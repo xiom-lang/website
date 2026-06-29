@@ -364,6 +364,28 @@ Starts only when Phase 1 is stable enough to write the compiler in AXIOM itself.
 
 ---
 
+## Total Timeline
+
+| Scenario | Phase 0 | Phase 1 | Phase 2 | Total to Self-Hosting |
+|----------|---------|---------|---------|----------------------|
+| AI-assisted | 2-3 weeks | 3-6 months | 6-12 months | **12-24 months** |
+| Conventional team | 6-10 months | 12-18 months | 12-18 months | **30-46 months** |
+
+Both scenarios assume the language specification is complete before implementation begins (which it is as of v0.3).
+
+---
+
+## Deferred Features
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| `derived` fields (computed/reactive) | DEFERRED to Phase 2+ | Grammar defined but not implemented. AST supports storage. No codegen. |
+| Static contract verification (Z3) | DEFERRED to Phase 3 | Runtime guards in Phase 1. SMT proof requires stable contract semantics after real-world usage. |
+| GPU / Vulkan bindings | Not in scope | Library domain. C FFI covers it. |
+| Console targets | Not in scope | Platform SDK constraints. Add when language is stable. |
+
+---
+
 ## How This Document Gets Updated
 
 Every design decision made during implementation gets recorded here.

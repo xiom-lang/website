@@ -122,11 +122,9 @@ ConstDecl    = "const" Ident ":" Type "=" Expr ";"
 ```
 TypeDecl      = "type" Ident [ GenericParams ] "=" "{"
                   { FieldDecl }
-                  { DerivedDecl }
                   { InvariantDecl }
                 "}" [ DeriveClause ]
 FieldDecl     = Ident ":" Type ";"
-DerivedDecl   = Ident ":" Type "derived" "(" Expr ")" ";"
 InvariantDecl = "invariant" ":" Expr ";"
 DeriveClause  = "derive" "[" DeriveTrait { "," DeriveTrait } "]"
 DeriveTrait   = "Eq" | "Clone" | "Display" | "Hash" | "Ord"
@@ -138,6 +136,10 @@ EnumVariantField = Ident ":" Type
 InterfaceDecl = "interface" Ident [ GenericParams ] "{"
                   { FieldDecl | FnSignature }
                 "}"
+
+Note: `derived` fields (computed fields that auto-recompute when dependencies change)
+are a planned Phase 2+ feature. Syntax: `Ident ":" Type "derived" "(" Expr ")" ";"`.
+This feature is not part of the Phase 0 or Phase 1 grammar.
 ```
 
 ### 3.4  Functions
@@ -327,8 +329,8 @@ interface Comparable {
 type Score = { value: Int }
 
 fn Score.compare(other: &Score) -> Int {
-  if self.value < other.value { return -1 }
-  if self.value > other.value { return  1 }
+  if value < other.value { return -1 }
+  if value > other.value { return  1 }
   return 0
 }
 
@@ -1026,7 +1028,12 @@ Language specification locked. Breaking changes require a formal proposal and de
 
 ## Realistic Total Timeline
 
-Phase 0 through self-hosting: 12 to 24 months of dedicated AI-assisted development. Conventional team estimates: 30 to 46 months. Rust took approximately 8 years from start to 1.0. Go took 3 years with a large Google team. Zig is still pre-1.0 after 8 years. These timelines are normal. A language that cuts corners to ship faster will have the wrong corners cut forever.
+Phase 0 through self-hosting with AI-assisted development: 12 to 24 months.
+Conventional team (2-3 engineers, no AI tooling): 30 to 46 months.
+
+For context: Rust took approximately 8 years from start to 1.0. Go took 3 years with a large Google team. Zig is still pre-1.0 after 8 years. These timelines are normal. A language that cuts corners to ship faster will have the wrong corners cut forever.
+
+The build strategy document contains the authoritative timeline with per-phase breakdowns.
 
 ---
 
