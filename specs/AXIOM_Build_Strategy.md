@@ -347,7 +347,7 @@ Starts only when Phase 1 is stable enough to write the compiler in AXIOM itself.
 - Additional compiler targets
 - **WASM compiler distribution** — the compiler itself as WASM module for browser playground
 - **Mechanical FFI binding generation** with contract inference from C headers
-- **Showcase projects:** AxiomDB (KV store → transactions) → AxiomVDB (vector store)
+- **Showcase projects:** AxiomDB (KV store → transactions) → AxiomVDB (vector store) — gated on full self-hosting bootstrap (byte-for-byte identical compiler output)
 
 ---
 
@@ -386,7 +386,7 @@ These were recommendations promoted to decisions on 2026-06-30.
 | **Single `main` branch** — no per-OS forks. Conditional compilation for platform-specific code. CI build matrix per commit. | DECIDED | AXIOM_CrossPlatform_Distribution.md |
 | **Three distribution paths:** pre-built binaries (primary), build-from-source (secondary), WASM compiler playground (tertiary). | DECIDED | AXIOM_CrossPlatform_Distribution.md |
 | **Version manager** (`axiomup`) deferred to Phase 3. Design distribution infrastructure to support it from the start. | DEFERRED | AXIOM_CrossPlatform_Distribution.md |
-| **Showcase projects:** AxiomDB first (KV store → transactions), AxiomVDB second (built on AxiomDB storage engine). | DECIDED | AXIOM_Showcase_Projects.md |
+| **Showcase projects:** AxiomDB first (KV store → transactions), AxiomVDB second (built on AxiomDB storage engine). Gated on full self-hosting (byte-for-byte identical compiler output). | DECIDED | AXIOM_Showcase_Projects.md |
 | **AxiomDB scoped to Phase A (KV store, no transactions) before AxiomVDB.** Transactions are Phase B, post-AxiomVDB. | DECIDED | AXIOM_Showcase_Projects.md |
 | **Both showcase projects expose C-ABI surface** for consumption from Rust/Python/Tauri. First outbound FFI test. | DECIDED | AXIOM_Showcase_Projects.md |
 | **`--diagnostics=json`** structured compiler output. Built during Phase 2 self-hosting. | DECIDED | AXIOM_Phase3_Recommendations.md |
