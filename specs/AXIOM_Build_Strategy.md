@@ -305,6 +305,7 @@ Starts only when Phase 0 is complete and verified.
 - Enums with pattern matching and exhaustion checking
 - Module system and `use` declarations
 - Basic standard library: core, io, collections, string, math, ffi
+- Standard library conformance testing — `test` package with contract-aware runner
 - Error handling — `Result`, `Option`, `?` operator
 - Async runtime and channel primitives
 - Package manager prototype — local resolution only
@@ -317,24 +318,36 @@ Starts only when Phase 0 is complete and verified.
 
 Starts only when Phase 1 is stable enough to write the compiler in AXIOM itself.
 
+#### 2A — Core Compiler Rewrite
+
 - Rewrite lexer in AXIOM — compiled by Phase 1 compiler
 - Rewrite parser in AXIOM
 - Rewrite type checker in AXIOM
 - Rewrite IR emitter and LLVM bindings in AXIOM
 - Compile new compiler with Phase 1 compiler
 - New compiler compiles itself — bootstrap complete
-- Phase 0 Rust compiler retired
+- **Phase 0 Rust compiler kept as permanent bootstrap fallback** — never deleted
+
+#### 2B — AI Tooling (Built During Self-Hosting)
+
+- **`--diagnostics=json`** — structured compiler output. Enables AI agents to parse errors without string-matching. 2-day addition to error-reporting path.
+- **`--dump-contracts`** — queryable contract index across a package. Emits JSON of every function's `requires`/`ensures`/`invariant`. AST traversal + output flag. AI tooling uses this during self-hosting to compose functions without reading source.
+- **Contract semantics audit** — track contract quality during Phase 2 corpus generation. Gate on Phase 3 Z3 work. Audit before building SMT integration.
+- **Borrow-error AI friction tracking** — measure agent failure rate on borrow errors. Data collection only. Informs ownership model revision decision.
 
 ---
 
 ### Phase 3 — Ecosystem & Static Contracts (ongoing)
 
-- Z3 SMT integration for static contract verification
+- Z3 SMT integration for static contract verification (gated on Phase 2 contract audit)
 - Package registry
 - Language server (LSP) full implementation
 - Canonical formatter (`axiom fmt`)
 - Documentation generator (`axiom doc`)
 - Additional compiler targets
+- **WASM compiler distribution** — the compiler itself as WASM module for browser playground
+- **Mechanical FFI binding generation** with contract inference from C headers
+- **Showcase projects:** AxiomDB (KV store → transactions) → AxiomVDB (vector store)
 
 ---
 
