@@ -364,6 +364,29 @@ Starts only when Phase 1 is stable enough to write the compiler in AXIOM itself.
 
 ---
 
+## Ecosystem & Distribution Decisions
+
+These were recommendations promoted to decisions on 2026-06-30.
+
+| Decision | Status | Source |
+|----------|--------|--------|
+| **Single `main` branch** — no per-OS forks. Conditional compilation for platform-specific code. CI build matrix per commit. | DECIDED | AXIOM_CrossPlatform_Distribution.md |
+| **Three distribution paths:** pre-built binaries (primary), build-from-source (secondary), WASM compiler playground (tertiary). | DECIDED | AXIOM_CrossPlatform_Distribution.md |
+| **Version manager** (`axiomup`) deferred to Phase 3. Design distribution infrastructure to support it from the start. | DEFERRED | AXIOM_CrossPlatform_Distribution.md |
+| **Showcase projects:** AxiomDB first (KV store → transactions), AxiomVDB second (built on AxiomDB storage engine). | DECIDED | AXIOM_Showcase_Projects.md |
+| **AxiomDB scoped to Phase A (KV store, no transactions) before AxiomVDB.** Transactions are Phase B, post-AxiomVDB. | DECIDED | AXIOM_Showcase_Projects.md |
+| **Both showcase projects expose C-ABI surface** for consumption from Rust/Python/Tauri. First outbound FFI test. | DECIDED | AXIOM_Showcase_Projects.md |
+| **`--diagnostics=json`** structured compiler output. Built during Phase 2 self-hosting. | DECIDED | AXIOM_Phase3_Recommendations.md |
+| **`--dump-contracts`** queryable contract index. Built during Phase 2 self-hosting. | DECIDED | AXIOM_Phase3_Recommendations.md |
+| **Contract semantics audit** before Z3 integration. Phase 2 output audited for contract quality. Gate on Phase 3 SMT work. | DECIDED | AXIOM_Phase3_Recommendations.md |
+| **Borrow-error AI friction tracking** during Phase 2. Ownership model revisable if data shows systematic agent failure. | DECIDED | AXIOM_Phase3_Recommendations.md |
+| **Mechanical FFI binding generation** prioritized in Phase 3. Auto-infer contracts from C headers where possible. | DECIDED | AXIOM_Phase3_Recommendations.md |
+| **WASM compiler distribution** — the compiler itself as a WASM module for browser playground. Phase 3. | DECIDED | AXIOM_Phase3_Recommendations.md |
+| **Stdlib conformance testing** — `test` package with contract-aware runner. Phase 1 addition. | DECIDED | AXIOM_Phase3_Recommendations.md |
+| **No AGI-oriented feature creep** — reaffirmed. All AI-tooling decisions trace to observable agent failure modes, not speculation. | DECIDED | AXIOM_Phase3_Recommendations.md |
+
+---
+
 ## Total Timeline
 
 | Scenario | Phase 0 | Phase 1 | Phase 2 | Total to Self-Hosting |

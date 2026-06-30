@@ -1,46 +1,32 @@
-# AXIOM — Phase 3 Recommendations, Concerns & Suggestions
+# AXIOM — Phase 3 Recommendations & Phase 2 Enhancements
 
-> Companion document to AXIOM_Build_Strategy.md. Written from the perspective of
-> AI-agent ergonomics and ecosystem leverage, not new language pillars.
-> Nothing here contradicts the Three Pillars or the existing scope rejections
-> (no AGI infrastructure framing, no lifetimes, no GC).
+> Companion to AXIOM_Build_Strategy.md. Recommendations that enhance Phase 2
+> tooling and Phase 3 ecosystem work, with a focus on AI-agent ergonomics.
+> **Status: DECIDED** where marked. Recommendations otherwise.
+> Nothing here contradicts the Three Pillars or the existing scope rejections.
 
 ---
 
-## Context
+## Scope Note
 
 Phase 3 as currently scoped covers: Z3 static verification, package registry,
 full LSP, formatter, doc generator, additional targets. This document adds
-recommendations layered on top of that scope — it does not propose new pillars
-or reopen DECIDED items.
+items that can be built during Phase 2 (low cost, high AI-tooling leverage)
+and refinements for Phase 3 planning.
 
 ---
 
-## 1. Concern: Contract Semantics May Need Revision Before Z3
+## Phase 2 Additions (Build These During Self-Hosting)
 
-**Status: Recommendation — sequencing risk**
-
-Phase 1 contracts have only been exercised by the team itself. Self-hosting
-(Phase 2) will be the first large, adversarial-scale corpus of contracts —
-written by AI tooling, against AI-generated AXIOM code, at compiler scale.
-
-**Recommendation:** Treat the first 1–2 months of Phase 2 output as a contract
-semantics audit, not just a bootstrap milestone. Specifically track:
-
-- How often `requires`/`ensures` clauses are wrong, vague, or trivially true
-- Whether contract violations caught real bugs or just noise
-- Whether the runtime guard error format was sufficient for an agent to fix
-  the violation without human intervention
-
-**Why it matters:** Z3 static proof is expensive to build against unstable
-semantics. If contract authoring patterns shift during Phase 2, that shift
-should happen *before* Phase 3 SMT work starts, not after.
+These items require no new language semantics. They expose data the compiler
+already has in the AST. They cost days, not weeks. They give AI tooling
+immediate leverage during the self-hosting effort itself.
 
 ---
 
-## 2. Recommendation: Structured (JSON) Compiler Diagnostics
+### Decision 1: Structured Compiler Diagnostics (`--diagnostics=json`)
 
-**Status: New recommendation, additive to existing LSP/tooling scope**
+**Status: DECIDED.** Build during Phase 2 self-hosting.
 
 Current contract violation messages are human-readable strings:
 
@@ -48,11 +34,11 @@ Current contract violation messages are human-readable strings:
 panic("contract violated: requires b != 0.0 at divide:2")
 ```
 
-This is good for humans. It is bad for AI agents, who currently must
-string-parse or regex this to extract structured meaning.
+This is good for humans. It is bad for AI agents, who must string-parse or
+regex this to extract structured meaning.
 
-**Recommendation:** Add a `--diagnostics=json` compiler flag (Phase 3) that
-emits structured diagnostics for both compile errors and contract violations:
+**Decision:** Add a `--diagnostics=json` compiler flag that emits structured
+diagnostics for both compile errors and contract violations:
 
 ```json
 {
@@ -66,26 +52,25 @@ emits structured diagnostics for both compile errors and contract violations:
 }
 ```
 
-**Why it matters:** This is the single highest-leverage, lowest-risk addition
-for AI-agent tooling. It requires no new language semantics — only a second
-output format for diagnostics that already exist. Tight feedback loops are
-what let agents iterate on fixes without human translation of error text.
+**Why Phase 2, not Phase 3:** This is a second output format for diagnostics
+that already exist. The cost is a 2-day addition to the error-reporting path.
+The payoff is immediate: AI agents writing AXIOM during self-hosting get
+structured feedback instead of parsing strings. Tight feedback loops let
+agents iterate on fixes without human translation of error text.
 
 ---
 
-## 3. Recommendation: Queryable Contract Index ("Contracts as Spec Database")
+### Decision 2: Queryable Contract Index (`--dump-contracts`)
 
-**Status: New recommendation — the genuinely differentiated idea**
+**Status: DECIDED.** Build during Phase 2 self-hosting.
 
 Today, to know what a function promises, an agent (or human) must read the
 function body or trust a comment. AXIOM's contracts already make this data
-exist in the language — but nothing currently exposes it independent of
-parsing source.
+exist in the AST — but nothing exposes it independent of parsing source.
 
-**Recommendation:** Extend the planned `axiom doc` generator (already in
-Phase 3 scope) with a `--contracts-json` mode that emits a structured,
-queryable index of every function's `requires`/`ensures`/`invariant` clauses
-across a package, without requiring the body to be read at all.
+**Decision:** Add a `--dump-contracts` flag to the Phase 2 compiler that
+emits a structured index of every function's `requires`/`ensures`/`invariant`
+clauses across a package, without requiring the body to be read at all.
 
 ```json
 {
@@ -97,99 +82,176 @@ across a package, without requiring the body to be read at all.
 }
 ```
 
-**Why it matters:** This turns "the compiler is the reviewer" (Purpose doc)
-into "the compiler also produces a spec database an agent can plan against."
-It is the one item in this document that is unique to AXIOM's premise rather
-than generic AI-tooling hygiene — no mainstream systems language currently
-exposes this. It costs nothing new in the type checker; the data already
-exists in the AST.
+**Why Phase 2, not Phase 3:** This data already exists in the typed AST. It
+costs a new output flag and a traversal. It's what AI tooling needs during
+self-hosting to compose functions without reading every source file. Don't
+wait for Phase 3. Build it during the self-hosting effort itself — it's how
+the AI writing the compiler will understand what functions promise.
 
-**Stretch goal (post-Phase 3, not now):** Contract composition checking —
-verifying that a chain of calls satisfies each link's `requires` from the
-prior link's `ensures`, without re-deriving everything per call. This is a
-natural extension of the contract index, not a new mechanism.
+**Stretch goal (post-Phase 2):** Contract composition checking — verifying
+that a chain of calls satisfies each link's `requires` from the prior link's
+`ensures`, without re-deriving everything per call. This is a natural
+extension of the contract index, not a new mechanism.
 
 ---
 
-## 4. Concern: Lexical Scope Borrowing — Unverified for AI-Generated Code
+## Phase 3 Recommendations
 
-**Status: Concern, not a recommendation to change course**
+---
 
-Lexical scope borrowing is simpler for a *human* to read than Rust lifetimes.
+### 1. Contract Semantics Audit Before Z3
+
+**Status: DECIDED.** Sequencing risk. Audit before investing in SMT.
+
+Phase 1 contracts have only been exercised by the team itself. Phase 2
+self-hosting will be the first large, adversarial-scale corpus of contracts —
+written by AI tooling, against AI-generated AXIOM code, at compiler scale.
+
+**Decision:** Treat the first 1–2 months of Phase 2 output as a contract
+semantics audit. Track:
+- How often `requires`/`ensures` clauses are wrong, vague, or trivially true
+- Whether contract violations caught real bugs or just noise
+- Whether the runtime guard error format was sufficient for an agent to fix
+  the violation without human intervention (the structured diagnostics from
+  Decision 1 above are the delivery mechanism for this)
+
+**Why it matters:** Z3 static proof is expensive to build against unstable
+semantics. If contract authoring patterns shift during Phase 2, that shift
+must happen *before* Phase 3 SMT work starts, not after.
+
+---
+
+### 2. Track Borrow-Error AI Friction (With Escape Hatch)
+
+**Status: DECIDED — measurement with acknowledged revision path.**
+
+Lexical scope borrowing is simpler for a human to read than Rust lifetimes.
 It is not yet known whether it is easier for an LLM to *generate correctly*
-under those constraints. Rust's lifetime errors, while harder to read, give
-the compiler enough information to produce a precise, iterable error — which
-is exactly what agents currently rely on to self-correct.
+under those constraints.
 
-**Recommendation:** Track this empirically rather than assuming either way.
-During Phase 2 self-hosting (large AI-assisted corpus), measure:
-
+**Decision:** Track this empirically during Phase 2 self-hosting:
 - Rate of borrow-related compile failures in AI-generated AXIOM code
-- Whether the agent fixes them in 1 iteration based on the error message, or
-  needs multiple retries / human intervention
+- Whether the agent fixes them in 1 iteration or needs multiple retries /
+  human intervention
 
-This is a metric to collect, not a design decision to revisit now. If the
-data shows agents struggle disproportionately with borrow errors compared to
-type errors, the diagnostic message format (see #2) is the first lever to
-pull — not the ownership model itself.
+**Escape hatch:** If empirical data from Phase 2 shows agents cannot reliably
+generate correct borrow patterns under lexical scope — and structured
+diagnostics don't reduce the failure rate to acceptable levels — **the
+ownership model is on the table for revision.** This is not a commitment to
+change it. It is an acknowledgment that a model designed for human readability
+may need adjustment if agents systematically fail against it. The measurement
+is free. The acknowledgment is honest. The decision to act on the data is
+deferred until the data exists.
+
+The diagnostic message format (Decision 1) is the first lever to pull. If it
+doesn't help, the model itself is the second lever.
 
 ---
 
-## 5. Recommendation: FFI as the Real Adoption Lever
+### 3. FFI as the Real Adoption Lever
 
-**Status: Recommendation — ecosystem priority, not language feature**
+**Status: DECIDED — ecosystem priority within Phase 3 scope.**
 
-Regardless of AI framing, the largest practical determinant of adoption for
-a new systems language is whether it's frictionless to wrap one existing
-C/C++/Rust library. This is explicitly in scope already (C FFI, "AXIOM is
-not trying to be the only language"). The recommendation is about *how* to
-prioritize it under AI-assisted development specifically.
+Regardless of AI framing, the largest practical determinant of adoption for a
+new systems language is frictionless wrapping of existing C/C++/Rust
+libraries. This is explicitly in scope (C FFI). The decision is about *how*
+to prioritize it:
 
-**Recommendation:**
-- Make the FFI binding surface mechanical, not judgment-based: minimal
-  manual marshalling decisions per binding, so generating a binding is a
-  repetitive, well-specified task — exactly what an agent does well and a
-  human finds tedious.
+- Make the FFI binding surface mechanical: minimal manual marshalling
+  decisions per binding. Generating a binding should be a repetitive,
+  well-specified task — exactly what an agent does well and a human finds
+  tedious.
 - Where possible, auto-infer contracts from C header metadata during binding
-  generation (e.g. non-null pointer annotations → `requires` clauses). This
-  is additive to the contract system, not a new mechanism, and gives FFI
-  bindings the same safety net as native AXIOM code with no extra authoring
-  cost.
+  generation (e.g., non-null pointer annotations → `requires` clauses). This
+  gives FFI bindings the same safety net as native AXIOM code with no extra
+  authoring cost.
 
-**Why it matters:** This is the unglamorous but highest-ROI ecosystem
-investment. Language design rarely decides adoption for a non-Rust,
-non-Zig systems language — packaging and interop friction does.
+This is the unglamorous but highest-ROI ecosystem investment. Language design
+rarely decides adoption for a new systems language — packaging and interop
+friction does.
 
 ---
 
-## 6. Explicit Non-Recommendation: No "AGI-Oriented" Features
+### 4. WASM Compiler Distribution Path
 
-**Status: Scope guard, reaffirming existing decision**
+**Status: DECIDED — unique to AXIOM.**
+
+The AXIOM compiler itself compiles to WASM (proven in Phase 0 — same
+pipeline flag as user programs). This enables a distribution path no other
+systems language currently offers:
+
+- A web-based AXIOM playground where the compiler runs client-side in the
+  browser via WASM — no install, no backend server, no account
+- Instant-on for new users: open a URL, write AXIOM, see compiled output or
+  run the WASM binary directly in the browser
+- The compiler WASM is a distribution artifact built by the same CI matrix
+  that builds native binaries
+
+**Implementation in Phase 3:** The same `--target wasm` flag that compiles
+user programs to WASM is applied to the compiler itself. The playground is a
+static HTML page that loads the compiler WASM and presents an editor. No
+backend required. This is a competitive differentiator worth investing in.
+
+---
+
+### 5. Standard Library Conformance Testing
+
+**Status: DECIDED — Phase 1 addition.**
+
+The showcase projects (AxiomDB, AxiomVDB) will test the language features.
+But the stdlib itself needs a conformance suite that tests whether every
+function satisfies its own contracts:
+
+- Does `Vec.push` maintain the capacity invariant?
+- Does `Map.get` return `None` for missing keys?
+- Does `Result.unwrap` panic on `Err`?
+
+This is separate from compiler tests. It validates that the stdlib
+implementation is correct against its own stated contracts — the same
+contracts that user code relies on.
+
+**Implementation:** A `test` package in the stdlib that provides a contract-
+aware test runner. `fn test_push_respects_capacity` — the contract IS the
+test. Start during Phase 1 stdlib implementation.
+
+---
+
+### 6. No "AGI-Oriented" Feature Creep
+
+**Status: DECIDED — reaffirming existing decision.**
 
 The Purpose document already rejects "AGI infrastructure framing" as out of
-scope. This document does not propose reopening that. Everything above is
-framed around *today's* AI coding agents and their concrete, observable
-failure modes (context limits, need for structured feedback, reliance on
-local reasoning) — not speculation about what a future AGI might want.
-Recommendation: keep this boundary explicit in any future Phase 3 planning
-discussion, since "AI-native language" framing tends to attract speculative
-feature requests that don't trace back to an observed agent failure mode.
+scope. Everything in this document is framed around today's AI coding agents
+and their concrete, observable failure modes (context limits, need for
+structured feedback, reliance on local reasoning) — not speculation about
+what a future AGI might want. Keep this boundary explicit.
 
 ---
 
 ## Summary Table
 
-| # | Item | Type | Effort vs. Phase 3 scope |
-|---|------|------|---------------------------|
-| 1 | Contract semantics audit during Phase 2 | Process recommendation | No new scope — timing only |
-| 2 | `--diagnostics=json` flag | Tooling addition | Low — new output format only |
-| 3 | `--contracts-json` index | Tooling addition | Low–medium — extends planned `axiom doc` |
-| 4 | Track borrow-error agent friction | Metric to collect | No new scope — measurement only |
-| 5 | Mechanical, contract-inferring FFI generation | Ecosystem priority | Medium — within existing FFI scope |
-| 6 | No AGI-oriented feature creep | Scope guard | None — reaffirms existing decision |
+| # | Item | Status | Phase | Effort |
+|---|------|--------|-------|--------|
+| D1 | `--diagnostics=json` flag | **DECIDED** | Phase 2 | Low — new output format |
+| D2 | `--dump-contracts` contract index | **DECIDED** | Phase 2 | Low — AST traversal + output flag |
+| 1 | Contract semantics audit before Z3 | **DECIDED** | Phase 2→3 gate | No new scope — timing only |
+| 2 | Track borrow-error AI friction | **DECIDED** | Phase 2 | Measurement only |
+| 2b | Ownership model revision escape hatch | **DECIDED** (acknowledged) | Deferred to data | No action now — acknowledged path |
+| 3 | Mechanical FFI generation | **DECIDED** | Phase 3 | Medium — within existing FFI scope |
+| 4 | WASM compiler distribution | **DECIDED** | Phase 3 | Medium — compiler WASM + static playground |
+| 5 | Stdlib conformance testing | **DECIDED** | Phase 1 | Low — test package + contract runner |
+| 6 | No AGI-oriented feature creep | **DECIDED** | Ongoing | None — reaffirms existing decision |
 
 ---
 
-*Companion to AXIOM_Build_Strategy.md — recommendations only, not binding
-decisions. Promote any item to the Build Strategy's decision log if and when
-it is actually decided.*
+## What Was Rejected / Moved
+
+| Item | Original location | Final decision |
+|------|------------------|----------------|
+| `--contracts-json` (contract index) | Proposed for Phase 3 | **Moved to Phase 2** (Decision 2). Data exists in AST. Build it during self-hosting. |
+| Ownership model concerns | Proposed as measurement-only | **Added escape hatch** (Item 2b). If data shows systematic agent failure, the model is revisable. |
+
+---
+
+*AXIOM Phase 3 Recommendations — Version 1.0. Decisions made 2026-06-30.*
+*Recorded in AXIOM_Build_Strategy.md decision log.*
