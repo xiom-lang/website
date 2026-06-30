@@ -351,6 +351,28 @@ Starts only when Phase 1 is stable enough to write the compiler in AXIOM itself.
 
 ---
 
+### Ecosystem Phase — Libraries & Distribution
+
+Starts after Phase 3 compiler is production-stable and self-hosting.
+
+**Goal:** A library ecosystem and distribution toolchain so AXIOM can be used for real projects.
+
+| Milestone | Status |
+|-----------|--------|
+| **Installer** — `install.ps1` builds release binary, adds to PATH | ✅ v0.10.0 |
+| **HTTP library** — `axiom-http` with libcurl FFI bindings | 🚧 |
+| **Crypto library** — `axiom-crypto` with OpenSSL FFI bindings | 🚧 |
+| **SQL library** — `axiom-sql` with SQLite FFI bindings | 🚧 |
+| **GPU compute** — `axiom-gpu` with Vulkan FFI bindings | 📋 Planned |
+| **Package registry** — `axiom pkg publish` / `axiom pkg install` | 🚧 |
+| **CI/CD** — GitHub Actions build matrix | 📋 Planned |
+| **AxiomDB** — Embedded KV store (gated on ecosystem libraries) | 📋 Planned |
+| **AxiomVDB** — Vector database (gated on AxiomDB) | 📋 Planned |
+
+**Design principle:** All ecosystem libraries are written in AXIOM, compiled by axiomc, and distributed as packages via `axiom pkg`. The compiler does not change for ecosystem work.
+
+---
+
 ## What We Are Not Doing (And Why)
 
 | Dropped | Reason |
