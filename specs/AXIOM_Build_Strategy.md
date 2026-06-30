@@ -400,6 +400,47 @@ These were recommendations promoted to decisions on 2026-06-30.
 
 ---
 
+## Testing Strategy
+
+> The self-hosting compiler (~10,000 lines of AXIOM) is the primary stress test. These tests cover what the compiler source doesn't exercise.
+
+### Test Types and Phasing
+
+| Test Type | Description | Phase |
+|-----------|-------------|-------|
+| **Unit tests** | Per-crate tests for lexer, parser, type checker, codegen | Phase 0–1 (in progress) |
+| **Stdlib conformance** | Contract-aware tests that verify every stdlib function satisfies its own contracts | Phase 1 |
+| **Differential correctness** | Same AXIOM program compiled by Rust compiler AND AXIOM compiler → diff the LLVM IR. Must be identical. Strongest correctness signal in Phase 2. | Phase 2A |
+| **Feature stress tests** | Programs targeting features the compiler source doesn't heavily exercise: async (100 concurrent tasks), float matrix multiply, 50-field struct derives, 10-level nested borrows, 5-level generic chains | Phase 2B |
+| **Compile-time benchmarks** | Per-commit metrics: 100-function file throughput, 10K-line scaling, 100-generic monomorphisation time, 500-borrow check time | Phase 2C |
+| **Regression tests** | Per-bug minimal reproduction. Every bug found during self-hosting becomes a regression test. | Phase 2C–ongoing |
+| **Ecosystem stress** | AxiomDB and AxiomVDB compile — real application-scale stress on the entire pipeline | Phase 3 |
+
+### Decision: Build During Phase 2, Not After
+
+**Status: DECIDED.** Stress tests run during self-hosting, not after. Reasoning:
+
+1. Catch regressions as the compiler is rewritten, not after it already compiled itself
+2. Fixing bugs post-self-host means fixing in AXIOM and re-bootstrapping — a dependency loop
+3. The Rust fallback compiler is the active development tool during Phase 2 — use it to validate the AXIOM compiler's output before retiring it
+4. Differential tests produce the strongest correctness signal early (byte-for-byte IR comparison)
+
+### What the Compiler Source Exercises vs. Doesn't
+
+| Heavily Exercised | Barely Exercised |
+|-------------------|------------------|
+| Structs, enums, pattern matching | Async/await state machines |
+| Generics monomorphisation | Channels and message passing |
+| String manipulation | Float-heavy numerics |
+| File I/O and error handling | Large allocation patterns |
+| Recursive descent algorithms | Collection operations (Map, Set) |
+| Borrow checker rules | 50-field struct derives |
+| | Deep generic instantiation chains |
+
+Feature stress tests target the right column.
+
+---
+
 ## Total Timeline
 
 | Scenario | Phase 0 | Phase 1 | Phase 2 | Total to Self-Hosting |
