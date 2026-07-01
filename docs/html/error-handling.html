@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — Error Handling</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--signal);font-weight:500;">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">Error Handling</h1>
+      <h1>Error Handling</h1>
+<p>AXIOM has no exceptions. Functions that can fail return <code>Result[T, E]</code>. Absence of a value is expressed through <code>Option[T]</code>. The compiler enforces exhaustive handling of both at every use site.</p>
+<h2>Result Type</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> parse_int(s: <span class=<span class="str">"ty"</span>>Str</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[<span class=<span class="str">"ty"</span>>Int</span>, <span class=<span class="str">"ty"</span>>ParseError</span>] {
+  <span class=<span class="str">"cm"</span>>// ...</span>
+}
+</code></pre>
+<p><code>E</code> in <code>Result[T, E]</code> is <strong>any type</strong>. No <code>Error</code> interface is required. The standard library provides a <code>StdError</code> interface for its own functions. Library authors are free to use any error type.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// All valid</span>
+<span class=<span class="str">"ty"</span>>Result</span>[<span class=<span class="str">"ty"</span>>Int</span>, <span class=<span class="str">"ty"</span>>Str</span>]
+<span class=<span class="str">"ty"</span>>Result</span>[Config, <span class=<span class="str">"ty"</span>>IOError</span>]
+<span class=<span class="str">"ty"</span>>Result</span>[Data, MyCustomErrorEnum]
+</code></pre>
+<h2>The <code>?</code> Operator</h2>
+<p>The <code>?</code> operator returns the error from the current function if the <code>Result</code> is <code>Err</code>. It is syntactic sugar for an explicit match that returns the error.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> load_config(path: <span class=<span class="str">"ty"</span>>Str</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[Config, <span class=<span class="str">"ty"</span>>AppError</span>] {
+  <span class=<span class="str">"kw"</span>>let</span> file   = io.read_file(path)?     <span class=<span class="str">"cm"</span>>// returns <span class=<span class="str">"kw"</span>>Err</span> on failure</span>
+  <span class=<span class="str">"kw"</span>>let</span> config = parse_config(file)?     <span class=<span class="str">"cm"</span>>// returns <span class=<span class="str">"kw"</span>>Err</span> on failure</span>
+  <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Ok</span>(config)
+}
+</code></pre>
+<p><code>?</code> can only appear inside a function that returns <code>Result</code>.</p>
+<h2>Match Exhaustion</h2>
+<p>Every <code>match</code> expression must cover all cases. The compiler rejects non-exhaustive matches.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>match</span> parse_int(<span class="str">"<span class="num">42</span>"</span>) {
+  <span class=<span class="str">"kw"</span>>Ok</span>(n)  => io.print(n.to_str()),
+  <span class=<span class="str">"kw"</span>>Err</span>(e) => io.print_err(e.message),
+}
+
+<span class=<span class="str">"cm"</span>>// Matching an <span class=<span class="str">"kw"</span>>enum</span> — all variants required</span>
+<span class=<span class="str">"kw"</span>>match</span> state {
+  AgentState.Idle              => wait(),
+  AgentState.Patrolling(route) => follow(route),
+  AgentState.Attacking(target) => engage(target),
+  AgentState.Dead(cause)       => log(cause),
+}
+</code></pre>
+<p>Use <code>_</code> as a wildcard to cover remaining cases:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>match</span> value {
+  <span class=<span class="str">"kw"</span>>Some</span>(v) => process(v),
+  _       => {}  <span class=<span class="str">"cm"</span>>// handle all other cases</span>
+}
+</code></pre>
+<h2>Option Type</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> val: <span class=<span class="str">"ty"</span>>Option</span>[<span class=<span class="str">"ty"</span>>Int</span>] = <span class=<span class="str">"kw"</span>>Some</span>(<span class="num">10</span>)
+
+<span class=<span class="str">"cm"</span>>// Unwrap with default</span>
+<span class=<span class="str">"kw"</span>>let</span> n = val.unwrap_or(<span class="num">0</span>)
+
+<span class=<span class="str">"cm"</span>>// Pattern <span class=<span class="str">"kw"</span>>match</span></span>
+<span class=<span class="str">"kw"</span>>match</span> val {
+  <span class=<span class="str">"kw"</span>>Some</span>(n) => <span class=<span class="str">"kw"</span>>use</span>(n),
+  <span class=<span class="str">"kw"</span>>None</span>    => handle_absent(),
+}
+
+<span class=<span class="str">"cm"</span>>// Propagate <span class=<span class="str">"kw"</span>>None</span> with ? (inside a function returning <span class=<span class="str">"ty"</span>>Option</span>)</span>
+<span class=<span class="str">"kw"</span>>let</span> n = val?
+</code></pre>
+<h2>Constructors</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Option</span></span>
+<span class=<span class="str">"kw"</span>>let</span> present = <span class=<span class="str">"kw"</span>>Some</span>(<span class="num">42</span>)
+<span class=<span class="str">"kw"</span>>let</span> absent: <span class=<span class="str">"ty"</span>>Option</span>[<span class=<span class="str">"ty"</span>>Int</span>] = <span class=<span class="str">"kw"</span>>None</span>
+
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Result</span></span>
+<span class=<span class="str">"kw"</span>>let</span> success = <span class=<span class="str">"kw"</span>>Ok</span>(<span class="str">"done"</span>)
+<span class=<span class="str">"kw"</span>>let</span> failure: <span class=<span class="str">"ty"</span>>Result</span>[<span class=<span class="str">"ty"</span>>Str</span>, <span class=<span class="str">"ty"</span>>IOError</span>] = <span class=<span class="str">"kw"</span>>Err</span>(<span class=<span class="str">"ty"</span>>IOError</span>.new(<span class="str">"file not found"</span>))
+</code></pre>
+<h2><code>?</code> Propagation Rules</h2>
+<ul>
+<li><code>Result</code> functions can use <code>?</code> on both <code>Result</code> and <code>Option</code> values</li>
+<li><code>Option</code> functions can use <code>?</code> on <code>Option</code> values</li>
+<li>The <code>?</code> operator requires <code>From<SourceError></code> for automatic error conversion at propagation sites</li>
+<li><code>?</code> cannot appear outside a function that returns <code>Result</code> or <code>Option</code></li>
+</ul>
+<h2>Error Messages</h2>
+<p>When an unhandled error path exists, the compiler provides a clear error:</p>
+<pre><code>
+error[E0401]: non-exhaustive <span class=<span class="str">"kw"</span>>match</span>
+  --> src/main.ax:<span class="num">12</span>:<span class="num">3</span>
+   |
+<span class="num">12</span> |   <span class=<span class="str">"kw"</span>>match</span> <span class=<span class="str">"kw"</span>>result</span> {
+   |         ^^^^^^ missing arm: <span class=<span class="str">"kw"</span>>Err</span>(_)
+   |
+   = help: add a wildcard arm or handle the <span class=<span class="str">"kw"</span>>Err</span> case explicitly
+</code></pre>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

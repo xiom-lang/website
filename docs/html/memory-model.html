@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — Memory Model</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--signal);font-weight:500;">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">Memory Model</h1>
+      <h1>Memory Model</h1>
+<p>AXIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
+<p>The model uses <strong>lexical scope borrowing</strong> — simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.</p>
+<h2>Ownership Rules</h2>
+<table>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><strong>Single Owner</strong></td>
+<td>Every value has exactly one owner at any time. Assignment moves ownership.</td>
+</tr>
+<tr>
+<td><strong>Scope Lifetime</strong></td>
+<td>A value is freed when its owning binding leaves scope. No GC, no manual free.</td>
+</tr>
+<tr>
+<td><strong>Read Borrow (<code>&T</code>)</strong></td>
+<td>Multiple simultaneous read borrows allowed. No mutation during active read borrows.</td>
+</tr>
+<tr>
+<td><strong>Write Borrow (<code>&mut T</code>)</strong></td>
+<td>Exactly one write borrow at a time. No other borrows active simultaneously.</td>
+</tr>
+<tr>
+<td><strong>Explicit Clone</strong></td>
+<td>Duplicating a value requires <code>.clone()</code>. No implicit deep copy.</td>
+</tr>
+<tr>
+<td><strong>Move On Call</strong></td>
+<td>Passing a value to a function moves ownership unless the parameter is a borrow.</td>
+</tr>
+</table>
+<h2>Borrowing</h2>
+<p>Borrows expire at the end of the block or statement they are created in. You can see when a borrow ends by looking at the braces.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> consume(data: <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) { }          <span class=<span class="str">"cm"</span>>// takes ownership</span>
+<span class=<span class="str">"kw"</span>>fn</span> read_only(data: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) { }       <span class=<span class="str">"cm"</span>>// read borrow</span>
+<span class=<span class="str">"kw"</span>>fn</span> mutate(data: &mut <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) { }      <span class=<span class="str">"cm"</span>>// write borrow</span>
+
+<span class=<span class="str">"kw"</span>>let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+read_only(&v)        <span class=<span class="str">"cm"</span>>// borrow, v still valid</span>
+mutate(&mut v)       <span class=<span class="str">"cm"</span>>// write borrow, v still valid  </span>
+consume(v)           <span class=<span class="str">"cm"</span>>// move — v no longer usable here</span>
+<span class=<span class="str">"cm"</span>>// read_only(&v)     // COMPILE ERROR: v was moved</span>
+</code></pre>
+<h2>What the Model Cannot Handle</h2>
+<p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
+<p>This is a constraint, not a bug — it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
+<h2>Clone</h2>
+<p>Use <code>.clone()</code> to explicitly duplicate a value:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> a = <span class=<span class="str">"ty"</span>>Vec</span>.new()
+a.push(<span class="num">1</span>)
+
+<span class=<span class="str">"kw"</span>>let</span> b = a.clone()    <span class=<span class="str">"cm"</span>>// explicit deep copy</span>
+<span class=<span class="str">"cm"</span>>// a <span class=<span class="str">"kw"</span>>is</span> still valid — ownership was not moved</span>
+
+consume(a)           <span class=<span class="str">"cm"</span>>// a <span class=<span class="str">"kw"</span>>is</span> moved</span>
+<span class=<span class="str">"cm"</span>>// b <span class=<span class="str">"kw"</span>>is</span> still valid  — it was cloned, not moved</span>
+</code></pre>
+<p>Types with <code>derive[Clone]</code> get automatic clone implementations. Manual <code>clone()</code> methods can be written for types that need custom duplication logic.</p>
+<h2>Move Semantics</h2>
+<p>Passing a value to a function moves ownership:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> take(v: <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) {
+  <span class=<span class="str">"cm"</span>>// v <span class=<span class="str">"kw"</span>>is</span> owned here — freed at end of scope</span>
+}
+
+<span class=<span class="str">"kw"</span>>let</span> data = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+take(data)           <span class=<span class="str">"cm"</span>>// ownership moves to take()</span>
+<span class=<span class="str">"cm"</span>>// data <span class=<span class="str">"kw"</span>>is</span> no longer valid here</span>
+</code></pre>
+<p>Use borrows when you don't need ownership:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> inspect(v: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) {
+  <span class=<span class="str">"cm"</span>>// read-only access — caller retains ownership</span>
+}
+
+<span class=<span class="str">"kw"</span>>let</span> data = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+inspect(&data)       <span class=<span class="str">"cm"</span>>// borrow — data still valid</span>
+inspect(&data)       <span class=<span class="str">"cm"</span>>// can borrow again</span>
+</code></pre>
+<h2>Unsafe Blocks</h2>
+<p>Raw pointer arithmetic and C interop that cannot be verified by the compiler are permitted only inside explicit <code>unsafe { }</code> blocks.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>unsafe</span> {
+  <span class=<span class="str">"kw"</span>>let</span> raw: *<span class=<span class="str">"ty"</span>>Int</span> = some_c_function()
+  <span class=<span class="str">"kw"</span>>let</span> value = *raw   <span class=<span class="str">"cm"</span>>// dereference — programmer guarantees validity</span>
+}
+</code></pre>
+<p>The <code>unsafe</code> keyword is a declaration that the programmer takes responsibility for memory safety inside that scope. Unsafe blocks are visible in code review and audits. They cannot be hidden.</p>
+<h2>Differences from Rust</h2>
+<table>
+<tr>
+<th></th>
+<th>AXIOM</th>
+<th>Rust</th>
+</tr>
+<tr>
+<td>Lifetime annotations</td>
+<td>None</td>
+<td>Required for non-trivial cases</td>
+</tr>
+<tr>
+<td>Borrow scope</td>
+<td>Lexical (visible by braces)</td>
+<td>NLL (non-lexical lifetimes)</td>
+</tr>
+<tr>
+<td>Borrow in structs</td>
+<td>Not allowed</td>
+<td>Allowed with lifetime parameters</td>
+</tr>
+<tr>
+<td>Return borrows</td>
+<td>Not allowed</td>
+<td>Allowed with lifetime parameters</td>
+</tr>
+<tr>
+<td>Learning curve</td>
+<td>Moderate</td>
+<td>Steep</td>
+</tr>
+</table>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

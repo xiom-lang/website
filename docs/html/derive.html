@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — Derive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--signal);font-weight:500;">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">Derive</h1>
+      <h1>Derive</h1>
+<p>The <code>derive</code> clause instructs the compiler to generate correct-by-construction implementations of common interfaces. Every hand-written <code>eq</code> or <code>clone</code> method is a chance for error. The compiler never misses.</p>
+<h2>Supported Derivations</h2>
+<table>
+<tr>
+<th>Derive</th>
+<th>Generated Behavior</th>
+</tr>
+<tr>
+<td><code>Eq</code></td>
+<td>Structural equality — every field compared. Two values are equal if all fields are equal.</td>
+</tr>
+<tr>
+<td><code>Clone</code></td>
+<td>Deep copy — every field cloned recursively.</td>
+</tr>
+<tr>
+<td><code>Display</code></td>
+<td>Canonical string representation. Structs format as <code>TypeName{ field: value, ... }</code>.</td>
+</tr>
+<tr>
+<td><code>Hash</code></td>
+<td>Structural hash — every field hashed and combined. Compatible with <code>Eq</code>.</td>
+</tr>
+<tr>
+<td><code>Ord</code></td>
+<td>Lexicographic ordering — fields compared in declaration order.</td>
+</tr>
+</table>
+<h2>Usage</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Point</span> = {
+  x: <span class=<span class="str">"ty"</span>>Float64</span>;
+  y: <span class=<span class="str">"ty"</span>>Float64</span>;
+} <span class=<span class="str">"kw"</span>>derive</span>[<span class=<span class="str">"ty"</span>>Eq</span>, <span class=<span class="str">"ty"</span>>Clone</span>, <span class=<span class="str">"ty"</span>>Display</span>]
+
+<span class=<span class="str">"cm"</span>>// Compiler generates:</span>
+<span class=<span class="str">"cm"</span>>//   <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Point</span>.eq(other: &<span class=<span class="str">"ty"</span>>Point</span>) -> <span class=<span class="str">"ty"</span>>Bool</span>     — x == x && y == y</span>
+<span class=<span class="str">"cm"</span>>//   <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Point</span>.clone() -> <span class=<span class="str">"ty"</span>>Point</span>              — deep copy of both fields</span>
+<span class=<span class="str">"cm"</span>>//   <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Point</span>.to_str() -> <span class=<span class="str">"ty"</span>>Str</span>               — <span class="str">"<span class="</span>ty<span class="str">">Point</span>{ x: <span class="num">1.0</span>, y: <span class="num">2.0</span> }"</span></span>
+</code></pre>
+<h2>Invariant Restriction</h2>
+<p>Types with <code>invariant</code> clauses cannot derive <code>Eq</code>, <code>Hash</code>, or <code>Ord</code>. Invariants make structural equality semantically ambiguous — two values with different internal state may both satisfy the same invariant. <code>Clone</code> and <code>Display</code> remain available.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Health</span> = {
+  current: <span class=<span class="str">"ty"</span>>Int</span>;
+  maximum: <span class=<span class="str">"ty"</span>>Int</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: current >= <span class="num">0</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: current <= maximum;
+} <span class=<span class="str">"kw"</span>>derive</span>[<span class=<span class="str">"ty"</span>>Clone</span>, <span class=<span class="str">"ty"</span>>Display</span>]
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Eq</span>, <span class=<span class="str">"ty"</span>>Hash</span>, <span class=<span class="str">"ty"</span>>Ord</span> are rejected — invariants make equality/hashing ambiguous</span>
+</code></pre>
+<h2>Enums</h2>
+<p>Enums support derive too:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>enum</span> <span class=<span class="str">"ty"</span>>Option</span>[T] {
+  <span class=<span class="str">"kw"</span>>Some</span>(value: T),
+  <span class=<span class="str">"kw"</span>>None</span>,
+} <span class=<span class="str">"kw"</span>>derive</span>[<span class=<span class="str">"ty"</span>>Eq</span>, <span class=<span class="str">"ty"</span>>Clone</span>]
+
+<span class=<span class="str">"cm"</span>>// Enums with variant data can <span class=<span class="str">"kw"</span>>derive</span> <span class=<span class="str">"ty"</span>>Clone</span>, <span class=<span class="str">"ty"</span>>Display</span></span>
+<span class=<span class="str">"cm"</span>>// Enums with only unit variants can also <span class=<span class="str">"kw"</span>>derive</span> <span class=<span class="str">"ty"</span>>Eq</span>, <span class=<span class="str">"ty"</span>>Hash</span>, <span class=<span class="str">"ty"</span>>Ord</span></span>
+</code></pre>
+<h2>Codegen Details</h2>
+<h3>Eq</h3>
+<pre class="language-llvm"><code>
+; Structural comparison over all fields
+%eq_x = fcmp oeq double %<span class=<span class="str">"kw"</span>>self</span>.x, %other.x
+%eq_y = fcmp oeq double %<span class=<span class="str">"kw"</span>>self</span>.y, %other.y
+%<span class=<span class="str">"kw"</span>>result</span> = and i1 %eq_x, %eq_y
+</code></pre>
+<h3>Clone</h3>
+<pre class="language-llvm"><code>
+; Deep copy via alloca + GEP per field
+%clone = alloca %struct.<span class=<span class="str">"ty"</span>>Point</span>
+%x_ptr = getelementptr %struct.<span class=<span class="str">"ty"</span>>Point</span>, %struct.<span class=<span class="str">"ty"</span>>Point</span>* %clone, i32 <span class="num">0</span>, i32 <span class="num">0</span>
+store double %<span class=<span class="str">"kw"</span>>self</span>.x, double* %x_ptr
+; ... repeat <span class=<span class="str">"kw"</span>>for</span> each field
+</code></pre>
+<h3>Display</h3>
+<pre class="language-llvm"><code>
+; Canonical string via printf format concatenation
+; <span class="str">"<span class="</span>ty<span class="str">">Point</span>{ x: <span class="num">1.0</span>, y: <span class="num">2.0</span> }"</span>
+</code></pre>
+<h3>Hash</h3>
+<pre class="language-llvm"><code>
+; Multiplicative hash (DJB2 variant) combining all fields
+%hash = mul i64 %hash, <span class="num">33</span>
+%hash = add i64 %hash, %field_hash
+</code></pre>
+<h3>Ord</h3>
+<pre class="language-llvm"><code>
+; Lexicographic field-by-field comparison with branch dispatch
+; Compare field <span class="num">0</span> → <span class=<span class="str">"kw"</span>>if</span> not equal, <span class=<span class="str">"kw"</span>>return</span>; <span class=<span class="str">"kw"</span>>else</span> compare field <span class="num">1</span>...
+</code></pre>
+<h2>Custom Implementations</h2>
+<p>You can always write a manual implementation instead of using <code>derive</code>:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Point</span> = { x: <span class=<span class="str">"ty"</span>>Float64</span>; y: <span class=<span class="str">"ty"</span>>Float64</span> }
+
+<span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Point</span>.eq(other: &<span class=<span class="str">"ty"</span>>Point</span>) -> <span class=<span class="str">"ty"</span>>Bool</span> {
+  <span class=<span class="str">"kw"</span>>return</span> x == other.x && y == other.y
+}
+</code></pre>
+<p>Manual implementations take precedence over derived ones. This is useful when the structural definition doesn't match the semantic definition (e.g., a type that should compare only a subset of fields).</p>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

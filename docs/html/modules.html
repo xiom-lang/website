@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — Module System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--signal);font-weight:500;">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">Module System</h1>
+      <h1>Module System</h1>
+<h2>Declaring Modules</h2>
+<p>A module is a named namespace. Every source file begins with a module declaration. A module hierarchy corresponds to the directory structure.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>module</span> math.vector
+
+<span class=<span class="str">"cm"</span>>// Everything declared here <span class=<span class="str">"kw"</span>>is</span> <span class=<span class="str">"kw"</span>>in</span> the math.vector namespace.</span>
+</code></pre>
+<h2>Importing</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>use</span> math.vector              <span class=<span class="str">"cm"</span>>// imports the <span class=<span class="str">"kw"</span>>module</span> — access <span class=<span class="str">"kw"</span>>as</span> vector.<span class=<span class="str">"ty"</span>>Vec3</span></span>
+<span class=<span class="str">"kw"</span>>use</span> math.vector.<span class=<span class="str">"ty"</span>>Vec3</span>         <span class=<span class="str">"cm"</span>>// imports one <span class=<span class="str">"kw"</span>>type</span> — access <span class=<span class="str">"kw"</span>>as</span> <span class=<span class="str">"ty"</span>>Vec3</span></span>
+<span class=<span class="str">"kw"</span>>use</span> math.vector.<span class=<span class="str">"ty"</span>>Vec3</span> <span class=<span class="str">"kw"</span>>as</span> V3   <span class=<span class="str">"cm"</span>>// alias — access <span class=<span class="str">"kw"</span>>as</span> V3</span>
+<span class=<span class="str">"kw"</span>>use</span> math.vector.*            <span class=<span class="str">"cm"</span>>// imports all public symbols (discouraged)</span>
+</code></pre>
+<h2>Visibility</h2>
+<p>All declarations are private to their module by default. The <code>pub</code> keyword makes a declaration visible to other modules. There is no <code>protected</code> or <code>friend</code> visibility.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Vec3</span> = {
+  x: <span class=<span class="str">"ty"</span>>Float32</span>;
+  y: <span class=<span class="str">"ty"</span>>Float32</span>;
+  z: <span class=<span class="str">"ty"</span>>Float32</span>;
+} <span class=<span class="str">"kw"</span>>derive</span>[<span class=<span class="str">"ty"</span>>Eq</span>, <span class=<span class="str">"ty"</span>>Clone</span>, <span class=<span class="str">"ty"</span>>Display</span>]
+
+<span class=<span class="str">"kw"</span>>fn</span> internal_helper() {  <span class=<span class="str">"cm"</span>>// private to this <span class=<span class="str">"kw"</span>>module</span></span>
+  <span class=<span class="str">"cm"</span>>// ...</span>
+}
+</code></pre>
+<h2>Method Declarations</h2>
+<p>Methods on a type are declared using the <code>TypeName.methodName</code> syntax. The receiver (<code>self</code>) is synthesized implicitly by the compiler — it does not appear in the parameter list.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Vec3</span>.dot(other: &<span class=<span class="str">"ty"</span>>Vec3</span>) -> <span class=<span class="str">"ty"</span>>Float32</span> {
+  <span class=<span class="str">"kw"</span>>return</span> x * other.x + y * other.y + z * other.z
+  <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>self</span> <span class=<span class="str">"kw"</span>>is</span> implicit — fields accessed directly</span>
+}
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Vec3</span>.set_x(value: <span class=<span class="str">"ty"</span>>Float32</span>) {
+  x = value   <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>self</span> <span class=<span class="str">"kw"</span>>is</span> &mut <span class=<span class="str">"ty"</span>>Vec3</span> — field mutation detected</span>
+}
+</code></pre>
+<p>The compiler infers the receiver type:</p>
+<ul>
+<li>Methods that do not mutate fields get <code>self: &Self</code> (read borrow)</li>
+<li>Methods that mutate fields get <code>self: &mut Self</code> (write borrow)</li>
+<li>If a field is mutated anywhere in the method body, the receiver is <code>&mut Self</code></li>
+</ul>
+<h2>Method Dispatch</h2>
+<p>Methods can be called on any value of the type:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> v = <span class=<span class="str">"ty"</span>>Vec3</span>{ x: <span class="num">1.0</span>, y: <span class="num">2.0</span>, z: <span class="num">3.0</span> }
+<span class=<span class="str">"kw"</span>>let</span> d = v.dot(&other)
+</code></pre>
+<p>Methods are dispatched structurally — any type with matching method signatures satisfies the interface, regardless of module boundaries.</p>
+<h2>Package Manifest</h2>
+<p>Packages are defined by a <code>package.ax</code> manifest file at the project root. Dependencies are resolved at build time. Version pinning uses semantic versioning.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// package.ax</span>
+package {
+  name:    <span class="str">"myproject"</span>
+  version: <span class="str">"<span class="num">1.0</span>.<span class="num">0</span>"</span>
+  deps: {
+    <span class="str">"axiom-std"</span>: <span class="str">"<span class="num">0.4</span>.*"</span>
+    <span class="str">"axiom-net"</span>:  <span class="str">"<span class="num">0.2</span>.<span class="num">1</span>"</span>
+  }
+}
+</code></pre>
+<h2>Package Manager</h2>
+<p>The package manager resolves dependencies from the <a href="https://gitea.example.com/axiom-lang/registry">AXIOM package registry</a>:</p>
+<pre class="language-bash"><code>
+axiom get axiom-std     # fetch and compile a dependency
+axiom build             # build the current package
+axiom run               # build and run
+</code></pre>
+<p>For the full ecosystem, see the <a href="https://axiom-lang.org/ecosystem.html">Ecosystem page</a>.</p>
+<h2>File Organization</h2>
+<pre><code>
+myproject/
+├── package.ax              # package manifest
+├── src/
+│   ├── main.ax             # entry point
+│   └── lib.ax              # library code
+└── deps/                   # resolved dependencies (generated)
+</code></pre>
+<h2>Standard Library</h2>
+<p>The standard library ships with the compiler in <code>stdlib/axiom/</code>. 39 modules covering core types, I/O, collections, text, math, concurrency, networking, memory, system, utilities, crypto, and testing.</p>
+<p>For the full stdlib reference with every type, function, and signature, see the <a href="stdlib.md">Standard Library Reference</a>.</p>
+<h3>Quick Index</h3>
+<table>
+<tr>
+<th>Category</th>
+<th>Modules</th>
+</tr>
+<tr>
+<td><strong>Foundation</strong></td>
+<td><code>core</code>, <code>error</code>, <code>char</code></td>
+</tr>
+<tr>
+<td><strong>I/O</strong></td>
+<td><code>io</code>, <code>path</code></td>
+</tr>
+<tr>
+<td><strong>Data Structures</strong></td>
+<td><code>collections</code>, <code>array</code></td>
+</tr>
+<tr>
+<td><strong>Text</strong></td>
+<td><code>string</code>, <code>encoding</code></td>
+</tr>
+<tr>
+<td><strong>Numeric</strong></td>
+<td><code>math</code>, <code>num</code>, <code>cmp</code></td>
+</tr>
+<tr>
+<td><strong>Concurrency</strong></td>
+<td><code>async</code>, <code>thread</code>, <code>sync</code></td>
+</tr>
+<tr>
+<td><strong>Network</strong></td>
+<td><code>net</code></td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td><code>mem</code>, <code>ptr</code>, <code>alloc</code>, <code>rc</code></td>
+</tr>
+<tr>
+<td><strong>System</strong></td>
+<td><code>os</code>, <code>env</code>, <code>time</code></td>
+</tr>
+<tr>
+<td><strong>Utilities</strong></td>
+<td><code>iter</code>, <code>convert</code>, <code>cell</code>, <code>fmt</code>, <code>hash</code></td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td><code>crypto</code>, <code>compress</code>, <code>rand</code>, <code>regex</code></td>
+</tr>
+<tr>
+<td><strong>Tooling</strong></td>
+<td><code>test</code>, <code>bench</code>, <code>log</code>, <code>contracts</code>, <code>serialize</code>, <code>reflect</code></td>
+</tr>
+<tr>
+<td><strong>Interop</strong></td>
+<td><code>ffi</code></td>
+</tr>
+</table>
+<h3>Importing</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>use</span> axiom.collections     <span class=<span class="str">"cm"</span>>// import the <span class=<span class="str">"kw"</span>>module</span></span>
+<span class=<span class="str">"kw"</span>>use</span> axiom.collections.<span class=<span class="str">"ty"</span>>Vec</span>  <span class=<span class="str">"cm"</span>>// import one <span class=<span class="str">"kw"</span>>type</span></span>
+<span class=<span class="str">"kw"</span>>use</span> axiom.io               <span class=<span class="str">"cm"</span>>// import I/O functions</span>
+</code></pre>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

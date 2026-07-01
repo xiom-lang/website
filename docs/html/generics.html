@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — Generics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--signal);font-weight:500;">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">Generics</h1>
+      <h1>Generics</h1>
+<p>Generics are implemented through <strong>comptime type parameters</strong>. The type parameter is resolved at compile time, producing a monomorphised specialisation. No runtime dispatch, no boxing, no virtual calls unless explicitly requested via interface references.</p>
+<h2>Basic Generics</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> max[T: <span class=<span class="str">"ty"</span>>Comparable</span>](a: T, b: T) -> T {
+  <span class=<span class="str">"kw"</span>>if</span> a > b { <span class=<span class="str">"kw"</span>>return</span> a }
+  <span class=<span class="str">"kw"</span>>return</span> b
+}
+
+<span class=<span class="str">"cm"</span>>// Call sites — T inferred from arguments</span>
+<span class=<span class="str">"kw"</span>>let</span> m1 = max(<span class="num">10</span>, <span class="num">20</span>)          <span class=<span class="str">"cm"</span>>// T = <span class=<span class="str">"ty"</span>>Int</span></span>
+<span class=<span class="str">"kw"</span>>let</span> m2 = max(<span class="num">1.5</span>, <span class="num">2.7</span>)        <span class=<span class="str">"cm"</span>>// T = <span class=<span class="str">"ty"</span>>Float64</span></span>
+</code></pre>
+<h2>Inline Type Constraints</h2>
+<p>Type-level requirements are declared <strong>inline</strong> with the type parameter. This separates type requirements from value-level preconditions:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// Single constraint</span>
+<span class=<span class="str">"kw"</span>>fn</span> sort[T: <span class=<span class="str">"ty"</span>>Ord</span>](items: &mut <span class=<span class="str">"ty"</span>>Vec</span>[T])
+
+<span class=<span class="str">"cm"</span>>// Multiple constraints</span>
+<span class=<span class="str">"kw"</span>>fn</span> dedup[T: <span class=<span class="str">"ty"</span>>Eq</span> + <span class=<span class="str">"ty"</span>>Hash</span>](items: &mut <span class=<span class="str">"ty"</span>>Vec</span>[T])
+
+<span class=<span class="str">"cm"</span>>// Constraint with <span class=<span class="str">"kw"</span>>interface</span></span>
+<span class=<span class="str">"kw"</span>>fn</span> process[T: <span class=<span class="str">"ty"</span>>Comparable</span> + <span class=<span class="str">"ty"</span>>Display</span>](value: T) -> <span class=<span class="str">"ty"</span>>Str</span> {
+  <span class=<span class="str">"kw"</span>>return</span> value.to_str()
+}
+</code></pre>
+<h2>Explicit Type Parameters</h2>
+<p>If a type parameter appears only in the return type and not in any argument, it must be annotated explicitly at the call site:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> parse[T](s: <span class=<span class="str">"ty"</span>>Str</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[T, <span class=<span class="str">"ty"</span>>ParseError</span>] { ... }
+
+<span class=<span class="str">"kw"</span>>let</span> n = parse[<span class=<span class="str">"ty"</span>>Int</span>](<span class="str">"<span class="num">42</span>"</span>)   <span class=<span class="str">"cm"</span>>// T must be explicit — not inferrable from arguments</span>
+</code></pre>
+<h2>Generic Types</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Stack</span>[T] = {
+  items: <span class=<span class="str">"ty"</span>>Vec</span>[T];
+  capacity: <span class=<span class="str">"ty"</span>>UInt</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: items.len() <= capacity;
+}
+
+<span class=<span class="str">"kw"</span>>type</span> Pair[A, B] = {
+  first: A;
+  second: B;
+} <span class=<span class="str">"kw"</span>>derive</span>[<span class=<span class="str">"ty"</span>>Eq</span>, <span class=<span class="str">"ty"</span>>Clone</span>]
+</code></pre>
+<h2>Monomorphisation</h2>
+<p>Generics use <strong>two-pass monomorphisation</strong>:</p>
+<ul>
+<li><strong>Pass 1 — Register:</strong> The compiler scans for concrete instantiations at call sites and registers them.</li>
+<li><strong>Pass 2 — Specialize:</strong> For each registered instantiation, the compiler emits a specialized version with full type substitution.</li>
+</ul>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// Source</span>
+<span class=<span class="str">"kw"</span>>fn</span> identity[T](x: T) -> T { <span class=<span class="str">"kw"</span>>return</span> x }
+
+<span class=<span class="str">"kw"</span>>let</span> a = identity(<span class="num">42</span>)      <span class=<span class="str">"cm"</span>>// T = <span class=<span class="str">"ty"</span>>Int</span></span>
+<span class=<span class="str">"kw"</span>>let</span> b = identity(<span class="str">"hi"</span>)    <span class=<span class="str">"cm"</span>>// T = <span class=<span class="str">"ty"</span>>Str</span></span>
+
+<span class=<span class="str">"cm"</span>>// Generated (conceptual)</span>
+<span class=<span class="str">"kw"</span>>fn</span> identity_Int(x: <span class=<span class="str">"ty"</span>>Int</span>) -> <span class=<span class="str">"ty"</span>>Int</span> { <span class=<span class="str">"kw"</span>>return</span> x }
+<span class=<span class="str">"kw"</span>>fn</span> identity_Str(x: <span class=<span class="str">"ty"</span>>Str</span>) -> <span class=<span class="str">"ty"</span>>Str</span> { <span class=<span class="str">"kw"</span>>return</span> x }
+</code></pre>
+<p>This produces zero-overhead abstractions — generic code compiles to the same machine code as hand-specialized versions.</p>
+<h2>Interface Satisfaction</h2>
+<p>Inline constraints are checked at monomorphisation time. If a type parameter <code>T: Ord</code> is declared, the compiler verifies that the concrete type satisfies <code>Ord</code> before specializing:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Score</span> = { value: <span class=<span class="str">"ty"</span>>Int</span> }
+
+<span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Score</span>.compare(other: &<span class=<span class="str">"ty"</span>>Score</span>) -> <span class=<span class="str">"ty"</span>>Int</span> { ... }
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Score</span> now satisfies <span class=<span class="str">"ty"</span>>Comparable</span></span>
+
+<span class=<span class="str">"kw"</span>>let</span> winner = max(<span class=<span class="str">"ty"</span>>Score</span>{ value: <span class="num">10</span> }, <span class=<span class="str">"ty"</span>>Score</span>{ value: <span class="num">20</span> })
+<span class=<span class="str">"cm"</span>>// Compiler verifies: <span class=<span class="str">"ty"</span>>Score</span> satisfies <span class=<span class="str">"ty"</span>>Comparable</span> ✓</span>
+<span class=<span class="str">"cm"</span>>// Generates: max_Score(<span class=<span class="str">"ty"</span>>Score</span>, <span class=<span class="str">"ty"</span>>Score</span>) -> <span class=<span class="str">"ty"</span>>Score</span></span>
+</code></pre>
+<p>If a type does not satisfy the required interface, the compiler produces a clear error:</p>
+<pre><code>
+error[E0301]: <span class=<span class="str">"kw"</span>>type</span> does not satisfy <span class=<span class="str">"kw"</span>>interface</span>
+  --> src/main.ax:<span class="num">12</span>:<span class="num">10</span>
+   |
+<span class="num">12</span> |   <span class=<span class="str">"kw"</span>>let</span> s = sort[<span class=<span class="str">"ty"</span>>Point</span>](points)
+   |           ^^^^^^^^^ <span class=<span class="str">"kw"</span>>type</span> `<span class=<span class="str">"ty"</span>>Point</span>` does not satisfy `<span class=<span class="str">"ty"</span>>Ord</span>`
+   |
+   = `sort` <span class=<span class="str">"kw"</span>>requires</span> `T: <span class=<span class="str">"ty"</span>>Ord</span>` because it must compare elements.
+     Type `<span class=<span class="str">"ty"</span>>Point</span>` <span class=<span class="str">"kw"</span>>is</span> missing:  <span class=<span class="str">"kw"</span>>fn</span> compare(other: &<span class=<span class="str">"ty"</span>>Point</span>) -> <span class=<span class="str">"ty"</span>>Int</span>
+   = help: add `<span class=<span class="str">"kw"</span>>derive</span>[<span class=<span class="str">"ty"</span>>Ord</span>]` to the <span class=<span class="str">"kw"</span>>type</span> definition of `<span class=<span class="str">"ty"</span>>Point</span>`, or
+     implement `<span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Point</span>.compare(other: &<span class=<span class="str">"ty"</span>>Point</span>) -> <span class=<span class="str">"ty"</span>>Int</span>` by hand.
+</code></pre>
+<h2>Comptime</h2>
+<p><code>comptime</code> marks expressions and blocks to be evaluated at compile time. It is the single mechanism for all metaprogramming — generics, reflection, and specialisation all flow through it.</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> size = <span class=<span class="str">"kw"</span>>comptime</span> expensive_computation()  <span class=<span class="str">"cm"</span>>// evaluated once, at compile time</span>
+</code></pre>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

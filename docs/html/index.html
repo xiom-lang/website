@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — AXIOM Language Documentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--signal);font-weight:500;">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">**Compiler:** v0.12.0 "Production" · **Spec:** v0.3 · **Tests:** 234 passing</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">AXIOM Language Documentation</h1>
+      <h1>AXIOM Language Documentation</h1>
+<blockquote><p><strong>Compiler:</strong> v0.12.0 "Production" · <strong>Spec:</strong> v0.3 · <strong>Tests:</strong> 234 passing</p></blockquote>
+<h2>Contents</h2>
+<table>
+<tr>
+<th>Section</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>[Getting Started](getting-started.md)</td>
+<td>Installation, first program, CLI reference</td>
+</tr>
+<tr>
+<td>[Syntax](syntax.md)</td>
+<td>Full language syntax: variables, functions, control flow, expressions</td>
+</tr>
+<tr>
+<td>[Type System](types.md)</td>
+<td>Primitive types, compound types, structs, enums, type inference</td>
+</tr>
+<tr>
+<td>[Memory Model](memory-model.md)</td>
+<td>Ownership, lexical scope borrowing, move semantics, unsafe</td>
+</tr>
+<tr>
+<td>[Contracts](contracts.md)</td>
+<td>requires/ensures/invariant, contract collections, verification modes</td>
+</tr>
+<tr>
+<td>[Error Handling](error-handling.md)</td>
+<td>Result, Option, ? operator, match exhaustion</td>
+</tr>
+<tr>
+<td>[Modules](modules.md)</td>
+<td>module/use/pub, visibility, packages, method declarations</td>
+</tr>
+<tr>
+<td>[Generics](generics.md)</td>
+<td>Comptime monomorphisation, inline type constraints, interface bounds</td>
+</tr>
+<tr>
+<td>[Derive](derive.md)</td>
+<td>Compiler-generated Eq, Clone, Display, Hash, Ord</td>
+</tr>
+<tr>
+<td>[C FFI](ffi.md)</td>
+<td>Zero-cost C interoperability, extern blocks, unsafe</td>
+</tr>
+<tr>
+<td>[Compiler](compiler.md)</td>
+<td>Pipeline overview, CLI flags, build targets, WASM</td>
+</tr>
+<tr>
+<td>[Standard Library](stdlib.md)</td>
+<td>Complete API reference for all 39 stdlib modules</td>
+</tr>
+<tr>
+<td>[AI Coding Reference](../AI_CONTEXT.md)</td>
+<td>Single-file AI prompt — inject into any LLM to enable AXIOM code generation</td>
+</tr>
+</table>
+<h2>Language Overview</h2>
+<p>AXIOM is a compiled, statically typed, memory-safe systems programming language.</p>
+<pre><code>
+.ax source → Lexer → Parser → Type Checker → Borrow Checker
+           → LLVM IR (+ Contracts + Derive + Generics)
+           → clang → native .exe / .wasm
+</code></pre>
+<h3>Three Pillars</h3>
+<table>
+<tr>
+<th>SAFE</th>
+<th>Ownership-based memory safety. No garbage collector. No null. Memory freed deterministically when the owner leaves scope.</th>
+</tr>
+<tr>
+<td>VERIFIED</td>
+<td>Contracts (requires, ensures, invariant) are first-class language constructs enforced by the compiler.</td>
+</tr>
+<tr>
+<td>PRECISE</td>
+<td>The grammar is unambiguous. One canonical form for every construct. No implicit coercions, hidden allocations, or surprising control flow.</td>
+</tr>
+</table>
+<h2>Quick Example</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> fib(n: <span class=<span class="str">"ty"</span>>Int</span>) -> <span class=<span class="str">"ty"</span>>Int</span>
+  <span class=<span class="str">"kw"</span>>requires</span>: n >= <span class="num">0</span>
+{
+  <span class=<span class="str">"kw"</span>>if</span> n <= <span class="num">1</span> { <span class=<span class="str">"kw"</span>>return</span> n }
+  <span class=<span class="str">"kw"</span>>return</span> fib(n - <span class="num">1</span>) + fib(n - <span class="num">2</span>)
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> main() -> <span class=<span class="str">"ty"</span>>Int</span> {
+  <span class=<span class="str">"kw"</span>>return</span> fib(<span class="num">10</span>)  <span class=<span class="str">"cm"</span>>// → <span class="num">55</span></span>
+}
+</code></pre>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// Types with invariants and <span class=<span class="str">"kw"</span>>derive</span></span>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Health</span> = {
+  current: <span class=<span class="str">"ty"</span>>Int</span>;
+  maximum: <span class=<span class="str">"ty"</span>>Int</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: current >= <span class="num">0</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: current <= maximum;
+} <span class=<span class="str">"kw"</span>>derive</span>[<span class=<span class="str">"ty"</span>>Clone</span>, <span class=<span class="str">"ty"</span>>Display</span>]
+
+<span class=<span class="str">"cm"</span>>// Functions with contracts</span>
+<span class=<span class="str">"kw"</span>>fn</span> divide(a: <span class=<span class="str">"ty"</span>>Float64</span>, b: <span class=<span class="str">"ty"</span>>Float64</span>) -> <span class=<span class="str">"ty"</span>>Float64</span>
+  <span class=<span class="str">"kw"</span>>requires</span>: b != <span class="num">0.0</span>
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> * b == a
+{
+  <span class=<span class="str">"kw"</span>>return</span> a / b
+}
+</code></pre>
+<h2>Getting Started</h2>
+<p>Ready to build with AXIOM?</p>
+<table>
+<tr>
+<th>Step</th>
+<th>Resource</th>
+</tr>
+<tr>
+<td>Install the compiler</td>
+<td>[Installation Guide](getting-started.md)</td>
+</tr>
+<tr>
+<td>Write your first program</td>
+<td>[Getting Started Tutorial](getting-started.md)</td>
+</tr>
+<tr>
+<td>Learn the language</td>
+<td>[Syntax](syntax.md), [Type System](types.md), [Memory Model](memory-model.md)</td>
+</tr>
+<tr>
+<td>Browse the standard library</td>
+<td>[Stdlib Reference](stdlib.md)</td>
+</tr>
+<tr>
+<td>Find or publish packages</td>
+<td>[Ecosystem & Packages](../ecosystem/packages.md)</td>
+</tr>
+</table>
+<h2>Ecosystem</h2>
+<p>AXIOM's ecosystem is organized across three tiers: first-party, first-party FFI bindings, and community.</p>
+<table>
+<tr>
+<th>Resource</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>[Expansion Roadmap](../ecosystem/roadmap.md)</td>
+<td>Full strategy for database, networking, GPU, GUI, ML, game dev, and serialization packages</td>
+</tr>
+<tr>
+<td>[Package Guide](../ecosystem/packages.md)</td>
+<td>How to create, structure, and publish AXIOM packages</td>
+</tr>
+<tr>
+<td><code>axiom:net</code></td>
+<td>First-party FFI HTTP client (libcurl)</td>
+</tr>
+<tr>
+<td><code>axiom:sql</code></td>
+<td>First-party FFI SQLite bindings</td>
+</tr>
+<tr>
+<td><code>axiom:serialize</code></td>
+<td>First-party JSON / binary serialization</td>
+</tr>
+<tr>
+<td><code>axiom:crypto</code></td>
+<td>First-party FFI OpenSSL bindings</td>
+</tr>
+</table>
+<p>For a complete list of planned and in-progress packages, see the <a href="../ecosystem/roadmap.md">Expansion Roadmap</a>.</p>
+<h2>Current Status</h2>
+<table>
+<tr>
+<th>Phase</th>
+<th>Version</th>
+<th>Status</th>
+</tr>
+<tr>
+<td>Phase 0</td>
+<td>v0.1.0 "Pipeline"</td>
+<td>Released — working pipeline, 36 tests</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>v0.2.0 "Guardian"</td>
+<td>Released — full language surface, 87 tests</td>
+</tr>
+<tr>
+<td>Phase 1.5</td>
+<td>v0.2.5 "Hardened"</td>
+<td>Released — 13 bug fixes, 109 tests</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>v0.4.0 "Mirror"</td>
+<td>Released — self-host compiler, 124 tests</td>
+</tr>
+<tr>
+<td>Phase 2C</td>
+<td>v0.10.0 "Sovereign"</td>
+<td>Released — production self-hosting, 208 tests</td>
+</tr>
+<tr>
+<td>Phase 2C+</td>
+<td>v0.12.0 "Production"</td>
+<td><strong>Current</strong> — 234 tests, WASM playground</td>
+</tr>
+<tr>
+<td>Phase 2C</td>
+<td>v0.11.0 "Self-Hosted"</td>
+<td>Released — full self-hosting, 213 tests</td>
+</tr>
+</table>
+<p>See <a href="compiler.md#version-history">Compiler Version History</a> for the full changelog.</p>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
