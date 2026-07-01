@@ -107,19 +107,32 @@ myproject/
 
 ## Standard Library
 
-The standard library ships with the compiler in `stdlib/axiom/`:
+The standard library ships with the compiler in `stdlib/axiom/`. 39 modules covering core types, I/O, collections, text, math, concurrency, networking, memory, system, utilities, crypto, and testing.
 
-| Module | Contents |
-|--------|----------|
-| `core` | Primitives, Bool, Int, Float64, Option, Result, Iterator, Default, Drop, Box, BinaryHeap, numeric limits, core interfaces (Clone, Eq, Ord, Display, Hash, Add, Sub, Mul, Div) |
-| `io` | print, readln, File, Read, Write, Seek, BufReader, BufWriter, Metadata, Cursor, path operations, standard streams |
-| `collections` | Vec, Map, Set, VecDeque, BTreeMap, BTreeSet, LinkedList, Queue, Stack, Slice methods |
-| `string` | Str, StringBuilder, find, split, trim, replace, lines, words, format |
-| `math` | abs, sqrt, sin, cos, tan, pow, floor, ceil, round, log, bitwise, random, PI, E, TAU |
-| `ffi` | extern "C" declaration helpers, memory alloc/free, type size/align |
-| `async` | spawn, channel, send, recv |
-| `net` | TCP, UDP, DNS, HTTP, URL parsing |
-| `os` | platform detection, env, process, symlinks, permissions, CPU, memory |
-| `time` | Duration, Instant, SystemTime, DateTime, sleep |
-| `sync` | Mutex, RwLock, Condvar, Once, Arc, AtomicBool, AtomicInt, Barrier |
-| `iter` | Range, RangeInclusive, Iterator adapters (map, filter, take, skip, chain, zip, enumerate), collectors (fold, sum, product, max, min, find, all, any) |
+For the full stdlib reference with every type, function, and signature, see the [Standard Library Reference](stdlib.md).
+
+### Quick Index
+
+| Category | Modules |
+|----------|---------|
+| **Foundation** | `core`, `error`, `char` |
+| **I/O** | `io`, `path` |
+| **Data Structures** | `collections`, `array` |
+| **Text** | `string`, `encoding` |
+| **Numeric** | `math`, `num`, `cmp` |
+| **Concurrency** | `async`, `thread`, `sync` |
+| **Network** | `net` |
+| **Memory** | `mem`, `ptr`, `alloc`, `rc` |
+| **System** | `os`, `env`, `time` |
+| **Utilities** | `iter`, `convert`, `cell`, `fmt`, `hash` |
+| **Security** | `crypto`, `compress`, `rand`, `regex` |
+| **Tooling** | `test`, `bench`, `log`, `contracts`, `serialize`, `reflect` |
+| **Interop** | `ffi` |
+
+### Importing
+
+```axiom
+use axiom.collections     // import the module
+use axiom.collections.Vec  // import one type
+use axiom.io               // import I/O functions
+```
