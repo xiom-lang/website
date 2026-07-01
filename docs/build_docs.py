@@ -239,7 +239,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <meta charset="UTF-8">
 <title>AXIOM — {title}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="{icon_path}">
+<link rel="icon" type="image/x-icon" href="{icon_path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{css_path}">
@@ -249,7 +249,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <nav>
   <div class="wrap">
     <a href="{home_path}" class="logo">
-      <img src="{icon_path}" alt="AXIOM" style="width:20px;height:20px;">
+      <img src="{icon_path}" alt="AXIOM">
       AXIOM
     </a>
     <div class="navlinks">
@@ -484,7 +484,7 @@ if __name__ == '__main__':
         output_dir=OUT_WEBSITE,
         home_path="../",
         css_path="../style.css",
-        icon_path="../../resource/img/axiom-icon.png",
+        icon_path="../img/axiom-icon.ico",
     )
 
     # 3. Copy style.css to docs/html/ so standalone works
