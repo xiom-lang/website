@@ -21,7 +21,7 @@ fn divide(a: Float64, b: Float64) -> Float64
   requires: b != 0.0
   ensures:  result * b == a
 {
-  return a / b
+  return a / b;
 }
 ```
 

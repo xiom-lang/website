@@ -105,7 +105,7 @@ You can always write a manual implementation instead of using `derive`:
 type Point = { x: Float64; y: Float64 }
 
 fn Point.eq(other: &Point) -> Bool {
-  return x == other.x && y == other.y
+  return x == other.x && y == other.y;
 }
 ```
 

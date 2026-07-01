@@ -40,14 +40,18 @@ def md_to_html(text: str) -> str:
             return
         p = ' '.join(buf).strip()
         if p:
-            # Inline code
+            # Inline code (backticks)
             p = re.sub(r'`([^`]+)`', r'<code>\1</code>', p)
             # Bold
             p = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', p)
             # Italic
             p = re.sub(r'\*([^*]+)\*', r'<em>\1</em>', p)
-            # Links
-            p = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', p)
+            # Links — convert .md to .html
+            def link_repl(m):
+                text, url = m.group(1), m.group(2)
+                url = re.sub(r'\.md$', '.html', url)
+                return f'<a href="{url}">{text}</a>'
+            p = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link_repl, p)
             out.append(f'<p>{p}</p>')
 
     def flush_table():
@@ -59,8 +63,17 @@ def md_to_html(text: str) -> str:
             tag = 'th' if ri == 0 else 'td'
             out.append('<tr>')
             for cell in row:
-                cell = re.sub(r'`([^`]+)`', r'<code>\1</code>', cell.strip())
+                cell = cell.strip()
+                # Inline code
+                cell = re.sub(r'`([^`]+)`', r'<code>\1</code>', cell)
+                # Bold
                 cell = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', cell)
+                # Links — convert .md to .html
+                def link_repl(m):
+                    text, url = m.group(1), m.group(2)
+                    url = re.sub(r'\.md$', '.html', url)
+                    return f'<a href="{url}">{text}</a>'
+                cell = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link_repl, cell)
                 out.append(f'<{tag}>{cell}</{tag}>')
             out.append('</tr>')
         out.append('</table>')
@@ -87,11 +100,12 @@ def md_to_html(text: str) -> str:
                 for cl in code_lines:
                     # Basic syntax highlighting for axiom code
                     hl = cl
-                    hl = re.sub(r'(//.*$)', r'<span class="cm">\1</span>', hl)
-                    hl = re.sub(r'\b(fn|let|var|const|return|if|elif|else|match|while|for|in|spawn|async|await|comptime|module|use|pub|as|type|enum|interface|derive|requires|ensures|invariant|true|false|self|result|Some|None|Ok|Err|unsafe|extern|is)\b', r'<span class="kw">\1</span>', hl)
-                    hl = re.sub(r'\b(Int|Int8|Int16|Int32|Int64|UInt|UInt8|UInt16|UInt32|UInt64|Float32|Float64|Bool|Str|Char|Vec|Map|Set|Option|Result|Slice|Self|Unit|Stack|Point|Health|Score|Vec3|TcpStream|TcpListener|HttpResponse|UdpSocket|NetError|IOError|ParseError|AppError|Channel|Mutex|RwLock|Arc|Barrier|Duration|Instant|SystemTime|DateTime|Regex|Rng|Cell|RefCell|Comparable|Ord|Eq|Clone|Display|Hash|Add|Sub|Mul|Div)\b', r'<span class="ty">\1</span>', hl)
-                    hl = re.sub(r'("[^"]*")', r'<span class="str">\1</span>', hl)
-                    hl = re.sub(r'(\b\d+\.?\d*\b)', r'<span class="num">\1</span>', hl)
+                    hl = re.sub(r'(//.*$)', r"<span class='cm'>\1</span>", hl)
+                    hl = re.sub(r'"([^"]*)"', r"<span class='str'>\1</span>", hl)
+                    hl = re.sub(r'(\b\d+\.?\d*\b)', r"<span class='num'>\1</span>", hl)
+                    hl = re.sub(r'\b(Int|Int8|Int16|Int32|Int64|UInt|UInt8|UInt16|UInt32|UInt64|Float32|Float64|Bool|Str|Char|Vec|Map|Set|Option|Result|Slice|Self|Unit|Stack|Point|Health|Score|Vec3|TcpStream|TcpListener|HttpResponse|UdpSocket|NetError|IOError|ParseError|AppError|Channel|Mutex|RwLock|Arc|Barrier|Duration|Instant|SystemTime|DateTime|Regex|Rng|Cell|RefCell|Comparable|Ord|Eq|Clone|Display|Hash|Add|Sub|Mul|Div)\b', r"<span class='ty'>\1</span>", hl)
+                    hl = re.sub(r'\b([a-z_][a-zA-Z0-9_]*)\s*\(', r"<span class='func'>\1</span>(", hl)
+                    hl = re.sub(r'\b(fn|let|var|const|return|if|elif|else|match|while|for|in|spawn|async|await|comptime|module|use|pub|as|type|enum|interface|derive|requires|ensures|invariant|true|false|self|result|Some|None|Ok|Err|unsafe|extern|is)\b', r"<span class='kw'>\1</span>", hl)
                     out.append(hl)
                 out.append('</code></pre>')
                 code_lines = []
@@ -289,6 +303,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 NAV_ORDER = [
     ("index.md", "Overview"),
     ("getting-started.md", "Getting Started"),
+    ("concepts.md", "Concepts"),
     ("examples.md", "By Example"),
     ("syntax.md", "Syntax"),
     ("types.md", "Type System"),
@@ -299,19 +314,91 @@ NAV_ORDER = [
     ("generics.md", "Generics"),
     ("derive.md", "Derive"),
     ("ffi.md", "C FFI"),
-    ("stdlib.md", "Standard Library"),
     ("compiler.md", "Compiler"),
+    ("api.md", "_api"),           # built but shown as sidebar section header
     ("../AI_CONTEXT.md", "AI Coding Ref"),
 ]
 
+# Stdlib modules — individual pages
+STDLIB_NAV = [
+    ("stdlib/core.md", "core"),
+    ("stdlib/io.md", "io"),
+    ("stdlib/collections.md", "collections"),
+    ("stdlib/string.md", "string"),
+    ("stdlib/math.md", "math"),
+    ("stdlib/sync.md", "sync"),
+    ("stdlib/async.md", "async"),
+    ("stdlib/net.md", "net"),
+    ("stdlib/crypto.md", "crypto"),
+    ("stdlib/serialize.md", "serialize"),
+    ("stdlib/test.md", "test"),
+    ("stdlib/iter.md", "iter"),
+    ("stdlib/error.md", "error"),
+    ("stdlib/char.md", "char"),
+    ("stdlib/path.md", "path"),
+    ("stdlib/array.md", "array"),
+    ("stdlib/encoding.md", "encoding"),
+    ("stdlib/num.md", "num"),
+    ("stdlib/cmp.md", "cmp"),
+    ("stdlib/thread.md", "thread"),
+    ("stdlib/mem.md", "mem"),
+    ("stdlib/ptr.md", "ptr"),
+    ("stdlib/alloc.md", "alloc"),
+    ("stdlib/rc.md", "rc"),
+    ("stdlib/os.md", "os"),
+    ("stdlib/env.md", "env"),
+    ("stdlib/time.md", "time"),
+    ("stdlib/convert.md", "convert"),
+    ("stdlib/cell.md", "cell"),
+    ("stdlib/fmt.md", "fmt"),
+    ("stdlib/hash.md", "hash"),
+    ("stdlib/compress.md", "compress"),
+    ("stdlib/rand.md", "rand"),
+    ("stdlib/regex.md", "regex"),
+    ("stdlib/bench.md", "bench"),
+    ("stdlib/log.md", "log"),
+    ("stdlib/contracts.md", "contracts"),
+    ("stdlib/reflect.md", "reflect"),
+    ("stdlib/ffi.md", "ffi"),
+]
+
 def build_nav(current_file: str, output_dir: str, ext: str = ".html") -> str:
-    """Build the navigation sidebar HTML."""
+    """Build the navigation sidebar HTML with correct relative paths."""
+    current_depth = current_file.count('/')
+    up = '../' * current_depth if current_depth > 0 else ''
+
     links = []
+    # Main nav items (skip _api — it's rendered as the section header below)
     for fname, title in NAV_ORDER:
-        if fname == current_file:
-            links.append(f'<a href="{fname.replace(".md", ext)}" style="color:var(--signal);font-weight:500;">{title}</a>')
-        else:
-            links.append(f'<a href="{fname.replace(".md", ext)}" style="color:var(--muted);">{title}</a>')
+        if title == '_api':
+            continue
+        href = fname.replace(".md", ext)
+        if current_depth > 0 and '/' not in fname:
+            href = up + href
+        active = (fname == current_file)
+        color = 'color:var(--signal);font-weight:500;' if active else 'color:var(--muted);'
+        links.append(f'<a href="{href}" style="{color}">{title}</a>')
+
+    # Standard Library — clickable section header
+    api_href = 'api.html'
+    if current_depth > 0:
+        api_href = up + api_href
+    api_active = (current_file == 'api.md')
+    api_color = 'color:var(--signal);font-weight:600;' if api_active else 'color:var(--paper);font-weight:500;'
+    links.append(f'<div style="margin-top:20px;"></div>')
+    links.append(f'<a href="{api_href}" style="{api_color};font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>')
+
+    # Stdlib module links
+    for fname, title in STDLIB_NAV:
+        href = fname.replace(".md", ext)
+        if current_depth > 0 and fname.startswith('stdlib/'):
+            href = fname.replace('stdlib/', '').replace(".md", ext)
+        elif current_depth == 0 and fname.startswith('stdlib/'):
+            href = fname.replace(".md", ext)
+        active = (fname == current_file)
+        color = 'color:var(--signal);font-weight:500;' if active else 'color:var(--muted);'
+        links.append(f'<a href="{href}" style="{color}">{title}</a>')
+
     return '\n        '.join(links)
 
 
@@ -322,7 +409,7 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
     output_dir.mkdir(parents=True, exist_ok=True)
 
     files = []
-    for fname, _ in NAV_ORDER:
+    for fname, _ in NAV_ORDER + STDLIB_NAV:
         # Handle files outside the language directory
         if fname.startswith("../"):
             src = ROOT / "docs" / fname.replace("../", "")
@@ -336,7 +423,15 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
     for fname, src in files:
         text = src.read_text(encoding='utf-8')
         title = text.split('\n')[0].lstrip('#').strip()
-        body = md_to_html(text)
+
+        # Strip leading # Title from body — template already renders <h1>{title}</h1>
+        body_text = text
+        if body_text.startswith('# '):
+            body_text = body_text.split('\n', 1)[1].lstrip('\n')
+        elif body_text.startswith('## '):
+            body_text = body_text  # keep it — it's a subsection header
+
+        body = md_to_html(body_text)
 
         # Detect version from first line
         version_line = ""
@@ -345,15 +440,21 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
                 version_line = line.strip('>').strip()
                 break
 
+        # Adjust paths for files in subdirectories
+        depth = fname.count('/')
+        file_css = '../' * depth + css_path
+        file_icon = '../' * depth + icon_path
+        file_home = '../' * depth + home_path
+
         html = PAGE_TEMPLATE.format(
             title=title,
             version=version_line or "v0.12.0 · 234 tests",
             version_short="v0.12.0",
             body=body,
             nav_links=build_nav(fname, str(output_dir), ext),
-            home_path=home_path,
-            css_path=css_path,
-            icon_path=icon_path,
+            home_path=file_home,
+            css_path=file_css,
+            icon_path=file_icon,
         )
 
         out = output_dir / fname.replace('.md', ext).replace('../', '')
@@ -372,9 +473,9 @@ if __name__ == '__main__':
     print("[1/2] Building standalone HTML (docs/html/)...")
     build(
         output_dir=OUT_HTML,
-        home_path="../website/",
-        css_path="../website/style.css",
-        icon_path="../resource/img/axiom-icon.png",
+        home_path="",
+        css_path="style.css",
+        icon_path="",
     )
 
     # 2. Build website docs (integrated into axiom-lang.org)
@@ -385,17 +486,6 @@ if __name__ == '__main__':
         css_path="../style.css",
         icon_path="../../resource/img/axiom-icon.png",
     )
-
-    # 3. Copy style.css to docs/html/ so standalone works
-    style_dest = OUT_HTML / "style.css"
-    if STYLE_CSS.exists():
-        shutil.copy2(STYLE_CSS, style_dest)
-        print(f"\n  Copied style.css -> {style_dest.relative_to(ROOT)}")
-
-    print("\nDone. Outputs:")
-    print(f"  Standalone:  {OUT_HTML.relative_to(ROOT)}/  (ships with releases)")
-    print(f"  Website:     {OUT_WEBSITE.relative_to(ROOT)}/  (axiom-lang.org/docs/)")
-    print(f"\nOpen: { (OUT_HTML / 'index.html').relative_to(ROOT) }")
 
     # 3. Copy style.css to docs/html/ so standalone works
     style_dest = OUT_HTML / "style.css"

@@ -24,10 +24,12 @@ Result[Data, MyCustomErrorEnum]
 The `?` operator returns the error from the current function if the `Result` is `Err`. It is syntactic sugar for an explicit match that returns the error.
 
 ```axiom
+use axiom.io;
+
 fn load_config(path: Str) -> Result[Config, AppError] {
-  let file   = io.read_file(path)?     // returns Err on failure
-  let config = parse_config(file)?     // returns Err on failure
-  return Ok(config)
+  let file   = io.read_file(path)?;     // returns Err on failure
+  let config = parse_config(file)?;     // returns Err on failure
+  return Ok(config);
 }
 ```
 
@@ -38,6 +40,8 @@ fn load_config(path: Str) -> Result[Config, AppError] {
 Every `match` expression must cover all cases. The compiler rejects non-exhaustive matches.
 
 ```axiom
+use axiom.io;
+
 match parse_int("42") {
   Ok(n)  => io.print(n.to_str()),
   Err(e) => io.print_err(e.message),
@@ -64,10 +68,10 @@ match value {
 ## Option Type
 
 ```axiom
-let val: Option[Int] = Some(10)
+let val: Option[Int] = Some(10);
 
 // Unwrap with default
-let n = val.unwrap_or(0)
+let n = val.unwrap_or(0);
 
 // Pattern match
 match val {
@@ -76,19 +80,19 @@ match val {
 }
 
 // Propagate None with ? (inside a function returning Option)
-let n = val?
+let n = val?;
 ```
 
 ## Constructors
 
 ```axiom
 // Option
-let present = Some(42)
-let absent: Option[Int] = None
+let present = Some(42);
+let absent: Option[Int] = None;
 
 // Result
-let success = Ok("done")
-let failure: Result[Str, IOError] = Err(IOError.new("file not found"))
+let success = Ok("done");
+let failure: Result[Str, IOError] = Err(IOError.new("file not found"));
 ```
 
 ## `?` Propagation Rules

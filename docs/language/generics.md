@@ -6,13 +6,13 @@ Generics are implemented through **comptime type parameters**. The type paramete
 
 ```axiom
 fn max[T: Comparable](a: T, b: T) -> T {
-  if a > b { return a }
-  return b
+  if a > b { return a; }
+  return b;
 }
 
 // Call sites — T inferred from arguments
-let m1 = max(10, 20)          // T = Int
-let m2 = max(1.5, 2.7)        // T = Float64
+let m1 = max(10, 20);          // T = Int
+let m2 = max(1.5, 2.7);        // T = Float64
 ```
 
 ## Inline Type Constraints
@@ -28,7 +28,7 @@ fn dedup[T: Eq + Hash](items: &mut Vec[T])
 
 // Constraint with interface
 fn process[T: Comparable + Display](value: T) -> Str {
-  return value.to_str()
+  return value.to_str();
 }
 ```
 
@@ -39,7 +39,7 @@ If a type parameter appears only in the return type and not in any argument, it 
 ```axiom
 fn parse[T](s: Str) -> Result[T, ParseError] { ... }
 
-let n = parse[Int]("42")   // T must be explicit — not inferrable from arguments
+let n = parse[Int]("42");   // T must be explicit — not inferrable from arguments
 ```
 
 ## Generic Types
@@ -66,14 +66,14 @@ Generics use **two-pass monomorphisation**:
 
 ```axiom
 // Source
-fn identity[T](x: T) -> T { return x }
+fn identity[T](x: T) -> T { return x; }
 
-let a = identity(42)      // T = Int
-let b = identity("hi")    // T = Str
+let a = identity(42);      // T = Int
+let b = identity("hi");    // T = Str
 
 // Generated (conceptual)
-fn identity_Int(x: Int) -> Int { return x }
-fn identity_Str(x: Str) -> Str { return x }
+fn identity_Int(x: Int) -> Int { return x; }
+fn identity_Str(x: Str) -> Str { return x; }
 ```
 
 This produces zero-overhead abstractions — generic code compiles to the same machine code as hand-specialized versions.
@@ -88,7 +88,7 @@ type Score = { value: Int }
 fn Score.compare(other: &Score) -> Int { ... }
 // Score now satisfies Comparable
 
-let winner = max(Score{ value: 10 }, Score{ value: 20 })
+let winner = max(Score{ value: 10 }, Score{ value: 20 });
 // Compiler verifies: Score satisfies Comparable ✓
 // Generates: max_Score(Score, Score) -> Score
 ```
@@ -113,5 +113,5 @@ error[E0301]: type does not satisfy interface
 `comptime` marks expressions and blocks to be evaluated at compile time. It is the single mechanism for all metaprogramming — generics, reflection, and specialisation all flow through it.
 
 ```axiom
-let size = comptime expensive_computation()  // evaluated once, at compile time
+let size = comptime expensive_computation();  // evaluated once, at compile time
 ```

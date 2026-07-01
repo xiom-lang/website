@@ -41,12 +41,12 @@ Methods on a type are declared using the `TypeName.methodName` syntax. The recei
 
 ```axiom
 pub fn Vec3.dot(other: &Vec3) -> Float32 {
-  return x * other.x + y * other.y + z * other.z
+  return x * other.x + y * other.y + z * other.z;
   // self is implicit — fields accessed directly
 }
 
 pub fn Vec3.set_x(value: Float32) {
-  x = value   // self is &mut Vec3 — field mutation detected
+  x = value;   // self is &mut Vec3 — field mutation detected
 }
 ```
 
@@ -60,8 +60,8 @@ The compiler infers the receiver type:
 Methods can be called on any value of the type:
 
 ```axiom
-let v = Vec3{ x: 1.0, y: 2.0, z: 3.0 }
-let d = v.dot(&other)
+let v = Vec3{ x: 1.0, y: 2.0, z: 3.0 };
+let d = v.dot(&other);
 ```
 
 Methods are dispatched structurally — any type with matching method signatures satisfies the interface, regardless of module boundaries.

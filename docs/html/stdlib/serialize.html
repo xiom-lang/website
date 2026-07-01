@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — `axiom.serialize` — Serialization</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../spec.html">Spec</a>
+      <a href="../docs/">Docs</a>
+      <a href="../ecosystem.html">Ecosystem</a>
+      <a href="../versions.html">Versions</a>
+      <a href="../playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="../index.html" style="color:var(--muted);">Overview</a>
+        <a href="../getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="../concepts.html" style="color:var(--muted);">Concepts</a>
+        <a href="../examples.html" style="color:var(--muted);">By Example</a>
+        <a href="../syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="../types.html" style="color:var(--muted);">Type System</a>
+        <a href="../memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="../contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="../error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="../modules.html" style="color:var(--muted);">Modules</a>
+        <a href="../generics.html" style="color:var(--muted);">Generics</a>
+        <a href="../derive.html" style="color:var(--muted);">Derive</a>
+        <a href="../ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="../compiler.html" style="color:var(--muted);">Compiler</a>
+        <a href="../AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
+        <div style="margin-top:20px;"></div>
+        <a href="../api.html" style="color:var(--paper);font-weight:500;;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>
+        <a href="core.html" style="color:var(--muted);">core</a>
+        <a href="io.html" style="color:var(--muted);">io</a>
+        <a href="collections.html" style="color:var(--muted);">collections</a>
+        <a href="string.html" style="color:var(--muted);">string</a>
+        <a href="math.html" style="color:var(--muted);">math</a>
+        <a href="sync.html" style="color:var(--muted);">sync</a>
+        <a href="async.html" style="color:var(--muted);">async</a>
+        <a href="net.html" style="color:var(--muted);">net</a>
+        <a href="crypto.html" style="color:var(--muted);">crypto</a>
+        <a href="serialize.html" style="color:var(--signal);font-weight:500;">serialize</a>
+        <a href="test.html" style="color:var(--muted);">test</a>
+        <a href="iter.html" style="color:var(--muted);">iter</a>
+        <a href="error.html" style="color:var(--muted);">error</a>
+        <a href="char.html" style="color:var(--muted);">char</a>
+        <a href="path.html" style="color:var(--muted);">path</a>
+        <a href="array.html" style="color:var(--muted);">array</a>
+        <a href="encoding.html" style="color:var(--muted);">encoding</a>
+        <a href="num.html" style="color:var(--muted);">num</a>
+        <a href="cmp.html" style="color:var(--muted);">cmp</a>
+        <a href="thread.html" style="color:var(--muted);">thread</a>
+        <a href="mem.html" style="color:var(--muted);">mem</a>
+        <a href="ptr.html" style="color:var(--muted);">ptr</a>
+        <a href="alloc.html" style="color:var(--muted);">alloc</a>
+        <a href="rc.html" style="color:var(--muted);">rc</a>
+        <a href="os.html" style="color:var(--muted);">os</a>
+        <a href="env.html" style="color:var(--muted);">env</a>
+        <a href="time.html" style="color:var(--muted);">time</a>
+        <a href="convert.html" style="color:var(--muted);">convert</a>
+        <a href="cell.html" style="color:var(--muted);">cell</a>
+        <a href="fmt.html" style="color:var(--muted);">fmt</a>
+        <a href="hash.html" style="color:var(--muted);">hash</a>
+        <a href="compress.html" style="color:var(--muted);">compress</a>
+        <a href="rand.html" style="color:var(--muted);">rand</a>
+        <a href="regex.html" style="color:var(--muted);">regex</a>
+        <a href="bench.html" style="color:var(--muted);">bench</a>
+        <a href="log.html" style="color:var(--muted);">log</a>
+        <a href="contracts.html" style="color:var(--muted);">contracts</a>
+        <a href="reflect.html" style="color:var(--muted);">reflect</a>
+        <a href="ffi.html" style="color:var(--muted);">ffi</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">`axiom.serialize` — Serialization</h1>
+      <p>Provides interfaces and utilities for serializing and deserializing data in JSON and binary formats. Deserialization preserves and validates contracts (invariants).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>use</span> axiom.serialize;
+</code></pre>
+<hr>
+<h2>Traits</h2>
+<h3><code>Serialize</code></h3>
+<p>The <code>Serialize</code> interface must be implemented by types that can be serialized. Provides three serialization methods covering text (default), JSON, and binary formats.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>interface</span> Serialize {
+  <span class='kw'>fn</span> <span class='func'>serialize</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, SerializeError];
+  <span class='kw'>fn</span> <span class='func'>serialize_json</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, SerializeError];
+  <span class='kw'>fn</span> <span class='func'>serialize_bytes</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], SerializeError];
+}
+</code></pre>
+<h3><code>Deserialize</code></h3>
+<p>The <code>Deserialize</code> interface must be implemented by types that can be deserialized. Each method has a postcondition <code>ensures</code> that validates the result's invariants (contract preservation), guaranteeing that deserialized values satisfy their type contracts.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>interface</span> Deserialize {
+  <span class='kw'>fn</span> <span class='func'>deserialize</span>(data: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Self</span>, SerializeError]
+    <span class='kw'>ensures</span>: <span class='kw'>result</span> <span class='kw'>is</span> <span class='kw'>Ok</span> => <span class='kw'>self</span>.<span class='func'>invariant_check</span>()
+  <span class='kw'>fn</span> <span class='func'>deserialize_json</span>(data: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Self</span>, SerializeError]
+    <span class='kw'>ensures</span>: <span class='kw'>result</span> <span class='kw'>is</span> <span class='kw'>Ok</span> => <span class='kw'>self</span>.<span class='func'>invariant_check</span>()
+  <span class='kw'>fn</span> <span class='func'>deserialize_bytes</span>(data: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Self</span>, SerializeError]
+    <span class='kw'>ensures</span>: <span class='kw'>result</span> <span class='kw'>is</span> <span class='kw'>Ok</span> => <span class='kw'>self</span>.<span class='func'>invariant_check</span>()
+}
+</code></pre>
+<hr>
+<h2>Types</h2>
+<h3><code>SerializeError</code></h3>
+<p>Represents a serialization or deserialization failure with detailed location information. Error kind codes: <code>0=Unknown</code>, <code>1=InvalidFormat</code>, <code>2=MissingField</code>, <code>3=TypeMismatch</code>, <code>4=ContractViolation</code>, <code>5=UnsupportedType</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> SerializeError = {
+  kind: <span class='ty'>Int</span>;
+  message: <span class='ty'>Str</span>;
+  path: <span class='ty'>Str</span>;
+  line: <span class='ty'>Int</span>;
+  col: <span class='ty'>Int</span>;
+} <span class='kw'>derive</span>[<span class='ty'>Eq</span>, <span class='ty'>Clone</span>, <span class='ty'>Display</span>]
+</code></pre>
+<h3><code>SerializeError.format_error()</code></h3>
+<p>Formats the <code>SerializeError</code> into a human-readable error string.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> SerializeError.<span class='func'>format_error</span>() -> <span class='ty'>Str</span>
+</code></pre>
+<h3><code>JsonValue</code></h3>
+<p>A recursive enum representing parsed JSON values. Supports <code>Null</code>, <code>Bool</code>, <code>Number</code>, <code>String</code>, <code>Array</code>, and <code>Object</code> variants.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> JsonValue = <span class='kw'>enum</span> {
+  Null,
+  <span class='ty'>Bool</span>(value: <span class='ty'>Bool</span>),
+  Number(value: <span class='ty'>Float64</span>),
+  String(value: <span class='ty'>Str</span>),
+  Array(items: <span class='ty'>Vec</span><JsonValue>),
+  Object(entries: <span class='ty'>Map</span>[<span class='ty'>Str</span>, JsonValue]),
+}
+</code></pre>
+<hr>
+<h2>Format Detection</h2>
+<h3><code>detect_format(data)</code></h3>
+<p>Detects the serialization format of a byte buffer by inspecting its magic bytes or structure. Returns a string identifying the format (e.g., <code>"json"</code>, <code>"binary"</code>).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>detect_format</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Str</span>
+</code></pre>
+<h3><code>is_valid_json(data)</code></h3>
+<p>Checks whether a string is syntactically valid JSON.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>is_valid_json</span>(data: <span class='ty'>Str</span>) -> <span class='ty'>Bool</span>
+</code></pre>
+<h3><code>is_valid_bytes(data)</code></h3>
+<p>Checks whether a byte buffer contains valid binary serialization data.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>is_valid_bytes</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Bool</span>
+</code></pre>
+<hr>
+<h2>JSON Helpers</h2>
+<h3><code>json_string(s)</code></h3>
+<p>Produces a JSON-encoded string literal from a plain string, including proper escaping.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>json_string</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Str</span>
+</code></pre>
+<h3><code>json_number(n)</code></h3>
+<p>Produces a JSON number literal from a <code>Float64</code> value.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>json_number</span>(n: <span class='ty'>Float64</span>) -> <span class='ty'>Str</span>
+</code></pre>
+<h3><code>json_bool(b)</code></h3>
+<p>Produces a JSON boolean literal (<code>true</code> or <code>false</code>).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>json_bool</span>(b: <span class='ty'>Bool</span>) -> <span class='ty'>Str</span>
+</code></pre>
+<h3><code>json_null()</code></h3>
+<p>Produces the JSON null literal.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>json_null</span>() -> <span class='ty'>Str</span>
+</code></pre>
+<h3><code>json_array(items)</code></h3>
+<p>Produces a JSON array string from a vector of pre-serialized item strings.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>json_array</span>(items: <span class='ty'>Vec</span>[<span class='ty'>Str</span>]) -> <span class='ty'>Str</span>
+</code></pre>
+<h3><code>json_object(pairs)</code></h3>
+<p>Produces a JSON object string from a vector of key-value pairs, where each key and value is a pre-serialized JSON string.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>json_object</span>(pairs: <span class='ty'>Vec</span>[(<span class='ty'>Str</span>, <span class='ty'>Str</span>)]) -> <span class='ty'>Str</span>
+</code></pre>
+<h3><code>json_parse(data)</code></h3>
+<p>Parses a JSON string into a <code>JsonValue</code> enum. Returns the parsed value on success.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>json_parse</span>(data: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[JsonValue, SerializeError]
+</code></pre>
+<hr>
+<h2>Binary Helpers</h2>
+<h3><code>little_endian()</code></h3>
+<p>Returns <code>true</code> if the current system uses little-endian byte ordering.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>little_endian</span>() -> <span class='ty'>Bool</span>
+</code></pre>
+<h3><code>big_endian()</code></h3>
+<p>Returns <code>true</code> if the current system uses big-endian byte ordering.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>big_endian</span>() -> <span class='ty'>Bool</span>
+</code></pre>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../spec.html">Spec</a>
+      <a href="../docs/">Docs</a>
+      <a href="../ecosystem.html">Ecosystem</a>
+      <a href="../download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

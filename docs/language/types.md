@@ -39,11 +39,11 @@
 Types are inferred from context in `let` and `var` bindings and in closure parameters. Inference does not cross function boundaries — function signatures are always fully annotated.
 
 ```axiom
-let x = 42          // inferred: Int
-let f = 3.14        // inferred: Float64
-let s = "hello"     // inferred: Str
-let v = [1, 2, 3]   // inferred: Vec[Int]
-let t = (1, true)   // inferred: (Int, Bool)
+let x = 42;          // inferred: Int
+let f = 3.14;        // inferred: Float64
+let s = "hello";     // inferred: Str
+let v = [1, 2, 3];   // inferred: Vec[Int]
+let t = (1, true);   // inferred: (Int, Bool)
 ```
 
 ## Structs
@@ -93,13 +93,13 @@ interface Comparable {
 type Score = { value: Int }
 
 fn Score.compare(other: &Score) -> Int {
-  if value < other.value { return -1 }
-  if value > other.value { return  1 }
-  return 0
+  if value < other.value { return -1; }
+  if value > other.value { return  1; }
+  return 0;
 }
 
 // Score now satisfies Comparable — no declaration needed
-let result = max(Score{ value: 10 }, Score{ value: 20 })
+let result = max(Score{ value: 10 }, Score{ value: 20 });
 ```
 
 ## Type Constraints (Inline)

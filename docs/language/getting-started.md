@@ -23,11 +23,11 @@ Create a file `hello.ax`:
 
 ```axiom
 fn add(a: Int, b: Int) -> Int {
-  return a + b
+  return a + b;
 }
 
 fn main() -> Int {
-  return add(10, 20)
+  return add(10, 20);
 }
 ```
 
