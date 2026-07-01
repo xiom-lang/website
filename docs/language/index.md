@@ -7,6 +7,7 @@
 | Section | Description |
 |---------|-------------|
 | [Getting Started](getting-started.md) | Installation, first program, CLI reference |
+| [By Example](examples.md) | Progressive examples from Hello World to generics + contracts |
 | [Syntax](syntax.md) | Full language syntax: variables, functions, control flow, expressions |
 | [Type System](types.md) | Primitive types, compound types, structs, enums, type inference |
 | [Memory Model](memory-model.md) | Ownership, lexical scope borrowing, move semantics, unsafe |
