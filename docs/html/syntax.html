@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — Syntax Reference</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="syntax.html" style="color:var(--signal);font-weight:500;">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">Syntax Reference</h1>
+      <h1>Syntax Reference</h1>
+<h2>Variables</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> x: <span class=<span class="str">"ty"</span>>Int</span> = <span class="num">42</span>           <span class=<span class="str">"cm"</span>>// immutable binding</span>
+<span class=<span class="str">"kw"</span>>var</span> y: <span class=<span class="str">"ty"</span>>Float64</span> = <span class="num">3.14</span>     <span class=<span class="str">"cm"</span>>// mutable binding</span>
+<span class=<span class="str">"kw"</span>>let</span> name = <span class="str">"AXIOM"</span>        <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred <span class=<span class="str">"kw"</span>>as</span> <span class=<span class="str">"ty"</span>>Str</span></span>
+<span class=<span class="str">"kw"</span>>let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred <span class=<span class="str">"kw"</span>>as</span> <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]</span>
+<span class=<span class="str">"kw"</span>>let</span> t = (<span class="num">1</span>, <span class=<span class="str">"kw"</span>>true</span>)         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred <span class=<span class="str">"kw"</span>>as</span> (<span class=<span class="str">"ty"</span>>Int</span>, <span class=<span class="str">"ty"</span>>Bool</span>)</span>
+</code></pre>
+<ul>
+<li><code>let</code> — immutable binding. Cannot be reassigned.</li>
+<li><code>var</code> — mutable binding. Can be reassigned with <code>=</code>.</li>
+<li>Type annotations are optional when the compiler can infer the type.</li>
+<li>Type inference does not cross function boundaries.</li>
+</ul>
+<h2>Functions</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> add(a: <span class=<span class="str">"ty"</span>>Int</span>, b: <span class=<span class="str">"ty"</span>>Int</span>) -> <span class=<span class="str">"ty"</span>>Int</span> {
+  <span class=<span class="str">"kw"</span>>return</span> a + b
+}
+
+<span class=<span class="str">"cm"</span>>// Void <span class=<span class="str">"kw"</span>>return</span> (no <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>type</span> annotation)</span>
+<span class=<span class="str">"kw"</span>>fn</span> log(message: <span class=<span class="str">"ty"</span>>Str</span>) {
+  io.print(message)
+}
+
+<span class=<span class="str">"cm"</span>>// With contracts</span>
+<span class=<span class="str">"kw"</span>>fn</span> divide(a: <span class=<span class="str">"ty"</span>>Float64</span>, b: <span class=<span class="str">"ty"</span>>Float64</span>) -> <span class=<span class="str">"ty"</span>>Float64</span>
+  <span class=<span class="str">"kw"</span>>requires</span>: b != <span class="num">0.0</span>
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> * b == a
+{
+  <span class=<span class="str">"kw"</span>>return</span> a / b
+}
+</code></pre>
+<ul>
+<li>Function signatures are always fully annotated.</li>
+<li>Contracts (<code>requires</code>, <code>ensures</code>) appear between the signature and the body.</li>
+<li>The last expression in a block is the return value (tail expression).</li>
+<li>Every statement <strong>must</strong> end with <code>;</code>. Tail expressions do not.</li>
+</ul>
+<h2>Methods</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Vec3</span> = { x: <span class=<span class="str">"ty"</span>>Float32</span>; y: <span class=<span class="str">"ty"</span>>Float32</span>; z: <span class=<span class="str">"ty"</span>>Float32</span>; }
+
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>self</span> <span class=<span class="str">"kw"</span>>is</span> implicit — fields accessed directly</span>
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Vec3</span>.dot(other: &<span class=<span class="str">"ty"</span>>Vec3</span>) -> <span class=<span class="str">"ty"</span>>Float32</span> {
+  <span class=<span class="str">"kw"</span>>return</span> x * other.x + y * other.y + z * other.z
+}
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Vec3</span>.set_x(value: <span class=<span class="str">"ty"</span>>Float32</span>) {
+  x = value   <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>self</span> <span class=<span class="str">"kw"</span>>is</span> &mut <span class=<span class="str">"ty"</span>>Vec3</span> — mutation detected</span>
+}
+</code></pre>
+<ul>
+<li>Methods use <code>TypeName.methodName</code> syntax.</li>
+<li><code>self</code> is synthesized implicitly by the compiler.</li>
+<li>The compiler infers <code>&Self</code> vs <code>&mut Self</code> from the method body.</li>
+<li>If a field is mutated anywhere, the receiver is <code>&mut Self</code>.</li>
+</ul>
+<h2>Control Flow</h2>
+<h3>If / Elif / Else</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>if</span> x > <span class="num">0</span> {
+  <span class=<span class="str">"kw"</span>>return</span> <span class="num">1</span>
+} <span class=<span class="str">"kw"</span>>elif</span> x < <span class="num">0</span> {
+  <span class=<span class="str">"kw"</span>>return</span> -<span class="num">1</span>
+} <span class=<span class="str">"kw"</span>>else</span> {
+  <span class=<span class="str">"kw"</span>>return</span> <span class="num">0</span>
+}
+</code></pre>
+<h3>While</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>while</span> count > <span class="num">0</span> {
+  count = count - <span class="num">1</span>
+}
+</code></pre>
+<h3>For</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>for</span> item <span class=<span class="str">"kw"</span>>in</span> items {
+  process(item)
+}
+</code></pre>
+<h3>Match</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>match</span> value {
+  <span class=<span class="str">"kw"</span>>Some</span>(v) => process(v),
+  <span class=<span class="str">"kw"</span>>None</span>    => handle_absent(),
+}
+
+<span class=<span class="str">"kw"</span>>match</span> state {
+  AgentState.Idle              => wait(),
+  AgentState.Patrolling(route) => follow(route),
+  AgentState.Attacking(target) => engage(target),
+  AgentState.Dead(cause)       => log(cause),
+}
+</code></pre>
+<ul>
+<li>Every <code>match</code> must cover all cases. Non-exhaustive matches are compile errors.</li>
+<li>Use <code>_</code> as a wildcard to cover remaining cases.</li>
+<li>Match arms can be blocks or expressions.</li>
+</ul>
+<h2>Expressions</h2>
+<h3>Literals</h3>
+<pre class="language-axiom"><code>
+<span class="num">42</span>              <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Int</span></span>
+100_000         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Int</span> with separators</span>
+<span class="num">3.14</span>            <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Float64</span></span>
+<span class=<span class="str">"kw"</span>>true</span> | <span class=<span class="str">"kw"</span>>false</span>    <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Bool</span></span>
+<span class="str">"hello"</span>         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Str</span></span>
+'A'             <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Char</span></span>
+\n \t \\ \<span class="str">"     <span class="</span>cm">// Escape sequences</span>
+\u{1F600}       <span class=<span class="str">"cm"</span>>// Unicode codepoint</span>
+</code></pre>
+<h3>Arithmetic</h3>
+<pre class="language-axiom"><code>
+a + b   a - b   a * b   a / b   a % b
+-a      <span class=<span class="str">"cm"</span>>// negation</span>
+</code></pre>
+<h3>Comparison</h3>
+<pre class="language-axiom"><code>
+a == b   a != b   a < b   a > b   a <= b   a >= b
+</code></pre>
+<h3>Logical</h3>
+<pre class="language-axiom"><code>
+!a          <span class=<span class="str">"cm"</span>>// not</span>
+a && b      <span class=<span class="str">"cm"</span>>// and</span>
+a || b      <span class=<span class="str">"cm"</span>>// or</span>
+</code></pre>
+<h3>Struct Literals</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> p = <span class=<span class="str">"ty"</span>>Point</span>{ x: <span class="num">1.0</span>, y: <span class="num">2.0</span> }
+<span class=<span class="str">"kw"</span>>let</span> s = <span class=<span class="str">"ty"</span>>Stack</span>[<span class=<span class="str">"ty"</span>>Int</span>]{ items: [], capacity: <span class="num">10</span> }
+</code></pre>
+<h3>Array Literals</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>]
+<span class=<span class="str">"kw"</span>>let</span> empty: <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>] = []
+</code></pre>
+<h3>Field Access</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> dist = p.x * p.x + p.y * p.y
+</code></pre>
+<h3>Function Calls</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> <span class=<span class="str">"kw"</span>>result</span> = add(<span class="num">10</span>, <span class="num">20</span>)
+<span class=<span class="str">"kw"</span>>let</span> x = max[<span class=<span class="str">"ty"</span>>Int</span>](a, b)      <span class=<span class="str">"cm"</span>>// explicit <span class=<span class="str">"kw"</span>>type</span> parameter</span>
+<span class=<span class="str">"kw"</span>>let</span> y = max(a, b)           <span class=<span class="str">"cm"</span>>// inferred <span class=<span class="str">"kw"</span>>type</span> parameter</span>
+</code></pre>
+<h3>Closures</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>fn</span>(params) { body } — closure expression</span>
+<span class=<span class="str">"kw"</span>>let</span> doubler = <span class=<span class="str">"kw"</span>>fn</span>(x: <span class=<span class="str">"ty"</span>>Int</span>) -> <span class=<span class="str">"ty"</span>>Int</span> { <span class=<span class="str">"kw"</span>>return</span> x * <span class="num">2</span> }
+
+<span class=<span class="str">"cm"</span>>// |params| body — pipe closure</span>
+<span class=<span class="str">"kw"</span>>let</span> tripler = |x| x * <span class="num">3</span>
+</code></pre>
+<h3>Other Expressions</h3>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// Error propagation</span>
+<span class=<span class="str">"kw"</span>>let</span> f = open(path)?
+
+<span class=<span class="str">"cm"</span>>// Reference creation</span>
+<span class=<span class="str">"kw"</span>>let</span> r = &x
+<span class=<span class="str">"kw"</span>>let</span> rm = &mut x
+
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Option</span> constructors</span>
+<span class=<span class="str">"kw"</span>>Some</span>(value)
+<span class=<span class="str">"kw"</span>>None</span>
+
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Result</span> constructors</span>
+<span class=<span class="str">"kw"</span>>Ok</span>(value)
+<span class=<span class="str">"kw"</span>>Err</span>(error)
+
+<span class=<span class="str">"cm"</span>>// Await (<span class=<span class="str">"kw"</span>>async</span>)</span>
+<span class=<span class="str">"kw"</span>>await</span> fetch(url)
+
+<span class=<span class="str">"cm"</span>>// Comptime evaluation</span>
+<span class=<span class="str">"kw"</span>>comptime</span> expensive_computation()
+
+<span class=<span class="str">"cm"</span>>// Type test</span>
+x <span class=<span class="str">"kw"</span>>is</span> <span class=<span class="str">"kw"</span>>Some</span>
+
+<span class=<span class="str">"cm"</span>>// Pre-state reference (<span class=<span class="str">"kw"</span>>in</span> contracts)</span>
+items.len()@pre
+</code></pre>
+<h2>Operators (Precedence)</h2>
+<table>
+<tr>
+<th>Precedence</th>
+<th>Operators</th>
+</tr>
+<tr>
+<td>1 (lowest)</td>
+<td><code>?</code> (error propagation)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>=></code> (implication)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>`\</td>
+<td>\</td>
+<td>` (logical or)</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>&&</code> (logical and)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>is</code> (type test)</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>==</code> <code>!=</code> <code><</code> <code>></code> <code><=</code> <code>>=</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>+</code> <code>-</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>*</code> <code>/</code> <code>%</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>!</code> <code>-</code> (unary) <code>&</code> <code>&mut</code></td>
+</tr>
+<tr>
+<td>10 (highest)</td>
+<td><code>.</code> <code>()</code> <code>[]</code> <code>@pre</code> (postfix)</td>
+</tr>
+</table>
+<h2>Comments</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// Single-line comment</span>
+
+/* Multi-line
+   block comment */
+</code></pre>
+<h2>Keywords</h2>
+<pre><code>
+<span class=<span class="str">"kw"</span>>let</span>  <span class=<span class="str">"kw"</span>>var</span>  <span class=<span class="str">"kw"</span>>const</span>  <span class=<span class="str">"kw"</span>>fn</span>  <span class=<span class="str">"kw"</span>>return</span>
+<span class=<span class="str">"kw"</span>>if</span>  <span class=<span class="str">"kw"</span>>elif</span>  <span class=<span class="str">"kw"</span>>else</span>  <span class=<span class="str">"kw"</span>>match</span>  <span class=<span class="str">"kw"</span>>while</span>  <span class=<span class="str">"kw"</span>>for</span>  <span class=<span class="str">"kw"</span>>in</span>
+<span class=<span class="str">"kw"</span>>spawn</span>  <span class=<span class="str">"kw"</span>>async</span>  <span class=<span class="str">"kw"</span>>await</span>  <span class=<span class="str">"kw"</span>>comptime</span>
+<span class=<span class="str">"kw"</span>>module</span>  <span class=<span class="str">"kw"</span>>use</span>  <span class=<span class="str">"kw"</span>>pub</span>  <span class=<span class="str">"kw"</span>>as</span>
+<span class=<span class="str">"kw"</span>>type</span>  <span class=<span class="str">"kw"</span>>enum</span>  <span class=<span class="str">"kw"</span>>interface</span>  <span class=<span class="str">"kw"</span>>derive</span>
+<span class=<span class="str">"kw"</span>>requires</span>  <span class=<span class="str">"kw"</span>>ensures</span>  <span class=<span class="str">"kw"</span>>invariant</span>
+<span class=<span class="str">"kw"</span>>true</span>  <span class=<span class="str">"kw"</span>>false</span>  <span class=<span class="str">"kw"</span>>self</span>  <span class=<span class="str">"kw"</span>>result</span>
+<span class=<span class="str">"kw"</span>>Some</span>  <span class=<span class="str">"kw"</span>>None</span>  <span class=<span class="str">"kw"</span>>Ok</span>  <span class=<span class="str">"kw"</span>>Err</span>
+<span class=<span class="str">"kw"</span>>unsafe</span>  <span class=<span class="str">"kw"</span>>extern</span>  <span class=<span class="str">"kw"</span>>is</span>
+</code></pre>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

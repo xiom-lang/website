@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — Contracts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--signal);font-weight:500;">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">Contracts</h1>
+      <h1>Contracts</h1>
+<p>Contracts are the formal specification layer of AXIOM. They transform function signatures from documentation into machine-checkable specifications.</p>
+<p>Contracts compile to runtime guards with precise error messages. Static proof via Z3 SMT solver is planned for Phase 3.</p>
+<h2>Keywords</h2>
+<table>
+<tr>
+<th>Keyword</th>
+<th>Semantics</th>
+</tr>
+<tr>
+<td><code>requires</code></td>
+<td>Pre-condition. Must hold when the function is called. Caller is responsible.</td>
+</tr>
+<tr>
+<td><code>ensures</code></td>
+<td>Post-condition. Must hold when the function returns. Implementation is responsible.</td>
+</tr>
+<tr>
+<td><code>invariant</code></td>
+<td>Type-level contract. Must hold after every mutation of a value of this type.</td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td>Refers to the return value inside an <code>ensures</code> clause.</td>
+</tr>
+<tr>
+<td><code>self@pre</code></td>
+<td>Value of <code>self</code> at the moment the function was entered. For use in <code>ensures</code>.</td>
+</tr>
+</table>
+<h2>Function Contracts</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> divide(a: <span class=<span class="str">"ty"</span>>Float64</span>, b: <span class=<span class="str">"ty"</span>>Float64</span>) -> <span class=<span class="str">"ty"</span>>Float64</span>
+  <span class=<span class="str">"kw"</span>>requires</span>: b != <span class="num">0.0</span>
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> * b == a
+{
+  <span class=<span class="str">"kw"</span>>return</span> a / b
+}
+</code></pre>
+<p><strong>Type-level constraints</strong> (which interfaces a generic parameter must satisfy) are declared <strong>inline</strong> with the type parameter, not as <code>requires</code> clauses. This separates type requirements from value preconditions:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"cm"</span>>// Type constraint — inline</span>
+<span class=<span class="str">"kw"</span>>fn</span> sort[T: <span class=<span class="str">"ty"</span>>Ord</span>](items: &mut <span class=<span class="str">"ty"</span>>Vec</span>[T])
+
+<span class=<span class="str">"cm"</span>>// Value precondition — <span class=<span class="str">"kw"</span>>requires</span> clause</span>
+<span class=<span class="str">"kw"</span>>fn</span> pop[T](stack: &mut <span class=<span class="str">"ty"</span>>Stack</span>[T]) -> <span class=<span class="str">"ty"</span>>Option</span>[T]
+  <span class=<span class="str">"kw"</span>>requires</span>: !stack.is_empty()
+</code></pre>
+<h2>Type Invariants</h2>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Health</span> = {
+  current: <span class=<span class="str">"ty"</span>>Int</span>;
+  maximum: <span class=<span class="str">"ty"</span>>Int</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: current >= <span class="num">0</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: current <= maximum;
+  <span class=<span class="str">"kw"</span>>invariant</span>: maximum > <span class="num">0</span>;
+}
+
+<span class=<span class="str">"cm"</span>>// The compiler rejects any code that could violate these invariants.</span>
+<span class=<span class="str">"cm"</span>>// No runtime crash — compile error.</span>
+</code></pre>
+<p>The compiler guarantees these invariants hold after every mutation. Any code path that could violate them is a compile error.</p>
+<h2>Contract Collection Methods</h2>
+<p>To reduce verbosity, the standard library provides contract-focused methods on collections:</p>
+<table>
+<tr>
+<th>Method</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td><code>.is_sorted()</code></td>
+<td>Elements are in non-decreasing order</td>
+</tr>
+<tr>
+<td><code>.all(closure)</code></td>
+<td>All elements satisfy the predicate</td>
+</tr>
+<tr>
+<td><code>.none(closure)</code></td>
+<td>No element satisfies the predicate</td>
+</tr>
+<tr>
+<td><code>.contains(value)</code></td>
+<td>Collection contains the given value</td>
+</tr>
+<tr>
+<td><code>.len()</code></td>
+<td>Number of elements</td>
+</tr>
+<tr>
+<td><code>.is_empty()</code></td>
+<td>Collection is empty. Equivalent to <code>.len() == 0</code></td>
+</tr>
+</table>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> sort(items: &mut <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>])
+  <span class=<span class="str">"kw"</span>>ensures</span>: items.is_sorted()
+{
+  <span class=<span class="str">"cm"</span>>// ... sorting implementation</span>
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> filter_positive(items: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) -> <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]
+  <span class=<span class="str">"kw"</span>>ensures</span>: <span class=<span class="str">"kw"</span>>result</span>.all(|x| x > <span class="num">0</span>)
+  <span class=<span class="str">"kw"</span>>ensures</span>: <span class=<span class="str">"kw"</span>>result</span>.len() <= items.len()
+{
+  <span class=<span class="str">"cm"</span>>// ... filter implementation</span>
+}
+</code></pre>
+<h2>Verification Modes</h2>
+<table>
+<tr>
+<th>Mode</th>
+<th>Behavior</th>
+</tr>
+<tr>
+<td><strong>Runtime guard (default)</strong></td>
+<td>Inserted when static proof fails or is unavailable. Panics with a clear message on violation.</td>
+</tr>
+<tr>
+<td><strong>Static (Phase 3)</strong></td>
+<td>Compiler attempts Z3 SMT proof. Zero runtime cost if proven.</td>
+</tr>
+<tr>
+<td><strong>Disabled (<code>--no-contracts</code>)</strong></td>
+<td>Strips all contracts in release builds when explicitly requested. Opt-in only.</td>
+</tr>
+<tr>
+<td><strong>Contradictory</strong></td>
+<td>Compile error. The specification is logically impossible to satisfy.</td>
+</tr>
+</table>
+<h2>Runtime Behavior</h2>
+<p>When a contract is violated at runtime, the compiler emits:</p>
+<pre><code>
+contract violated: <span class=<span class="str">"kw"</span>>requires</span> b != <span class="num">0.0</span> at divide:<span class="num">2</span>
+</code></pre>
+<p>Followed by a trap (<code>@llvm.trap()</code>). The program terminates with a clear, structured error message identifying the function, line, and the violated clause.</p>
+<p>Enable structured diagnostics with <code>--diagnostics=json</code> for machine-readable output:</p>
+<pre class="language-json"><code>
+{
+  <span class="str">"kind"</span>: <span class="str">"contract_violation"</span>,
+  <span class="str">"clause"</span>: <span class="str">"<span class="</span>kw<span class="str">">requires</span>"</span>,
+  <span class="str">"expression"</span>: <span class="str">"b != <span class="num">0.0</span>"</span>,
+  <span class="str">"function"</span>: <span class="str">"divide"</span>,
+  <span class="str">"location"</span>: { <span class="str">"file"</span>: <span class="str">"math.ax"</span>, <span class="str">"line"</span>: <span class="num">2</span> }
+}
+</code></pre>
+<h2>AI and Contracts</h2>
+<p>Contracts are machine-readable intent. When AI generates code:</p>
+<ul>
+<li>AI writes a function with stated intent (<code>requires</code> and <code>ensures</code>)</li>
+<li>The compiler checks the implementation against that intent</li>
+<li>Violations are caught at compile time or the first test run</li>
+<li>The contract is machine-readable, so the AI itself can reason about it when composing functions</li>
+</ul>
+<p>This is not about making AI better at writing code. It is about making the output <strong>verifiable by construction</strong> rather than by human review.</p>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

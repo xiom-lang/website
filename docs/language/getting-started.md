@@ -14,7 +14,7 @@
 git clone https://gitea.example.com/axiom-lang/axiom.git
 cd axiom
 cargo build
-cargo test          # 213 tests should pass
+cargo test          # 234 tests should pass
 ```
 
 ## Your First Program

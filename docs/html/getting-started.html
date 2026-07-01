@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — Getting Started</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../resource/img/axiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../website/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../website/" class="logo">
+      <img src="../resource/img/axiom-icon.png" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/versions.html">Versions</a>
+      <a href="../website/playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../website/download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--signal);font-weight:500;">Getting Started</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">Getting Started</h1>
+      <h1>Getting Started</h1>
+<h2>Prerequisites</h2>
+<ul>
+<li><strong>Rust</strong> 1.85+ (<a href="https://rustup.rs">rustup</a>)</li>
+<li><strong>LLVM/Clang</strong> 18+ for native compilation</li>
+<li>Windows: <code>winget install LLVM.LLVM</code></li>
+<li>macOS: <code>brew install llvm</code></li>
+<li>Linux: <code>apt install clang</code> or <code>dnf install clang</code></li>
+</ul>
+<h2>Build from Source</h2>
+<pre class="language-bash"><code>
+git clone https:<span class=<span class="str">"cm"</span>>//gitea.example.com/axiom-lang/axiom.git</span>
+cd axiom
+cargo build
+cargo test          # <span class="num">234</span> tests should pass
+</code></pre>
+<h2>Your First Program</h2>
+<p>Create a file <code>hello.ax</code>:</p>
+<pre class="language-axiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> add(a: <span class=<span class="str">"ty"</span>>Int</span>, b: <span class=<span class="str">"ty"</span>>Int</span>) -> <span class=<span class="str">"ty"</span>>Int</span> {
+  <span class=<span class="str">"kw"</span>>return</span> a + b
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> main() -> <span class=<span class="str">"ty"</span>>Int</span> {
+  <span class=<span class="str">"kw"</span>>return</span> add(<span class="num">10</span>, <span class="num">20</span>)
+}
+</code></pre>
+<p>Compile and run:</p>
+<pre class="language-bash"><code>
+# View LLVM IR
+cargo run -p axiomc -- --emit-ir hello.ax
+
+# Compile to native binary
+cargo run -p axiomc -- -o hello.exe hello.ax
+
+# Compile and run (prints exit code)
+cargo run -p axiomc -- --run hello.ax
+# → exit code: <span class="num">30</span>
+
+# Compile to WASM
+cargo run -p axiomc -- --target wasm -o hello.wasm hello.ax
+# → wasm size: <span class="num">618</span> bytes
+</code></pre>
+<h2>Try in Browser</h2>
+<p>Open the <a href="https://axiom-lang.org/playground">AXIOM Playground</a> to write and compile AXIOM directly in your browser. No install required.</p>
+<h2>CLI Reference</h2>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code><source.ax></code></td>
+<td>Print LLVM IR to stdout</td>
+</tr>
+<tr>
+<td><code>--emit-ir <source.ax></code></td>
+<td>Print LLVM IR to stdout</td>
+</tr>
+<tr>
+<td><code>-o <output> <source.ax></code></td>
+<td>Compile to native binary</td>
+</tr>
+<tr>
+<td><code>--run <source.ax></code></td>
+<td>Compile and run, print exit code</td>
+</tr>
+<tr>
+<td><code>--target wasm -o <out.wasm> <source.ax></code></td>
+<td>Compile to WASM</td>
+</tr>
+<tr>
+<td><code>--no-contracts</code></td>
+<td>Disable contract runtime checks</td>
+</tr>
+<tr>
+<td><code>--diagnostics=json</code></td>
+<td>Structured compiler output (Phase 2 tooling)</td>
+</tr>
+<tr>
+<td><code>--dump-contracts</code></td>
+<td>Queryable contract index (Phase 2 tooling)</td>
+</tr>
+</table>
+<h2>Project Structure</h2>
+<pre><code>
+AXIOM/
+├── crates/             # Rust bootstrap compiler (permanent)
+│   ├── axiom-ast/      # AST node definitions
+│   ├── axiom-lexer/    # Tokenizer
+│   ├── axiom-parser/   # Recursive descent parser
+│   ├── axiom-check/    # Type checker + borrow checker + <span class=<span class="str">"kw"</span>>module</span> resolver
+│   ├── axiom-codegen/  # LLVM IR emitter + contracts + <span class=<span class="str">"kw"</span>>derive</span> + generics
+│   └── axiomc/         # CLI binary
+├── selfhost/           # AXIOM <span class=<span class="str">"kw"</span>>self</span>-hosted compiler
+│   ├── axiom-lexer.ax
+│   ├── axiom-parser.ax
+│   ├── axiom-check.ax
+│   ├── axiom-codegen.ax
+│   └── axiomc.ax
+├── stdlib/             # Standard library (AXIOM source)
+├── examples/           # Example programs
+├── specs/              # Language specification
+├── docs/               # Documentation
+├── website/            # Official website
+└── playground/         # WASM playground
+</code></pre>
+<h2>Editor Support</h2>
+<ul>
+<li><strong>VS Code</strong> — Install <code>vscode-axiom</code> extension for syntax highlighting</li>
+<li><strong>Any editor</strong> — AXIOM uses <code>.ax</code> file extension. Set up <code>.ax</code> → plain text with 4-space indentation for now. Full LSP support planned for Phase 3.</li>
+</ul>
+<h2>Next Steps</h2>
+<ul>
+<li>Read the [Syntax Guide](syntax.md)</li>
+<li>Explore the [Type System](types.md)</li>
+<li>Understand the [Memory Model](memory-model.md)</li>
+<li>Learn about [Contracts](contracts.md)</li>
+</ul>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../website/" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../website/spec.html">Spec</a>
+      <a href="../website/docs/">Docs</a>
+      <a href="../website/ecosystem.html">Ecosystem</a>
+      <a href="../website/download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
