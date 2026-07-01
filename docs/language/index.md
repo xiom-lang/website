@@ -68,6 +68,33 @@ fn divide(a: Float64, b: Float64) -> Float64
 }
 ```
 
+## Getting Started
+
+Ready to build with AXIOM?
+
+| Step | Resource |
+|------|----------|
+| Install the compiler | [Installation Guide](getting-started.md) |
+| Write your first program | [Getting Started Tutorial](getting-started.md) |
+| Learn the language | [Syntax](syntax.md), [Type System](types.md), [Memory Model](memory-model.md) |
+| Browse the standard library | [Stdlib Reference](stdlib.md) |
+| Find or publish packages | [Ecosystem & Packages](../ecosystem/packages.md) |
+
+## Ecosystem
+
+AXIOM's ecosystem is organized across three tiers: first-party, first-party FFI bindings, and community.
+
+| Resource | Description |
+|----------|-------------|
+| [Expansion Roadmap](../ecosystem/roadmap.md) | Full strategy for database, networking, GPU, GUI, ML, game dev, and serialization packages |
+| [Package Guide](../ecosystem/packages.md) | How to create, structure, and publish AXIOM packages |
+| `axiom:net` | First-party FFI HTTP client (libcurl) |
+| `axiom:sql` | First-party FFI SQLite bindings |
+| `axiom:serialize` | First-party JSON / binary serialization |
+| `axiom:crypto` | First-party FFI OpenSSL bindings |
+
+For a complete list of planned and in-progress packages, see the [Expansion Roadmap](../ecosystem/roadmap.md).
+
 ## Current Status
 
 | Phase | Version | Status |
