@@ -17,6 +17,7 @@
 | [Derive](derive.md) | Compiler-generated Eq, Clone, Display, Hash, Ord |
 | [C FFI](ffi.md) | Zero-cost C interoperability, extern blocks, unsafe |
 | [Compiler](compiler.md) | Pipeline overview, CLI flags, build targets, WASM |
+| [Standard Library](stdlib.md) | Complete API reference for all 39 stdlib modules |
 
 ## Language Overview
 
