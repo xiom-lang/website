@@ -111,10 +111,15 @@ The standard library ships with the compiler in `stdlib/axiom/`:
 
 | Module | Contents |
 |--------|----------|
-| `core` | Primitives, Bool, Int, Float64, core interfaces |
-| `io` | print, readln, File, Stderr |
-| `collections` | Vec, Map, Set |
-| `string` | Str, StringBuilder, find, split, trim |
-| `math` | abs, sqrt, sin, cos, pow, floor, ceil |
-| `ffi` | extern "C" declaration helpers |
-| `async` | spawn, channel, sleep |
+| `core` | Primitives, Bool, Int, Float64, Option, Result, Iterator, Default, Drop, Box, BinaryHeap, numeric limits, core interfaces (Clone, Eq, Ord, Display, Hash, Add, Sub, Mul, Div) |
+| `io` | print, readln, File, Read, Write, Seek, BufReader, BufWriter, Metadata, Cursor, path operations, standard streams |
+| `collections` | Vec, Map, Set, VecDeque, BTreeMap, BTreeSet, LinkedList, Queue, Stack, Slice methods |
+| `string` | Str, StringBuilder, find, split, trim, replace, lines, words, format |
+| `math` | abs, sqrt, sin, cos, tan, pow, floor, ceil, round, log, bitwise, random, PI, E, TAU |
+| `ffi` | extern "C" declaration helpers, memory alloc/free, type size/align |
+| `async` | spawn, channel, send, recv |
+| `net` | TCP, UDP, DNS, HTTP, URL parsing |
+| `os` | platform detection, env, process, symlinks, permissions, CPU, memory |
+| `time` | Duration, Instant, SystemTime, DateTime, sleep |
+| `sync` | Mutex, RwLock, Condvar, Once, Arc, AtomicBool, AtomicInt, Barrier |
+| `iter` | Range, RangeInclusive, Iterator adapters (map, filter, take, skip, chain, zip, enumerate), collectors (fold, sum, product, max, min, find, all, any) |
