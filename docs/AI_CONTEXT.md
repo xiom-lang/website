@@ -1,7 +1,7 @@
 # AXIOM — AI Coding Reference
 
 > **Purpose:** Feed this document into any LLM context window to enable correct AXIOM code generation.
-> **Version:** v0.12.0 | **Tests:** 234 passing | **Status:** Self-hosted compiler
+> **Version:** v0.16.0 | **Tests:** 234 passing | **Status:** Self-hosted compiler
 > 
 > This document is the single source of truth for AI-generated AXIOM code.
 > Every rule stated here is enforced by the compiler. No exceptions.
@@ -491,9 +491,9 @@ fn private_helper() { }   // module-private (default)
 
 ## 8. Standard Library Quick Reference
 
-39 modules. Import with `use axiom.<module>`. Full reference at `docs/language/stdlib.md`.
+43 modules. Import with `use axiom.<module>`. Full reference at `docs/language/stdlib.md`.
 
-### Most Commonly Used
+### All Modules
 
 | Module | Key Items |
 |--------|-----------|
@@ -502,11 +502,40 @@ fn private_helper() { }   // module-private (default)
 | `collections` | `Vec[T]` (push, pop, get, len), `Map[K,V]` (insert, get), `Set[T]` |
 | `string` | `str_len()`, `str_concat()`, `str_split()`, `str_trim()`, `format()`, `replace()` |
 | `math` | `abs()`, `sqrt()`, `sin()`, `cos()`, `pow()`, `random()`, `PI` |
+| `ffi` | `extern "C"`, `unsafe`, `*T` raw pointers |
 | `async` | `spawn()`, `Channel.bounded()`, `.send()`, `.recv()` |
 | `net` | `tcp_connect()`, `tcp_listen()`, `http_get()`, `http_post()` |
+| `os` | `exec()`, `env()`, `exit()`, `platform()` |
+| `time` | `now()`, `sleep()`, `Duration`, `Timer` |
 | `sync` | `Mutex[T]`, `RwLock[T]`, `Arc[T]`, `Barrier` |
-| `ffi` | `extern "C"`, `unsafe`, `*T` raw pointers |
+| `iter` | `map()`, `filter()`, `fold()`, `zip()`, `take()`, `skip()` |
 | `test` | `test()`, `assert_eq()`, `assert_ok()`, `run_tests()` |
+| `serialize` | `to_json()`, `from_json()`, `to_bincode()`, `from_bincode()` |
+| `bench` | `bench()`, `BenchConfig`, `BenchResult` |
+| `log` | `info()`, `warn()`, `error()`, `debug()`, `LogLevel` |
+| `contracts` | `requires()`, `ensures()`, `invariant()` |
+| `error` | `Error`, `ErrorKind`, `into()`, `from()` |
+| `fmt` | `format()`, `print()`, `println()`, `Display` |
+| `hash` | `hash()`, `Hash`, `Hasher`, `sip_hash()` |
+| `num` | `Num`, `parse()`, `to_string()`, `from_str()` |
+| `cmp` | `Ordering`, `max()`, `min()`, `clamp()` |
+| `convert` | `From`, `Into`, `from()`, `into()` |
+| `cell` | `Cell[T]`, `RefCell[T]` |
+| `rc` | `Rc[T]`, `Weak[T]` |
+| `path` | `Path`, `join()`, `parent()`, `extension()`, `exists()` |
+| `mem` | `size_of()`, `align_of()`, `addr_of()` |
+| `ptr` | `null()`, `is_null()`, `offset()` |
+| `char` | `is_digit()`, `is_alpha()`, `to_upper()`, `to_lower()` |
+| `array` | `Array[T; N]`, `repeat()`, `from_fn()` |
+| `encoding` | `base64_encode()`, `base64_decode()`, `hex_encode()`, `hex_decode()` |
+| `rand` | `random()`, `seed()`, `shuffle()`, `choose()` |
+| `compress` | `gzip()`, `gunzip()`, `zlib()`, `unzlib()` |
+| `crypto` | `sha256()`, `aes_encrypt()`, `aes_decrypt()` |
+| `regex` | `Regex`, `is_match()`, `find()`, `replace()` |
+| `alloc` | `alloc()`, `dealloc()`, `realloc()` |
+| `thread` | `spawn()`, `join()`, `ThreadPool` |
+| `reflect` | `type_name()`, `fields()`, `is_enum()`, `is_struct()` |
+| `env` | `get_var()`, `set_var()`, `home_dir()`, `temp_dir()` |
 
 ### C FFI
 
