@@ -16,6 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = ROOT / "docs" / "language"
+AI_CONTEXT = ROOT / "docs" / "AI_CONTEXT.md"
 OUT_HTML = ROOT / "docs" / "html"
 OUT_WEBSITE = ROOT / "website" / "docs"
 STYLE_CSS = ROOT / "website" / "style.css"
@@ -288,6 +289,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 NAV_ORDER = [
     ("index.md", "Overview"),
     ("getting-started.md", "Getting Started"),
+    ("examples.md", "By Example"),
     ("syntax.md", "Syntax"),
     ("types.md", "Type System"),
     ("memory-model.md", "Memory Model"),
@@ -299,6 +301,7 @@ NAV_ORDER = [
     ("ffi.md", "C FFI"),
     ("stdlib.md", "Standard Library"),
     ("compiler.md", "Compiler"),
+    ("../AI_CONTEXT.md", "AI Coding Ref"),
 ]
 
 def build_nav(current_file: str, output_dir: str, ext: str = ".html") -> str:
@@ -320,9 +323,15 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
 
     files = []
     for fname, _ in NAV_ORDER:
-        src = SRC_DIR / fname
+        # Handle files outside the language directory
+        if fname.startswith("../"):
+            src = ROOT / "docs" / fname.replace("../", "")
+        else:
+            src = SRC_DIR / fname
         if src.exists():
             files.append((fname, src))
+        else:
+            print(f"  [skip] {fname} — not found")
 
     for fname, src in files:
         text = src.read_text(encoding='utf-8')
@@ -347,7 +356,7 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
             icon_path=icon_path,
         )
 
-        out = output_dir / fname.replace('.md', ext)
+        out = output_dir / fname.replace('.md', ext).replace('../', '')
         out.write_text(html, encoding='utf-8')
         print(f"  {fname} -> {out.relative_to(ROOT)}")
 
