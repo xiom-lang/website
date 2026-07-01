@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXIOM — I/O Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../" alt="AXIOM" style="width:20px;height:20px;">
+      AXIOM
+    </a>
+    <div class="navlinks">
+      <a href="../spec.html">Spec</a>
+      <a href="../docs/">Docs</a>
+      <a href="../ecosystem.html">Ecosystem</a>
+      <a href="../versions.html">Versions</a>
+      <a href="../playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="../index.html" style="color:var(--muted);">Overview</a>
+        <a href="../getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="../concepts.html" style="color:var(--muted);">Concepts</a>
+        <a href="../examples.html" style="color:var(--muted);">By Example</a>
+        <a href="../syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="../types.html" style="color:var(--muted);">Type System</a>
+        <a href="../memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="../contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="../error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="../modules.html" style="color:var(--muted);">Modules</a>
+        <a href="../generics.html" style="color:var(--muted);">Generics</a>
+        <a href="../derive.html" style="color:var(--muted);">Derive</a>
+        <a href="../ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="../compiler.html" style="color:var(--muted);">Compiler</a>
+        <a href="../AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
+        <div style="margin-top:20px;"></div>
+        <a href="../api.html" style="color:var(--paper);font-weight:500;;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>
+        <a href="core.html" style="color:var(--muted);">core</a>
+        <a href="io.html" style="color:var(--signal);font-weight:500;">io</a>
+        <a href="collections.html" style="color:var(--muted);">collections</a>
+        <a href="string.html" style="color:var(--muted);">string</a>
+        <a href="math.html" style="color:var(--muted);">math</a>
+        <a href="sync.html" style="color:var(--muted);">sync</a>
+        <a href="async.html" style="color:var(--muted);">async</a>
+        <a href="net.html" style="color:var(--muted);">net</a>
+        <a href="crypto.html" style="color:var(--muted);">crypto</a>
+        <a href="serialize.html" style="color:var(--muted);">serialize</a>
+        <a href="test.html" style="color:var(--muted);">test</a>
+        <a href="iter.html" style="color:var(--muted);">iter</a>
+        <a href="error.html" style="color:var(--muted);">error</a>
+        <a href="char.html" style="color:var(--muted);">char</a>
+        <a href="path.html" style="color:var(--muted);">path</a>
+        <a href="array.html" style="color:var(--muted);">array</a>
+        <a href="encoding.html" style="color:var(--muted);">encoding</a>
+        <a href="num.html" style="color:var(--muted);">num</a>
+        <a href="cmp.html" style="color:var(--muted);">cmp</a>
+        <a href="thread.html" style="color:var(--muted);">thread</a>
+        <a href="mem.html" style="color:var(--muted);">mem</a>
+        <a href="ptr.html" style="color:var(--muted);">ptr</a>
+        <a href="alloc.html" style="color:var(--muted);">alloc</a>
+        <a href="rc.html" style="color:var(--muted);">rc</a>
+        <a href="os.html" style="color:var(--muted);">os</a>
+        <a href="env.html" style="color:var(--muted);">env</a>
+        <a href="time.html" style="color:var(--muted);">time</a>
+        <a href="convert.html" style="color:var(--muted);">convert</a>
+        <a href="cell.html" style="color:var(--muted);">cell</a>
+        <a href="fmt.html" style="color:var(--muted);">fmt</a>
+        <a href="hash.html" style="color:var(--muted);">hash</a>
+        <a href="compress.html" style="color:var(--muted);">compress</a>
+        <a href="rand.html" style="color:var(--muted);">rand</a>
+        <a href="regex.html" style="color:var(--muted);">regex</a>
+        <a href="bench.html" style="color:var(--muted);">bench</a>
+        <a href="log.html" style="color:var(--muted);">log</a>
+        <a href="contracts.html" style="color:var(--muted);">contracts</a>
+        <a href="reflect.html" style="color:var(--muted);">reflect</a>
+        <a href="ffi.html" style="color:var(--muted);">ffi</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">I/O Library</h1>
+      <p>The <code>io</code> module provides console input/output, file system manipulation, process interaction, timing, buffered I/O wrappers, standard streams, in-memory I/O cursors, and path utilities.</p>
+<pre><code>
+<span class='kw'>use</span> axiom.io;
+</code></pre>
+<hr>
+<h2>Error Type</h2>
+<p>The <code>IOError</code> type represents an I/O operation failure with a human-readable message and a platform-specific error code.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>type</span> <span class='ty'>IOError</span> = {
+  message: <span class='ty'>Str</span>;
+  code: <span class='ty'>Int</span>;
+}
+</code></pre>
+<hr>
+<h2>SeekFrom Enum</h2>
+<p>Specifies the reference point for a seek operation.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>type</span> SeekFrom = <span class='kw'>enum</span> { Start(<span class='ty'>Int</span>), End(<span class='ty'>Int</span>), Current(<span class='ty'>Int</span>) }
+</code></pre>
+<table>
+<tr>
+<th>Variant</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>Start(n)</code></td>
+<td>Seek <code>n</code> bytes from the beginning of the stream.</td>
+</tr>
+<tr>
+<td><code>End(n)</code></td>
+<td>Seek <code>n</code> bytes from the end of the stream (usually negative).</td>
+</tr>
+<tr>
+<td><code>Current(n)</code></td>
+<td>Seek <code>n</code> bytes from the current stream position.</td>
+</tr>
+</table>
+<hr>
+<h2>Console</h2>
+<h3><code>print(msg)</code></h3>
+<p>Writes <code>msg</code> to standard output without a trailing newline.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>print</span>(msg: <span class='ty'>Str</span>);
+</code></pre>
+<h3><code>println(msg)</code></h3>
+<p>Writes <code>msg</code> to standard output followed by a newline character.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>println</span>(msg: <span class='ty'>Str</span>);
+</code></pre>
+<h3><code>read_line()</code></h3>
+<p>Reads a single line from standard input. The trailing newline is stripped.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>read_line</span>() -> <span class='ty'>Str</span>;
+</code></pre>
+<h3><code>read_int()</code></h3>
+<p>Reads a line from standard input and attempts to parse it as an <code>Int</code>. Returns <code>Ok(Int)</code> on success or <code>Err(Str)</code> if the input is not a valid integer.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>read_int</span>() -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>Str</span>];
+</code></pre>
+<h3><code>read_float()</code></h3>
+<p>Reads a line from standard input and attempts to parse it as a <code>Float64</code>. Returns <code>Ok(Float64)</code> on success or <code>Err(Str)</code> if the input is not a valid floating-point number.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>read_float</span>() -> <span class='ty'>Result</span>[<span class='ty'>Float64</span>, <span class='ty'>Str</span>];
+</code></pre>
+<hr>
+<h2>File System</h2>
+<h3><code>read_file(path)</code></h3>
+<p>Reads the entire contents of the file at <code>path</code> into a <code>Str</code>. Returns <code>Ok(content)</code> on success or <code>Err(IOError)</code> if the file cannot be read.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>read_file</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<h3><code>write_file(path, content)</code></h3>
+<p>Writes <code>content</code> to the file at <code>path</code>, replacing the file if it already exists. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>write_file</span>(path: <span class='ty'>Str</span>, content: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<h3><code>append_file(path, content)</code></h3>
+<p>Appends <code>content</code> to the end of the file at <code>path</code>, creating the file if it does not exist. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>append_file</span>(path: <span class='ty'>Str</span>, content: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<h3><code>file_exists(path)</code></h3>
+<p>Returns true if a file or directory exists at <code>path</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>file_exists</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Bool</span>;
+</code></pre>
+<h3><code>is_dir(path)</code></h3>
+<p>Returns true if the path points to an existing directory.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>is_dir</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Bool</span>;
+</code></pre>
+<h3><code>create_dir(path)</code></h3>
+<p>Creates a new directory at <code>path</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>create_dir</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<h3><code>list_dir(path)</code></h3>
+<p>Lists the entries in the directory at <code>path</code>. Returns <code>Ok(entries)</code> where entries is a <code>Vec[Str]</code> of file/directory names, or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>list_dir</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>Str</span>], <span class='ty'>IOError</span>];
+</code></pre>
+<h3><code>remove_file(path)</code></h3>
+<p>Deletes the file at <code>path</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>remove_file</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<h3><code>copy_file(src, dst)</code></h3>
+<p>Copies the file from <code>src</code> to <code>dst</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>copy_file</span>(src: <span class='ty'>Str</span>, dst: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<h3><code>rename(src, dst)</code></h3>
+<p>Renames (moves) a file or directory from <code>src</code> to <code>dst</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>rename</span>(src: <span class='ty'>Str</span>, dst: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<hr>
+<h2>Process</h2>
+<h3><code>exit(code)</code></h3>
+<p>Terminates the program immediately with the given exit code.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>exit</span>(code: <span class='ty'>Int</span>);
+</code></pre>
+<h3><code>args()</code></h3>
+<p>Returns the command-line arguments passed to the program as a <code>Vec[Str]</code>. The first element is the program name.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>args</span>() -> <span class='ty'>Vec</span>[<span class='ty'>Str</span>];
+</code></pre>
+<h3><code>env_var(name)</code></h3>
+<p>Retrieves the value of the environment variable <code>name</code>. Returns <code>Some(value)</code> if set or <code>None</code> if undefined.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>env_var</span>(name: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Str</span>];
+</code></pre>
+<hr>
+<h2>Time</h2>
+<h3><code>time_now()</code></h3>
+<p>Returns the current time as a Unix timestamp (seconds since January 1, 1970 UTC).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>time_now</span>() -> <span class='ty'>Int</span>;
+</code></pre>
+<h3><code>sleep(ms)</code></h3>
+<p>Suspends execution for at least <code>ms</code> milliseconds.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>sleep</span>(ms: <span class='ty'>Int</span>);
+</code></pre>
+<hr>
+<h2>Standard Streams</h2>
+<h3><code>stdin()</code></h3>
+<p>Returns the file descriptor for standard input (typically 0).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>stdin</span>() -> <span class='ty'>Int</span>;
+</code></pre>
+<h3><code>stdout()</code></h3>
+<p>Returns the file descriptor for standard output (typically 1).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>stdout</span>() -> <span class='ty'>Int</span>;
+</code></pre>
+<h3><code>stderr()</code></h3>
+<p>Returns the file descriptor for standard error (typically 2).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>stderr</span>() -> <span class='ty'>Int</span>;
+</code></pre>
+<h3><code>print_line(s)</code></h3>
+<p>Writes <code>s</code> followed by a newline to standard output. Equivalent to <code>println</code> but may use a lower-level path.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>print_line</span>(s: <span class='ty'>Str</span>);
+</code></pre>
+<hr>
+<h2>Read / Write / Seek Traits</h2>
+<h3><code>Read</code></h3>
+<p>Provides byte-level reading from a source. The source is typically a file descriptor or a <code>Cursor</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>interface</span> Read {
+  <span class='kw'>fn</span> <span class='func'>read</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>read_to_end</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>read_to_string</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>read_exact</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+}
+</code></pre>
+<table>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>read(buf)</code></td>
+<td>Reads up to <code>buf.len()</code> bytes into <code>buf</code>. Returns the number of bytes read.</td>
+</tr>
+<tr>
+<td><code>read_to_end(buf)</code></td>
+<td>Reads all remaining bytes from the source into <code>buf</code>. Returns the total number of bytes read.</td>
+</tr>
+<tr>
+<td><code>read_to_string()</code></td>
+<td>Reads all remaining bytes and returns them as a <code>Str</code>.</td>
+</tr>
+<tr>
+<td><code>read_exact(buf)</code></td>
+<td>Reads exactly <code>buf.len()</code> bytes, blocking until all bytes are read. Returns <code>Err</code> on unexpected EOF.</td>
+</tr>
+</table>
+<h3><code>Write</code></h3>
+<p>Provides byte-level writing to a sink.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>interface</span> Write {
+  <span class='kw'>fn</span> <span class='func'>write</span>(<span class='kw'>self</span>, buf: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>write_all</span>(<span class='kw'>self</span>, buf: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>flush</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+}
+</code></pre>
+<table>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>write(buf)</code></td>
+<td>Writes up to <code>buf.len()</code> bytes. Returns the number of bytes written.</td>
+</tr>
+<tr>
+<td><code>write_all(buf)</code></td>
+<td>Writes all bytes in <code>buf</code>, retrying until complete.</td>
+</tr>
+<tr>
+<td><code>flush()</code></td>
+<td>Flushes any buffered data to the underlying sink.</td>
+</tr>
+</table>
+<h3><code>Seek</code></h3>
+<p>Provides the ability to reposition a byte-oriented stream.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>interface</span> Seek {
+  <span class='kw'>fn</span> <span class='func'>seek</span>(<span class='kw'>self</span>, pos: SeekFrom) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>stream_position</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+}
+</code></pre>
+<table>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>seek(pos)</code></td>
+<td>Seeks to <code>pos</code> relative to <code>SeekFrom</code>. Returns the new position from the start of the stream.</td>
+</tr>
+<tr>
+<td><code>stream_position()</code></td>
+<td>Returns the current position from the start of the stream.</td>
+</tr>
+</table>
+<hr>
+<h2>Buffered I/O</h2>
+<h3><code>BufReader</code></h3>
+<p>A buffered reader that wraps a raw file descriptor, reducing system calls by reading larger chunks into an internal buffer.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>type</span> BufReader = { inner: <span class='ty'>Int</span>; buf: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]; }
+</code></pre>
+<h4><code>BufReader.new(reader)</code></h4>
+<p>Creates a new <code>BufReader</code> wrapping the given file descriptor.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> BufReader.<span class='func'>new</span>(reader: <span class='ty'>Int</span>) -> BufReader;
+</code></pre>
+<h4><code>BufReader.read_line(buf)</code></h4>
+<p>Reads a line (up to and including the newline) into <code>buf</code>. Returns the number of bytes read, or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> BufReader.<span class='func'>read_line</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<h4><code>BufReader.lines()</code></h4>
+<p>Reads all remaining lines from the buffered reader and returns them as a <code>Vec[Str]</code>. Each string has the trailing newline stripped.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> BufReader.<span class='func'>lines</span>(<span class='kw'>self</span>) -> <span class='ty'>Vec</span>[<span class='ty'>Str</span>];
+</code></pre>
+<h3><code>BufWriter</code></h3>
+<p>A buffered writer that wraps a raw file descriptor, accumulating writes in an internal buffer and flushing on overflow or explicit <code>flush()</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>type</span> BufWriter = { inner: <span class='ty'>Int</span>; buf: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]; }
+</code></pre>
+<h4><code>BufWriter.new(writer)</code></h4>
+<p>Creates a new <code>BufWriter</code> wrapping the given file descriptor.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> BufWriter.<span class='func'>new</span>(writer: <span class='ty'>Int</span>) -> BufWriter;
+</code></pre>
+<hr>
+<h2>File Metadata</h2>
+<p>The <code>Metadata</code> type holds information about a file or directory on disk.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>type</span> Metadata = {
+  size: <span class='ty'>Int</span>;
+  is_file: <span class='ty'>Bool</span>;
+  is_dir: <span class='ty'>Bool</span>;
+  modified: <span class='ty'>Int</span>;
+  created: <span class='ty'>Int</span>;
+  permissions: <span class='ty'>Int</span>;
+}
+</code></pre>
+<table>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td>File size in bytes.</td>
+</tr>
+<tr>
+<td><code>is_file</code></td>
+<td>True if this entry is a regular file.</td>
+</tr>
+<tr>
+<td><code>is_dir</code></td>
+<td>True if this entry is a directory.</td>
+</tr>
+<tr>
+<td><code>modified</code></td>
+<td>Last modification timestamp (Unix timestamp).</td>
+</tr>
+<tr>
+<td><code>created</code></td>
+<td>Creation timestamp (Unix timestamp).</td>
+</tr>
+<tr>
+<td><code>permissions</code></td>
+<td>Platform-specific permission bits.</td>
+</tr>
+</table>
+<h3><code>metadata(path)</code></h3>
+<p>Retrieves metadata for the file or directory at <code>path</code>. Returns <code>Ok(Metadata)</code> or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>metadata</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[Metadata, <span class='ty'>IOError</span>>;
+</code></pre>
+<h3><code>set_permissions(path, perm)</code></h3>
+<p>Sets the permission bits of the file or directory at <code>path</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>set_permissions</span>(path: <span class='ty'>Str</span>, perm: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+</code></pre>
+<hr>
+<h2>Memory I/O</h2>
+<h3><code>Cursor</code></h3>
+<p>An in-memory buffer that implements <code>Read</code>, <code>Write</code>, and <code>Seek</code>. Useful for testing I/O logic without the file system.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>type</span> Cursor = { data: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]; pos: <span class='ty'>Int</span>; }
+</code></pre>
+<h4><code>Cursor.new(data)</code></h4>
+<p>Creates a new <code>Cursor</code> initialized with the given byte data, positioned at the start.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> Cursor.<span class='func'>new</span>(data: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> Cursor;
+</code></pre>
+<h4><code>Cursor.into_inner()</code></h4>
+<p>Consumes the <code>Cursor</code> and returns the underlying byte buffer.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> Cursor.<span class='func'>into_inner</span>(<span class='kw'>self</span>) -> <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>];
+</code></pre>
+<hr>
+<h2>Path Operations</h2>
+<h3><code>join_paths(base, child)</code></h3>
+<p>Joins two path components using the platform-specific separator. Returns a single combined path string.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>join_paths</span>(base: <span class='ty'>Str</span>, child: <span class='ty'>Str</span>) -> <span class='ty'>Str</span>;
+</code></pre>
+<h3><code>parent_path(path)</code></h3>
+<p>Returns the parent directory of <code>path</code>, or <code>None</code> if there is no parent (e.g., the root).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>parent_path</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Str</span>];
+</code></pre>
+<h3><code>file_name(path)</code></h3>
+<p>Returns the file or directory name component of <code>path</code> (the last segment), or <code>None</code> if the path ends with <code>..</code> or is the root.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>file_name</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Str</span>];
+</code></pre>
+<h3><code>extension(path)</code></h3>
+<p>Returns the file extension (the part after the last <code>.</code>), or <code>None</code> if the path has no extension.</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>extension</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Str</span>];
+</code></pre>
+<h3><code>is_absolute(path)</code></h3>
+<p>Returns true if <code>path</code> is an absolute path (platform-specific: starts with <code>/</code> on Unix, or a drive letter on Windows).</p>
+<pre class="language-axiom"><code>
+<span class='kw'>fn</span> <span class='func'>is_absolute</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Bool</span>;
+</code></pre>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AXIOM v0.12.0 · <a href="../" style="color:var(--signal);">axiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../spec.html">Spec</a>
+      <a href="../docs/">Docs</a>
+      <a href="../ecosystem.html">Ecosystem</a>
+      <a href="../download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

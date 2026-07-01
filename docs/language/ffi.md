@@ -19,11 +19,11 @@ extern "C" {
 
 ```axiom
 fn c_string_length(ptr: *UInt8) -> UInt {
-  unsafe { return strlen(ptr) }
+  unsafe { return strlen(ptr); }
 }
 
 fn allocate_buffer(size: UInt) -> *UInt8 {
-  unsafe { return malloc(size) }
+  unsafe { return malloc(size); }
 }
 ```
 
@@ -33,9 +33,9 @@ Raw pointers (`*T`) are only usable inside `unsafe` blocks. They cannot be deref
 
 ```axiom
 unsafe {
-  let raw: *Int = some_c_function()
-  let value = *raw   // dereference — programmer guarantees validity
-  *raw = 42          // write through pointer
+  let raw: *Int = some_c_function();
+  let value = *raw;   // dereference — programmer guarantees validity
+  *raw = 42;          // write through pointer
 }
 ```
 
@@ -48,11 +48,11 @@ fn safe_alloc(size: UInt) -> Option[*UInt8]
   requires: size > 0
 {
   unsafe {
-    let ptr = malloc(size)
+    let ptr = malloc(size);
     if ptr == null_ptr() {
-      return None
+      return None;
     }
-    return Some(ptr)
+    return Some(ptr);
   }
 }
 
@@ -81,7 +81,7 @@ AXIOM functions can be exported with C ABI for consumption from other languages:
 
 ```axiom
 extern "C" fn axiom_add(a: Int32, b: Int32) -> Int32 {
-  return a + b
+  return a + b;
 }
 ```
 

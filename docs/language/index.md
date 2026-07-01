@@ -7,6 +7,7 @@
 | Section | Description |
 |---------|-------------|
 | [Getting Started](getting-started.md) | Installation, first program, CLI reference |
+| [Concepts](concepts.md) | AXIOM for programmers from other languages — Java, C++, Python, Rust, Go |
 | [By Example](examples.md) | Progressive examples from Hello World to generics + contracts |
 | [Syntax](syntax.md) | Full language syntax: variables, functions, control flow, expressions |
 | [Type System](types.md) | Primitive types, compound types, structs, enums, type inference |
@@ -43,12 +44,12 @@ AXIOM is a compiled, statically typed, memory-safe systems programming language.
 fn fib(n: Int) -> Int
   requires: n >= 0
 {
-  if n <= 1 { return n }
-  return fib(n - 1) + fib(n - 2)
+  if n <= 1 { return n; }
+  return fib(n - 1) + fib(n - 2);
 }
 
 fn main() -> Int {
-  return fib(10)  // → 55
+  return fib(10);  // → 55
 }
 ```
 
@@ -66,7 +67,7 @@ fn divide(a: Float64, b: Float64) -> Float64
   requires: b != 0.0
   ensures:  result * b == a
 {
-  return a / b
+  return a / b;
 }
 ```
 

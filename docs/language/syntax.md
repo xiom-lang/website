@@ -1,13 +1,15 @@
 # Syntax Reference
 
+> **Quick look:** `let x = 42;` · `fn name(args) -> Type { ... }` · `if/elif/else` · `match x { Arm => ..., }` · `;` on every statement
+
 ## Variables
 
 ```axiom
-let x: Int = 42           // immutable binding
-var y: Float64 = 3.14     // mutable binding
-let name = "AXIOM"        // type inferred as Str
-let v = [1, 2, 3]         // type inferred as Vec[Int]
-let t = (1, true)         // type inferred as (Int, Bool)
+let x: Int = 42;           // immutable binding
+var y: Float64 = 3.14;     // mutable binding
+let name = "AXIOM";        // type inferred as Str
+let v = [1, 2, 3];         // type inferred as Vec[Int]
+let t = (1, true);         // type inferred as (Int, Bool)
 ```
 
 - `let` — immutable binding. Cannot be reassigned.
@@ -18,13 +20,15 @@ let t = (1, true)         // type inferred as (Int, Bool)
 ## Functions
 
 ```axiom
+use axiom.io;
+
 fn add(a: Int, b: Int) -> Int {
-  return a + b
+  return a + b;
 }
 
 // Void return (no return type annotation)
 fn log(message: Str) {
-  io.print(message)
+  io.print(message);
 }
 
 // With contracts
@@ -32,7 +36,7 @@ fn divide(a: Float64, b: Float64) -> Float64
   requires: b != 0.0
   ensures:  result * b == a
 {
-  return a / b
+  return a / b;
 }
 ```
 
@@ -48,11 +52,11 @@ pub type Vec3 = { x: Float32; y: Float32; z: Float32; }
 
 // self is implicit — fields accessed directly
 pub fn Vec3.dot(other: &Vec3) -> Float32 {
-  return x * other.x + y * other.y + z * other.z
+  return x * other.x + y * other.y + z * other.z;
 }
 
 pub fn Vec3.set_x(value: Float32) {
-  x = value   // self is &mut Vec3 — mutation detected
+  x = value;   // self is &mut Vec3 — mutation detected
 }
 ```
 
@@ -67,11 +71,11 @@ pub fn Vec3.set_x(value: Float32) {
 
 ```axiom
 if x > 0 {
-  return 1
+  return 1;
 } elif x < 0 {
-  return -1
+  return -1;
 } else {
-  return 0
+  return 0;
 }
 ```
 
@@ -79,7 +83,7 @@ if x > 0 {
 
 ```axiom
 while count > 0 {
-  count = count - 1
+  count = count - 1;
 }
 ```
 
@@ -87,7 +91,7 @@ while count > 0 {
 
 ```axiom
 for item in items {
-  process(item)
+  process(item);
 }
 ```
 
@@ -150,50 +154,50 @@ a || b      // or
 ### Struct Literals
 
 ```axiom
-let p = Point{ x: 1.0, y: 2.0 }
-let s = Stack[Int]{ items: [], capacity: 10 }
+let p = Point{ x: 1.0, y: 2.0 };
+let s = Stack[Int]{ items: [], capacity: 10 };
 ```
 
 ### Array Literals
 
 ```axiom
-let nums = [1, 2, 3, 4, 5]
-let empty: Vec[Int] = []
+let nums = [1, 2, 3, 4, 5];
+let empty: Vec[Int] = [];
 ```
 
 ### Field Access
 
 ```axiom
-let dist = p.x * p.x + p.y * p.y
+let dist = p.x * p.x + p.y * p.y;
 ```
 
 ### Function Calls
 
 ```axiom
-let result = add(10, 20)
-let x = max[Int](a, b)      // explicit type parameter
-let y = max(a, b)           // inferred type parameter
+let result = add(10, 20);
+let x = max[Int](a, b);      // explicit type parameter
+let y = max(a, b);           // inferred type parameter
 ```
 
 ### Closures
 
 ```axiom
 // fn(params) { body } — closure expression
-let doubler = fn(x: Int) -> Int { return x * 2 }
+let doubler = fn(x: Int) -> Int { return x * 2; };
 
 // |params| body — pipe closure
-let tripler = |x| x * 3
+let tripler = |x| x * 3;
 ```
 
 ### Other Expressions
 
 ```axiom
 // Error propagation
-let f = open(path)?
+let f = open(path)?;
 
 // Reference creation
-let r = &x
-let rm = &mut x
+let r = &x;
+let rm = &mut x;
 
 // Option constructors
 Some(value)
