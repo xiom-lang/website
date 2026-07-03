@@ -5,6 +5,36 @@
 
 ---
 
+## Revised Build Order (2026-07-03)
+
+**Self-hosting is the final validation, not the driver.**
+
+The v0.9.x–v0.11.x self-hosting MVP proved the concept — the AXIOM language CAN express a compiler. But pursuing self-hosting while the Rust compiler was still unstable caused benchmark breakage and diverted focus from hardening. The revised strategy:
+
+1. **Finish the Rust compiler first** — all language features, all contracts, all generics, Z3 static verification, debugger, LSP, CLI toolchain, hot reload, benchmark suite. The Rust compiler is the PERMANENT bootstrap fallback — NEVER deleted.
+2. **Self-host LAST** — when the language is stable (no breaking syntax changes for 6+ months) and the standard library is mature enough to write a compiler in AXIOM. Self-hosting is a validation milestone, not a development milestone.
+3. **Byte-for-byte identical output** — the self-hosting bootstrap is successful when the AXIOM-compiled compiler produces bit-identical IR to the Rust-compiled version for all test programs. This is the strongest possible correctness signal.
+
+### Phase Structure (Revised)
+
+| Phase | Focus | Self-Hosting? |
+|-------|-------|---------------|
+| **Phase 0** (done) | Working pipeline: lex → parse → check → codegen | No |
+| **Phase 1** (done) | Full language surface: ownership, contracts, generics, modules | No |
+| **Phase 2** (now) | Hardening: performance, warnings, benchmarks, multi-file, hot reload, incremental compilation | No |
+| **Phase 3** (next) | Verification & Toolchain: Z3 static contracts, debugger, LSP, CLI, visual benchmarks, WASM playground | No |
+| **Phase 4** (final) | Self-hosting: bootstrap AXIOM compiler in AXIOM, byte-for-byte verified | YES |
+| **Ecosystem** (after) | Packages, registry, showcase projects (AxiomDB, AxiomVDB) | Post-self-hosting |
+
+### Why This Order
+
+1. **The Rust compiler is our primary development tool.** It must be fast, reliable, and feature-complete before we ask it to compile a second compiler.
+2. **Z3 static verification makes contracts zero-cost.** This is THE killer feature. It must ship before we freeze the language for self-hosting.
+3. **Toolchain (debugger, LSP, CLI) makes the language usable.** Nobody adopts a language without a debugger. These are prerequisites for real-world adoption.
+4. **Self-hosting is a test of correctness, not a feature.** It proves the language can express a complex real-world program. It does not make the compiler faster or safer — the Rust compiler already is.
+
+---
+
 ## The Core Principle
 
 **Build on working foundations. Nothing gets built on speculation.**
