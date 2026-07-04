@@ -3,7 +3,7 @@
 Structured logging with log levels, structured key-value pairs, runtime configuration, and in-memory log querying.
 
 ```
-use axiom.log;
+use xiom.log;
 ```
 
 ## Types

@@ -3,7 +3,7 @@
 OS thread management: spawning, joining, scoped threads, and concurrency utilities.
 
 ```
-use axiom.thread;
+use xiom.thread;
 ```
 
 ## Types

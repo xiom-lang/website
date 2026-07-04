@@ -3,7 +3,7 @@
 Runtime queryable contract API: inspect `requires`, `ensures`, and `invariant` clauses for functions and types, verify contracts at runtime, export contract specs, and measure contract coverage.
 
 ```
-use axiom.contracts;
+use xiom.contracts;
 ```
 
 ## Contract Metadata Types

@@ -1,6 +1,6 @@
 # Contracts
 
-Contracts are the formal specification layer of AXIOM. They transform function signatures from documentation into machine-checkable specifications.
+Contracts are the formal specification layer of XIOM. They transform function signatures from documentation into machine-checkable specifications.
 
 Contracts compile to runtime guards with precise error messages. Static proof via Z3 SMT solver is planned for Phase 3.
 
@@ -16,7 +16,7 @@ Contracts compile to runtime guards with precise error messages. Static proof vi
 
 ## Function Contracts
 
-```axiom
+```xiom
 fn divide(a: Float64, b: Float64) -> Float64
   requires: b != 0.0
   ensures:  result * b == a
@@ -27,7 +27,7 @@ fn divide(a: Float64, b: Float64) -> Float64
 
 **Type-level constraints** (which interfaces a generic parameter must satisfy) are declared **inline** with the type parameter, not as `requires` clauses. This separates type requirements from value preconditions:
 
-```axiom
+```xiom
 // Type constraint — inline
 fn sort[T: Ord](items: &mut Vec[T])
 
@@ -38,7 +38,7 @@ fn pop[T](stack: &mut Stack[T]) -> Option[T]
 
 ## Type Invariants
 
-```axiom
+```xiom
 type Health = {
   current: Int;
   maximum: Int;
@@ -66,7 +66,7 @@ To reduce verbosity, the standard library provides contract-focused methods on c
 | `.len()` | Number of elements |
 | `.is_empty()` | Collection is empty. Equivalent to `.len() == 0` |
 
-```axiom
+```xiom
 fn sort(items: &mut Vec[Int])
   ensures: items.is_sorted()
 {
@@ -108,7 +108,7 @@ Enable structured diagnostics with `--diagnostics=json` for machine-readable out
   "clause": "requires",
   "expression": "b != 0.0",
   "function": "divide",
-  "location": { "file": "math.ax", "line": 2 }
+  "location": { "file": "math.xi", "line": 2 }
 }
 ```
 

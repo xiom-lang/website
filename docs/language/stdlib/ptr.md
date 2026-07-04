@@ -3,7 +3,7 @@
 Low-level pointer utilities: null pointers, read/write, volatile access, pointer arithmetic, and copy operations.
 
 ```
-use axiom.ptr;
+use xiom.ptr;
 ```
 
 ## Null & Dangling Pointers

@@ -3,7 +3,7 @@
 String formatting via the `Display` trait and `Formatter` type.
 
 ```
-use axiom.fmt;
+use xiom.fmt;
 ```
 
 ## Display

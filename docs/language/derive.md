@@ -14,7 +14,7 @@ The `derive` clause instructs the compiler to generate correct-by-construction i
 
 ## Usage
 
-```axiom
+```xiom
 type Point = {
   x: Float64;
   y: Float64;
@@ -30,7 +30,7 @@ type Point = {
 
 Types with `invariant` clauses cannot derive `Eq`, `Hash`, or `Ord`. Invariants make structural equality semantically ambiguous — two values with different internal state may both satisfy the same invariant. `Clone` and `Display` remain available.
 
-```axiom
+```xiom
 type Health = {
   current: Int;
   maximum: Int;
@@ -44,7 +44,7 @@ type Health = {
 
 Enums support derive too:
 
-```axiom
+```xiom
 enum Option[T] {
   Some(value: T),
   None,
@@ -101,7 +101,7 @@ store double %self.x, double* %x_ptr
 
 You can always write a manual implementation instead of using `derive`:
 
-```axiom
+```xiom
 type Point = { x: Float64; y: Float64 }
 
 fn Point.eq(other: &Point) -> Bool {

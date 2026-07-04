@@ -1,9 +1,9 @@
-# `axiom.serialize` — Serialization
+# `xiom.serialize` — Serialization
 
 Provides interfaces and utilities for serializing and deserializing data in JSON and binary formats. Deserialization preserves and validates contracts (invariants).
 
-```axiom
-use axiom.serialize;
+```xiom
+use xiom.serialize;
 ```
 
 ---
@@ -14,7 +14,7 @@ use axiom.serialize;
 
 The `Serialize` interface must be implemented by types that can be serialized. Provides three serialization methods covering text (default), JSON, and binary formats.
 
-```axiom
+```xiom
 pub interface Serialize {
   fn serialize(self) -> Result[Str, SerializeError];
   fn serialize_json(self) -> Result[Str, SerializeError];
@@ -26,7 +26,7 @@ pub interface Serialize {
 
 The `Deserialize` interface must be implemented by types that can be deserialized. Each method has a postcondition `ensures` that validates the result's invariants (contract preservation), guaranteeing that deserialized values satisfy their type contracts.
 
-```axiom
+```xiom
 pub interface Deserialize {
   fn deserialize(data: Str) -> Result[Self, SerializeError]
     ensures: result is Ok => self.invariant_check()
@@ -45,7 +45,7 @@ pub interface Deserialize {
 
 Represents a serialization or deserialization failure with detailed location information. Error kind codes: `0=Unknown`, `1=InvalidFormat`, `2=MissingField`, `3=TypeMismatch`, `4=ContractViolation`, `5=UnsupportedType`.
 
-```axiom
+```xiom
 pub type SerializeError = {
   kind: Int;
   message: Str;
@@ -59,7 +59,7 @@ pub type SerializeError = {
 
 Formats the `SerializeError` into a human-readable error string.
 
-```axiom
+```xiom
 pub fn SerializeError.format_error() -> Str
 ```
 
@@ -67,7 +67,7 @@ pub fn SerializeError.format_error() -> Str
 
 A recursive enum representing parsed JSON values. Supports `Null`, `Bool`, `Number`, `String`, `Array`, and `Object` variants.
 
-```axiom
+```xiom
 pub type JsonValue = enum {
   Null,
   Bool(value: Bool),
@@ -86,7 +86,7 @@ pub type JsonValue = enum {
 
 Detects the serialization format of a byte buffer by inspecting its magic bytes or structure. Returns a string identifying the format (e.g., `"json"`, `"binary"`).
 
-```axiom
+```xiom
 pub fn detect_format(data: &Vec[UInt8]) -> Str
 ```
 
@@ -94,7 +94,7 @@ pub fn detect_format(data: &Vec[UInt8]) -> Str
 
 Checks whether a string is syntactically valid JSON.
 
-```axiom
+```xiom
 pub fn is_valid_json(data: Str) -> Bool
 ```
 
@@ -102,7 +102,7 @@ pub fn is_valid_json(data: Str) -> Bool
 
 Checks whether a byte buffer contains valid binary serialization data.
 
-```axiom
+```xiom
 pub fn is_valid_bytes(data: &Vec[UInt8]) -> Bool
 ```
 
@@ -114,7 +114,7 @@ pub fn is_valid_bytes(data: &Vec[UInt8]) -> Bool
 
 Produces a JSON-encoded string literal from a plain string, including proper escaping.
 
-```axiom
+```xiom
 pub fn json_string(s: Str) -> Str
 ```
 
@@ -122,7 +122,7 @@ pub fn json_string(s: Str) -> Str
 
 Produces a JSON number literal from a `Float64` value.
 
-```axiom
+```xiom
 pub fn json_number(n: Float64) -> Str
 ```
 
@@ -130,7 +130,7 @@ pub fn json_number(n: Float64) -> Str
 
 Produces a JSON boolean literal (`true` or `false`).
 
-```axiom
+```xiom
 pub fn json_bool(b: Bool) -> Str
 ```
 
@@ -138,7 +138,7 @@ pub fn json_bool(b: Bool) -> Str
 
 Produces the JSON null literal.
 
-```axiom
+```xiom
 pub fn json_null() -> Str
 ```
 
@@ -146,7 +146,7 @@ pub fn json_null() -> Str
 
 Produces a JSON array string from a vector of pre-serialized item strings.
 
-```axiom
+```xiom
 pub fn json_array(items: Vec[Str]) -> Str
 ```
 
@@ -154,7 +154,7 @@ pub fn json_array(items: Vec[Str]) -> Str
 
 Produces a JSON object string from a vector of key-value pairs, where each key and value is a pre-serialized JSON string.
 
-```axiom
+```xiom
 pub fn json_object(pairs: Vec[(Str, Str)]) -> Str
 ```
 
@@ -162,7 +162,7 @@ pub fn json_object(pairs: Vec[(Str, Str)]) -> Str
 
 Parses a JSON string into a `JsonValue` enum. Returns the parsed value on success.
 
-```axiom
+```xiom
 pub fn json_parse(data: Str) -> Result[JsonValue, SerializeError]
 ```
 
@@ -174,7 +174,7 @@ pub fn json_parse(data: Str) -> Result[JsonValue, SerializeError]
 
 Returns `true` if the current system uses little-endian byte ordering.
 
-```axiom
+```xiom
 pub fn little_endian() -> Bool
 ```
 
@@ -182,6 +182,6 @@ pub fn little_endian() -> Bool
 
 Returns `true` if the current system uses big-endian byte ordering.
 
-```axiom
+```xiom
 pub fn big_endian() -> Bool
 ```

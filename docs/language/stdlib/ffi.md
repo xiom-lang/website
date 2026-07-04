@@ -3,7 +3,7 @@
 Zero-cost C foreign function interface: external function declaration, raw memory allocation, and type size/alignment queries.
 
 ```
-use axiom.ffi;
+use xiom.ffi;
 ```
 
 ## External Calls

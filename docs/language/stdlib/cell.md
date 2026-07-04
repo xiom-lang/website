@@ -3,7 +3,7 @@
 Interior mutability types: `Cell` (for `Copy` types) and `RefCell` (with runtime borrow checking).
 
 ```
-use axiom.cell;
+use xiom.cell;
 ```
 
 ## Cell

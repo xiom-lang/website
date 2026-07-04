@@ -3,7 +3,7 @@
 Hashing infrastructure: the `Hasher` trait, the `Hash` interface, and the default hasher implementation.
 
 ```
-use axiom.hash;
+use xiom.hash;
 ```
 
 ## Hasher

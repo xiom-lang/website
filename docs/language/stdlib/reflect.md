@@ -3,7 +3,7 @@
 Comptime and runtime type introspection: type IDs, type information, field metadata, and downcasting.
 
 ```
-use axiom.reflect;
+use xiom.reflect;
 ```
 
 ## TypeId

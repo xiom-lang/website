@@ -38,7 +38,7 @@
 
 Types are inferred from context in `let` and `var` bindings and in closure parameters. Inference does not cross function boundaries — function signatures are always fully annotated.
 
-```axiom
+```xiom
 let x = 42;          // inferred: Int
 let f = 3.14;        // inferred: Float64
 let s = "hello";     // inferred: Str
@@ -48,7 +48,7 @@ let t = (1, true);   // inferred: (Int, Bool)
 
 ## Structs
 
-```axiom
+```xiom
 type Point = {
   x: Float64;
   y: Float64;
@@ -61,7 +61,7 @@ type Point = {
 
 ## Enums
 
-```axiom
+```xiom
 enum Option[T] {
   Some(value: T),
   None,
@@ -85,7 +85,7 @@ enum AgentState {
 
 A type satisfies an interface if it provides all required fields and methods with matching signatures. No `implements` keyword is needed.
 
-```axiom
+```xiom
 interface Comparable {
   fn compare(other: &Self) -> Int  // -1, 0, 1
 }
@@ -106,7 +106,7 @@ let result = max(Score{ value: 10 }, Score{ value: 20 });
 
 Type-level interface requirements are declared inline with the type parameter:
 
-```axiom
+```xiom
 fn sort[T: Ord](items: &mut Vec[T])
 
 // Multiple constraints
@@ -129,7 +129,7 @@ The `derive` clause generates correct-by-construction implementations:
 
 **Constraint:** Types with `invariant` clauses cannot derive `Eq`, `Hash`, or `Ord`. Invariants make equality semantically ambiguous. `Clone` and `Display` remain available.
 
-```axiom
+```xiom
 type Point = {
   x: Float64;
   y: Float64;

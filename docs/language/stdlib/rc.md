@@ -3,7 +3,7 @@
 Single-threaded reference-counted pointers (`Rc`) and weak references (`Weak`).
 
 ```
-use axiom.rc;
+use xiom.rc;
 ```
 
 ## Rc

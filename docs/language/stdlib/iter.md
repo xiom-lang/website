@@ -1,9 +1,9 @@
-# `axiom.iter` — Iterators
+# `xiom.iter` — Iterators
 
 Provides range types and iterator adapters for lazy, composable data processing over sequences.
 
-```axiom
-use axiom.iter;
+```xiom
+use xiom.iter;
 ```
 
 ---
@@ -14,7 +14,7 @@ use axiom.iter;
 
 A half-open range `[start, end)` that yields integers from `start` (inclusive) to `end` (exclusive).
 
-```axiom
+```xiom
 pub type Range = { start: Int; end: Int; }
 ```
 
@@ -22,7 +22,7 @@ pub type Range = { start: Int; end: Int; }
 
 A fully-inclusive range `[start, end]` that yields integers from `start` through `end` inclusive.
 
-```axiom
+```xiom
 pub type RangeInclusive = { start: Int; end: Int; current: Int; done: Bool; }
 ```
 
@@ -30,7 +30,7 @@ pub type RangeInclusive = { start: Int; end: Int; current: Int; done: Bool; }
 
 Creates a half-open `Range` from `start` (inclusive) to `end` (exclusive). Panics if `start > end`.
 
-```axiom
+```xiom
 pub fn range(start: Int, end: Int) -> Range
 ```
 
@@ -38,7 +38,7 @@ pub fn range(start: Int, end: Int) -> Range
 
 Creates a fully-inclusive `RangeInclusive` from `start` through `end`. Panics if `start > end`.
 
-```axiom
+```xiom
 pub fn range_inclusive(start: Int, end: Int) -> RangeInclusive
 ```
 
@@ -46,7 +46,7 @@ pub fn range_inclusive(start: Int, end: Int) -> RangeInclusive
 
 Advances the range and returns the next value, or `None` when the range is exhausted.
 
-```axiom
+```xiom
 pub fn Range.next(self) -> Option[Int]
 ```
 
@@ -54,7 +54,7 @@ pub fn Range.next(self) -> Option[Int]
 
 Returns the number of elements remaining in the range (end minus start).
 
-```axiom
+```xiom
 pub fn Range.len(self) -> Int
 ```
 
@@ -62,7 +62,7 @@ pub fn Range.len(self) -> Int
 
 Returns `true` if `x` is within the bounds of the range (start <= x < end).
 
-```axiom
+```xiom
 pub fn Range.contains(self, x: Int) -> Bool
 ```
 
@@ -70,7 +70,7 @@ pub fn Range.contains(self, x: Int) -> Bool
 
 Advances the inclusive range and returns the next value, or `None` when the range is exhausted.
 
-```axiom
+```xiom
 pub fn RangeInclusive.next(self) -> Option[Int]
 ```
 
@@ -84,7 +84,7 @@ These methods are available on any type implementing the `Iterator[T]` trait. Th
 
 Transforms each element by applying the function `f`, producing a `MapIter` that yields values of type `U`.
 
-```axiom
+```xiom
 pub fn Iterator[T].map[U](self, f: fn(T) -> U) -> MapIter[T, U]
 ```
 
@@ -92,7 +92,7 @@ pub fn Iterator[T].map[U](self, f: fn(T) -> U) -> MapIter[T, U]
 
 Keeps only elements for which `predicate` returns `true`. The predicate receives a reference to each element.
 
-```axiom
+```xiom
 pub fn Iterator[T].filter(self, predicate: fn(&T) -> Bool) -> FilterIter[T]
 ```
 
@@ -100,7 +100,7 @@ pub fn Iterator[T].filter(self, predicate: fn(&T) -> Bool) -> FilterIter[T]
 
 Wraps the iterator, pairing each element with its zero-based index. Produces tuples of `(Int, T)`.
 
-```axiom
+```xiom
 pub fn Iterator[T].enumerate(self) -> EnumerateIter[T]
 ```
 
@@ -108,7 +108,7 @@ pub fn Iterator[T].enumerate(self) -> EnumerateIter[T]
 
 Limits the iterator to the first `n` elements, ignoring the rest.
 
-```axiom
+```xiom
 pub fn Iterator[T].take(self, n: Int) -> TakeIter[T]
 ```
 
@@ -116,7 +116,7 @@ pub fn Iterator[T].take(self, n: Int) -> TakeIter[T]
 
 Skips the first `n` elements of the iterator, then yields the remaining elements.
 
-```axiom
+```xiom
 pub fn Iterator[T].skip(self, n: Int) -> SkipIter[T]
 ```
 
@@ -124,7 +124,7 @@ pub fn Iterator[T].skip(self, n: Int) -> SkipIter[T]
 
 Concatenates two iterators of potentially different types. After `self` is exhausted, elements are drawn from `other`.
 
-```axiom
+```xiom
 pub fn Iterator[T].chain[U](self, other: Iterator[U]) -> ChainIter[T, U]
 ```
 
@@ -132,7 +132,7 @@ pub fn Iterator[T].chain[U](self, other: Iterator[U]) -> ChainIter[T, U]
 
 Zips two iterators together, producing tuples of `(T, U)`. The resulting iterator stops when either input iterator is exhausted.
 
-```axiom
+```xiom
 pub fn Iterator[T].zip[U](self, other: Iterator[U]) -> ZipIter[T, U]
 ```
 
@@ -146,7 +146,7 @@ These methods consume the iterator and produce a single value, eagerly evaluatin
 
 Consumes the iterator and collects all remaining elements into a new `Vec[T]`.
 
-```axiom
+```xiom
 pub fn Iterator[T].collect(self) -> Vec[T]
 ```
 
@@ -154,7 +154,7 @@ pub fn Iterator[T].collect(self) -> Vec[T]
 
 Folds every element into an accumulator by applying the function `f`, starting with the initial value `init`.
 
-```axiom
+```xiom
 pub fn Iterator[T].fold[B](self, init: B, f: fn(B, T) -> B) -> B
 ```
 
@@ -162,7 +162,7 @@ pub fn Iterator[T].fold[B](self, init: B, f: fn(B, T) -> B) -> B
 
 Consumes the iterator and returns the number of remaining elements.
 
-```axiom
+```xiom
 pub fn Iterator[T].count(self) -> Int
 ```
 
@@ -170,7 +170,7 @@ pub fn Iterator[T].count(self) -> Int
 
 Computes the sum of all elements in the iterator. Requires the element type to support addition.
 
-```axiom
+```xiom
 pub fn Iterator[T].sum(self) -> T
 ```
 
@@ -178,7 +178,7 @@ pub fn Iterator[T].sum(self) -> T
 
 Computes the product of all elements in the iterator. Requires the element type to support multiplication.
 
-```axiom
+```xiom
 pub fn Iterator[T].product(self) -> T
 ```
 
@@ -186,7 +186,7 @@ pub fn Iterator[T].product(self) -> T
 
 Returns the maximum element in the iterator, or `None` if the iterator is empty.
 
-```axiom
+```xiom
 pub fn Iterator[T].max(self) -> Option[T]
 ```
 
@@ -194,7 +194,7 @@ pub fn Iterator[T].max(self) -> Option[T]
 
 Returns the minimum element in the iterator, or `None` if the iterator is empty.
 
-```axiom
+```xiom
 pub fn Iterator[T].min(self) -> Option[T]
 ```
 
@@ -202,7 +202,7 @@ pub fn Iterator[T].min(self) -> Option[T]
 
 Returns the first element for which `predicate` returns `true`, or `None` if no element matches.
 
-```axiom
+```xiom
 pub fn Iterator[T].find(self, predicate: fn(&T) -> Bool) -> Option[T]
 ```
 
@@ -210,7 +210,7 @@ pub fn Iterator[T].find(self, predicate: fn(&T) -> Bool) -> Option[T]
 
 Returns `true` if `predicate` returns `true` for every element in the iterator. Short-circuits on the first `false`.
 
-```axiom
+```xiom
 pub fn Iterator[T].all(self, predicate: fn(&T) -> Bool) -> Bool
 ```
 
@@ -218,7 +218,7 @@ pub fn Iterator[T].all(self, predicate: fn(&T) -> Bool) -> Bool
 
 Returns `true` if `predicate` returns `true` for at least one element in the iterator. Short-circuits on the first `true`.
 
-```axiom
+```xiom
 pub fn Iterator[T].any(self, predicate: fn(&T) -> Bool) -> Bool
 ```
 
@@ -226,7 +226,7 @@ pub fn Iterator[T].any(self, predicate: fn(&T) -> Bool) -> Bool
 
 Returns the `n`-th element (zero-indexed) of the iterator, consuming elements up to it. Returns `None` if the iterator has fewer than `n+1` elements.
 
-```axiom
+```xiom
 pub fn Iterator[T].nth(self, n: Int) -> Option[T]
 ```
 
@@ -234,7 +234,7 @@ pub fn Iterator[T].nth(self, n: Int) -> Option[T]
 
 Consumes the entire iterator and returns the last element, or `None` if the iterator was empty.
 
-```axiom
+```xiom
 pub fn Iterator[T].last(self) -> Option[T]
 ```
 

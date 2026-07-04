@@ -3,7 +3,7 @@
 Extended numeric traits, operations, bounds, bit manipulation, float classification, and checked/saturating/wrapping arithmetic.
 
 ```
-use axiom.num;
+use xiom.num;
 ```
 
 ## Numeric Traits

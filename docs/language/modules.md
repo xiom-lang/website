@@ -4,7 +4,7 @@
 
 A module is a named namespace. Every source file begins with a module declaration. A module hierarchy corresponds to the directory structure.
 
-```axiom
+```xiom
 module math.vector
 
 // Everything declared here is in the math.vector namespace.
@@ -12,7 +12,7 @@ module math.vector
 
 ## Importing
 
-```axiom
+```xiom
 use math.vector              // imports the module — access as vector.Vec3
 use math.vector.Vec3         // imports one type — access as Vec3
 use math.vector.Vec3 as V3   // alias — access as V3
@@ -23,7 +23,7 @@ use math.vector.*            // imports all public symbols (discouraged)
 
 All declarations are private to their module by default. The `pub` keyword makes a declaration visible to other modules. There is no `protected` or `friend` visibility.
 
-```axiom
+```xiom
 pub type Vec3 = {
   x: Float32;
   y: Float32;
@@ -39,7 +39,7 @@ fn internal_helper() {  // private to this module
 
 Methods on a type are declared using the `TypeName.methodName` syntax. The receiver (`self`) is synthesized implicitly by the compiler — it does not appear in the parameter list.
 
-```axiom
+```xiom
 pub fn Vec3.dot(other: &Vec3) -> Float32 {
   return x * other.x + y * other.y + z * other.z;
   // self is implicit — fields accessed directly
@@ -59,7 +59,7 @@ The compiler infers the receiver type:
 
 Methods can be called on any value of the type:
 
-```axiom
+```xiom
 let v = Vec3{ x: 1.0, y: 2.0, z: 3.0 };
 let d = v.dot(&other);
 ```
@@ -68,46 +68,46 @@ Methods are dispatched structurally — any type with matching method signatures
 
 ## Package Manifest
 
-Packages are defined by a `package.ax` manifest file at the project root. Dependencies are resolved at build time. Version pinning uses semantic versioning.
+Packages are defined by a `package.xi` manifest file at the project root. Dependencies are resolved at build time. Version pinning uses semantic versioning.
 
-```axiom
-// package.ax
+```xiom
+// package.xi
 package {
   name:    "myproject"
   version: "1.0.0"
   deps: {
-    "axiom-std": "0.4.*"
-    "axiom-net":  "0.2.1"
+    "xiom-std": "0.4.*"
+    "xiom-net":  "0.2.1"
   }
 }
 ```
 
 ## Package Manager
 
-The package manager resolves dependencies from the [AXIOM package registry](https://gitea.example.com/axiom-lang/registry):
+The package manager resolves dependencies from the [XIOM package registry](https://gitea.example.com/xiom-lang/registry):
 
 ```bash
-axiom get axiom-std     # fetch and compile a dependency
-axiom build             # build the current package
-axiom run               # build and run
+xiom get xiom-std     # fetch and compile a dependency
+xiom build             # build the current package
+xiom run               # build and run
 ```
 
-For the full ecosystem, see the [Ecosystem page](https://axiom-lang.org/ecosystem.html).
+For the full ecosystem, see the [Ecosystem page](https://xiom-lang.org/ecosystem.html).
 
 ## File Organization
 
 ```
 myproject/
-├── package.ax              # package manifest
+├── package.xi              # package manifest
 ├── src/
-│   ├── main.ax             # entry point
-│   └── lib.ax              # library code
+│   ├── main.xi             # entry point
+│   └── lib.xi              # library code
 └── deps/                   # resolved dependencies (generated)
 ```
 
 ## Standard Library
 
-The standard library ships with the compiler in `stdlib/axiom/`. 39 modules covering core types, I/O, collections, text, math, concurrency, networking, memory, system, utilities, crypto, and testing.
+The standard library ships with the compiler in `stdlib/xiom/`. 39 modules covering core types, I/O, collections, text, math, concurrency, networking, memory, system, utilities, crypto, and testing.
 
 For the full stdlib reference with every type, function, and signature, see the [Standard Library Reference](stdlib.md).
 
@@ -131,8 +131,8 @@ For the full stdlib reference with every type, function, and signature, see the 
 
 ### Importing
 
-```axiom
-use axiom.collections     // import the module
-use axiom.collections.Vec  // import one type
-use axiom.io               // import I/O functions
+```xiom
+use xiom.collections     // import the module
+use xiom.collections.Vec  // import one type
+use xiom.io               // import I/O functions
 ```

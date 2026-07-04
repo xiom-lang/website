@@ -3,7 +3,7 @@
 Memory management utilities: swap, replace, drop, type size/alignment queries, and zeroed/uninitialized memory.
 
 ```
-use axiom.mem;
+use xiom.mem;
 ```
 
 ## Manipulation

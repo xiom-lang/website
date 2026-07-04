@@ -3,7 +3,7 @@
 Operating system interface: platform detection, process management, filesystem operations, signals, pipes, and file watching.
 
 ```
-use axiom.os;
+use xiom.os;
 ```
 
 ## System Information

@@ -3,7 +3,7 @@
 The `io` module provides console input/output, file system manipulation, process interaction, timing, buffered I/O wrappers, standard streams, in-memory I/O cursors, and path utilities.
 
 ```
-use axiom.io;
+use xiom.io;
 ```
 
 ---
@@ -12,7 +12,7 @@ use axiom.io;
 
 The `IOError` type represents an I/O operation failure with a human-readable message and a platform-specific error code.
 
-```axiom
+```xiom
 type IOError = {
   message: Str;
   code: Int;
@@ -25,7 +25,7 @@ type IOError = {
 
 Specifies the reference point for a seek operation.
 
-```axiom
+```xiom
 type SeekFrom = enum { Start(Int), End(Int), Current(Int) }
 ```
 
@@ -42,35 +42,35 @@ type SeekFrom = enum { Start(Int), End(Int), Current(Int) }
 ### `print(msg)`
 Writes `msg` to standard output without a trailing newline.
 
-```axiom
+```xiom
 fn print(msg: Str);
 ```
 
 ### `println(msg)`
 Writes `msg` to standard output followed by a newline character.
 
-```axiom
+```xiom
 fn println(msg: Str);
 ```
 
 ### `read_line()`
 Reads a single line from standard input. The trailing newline is stripped.
 
-```axiom
+```xiom
 fn read_line() -> Str;
 ```
 
 ### `read_int()`
 Reads a line from standard input and attempts to parse it as an `Int`. Returns `Ok(Int)` on success or `Err(Str)` if the input is not a valid integer.
 
-```axiom
+```xiom
 fn read_int() -> Result[Int, Str];
 ```
 
 ### `read_float()`
 Reads a line from standard input and attempts to parse it as a `Float64`. Returns `Ok(Float64)` on success or `Err(Str)` if the input is not a valid floating-point number.
 
-```axiom
+```xiom
 fn read_float() -> Result[Float64, Str];
 ```
 
@@ -81,70 +81,70 @@ fn read_float() -> Result[Float64, Str];
 ### `read_file(path)`
 Reads the entire contents of the file at `path` into a `Str`. Returns `Ok(content)` on success or `Err(IOError)` if the file cannot be read.
 
-```axiom
+```xiom
 fn read_file(path: Str) -> Result[Str, IOError];
 ```
 
 ### `write_file(path, content)`
 Writes `content` to the file at `path`, replacing the file if it already exists. Returns `Ok(())` on success or `Err(IOError)`.
 
-```axiom
+```xiom
 fn write_file(path: Str, content: Str) -> Result[Unit, IOError];
 ```
 
 ### `append_file(path, content)`
 Appends `content` to the end of the file at `path`, creating the file if it does not exist. Returns `Ok(())` on success or `Err(IOError)`.
 
-```axiom
+```xiom
 fn append_file(path: Str, content: Str) -> Result[Unit, IOError];
 ```
 
 ### `file_exists(path)`
 Returns true if a file or directory exists at `path`.
 
-```axiom
+```xiom
 fn file_exists(path: Str) -> Bool;
 ```
 
 ### `is_dir(path)`
 Returns true if the path points to an existing directory.
 
-```axiom
+```xiom
 fn is_dir(path: Str) -> Bool;
 ```
 
 ### `create_dir(path)`
 Creates a new directory at `path`. Returns `Ok(())` on success or `Err(IOError)`.
 
-```axiom
+```xiom
 fn create_dir(path: Str) -> Result[Unit, IOError];
 ```
 
 ### `list_dir(path)`
 Lists the entries in the directory at `path`. Returns `Ok(entries)` where entries is a `Vec[Str]` of file/directory names, or `Err(IOError)`.
 
-```axiom
+```xiom
 fn list_dir(path: Str) -> Result[Vec[Str], IOError];
 ```
 
 ### `remove_file(path)`
 Deletes the file at `path`. Returns `Ok(())` on success or `Err(IOError)`.
 
-```axiom
+```xiom
 fn remove_file(path: Str) -> Result[Unit, IOError];
 ```
 
 ### `copy_file(src, dst)`
 Copies the file from `src` to `dst`. Returns `Ok(())` on success or `Err(IOError)`.
 
-```axiom
+```xiom
 fn copy_file(src: Str, dst: Str) -> Result[Unit, IOError];
 ```
 
 ### `rename(src, dst)`
 Renames (moves) a file or directory from `src` to `dst`. Returns `Ok(())` on success or `Err(IOError)`.
 
-```axiom
+```xiom
 fn rename(src: Str, dst: Str) -> Result[Unit, IOError];
 ```
 
@@ -155,21 +155,21 @@ fn rename(src: Str, dst: Str) -> Result[Unit, IOError];
 ### `exit(code)`
 Terminates the program immediately with the given exit code.
 
-```axiom
+```xiom
 fn exit(code: Int);
 ```
 
 ### `args()`
 Returns the command-line arguments passed to the program as a `Vec[Str]`. The first element is the program name.
 
-```axiom
+```xiom
 fn args() -> Vec[Str];
 ```
 
 ### `env_var(name)`
 Retrieves the value of the environment variable `name`. Returns `Some(value)` if set or `None` if undefined.
 
-```axiom
+```xiom
 fn env_var(name: Str) -> Option[Str];
 ```
 
@@ -180,14 +180,14 @@ fn env_var(name: Str) -> Option[Str];
 ### `time_now()`
 Returns the current time as a Unix timestamp (seconds since January 1, 1970 UTC).
 
-```axiom
+```xiom
 fn time_now() -> Int;
 ```
 
 ### `sleep(ms)`
 Suspends execution for at least `ms` milliseconds.
 
-```axiom
+```xiom
 fn sleep(ms: Int);
 ```
 
@@ -198,28 +198,28 @@ fn sleep(ms: Int);
 ### `stdin()`
 Returns the file descriptor for standard input (typically 0).
 
-```axiom
+```xiom
 fn stdin() -> Int;
 ```
 
 ### `stdout()`
 Returns the file descriptor for standard output (typically 1).
 
-```axiom
+```xiom
 fn stdout() -> Int;
 ```
 
 ### `stderr()`
 Returns the file descriptor for standard error (typically 2).
 
-```axiom
+```xiom
 fn stderr() -> Int;
 ```
 
 ### `print_line(s)`
 Writes `s` followed by a newline to standard output. Equivalent to `println` but may use a lower-level path.
 
-```axiom
+```xiom
 fn print_line(s: Str);
 ```
 
@@ -230,7 +230,7 @@ fn print_line(s: Str);
 ### `Read`
 Provides byte-level reading from a source. The source is typically a file descriptor or a `Cursor`.
 
-```axiom
+```xiom
 interface Read {
   fn read(self, buf: &mut Vec[UInt8]) -> Result[Int, IOError];
   fn read_to_end(self, buf: &mut Vec[UInt8]) -> Result[Int, IOError];
@@ -249,7 +249,7 @@ interface Read {
 ### `Write`
 Provides byte-level writing to a sink.
 
-```axiom
+```xiom
 interface Write {
   fn write(self, buf: &Vec[UInt8]) -> Result[Int, IOError];
   fn write_all(self, buf: &Vec[UInt8]) -> Result[Unit, IOError];
@@ -266,7 +266,7 @@ interface Write {
 ### `Seek`
 Provides the ability to reposition a byte-oriented stream.
 
-```axiom
+```xiom
 interface Seek {
   fn seek(self, pos: SeekFrom) -> Result[Int, IOError];
   fn stream_position(self) -> Result[Int, IOError];
@@ -286,28 +286,28 @@ interface Seek {
 
 A buffered reader that wraps a raw file descriptor, reducing system calls by reading larger chunks into an internal buffer.
 
-```axiom
+```xiom
 type BufReader = { inner: Int; buf: Vec[UInt8]; }
 ```
 
 #### `BufReader.new(reader)`
 Creates a new `BufReader` wrapping the given file descriptor.
 
-```axiom
+```xiom
 fn BufReader.new(reader: Int) -> BufReader;
 ```
 
 #### `BufReader.read_line(buf)`
 Reads a line (up to and including the newline) into `buf`. Returns the number of bytes read, or `Err(IOError)`.
 
-```axiom
+```xiom
 fn BufReader.read_line(self, buf: &mut Str) -> Result[Int, IOError];
 ```
 
 #### `BufReader.lines()`
 Reads all remaining lines from the buffered reader and returns them as a `Vec[Str]`. Each string has the trailing newline stripped.
 
-```axiom
+```xiom
 fn BufReader.lines(self) -> Vec[Str];
 ```
 
@@ -315,14 +315,14 @@ fn BufReader.lines(self) -> Vec[Str];
 
 A buffered writer that wraps a raw file descriptor, accumulating writes in an internal buffer and flushing on overflow or explicit `flush()`.
 
-```axiom
+```xiom
 type BufWriter = { inner: Int; buf: Vec[UInt8]; }
 ```
 
 #### `BufWriter.new(writer)`
 Creates a new `BufWriter` wrapping the given file descriptor.
 
-```axiom
+```xiom
 fn BufWriter.new(writer: Int) -> BufWriter;
 ```
 
@@ -332,7 +332,7 @@ fn BufWriter.new(writer: Int) -> BufWriter;
 
 The `Metadata` type holds information about a file or directory on disk.
 
-```axiom
+```xiom
 type Metadata = {
   size: Int;
   is_file: Bool;
@@ -355,14 +355,14 @@ type Metadata = {
 ### `metadata(path)`
 Retrieves metadata for the file or directory at `path`. Returns `Ok(Metadata)` or `Err(IOError)`.
 
-```axiom
+```xiom
 fn metadata(path: Str) -> Result[Metadata, IOError>;
 ```
 
 ### `set_permissions(path, perm)`
 Sets the permission bits of the file or directory at `path`. Returns `Ok(())` on success or `Err(IOError)`.
 
-```axiom
+```xiom
 fn set_permissions(path: Str, perm: Int) -> Result[Unit, IOError];
 ```
 
@@ -374,21 +374,21 @@ fn set_permissions(path: Str, perm: Int) -> Result[Unit, IOError];
 
 An in-memory buffer that implements `Read`, `Write`, and `Seek`. Useful for testing I/O logic without the file system.
 
-```axiom
+```xiom
 type Cursor = { data: Vec[UInt8]; pos: Int; }
 ```
 
 #### `Cursor.new(data)`
 Creates a new `Cursor` initialized with the given byte data, positioned at the start.
 
-```axiom
+```xiom
 fn Cursor.new(data: Vec[UInt8]) -> Cursor;
 ```
 
 #### `Cursor.into_inner()`
 Consumes the `Cursor` and returns the underlying byte buffer.
 
-```axiom
+```xiom
 fn Cursor.into_inner(self) -> Vec[UInt8];
 ```
 
@@ -399,34 +399,34 @@ fn Cursor.into_inner(self) -> Vec[UInt8];
 ### `join_paths(base, child)`
 Joins two path components using the platform-specific separator. Returns a single combined path string.
 
-```axiom
+```xiom
 fn join_paths(base: Str, child: Str) -> Str;
 ```
 
 ### `parent_path(path)`
 Returns the parent directory of `path`, or `None` if there is no parent (e.g., the root).
 
-```axiom
+```xiom
 fn parent_path(path: Str) -> Option[Str];
 ```
 
 ### `file_name(path)`
 Returns the file or directory name component of `path` (the last segment), or `None` if the path ends with `..` or is the root.
 
-```axiom
+```xiom
 fn file_name(path: Str) -> Option[Str];
 ```
 
 ### `extension(path)`
 Returns the file extension (the part after the last `.`), or `None` if the path has no extension.
 
-```axiom
+```xiom
 fn extension(path: Str) -> Option[Str];
 ```
 
 ### `is_absolute(path)`
 Returns true if `path` is an absolute path (platform-specific: starts with `/` on Unix, or a drive letter on Windows).
 
-```axiom
+```xiom
 fn is_absolute(path: Str) -> Bool;
 ```

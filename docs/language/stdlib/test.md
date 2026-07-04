@@ -1,9 +1,9 @@
-# `axiom.test` — Test Framework
+# `xiom.test` — Test Framework
 
 A contract-aware testing framework with assertions, contract verification, test runners, formatters, and benchmarking.
 
-```axiom
-use axiom.test;
+```xiom
+use xiom.test;
 ```
 
 ---
@@ -14,7 +14,7 @@ use axiom.test;
 
 Represents the result of a single test, including whether it passed, the test name, a message, any contract violations that occurred, and the execution duration.
 
-```axiom
+```xiom
 pub type TestResult = {
   passed: Bool;
   name: Str;
@@ -28,7 +28,7 @@ pub type TestResult = {
 
 Records a contract violation encountered during a test. Includes the clause type (`"requires"`, `"ensures"`, or `"invariant"`), the contract expression text, the actual values at the time of violation, and the source location.
 
-```axiom
+```xiom
 pub type ContractFailure = {
   clause: Str;
   expression: Str;
@@ -45,7 +45,7 @@ pub type ContractFailure = {
 
 Asserts that `condition` is truthy. The test passes if `condition` evaluates to `true`.
 
-```axiom
+```xiom
 pub fn assert(condition: Bool, name: Str) -> TestResult
 ```
 
@@ -53,7 +53,7 @@ pub fn assert(condition: Bool, name: Str) -> TestResult
 
 Asserts that `expected` equals `actual`. Uses the `Eq` trait for comparison.
 
-```axiom
+```xiom
 pub fn assert_eq[T: Eq](expected: T, actual: T, name: Str) -> TestResult
 ```
 
@@ -61,7 +61,7 @@ pub fn assert_eq[T: Eq](expected: T, actual: T, name: Str) -> TestResult
 
 Asserts that `expected` does not equal `actual`. Uses the `Eq` trait for comparison.
 
-```axiom
+```xiom
 pub fn assert_ne[T: Eq](expected: T, actual: T, name: Str) -> TestResult
 ```
 
@@ -69,7 +69,7 @@ pub fn assert_ne[T: Eq](expected: T, actual: T, name: Str) -> TestResult
 
 Asserts that `left` is strictly less than `right`. Uses the `Ord` trait for comparison.
 
-```axiom
+```xiom
 pub fn assert_lt[T: Ord](left: T, right: T, name: Str) -> TestResult
 ```
 
@@ -77,7 +77,7 @@ pub fn assert_lt[T: Ord](left: T, right: T, name: Str) -> TestResult
 
 Asserts that `left` is strictly greater than `right`. Uses the `Ord` trait for comparison.
 
-```axiom
+```xiom
 pub fn assert_gt[T: Ord](left: T, right: T, name: Str) -> TestResult
 ```
 
@@ -85,7 +85,7 @@ pub fn assert_gt[T: Ord](left: T, right: T, name: Str) -> TestResult
 
 Asserts that the string `haystack` contains the substring `needle`.
 
-```axiom
+```xiom
 pub fn assert_contains(haystack: Str, needle: Str, name: Str) -> TestResult
 ```
 
@@ -93,7 +93,7 @@ pub fn assert_contains(haystack: Str, needle: Str, name: Str) -> TestResult
 
 Asserts that `result` is the `Ok` variant of a `Result[T, E]`.
 
-```axiom
+```xiom
 pub fn assert_ok[T, E](result: Result[T, E], name: Str) -> TestResult
 ```
 
@@ -101,7 +101,7 @@ pub fn assert_ok[T, E](result: Result[T, E], name: Str) -> TestResult
 
 Asserts that `result` is the `Err` variant of a `Result[T, E]`.
 
-```axiom
+```xiom
 pub fn assert_err[T, E](result: Result[T, E], name: Str) -> TestResult
 ```
 
@@ -109,7 +109,7 @@ pub fn assert_err[T, E](result: Result[T, E], name: Str) -> TestResult
 
 Asserts that `option` is the `Some` variant of an `Option[T]`.
 
-```axiom
+```xiom
 pub fn assert_some[T](option: Option[T], name: Str) -> TestResult
 ```
 
@@ -117,7 +117,7 @@ pub fn assert_some[T](option: Option[T], name: Str) -> TestResult
 
 Asserts that `option` is the `None` variant of an `Option[T]`.
 
-```axiom
+```xiom
 pub fn assert_none[T](option: Option[T], name: Str) -> TestResult
 ```
 
@@ -129,7 +129,7 @@ pub fn assert_none[T](option: Option[T], name: Str) -> TestResult
 
 Asserts that `value` satisfies the given `predicate`. Used for testing contract invariants at runtime — the predicate receives a reference to the value and must return `true` for the assertion to pass.
 
-```axiom
+```xiom
 pub fn assert_contract[T](value: T, predicate: fn(&T) -> Bool, name: Str) -> TestResult
 ```
 
@@ -141,7 +141,7 @@ pub fn assert_contract[T](value: T, predicate: fn(&T) -> Bool, name: Str) -> Tes
 
 Runs a single test function and returns the exit code. Returns `0` if the test passed, non-zero on failure.
 
-```axiom
+```xiom
 pub fn run(test: fn() -> TestResult) -> Int
 ```
 
@@ -149,7 +149,7 @@ pub fn run(test: fn() -> TestResult) -> Int
 
 Runs all provided test functions sequentially and returns the total exit code. Each test is executed and its result is collected for reporting.
 
-```axiom
+```xiom
 pub fn run_all(tests: Vec[fn() -> TestResult]) -> Int
 ```
 
@@ -157,7 +157,7 @@ pub fn run_all(tests: Vec[fn() -> TestResult]) -> Int
 
 Runs only those test functions whose name matches the given filter string. Returns the total exit code for the matched tests.
 
-```axiom
+```xiom
 pub fn run_filtered(tests: Vec[fn() -> TestResult], filter: Str) -> Int
 ```
 
@@ -169,7 +169,7 @@ pub fn run_filtered(tests: Vec[fn() -> TestResult], filter: Str) -> Int
 
 Formats a vector of test results into a human-readable summary string, showing passed/failed status, names, messages, contract failures, and durations.
 
-```axiom
+```xiom
 pub fn format_results(results: Vec[TestResult]) -> Str
 ```
 
@@ -177,7 +177,7 @@ pub fn format_results(results: Vec[TestResult]) -> Str
 
 Formats a vector of test results as a JSON string for machine consumption, enabling integration with CI/CD pipelines and reporting tools.
 
-```axiom
+```xiom
 pub fn format_results_json(results: Vec[TestResult]) -> Str
 ```
 
@@ -189,6 +189,6 @@ pub fn format_results_json(results: Vec[TestResult]) -> Str
 
 Runs the function `f` as a benchmark, measuring its execution duration. Returns a `TestResult` with the `duration_ms` field set to the elapsed time.
 
-```axiom
+```xiom
 pub fn bench(name: Str, f: fn()) -> TestResult
 ```

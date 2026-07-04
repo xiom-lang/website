@@ -3,7 +3,7 @@
 ## Pipeline
 
 ```
-.ax source
+.xi source
   → Lexer           (tokenize — 40+ token kinds)
   → Parser          (AST — LL(1), no backtracking)
   → Type Checker    (primitives, structs, functions, interface satisfaction)
@@ -18,7 +18,7 @@
 ## CLI Reference
 
 ```bash
-axiomc [flags] <source.ax>
+xiomc [flags] <source.xi>
 ```
 
 | Flag | Description |
@@ -35,7 +35,7 @@ axiomc [flags] <source.ax>
 ### Via Cargo
 
 ```bash
-cargo run -p axiomc -- [flags] <source.ax>
+cargo run -p xiomc -- [flags] <source.xi>
 ```
 
 ## Targets
@@ -51,24 +51,24 @@ cargo run -p axiomc -- [flags] <source.ax>
 
 | Crate | Purpose | LOC |
 |-------|---------|-----|
-| `axiom-ast` | AST node definitions (full EBNF coverage) | ~480 |
-| `axiom-lexer` | Tokenizer (40+ token kinds) | ~500 |
-| `axiom-parser` | Recursive descent LL(1) parser | ~1,450 |
-| `axiom-check` | Type checker + Borrow checker + Module resolver | ~1,415 |
-| `axiom-codegen` | LLVM IR emitter + Contracts + Derive + Generics | ~1,405 |
-| `axiomc` | CLI binary | ~220 |
+| `xiom-ast` | AST node definitions (full EBNF coverage) | ~480 |
+| `xiom-lexer` | Tokenizer (40+ token kinds) | ~500 |
+| `xiom-parser` | Recursive descent LL(1) parser | ~1,450 |
+| `xiom-check` | Type checker + Borrow checker + Module resolver | ~1,415 |
+| `xiom-codegen` | LLVM IR emitter + Contracts + Derive + Generics | ~1,405 |
+| `xiomc` | CLI binary | ~220 |
 
 ## Self-Hosted Compiler
 
-The AXIOM compiler itself is written in AXIOM (`selfhost/` directory). It is compiled by the Rust bootstrap compiler. Once Phase 2C bootstrapping is complete, the AXIOM compiler compiles itself.
+The XIOM compiler itself is written in XIOM (`selfhost/` directory). It is compiled by the Rust bootstrap compiler. Once Phase 2C bootstrapping is complete, the XIOM compiler compiles itself.
 
 | File | Purpose |
 |------|---------|
-| `selfhost/axiom-lexer.ax` | Tokenizer in AXIOM |
-| `selfhost/axiom-parser.ax` | Recursive descent parser in AXIOM |
-| `selfhost/axiom-check.ax` | Type checker in AXIOM |
-| `selfhost/axiom-codegen.ax` | LLVM IR emitter in AXIOM |
-| `selfhost/axiomc.ax` | CLI driver in AXIOM |
+| `selfhost/xiom-lexer.xi` | Tokenizer in XIOM |
+| `selfhost/xiom-parser.xi` | Recursive descent parser in XIOM |
+| `selfhost/xiom-check.xi` | Type checker in XIOM |
+| `selfhost/xiom-codegen.xi` | LLVM IR emitter in XIOM |
+| `selfhost/xiomc.xi` | CLI driver in XIOM |
 
 ## Version History
 
@@ -81,7 +81,7 @@ The AXIOM compiler itself is written in AXIOM (`selfhost/` directory). It is com
 | v0.2.0 | Guardian | 1 | 87 | ~5,200 |
 | v0.1.0 | Pipeline | 0 | 36 | ~3,800 |
 
-See the [full version history](https://axiom-lang.org/versions) for all releases.
+See the [full version history](https://xiom-lang.org/versions) for all releases.
 
 ## Architecture Decisions
 
@@ -99,12 +99,12 @@ See the [full version history](https://axiom-lang.org/versions) for all releases
 ## Build from Source
 
 ```bash
-git clone https://gitea.example.com/axiom-lang/axiom.git
-cd axiom
+git clone https://gitea.example.com/xiom-lang/xiom.git
+cd xiom
 cargo build
 cargo test     # 213 tests
 ```
 
 ## Download
 
-Pre-built binaries for Windows, macOS, and Linux are available on the [download page](https://axiom-lang.org/download).
+Pre-built binaries for Windows, macOS, and Linux are available on the [download page](https://xiom-lang.org/download).

@@ -3,7 +3,7 @@
 Random number generation: the `Rng` trait, standard RNG, distributions, shuffle/pick, and UUID generation.
 
 ```
-use axiom.rand;
+use xiom.rand;
 ```
 
 ## Rng Trait

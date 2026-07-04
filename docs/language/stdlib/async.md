@@ -1,9 +1,9 @@
-# `axiom.async` — Async Programming
+# `xiom.async` — Async Programming
 
 Provides primitives for asynchronous task execution and message passing between concurrent tasks.
 
-```axiom
-use axiom.async;
+```xiom
+use xiom.async;
 ```
 
 ---
@@ -14,7 +14,7 @@ use axiom.async;
 
 Launches a new asynchronous task that runs the given closure. The task is scheduled on the runtime's thread pool and executes concurrently with the caller.
 
-```axiom
+```xiom
 fn spawn(task: fn())
 ```
 
@@ -28,7 +28,7 @@ Communication primitives for sending values between concurrent tasks. Channels c
 
 A typed channel for sending values of type `T` between tasks. Internally uses a ring buffer.
 
-```axiom
+```xiom
 type Channel[T] = { }
 ```
 
@@ -36,7 +36,7 @@ type Channel[T] = { }
 
 Creates a new bounded channel with the given buffer capacity. The channel can hold at most `capacity` messages before `send` blocks.
 
-```axiom
+```xiom
 fn Channel.bounded[T](capacity: Int) -> Channel[T]
 ```
 
@@ -44,7 +44,7 @@ fn Channel.bounded[T](capacity: Int) -> Channel[T]
 
 Creates a new unbounded channel with no limit on buffer size. `send` never blocks.
 
-```axiom
+```xiom
 fn Channel.unbounded[T]() -> Channel[T]
 ```
 
@@ -52,7 +52,7 @@ fn Channel.unbounded[T]() -> Channel[T]
 
 Sends a value into the channel. For bounded channels, this blocks if the buffer is full. For unbounded channels, this always succeeds immediately.
 
-```axiom
+```xiom
 fn Channel.send[T](value: T)
 ```
 
@@ -60,7 +60,7 @@ fn Channel.send[T](value: T)
 
 Receives a value from the channel, blocking the current task until a message is available.
 
-```axiom
+```xiom
 fn Channel.recv[T]() -> T
 ```
 
@@ -68,7 +68,7 @@ fn Channel.recv[T]() -> T
 
 Attempts to receive a value without blocking. Returns `Some(value)` if a message is available, or `None` if the channel is empty.
 
-```axiom
+```xiom
 fn Channel.try_recv[T]() -> Option[T]
 ```
 
@@ -76,6 +76,6 @@ fn Channel.try_recv[T]() -> Option[T]
 
 Closes the channel, preventing further sends. Outstanding messages can still be received. Once the buffer is drained, `recv` returns an error or signals the end of the stream.
 
-```axiom
+```xiom
 fn Channel.close[T]()
 ```

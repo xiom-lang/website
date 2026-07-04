@@ -1,6 +1,6 @@
 # Memory Model
 
-AXIOM uses **ownership semantics** for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.
+XIOM uses **ownership semantics** for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.
 
 The model uses **lexical scope borrowing** — simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.
 
@@ -19,7 +19,7 @@ The model uses **lexical scope borrowing** — simpler than Rust's lifetime syst
 
 Borrows expire at the end of the block or statement they are created in. You can see when a borrow ends by looking at the braces.
 
-```axiom
+```xiom
 fn consume(data: Vec[Int]) { }          // takes ownership
 fn read_only(data: &Vec[Int]) { }       // read borrow
 fn mutate(data: &mut Vec[Int]) { }      // write borrow
@@ -41,7 +41,7 @@ This is a constraint, not a bug — it is the design. Patterns that require esca
 
 Use `.clone()` to explicitly duplicate a value:
 
-```axiom
+```xiom
 let a = Vec.new();
 a.push(1);
 
@@ -58,7 +58,7 @@ Types with `derive[Clone]` get automatic clone implementations. Manual `clone()`
 
 Passing a value to a function moves ownership:
 
-```axiom
+```xiom
 fn take(v: Vec[Int]) {
   // v is owned here — freed at end of scope
 }
@@ -70,7 +70,7 @@ take(data);           // ownership moves to take()
 
 Use borrows when you don't need ownership:
 
-```axiom
+```xiom
 fn inspect(v: &Vec[Int]) {
   // read-only access — caller retains ownership
 }
@@ -84,7 +84,7 @@ inspect(&data);       // can borrow again
 
 Raw pointer arithmetic and C interop that cannot be verified by the compiler are permitted only inside explicit `unsafe { }` blocks.
 
-```axiom
+```xiom
 unsafe {
   let raw: *Int = some_c_function();
   let value = *raw;   // dereference — programmer guarantees validity
@@ -95,7 +95,7 @@ The `unsafe` keyword is a declaration that the programmer takes responsibility f
 
 ## Differences from Rust
 
-| | AXIOM | Rust |
+| | XIOM | Rust |
 |---|-------|------|
 | Lifetime annotations | None | Required for non-trivial cases |
 | Borrow scope | Lexical (visible by braces) | NLL (non-lexical lifetimes) |
