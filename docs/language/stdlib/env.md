@@ -3,7 +3,7 @@
 Environment variable access, process argument querying, directory helpers, and platform constants.
 
 ```
-use axiom.env;
+use xiom.env;
 ```
 
 ## Environment Variables

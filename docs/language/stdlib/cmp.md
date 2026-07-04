@@ -3,7 +3,7 @@
 Comparison and ordering types, traits, and utility functions.
 
 ```
-use axiom.cmp;
+use xiom.cmp;
 ```
 
 ## Ordering

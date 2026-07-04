@@ -1,8 +1,8 @@
 # Standard Library
 
-> 39 modules. All ship with the compiler in `stdlib/axiom/`.
+> 39 modules. All ship with the compiler in `stdlib/xiom/`.
 > Types (Option, Result, Vec, Int, Str...) are built-in — no import needed.
-> Functions live in modules — import with `use axiom.<module>`.
+> Functions live in modules — import with `use xiom.<module>`.
 
 ## Foundation
 

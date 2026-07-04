@@ -3,7 +3,7 @@
 Fixed-size array operations for compile-time known-length arrays `[N]T`.
 
 ```
-use axiom.array;
+use xiom.array;
 ```
 
 ## Size & Access

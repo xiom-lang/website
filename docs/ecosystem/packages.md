@@ -1,28 +1,28 @@
-# AXIOM — Package Guide
+# XIOM — Package Guide
 
 ## Creating a Package
 
 ```
 mypackage/
-├── package.ax          # manifest
+├── package.xi          # manifest
 ├── src/
-│   └── lib.ax          # library code
+│   └── lib.xi          # library code
 ├── bindings/
-│   └── lib.axiom-bind  # FFI binding spec (if C FFI)
+│   └── lib.xiom-bind  # FFI binding spec (if C FFI)
 └── tests/
-    └── test.ax         # test suite
+    └── test.xi         # test suite
 ```
 
-### package.ax
+### package.xi
 
-```axiom
+```xiom
 package {
   name: "mypackage"
   version: "0.1.0"
-  description: "My AXIOM package"
+  description: "My XIOM package"
   authors: ["Your Name"]
   deps: {
-    "axiom-std": "0.1.0"
+    "xiom-std": "0.1.0"
   }
 }
 ```
@@ -34,21 +34,21 @@ package {
 python registry/server.py
 
 # Publish
-axiom pkg publish
+xiom pkg publish
 
 # Install
-axiom pkg install mypackage
+xiom pkg install mypackage
 ```
 
 ## Package Naming Convention
 
-- `axiom:xyz` — First-party official packages
+- `xiom:xyz` — First-party official packages
 - `community:xyz` — Community packages
 - No prefix — Third-party packages
 
 ## FFI Binding Template
 
-Create `bindings/lib.axiom-bind`:
+Create `bindings/lib.xiom-bind`:
 
 ```
 library "libname" {
@@ -58,5 +58,5 @@ library "libname" {
 
 Generate:
 ```powershell
-axiom ffigen bindings/lib.axiom-bind > src/extern.ax
+xiom ffigen bindings/lib.xiom-bind > src/extern.xi
 ```

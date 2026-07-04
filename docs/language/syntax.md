@@ -4,10 +4,10 @@
 
 ## Variables
 
-```axiom
+```xiom
 let x: Int = 42;           // immutable binding
 var y: Float64 = 3.14;     // mutable binding
-let name = "AXIOM";        // type inferred as Str
+let name = "XIOM";        // type inferred as Str
 let v = [1, 2, 3];         // type inferred as Vec[Int]
 let t = (1, true);         // type inferred as (Int, Bool)
 ```
@@ -19,8 +19,8 @@ let t = (1, true);         // type inferred as (Int, Bool)
 
 ## Functions
 
-```axiom
-use axiom.io;
+```xiom
+use xiom.io;
 
 fn add(a: Int, b: Int) -> Int {
   return a + b;
@@ -47,7 +47,7 @@ fn divide(a: Float64, b: Float64) -> Float64
 
 ## Methods
 
-```axiom
+```xiom
 pub type Vec3 = { x: Float32; y: Float32; z: Float32; }
 
 // self is implicit — fields accessed directly
@@ -69,7 +69,7 @@ pub fn Vec3.set_x(value: Float32) {
 
 ### If / Elif / Else
 
-```axiom
+```xiom
 if x > 0 {
   return 1;
 } elif x < 0 {
@@ -81,7 +81,7 @@ if x > 0 {
 
 ### While
 
-```axiom
+```xiom
 while count > 0 {
   count = count - 1;
 }
@@ -89,7 +89,7 @@ while count > 0 {
 
 ### For
 
-```axiom
+```xiom
 for item in items {
   process(item);
 }
@@ -97,7 +97,7 @@ for item in items {
 
 ### Match
 
-```axiom
+```xiom
 match value {
   Some(v) => process(v),
   None    => handle_absent(),
@@ -119,7 +119,7 @@ match state {
 
 ### Literals
 
-```axiom
+```xiom
 42              // Int
 100_000         // Int with separators
 3.14            // Float64
@@ -132,20 +132,20 @@ true | false    // Bool
 
 ### Arithmetic
 
-```axiom
+```xiom
 a + b   a - b   a * b   a / b   a % b
 -a      // negation
 ```
 
 ### Comparison
 
-```axiom
+```xiom
 a == b   a != b   a < b   a > b   a <= b   a >= b
 ```
 
 ### Logical
 
-```axiom
+```xiom
 !a          // not
 a && b      // and
 a || b      // or
@@ -153,27 +153,27 @@ a || b      // or
 
 ### Struct Literals
 
-```axiom
+```xiom
 let p = Point{ x: 1.0, y: 2.0 };
 let s = Stack[Int]{ items: [], capacity: 10 };
 ```
 
 ### Array Literals
 
-```axiom
+```xiom
 let nums = [1, 2, 3, 4, 5];
 let empty: Vec[Int] = [];
 ```
 
 ### Field Access
 
-```axiom
+```xiom
 let dist = p.x * p.x + p.y * p.y;
 ```
 
 ### Function Calls
 
-```axiom
+```xiom
 let result = add(10, 20);
 let x = max[Int](a, b);      // explicit type parameter
 let y = max(a, b);           // inferred type parameter
@@ -181,7 +181,7 @@ let y = max(a, b);           // inferred type parameter
 
 ### Closures
 
-```axiom
+```xiom
 // fn(params) { body } — closure expression
 let doubler = fn(x: Int) -> Int { return x * 2; };
 
@@ -191,7 +191,7 @@ let tripler = |x| x * 3;
 
 ### Other Expressions
 
-```axiom
+```xiom
 // Error propagation
 let f = open(path)?;
 
@@ -237,7 +237,7 @@ items.len()@pre
 
 ## Comments
 
-```axiom
+```xiom
 // Single-line comment
 
 /* Multi-line

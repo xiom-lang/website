@@ -3,7 +3,7 @@
 Provides the `Error` interface, error chaining, backtrace capture, and error context wrapping.
 
 ```
-use axiom.error;
+use xiom.error;
 ```
 
 ## Error Interface

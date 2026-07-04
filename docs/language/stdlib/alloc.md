@@ -3,7 +3,7 @@
 Memory allocation types and the global allocator interface.
 
 ```
-use axiom.alloc;
+use xiom.alloc;
 ```
 
 ## Layout

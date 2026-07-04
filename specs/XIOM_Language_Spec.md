@@ -163,6 +163,7 @@ ContractClause= ( "requires" | "ensures" ) ":" Expr
 GenericParams = "[" Ident [ ":" InterfaceRef ] { "," Ident [ ":" InterfaceRef ] } "]"
 InterfaceRef  = Ident { "+" Ident }
 TypeName      = Ident   // refers to an existing type in scope
+```
 
 ### 3.5  Types
 

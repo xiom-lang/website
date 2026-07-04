@@ -3,7 +3,7 @@
 Benchmarking framework: running benchmarks, collecting timing results, and preventing compiler optimizations.
 
 ```
-use axiom.bench;
+use xiom.bench;
 ```
 
 ## BenchResult

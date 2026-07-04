@@ -3,7 +3,7 @@
 File path manipulation with `Path` (borrowed) and `PathBuf` (owned) types. Provides platform-aware path parsing, joining, and filesystem queries.
 
 ```
-use axiom.path;
+use xiom.path;
 ```
 
 ## Types

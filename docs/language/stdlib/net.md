@@ -1,9 +1,9 @@
-# `axiom.net` — Networking
+# `xiom.net` — Networking
 
 Provides networking primitives including TCP, UDP, HTTP, DNS resolution, and URL parsing.
 
-```axiom
-use axiom.net;
+```xiom
+use xiom.net;
 ```
 
 ---
@@ -14,7 +14,7 @@ use axiom.net;
 
 A networking error carrying a human-readable message and a numeric error code.
 
-```axiom
+```xiom
 pub type NetError = { message: Str; code: Int; }
 ```
 
@@ -22,7 +22,7 @@ pub type NetError = { message: Str; code: Int; }
 
 An enum representing standard HTTP request methods.
 
-```axiom
+```xiom
 pub type HttpMethod = enum { GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS }
 ```
 
@@ -30,7 +30,7 @@ pub type HttpMethod = enum { GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS }
 
 The response from an HTTP request, containing the status code and response body as a string.
 
-```axiom
+```xiom
 pub type HttpResponse = { status: Int; body: Str; } derive[Clone]
 ```
 
@@ -38,7 +38,7 @@ pub type HttpResponse = { status: Int; body: Str; } derive[Clone]
 
 The result of parsing a URL into its constituent components.
 
-```axiom
+```xiom
 pub type UrlParts = { scheme: Str; host: Str; port: Int; path: Str; query: Str; fragment: Str; }
 ```
 
@@ -50,7 +50,7 @@ pub type UrlParts = { scheme: Str; host: Str; port: Int; path: Str; query: Str; 
 
 Opens a TCP connection to the given host and port. Returns a `TcpStream` on success.
 
-```axiom
+```xiom
 pub fn tcp_connect(host: Str, port: Int) -> Result[TcpStream, NetError]
 ```
 
@@ -58,7 +58,7 @@ pub fn tcp_connect(host: Str, port: Int) -> Result[TcpStream, NetError]
 
 Binds a TCP listener to the given host and port, accepting incoming connections. Returns a `TcpListener` on success.
 
-```axiom
+```xiom
 pub fn tcp_listen(host: Str, port: Int) -> Result[TcpListener, NetError]
 ```
 
@@ -66,7 +66,7 @@ pub fn tcp_listen(host: Str, port: Int) -> Result[TcpListener, NetError]
 
 A connected TCP stream that can be read from and written to.
 
-```axiom
+```xiom
 pub type TcpStream = { fd: Int; } derive[Clone]
 ```
 
@@ -74,7 +74,7 @@ pub type TcpStream = { fd: Int; } derive[Clone]
 
 Reads data from the TCP stream into the provided byte buffer. Returns the number of bytes read.
 
-```axiom
+```xiom
 pub fn TcpStream.read(self, buf: &mut Vec[UInt8]) -> Result[Int, NetError]
 ```
 
@@ -82,7 +82,7 @@ pub fn TcpStream.read(self, buf: &mut Vec[UInt8]) -> Result[Int, NetError]
 
 Writes the provided byte buffer to the TCP stream. Returns the number of bytes written.
 
-```axiom
+```xiom
 pub fn TcpStream.write(self, data: &Vec[UInt8]) -> Result[Int, NetError]
 ```
 
@@ -90,7 +90,7 @@ pub fn TcpStream.write(self, data: &Vec[UInt8]) -> Result[Int, NetError]
 
 Closes the TCP stream, releasing the underlying socket descriptor.
 
-```axiom
+```xiom
 pub fn TcpStream.close(self) -> Result[Unit, NetError]
 ```
 
@@ -98,7 +98,7 @@ pub fn TcpStream.close(self) -> Result[Unit, NetError]
 
 A TCP socket listener that accepts incoming connections.
 
-```axiom
+```xiom
 pub type TcpListener = { fd: Int; } derive[Clone]
 ```
 
@@ -106,7 +106,7 @@ pub type TcpListener = { fd: Int; } derive[Clone]
 
 Blocks until a new TCP connection arrives. Returns a tuple of `(TcpStream, Str)` containing the connected stream and the remote address.
 
-```axiom
+```xiom
 pub fn TcpListener.accept(self) -> Result[(TcpStream, Str), NetError]
 ```
 
@@ -118,7 +118,7 @@ pub fn TcpListener.accept(self) -> Result[(TcpStream, Str), NetError]
 
 Performs an HTTP GET request to the specified URL. Returns the response including status code and body.
 
-```axiom
+```xiom
 pub fn http_get(url: Str) -> Result[HttpResponse, NetError]
 ```
 
@@ -126,7 +126,7 @@ pub fn http_get(url: Str) -> Result[HttpResponse, NetError]
 
 Performs an HTTP POST request to the specified URL with the given string body. Returns the response including status code and body.
 
-```axiom
+```xiom
 pub fn http_post(url: Str, body: Str) -> Result[HttpResponse, NetError]
 ```
 
@@ -138,7 +138,7 @@ pub fn http_post(url: Str, body: Str) -> Result[HttpResponse, NetError]
 
 Binds a UDP socket to the given host and port. Returns a `UdpSocket` for sending and receiving datagrams.
 
-```axiom
+```xiom
 fn udp_bind(host: Str, port: Int) -> Result[UdpSocket, NetError]
 ```
 
@@ -146,7 +146,7 @@ fn udp_bind(host: Str, port: Int) -> Result[UdpSocket, NetError]
 
 A UDP socket bound to a local address for connectionless datagram communication.
 
-```axiom
+```xiom
 pub type UdpSocket = { fd: Int; }
 ```
 
@@ -154,7 +154,7 @@ pub type UdpSocket = { fd: Int; }
 
 Sends a datagram to the specified remote address and port. Returns the number of bytes sent.
 
-```axiom
+```xiom
 pub fn UdpSocket.send_to(self, data: &Vec[UInt8], addr: Str, port: Int) -> Result[Int, NetError]
 ```
 
@@ -162,7 +162,7 @@ pub fn UdpSocket.send_to(self, data: &Vec[UInt8], addr: Str, port: Int) -> Resul
 
 Receives a datagram into the provided buffer. Returns a tuple of `(bytes_read, source_addr, source_port)`.
 
-```axiom
+```xiom
 pub fn UdpSocket.recv_from(self, buf: &mut Vec[UInt8]) -> Result[(Int, Str, Int), NetError]
 ```
 
@@ -170,7 +170,7 @@ pub fn UdpSocket.recv_from(self, buf: &mut Vec[UInt8]) -> Result[(Int, Str, Int)
 
 Closes the UDP socket, releasing the underlying socket descriptor.
 
-```axiom
+```xiom
 pub fn UdpSocket.close(self) -> Result[Unit, NetError]
 ```
 
@@ -182,7 +182,7 @@ pub fn UdpSocket.close(self) -> Result[Unit, NetError]
 
 Resolves a hostname to a list of IP address strings. Returns any addresses found.
 
-```axiom
+```xiom
 fn resolve_host(hostname: Str) -> Result[Vec[Str], NetError]
 ```
 
@@ -190,7 +190,7 @@ fn resolve_host(hostname: Str) -> Result[Vec[Str], NetError]
 
 Resolves the local IP address that would be used to connect to the given port. Useful for determining the machine's outward-facing address.
 
-```axiom
+```xiom
 fn local_addr(port: Int) -> Result[Str, NetError]
 ```
 
@@ -202,6 +202,6 @@ fn local_addr(port: Int) -> Result[Str, NetError]
 
 Parses a URL string into its components (scheme, host, port, path, query, fragment). Returns a `UrlParts` struct on success.
 
-```axiom
+```xiom
 fn parse_url(url: Str) -> Result[UrlParts, NetError]
 ```

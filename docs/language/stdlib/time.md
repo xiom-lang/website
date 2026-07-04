@@ -3,7 +3,7 @@
 Time types: `Duration`, `Instant`, `SystemTime`, `DateTime`, and sleep functions.
 
 ```
-use axiom.time;
+use xiom.time;
 ```
 
 ## Duration

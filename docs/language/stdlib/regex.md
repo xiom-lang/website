@@ -3,7 +3,7 @@
 Regular expression matching, searching, replacing, splitting, and capture groups.
 
 ```
-use axiom.regex;
+use xiom.regex;
 ```
 
 ## Types

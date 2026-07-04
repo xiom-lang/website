@@ -3,7 +3,7 @@
 Unicode character classification, case conversion, digit conversion, and UTF-8 encoding utilities.
 
 ```
-use axiom.char;
+use xiom.char;
 ```
 
 ## Classification

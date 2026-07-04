@@ -1,17 +1,17 @@
-# AXIOM by Example
+# XIOM by Example
 
 > Copy, paste, compile, run. Every example is self-contained.
-> **Types are built-in** (no import). **Functions need imports** (`use axiom.io;`).
-> Compile: `axiom --run file.ax` (or `cargo run -p axiomc -- --run file.ax` for dev).
+> **Types are built-in** (no import). **Functions need imports** (`use xiom.io;`).
+> Compile: `xiom --run file.xi` (or `cargo run -p xiomc -- --run file.xi` for dev).
 
 ---
 
 ## 1. Hello World
 
-```axiom
-// hello.ax — your first AXIOM program
-// Run: axiom --run hello.ax
-use axiom.io;
+```xiom
+// hello.xi — your first XIOM program
+// Run: xiom --run hello.xi
+use xiom.io;
 
 fn main() {
   io.println("Hello, World!");  // prints to console
@@ -19,25 +19,25 @@ fn main() {
 ```
 
 ```
-$ axiom --run hello.ax
+$ xiom --run hello.xi
 Hello, World!
 ```
 
-`use axiom.io;` imports the I/O module. `io.println()` prints to console. Every file that uses I/O needs this import.
+`use xiom.io;` imports the I/O module. `io.println()` prints to console. Every file that uses I/O needs this import.
 
 **Three ways to import — all valid:**
 
-```axiom
+```xiom
 // Style A: module prefix (recommended — clear origin)
-use axiom.io;
+use xiom.io;
 fn main() { io.println("Hello"); }
 
 // Style B: glob import (shorter — for small programs)
-use axiom.io.*;
+use xiom.io.*;
 fn main() { println("Hello"); }
 
 // Style C: single import (precise — import only what you need)
-use axiom.io.println;
+use xiom.io.println;
 fn main() { println("Hello"); }
 ```
 
@@ -45,7 +45,7 @@ fn main() { println("Hello"); }
 
 ## 2. Variables & Arithmetic
 
-```axiom
+```xiom
 fn main() -> Int {
   let x: Int = 10;           // immutable — cannot be reassigned
   var y = 3.14;              // mutable — can be reassigned, type inferred as Float64
@@ -56,7 +56,7 @@ fn main() -> Int {
 ```
 
 ```
-$ axiom --run vars.ax
+$ xiom --run vars.xi
 # exit code: 30
 ```
 
@@ -66,8 +66,8 @@ $ axiom --run vars.ax
 
 ## 3. Functions
 
-```axiom
-use axiom.io;
+```xiom
+use xiom.io;
 
 // Functions with return values
 fn add(a: Int, b: Int) -> Int {
@@ -91,8 +91,8 @@ Every parameter must have a type. Return type is required unless void. Functions
 
 ## 4. Control Flow — Fibonacci
 
-```axiom
-use axiom.io;
+```xiom
+use xiom.io;
 
 // Compute the nth Fibonacci number
 fn fib(n: Int) -> Int
@@ -113,7 +113,7 @@ fn main() {
 
 ## 5. Structs & Methods
 
-```axiom
+```xiom
 // A 2D point with compiler-generated equality, clone, and display
 type Point = {
   x: Float64;
@@ -147,8 +147,8 @@ fn main() -> Int {
 
 ## 6. Enums & Pattern Matching
 
-```axiom
-use axiom.io;
+```xiom
+use xiom.io;
 
 // Algebraic data type
 enum Option { Some(value: Int), None }
@@ -173,8 +173,8 @@ Every `match` must be exhaustive — missing a variant is a compile error. Use `
 
 ## 7. Error Handling — Result & ?
 
-```axiom
-use axiom.io;
+```xiom
+use xiom.io;
 
 // Returns Result instead of crashing on division by zero
 fn divide_safe(a: Float64, b: Float64) -> Result[Float64, Str] {
@@ -205,8 +205,8 @@ fn main() {
 
 ## 8. Contracts — Division by Zero Prevention
 
-```axiom
-use axiom.io;
+```xiom
+use xiom.io;
 
 // requires: caller must ensure b != 0
 // ensures:  the implementation guarantees result * b == a
@@ -237,8 +237,8 @@ Contracts are compiler-enforced. `requires` = caller's responsibility. `ensures`
 
 ## 9. Ownership & Borrowing
 
-```axiom
-use axiom.io;
+```xiom
+use xiom.io;
 
 // Takes ownership — x moved here, caller can't use it anymore
 fn take_ownership(x: Int) -> Int {
@@ -274,9 +274,9 @@ fn main() -> Int {
 
 ## 10. Generics — Typed Stack
 
-```axiom
-use axiom.io;
-use axiom.collections.Vec;
+```xiom
+use xiom.io;
+use xiom.collections.Vec;
 
 // Generic stack with contract-verified invariants
 type Stack[T] = {
@@ -343,7 +343,7 @@ Generics + contracts + error handling + ownership — all in one program. The St
 
 ## 11. Interfaces — No `implements` Keyword
 
-```axiom
+```xiom
 // Define an interface
 interface Comparable {
   fn compare(other: &Self) -> Int;  // returns -1, 0, or 1
@@ -379,9 +379,9 @@ No `implements` keyword. A type satisfies an interface by having the right metho
 
 ## 12. Sort with Contract Verification
 
-```axiom
-use axiom.io;
-use axiom.collections.Vec;
+```xiom
+use xiom.io;
+use xiom.collections.Vec;
 
 // Contract ensures the output IS sorted — verified at runtime
 fn sort(items: &mut Vec[Int])
@@ -419,6 +419,6 @@ The `ensures: items.is_sorted()` contract is verified after `sort()` returns. If
 
 ## Next Steps
 
-- **21 example programs** ship in `examples/` — compile any with `axiom --run examples/phase1_full.ax`
+- **21 example programs** ship in `examples/` — compile any with `xiom --run examples/phase1_full.xi`
 - **Full stdlib reference** — [39 modules with API documentation](api.md)
-- **AI coding guide** — [AI_CONTEXT.md](../AI_CONTEXT.md) for LLM-powered AXIOM code generation
+- **AI coding guide** — [AI_CONTEXT.md](../AI_CONTEXT.md) for LLM-powered XIOM code generation

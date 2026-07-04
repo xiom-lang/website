@@ -3,7 +3,7 @@
 Compression algorithms: Gzip, Zlib/Deflate, Brotli, LZ4, and Snappy, with format detection utilities.
 
 ```
-use axiom.compress;
+use xiom.compress;
 ```
 
 ## Compressor Trait

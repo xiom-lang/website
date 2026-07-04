@@ -11,17 +11,17 @@
 ## Build from Source
 
 ```bash
-git clone https://gitea.example.com/axiom-lang/axiom.git
-cd axiom
+git clone https://gitea.example.com/xiom-lang/xiom.git
+cd xiom
 cargo build
 cargo test          # 234 tests should pass
 ```
 
 ## Your First Program
 
-Create a file `hello.ax`:
+Create a file `hello.xi`:
 
-```axiom
+```xiom
 fn add(a: Int, b: Int) -> Int {
   return a + b;
 }
@@ -35,33 +35,33 @@ Compile and run:
 
 ```bash
 # View LLVM IR
-cargo run -p axiomc -- --emit-ir hello.ax
+cargo run -p xiomc -- --emit-ir hello.xi
 
 # Compile to native binary
-cargo run -p axiomc -- -o hello.exe hello.ax
+cargo run -p xiomc -- -o hello.exe hello.xi
 
 # Compile and run (prints exit code)
-cargo run -p axiomc -- --run hello.ax
+cargo run -p xiomc -- --run hello.xi
 # → exit code: 30
 
 # Compile to WASM
-cargo run -p axiomc -- --target wasm -o hello.wasm hello.ax
+cargo run -p xiomc -- --target wasm -o hello.wasm hello.xi
 # → wasm size: 618 bytes
 ```
 
 ## Try in Browser
 
-Open the [AXIOM Playground](https://axiom-lang.org/playground) to write and compile AXIOM directly in your browser. No install required.
+Open the [XIOM Playground](https://xiom-lang.org/playground) to write and compile XIOM directly in your browser. No install required.
 
 ## CLI Reference
 
 | Flag | Description |
 |------|-------------|
-| `<source.ax>` | Print LLVM IR to stdout |
-| `--emit-ir <source.ax>` | Print LLVM IR to stdout |
-| `-o <output> <source.ax>` | Compile to native binary |
-| `--run <source.ax>` | Compile and run, print exit code |
-| `--target wasm -o <out.wasm> <source.ax>` | Compile to WASM |
+| `<source.xi>` | Print LLVM IR to stdout |
+| `--emit-ir <source.xi>` | Print LLVM IR to stdout |
+| `-o <output> <source.xi>` | Compile to native binary |
+| `--run <source.xi>` | Compile and run, print exit code |
+| `--target wasm -o <out.wasm> <source.xi>` | Compile to WASM |
 | `--no-contracts` | Disable contract runtime checks |
 | `--diagnostics=json` | Structured compiler output (Phase 2 tooling) |
 | `--dump-contracts` | Queryable contract index (Phase 2 tooling) |
@@ -69,21 +69,21 @@ Open the [AXIOM Playground](https://axiom-lang.org/playground) to write and comp
 ## Project Structure
 
 ```
-AXIOM/
+XIOM/
 ├── crates/             # Rust bootstrap compiler (permanent)
-│   ├── axiom-ast/      # AST node definitions
-│   ├── axiom-lexer/    # Tokenizer
-│   ├── axiom-parser/   # Recursive descent parser
-│   ├── axiom-check/    # Type checker + borrow checker + module resolver
-│   ├── axiom-codegen/  # LLVM IR emitter + contracts + derive + generics
-│   └── axiomc/         # CLI binary
-├── selfhost/           # AXIOM self-hosted compiler
-│   ├── axiom-lexer.ax
-│   ├── axiom-parser.ax
-│   ├── axiom-check.ax
-│   ├── axiom-codegen.ax
-│   └── axiomc.ax
-├── stdlib/             # Standard library (AXIOM source)
+│   ├── xiom-ast/      # AST node definitions
+│   ├── xiom-lexer/    # Tokenizer
+│   ├── xiom-parser/   # Recursive descent parser
+│   ├── xiom-check/    # Type checker + borrow checker + module resolver
+│   ├── xiom-codegen/  # LLVM IR emitter + contracts + derive + generics
+│   └── xiomc/         # CLI binary
+├── selfhost/           # XIOM self-hosted compiler
+│   ├── xiom-lexer.xi
+│   ├── xiom-parser.xi
+│   ├── xiom-check.xi
+│   ├── xiom-codegen.xi
+│   └── xiomc.xi
+├── stdlib/             # Standard library (XIOM source)
 ├── examples/           # Example programs
 ├── specs/              # Language specification
 ├── docs/               # Documentation
@@ -93,8 +93,8 @@ AXIOM/
 
 ## Editor Support
 
-- **VS Code** — Install `vscode-axiom` extension for syntax highlighting
-- **Any editor** — AXIOM uses `.ax` file extension. Set up `.ax` → plain text with 4-space indentation for now. Full LSP support planned for Phase 3.
+- **VS Code** — Install `vscode-xiom` extension for syntax highlighting
+- **Any editor** — XIOM uses `.xi` file extension. Set up `.xi` → plain text with 4-space indentation for now. Full LSP support planned for Phase 3.
 
 ## Next Steps
 

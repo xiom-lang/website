@@ -3,7 +3,7 @@
 Text encoding and decoding utilities: Base64, Hex, URL, Percent, and UTF-8 encoding.
 
 ```
-use axiom.encoding;
+use xiom.encoding;
 ```
 
 ## Base64

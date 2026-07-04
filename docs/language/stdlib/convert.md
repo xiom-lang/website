@@ -3,7 +3,7 @@
 Type conversion traits (`From`, `Into`, `TryFrom`, `TryInto`) and common conversion functions.
 
 ```
-use axiom.convert;
+use xiom.convert;
 ```
 
 ## Traits

@@ -1,9 +1,9 @@
-# `axiom.sync` — Synchronization Primitives
+# `xiom.sync` — Synchronization Primitives
 
 Provides thread-safe synchronization primitives for coordinating access to shared state across concurrent tasks.
 
-```axiom
-use axiom.sync;
+```xiom
+use xiom.sync;
 ```
 
 ---
@@ -16,7 +16,7 @@ A mutual exclusion primitive that guards shared data. Only one thread may hold t
 
 A type wrapping a value `T` with a lock flag. The data can only be accessed through a `MutexGuard`.
 
-```axiom
+```xiom
 pub type Mutex[T] = { data: T; locked: Bool; }
 ```
 
@@ -24,7 +24,7 @@ pub type Mutex[T] = { data: T; locked: Bool; }
 
 Creates a new `Mutex` protecting the given value. The mutex starts in the unlocked state.
 
-```axiom
+```xiom
 pub fn Mutex.new[T](data: T) -> Mutex[T]
 ```
 
@@ -32,7 +32,7 @@ pub fn Mutex.new[T](data: T) -> Mutex[T]
 
 Blocks the current thread until the lock is acquired, then returns a `MutexGuard` that provides access to the protected data. The guard releases the lock when dropped.
 
-```axiom
+```xiom
 pub fn Mutex.lock[T](self) -> MutexGuard[T]
 ```
 
@@ -40,7 +40,7 @@ pub fn Mutex.lock[T](self) -> MutexGuard[T]
 
 Attempts to acquire the lock without blocking. Returns `Some(guard)` if the lock was acquired, or `None` if another thread holds the lock.
 
-```axiom
+```xiom
 pub fn Mutex.try_lock[T](self) -> Option[MutexGuard[T]]
 ```
 
@@ -48,7 +48,7 @@ pub fn Mutex.try_lock[T](self) -> Option[MutexGuard[T]]
 
 An RAII guard that holds a locked `Mutex`. The lock is released when this value is dropped.
 
-```axiom
+```xiom
 pub type MutexGuard[T] = { mutex: Mutex[T]; }
 ```
 
@@ -56,7 +56,7 @@ pub type MutexGuard[T] = { mutex: Mutex[T]; }
 
 Returns an immutable reference to the data protected by the mutex.
 
-```axiom
+```xiom
 pub fn MutexGuard.get[T](self) -> &T
 ```
 
@@ -64,7 +64,7 @@ pub fn MutexGuard.get[T](self) -> &T
 
 Returns a mutable reference to the data protected by the mutex.
 
-```axiom
+```xiom
 pub fn MutexGuard.get_mut[T](self) -> &mut T
 ```
 
@@ -78,7 +78,7 @@ A reader-writer lock allowing concurrent reads or exclusive writes.
 
 A type wrapping a value `T` with reader and writer tracking for fine-grained concurrency control.
 
-```axiom
+```xiom
 pub type RwLock[T] = { data: T; readers: Int; writer: Bool; }
 ```
 
@@ -86,7 +86,7 @@ pub type RwLock[T] = { data: T; readers: Int; writer: Bool; }
 
 Creates a new `RwLock` protecting the given value.
 
-```axiom
+```xiom
 pub fn RwLock.new[T](data: T) -> RwLock[T]
 ```
 
@@ -94,7 +94,7 @@ pub fn RwLock.new[T](data: T) -> RwLock[T]
 
 Acquires a shared read lock, blocking if a writer holds the lock. Multiple readers may hold the lock simultaneously.
 
-```axiom
+```xiom
 pub fn RwLock.read[T](self) -> ReadGuard[T]
 ```
 
@@ -102,7 +102,7 @@ pub fn RwLock.read[T](self) -> ReadGuard[T]
 
 Acquires an exclusive write lock, blocking until all readers and writers have released the lock.
 
-```axiom
+```xiom
 pub fn RwLock.write[T](self) -> WriteGuard[T]
 ```
 
@@ -110,7 +110,7 @@ pub fn RwLock.write[T](self) -> WriteGuard[T]
 
 Attempts to acquire a read lock without blocking. Returns `Some(ReadGuard)` on success, `None` if a writer holds the lock.
 
-```axiom
+```xiom
 pub fn RwLock.try_read[T](self) -> Option<ReadGuard[T]>
 ```
 
@@ -118,7 +118,7 @@ pub fn RwLock.try_read[T](self) -> Option<ReadGuard[T]>
 
 Attempts to acquire a write lock without blocking. Returns `Some(WriteGuard)` on success, `None` if the lock is contended.
 
-```axiom
+```xiom
 pub fn RwLock.try_write[T](self) -> Option<WriteGuard[T]>
 ```
 
@@ -126,7 +126,7 @@ pub fn RwLock.try_write[T](self) -> Option<WriteGuard[T]>
 
 An RAII guard that holds a shared read lock on an `RwLock`. The read count is decremented when dropped.
 
-```axiom
+```xiom
 pub type ReadGuard[T] = { lock: RwLock[T]; }
 ```
 
@@ -134,7 +134,7 @@ pub type ReadGuard[T] = { lock: RwLock[T]; }
 
 An RAII guard that holds an exclusive write lock on an `RwLock`. The writer flag is cleared when dropped.
 
-```axiom
+```xiom
 pub type WriteGuard[T] = { lock: RwLock[T]; }
 ```
 
@@ -148,7 +148,7 @@ A condition variable for blocking threads until a condition is signaled. Typical
 
 A synchronization primitive that blocks threads until notified.
 
-```axiom
+```xiom
 pub type Condvar = { waiters: Int; }
 ```
 
@@ -156,7 +156,7 @@ pub type Condvar = { waiters: Int; }
 
 Creates a new condition variable with no waiters.
 
-```axiom
+```xiom
 pub fn Condvar.new() -> Condvar
 ```
 
@@ -164,7 +164,7 @@ pub fn Condvar.new() -> Condvar
 
 Blocks the current thread, temporarily releasing the `MutexGuard`. The guard is re-acquired when the thread wakes.
 
-```axiom
+```xiom
 pub fn Condvar.wait[T](self, guard: MutexGuard[T]) -> MutexGuard[T]
 ```
 
@@ -172,7 +172,7 @@ pub fn Condvar.wait[T](self, guard: MutexGuard[T]) -> MutexGuard[T]
 
 Wakes up one blocked thread waiting on this condition variable.
 
-```axiom
+```xiom
 pub fn Condvar.notify_one(self)
 ```
 
@@ -180,7 +180,7 @@ pub fn Condvar.notify_one(self)
 
 Wakes up all threads blocked on this condition variable.
 
-```axiom
+```xiom
 pub fn Condvar.notify_all(self)
 ```
 
@@ -194,7 +194,7 @@ A synchronization primitive for one-time initialization of a function or value.
 
 Tracks whether a one-time operation has been executed.
 
-```axiom
+```xiom
 pub type Once = { done: Bool; }
 ```
 
@@ -202,7 +202,7 @@ pub type Once = { done: Bool; }
 
 Creates a new `Once` in the uninitialized state.
 
-```axiom
+```xiom
 pub fn Once.new() -> Once
 ```
 
@@ -210,7 +210,7 @@ pub fn Once.new() -> Once
 
 Calls the provided function `f` exactly once, even if invoked from multiple threads concurrently. Subsequent calls are no-ops.
 
-```axiom
+```xiom
 pub fn Once.call_once(self, f: fn())
 ```
 
@@ -224,7 +224,7 @@ A thread-safe reference-counted pointer for sharing ownership across threads.
 
 An atomically reference-counted pointer to a value of type `T`.
 
-```axiom
+```xiom
 pub type Arc[T] = { ptr: *T; count: Int; }
 ```
 
@@ -232,7 +232,7 @@ pub type Arc[T] = { ptr: *T; count: Int; }
 
 Creates a new `Arc` wrapping the given value with an initial reference count of 1.
 
-```axiom
+```xiom
 pub fn Arc.new[T](value: T) -> Arc[T]
 ```
 
@@ -240,7 +240,7 @@ pub fn Arc.new[T](value: T) -> Arc[T]
 
 Increments the reference count and returns a new `Arc` pointing to the same data.
 
-```axiom
+```xiom
 pub fn Arc.clone[T](self) -> Arc[T]
 ```
 
@@ -248,7 +248,7 @@ pub fn Arc.clone[T](self) -> Arc[T]
 
 Returns an immutable reference to the inner value.
 
-```axiom
+```xiom
 pub fn Arc.get[T](self) -> &T
 ```
 
@@ -256,7 +256,7 @@ pub fn Arc.get[T](self) -> &T
 
 Returns the current strong reference count of the `Arc`.
 
-```axiom
+```xiom
 pub fn Arc.strong_count[T](self) -> Int
 ```
 
@@ -264,7 +264,7 @@ pub fn Arc.strong_count[T](self) -> Int
 
 Returns `true` if two `Arc` pointers reference the same heap allocation.
 
-```axiom
+```xiom
 pub fn Arc.ptr_eq[T, U](self, other: &Arc[U]) -> Bool
 ```
 
@@ -278,7 +278,7 @@ Lock-free atomic primitives for safe concurrent access to boolean and integer va
 
 A boolean value that can be safely read and modified from multiple threads.
 
-```axiom
+```xiom
 pub type AtomicBool = { val: Bool; }
 ```
 
@@ -286,7 +286,7 @@ pub type AtomicBool = { val: Bool; }
 
 Creates a new `AtomicBool` with the given initial value.
 
-```axiom
+```xiom
 pub fn AtomicBool.new(val: Bool) -> AtomicBool
 ```
 
@@ -294,7 +294,7 @@ pub fn AtomicBool.new(val: Bool) -> AtomicBool
 
 Atomically reads the current value of the atomic boolean.
 
-```axiom
+```xiom
 pub fn AtomicBool.load(self) -> Bool
 ```
 
@@ -302,7 +302,7 @@ pub fn AtomicBool.load(self) -> Bool
 
 Atomically writes a new value to the atomic boolean.
 
-```axiom
+```xiom
 pub fn AtomicBool.store(self, val: Bool)
 ```
 
@@ -310,7 +310,7 @@ pub fn AtomicBool.store(self, val: Bool)
 
 Atomically stores a value and returns the previous value.
 
-```axiom
+```xiom
 pub fn AtomicBool.swap(self, val: Bool) -> Bool
 ```
 
@@ -318,7 +318,7 @@ pub fn AtomicBool.swap(self, val: Bool) -> Bool
 
 An integer value that can be safely read and modified from multiple threads using atomic operations.
 
-```axiom
+```xiom
 pub type AtomicInt = { val: Int; }
 ```
 
@@ -326,7 +326,7 @@ pub type AtomicInt = { val: Int; }
 
 Creates a new `AtomicInt` with the given initial value.
 
-```axiom
+```xiom
 pub fn AtomicInt.new(val: Int) -> AtomicInt
 ```
 
@@ -334,7 +334,7 @@ pub fn AtomicInt.new(val: Int) -> AtomicInt
 
 Atomically reads the current value of the atomic integer.
 
-```axiom
+```xiom
 pub fn AtomicInt.load(self) -> Int
 ```
 
@@ -342,7 +342,7 @@ pub fn AtomicInt.load(self) -> Int
 
 Atomically writes a new value to the atomic integer.
 
-```axiom
+```xiom
 pub fn AtomicInt.store(self, val: Int)
 ```
 
@@ -350,7 +350,7 @@ pub fn AtomicInt.store(self, val: Int)
 
 Atomically adds `val` to the current value and returns the previous value.
 
-```axiom
+```xiom
 pub fn AtomicInt.fetch_add(self, val: Int) -> Int
 ```
 
@@ -358,7 +358,7 @@ pub fn AtomicInt.fetch_add(self, val: Int) -> Int
 
 Atomically subtracts `val` from the current value and returns the previous value.
 
-```axiom
+```xiom
 pub fn AtomicInt.fetch_sub(self, val: Int) -> Int
 ```
 
@@ -372,7 +372,7 @@ A barrier that blocks a fixed set of threads until all have arrived.
 
 Synchronizes `n` threads so that each waits at the barrier until all have reached it.
 
-```axiom
+```xiom
 pub type Barrier = { count: Int; generation: Int; }
 ```
 
@@ -380,7 +380,7 @@ pub type Barrier = { count: Int; generation: Int; }
 
 Creates a new barrier that blocks until `n` threads have called `wait`.
 
-```axiom
+```xiom
 pub fn Barrier.new(n: Int) -> Barrier
 ```
 
@@ -388,6 +388,6 @@ pub fn Barrier.new(n: Int) -> Barrier
 
 Blocks the current thread until all threads in the barrier set have called `wait`. After the barrier is reached, all threads are released.
 
-```axiom
+```xiom
 pub fn Barrier.wait(self)
 ```

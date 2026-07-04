@@ -1,4 +1,4 @@
-# AXIOM Language Documentation
+# XIOM Language Documentation
 
 > **Compiler:** v0.12.0 "Production" · **Spec:** v0.3 · **Tests:** 234 passing
 
@@ -7,7 +7,7 @@
 | Section | Description |
 |---------|-------------|
 | [Getting Started](getting-started.md) | Installation, first program, CLI reference |
-| [Concepts](concepts.md) | AXIOM for programmers from other languages — Java, C++, Python, Rust, Go |
+| [Concepts](concepts.md) | XIOM for programmers from other languages — Java, C++, Python, Rust, Go |
 | [By Example](examples.md) | Progressive examples from Hello World to generics + contracts |
 | [Syntax](syntax.md) | Full language syntax: variables, functions, control flow, expressions |
 | [Type System](types.md) | Primitive types, compound types, structs, enums, type inference |
@@ -20,14 +20,14 @@
 | [C FFI](ffi.md) | Zero-cost C interoperability, extern blocks, unsafe |
 | [Compiler](compiler.md) | Pipeline overview, CLI flags, build targets, WASM |
 | [Standard Library](stdlib.md) | Complete API reference for all 39 stdlib modules |
-| [AI Coding Reference](../AI_CONTEXT.md) | Single-file AI prompt — inject into any LLM to enable AXIOM code generation |
+| [AI Coding Reference](../AI_CONTEXT.md) | Single-file AI prompt — inject into any LLM to enable XIOM code generation |
 
 ## Language Overview
 
-AXIOM is a compiled, statically typed, memory-safe systems programming language.
+XIOM is a compiled, statically typed, memory-safe systems programming language.
 
 ```
-.ax source → Lexer → Parser → Type Checker → Borrow Checker
+.xi source → Lexer → Parser → Type Checker → Borrow Checker
            → LLVM IR (+ Contracts + Derive + Generics)
            → clang → native .exe / .wasm
 ```
@@ -40,7 +40,7 @@ AXIOM is a compiled, statically typed, memory-safe systems programming language.
 
 ## Quick Example
 
-```axiom
+```xiom
 fn fib(n: Int) -> Int
   requires: n >= 0
 {
@@ -53,7 +53,7 @@ fn main() -> Int {
 }
 ```
 
-```axiom
+```xiom
 // Types with invariants and derive
 type Health = {
   current: Int;
@@ -73,7 +73,7 @@ fn divide(a: Float64, b: Float64) -> Float64
 
 ## Getting Started
 
-Ready to build with AXIOM?
+Ready to build with XIOM?
 
 | Step | Resource |
 |------|----------|
@@ -85,16 +85,16 @@ Ready to build with AXIOM?
 
 ## Ecosystem
 
-AXIOM's ecosystem is organized across three tiers: first-party, first-party FFI bindings, and community.
+XIOM's ecosystem is organized across three tiers: first-party, first-party FFI bindings, and community.
 
 | Resource | Description |
 |----------|-------------|
 | [Expansion Roadmap](../ecosystem/roadmap.md) | Full strategy for database, networking, GPU, GUI, ML, game dev, and serialization packages |
-| [Package Guide](../ecosystem/packages.md) | How to create, structure, and publish AXIOM packages |
-| `axiom:net` | First-party FFI HTTP client (libcurl) |
-| `axiom:sql` | First-party FFI SQLite bindings |
-| `axiom:serialize` | First-party JSON / binary serialization |
-| `axiom:crypto` | First-party FFI OpenSSL bindings |
+| [Package Guide](../ecosystem/packages.md) | How to create, structure, and publish XIOM packages |
+| `xiom:net` | First-party FFI HTTP client (libcurl) |
+| `xiom:sql` | First-party FFI SQLite bindings |
+| `xiom:serialize` | First-party JSON / binary serialization |
+| `xiom:crypto` | First-party FFI OpenSSL bindings |
 
 For a complete list of planned and in-progress packages, see the [Expansion Roadmap](../ecosystem/roadmap.md).
 

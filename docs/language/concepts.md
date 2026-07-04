@@ -1,12 +1,12 @@
-# AXIOM Concepts — For Programmers from Other Languages
+# XIOM Concepts — For Programmers from Other Languages
 
-> **You already know how to program.** This guide maps the concepts you know to how they work in AXIOM. No fluff. Just translations.
+> **You already know how to program.** This guide maps the concepts you know to how they work in XIOM. No fluff. Just translations.
 
 ---
 
 ## If You're Coming From...
 
-| Language | Closest mental model to AXIOM |
+| Language | Closest mental model to XIOM |
 |----------|-------------------------------|
 | **Rust** | Ownership, Result/Option, traits-as-interfaces, derive macros → `derive[]`. You lose lifetimes and gain contracts. |
 | **Go** | Structural interfaces (same!), `if err != nil` → `Result[T,E]`, goroutines → `spawn`. You lose GC and null. |
@@ -19,16 +19,16 @@
 
 ## 1. No Null — Option[T] Instead
 
-Every language has null. AXIOM doesn't.
+Every language has null. XIOM doesn't.
 
 | Language | Absence |
 |----------|---------|
 | Java/C# | `null` — crashes at runtime |
 | Python | `None` — crashes at runtime |
 | Rust | `Option<T>` — compiler enforces handling |
-| **AXIOM** | **`Option[T]` — compiler enforces handling** |
+| **XIOM** | **`Option[T]` — compiler enforces handling** |
 
-```axiom
+```xiom
 // Instead of:  String name = null;
 let name: Option[Str] = None;
 
@@ -45,7 +45,7 @@ You cannot accidentally use `None` as a value. The compiler rejects it.
 
 ## 2. No Exceptions — Result[T, E] Instead
 
-Every language has exceptions. AXIOM doesn't.
+Every language has exceptions. XIOM doesn't.
 
 | Language | Error handling |
 |----------|---------------|
@@ -53,9 +53,9 @@ Every language has exceptions. AXIOM doesn't.
 | Python | `try/except` — any line can throw |
 | Go | `if err != nil` — explicit but verbose |
 | Rust | `Result<T, E>` + `?` — explicit, clean |
-| **AXIOM** | **`Result<T, E>` + `?` — explicit, clean** |
+| **XIOM** | **`Result<T, E>` + `?` — explicit, clean** |
 
-```axiom
+```xiom
 // Instead of:  throw new IOException("file not found");
 fn read_config(path: Str) -> Result[Config, Str] {
   let file = io.read_file(path)?;    // ? returns the error immediately
@@ -82,9 +82,9 @@ The `?` operator is `try!` from Rust, `try` from Zig. It returns `Err(...)` imme
 | C | `malloc`/`free` — manual, error-prone |
 | C++ | RAII + smart pointers — complex rules |
 | Rust | Ownership + borrow checker + lifetimes — powerful but complex |
-| **AXIOM** | **Ownership + lexical scope borrowing — same safety, no lifetimes** |
+| **XIOM** | **Ownership + lexical scope borrowing — same safety, no lifetimes** |
 
-```axiom
+```xiom
 // A value has ONE owner. Assignment moves ownership.
 let a = Vec.new();
 let b = a;       // a MOVED to b — a is now invalid
@@ -104,9 +104,9 @@ let c = b.clone();  // explicit copy — both valid
 
 ## 4. Structs + Methods — No Classes, No Inheritance
 
-AXIOM has no `class`, no `extends`, no `implements`, no `virtual`, no `override`, no `protected`. Here's what you use instead:
+XIOM has no `class`, no `extends`, no `implements`, no `virtual`, no `override`, no `protected`. Here's what you use instead:
 
-| OOP Concept | AXIOM Equivalent |
+| OOP Concept | XIOM Equivalent |
 |-------------|-----------------|
 | `class` | `type` (struct) |
 | `extends` / inheritance | **Not supported.** Use composition or interfaces. |
@@ -120,7 +120,7 @@ AXIOM has no `class`, no `extends`, no `implements`, no `virtual`, no `override`
 | `static` method | Free function `fn function_name()` |
 | Property getter/setter | Direct field access. Use methods for logic. |
 
-```axiom
+```xiom
 // Instead of:  class Point { private float x; public float getX()... }
 type Point = {
   x: Float64;               // private by default
@@ -139,9 +139,9 @@ pub fn Point.distance(other: &Point) -> Float64 {
 
 ## 5. Polymorphism — Structural Interfaces
 
-AXIOM has no inheritance. Polymorphism works through **structural interfaces** — if a type has the required methods, it satisfies the interface. No declaration needed.
+XIOM has no inheritance. Polymorphism works through **structural interfaces** — if a type has the required methods, it satisfies the interface. No declaration needed.
 
-```axiom
+```xiom
 // Define what "comparable" means
 interface Comparable {
   fn compare(other: &Self) -> Int;  // -1, 0, 1
@@ -169,11 +169,11 @@ This is Go's interface model. It's also how Python's duck typing works, except c
 
 ---
 
-## 6. Contracts — Unique to AXIOM
+## 6. Contracts — Unique to XIOM
 
-No mainstream language has contracts as compiler-enforced specifications. This is AXIOM's defining feature.
+No mainstream language has contracts as compiler-enforced specifications. This is XIOM's defining feature.
 
-```axiom
+```xiom
 fn divide(a: Float64, b: Float64) -> Float64
   requires: b != 0.0           // PRE-CONDITION: caller must guarantee this
   ensures:  result * b == a    // POST-CONDITION: implementation must guarantee this
@@ -207,9 +207,9 @@ When a contract is violated at runtime, the program panics with the **exact** co
 | C++ | `public:`/`private:` sections in class body |
 | Python | `_convention` — not enforced |
 | Rust | `pub` — everything private by default |
-| **AXIOM** | **`pub` — everything private by default** |
+| **XIOM** | **`pub` — everything private by default** |
 
-```axiom
+```xiom
 module myproject.data;
 
 pub type User = {              // visible outside this module
@@ -238,9 +238,9 @@ No `protected`. No `friend`. No `package-private`. Just `pub` or private.
 | Java | Type erasure — limited, no primitives |
 | C# | Reified generics — better, still class-based |
 | Rust/Go | Monomorphised — zero-cost, checked at definition |
-| **AXIOM** | **Monomorphised — zero-cost, checked at definition** |
+| **XIOM** | **Monomorphised — zero-cost, checked at definition** |
 
-```axiom
+```xiom
 // Instead of:  template<typename T> T max(T a, T b) { return a > b ? a : b; }
 fn max[T: Comparable](a: T, b: T) -> T {
   if a > b { return a; }
@@ -259,7 +259,7 @@ The `[T: Comparable]` constraint means: "T must have a `compare` method." The co
 
 ## 9. Pattern Matching — Like switch, But Exhaustive
 
-```axiom
+```xiom
 // Instead of:  switch (value) { case 1: ... break; default: ... }
 match value {
   Some(v) => io.println("got " + v.to_str()),
@@ -281,8 +281,8 @@ The compiler forces you to handle **every** variant. Missing a case is a compile
 
 ## 10. Async — Like async/await, With Channels
 
-```axiom
-use axiom.async;
+```xiom
+use xiom.async;
 
 // Instead of:  async function fetch() { const r = await http.get(url); }
 async fn fetch(url: Str) -> Result[Str, NetError] {
@@ -302,7 +302,7 @@ match rx.recv() {
 };
 ```
 
-| Other Language | AXIOM |
+| Other Language | XIOM |
 |---------------|-------|
 | `async function` / `async fn` | `async fn` |
 | `await` | `await` |
@@ -316,7 +316,7 @@ match rx.recv() {
 
 No preprocessor. No macros. No templates. One keyword: `comptime`.
 
-```axiom
+```xiom
 // Evaluated at compile time — zero runtime cost
 let size = comptime expensive_computation();
 
@@ -330,7 +330,7 @@ fn max[T: Comparable](a: T, b: T) -> T { ... }
 
 ## 12. C FFI — Call Any C Library
 
-```axiom
+```xiom
 extern "C" {
   fn malloc(size: UInt) -> *UInt8;
   fn free(ptr: *UInt8);
@@ -344,13 +344,13 @@ fn alloc(size: UInt) -> *UInt8
 }
 ```
 
-AXIOM does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS — all accessed through FFI with contract-verified preconditions.
+XIOM does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS — all accessed through FFI with contract-verified preconditions.
 
 ---
 
 ## Quick Comparison Table
 
-| Concept | Java/C# | C++ | Python | Rust | Go | **AXIOM** |
+| Concept | Java/C# | C++ | Python | Rust | Go | **XIOM** |
 |---------|---------|-----|--------|------|----|-----------|
 | Absence | `null` | `nullptr` | `None` | `Option<T>` | `nil` | **`Option[T]`** |
 | Errors | exceptions | exceptions | exceptions | `Result<T,E>` | `if err != nil` | **`Result[T,E]` + `?`** |
@@ -367,7 +367,7 @@ AXIOM does not rewrite C libraries. It wraps them with safe interfaces and contr
 
 ---
 
-## What AXIOM Does NOT Have (On Purpose)
+## What XIOM Does NOT Have (On Purpose)
 
 | Feature | Why It's Missing |
 |---------|-----------------|
