@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-AXIOM Documentation Builder
+xiom Documentation Builder
 Converts docs/language/*.md → docs/html/ and website/docs/
 Run: python docs/build_docs.py
 
 Outputs:
   docs/html/         — static HTML, ships with releases, works from file://
-  website/docs/      — integrated into axiom-lang.org
+  website/docs/      — integrated into xiom-lang.org
 """
 
 import os
@@ -98,7 +98,7 @@ def md_to_html(text: str) -> str:
                 lang_class = f' class="language-{code_lang}"' if code_lang else ''
                 out.append(f'<pre{lang_class}><code>')
                 for cl in code_lines:
-                    # Basic syntax highlighting for axiom code
+                    # Basic syntax highlighting for xiom code
                     hl = cl
                     hl = re.sub(r'(//.*$)', r"<span class='cm'>\1</span>", hl)
                     hl = re.sub(r'"([^"]*)"', r"<span class='str'>\1</span>", hl)
@@ -237,7 +237,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — {title}</title>
+<title>xiom — {title}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="{icon_path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -249,8 +249,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <nav>
   <div class="wrap">
     <a href="{home_path}" class="logo">
-      <img src="{icon_path}" alt="AXIOM">
-      AXIOM
+      <img src="{icon_path}" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="{home_path}spec.html">Spec</a>
@@ -284,7 +284,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 
 <footer>
   <div class="wrap">
-    <p>AXIOM {version_short} · <a href="{home_path}" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom {version_short} · <a href="{home_path}" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="{home_path}spec.html">Spec</a>
       <a href="{home_path}docs/">Docs</a>
@@ -467,7 +467,7 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
 # ── Main ───────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
-    print("AXIOM Documentation Builder\n")
+    print("xiom Documentation Builder\n")
 
     # 1. Build standalone HTML (ships with releases, works from file://)
     print("[1/2] Building standalone HTML (docs/html/)...")
@@ -478,13 +478,13 @@ if __name__ == '__main__':
         icon_path="",
     )
 
-    # 2. Build website docs (integrated into axiom-lang.org)
+    # 2. Build website docs (integrated into xiom-lang.org)
     print("\n[2/2] Building website docs (website/docs/)...")
     build(
         output_dir=OUT_WEBSITE,
         home_path="../",
         css_path="../style.css",
-        icon_path="../img/axiom-icon.ico",
+        icon_path="../img/xiom-icon.ico",
     )
 
     # 3. Copy style.css to docs/html/ so standalone works
@@ -495,5 +495,5 @@ if __name__ == '__main__':
 
     print("\nDone. Outputs:")
     print(f"  Standalone:  {OUT_HTML.relative_to(ROOT)}/  (ships with releases)")
-    print(f"  Website:     {OUT_WEBSITE.relative_to(ROOT)}/  (axiom-lang.org/docs/)")
+    print(f"  Website:     {OUT_WEBSITE.relative_to(ROOT)}/  (xiom-lang.org/docs/)")
     print(f"\nOpen: { (OUT_HTML / 'index.html').relative_to(ROOT) }")

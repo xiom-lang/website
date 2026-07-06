@@ -502,7 +502,7 @@ fn private_helper() { }   // module-private (default)
 - `extern "C"` FFI — via C runtime (`xiom_runtime.c`), standard libc functions
 - `@malloc`, `@free`, `@realloc` — LLVM declarations emit automatically
 - `@llvm.trap()` — contract guard emission
-- `@axiom_str_len` — Str length via C runtime
+- `@xiom_str_len` — Str length via C runtime
 - File I/O: `xiom_read_file`, `xiom_file_size`, `xiom_free` (C runtime)
 
 **Implemented but NOT YET COMPILED OR TESTED:** All other stdlib functions. See tier breakdown below. 24 custom `xiom_*` C runtime functions declared by stdlib modules are missing from `xiom_runtime.c` and will cause linker errors. Concurrency is simplified single-threaded. Network returns stub errors.
