@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — Contracts</title>
+<title>xiom — Contracts</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="" class="logo">
-      <img src="" alt="AXIOM">
-      AXIOM
+      <img src="" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="spec.html">Spec</a>
@@ -96,7 +96,7 @@
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Contracts</h1>
-      <p>Contracts are the formal specification layer of AXIOM. They transform function signatures from documentation into machine-checkable specifications.</p>
+      <p>Contracts are the formal specification layer of xiom. They transform function signatures from documentation into machine-checkable specifications.</p>
 <p>Contracts compile to runtime guards with precise error messages. Static proof via Z3 SMT solver is planned for Phase 3.</p>
 <h2>Keywords</h2>
 <table>
@@ -126,7 +126,7 @@
 </tr>
 </table>
 <h2>Function Contracts</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
   <span class='kw'>requires</span>: b != <span class='num'>0.0</span>
   <span class='kw'>ensures</span>:  <span class='kw'>result</span> * b == a
@@ -135,7 +135,7 @@
 }
 </code></pre>
 <p><strong>Type-level constraints</strong> (which interfaces a generic parameter must satisfy) are declared <strong>inline</strong> with the type parameter, not as <code>requires</code> clauses. This separates type requirements from value preconditions:</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Type constraint — inline</span>
 <span class='kw'>fn</span> sort[T: <span class='ty'>Ord</span>](items: &mut <span class='ty'>Vec</span>[T])
 
@@ -144,7 +144,7 @@
   <span class='kw'>requires</span>: !stack.<span class='func'>is_empty</span>()
 </code></pre>
 <h2>Type Invariants</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Health</span> = {
   current: <span class='ty'>Int</span>;
   maximum: <span class='ty'>Int</span>;
@@ -189,7 +189,7 @@
 <td>Collection is empty. Equivalent to <code>.len() == 0</code></td>
 </tr>
 </table>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>sort</span>(items: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>])
   <span class='kw'>ensures</span>: items.<span class='func'>is_sorted</span>()
 {
@@ -258,7 +258,7 @@ contract violated: <span class='kw'>requires</span> b != <span class='num'>0.0</
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="spec.html">Spec</a>
       <a href="docs/">Docs</a>

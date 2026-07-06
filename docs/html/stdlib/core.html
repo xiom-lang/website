@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — Core Library</title>
+<title>xiom — Core Library</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="../" class="logo">
-      <img src="../" alt="AXIOM">
-      AXIOM
+      <img src="../" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="../spec.html">Spec</a>
@@ -96,79 +96,79 @@
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Core Library</h1>
-      <p>The <code>core</code> module provides fundamental types, interfaces, and operations used throughout the AXIOM standard library. It includes the <code>Option</code> and <code>Result</code> types for error handling, numeric conversions, collection contract predicates, core traits (interfaces), heap allocation via <code>Box</code>, the <code>BinaryHeap</code> priority queue, iterator support, numeric limits, and compile-time type introspection.</p>
+      <p>The <code>core</code> module provides fundamental types, interfaces, and operations used throughout the xiom standard library. It includes the <code>Option</code> and <code>Result</code> types for error handling, numeric conversions, collection contract predicates, core traits (interfaces), heap allocation via <code>Box</code>, the <code>BinaryHeap</code> priority queue, iterator support, numeric limits, and compile-time type introspection.</p>
 <pre><code>
-<span class='kw'>use</span> axiom.core;
+<span class='kw'>use</span> xiom.core;
 </code></pre>
 <hr>
 <h2>Option Type</h2>
-<p>A sum type representing an optional value: either <code>Some(value)</code> or <code>None</code>. Internally represented as a struct with an <code>is_some</code> flag and a <code>value</code> field. Idiomatic AXIOM uses <code>Option</code> for fallible operations that do not need an error payload.</p>
-<pre class="language-axiom"><code>
+<p>A sum type representing an optional value: either <code>Some(value)</code> or <code>None</code>. Internally represented as a struct with an <code>is_some</code> flag and a <code>value</code> field. Idiomatic xiom uses <code>Option</code> for fallible operations that do not need an error payload.</p>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Option</span>[T] = { is_some: <span class='ty'>Bool</span>; value: T; }
 </code></pre>
 <hr>
 <h2>Result Type</h2>
 <p>A sum type representing either success (<code>Ok(value)</code>) or failure (<code>Err(error)</code>). Used for fallible operations where the error carries information. Internally represented as a struct with <code>is_ok</code>, <code>value</code>, and <code>error</code> fields.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Result</span>[T, E] = { is_ok: <span class='ty'>Bool</span>; value: T; error: E; }
 </code></pre>
 <hr>
 <h2>Panic & Assert</h2>
 <h3><code>panic(msg)</code></h3>
 <p>Halts program execution immediately and emits <code>msg</code> as an error message. Compiler-recognized: translates to a trap instruction.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>panic</span>(msg: <span class='ty'>Str</span>);
 </code></pre>
 <h3><code>assert(condition, msg)</code></h3>
 <p>Evaluates <code>condition</code>; if false, calls <code>panic(msg)</code>. Used for runtime invariant checking.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>assert</span>(condition: <span class='ty'>Bool</span>, msg: <span class='ty'>Str</span>);
 </code></pre>
 <h3><code>panic_if(condition, msg)</code></h3>
 <p>Conditionally panics — if <code>condition</code> is true, calls <code>panic(msg)</code>. Useful for guard clauses.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>panic_if</span>(condition: <span class='ty'>Bool</span>, msg: <span class='ty'>Str</span>);
 </code></pre>
 <hr>
 <h2>Numeric Conversions</h2>
 <h3><code>to_int(x)</code></h3>
 <p>Converts a <code>Float64</code> to <code>Int</code>, truncating the fractional part toward zero.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>to_int</span>(x: <span class='ty'>Float64</span>) -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>to_float(x)</code></h3>
 <p>Converts an <code>Int</code> to <code>Float64</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>to_float</span>(x: <span class='ty'>Int</span>) -> <span class='ty'>Float64</span>;
 </code></pre>
 <h3><code>to_string(x)</code></h3>
 <p>Converts an <code>Int</code> to its decimal string representation.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>to_string</span>(x: <span class='ty'>Int</span>) -> <span class='ty'>Str</span>;
 </code></pre>
 <h3><code>to_int_from_str(s)</code></h3>
 <p>Parses a <code>Str</code> as a signed integer. Returns <code>Ok(Int)</code> on success or <code>Err(Str)</code> if the string is not a valid integer.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>to_int_from_str</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>Str</span>];
 </code></pre>
 <h3><code>to_float_from_str(s)</code></h3>
 <p>Parses a <code>Str</code> as a 64-bit floating-point number. Returns <code>Ok(Float64)</code> on success or <code>Err(Str)</code> if parsing fails.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>to_float_from_str</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Float64</span>, <span class='ty'>Str</span>];
 </code></pre>
 <h3><code>to_bool_from_str(s)</code></h3>
 <p>Parses a <code>Str</code> as a boolean (e.g., <code>"true"</code> / <code>"false"</code>). Returns <code>Ok(Bool)</code> on success or <code>Err(Str)</code> if the string is not a valid boolean.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>to_bool_from_str</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Bool</span>, <span class='ty'>Str</span>];
 </code></pre>
 <h3><code>to_char(x)</code></h3>
 <p>Converts an <code>Int</code> code point to its corresponding <code>Char</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>to_char</span>(x: <span class='ty'>Int</span>) -> <span class='ty'>Char</span>;
 </code></pre>
 <h3><code>to_int_from_char(c)</code></h3>
 <p>Converts a <code>Char</code> to its Unicode code point as <code>Int</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>to_int_from_char</span>(c: <span class='ty'>Char</span>) -> <span class='ty'>Int</span>;
 </code></pre>
 <hr>
@@ -176,92 +176,92 @@
 <p>These functions are used inside <code>requires</code>, <code>ensures</code>, and <code>invariant</code> clauses to describe properties of slices and collections.</p>
 <h3><code>is_sorted(items)</code></h3>
 <p>Returns true if the elements in <code>items</code> are in non-decreasing order according to <code>Ord</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> is_sorted[T: <span class='ty'>Ord</span>](items: &<span class='ty'>Slice</span>[T]) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>all(items, predicate)</code></h3>
 <p>Returns true if <code>predicate</code> returns true for every element in <code>items</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> all[T](items: &<span class='ty'>Slice</span>[T], predicate: <span class='func'><span class='kw'>fn</span></span>(T) -> <span class='ty'>Bool</span>) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>none(items, predicate)</code></h3>
 <p>Returns true if <code>predicate</code> returns false for every element in <code>items</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> none[T](items: &<span class='ty'>Slice</span>[T], predicate: <span class='func'><span class='kw'>fn</span></span>(T) -> <span class='ty'>Bool</span>) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>contains(items, value)</code></h3>
 <p>Returns true if any element in <code>items</code> is equal to <code>value</code>. Elements must implement <code>Eq</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> contains[T: <span class='ty'>Eq</span>](items: &<span class='ty'>Slice</span>[T], value: T) -> <span class='ty'>Bool</span>;
 </code></pre>
 <hr>
 <h2>Core Traits (Interfaces)</h2>
 <h3><code>Clone</code></h3>
 <p>Provides a <code>clone()</code> method that returns an independent copy of <code>self</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Clone</span> {
   <span class='kw'>fn</span> <span class='func'>clone</span>() -> <span class='ty'>Self</span>;
 }
 </code></pre>
 <h3><code>Eq</code></h3>
 <p>Provides equality comparison via <code>eq(other)</code>. Implementations must be reflexive, symmetric, and transitive.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Eq</span> {
   <span class='kw'>fn</span> <span class='func'>eq</span>(other: &<span class='ty'>Self</span>) -> <span class='ty'>Bool</span>;
 }
 </code></pre>
 <h3><code>Ord</code></h3>
 <p>Provides total ordering via <code>compare(other)</code>. Returns a negative value if <code>self < other</code>, zero if equal, positive if <code>self > other</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Ord</span> {
   <span class='kw'>fn</span> <span class='func'>compare</span>(other: &<span class='ty'>Self</span>) -> <span class='ty'>Int</span>;
 }
 </code></pre>
 <h3><code>Display</code></h3>
 <p>Provides a human-readable string representation via <code>to_str()</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Display</span> {
   <span class='kw'>fn</span> <span class='func'>to_str</span>() -> <span class='ty'>Str</span>;
 }
 </code></pre>
 <h3><code>Hash</code></h3>
 <p>Provides a hash value via <code>hash()</code> returning a <code>UInt64</code>. Implementations must be deterministic and consistent with <code>Eq</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Hash</span> {
   <span class='kw'>fn</span> <span class='func'>hash</span>() -> <span class='ty'>UInt64</span>;
 }
 </code></pre>
 <h3><code>Add</code></h3>
 <p>Supports addition via <code>add(self, other)</code>, consuming self.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Add</span> {
   <span class='kw'>fn</span> <span class='func'>add</span>(<span class='kw'>self</span>, other: &<span class='ty'>Self</span>) -> <span class='ty'>Self</span>;
 }
 </code></pre>
 <h3><code>Sub</code></h3>
 <p>Supports subtraction via <code>sub(self, other)</code>, consuming self.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Sub</span> {
   <span class='kw'>fn</span> <span class='func'>sub</span>(<span class='kw'>self</span>, other: &<span class='ty'>Self</span>) -> <span class='ty'>Self</span>;
 }
 </code></pre>
 <h3><code>Mul</code></h3>
 <p>Supports multiplication via <code>mul(self, other)</code>, consuming self.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Mul</span> {
   <span class='kw'>fn</span> <span class='func'>mul</span>(<span class='kw'>self</span>, other: &<span class='ty'>Self</span>) -> <span class='ty'>Self</span>;
 }
 </code></pre>
 <h3><code>Div</code></h3>
 <p>Supports division via <code>div(self, other)</code>, consuming self.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Div</span> {
   <span class='kw'>fn</span> <span class='func'>div</span>(<span class='kw'>self</span>, other: &<span class='ty'>Self</span>) -> <span class='ty'>Self</span>;
 }
 </code></pre>
 <h3><code>Iterator[T]</code></h3>
 <p>Defines a sequence of values. Calling <code>next()</code> returns <code>Some(value)</code> for each element and <code>None</code> once exhausted. <code>size_hint()</code> returns a lower bound and optional upper bound on remaining length.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> Iterator[T] {
   <span class='kw'>fn</span> <span class='func'>next</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[T];
   <span class='kw'>fn</span> <span class='func'>size_hint</span>(<span class='kw'>self</span>) -> (<span class='ty'>Int</span>, <span class='ty'>Option</span>[<span class='ty'>Int</span>]);
@@ -269,21 +269,21 @@
 </code></pre>
 <h3><code>IntoIterator[T]</code></h3>
 <p>Converts a collection into an <code>Iterator[T]</code> via <code>into_iter()</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> IntoIterator[T] {
   <span class='kw'>fn</span> <span class='func'>into_iter</span>(<span class='kw'>self</span>) -> Iterator[T];
 }
 </code></pre>
 <h3><code>Default</code></h3>
 <p>Provides a default/zero value for a type via <code>default()</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> Default {
   <span class='kw'>fn</span> <span class='func'>default</span>() -> <span class='ty'>Self</span>;
 }
 </code></pre>
 <h3><code>Drop</code></h3>
 <p>Deterministic cleanup: the compiler calls <code>drop()</code> when a value goes out of scope.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> Drop {
   <span class='kw'>fn</span> <span class='func'>drop</span>(<span class='kw'>self</span>);
 }
@@ -291,145 +291,145 @@
 <hr>
 <h2>Box Type</h2>
 <p>A heap-allocated pointer providing ownership semantics. <code>Box[T]</code> stores a value on the heap and drops it when the <code>Box</code> goes out of scope.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> Box[T] = { ptr: *T; }
 </code></pre>
 <h3><code>Box.new(value)</code></h3>
 <p>Allocates <code>value</code> on the heap and returns a <code>Box[T]</code> owning it.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Box.new[T](value: T) -> Box[T];
 </code></pre>
 <h3><code>Box.get(b)</code></h3>
 <p>Returns an immutable reference to the heap-allocated value.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Box.get[T](b: &Box[T]) -> &T;
 </code></pre>
 <h3><code>Box.drop(b)</code></h3>
 <p>Explicitly drops the <code>Box</code> and deallocates the heap memory. The compiler also calls this automatically when the <code>Box</code> goes out of scope if it implements <code>Drop</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Box.drop[T](b: Box[T]);
 </code></pre>
 <hr>
 <h2>BinaryHeap (Priority Queue)</h2>
 <p>A priority queue implemented as a binary heap. The largest element (according to <code>Ord</code>) is always at the front.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> BinaryHeap[T] = { data: <span class='ty'>Vec</span>[T]; }
 </code></pre>
 <h3><code>BinaryHeap.new()</code></h3>
 <p>Creates an empty binary heap.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BinaryHeap[T: <span class='ty'>Ord</span>].<span class='func'>new</span>() -> BinaryHeap[T];
 </code></pre>
 <h3><code>BinaryHeap.push(value)</code></h3>
 <p>Inserts a value into the heap.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BinaryHeap[T: <span class='ty'>Ord</span>].<span class='func'>push</span>(<span class='kw'>self</span>, value: T);
 </code></pre>
 <h3><code>BinaryHeap.pop()</code></h3>
 <p>Removes and returns the largest element. Returns <code>None</code> if the heap is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BinaryHeap[T: <span class='ty'>Ord</span>].<span class='func'>pop</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>BinaryHeap.peek()</code></h3>
 <p>Returns a reference to the largest element without removing it. Returns <code>None</code> if empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BinaryHeap[T: <span class='ty'>Ord</span>].<span class='func'>peek</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[&T];
 </code></pre>
 <h3><code>BinaryHeap.len()</code></h3>
 <p>Returns the number of elements in the heap.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BinaryHeap[T].<span class='func'>len</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>BinaryHeap.is_empty()</code></h3>
 <p>Returns true if the heap contains no elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BinaryHeap[T].<span class='func'>is_empty</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
 </code></pre>
 <hr>
 <h2>Option Methods</h2>
 <h3><code>Option.unwrap_or(default)</code></h3>
 <p>Returns the inner value if <code>Some</code>, otherwise returns <code>default</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Option</span>[T].<span class='func'>unwrap_or</span>(<span class='kw'>self</span>, default: T) -> T;
 </code></pre>
 <h3><code>Option.unwrap_or_else(f)</code></h3>
 <p>Returns the inner value if <code>Some</code>, otherwise calls <code>f()</code> and returns its result.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Option</span>[T].<span class='func'>unwrap_or_else</span>(<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>() -> T) -> T;
 </code></pre>
 <h3><code>Option.map(f)</code></h3>
 <p>If <code>Some</code>, applies <code>f</code> to the inner value and wraps the result in <code>Some</code>. Returns <code>None</code> if <code>None</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Option</span>[T].map[U](<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>(T) -> U) -> <span class='ty'>Option</span>[U];
 </code></pre>
 <h3><code>Option.and_then(f)</code></h3>
 <p>If <code>Some</code>, applies <code>f</code> to the inner value and returns the <code>Option[U]</code> directly (no double-wrapping). Returns <code>None</code> if <code>None</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Option</span>[T].and_then[U](<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>(T) -> <span class='ty'>Option</span>[U]) -> <span class='ty'>Option</span>[U];
 </code></pre>
 <h3><code>Option.filter(predicate)</code></h3>
 <p>If <code>Some</code> and <code>predicate</code> returns true for the inner value, returns <code>self</code>. Otherwise returns <code>None</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Option</span>[T].<span class='func'>filter</span>(<span class='kw'>self</span>, predicate: <span class='func'><span class='kw'>fn</span></span>(&T) -> <span class='ty'>Bool</span>) -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>Option.is_some_and(predicate)</code></h3>
 <p>Returns true if <code>self</code> is <code>Some</code> and <code>predicate</code> returns true for the inner value.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Option</span>[T].<span class='func'>is_some_and</span>(<span class='kw'>self</span>, predicate: <span class='func'><span class='kw'>fn</span></span>(&T) -> <span class='ty'>Bool</span>) -> <span class='ty'>Bool</span>;
 </code></pre>
 <hr>
 <h2>Result Methods</h2>
 <h3><code>Result.unwrap_or(default)</code></h3>
 <p>Returns the inner value if <code>Ok</code>, otherwise returns <code>default</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Result</span>[T, E].<span class='func'>unwrap_or</span>(<span class='kw'>self</span>, default: T) -> T;
 </code></pre>
 <h3><code>Result.unwrap_or_else(f)</code></h3>
 <p>Returns the inner value if <code>Ok</code>, otherwise calls <code>f</code> with the error and returns its result.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Result</span>[T, E].<span class='func'>unwrap_or_else</span>(<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>(E) -> T) -> T;
 </code></pre>
 <h3><code>Result.map(f)</code></h3>
 <p>If <code>Ok</code>, applies <code>f</code> to the inner value and returns <code>Ok(result)</code>. Returns <code>Err(error)</code> unchanged.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Result</span>[T, E].map[U](<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>(T) -> U) -> <span class='ty'>Result</span>[U, E];
 </code></pre>
 <h3><code>Result.map_err(f)</code></h3>
 <p>If <code>Err</code>, applies <code>f</code> to the error value and returns <code>Err(new_error)</code>. Returns <code>Ok(value)</code> unchanged.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Result</span>[T, E].map_err[F](<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>(E) -> F) -> <span class='ty'>Result</span>[T, F];
 </code></pre>
 <h3><code>Result.and_then(f)</code></h3>
 <p>If <code>Ok</code>, applies <code>f</code> to the inner value and returns the <code>Result[U, E]</code> directly. Returns <code>Err(error)</code> unchanged.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Result</span>[T, E].and_then[U](<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>(T) -> <span class='ty'>Result</span>[U, E]) -> <span class='ty'>Result</span>[U, E];
 </code></pre>
 <h3><code>Result.expect(msg)</code></h3>
 <p>Returns the inner value if <code>Ok</code>, otherwise calls <code>panic(msg)</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Result</span>[T, E].<span class='func'>expect</span>(<span class='kw'>self</span>, msg: <span class='ty'>Str</span>) -> T;
 </code></pre>
 <h3><code>Result.is_ok_and(predicate)</code></h3>
 <p>Returns true if <code>self</code> is <code>Ok</code> and <code>predicate</code> returns true for the inner value.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Result</span>[T, E].<span class='func'>is_ok_and</span>(<span class='kw'>self</span>, predicate: <span class='func'><span class='kw'>fn</span></span>(&T) -> <span class='ty'>Bool</span>) -> <span class='ty'>Bool</span>;
 </code></pre>
 <hr>
 <h2>Type-Level Operations</h2>
 <h3><code>size_of[T]()</code></h3>
 <p>Returns the size (in bytes) of type <code>T</code> as determined by the compiler.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> size_of[T]() -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>align_of[T]()</code></h3>
 <p>Returns the alignment requirement (in bytes) of type <code>T</code> as determined by the compiler.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> align_of[T]() -> <span class='ty'>Int</span>;
 </code></pre>
 <hr>
 <h2>Numeric Limits</h2>
 <p>Compile-time constants representing the minimum and maximum values of built-in numeric types.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>const</span> INT_MAX: <span class='ty'>Int</span>;
 <span class='kw'>const</span> INT_MIN: <span class='ty'>Int</span>;
 <span class='kw'>const</span> FLOAT64_MAX: <span class='ty'>Float64</span>;
@@ -469,7 +469,7 @@
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="../" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>

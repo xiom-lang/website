@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — AXIOM Concepts — For Programmers from Other Languages</title>
+<title>xiom — xiom Concepts — For Programmers from Other Languages</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="" class="logo">
-      <img src="" alt="AXIOM">
-      AXIOM
+      <img src="" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="spec.html">Spec</a>
@@ -95,14 +95,14 @@
 
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">AXIOM Concepts — For Programmers from Other Languages</h1>
-      <blockquote><p><strong>You already know how to program.</strong> This guide maps the concepts you know to how they work in AXIOM. No fluff. Just translations.</p></blockquote>
+      <h1 style="font-size:36px;margin-bottom:24px;">xiom Concepts — For Programmers from Other Languages</h1>
+      <blockquote><p><strong>You already know how to program.</strong> This guide maps the concepts you know to how they work in xiom. No fluff. Just translations.</p></blockquote>
 <hr>
 <h2>If You're Coming From...</h2>
 <table>
 <tr>
 <th>Language</th>
-<th>Closest mental model to AXIOM</th>
+<th>Closest mental model to xiom</th>
 </tr>
 <tr>
 <td><strong>Rust</strong></td>
@@ -131,7 +131,7 @@
 </table>
 <hr>
 <h2>1. No Null — Option[T] Instead</h2>
-<p>Every language has null. AXIOM doesn't.</p>
+<p>Every language has null. xiom doesn't.</p>
 <table>
 <tr>
 <th>Language</th>
@@ -150,11 +150,11 @@
 <td><code>Option<T></code> — compiler enforces handling</td>
 </tr>
 <tr>
-<td><strong>AXIOM</strong></td>
+<td><strong>xiom</strong></td>
 <td><strong><code>Option[T]</code> — compiler enforces handling</strong></td>
 </tr>
 </table>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Instead of:  String name = null;</span>
 <span class='kw'>let</span> name: <span class='ty'>Option</span>[<span class='ty'>Str</span>] = <span class='kw'>None</span>;
 
@@ -167,7 +167,7 @@
 <p>You cannot accidentally use <code>None</code> as a value. The compiler rejects it.</p>
 <hr>
 <h2>2. No Exceptions — Result[T, E] Instead</h2>
-<p>Every language has exceptions. AXIOM doesn't.</p>
+<p>Every language has exceptions. xiom doesn't.</p>
 <table>
 <tr>
 <th>Language</th>
@@ -190,11 +190,11 @@
 <td><code>Result<T, E></code> + <code>?</code> — explicit, clean</td>
 </tr>
 <tr>
-<td><strong>AXIOM</strong></td>
+<td><strong>xiom</strong></td>
 <td><strong><code>Result<T, E></code> + <code>?</code> — explicit, clean</strong></td>
 </tr>
 </table>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Instead of:  throw new IOException(<span class='str'>file not found</span>);</span>
 <span class='kw'>fn</span> <span class='func'>read_config</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[Config, <span class='ty'>Str</span>] {
   <span class='kw'>let</span> file = io.<span class='func'>read_file</span>(path)?;    <span class='cm'>// ? returns the error immediately</span>
@@ -233,11 +233,11 @@
 <td>Ownership + borrow checker + lifetimes — powerful but complex</td>
 </tr>
 <tr>
-<td><strong>AXIOM</strong></td>
+<td><strong>xiom</strong></td>
 <td><strong>Ownership + lexical scope borrowing — same safety, no lifetimes</strong></td>
 </tr>
 </table>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// A value has ONE owner. Assignment moves ownership.</span>
 <span class='kw'>let</span> a = <span class='ty'>Vec</span>.<span class='func'>new</span>();
 <span class='kw'>let</span> b = a;       <span class='cm'>// a MOVED to b — a <span class='kw'>is</span> now invalid</span>
@@ -253,11 +253,11 @@
 <p><strong>The key difference from Rust:</strong> No lifetime annotations. Ever. Borrows expire at the end of the block where they're created. You can see when a borrow ends by looking at the braces.</p>
 <hr>
 <h2>4. Structs + Methods — No Classes, No Inheritance</h2>
-<p>AXIOM has no <code>class</code>, no <code>extends</code>, no <code>implements</code>, no <code>virtual</code>, no <code>override</code>, no <code>protected</code>. Here's what you use instead:</p>
+<p>xiom has no <code>class</code>, no <code>extends</code>, no <code>implements</code>, no <code>virtual</code>, no <code>override</code>, no <code>protected</code>. Here's what you use instead:</p>
 <table>
 <tr>
 <th>OOP Concept</th>
-<th>AXIOM Equivalent</th>
+<th>xiom Equivalent</th>
 </tr>
 <tr>
 <td><code>class</code></td>
@@ -304,7 +304,7 @@
 <td>Direct field access. Use methods for logic.</td>
 </tr>
 </table>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Instead of:  class <span class='ty'>Point</span> { private float x; public float <span class='func'>getX</span>()... }</span>
 <span class='kw'>type</span> <span class='ty'>Point</span> = {
   x: <span class='ty'>Float64</span>;               <span class='cm'>// private by default</span>
@@ -320,8 +320,8 @@
 </code></pre>
 <hr>
 <h2>5. Polymorphism — Structural Interfaces</h2>
-<p>AXIOM has no inheritance. Polymorphism works through <strong>structural interfaces</strong> — if a type has the required methods, it satisfies the interface. No declaration needed.</p>
-<pre class="language-axiom"><code>
+<p>xiom has no inheritance. Polymorphism works through <strong>structural interfaces</strong> — if a type has the required methods, it satisfies the interface. No declaration needed.</p>
+<pre class="language-xiom"><code>
 <span class='cm'>// Define what <span class='str'>comparable</span> means</span>
 <span class='kw'>interface</span> <span class='ty'>Comparable</span> {
   <span class='kw'>fn</span> <span class='func'>compare</span>(other: &<span class='ty'>Self</span>) -> <span class='ty'>Int</span>;  <span class='cm'>// -<span class='num'>1</span>, <span class='num'>0</span>, <span class='num'>1</span></span>
@@ -346,9 +346,9 @@
 </code></pre>
 <p>This is Go's interface model. It's also how Python's duck typing works, except compile-time verified.</p>
 <hr>
-<h2>6. Contracts — Unique to AXIOM</h2>
-<p>No mainstream language has contracts as compiler-enforced specifications. This is AXIOM's defining feature.</p>
-<pre class="language-axiom"><code>
+<h2>6. Contracts — Unique to xiom</h2>
+<p>No mainstream language has contracts as compiler-enforced specifications. This is xiom's defining feature.</p>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
   <span class='kw'>requires</span>: b != <span class='num'>0.0</span>           <span class='cm'>// PRE-CONDITION: caller must guarantee this</span>
   <span class='kw'>ensures</span>:  <span class='kw'>result</span> * b == a    <span class='cm'>// POST-CONDITION: implementation must guarantee this</span>
@@ -410,11 +410,11 @@
 <td><code>pub</code> — everything private by default</td>
 </tr>
 <tr>
-<td><strong>AXIOM</strong></td>
+<td><strong>xiom</strong></td>
 <td><strong><code>pub</code> — everything private by default</strong></td>
 </tr>
 </table>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>module</span> myproject.data;
 
 <span class='kw'>pub</span> <span class='kw'>type</span> User = {              <span class='cm'>// visible outside this <span class='kw'>module</span></span>
@@ -455,11 +455,11 @@
 <td>Monomorphised — zero-cost, checked at definition</td>
 </tr>
 <tr>
-<td><strong>AXIOM</strong></td>
+<td><strong>xiom</strong></td>
 <td><strong>Monomorphised — zero-cost, checked at definition</strong></td>
 </tr>
 </table>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Instead of:  template<typename T> T <span class='func'>max</span>(T a, T b) { <span class='kw'>return</span> a > b ? a : b; }</span>
 <span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -> T {
   <span class='kw'>if</span> a > b { <span class='kw'>return</span> a; }
@@ -474,7 +474,7 @@
 <p>The <code>[T: Comparable]</code> constraint means: "T must have a <code>compare</code> method." The compiler checks this before generating code. No template-instantiation-error soup.</p>
 <hr>
 <h2>9. Pattern Matching — Like switch, But Exhaustive</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Instead of:  <span class='func'>switch</span>(value) { case <span class='num'>1</span>: ... break; default: ... }</span>
 <span class='kw'>match</span> value {
   <span class='kw'>Some</span>(v) => io.<span class='func'>println</span>(<span class='str'>got </span> + v.<span class='func'>to_str</span>()),
@@ -492,8 +492,8 @@
 <p>The compiler forces you to handle <strong>every</strong> variant. Missing a case is a compile error. This eliminates an entire class of runtime bugs.</p>
 <hr>
 <h2>10. Async — Like async/await, With Channels</h2>
-<pre class="language-axiom"><code>
-<span class='kw'>use</span> axiom.<span class='kw'>async</span>;
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.<span class='kw'>async</span>;
 
 <span class='cm'>// Instead of:  <span class='kw'>async</span> function <span class='func'>fetch</span>() { <span class='kw'>const</span> r = <span class='kw'>await</span> http.<span class='func'>get</span>(url); }</span>
 <span class='kw'>async</span> <span class='kw'>fn</span> <span class='func'>fetch</span>(url: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>NetError</span>] {
@@ -515,7 +515,7 @@
 <table>
 <tr>
 <th>Other Language</th>
-<th>AXIOM</th>
+<th>xiom</th>
 </tr>
 <tr>
 <td><code>async function</code> / <code>async fn</code></td>
@@ -541,7 +541,7 @@
 <hr>
 <h2>11. Compile-Time Code — comptime</h2>
 <p>No preprocessor. No macros. No templates. One keyword: <code>comptime</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Evaluated at compile time — zero runtime cost</span>
 <span class='kw'>let</span> size = <span class='kw'>comptime</span> <span class='func'>expensive_computation</span>();
 
@@ -551,7 +551,7 @@
 <p><code>comptime</code> is Zig's model — any expression can be marked compile-time. This is how generics, reflection, and specialization all work. One mechanism.</p>
 <hr>
 <h2>12. C FFI — Call Any C Library</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>extern</span> <span class='str'>C</span> {
   <span class='kw'>fn</span> <span class='func'>malloc</span>(size: <span class='ty'>UInt</span>) -> *<span class='ty'>UInt8</span>;
   <span class='kw'>fn</span> <span class='func'>free</span>(ptr: *<span class='ty'>UInt8</span>);
@@ -564,7 +564,7 @@
   <span class='kw'>unsafe</span> { <span class='kw'>return</span> <span class='func'>malloc</span>(size); }
 }
 </code></pre>
-<p>AXIOM does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS — all accessed through FFI with contract-verified preconditions.</p>
+<p>xiom does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS — all accessed through FFI with contract-verified preconditions.</p>
 <hr>
 <h2>Quick Comparison Table</h2>
 <table>
@@ -575,7 +575,7 @@
 <th>Python</th>
 <th>Rust</th>
 <th>Go</th>
-<th><strong>AXIOM</strong></th>
+<th><strong>xiom</strong></th>
 </tr>
 <tr>
 <td>Absence</td>
@@ -687,7 +687,7 @@
 </tr>
 </table>
 <hr>
-<h2>What AXIOM Does NOT Have (On Purpose)</h2>
+<h2>What xiom Does NOT Have (On Purpose)</h2>
 <table>
 <tr>
 <th>Feature</th>
@@ -741,7 +741,7 @@
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="spec.html">Spec</a>
       <a href="docs/">Docs</a>
