@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — C FFI (Foreign Function Interface)</title>
+<title>xiom — C FFI (Foreign Function Interface)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="" class="logo">
-      <img src="" alt="AXIOM">
-      AXIOM
+      <img src="" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="spec.html">Spec</a>
@@ -96,10 +96,10 @@
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
       <h1 style="font-size:36px;margin-bottom:24px;">C FFI (Foreign Function Interface)</h1>
-      <p>AXIOM has zero-cost C interoperability. C functions and types are declared in <code>extern</code> blocks. The compiler generates no wrapper code. C ABI calling conventions are used directly.</p>
+      <p>xiom has zero-cost C interoperability. C functions and types are declared in <code>extern</code> blocks. The compiler generates no wrapper code. C ABI calling conventions are used directly.</p>
 <p><code>unsafe</code> is required because the compiler cannot verify C memory safety.</p>
 <h2>Extern Blocks</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>extern</span> <span class='str'>C</span> {
   <span class='kw'>fn</span> <span class='func'>malloc</span>(size: <span class='ty'>UInt</span>) -> *<span class='ty'>UInt8</span>
   <span class='kw'>fn</span> <span class='func'>free</span>(ptr: *<span class='ty'>UInt8</span>)
@@ -108,7 +108,7 @@
 }
 </code></pre>
 <h2>Calling C Functions</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>c_string_length</span>(ptr: *<span class='ty'>UInt8</span>) -> <span class='ty'>UInt</span> {
   <span class='kw'>unsafe</span> { <span class='kw'>return</span> <span class='func'>strlen</span>(ptr); }
 }
@@ -119,7 +119,7 @@
 </code></pre>
 <h2>Raw Pointers</h2>
 <p>Raw pointers (<code>*T</code>) are only usable inside <code>unsafe</code> blocks. They cannot be dereferenced in safe code.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>unsafe</span> {
   <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>some_c_function</span>();
   <span class='kw'>let</span> value = *raw;   <span class='cm'>// dereference — programmer guarantees validity</span>
@@ -127,8 +127,8 @@
 }
 </code></pre>
 <h2>Safe Wrappers</h2>
-<p>The recommended pattern is to wrap C libraries with safe AXIOM interfaces that add contracts:</p>
-<pre class="language-axiom"><code>
+<p>The recommended pattern is to wrap C libraries with safe xiom interfaces that add contracts:</p>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>safe_alloc</span>(size: <span class='ty'>UInt</span>) -> <span class='ty'>Option</span>[*<span class='ty'>UInt8</span>]
   <span class='kw'>requires</span>: size > <span class='num'>0</span>
 {
@@ -149,7 +149,7 @@
 <table>
 <tr>
 <th>C Type</th>
-<th>AXIOM Type</th>
+<th>xiom Type</th>
 </tr>
 <tr>
 <td><code>int</code></td>
@@ -189,20 +189,20 @@
 </tr>
 </table>
 <h2>C-ABI Export</h2>
-<p>AXIOM functions can be exported with C ABI for consumption from other languages:</p>
-<pre class="language-axiom"><code>
-<span class='kw'>extern</span> <span class='str'>C</span> <span class='kw'>fn</span> <span class='func'>axiom_add</span>(a: <span class='ty'>Int32</span>, b: <span class='ty'>Int32</span>) -> <span class='ty'>Int32</span> {
+<p>xiom functions can be exported with C ABI for consumption from other languages:</p>
+<pre class="language-xiom"><code>
+<span class='kw'>extern</span> <span class='str'>C</span> <span class='kw'>fn</span> <span class='func'>xiom_add</span>(a: <span class='ty'>Int32</span>, b: <span class='ty'>Int32</span>) -> <span class='ty'>Int32</span> {
   <span class='kw'>return</span> a + b;
 }
 </code></pre>
 <p>This compiles to a standard C-callable symbol that can be linked from Rust, Python, or any language with C FFI.</p>
 <h2>Strategy</h2>
-<p>AXIOM does not rewrite C libraries. It wraps them with safe interfaces and contract-verified preconditions:</p>
+<p>xiom does not rewrite C libraries. It wraps them with safe interfaces and contract-verified preconditions:</p>
 <table>
 <tr>
 <th>Library</th>
 <th>C LOC</th>
-<th>AXIOM Wrapper LOC</th>
+<th>xiom Wrapper LOC</th>
 </tr>
 <tr>
 <td>SQLite</td>
@@ -220,11 +220,11 @@
 <td>~150</td>
 </tr>
 </table>
-<p>The C library provides battle-tested implementation. The AXIOM wrapper adds contracts and type safety.</p>
+<p>The C library provides battle-tested implementation. The xiom wrapper adds contracts and type safety.</p>
 <h2>FFI Best Practices</h2>
 <ul>
 <li><strong>Always use <code>unsafe</code> blocks</strong> — never call C functions outside <code>unsafe { }</code>.</li>
-<li><strong>Wrap with safe functions</strong> — expose a safe AXIOM interface with contracts.</li>
+<li><strong>Wrap with safe functions</strong> — expose a safe xiom interface with contracts.</li>
 <li><strong>Validate at the boundary</strong> — check pointer validity, buffer sizes, and nullability.</li>
 <li><strong>Auto-infer contracts from C headers</strong> — planned Phase 3 feature for mechanical binding generation.</li>
 </ul>
@@ -235,7 +235,7 @@
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="spec.html">Spec</a>
       <a href="docs/">Docs</a>

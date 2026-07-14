@@ -13,7 +13,7 @@
 
 ### What We Don't Bless
 
-Axiom explicitly does NOT bless a single solution for:
+xiom explicitly does NOT bless a single solution for:
 - **HTTP server frameworks** — let the ecosystem compete (Axum/Actix equivalents)
 - **ORM / query builders** — too tied to database choice
 - **GUI framework** — platform-fragmented, use Dear ImGui via FFI
@@ -32,8 +32,8 @@ Axiom explicitly does NOT bless a single solution for:
 | `xiom:redis` | 🚧 Community | hiredis FFI bindings |
 | `xiom:rocksdb` | 📋 Planned | RocksDB C FFI |
 | `xiom:sled` | 📋 Community | Pure XIOM embedded DB |
-| AxiomDB (KV store) | 📋 Gated | Requires full self-hosting |
-| AxiomVDB (vector DB) | 📋 Gated | Requires AxiomDB |
+| xiomDB (KV store) | 📋 Gated | Requires full self-hosting |
+| xiomVDB (vector DB) | 📋 Gated | Requires xiomDB |
 
 ### Networking & HTTP
 

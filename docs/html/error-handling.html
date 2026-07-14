@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — Error Handling</title>
+<title>xiom — Error Handling</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="" class="logo">
-      <img src="" alt="AXIOM">
-      AXIOM
+      <img src="" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="spec.html">Spec</a>
@@ -96,15 +96,15 @@
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Error Handling</h1>
-      <p>AXIOM has no exceptions. Functions that can fail return <code>Result[T, E]</code>. Absence of a value is expressed through <code>Option[T]</code>. The compiler enforces exhaustive handling of both at every use site.</p>
+      <p>xiom has no exceptions. Functions that can fail return <code>Result[T, E]</code>. Absence of a value is expressed through <code>Option[T]</code>. The compiler enforces exhaustive handling of both at every use site.</p>
 <h2>Result Type</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>parse_int</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>ParseError</span>] {
   <span class='cm'>// ...</span>
 }
 </code></pre>
 <p><code>E</code> in <code>Result[T, E]</code> is <strong>any type</strong>. No <code>Error</code> interface is required. The standard library provides a <code>StdError</code> interface for its own functions. Library authors are free to use any error type.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// All valid</span>
 <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>Str</span>]
 <span class='ty'>Result</span>[Config, <span class='ty'>IOError</span>]
@@ -112,8 +112,8 @@
 </code></pre>
 <h2>The <code>?</code> Operator</h2>
 <p>The <code>?</code> operator returns the error from the current function if the <code>Result</code> is <code>Err</code>. It is syntactic sugar for an explicit match that returns the error.</p>
-<pre class="language-axiom"><code>
-<span class='kw'>use</span> axiom.io;
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.io;
 
 <span class='kw'>fn</span> <span class='func'>load_config</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[Config, <span class='ty'>AppError</span>] {
   <span class='kw'>let</span> file   = io.<span class='func'>read_file</span>(path)?;     <span class='cm'>// returns <span class='kw'>Err</span> on failure</span>
@@ -124,8 +124,8 @@
 <p><code>?</code> can only appear inside a function that returns <code>Result</code>.</p>
 <h2>Match Exhaustion</h2>
 <p>Every <code>match</code> expression must cover all cases. The compiler rejects non-exhaustive matches.</p>
-<pre class="language-axiom"><code>
-<span class='kw'>use</span> axiom.io;
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.io;
 
 <span class='kw'>match</span> <span class='func'>parse_int</span>(<span class='str'><span class='num'>42</span></span>) {
   <span class='kw'>Ok</span>(n)  => io.<span class='func'>print</span>(n.<span class='func'>to_str</span>()),
@@ -141,14 +141,14 @@
 }
 </code></pre>
 <p>Use <code>_</code> as a wildcard to cover remaining cases:</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>match</span> value {
   <span class='kw'>Some</span>(v) => <span class='func'>process</span>(v),
   _       => {}  <span class='cm'>// handle all other cases</span>
 }
 </code></pre>
 <h2>Option Type</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>let</span> val: <span class='ty'>Option</span>[<span class='ty'>Int</span>] = <span class='kw'>Some</span>(<span class='num'>10</span>);
 
 <span class='cm'>// Unwrap with default</span>
@@ -164,7 +164,7 @@
 <span class='kw'>let</span> n = val?;
 </code></pre>
 <h2>Constructors</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// <span class='ty'>Option</span></span>
 <span class='kw'>let</span> present = <span class='kw'>Some</span>(<span class='num'>42</span>);
 <span class='kw'>let</span> absent: <span class='ty'>Option</span>[<span class='ty'>Int</span>] = <span class='kw'>None</span>;
@@ -198,7 +198,7 @@ error[E0401]: non-exhaustive <span class='kw'>match</span>
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="spec.html">Spec</a>
       <a href="docs/">Docs</a>

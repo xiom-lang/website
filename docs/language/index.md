@@ -19,7 +19,7 @@
 | [Derive](derive.md) | Compiler-generated Eq, Clone, Display, Hash, Ord |
 | [C FFI](ffi.md) | Zero-cost C interoperability, extern blocks, unsafe |
 | [Compiler](compiler.md) | Pipeline overview, CLI flags, build targets, WASM |
-| [Standard Library](stdlib.md) | Complete API reference for all 39 stdlib modules |
+| [Standard Library](stdlib.md) | Complete API reference for all 40 stdlib modules |
 | [AI Coding Reference](../AI_CONTEXT.md) | Single-file AI prompt — inject into any LLM to enable XIOM code generation |
 
 ## Language Overview
@@ -107,7 +107,8 @@ For a complete list of planned and in-progress packages, see the [Expansion Road
 | Phase 1.5 | v0.2.5 "Hardened" | Released — 13 bug fixes, 109 tests |
 | Phase 2 | v0.4.0 "Mirror" | Released — self-host compiler, 124 tests |
 | Phase 2C | v0.10.0 "Sovereign" | Released — production self-hosting, 208 tests |
-| Phase 2C+ | v0.12.0 "Production" | **Current** — 234 tests, WASM playground |
+| Phase 2C+ | v0.12.0 "Production" | Released — 234 tests, WASM playground |
+| Phase 2C+ | v0.13.0 "Production" | **Current** — 234 tests, WASM playground, production-grade stdlib (40 modules, 374 contracts) |
 | Phase 2C | v0.11.0 "Self-Hosted" | Released — full self-hosting, 213 tests |
 
 See [Compiler Version History](compiler.md#version-history) for the full changelog.

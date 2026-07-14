@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — AXIOM — AI Coding Reference</title>
+<title>xiom — xiom — AI Coding Reference</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="../" class="logo">
-      <img src="../" alt="AXIOM">
-      AXIOM
+      <img src="../" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="../spec.html">Spec</a>
@@ -95,15 +95,15 @@
 
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">**Version:** v0.16.0 | **Tests:** 234 passing | **Status:** Self-hosted compiler</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">AXIOM — AI Coding Reference</h1>
-      <blockquote><p><strong>Purpose:</strong> Feed this document into any LLM context window to enable correct AXIOM code generation.</p></blockquote>
+      <h1 style="font-size:36px;margin-bottom:24px;">xiom — AI Coding Reference</h1>
+      <blockquote><p><strong>Purpose:</strong> Feed this document into any LLM context window to enable correct xiom code generation.</p></blockquote>
 <blockquote><p><strong>Version:</strong> v0.16.0 | <strong>Tests:</strong> 234 passing | <strong>Status:</strong> Self-hosted compiler</p></blockquote>
 <blockquote><p></p></blockquote>
-<blockquote><p>This document is the single source of truth for AI-generated AXIOM code.</p></blockquote>
+<blockquote><p>This document is the single source of truth for AI-generated xiom code.</p></blockquote>
 <blockquote><p>Every rule stated here is enforced by the compiler. No exceptions.</p></blockquote>
 <hr>
 <h2>1. Language Identity</h2>
-<p>AXIOM is a compiled, statically typed, memory-safe systems language.</p>
+<p>xiom is a compiled, statically typed, memory-safe systems language.</p>
 <pre><code>
 Pipeline: .ax → Lexer → Parser → Type Checker → Borrow Checker → LLVM IR → clang → binary
 </code></pre>
@@ -122,7 +122,7 @@ Pipeline: .ax → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <td>One canonical form per construct. No implicit coercions, hidden allocations, or surprising control flow.</td>
 </tr>
 </table>
-<p><strong>What AXIOM rejects:</strong></p>
+<p><strong>What xiom rejects:</strong></p>
 <ul>
 <li>No <code>null</code> / <code>nil</code> / <code>undefined</code>. Use <code>Option[T]</code>.</li>
 <li>No exceptions. Use <code>Result[T, E]</code>.</li>
@@ -134,10 +134,10 @@ Pipeline: .ax → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <hr>
 <h2>2. Complete Syntax Rules</h2>
 <h3>2.1 Variables</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>           <span class='cm'>// immutable — cannot be reassigned</span>
 <span class='kw'>var</span> y: <span class='ty'>Float64</span> = <span class='num'>3.14</span>     <span class='cm'>// mutable — can be reassigned with =</span>
-<span class='kw'>let</span> name = <span class='str'>AXIOM</span>        <span class='cm'>// <span class='kw'>type</span> inferred — <span class='ty'>Str</span></span>
+<span class='kw'>let</span> name = <span class='str'>xiom</span>        <span class='cm'>// <span class='kw'>type</span> inferred — <span class='ty'>Str</span></span>
 <span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>]         <span class='cm'>// <span class='kw'>type</span> inferred — <span class='ty'>Vec</span>[<span class='ty'>Int</span>]</span>
 </code></pre>
 <p><strong>Rules:</strong></p>
@@ -148,7 +148,7 @@ Pipeline: .ax → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <li>Every statement MUST end with <code>;</code>. The last expression in a block (tail expression) does NOT.</li>
 </ul>
 <h3>2.2 Functions</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>add</span>(a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>) -> <span class='ty'>Int</span> {
   <span class='kw'>return</span> a + b;
 }
@@ -175,7 +175,7 @@ Pipeline: .ax → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <li>Functions are not first-class values for assignment. Use closures.</li>
 </ul>
 <h3>2.3 Methods</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ty'>Vec3</span> = { x: <span class='ty'>Float32</span>; y: <span class='ty'>Float32</span>; z: <span class='ty'>Float32</span>; }
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(other: &<span class='ty'>Vec3</span>) -> <span class='ty'>Float32</span> {
@@ -195,7 +195,7 @@ Pipeline: .ax → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <li>Methods are defined OUTSIDE the type declaration, in the same module.</li>
 </ul>
 <h3>2.4 Control Flow</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>if</span> x > <span class='num'>0</span> {
   <span class='kw'>return</span> <span class='num'>1</span>;
 } <span class='kw'>elif</span> x < <span class='num'>0</span> {
@@ -231,7 +231,7 @@ Pipeline: .ax → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <li>Match arms that are blocks need no separator. Single-expression arms end with <code>,</code>.</li>
 </ul>
 <h3>2.5 Expressions</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Literals</span>
 <span class='num'>42</span>              <span class='cm'>// <span class='ty'>Int</span></span>
 100_000         <span class='cm'>// <span class='ty'>Int</span> with separators</span>
@@ -405,7 +405,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </tr>
 </table>
 <h3>3.2 Compound Types</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='ty'>Option</span>[T]        <span class='cm'>// <span class='kw'>Some</span>(value) | <span class='kw'>None</span></span>
 <span class='ty'>Result</span>[T, E]     <span class='cm'>// <span class='kw'>Ok</span>(value) | <span class='kw'>Err</span>(error)</span>
 <span class='ty'>Vec</span>[T]           <span class='cm'>// Heap-allocated growable array</span>
@@ -418,7 +418,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 &mut T           <span class='cm'>// Write borrow</span>
 </code></pre>
 <h3>3.3 Structs</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Point</span> = {
   x: <span class='ty'>Float64</span>;
   y: <span class='ty'>Float64</span>;
@@ -432,7 +432,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <li><code>invariant</code> clauses apply after every mutation.</li>
 </ul>
 <h3>3.4 Enums</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>enum</span> <span class='ty'>Option</span>[T] { <span class='kw'>Some</span>(value: T), <span class='kw'>None</span> }
 <span class='kw'>enum</span> AgentState {
   Idle,
@@ -448,7 +448,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <li>Trailing commas allowed.</li>
 </ul>
 <h3>3.5 Interfaces</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Comparable</span> {
   <span class='kw'>fn</span> <span class='func'>compare</span>(other: &<span class='ty'>Self</span>) -> <span class='ty'>Int</span>;  <span class='cm'>// -<span class='num'>1</span>, <span class='num'>0</span>, <span class='num'>1</span></span>
 }
@@ -460,7 +460,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <li>Interface methods in the declaration end with <code>;</code> (no body).</li>
 </ul>
 <h3>3.6 Generics</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Type constraint inline on parameter</span>
 <span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -> T { ... }
 
@@ -515,7 +515,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </table>
 <h3>4.2 Borrow Scope</h3>
 <p>Borrows expire at end of block or statement. Visible by braces.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>consume</span>(v: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }           <span class='cm'>// takes ownership</span>
 <span class='kw'>fn</span> <span class='func'>read</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }             <span class='cm'>// read borrow</span>
 <span class='kw'>fn</span> <span class='func'>write</span>(v: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }        <span class='cm'>// write borrow</span>
@@ -538,7 +538,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <li>✅ Return owned type, not borrow</li>
 </ul>
 <h3>4.4 Unsafe</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>unsafe</span> {
   <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>some_c_function</span>();
   <span class='kw'>let</span> value = *raw;
@@ -581,7 +581,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </tr>
 </table>
 <h3>5.2 Examples</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
   <span class='kw'>requires</span>: b != <span class='num'>0.0</span>
   <span class='kw'>ensures</span>:  <span class='kw'>result</span> * b == a
@@ -655,7 +655,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </table>
 <hr>
 <h2>6. Error Handling</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// <span class='ty'>Result</span> <span class='kw'>type</span></span>
 <span class='kw'>fn</span> <span class='func'>parse</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>ParseError</span>] { ... }
 
@@ -684,13 +684,13 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </ul>
 <hr>
 <h2>7. Module System</h2>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>module</span> myproject.math     <span class='cm'>// declare <span class='func'><span class='kw'>module</span></span>(must be first line of file)</span>
 
-<span class='kw'>use</span> axiom.io;             <span class='cm'>// import <span class='kw'>module</span></span>
-<span class='kw'>use</span> axiom.collections.<span class='ty'>Vec</span>;     <span class='cm'>// import single <span class='kw'>type</span></span>
-<span class='kw'>use</span> axiom.collections.<span class='ty'>Vec</span> <span class='kw'>as</span> V; <span class='cm'>// alias</span>
-<span class='kw'>use</span> axiom.collections.*;        <span class='cm'>// glob <span class='func'>import</span>(discouraged)</span>
+<span class='kw'>use</span> xiom.io;             <span class='cm'>// import <span class='kw'>module</span></span>
+<span class='kw'>use</span> xiom.collections.<span class='ty'>Vec</span>;     <span class='cm'>// import single <span class='kw'>type</span></span>
+<span class='kw'>use</span> xiom.collections.<span class='ty'>Vec</span> <span class='kw'>as</span> V; <span class='cm'>// alias</span>
+<span class='kw'>use</span> xiom.collections.*;        <span class='cm'>// glob <span class='func'>import</span>(discouraged)</span>
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>public_api</span>() { }   <span class='cm'>// visible outside <span class='kw'>module</span></span>
 <span class='kw'>fn</span> <span class='func'>private_helper</span>() { }   <span class='cm'>// <span class='kw'>module</span>-<span class='func'>private</span>(default)</span>
@@ -704,7 +704,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </ul>
 <hr>
 <h2>8. Standard Library Quick Reference</h2>
-<p>43 modules. Import with <code>use axiom.<module></code>. Full reference at <code>docs/language/stdlib.md</code>.</p>
+<p>43 modules. Import with <code>use xiom.<module></code>. Full reference at <code>docs/language/stdlib.md</code>.</p>
 <h3>All Modules</h3>
 <table>
 <tr>
@@ -869,7 +869,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </tr>
 </table>
 <h3>C FFI</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>extern</span> <span class='str'>C</span> {
   <span class='kw'>fn</span> <span class='func'>malloc</span>(size: <span class='ty'>UInt</span>) -> *<span class='ty'>UInt8</span>;
   <span class='kw'>fn</span> <span class='func'>free</span>(ptr: *<span class='ty'>UInt8</span>);
@@ -883,7 +883,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <hr>
 <h2>9. Code Patterns & Best Practices</h2>
 <h3>9.1 Return Early Pattern</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>process</span>(data: <span class='ty'>Option</span>[Data]) -> <span class='ty'>Result</span>[Output, <span class='ty'>AppError</span>] {
   <span class='kw'>match</span> data {
     <span class='kw'>None</span> => <span class='kw'>return</span> <span class='kw'>Err</span>(<span class='ty'>AppError</span>{ message: <span class='str'>no data</span> }),
@@ -895,7 +895,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 }
 </code></pre>
 <h3>9.2 Ownership-Safe Patterns</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// BAD: borrow returned from function ❌</span>
 <span class='kw'>fn</span> <span class='func'>get_ref</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) -> &<span class='ty'>Int</span> {
   <span class='kw'>return</span> &v[<span class='num'>0</span>];   <span class='cm'>// COMPILE ERROR: cannot <span class='kw'>return</span> borrow</span>
@@ -917,7 +917,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 }
 </code></pre>
 <h3>9.3 Contract-Driven Design</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Write contracts BEFORE implementation</span>
 <span class='kw'>fn</span> <span class='func'>withdraw</span>(account: &mut Account, amount: <span class='ty'>Float64</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>Str</span>]
   <span class='kw'>requires</span>: amount > <span class='num'>0.0</span>
@@ -933,7 +933,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 }
 </code></pre>
 <h3>9.4 Error Propagation</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Use ? <span class='kw'>for</span> clean error propagation</span>
 <span class='kw'>fn</span> <span class='func'>load_config</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[Config, <span class='ty'>AppError</span>] {
   <span class='kw'>let</span> file   = io.<span class='func'>read_file</span>(path)?;
@@ -951,7 +951,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 }
 </code></pre>
 <h3>9.5 Type-Driven Validation</h3>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='cm'>// Use types with invariants instead of runtime checks</span>
 <span class='kw'>type</span> Email = {
   value: <span class='ty'>Str</span>;
@@ -1035,23 +1035,23 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <hr>
 <h2>11. Compiler CLI</h2>
 <pre class="language-bash"><code>
-axiomc source.ax                              # print LLVM IR
-axiomc --emit-ir source.ax                    # print LLVM IR
-axiomc -o prog.exe source.ax                  # compile to native
-axiomc --run source.ax                        # compile + run
-axiomc --target wasm -o prog.wasm source.ax   # compile to WASM
-axiomc --no-contracts source.ax               # disable runtime checks
+xiomc source.ax                              # print LLVM IR
+xiomc --emit-ir source.ax                    # print LLVM IR
+xiomc -o prog.exe source.ax                  # compile to native
+xiomc --run source.ax                        # compile + run
+xiomc --target wasm -o prog.wasm source.ax   # compile to WASM
+xiomc --no-contracts source.ax               # disable runtime checks
 
 # Via cargo
-cargo run -p axiomc -- --run source.ax
+cargo run -p xiomc -- --run source.ax
 </code></pre>
 <hr>
-<h2>12. Complete AXIOM Program (Reference)</h2>
-<pre class="language-axiom"><code>
+<h2>12. Complete xiom Program (Reference)</h2>
+<pre class="language-xiom"><code>
 <span class='kw'>module</span> examples.bounded_stack
 
-<span class='kw'>use</span> axiom.io;
-<span class='kw'>use</span> axiom.collections.<span class='ty'>Vec</span>;
+<span class='kw'>use</span> xiom.io;
+<span class='kw'>use</span> xiom.collections.<span class='ty'>Vec</span>;
 
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ty'>Stack</span>[T] = {
   items: <span class='ty'>Vec</span>[T];
@@ -1118,16 +1118,16 @@ project/
 └── tests/               # test files
 </code></pre>
 <ul>
-<li>AXIOM source: <code>.ax</code></li>
+<li>xiom source: <code>.ax</code></li>
 <li>Package manifest: <code>package.ax</code></li>
-<li>C FFI bindings: <code>.axiom-bind</code></li>
+<li>C FFI bindings: <code>.xiom-bind</code></li>
 <li>One <code>module</code> declaration per file. Must be first statement.</li>
 <li>Modules correspond to directory structure.</li>
 </ul>
 <hr>
 <h2>14. Testing</h2>
-<pre class="language-axiom"><code>
-<span class='kw'>use</span> axiom.test;
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.test;
 
 <span class='kw'>fn</span> <span class='func'>test_push_updates_length</span>() {
   <span class='kw'>var</span> s = <span class='ty'>Stack</span>.new[<span class='ty'>Int</span>](<span class='num'>5</span>).<span class='func'>unwrap</span>();
@@ -1160,9 +1160,9 @@ project/
 </ul>
 <hr>
 <h2>15. Self-Hosting Note</h2>
-<p>The AXIOM compiler is written in AXIOM (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent — never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND AXIOM compiler, diff the LLVM IR. They must be identical.</p>
+<p>The xiom compiler is written in xiom (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent — never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND xiom compiler, diff the LLVM IR. They must be identical.</p>
 <hr>
-<p><strong>This document is the AI's complete reference for AXIOM code generation.</strong> <strong>When in doubt, refer to the exact syntax and rules above. The compiler enforces everything stated here.</strong></p>
+<p><strong>This document is the AI's complete reference for xiom code generation.</strong> <strong>When in doubt, refer to the exact syntax and rules above. The compiler enforces everything stated here.</strong></p>
     </main>
 
   </div>
@@ -1170,7 +1170,7 @@ project/
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="../" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>

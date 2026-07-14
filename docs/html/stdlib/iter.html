@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — `axiom.iter` — Iterators</title>
+<title>xiom — `xiom.iter` — Iterators</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="../" class="logo">
-      <img src="../" alt="AXIOM">
-      AXIOM
+      <img src="../" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="../spec.html">Spec</a>
@@ -95,51 +95,51 @@
 
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">`axiom.iter` — Iterators</h1>
+      <h1 style="font-size:36px;margin-bottom:24px;">`xiom.iter` — Iterators</h1>
       <p>Provides range types and iterator adapters for lazy, composable data processing over sequences.</p>
-<pre class="language-axiom"><code>
-<span class='kw'>use</span> axiom.iter;
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.iter;
 </code></pre>
 <hr>
 <h2>Range Types</h2>
 <h3><code>Range</code></h3>
 <p>A half-open range <code>[start, end)</code> that yields integers from <code>start</code> (inclusive) to <code>end</code> (exclusive).</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>type</span> Range = { start: <span class='ty'>Int</span>; end: <span class='ty'>Int</span>; }
 </code></pre>
 <h3><code>RangeInclusive</code></h3>
 <p>A fully-inclusive range <code>[start, end]</code> that yields integers from <code>start</code> through <code>end</code> inclusive.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>type</span> RangeInclusive = { start: <span class='ty'>Int</span>; end: <span class='ty'>Int</span>; current: <span class='ty'>Int</span>; done: <span class='ty'>Bool</span>; }
 </code></pre>
 <h3><code>range(start, end)</code></h3>
 <p>Creates a half-open <code>Range</code> from <code>start</code> (inclusive) to <code>end</code> (exclusive). Panics if <code>start > end</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>range</span>(start: <span class='ty'>Int</span>, end: <span class='ty'>Int</span>) -> Range
 </code></pre>
 <h3><code>range_inclusive(start, end)</code></h3>
 <p>Creates a fully-inclusive <code>RangeInclusive</code> from <code>start</code> through <code>end</code>. Panics if <code>start > end</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>range_inclusive</span>(start: <span class='ty'>Int</span>, end: <span class='ty'>Int</span>) -> RangeInclusive
 </code></pre>
 <h3><code>Range.next(self)</code></h3>
 <p>Advances the range and returns the next value, or <code>None</code> when the range is exhausted.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Range.<span class='func'>next</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[<span class='ty'>Int</span>]
 </code></pre>
 <h3><code>Range.len(self)</code></h3>
 <p>Returns the number of elements remaining in the range (end minus start).</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Range.<span class='func'>len</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>
 </code></pre>
 <h3><code>Range.contains(self, x)</code></h3>
 <p>Returns <code>true</code> if <code>x</code> is within the bounds of the range (start <= x < end).</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Range.<span class='func'>contains</span>(<span class='kw'>self</span>, x: <span class='ty'>Int</span>) -> <span class='ty'>Bool</span>
 </code></pre>
 <h3><code>RangeInclusive.next(self)</code>``</h3>
 <p>Advances the inclusive range and returns the next value, or <code>None</code> when the range is exhausted.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> RangeInclusive.<span class='func'>next</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[<span class='ty'>Int</span>]
 </code></pre>
 <hr>
@@ -147,37 +147,37 @@
 <p>These methods are available on any type implementing the <code>Iterator[T]</code> trait. They produce lazy wrapper iterators that transform the original sequence without allocating intermediate collections.</p>
 <h3><code>Iterator[T].map(f)</code></h3>
 <p>Transforms each element by applying the function <code>f</code>, producing a <code>MapIter</code> that yields values of type <code>U</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].map[U](<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>(T) -> U) -> MapIter[T, U]
 </code></pre>
 <h3><code>Iterator[T].filter(predicate)</code></h3>
 <p>Keeps only elements for which <code>predicate</code> returns <code>true</code>. The predicate receives a reference to each element.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>filter</span>(<span class='kw'>self</span>, predicate: <span class='func'><span class='kw'>fn</span></span>(&T) -> <span class='ty'>Bool</span>) -> FilterIter[T]
 </code></pre>
 <h3><code>Iterator[T].enumerate()</code></h3>
 <p>Wraps the iterator, pairing each element with its zero-based index. Produces tuples of <code>(Int, T)</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>enumerate</span>(<span class='kw'>self</span>) -> EnumerateIter[T]
 </code></pre>
 <h3><code>Iterator[T].take(n)</code></h3>
 <p>Limits the iterator to the first <code>n</code> elements, ignoring the rest.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>take</span>(<span class='kw'>self</span>, n: <span class='ty'>Int</span>) -> TakeIter[T]
 </code></pre>
 <h3><code>Iterator[T].skip(n)</code>``</h3>
 <p>Skips the first <code>n</code> elements of the iterator, then yields the remaining elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>skip</span>(<span class='kw'>self</span>, n: <span class='ty'>Int</span>) -> SkipIter[T]
 </code></pre>
 <h3><code>Iterator[T].chain(other)</code></h3>
 <p>Concatenates two iterators of potentially different types. After <code>self</code> is exhausted, elements are drawn from <code>other</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].chain[U](<span class='kw'>self</span>, other: Iterator[U]) -> ChainIter[T, U]
 </code></pre>
 <h3><code>Iterator[T].zip(other)</code></h3>
 <p>Zips two iterators together, producing tuples of <code>(T, U)</code>. The resulting iterator stops when either input iterator is exhausted.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].zip[U](<span class='kw'>self</span>, other: Iterator[U]) -> ZipIter[T, U]
 </code></pre>
 <hr>
@@ -185,62 +185,62 @@
 <p>These methods consume the iterator and produce a single value, eagerly evaluating the chain of adapters.</p>
 <h3><code>Iterator[T].collect()</code></h3>
 <p>Consumes the iterator and collects all remaining elements into a new <code>Vec[T]</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>collect</span>(<span class='kw'>self</span>) -> <span class='ty'>Vec</span>[T]
 </code></pre>
 <h3><code>Iterator[T].fold(init, f)</code></h3>
 <p>Folds every element into an accumulator by applying the function <code>f</code>, starting with the initial value <code>init</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].fold[B](<span class='kw'>self</span>, init: B, f: <span class='func'><span class='kw'>fn</span></span>(B, T) -> B) -> B
 </code></pre>
 <h3><code>Iterator[T].count()</code></h3>
 <p>Consumes the iterator and returns the number of remaining elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>count</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>
 </code></pre>
 <h3><code>Iterator[T].sum()</code></h3>
 <p>Computes the sum of all elements in the iterator. Requires the element type to support addition.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>sum</span>(<span class='kw'>self</span>) -> T
 </code></pre>
 <h3><code>Iterator[T].product()</code></h3>
 <p>Computes the product of all elements in the iterator. Requires the element type to support multiplication.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>product</span>(<span class='kw'>self</span>) -> T
 </code></pre>
 <h3><code>Iterator[T].max()</code></h3>
 <p>Returns the maximum element in the iterator, or <code>None</code> if the iterator is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>max</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[T]
 </code></pre>
 <h3><code>Iterator[T].min()</code></h3>
 <p>Returns the minimum element in the iterator, or <code>None</code> if the iterator is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>min</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[T]
 </code></pre>
 <h3><code>Iterator[T].find(predicate)</code></h3>
 <p>Returns the first element for which <code>predicate</code> returns <code>true</code>, or <code>None</code> if no element matches.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>find</span>(<span class='kw'>self</span>, predicate: <span class='func'><span class='kw'>fn</span></span>(&T) -> <span class='ty'>Bool</span>) -> <span class='ty'>Option</span>[T]
 </code></pre>
 <h3><code>Iterator[T].all(predicate)</code></h3>
 <p>Returns <code>true</code> if <code>predicate</code> returns <code>true</code> for every element in the iterator. Short-circuits on the first <code>false</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>all</span>(<span class='kw'>self</span>, predicate: <span class='func'><span class='kw'>fn</span></span>(&T) -> <span class='ty'>Bool</span>) -> <span class='ty'>Bool</span>
 </code></pre>
 <h3><code>Iterator[T].any(predicate)</code></h3>
 <p>Returns <code>true</code> if <code>predicate</code> returns <code>true</code> for at least one element in the iterator. Short-circuits on the first <code>true</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>any</span>(<span class='kw'>self</span>, predicate: <span class='func'><span class='kw'>fn</span></span>(&T) -> <span class='ty'>Bool</span>) -> <span class='ty'>Bool</span>
 </code></pre>
 <h3><code>Iterator[T].nth(n)</code></h3>
 <p>Returns the <code>n</code>-th element (zero-indexed) of the iterator, consuming elements up to it. Returns <code>None</code> if the iterator has fewer than <code>n+1</code> elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>nth</span>(<span class='kw'>self</span>, n: <span class='ty'>Int</span>) -> <span class='ty'>Option</span>[T]
 </code></pre>
 <h3><code>Iterator[T].last()</code></h3>
 <p>Consumes the entire iterator and returns the last element, or <code>None</code> if the iterator was empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>fn</span> Iterator[T].<span class='func'>last</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[T]
 </code></pre>
 <hr>
@@ -295,7 +295,7 @@
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="../" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>
