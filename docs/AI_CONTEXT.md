@@ -1,9 +1,12 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v1.0 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 39-module standard library.
+> **Version:** v0.45.3 | **Branch:** `feat/architect` | **Status:** Production-ready. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 39-module standard library. 461 tests passing (47 parser + 74 checker + 41 smoke + 86 e2e + 213 ecosystem).
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
-> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiomc` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
+> **Infrastructure:** Website: https://xiom-lang.org | Registry: https://registry.xiom-lang.org | Playground: https://play.xiom-lang.org | Repository: https://git.xiom-lang.org/xiom/xiom
+> **Ecosystem:** `xiom install <package>`, `xiom publish`, `xiom new`, `xiom init`, `xiom bench`, `xiom registry`, lockfile support.
+
+> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiomc` compiler CLI (section 11), package management (section 12), and code-generation guidance (sections 9, 16, 17).
 > Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
 ---
@@ -2055,69 +2058,176 @@ fn connect(host: Str, port: Port) -> Result[Conn, NetError]
 USAGE:
   xiomc [OPTIONS] <source.xi> [more.xi ...]
 
-OPTIONS:
+COMPILE OPTIONS:
   --help                Show help message and exit
   --version             Print compiler version and exit
   -o <output>           Output binary path (default per target: a.exe / a.wasm / a.out)
   --run                 Compile and run, then print the exit code (native target only)
   --emit-ir             Print LLVM IR to stdout (no binary produced)
+  --check               Type-check only, no codegen (fast feedback loop)
   --target <target>     Target backend: native (default), wasm, arm, riscv
-  --no-contracts        Disable contract runtime checks (strips requires/ensures/invariant guards)
-  --diagnostics=json    Emit diagnostics as JSON (type/borrow/codegen errors, or {"status":"ok"})
+
+BUILD MODE OPTIONS:
+  --release             Release build: O3 optimization + auto-strip contract guards
+  --debug / -g          Emit DWARF/PDB debug symbols (via clang -g)
+  --shared              Build as DLL/.so (passes -shared to clang)
+  --static              Compile to .o object file (static library)
+  --no-contracts        Disable contract runtime checks
+  --strict              Strict mode: error on unsafe without #[safety_audit],
+                        unknown types, missing contracts
+
+DIAGNOSTICS:
+  --diagnostics=json    Emit JSON diagnostics with suggestion and note fields
   --dump-contracts      Print the program's contract index as JSON and exit
   --verify              Generate SMT-LIB contract verification output (to stdout)
   --verify-output <f>   Write SMT-LIB verification output to file <f>
-  --timeout <seconds>   Compilation timeout watchdog (default: 60; 0 disables)
+
+RESOURCE LIMITS:
+  --timeout <seconds>   Compilation timeout (default: 300, 0 disables)
+  --max-depth <N>       Recursion depth limit (default: 500, max: 10000)
   --max-memory-mb <N>   Memory budget in MB; abort if exceeded (default: 0 = disabled)
-  --link <name>         Link a native library (repeatable; emits -l<name>, e.g. --link vulkan-1)
+
+LINKING:
+  --link <name>         Link a native library (repeatable; emits -l<name>)
   --link-path <dir>     Add a library search path (repeatable; emits -L<dir>)
   --c-source <file>     Link an extra C or object file (repeatable)
+
+PACKAGE MANAGEMENT (Phase 5d):
+  xiom install <pkg>    Install a package from the registry
+  xiom install          Install all dependencies from package.xi
+  xiom update           Refresh installed packages (--frozen/--locked for verify)
+  xiom publish          Publish current package (git tag + push + registry submit)
+  xiom new <name>       Create a new project scaffold
+  xiom init             Initialize project in current directory
+  xiom registry init    Initialize local package registry (~/.xiom/registry.json)
+  xiom registry add <n> <url>  Add package to local registry
+  xiom registry list    List local registry packages
+
+TESTING & BENCHMARKS:
+  xiom test <dir>       Discover and run all .xi test files (default: examples/)
+  xiom bench <file>     Benchmark runner: compile --release, run N iterations
+  xiom bench --count N  Number of benchmark iterations (default: 10)
+
+OTHER:
+  xiom clean            Remove build artifacts (*.exe, *.ll, *.obj, *.o, etc.)
+  xiom fmt <file>       Canonical formatter (xiom-fmt crate)
+  xiom doc              Generate HTML documentation (xiom-doc crate)
 ```
 
 **Behavior notes**
-- With no `-o`, no `--run`, and `--target native`, `xiomc` prints LLVM IR to stdout (same as `--emit-ir`).
-- Contracts are **enabled by default**; runtime guards trap via `@llvm.trap()` on violation. Use `--no-contracts` to strip them.
-- Multiple source files are merged into one program (see section 17). Passing a directory containing `package.xi` loads the modules it lists; otherwise all `.xi` files in the directory are compiled.
-- The `use xiom.*` standard library resolves automatically for any program (via the compiler's stdlib search path; override with the `XIOM_STDLIB` env var).
-
-**Targets** (LLVM triple → default output)
-| `--target` | Triple | Default output |
-|------------|--------|----------------|
-| `native` (default) | `x86_64-pc-windows-msvc` | `a.exe` |
-| `wasm` | `wasm32-unknown-unknown` | `a.wasm` |
-| `arm` | `aarch64-unknown-linux-gnu` | `a.out` |
-| `riscv` | `riscv64gc-unknown-linux-gnu` | `a.out` |
-
-**Toolchain dependencies**
-- Required: `clang` (LLVM) — compiles IR to a native binary.
-- Optional: `opt` (LLVM) — runs an `-O1` optimization pass over the IR.
-- Optional: `nasm` — assembles hardware-accelerated crypto/memcpy runtime objects.
+- With `--check`, the compiler exits after type + borrow checking — no codegen, no binary. Use for fast iteration.
+- Contracts are **enabled by default**; runtime guards trap via `@llvm.trap()` on violation. `--release` auto-strips them. Use `--no-contracts` for explicit strip.
+- `#[safety_audit(justification: "...")]` documents unsafe blocks. In `--strict` mode, unsafe blocks without this attribute produce warnings.
+- Multiple source files are merged into one program. Passing a directory containing `package.xi` loads modules it lists.
+- The `use xiom.*` stdlib resolves automatically via the compiler's stdlib search path.
+- `?` operator propagates errors: `let x = foo()?` unwraps Ok/Some, early-returns Err/None.
 
 **Examples**
 ```bash
+# Compilation
 xiomc source.xi                              # print LLVM IR (native, no -o/--run)
-xiomc --emit-ir source.xi                    # print LLVM IR explicitly
 xiomc -o prog.exe source.xi                  # compile to native binary
 xiomc --run source.xi                        # compile + run, print exit code
+xiomc --check source.xi                      # type-check only (fast)
+xiomc --release -o prog.exe source.xi        # optimized release build
+
+# Cross-compilation
 xiomc --target wasm -o prog.wasm source.xi   # compile to WebAssembly
 xiomc --target arm -o prog.out source.xi     # cross-compile to aarch64
-xiomc --no-contracts -o prog.exe source.xi   # release build without contract guards
-xiomc --diagnostics=json source.xi           # machine-readable diagnostics
-xiomc --dump-contracts source.xi             # contract index as JSON
-xiomc --verify source.xi                      # emit SMT-LIB for Z3
-xiomc --verify-output out.smt2 source.xi     # write SMT-LIB to a file
-xiomc --timeout 120 --max-memory-mb 2048 big.xi
-xiomc --link vulkan-1 --link-path C:/VulkanSDK/lib -o app.exe app.xi
-xiomc --c-source glue.c -o app.exe app.xi
-xiomc --run src/main.xi src/types.xi src/utils.xi   # multi-file merge
+xiomc --target riscv -o prog.out source.xi   # cross-compile to riscv64
 
-# Via cargo
-cargo run -p xiomc -- --run source.xi
+# Diagnostics
+xiomc --diagnostics=json source.xi           # structured JSON output
+xiomc --dump-contracts source.xi             # contract index as JSON
+xiomc --verify source.xi                     # emit SMT-LIB for Z3
+xiomc --strict --diagnostics=json source.xi  # strict mode with JSON
+
+# Resource control
+xiomc --timeout 120 --max-depth 1000 big.xi
+xiomc --max-memory-mb 2048 huge.xi
+
+# Testing & benchmarking
+xiomc --test examples/stdlib_smoke/          # run all smoke tests
+xiomc bench --count 100 my_bench.xi          # benchmark 100 iterations
+
+# Package management
+xiom install http-server                     # install a package
+xiom publish                                 # publish current package
+xiom new myproject                           # create project scaffold
+
+# Maintenance
+xiomc --clean                                # remove build artifacts
 ```
 
 ---
 
-## 12. Complete XIOM Program (Reference)
+## 12. Package Management & Ecosystem
+
+### 12.1 `package.xi` Manifest
+
+```xiom
+name: "my-project"
+version: "1.0.0"
+authors: ["Your Name"]
+license: "MIT"
+description: "My XIOM project"
+
+dependencies: [
+  "http-server: ^1.2.0",
+  "json: ^2.0.0",
+]
+
+sources: [
+  "src/main.xi",
+  "src/utils.xi",
+]
+
+tests: [
+  "tests/test_main.xi",
+]
+```
+
+### 12.2 Registry
+
+- **Registry URL:** https://registry.xiom-lang.org/packages.json
+- **Local registry:** `~/.xiom/registry.json` (managed via `xiom registry add/list`)
+- **Registry format:** JSON object with `"packages"` key mapping names → `{repo, description, license}`
+
+### 12.3 Lockfile (`xiom.lock`)
+
+```json
+{
+  "version": 1,
+  "packages": [
+    { "name": "http-server", "version": "1.2.0", "source": "registry" }
+  ]
+}
+```
+
+### 12.4 Project Scaffold
+
+```
+myproject/
+├── package.xi       ← project manifest
+├── src/main.xi      ← entry point
+├── tests/
+│   └── test_main.xi ← tests
+└── .gitignore
+```
+
+### 12.5 Infrastructure URLs
+
+| Service | URL |
+|---------|-----|
+| Website | https://xiom-lang.org |
+| Registry | https://registry.xiom-lang.org |
+| Playground | https://play.xiom-lang.org |
+| Repository | https://git.xiom-lang.org/xiom/xiom |
+| Documentation | https://docs.xiom-lang.org |
+
+---
+
+## 13. Complete XIOM Program (Reference)
 
 ```xiom
 module examples.bounded_stack
