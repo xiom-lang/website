@@ -1,12 +1,10 @@
-# XIOM — AI Coding Reference
+# XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Purpose:** Feed this document into any LLM context window to enable correct XIOM code generation.
-> **Version:** v0.22.1 | **Tests:** 186 passing | **Status:** Rust bootstrap, compiler hardening
+> **Version:** v1.0 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 39-module standard library.
+> This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
-> **Current stdlib state:** 39 modules, 530+ function signatures, complete type definitions. **Zero function implementations** — all bodies are stubs (`;` not `{...}`). Functions that DO work are built-in compiler primitives (Option, Result, Vec, arithmetic) or C runtime functions (file I/O, string interning). The types and interfaces are real and well-specified — use them. Implement the bodies as you generate code.
-> 
-> This document is the single source of truth for AI-generated XIOM code.
-> Every rule stated here is enforced by the compiler. No exceptions.
+> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiomc` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
+> Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
 ---
 
@@ -491,69 +489,1431 @@ fn private_helper() { }   // module-private (default)
 
 ---
 
-## 8. Standard Library Quick Reference
+## 8. Standard Library — Production API Reference
 
-**Current state:** 39 modules with complete type definitions and 530+ function signatures. Function BODIES are stubs — implement them as you generate code.
+The standard library is 39 modules under `xiom.*`. Every module is fully implemented and callable. Import a module with `use xiom.<module>;` then call it.
 
-**What WORKS (compiler built-ins + C runtime):**
-- `Option[T]`, `Result[T, E]` — built into the type checker
-- `Vec[T]` — push, pop, get, len are codegen primitives
-- Arithmetic, comparison, control flow — built into the compiler
-- `extern "C"` FFI — via C runtime (`axiom_runtime.c`)
-- `@malloc`, `@free`, `@realloc` — LLVM declarations emit automatically
-- `@llvm.trap()` — contract guard emission
-- `@axiom_str_len` — Str length via C runtime
-- File I/O: `axiom_read_file`, `axiom_file_size`, `axiom_free` (C runtime)
+**Calling conventions:**
+- **Free functions** are called through their module: `math.sqrt(x)`, `string.str_concat(a, b)`, `io.println(msg)`, `rand.random()`.
+- **Constructors / associated functions** use the type name: `Vec[Int].new()`, `Duration.from_secs(3)`, `Rc.new(value)`, `Regex.new("[a-z]+")`.
+- **Methods** are called on a value with implicit `self`: `v.push(x)`, `s.len()`, `d.as_millis()`, `arc.clone()`.
+- **`use` a single item** to call it unqualified: `use xiom.collections.Vec;` then `Vec[Int].new()`.
 
-**What needs implementing (all function bodies are stubs):**
+**Signatures below are copied verbatim from the source.** Some collection/method signatures show explicit type params like `Vec.push[T]` — at call sites the receiver's type is inferred, so you write `v.push(x)`.
 
-39 modules listed below. Import with `use xiom.<module>`. Types are real. Functions need bodies.
+### When generating code, follow these rules:
 
-### Core Modules (Types Real, Functions Stubs)
+1. **Use the types** — `Option[T]`, `Result[T,E]`, `Vec[T]`, `Map[K,V]`, `Set[T]`, `Str` are fully defined. `Option`, `Result`, `Vec`, and arithmetic/comparison/control flow are compiler primitives and need no import.
+2. **Use the stdlib** — all 39 modules are implemented. Import with `use xiom.<module>;` and call the documented functions. DO NOT reimplement stdlib functions.
+3. **Call through the module** — `io.println(...)`, `math.sqrt(...)`, `string.str_split(...)`, `json = serialize.json_parse(...)`. Methods on stdlib types use dot syntax on the value.
+4. **For FFI** — use `extern "C"` directly; the C runtime links standard libc plus the XIOM runtime automatically. See the C FFI block at the end of this section.
 
-| Module | Real Types | Functions to Implement |
-|--------|-----------|----------------------|
-| `core` | Option[T], Result[T,E], Box[T], BinaryHeap[T], interfaces (Eq, Ord, Hash, Clone, Display, Default, Neg, Rem, Abs, Pow, Sqrt) | is_sorted(), all(), none(), contains(), panic(), assert() |
-| `collections` | Vec[T], Map[K,V], Set[T], Deque[T] | push, pop, get, len, insert, remove, contains |
-| `string` | — | str_len(), str_concat(), str_split(), str_trim(), format(), replace() |
-| `io` | IOError | print(), println(), read_file(), write_file(), file_exists(), args() |
-| `math` | — | abs(), sqrt(), sin(), cos(), pow(), random(), PI, E, TAU |
-| `ffi` | — | extern "C" support |
-| `async` | Channel[T] | spawn(), send(), recv() |
-| `net` | TcpStream, TcpListener, HttpRequest, HttpResponse | tcp_connect(), tcp_listen(), http_get(), http_post() |
-| `os` | Process, Command | exec(), env(), exit(), platform() |
-| `time` | Duration, Instant, DateTime | now(), sleep() |
-| `sync` | Mutex[T], RwLock[T], Arc[T], Barrier, Atomics | lock(), unlock() |
-| `iter` | Range, Map, Filter, Zip | map(), filter(), fold(), zip(), take(), skip() |
-| `test` | TestResult, ContractFailure | test(), assert_eq(), assert_ok(), run_tests() |
-| `serialize` | Serialize, Deserialize, JsonValue | to_json(), from_json() |
-| `bench` | BenchResult | bench() |
-| `log` | LogLevel, LogEntry | info(), warn(), error(), debug() |
-| `contracts` | ContractClause, ContractIndex, FunctionIndex | dump_contracts() |
-| `error` | Error interface, Backtrace | into(), from() |
-| `fmt` | Formatter, FmtError, Display | format(), print(), println() |
-| `hash` | Hasher, DefaultHasher | hash(), sip_hash() |
-| `num` | interfaces: Neg, Rem, Abs, Pow, Sqrt, Trig | parse(), to_str(), from_str() |
-| `cmp` | Ordering, PartialEq, PartialOrd | max(), min(), clamp() |
-| `convert` | From, Into, TryFrom, TryInto | from(), into() |
-| `cell` | Cell[T], RefCell[T], Ref, RefMut | get(), set() |
-| `rc` | Rc[T], Weak[T] | new(), clone(), downgrade() |
-| `path` | Path, PathBuf | join(), parent(), extension(), exists() |
-| `mem` | ManuallyDrop[T] | size_of(), align_of() |
-| `ptr` | — | null(), is_null(), offset() |
-| `char` | — | is_digit(), is_alpha(), to_upper(), to_lower() |
-| `array` | — | Array[T;N], repeat(), from_fn() |
-| `encoding` | — | base64_encode(), base64_decode(), hex_encode() |
-| `rand` | Rng, StdRng | random(), seed(), shuffle() |
-| `compress` | Compressor, GzipCompressor | gzip(), gunzip(), zlib() |
-| `crypto` | KeyPair | sha256(), aes_encrypt(), aes_decrypt() |
-| `regex` | Regex, Match, Captures | is_match(), find(), replace() |
-| `alloc` | Layout, Allocator | alloc(), dealloc(), realloc() |
-| `thread` | Thread, JoinHandle, Scope | spawn(), join() |
-| `reflect` | TypeId, TypeInfo, FieldInfo, Any | type_name(), fields() |
-| `env` | consts: OS, ARCH, FAMILY | get_var(), set_var(), home_dir() |
+---
 
-### C FFI (Works Now)
+### 8.1 `core` — Fundamental types, interfaces, and intrinsics
+
+Built into the type system; you can use `Option`, `Result`, and these interfaces without importing.
+
+**Types**
+```xiom
+type Option[T]     = { is_some: Bool; value: T; }
+type Result[T, E]  = { is_ok: Bool; value: T; error: E; }
+type Box[T]        = { ptr: *T; }
+type BinaryHeap[T] = { data: Vec[T]; invariant: data.len() >= 0; }
+```
+
+**Interfaces**
+```xiom
+interface Clone   { fn clone() -> Self; }
+interface Eq      { fn eq(other: &Self) -> Bool; }
+interface Ord     { fn compare(other: &Self) -> Int; }        // -1, 0, 1
+interface Display { fn to_str() -> Str; }
+interface Hash    { fn hash() -> UInt64; }
+interface Add { fn add(self, other: &Self) -> Self; }
+interface Sub { fn sub(self, other: &Self) -> Self; }
+interface Mul { fn mul(self, other: &Self) -> Self; }
+interface Div { fn div(self, other: &Self) -> Self; }
+interface Iterator[T]     { fn next(self) -> Option[T]; fn size_hint(self) -> (Int, Option[Int]); }
+interface IntoIterator[T] { fn into_iter(self) -> Iterator[T]; }
+interface Default { fn default() -> Self; }
+interface Drop    { fn drop(self); }
+```
+
+**Functions & intrinsics**
+```xiom
+fn panic(msg: Str)
+fn assert(condition: Bool, msg: Str)
+fn panic_if(condition: Bool, msg: Str)
+fn size_of[T]() -> Int                          // compiler intrinsic
+fn align_of[T]() -> Int                         // compiler intrinsic
+fn to_int(x: Float64) -> Int
+fn to_float(x: Int) -> Float64
+fn to_string(x: Int) -> Str
+fn to_int_from_str(s: Str) -> Result[Int, Str]
+fn to_float_from_str(s: Str) -> Result[Float64, Str]
+fn to_bool_from_str(s: Str) -> Result[Bool, Str]
+fn to_char(x: Int) -> Char
+fn to_int_from_char(c: Char) -> Int
+fn is_sorted[T: Ord](items: &Slice[T]) -> Bool
+fn all[T](items: &Slice[T], predicate: fn(T) -> Bool) -> Bool
+fn none[T](items: &Slice[T], predicate: fn(T) -> Bool) -> Bool
+fn contains[T: Eq](items: &Slice[T], value: T) -> Bool
+```
+
+**Option methods**
+```xiom
+fn Option[T].unwrap_or(self, default: T) -> T
+fn Option[T].unwrap_or_else(self, f: fn() -> T) -> T
+fn Option[T].map[U](self, f: fn(T) -> U) -> Option[U]
+fn Option[T].and_then[U](self, f: fn(T) -> Option[U]) -> Option[U]
+fn Option[T].filter(self, predicate: fn(&T) -> Bool) -> Option[T]
+fn Option[T].is_some_and(self, predicate: fn(&T) -> Bool) -> Bool
+```
+
+**Result methods**
+```xiom
+fn Result[T, E].unwrap_or(self, default: T) -> T
+fn Result[T, E].unwrap_or_else(self, f: fn(E) -> T) -> T
+fn Result[T, E].map[U](self, f: fn(T) -> U) -> Result[U, E]
+fn Result[T, E].map_err[F](self, f: fn(E) -> F) -> Result[T, F]
+fn Result[T, E].and_then[U](self, f: fn(T) -> Result[U, E]) -> Result[U, E]
+fn Result[T, E].expect(self, msg: Str) -> T
+fn Result[T, E].is_ok_and(self, predicate: fn(&T) -> Bool) -> Bool
+```
+
+**Box & BinaryHeap**
+```xiom
+fn Box.new[T](value: T) -> Box[T]
+fn Box.get[T](b: &Box[T]) -> &T
+fn Box.drop[T](b: Box[T])
+fn BinaryHeap[T: Ord].new() -> BinaryHeap[T]
+fn BinaryHeap[T: Ord].push(self, value: T)
+fn BinaryHeap[T: Ord].pop(self) -> Option[T]
+fn BinaryHeap[T: Ord].peek(self) -> Option[T]
+fn BinaryHeap[T].len(self) -> Int
+fn BinaryHeap[T].is_empty(self) -> Bool
+```
+
+**Constants**
+```xiom
+const INT_MAX: Int = 9223372036854775807;
+const INT_MIN: Int = -9223372036854775808;
+const FLOAT64_MAX: Float64 = 1.7976931348623157e308;
+const FLOAT64_MIN: Float64 = 2.2250738585072014e-308;
+const FLOAT64_EPSILON: Float64 = 2.220446049250313e-16;
+```
+
+---
+
+### 8.2 `collections` — Vec, Map, Set, and more
+
+```xiom
+type Vec[T]        = { data: *T; len: Int; cap: Int; }
+type Map[K, V]     = { keys: Vec[K]; values: Vec[V]; }
+type Set[T]        = { items: Vec[T]; }
+type LinkedList[T] = { items: Vec[T]; }
+type Queue[T]      = { data: Vec[T]; head: Int; tail: Int; }
+type Stack[T]      = { items: Vec[T]; }
+type VecDeque[T]   = { data: Vec[T]; head: Int; tail: Int; }
+type BTreeMap[K: Ord, V] = { keys: Vec[K]; values: Vec[V]; }
+type BTreeSet[T: Ord]    = { items: Vec[T]; }
+type Slice[T]      = { data: Vec[T]; }
+```
+
+**Vec** (`data`, `len`, `cap` are codegen primitives; `push`/`pop`/`get`/`len` are built in)
+```xiom
+fn Vec.new[T]() -> Vec[T]
+fn Vec.with_capacity[T](cap: Int) -> Vec[T]
+fn Vec.push[T](value: T)
+fn Vec.pop[T]() -> Option[T]
+fn Vec.get[T](index: Int) -> Option[T]
+fn Vec.len[T]() -> Int
+fn Vec.is_empty[T]() -> Bool
+fn Vec.clear[T]()
+fn Vec.insert[T](index: Int, value: T)
+fn Vec.remove[T](index: Int) -> Option[T]
+fn Vec.first[T]() -> Option[T]
+fn Vec.last[T]() -> Option[T]
+fn Vec.set[T](index: Int, value: T)
+```
+Element access via index also works: `v[i]`.
+
+**Map**
+```xiom
+fn Map.new[K, V]() -> Map[K, V]
+fn Map.insert[K, V](key: K, value: V)
+fn Map.get[K, V](key: &K) -> Option[V]
+fn Map.remove[K, V](key: &K) -> Option[V]
+fn Map.contains[K, V](key: &K) -> Bool
+fn Map.len[K, V]() -> Int
+fn Map.keys[K, V]() -> Vec[K]
+fn Map.values[K, V]() -> Vec[V]
+fn Map.clear[K, V]()
+```
+
+**Set**
+```xiom
+fn Set.new[T]() -> Set[T]
+fn Set.insert[T](value: T)
+fn Set.remove[T](value: &T)
+fn Set.contains[T](value: &T) -> Bool
+fn Set.len[T]() -> Int
+fn Set.union[T](other: &Set[T]) -> Set[T]
+fn Set.intersection[T](other: &Set[T]) -> Set[T]
+fn Set.difference[T](other: &Set[T]) -> Set[T]
+```
+
+**LinkedList / Queue / Stack / VecDeque**
+```xiom
+fn LinkedList.new[T]() -> LinkedList[T]
+fn LinkedList.push_front[T](value: T)
+fn LinkedList.push_back[T](value: T)
+fn LinkedList.pop_front[T]() -> Option[T]
+fn LinkedList.pop_back[T]() -> Option[T]
+fn LinkedList.len[T]() -> Int
+fn LinkedList.is_empty[T]() -> Bool
+
+fn Queue.new[T]() -> Queue[T]
+fn Queue.enqueue[T](value: T)
+fn Queue.dequeue[T]() -> Option[T]
+fn Queue.peek[T]() -> Option[T]
+fn Queue.len[T]() -> Int
+fn Queue.is_empty[T]() -> Bool
+
+fn Stack.new[T]() -> Stack[T]
+fn Stack.push[T](value: T)
+fn Stack.pop[T]() -> Option[T]
+fn Stack.peek[T]() -> Option[T]
+fn Stack.len[T]() -> Int
+fn Stack.is_empty[T]() -> Bool
+
+fn VecDeque.new[T]() -> VecDeque[T]
+fn VecDeque.with_capacity[T](cap: Int) -> VecDeque[T]
+fn VecDeque.push_front[T](value: T)
+fn VecDeque.push_back[T](value: T)
+fn VecDeque.pop_front[T]() -> Option[T]
+fn VecDeque.pop_back[T]() -> Option[T]
+fn VecDeque.front[T]() -> Option[T]
+fn VecDeque.back[T]() -> Option[T]
+fn VecDeque.len[T]() -> Int
+```
+
+**BTreeMap / BTreeSet** (sorted, binary-search backed)
+```xiom
+fn BTreeMap.new[K: Ord, V]() -> BTreeMap[K, V]
+fn BTreeMap.insert[K: Ord, V](key: K, value: V) -> Option[V]
+fn BTreeMap.get[K: Ord, V](key: &K) -> Option[V]
+fn BTreeMap.remove[K: Ord, V](key: &K) -> Option[V]
+fn BTreeMap.contains_key[K: Ord, V](key: &K) -> Bool
+fn BTreeMap.first_entry[K: Ord, V]() -> Option[(K, V)]
+fn BTreeMap.last_entry[K: Ord, V]() -> Option[(K, V)]
+fn BTreeMap.len[K: Ord, V]() -> Int
+
+fn BTreeSet.new[T: Ord]() -> BTreeSet[T]
+fn BTreeSet.insert[T: Ord](value: T) -> Bool
+fn BTreeSet.remove[T: Ord](value: &T) -> Bool
+fn BTreeSet.contains[T: Ord](value: &T) -> Bool
+fn BTreeSet.first[T: Ord]() -> Option[T]
+fn BTreeSet.last[T: Ord]() -> Option[T]
+fn BTreeSet.len[T: Ord]() -> Int
+```
+
+**Slice**
+```xiom
+fn Slice.len[T]() -> Int
+fn Slice.is_empty[T]() -> Bool
+fn Slice.first[T]() -> Option[T]
+fn Slice.last[T]() -> Option[T]
+fn Slice.get[T](index: Int) -> Option[T]
+```
+
+---
+
+### 8.3 `string` — UTF-8 string operations
+
+Call as `string.<fn>(...)`.
+```xiom
+fn str_len(s: Str) -> Int
+fn str_concat(a: Str, b: Str) -> Str
+fn str_slice(s: Str, start: Int, end: Int) -> Str
+fn str_contains(s: Str, substr: Str) -> Bool
+fn str_starts_with(s: Str, prefix: Str) -> Bool
+fn str_ends_with(s: Str, suffix: Str) -> Bool
+fn str_split(s: Str, delimiter: Str) -> Vec[Str]
+fn str_trim(s: Str) -> Str
+fn str_to_int(s: Str) -> Result[Int, Str]
+fn str_to_float(s: Str) -> Result[Float64, Str]
+fn str_upper(s: Str) -> Str
+fn str_lower(s: Str) -> Str
+fn format(fmt: Str) -> Str
+fn format1(fmt: Str, arg: Str) -> Str
+fn format2(fmt: Str, arg1: Str, arg2: Str) -> Str
+fn char_at(s: Str, pos: Int) -> Option[Char]
+fn index_of(s: Str, substr: Str) -> Option[Int]
+fn last_index_of(s: Str, substr: Str) -> Option[Int]
+fn replace(s: Str, from: Str, to: Str) -> Str
+fn lines(s: Str) -> Vec[Str]
+fn words(s: Str) -> Vec[Str]
+fn is_empty(s: Str) -> Bool
+fn char_count(s: Str) -> Int
+fn byte_count(s: Str) -> Int
+```
+
+---
+
+### 8.4 `io` — Console, files, process, buffered I/O
+
+Call as `io.<fn>(...)`.
+
+**Types & interfaces**
+```xiom
+type IOError  = { message: Str; code: Int; }
+type SeekFrom = enum { Start(Int), End(Int), Current(Int) }
+type BufReader = { inner: Int; buf: Vec[UInt8]; }
+type BufWriter = { inner: Int; buf: Vec[UInt8]; }
+type Metadata  = { size: Int; is_file: Bool; is_dir: Bool; modified: Int; created: Int; permissions: Int; }
+type Cursor    = { data: Vec[UInt8]; pos: Int; }
+interface Read  { fn read(self, buf: &mut Vec[UInt8]) -> Result[Int, IOError]; fn read_to_end(self, buf: &mut Vec[UInt8]) -> Result[Int, IOError]; fn read_to_string(self) -> Result[Str, IOError]; fn read_exact(self, buf: &mut Vec[UInt8]) -> Result[Unit, IOError]; }
+interface Write { fn write(self, buf: &Vec[UInt8]) -> Result[Int, IOError]; fn write_all(self, buf: &Vec[UInt8]) -> Result[Unit, IOError]; fn flush(self) -> Result[Unit, IOError]; }
+interface Seek  { fn seek(self, pos: SeekFrom) -> Result[Int, IOError]; fn stream_position(self) -> Result[Int, IOError]; }
+```
+
+**Console**
+```xiom
+fn print(msg: Str)
+fn println(msg: Str)
+fn print_line(s: Str)
+fn read_line() -> Str
+fn read_int() -> Result[Int, Str]
+fn read_float() -> Result[Float64, Str]
+fn stdin() -> Int
+fn stdout() -> Int
+fn stderr() -> Int
+```
+
+**Filesystem**
+```xiom
+fn read_file(path: Str) -> Result[Str, IOError]
+fn write_file(path: Str, content: Str) -> Result[Unit, IOError]
+fn append_file(path: Str, content: Str) -> Result[Unit, IOError]
+fn file_exists(path: Str) -> Bool
+fn is_dir(path: Str) -> Bool
+fn create_dir(path: Str) -> Result[Unit, IOError]
+fn list_dir(path: Str) -> Result[Vec[Str], IOError]
+fn remove_file(path: Str) -> Result[Unit, IOError]
+fn copy_file(src: Str, dst: Str) -> Result[Unit, IOError]
+fn rename(src: Str, dst: Str) -> Result[Unit, IOError]
+fn metadata(path: Str) -> Result[Metadata, IOError]
+fn set_permissions(path: Str, perm: Int) -> Result[Unit, IOError]
+```
+
+**Process, time & paths**
+```xiom
+fn exit(code: Int)
+fn args() -> Vec[Str]
+fn env_var(name: Str) -> Option[Str]
+fn time_now() -> Int
+fn sleep(ms: Int)
+fn join_paths(base: Str, child: Str) -> Str
+fn parent_path(path: Str) -> Option[Str]
+fn file_name(path: Str) -> Option[Str]
+fn extension(path: Str) -> Option[Str]
+fn is_absolute(path: Str) -> Bool
+```
+
+**Buffered / memory I/O**
+```xiom
+fn BufReader.new(reader: Int) -> BufReader
+fn BufReader.read_line(self, buf: &mut Str) -> Result[Int, IOError]
+fn BufReader.lines(self) -> Vec[Str]
+fn BufWriter.new(writer: Int) -> BufWriter
+fn Cursor.new(data: Vec[UInt8]) -> Cursor
+fn Cursor.into_inner(self) -> Vec[UInt8]
+```
+
+---
+
+### 8.5 `fmt` — Formatting & Display
+
+```xiom
+interface Display { fn fmt(self, f: &mut Formatter) -> Result[Unit, FmtError]; }
+type Formatter = { buf: Str; width: Int; precision: Int; align: Int; }
+type FmtError  = { message: Str; }
+
+fn Formatter.new() -> Formatter
+fn Formatter.write_str(self, s: Str) -> Result[Unit, FmtError]
+fn Formatter.write_int(self, n: Int) -> Result[Unit, FmtError]
+fn Formatter.write_float(self, f: Float64) -> Result[Unit, FmtError]
+fn Formatter.write_bool(self, b: Bool) -> Result[Unit, FmtError]
+fn Formatter.finish(self) -> Str
+
+fn Int.to_str() -> Str
+fn Float64.to_str() -> Str
+fn Bool.to_str() -> Str
+fn Str.to_str() -> Str
+
+fn format1[T](fmt: Str, arg: T) -> Str                       // "{}" placeholder
+fn format2[T, U](fmt: Str, arg1: T, arg2: U) -> Str
+fn format3[T, U, V](fmt: Str, arg1: T, arg2: U, arg3: V) -> Str
+fn print(s: Str)
+fn println(s: Str)
+```
+
+---
+
+### 8.6 `math` — Math functions & constants
+
+Call as `math.<fn>(...)`. libm-backed functions plus pure-XIOM fallbacks (`*_pure`).
+```xiom
+const PI: Float64  = 3.141592653589793;
+const E: Float64   = 2.718281828459045;
+const TAU: Float64 = 6.283185307179586;
+
+fn sqrt(x: Float64) -> Float64
+fn pow(base: Float64, exp: Float64) -> Float64
+fn abs_int(x: Int) -> Int
+fn abs_float(x: Float64) -> Float64
+fn min_int(a: Int, b: Int) -> Int
+fn max_int(a: Int, b: Int) -> Int
+fn min_float(a: Float64, b: Float64) -> Float64
+fn max_float(a: Float64, b: Float64) -> Float64
+fn floor(x: Float64) -> Float64
+fn ceil(x: Float64) -> Float64
+fn round(x: Float64) -> Int
+fn sin(x: Float64) -> Float64
+fn cos(x: Float64) -> Float64
+fn tan(x: Float64) -> Float64
+fn asin(x: Float64) -> Float64
+fn acos(x: Float64) -> Float64
+fn atan(x: Float64) -> Float64
+fn atan2(y: Float64, x: Float64) -> Float64
+fn exp(x: Float64) -> Float64
+fn ln(x: Float64) -> Float64
+fn log10(x: Float64) -> Float64
+fn log2(x: Float64) -> Float64
+fn bit_and(a: Int, b: Int) -> Int
+fn bit_or(a: Int, b: Int) -> Int
+fn bit_xor(a: Int, b: Int) -> Int
+fn bit_not(a: Int) -> Int
+fn shl(a: Int, n: Int) -> Int
+fn shr(a: Int, n: Int) -> Int
+fn seed_rng(seed: Int)
+fn random() -> Float64
+fn random_range(min: Int, max: Int) -> Int
+fn random_float() -> Float64
+fn clamp(x: Float64, lo: Float64, hi: Float64) -> Float64
+fn lerp(a: Float64, b: Float64, t: Float64) -> Float64
+fn is_nan(x: Float64) -> Bool
+fn is_inf(x: Float64) -> Bool
+```
+Pure fallbacks (no libm): `sqrt_pure`, `pow_pure`, `abs_float_pure`, `floor_pure`, `ceil_pure`, `sin_pure`, `cos_pure`, `tan_pure`, `asin_pure`, `acos_pure`, `atan_pure`, `atan2_pure`, `exp_pure`, `ln_pure`, `log10_pure`, `log2_pure` (same signatures as their non-pure counterparts).
+
+---
+
+### 8.7 `num` — Numeric traits & integer/float utilities
+
+```xiom
+interface Neg  { fn neg(self) -> Self; }
+interface Rem  { fn rem(self, other: Self) -> Self; }
+interface Abs  { fn abs(self) -> Self; }
+interface Pow  { fn pow(self, exp: Self) -> Self; }
+interface Sqrt { fn sqrt(self) -> Self; }
+interface Bounded { fn min_value() -> Self; fn max_value() -> Self; fn epsilon() -> Self; fn zero() -> Self; }
+
+fn min_value[T: Bounded]() -> T
+fn max_value[T: Bounded]() -> T
+fn epsilon[T: Bounded]() -> T
+fn gcd(a: Int, b: Int) -> Int
+fn lcm(a: Int, b: Int) -> Int
+fn is_power_of_two(n: Int) -> Bool
+fn next_power_of_two(n: Int) -> Int
+fn count_ones(n: Int) -> Int
+fn count_zeros(n: Int) -> Int
+fn leading_zeros(n: Int) -> Int
+fn trailing_zeros(n: Int) -> Int
+fn rotate_left(n: Int, k: Int) -> Int
+fn rotate_right(n: Int, k: Int) -> Int
+fn reverse_bits(n: Int) -> Int
+fn to_be(n: Int) -> Int
+fn to_le(n: Int) -> Int
+fn from_be(n: Int) -> Int
+fn from_le(n: Int) -> Int
+fn is_finite(x: Float64) -> Bool
+fn is_normal(x: Float64) -> Bool
+fn classify(x: Float64) -> Int
+fn floor(x: Float64) -> Int
+fn ceil(x: Float64) -> Int
+fn round(x: Float64) -> Int
+fn trunc(x: Float64) -> Int
+fn fract(x: Float64) -> Float64
+fn recip(x: Float64) -> Float64
+fn to_degrees(rad: Float64) -> Float64
+fn to_radians(deg: Float64) -> Float64
+fn hypot(x: Float64, y: Float64) -> Float64
+fn saturating_add[T: Bounded + Ord + Add](a: T, b: T) -> T
+fn saturating_sub[T: Bounded + Ord + Sub](a: T, b: T) -> T
+fn saturating_mul[T: Bounded + Ord + Mul + Div](a: T, b: T) -> T
+fn checked_add[T: Bounded + Ord + Add](a: T, b: T) -> Option[T]
+fn checked_sub[T: Bounded + Ord + Sub](a: T, b: T) -> Option[T]
+fn checked_mul[T: Bounded + Ord + Mul + Div](a: T, b: T) -> Option[T]
+fn checked_div[T: Bounded + Eq + Div](a: T, b: T) -> Option[T]
+fn wrapping_add[T: Bounded + Add](a: T, b: T) -> T
+fn wrapping_sub[T: Bounded + Sub](a: T, b: T) -> T
+fn wrapping_mul[T: Bounded + Mul](a: T, b: T) -> T
+fn parse_int(s: Str) -> Result[Int, Str]
+fn parse_float(s: Str) -> Result[Float64, Str]
+fn parse_int_radix(s: Str, radix: Int) -> Result[Int, Str]
+```
+
+---
+
+### 8.8 `cmp` — Comparison & ordering
+
+```xiom
+type Ordering  = enum { Less, Equal, Greater }
+type Reverse[T] = { value: T; }
+interface PartialEq[Rhs: Self]  { fn eq(self, other: &Rhs) -> Bool; fn ne(self, other: &Rhs) -> Bool; }
+interface PartialOrd[Rhs: Self] { fn partial_cmp(self, other: &Rhs) -> Option[Ordering]; fn lt(self, other: &Rhs) -> Bool; fn le(self, other: &Rhs) -> Bool; fn gt(self, other: &Rhs) -> Bool; fn ge(self, other: &Rhs) -> Bool; }
+
+fn Ordering.reverse(self) -> Ordering
+fn Ordering.then(self, other: Ordering) -> Ordering
+fn Ordering.then_with(self, f: fn() -> Ordering) -> Ordering
+fn min[T: Ord](a: T, b: T) -> T
+fn max[T: Ord](a: T, b: T) -> T
+fn clamp[T: Ord](value: T, min_val: T, max_val: T) -> T
+fn min_by[T](a: T, b: T, compare: fn(&T, &T) -> Ordering) -> T
+fn max_by[T](a: T, b: T, compare: fn(&T, &T) -> Ordering) -> T
+fn max_int(a: Int, b: Int) -> Int
+fn min_int(a: Int, b: Int) -> Int
+fn clamp_int(value: Int, min_val: Int, max_val: Int) -> Int
+fn max_float(a: Float64, b: Float64) -> Float64
+fn min_float(a: Float64, b: Float64) -> Float64
+fn clamp_float(value: Float64, min_val: Float64, max_val: Float64) -> Float64
+fn Reverse.new[T](value: T) -> Reverse[T]
+```
+
+---
+
+### 8.9 `hash` — Hashing
+
+```xiom
+interface Hash        { fn hash(self, hasher: Hasher); }
+interface Hasher      { fn write(self, bytes: &Vec[UInt8]); fn write_int(self, n: Int); fn write_str(self, s: Str); fn finish(self) -> Int; }
+interface BuildHasher { fn build_hasher(self) -> Hasher; }
+type DefaultHasher = { state: Int; }
+
+fn DefaultHasher.new() -> DefaultHasher
+fn DefaultHasher.write(self, bytes: &Vec[UInt8])
+fn DefaultHasher.write_int(self, n: Int)
+fn DefaultHasher.write_str(self, s: Str)
+fn DefaultHasher.finish(self) -> Int
+fn Int.hash(self, hasher: Hasher)
+fn Str.hash(self, hasher: Hasher)
+fn Bool.hash(self, hasher: Hasher)
+fn hash_value[T: Hash](value: &T) -> Int
+fn hash_combine(seed: Int, hash: Int) -> Int
+fn hash[T: Hash](value: T) -> UInt64
+fn sip_hash(data: &Vec[UInt8]) -> UInt64
+```
+
+---
+
+### 8.10 `char` — Character operations
+
+```xiom
+fn is_alphabetic(c: Char) -> Bool
+fn is_alphanumeric(c: Char) -> Bool
+fn is_ascii(c: Char) -> Bool
+fn is_control(c: Char) -> Bool
+fn is_digit(c: Char) -> Bool
+fn is_lowercase(c: Char) -> Bool
+fn is_uppercase(c: Char) -> Bool
+fn is_numeric(c: Char) -> Bool
+fn is_punctuation(c: Char) -> Bool
+fn is_whitespace(c: Char) -> Bool
+fn to_lowercase(c: Char) -> Char
+fn to_uppercase(c: Char) -> Char
+fn to_digit(c: Char, radix: Int) -> Option[Int]
+fn from_digit(n: Int, radix: Int) -> Option[Char]
+fn len_utf8(c: Char) -> Int
+fn encode_utf8(c: Char, buf: &mut Vec[UInt8])
+```
+
+---
+
+### 8.11 `convert` — Type conversions
+
+```xiom
+interface From[T]    { fn from(value: T) -> Self; }
+interface Into[T]    { fn into(self) -> T; }
+interface TryFrom[T] { fn try_from(value: T) -> Result[Self, Str]; }
+interface TryInto[T] { fn try_into(self) -> Result[T, Str]; }
+
+fn identity[T](x: T) -> T
+fn int_to_float(n: Int) -> Float64
+fn float_to_int(f: Float64) -> Int
+fn int_to_string(n: Int) -> Str
+fn float_to_string(f: Float64) -> Str
+fn bool_to_string(b: Bool) -> Str
+fn char_to_int(c: Char) -> Int
+fn int_to_char(n: Int) -> Option[Char]
+```
+
+---
+
+### 8.12 `iter` — Iterators & adapters
+
+```xiom
+type Range          = { start: Int; end: Int; }
+type RangeInclusive = { start: Int; end: Int; current: Int; done: Bool; }
+type MapIter[T, U]  = { iter: Iterator[T]; f: fn(T) -> U; }
+type FilterIter[T]  = { iter: Iterator[T]; predicate: fn(&T) -> Bool; }
+type EnumerateIter[T] = { iter: Iterator[T]; index: Int; }
+type TakeIter[T]    = { iter: Iterator[T]; remaining: Int; }
+type SkipIter[T]    = { iter: Iterator[T]; to_skip: Int; }
+type ChainIter[T, U] = { first: Iterator[T]; second: Iterator[U]; }
+type ZipIter[T, U]  = { a: Iterator[T]; b: Iterator[U]; }
+
+fn range(start: Int, end: Int) -> Range
+fn range_inclusive(start: Int, end: Int) -> RangeInclusive
+fn Range.next(self) -> Option[Int]
+fn Range.len(self) -> Int
+fn Range.contains(self, x: Int) -> Bool
+fn RangeInclusive.next(self) -> Option[Int]
+
+fn Iterator[T].map[U](self, f: fn(T) -> U) -> MapIter[T, U]
+fn Iterator[T].filter(self, predicate: fn(&T) -> Bool) -> FilterIter[T]
+fn Iterator[T].enumerate(self) -> EnumerateIter[T]
+fn Iterator[T].take(self, n: Int) -> TakeIter[T]
+fn Iterator[T].skip(self, n: Int) -> SkipIter[T]
+fn Iterator[T].chain[U](self, other: Iterator[U]) -> ChainIter[T, U]
+fn Iterator[T].zip[U](self, other: Iterator[U]) -> ZipIter[T, U]
+fn Iterator[T].collect(self) -> Vec[T]
+fn Iterator[T].fold[B](self, init: B, f: fn(B, T) -> B) -> B
+fn Iterator[T].count(self) -> Int
+fn Iterator[T].sum(self) -> T
+fn Iterator[T].product(self) -> T
+fn Iterator[T].max(self) -> Option[T]
+fn Iterator[T].min(self) -> Option[T]
+fn Iterator[T].find(self, predicate: fn(&T) -> Bool) -> Option[T]
+fn Iterator[T].all(self, predicate: fn(&T) -> Bool) -> Bool
+fn Iterator[T].any(self, predicate: fn(&T) -> Bool) -> Bool
+fn Iterator[T].nth(self, n: Int) -> Option[T]
+fn Iterator[T].last(self) -> Option[T]
+```
+
+---
+
+### 8.13 `array` — Fixed-size array `[N]T` operations
+
+```xiom
+fn len[T, const N: Int](arr: &[N]T) -> Int
+fn is_empty[T, const N: Int](arr: &[N]T) -> Bool
+fn first[T](arr: &[N]T) -> Option[&T]
+fn last[T](arr: &[N]T) -> Option[&T]
+fn get[T](arr: &[N]T, index: Int) -> Option[&T]
+fn get_mut[T](arr: &mut [N]T, index: Int) -> Option[&mut T]
+fn map[T, U, const N: Int](arr: [N]T, f: fn(T) -> U) -> [N]U
+fn zip[T, U, const N: Int](a: [N]T, b: [N]U) -> [N](T, U)
+fn fold[T, B](arr: [N]T, init: B, f: fn(B, T) -> B) -> B
+fn as_slice[T](arr: &[N]T) -> Slice[T]
+fn as_mut_slice[T](arr: &mut [N]T) -> Slice[T]
+fn each_ref[T](arr: &[N]T) -> [N]&T
+fn each_mut[T](arr: &mut [N]T) -> [N]&mut T
+fn fill[T: Clone](arr: &mut [N]T, value: T)
+fn swap[T](arr: &mut [N]T, a: Int, b: Int)
+fn reverse[T](arr: &mut [N]T)
+fn rotate_left[T](arr: &mut [N]T, mid: Int)
+fn rotate_right[T](arr: &mut [N]T, k: Int)
+fn sort[T: Ord](arr: &mut [N]T)
+fn sort_by[T](arr: &mut [N]T, compare: fn(&T, &T) -> Ordering)
+fn binary_search[T: Ord](arr: &[N]T, x: &T) -> Result[Int, Int]
+fn contains[T: Eq](arr: &[N]T, x: &T) -> Bool
+```
+
+---
+
+### 8.14 `mem` — Memory utilities
+
+```xiom
+type ManuallyDrop[T] = { value: T; }
+
+fn swap[T](a: &mut T, b: &mut T)
+fn replace[T](dest: &mut T, src: T) -> T
+fn take[T: Default](dest: &mut T) -> T
+fn drop[T](value: T)
+fn size_of[T]() -> Int
+fn align_of[T]() -> Int
+fn size_of_val[T](value: &T) -> Int
+fn min_align_of_val[T](value: &T) -> Int
+fn zeroed[T]() -> T
+fn uninitialized[T]() -> T
+fn ManuallyDrop.new[T](value: T) -> ManuallyDrop[T]
+fn ManuallyDrop.into_inner[T](self) -> T
+fn ManuallyDrop.take[T](self) -> T
+fn ManuallyDrop.drop[T](self)
+```
+
+---
+
+### 8.15 `ptr` — Raw pointer operations (unsafe)
+
+```xiom
+fn null[T]() -> *T
+fn null_mut[T]() -> *mut T
+fn dangling[T]() -> *T
+fn is_null[T](ptr: *const T) -> Bool
+fn read[T](ptr: *const T) -> T
+fn write[T](ptr: *mut T, value: T)
+fn read_volatile[T](ptr: *const T) -> T
+fn write_volatile[T](ptr: *mut T, value: T)
+fn swap[T](a: *mut T, b: *mut T)
+fn replace[T](dest: *mut T, src: T) -> T
+fn copy[T](src: *const T, dst: *mut T, count: Int)
+fn copy_nonoverlapping[T](src: *const T, dst: *mut T, count: Int)
+fn eq[T](a: *const T, b: *const T) -> Bool
+fn offset[T](ptr: *const T, count: Int) -> *const T
+fn wrapping_offset[T](ptr: *const T, count: Int) -> *const T
+fn add[T](ptr: *const T, count: Int) -> *const T
+fn sub[T](ptr: *const T, count: Int) -> *const T
+fn from_ref[T](r: &T) -> *const T
+fn from_mut[T](r: &mut T) -> *mut T
+```
+
+---
+
+### 8.16 `alloc` — Allocation
+
+```xiom
+type Layout      = { size: Int; align: Int; }
+type AllocError  = { message: Str; }
+type GlobalAlloc = { }
+interface Allocator {
+  fn allocate(self, layout: Layout) -> Result[*mut UInt8, AllocError];
+  fn deallocate(self, ptr: *mut UInt8, layout: Layout);
+  fn allocate_zeroed(self, layout: Layout) -> Result[*mut UInt8, AllocError];
+  fn grow(self, ptr: *mut UInt8, old: Layout, new: Layout) -> Result[*mut UInt8, AllocError];
+  fn shrink(self, ptr: *mut UInt8, old: Layout, new: Layout) -> Result[*mut UInt8, AllocError];
+}
+
+fn Layout.new(size: Int) -> Layout
+fn Layout.with_align(self, align: Int) -> Layout
+fn Layout.padded_size(self) -> Int
+fn global_alloc() -> Allocator
+fn alloc(size: Int) -> *mut UInt8
+fn alloc_zeroed(size: Int) -> *mut UInt8
+fn realloc(ptr: *mut UInt8, old_size: Int, new_size: Int) -> *mut UInt8
+fn dealloc(ptr: *mut UInt8, size: Int)
+fn alloc_layout(layout: Layout) -> *mut UInt8
+fn dealloc_layout(ptr: *mut UInt8, layout: Layout)
+```
+
+---
+
+### 8.17 `error` — Error trait hierarchy
+
+```xiom
+interface Error { fn source(self) -> Option[Error]; fn description(self) -> Str; fn cause(self) -> Option[Error]; }
+type ErrorChain = { errors: Vec[Str]; }
+type Backtrace  = { frames: Vec[Str]; }
+
+fn Error.chain(self) -> ErrorChain
+fn ErrorChain.display(self) -> Str
+fn wrap_error[T, E: Error](result: Result[T, E], context: Str) -> Result[T, Str]
+fn context[T, E](result: Result[T, E], msg: Str) -> Result[T, Str]
+fn capture_backtrace() -> Backtrace
+fn Backtrace.display(self) -> Str
+```
+
+---
+
+### 8.18 `path` — Path manipulation
+
+```xiom
+type Path    = { inner: Str; }
+type PathBuf = { inner: Str; }
+
+fn Path.new(s: Str) -> Path
+fn Path.parent(self) -> Option[Path]
+fn Path.file_name(self) -> Option[Str]
+fn Path.extension(self) -> Option[Str]
+fn Path.file_stem(self) -> Option[Str]
+fn Path.is_absolute(self) -> Bool
+fn Path.is_relative(self) -> Bool
+fn Path.has_root(self) -> Bool
+fn Path.components(self) -> Vec[Str]
+fn Path.to_str(self) -> Str
+fn Path.join(self, child: Str) -> PathBuf
+fn Path.with_extension(self, ext: Str) -> PathBuf
+fn Path.with_file_name(self, name: Str) -> PathBuf
+fn Path.exists(self) -> Bool
+fn Path.is_file(self) -> Bool
+fn Path.is_dir(self) -> Bool
+fn Path.metadata(self) -> Result[Metadata, Str]
+fn Path.canonicalize(self) -> Result[PathBuf, Str]
+fn Path.starts_with(self, base: &Path) -> Bool
+fn Path.ends_with(self, child: &Path) -> Bool
+fn PathBuf.new() -> PathBuf
+fn PathBuf.from(s: Str) -> PathBuf
+fn PathBuf.push(self, component: Str)
+fn PathBuf.pop(self) -> Bool
+fn PathBuf.as_path(self) -> Path
+fn PathBuf.clear(self)
+fn path_separator() -> Str
+```
+
+---
+
+### 8.19 `time` — Duration, Instant, SystemTime, DateTime
+
+```xiom
+type Duration   = { secs: Int; nanos: Int; }
+type Instant    = { t: Int; }
+type SystemTime = { secs: Int; nanos: Int; }
+type DateTime   = { year: Int; month: Int; day: Int; hour: Int; minute: Int; second: Int; weekday: Int; }
+
+fn Duration.new(secs: Int, nanos: Int) -> Duration
+fn Duration.from_secs(s: Int) -> Duration
+fn Duration.from_secs_f64(secs: Float64) -> Duration
+fn Duration.from_millis(ms: Int) -> Duration
+fn Duration.from_micros(us: Int) -> Duration
+fn Duration.from_nanos(ns: Int) -> Duration
+fn Duration.as_secs(self) -> Int
+fn Duration.as_millis(self) -> Int
+fn Duration.as_micros(self) -> Int
+fn Duration.as_nanos(self) -> Int
+fn Duration.as_secs_f64(self) -> Float64
+fn Duration.subsec_nanos(self) -> Int
+fn Duration.add(self, other: Duration) -> Duration
+fn Duration.sub(self, other: Duration) -> Duration
+fn Duration.mul(self, factor: Int) -> Duration
+fn Duration.div(self, divisor: Int) -> Duration
+fn Duration.checked_add(self, other: Duration) -> Option[Duration]
+fn Duration.checked_sub(self, other: Duration) -> Option[Duration]
+fn Instant.now() -> Instant
+fn Instant.elapsed(self) -> Duration
+fn Instant.duration_since(self, earlier: Instant) -> Duration
+fn Instant.add(self, d: Duration) -> Instant
+fn Instant.sub(self, d: Duration) -> Instant
+fn SystemTime.now() -> SystemTime
+fn SystemTime.unix_epoch() -> SystemTime
+fn SystemTime.duration_since(self, earlier: SystemTime) -> Result[Duration, Str]
+fn SystemTime.secs_since_epoch(self) -> Int
+fn DateTime.now() -> DateTime
+fn DateTime.year(self) -> Int
+fn DateTime.month(self) -> Int
+fn DateTime.day(self) -> Int
+fn DateTime.hour(self) -> Int
+fn DateTime.minute(self) -> Int
+fn DateTime.second(self) -> Int
+fn DateTime.weekday(self) -> Int
+fn utc_now() -> DateTime
+fn local_now() -> DateTime
+fn sleep(dur: Duration)
+fn sleep_ms(ms: Int)
+fn sleep_until(instant: Instant)
+```
+
+---
+
+### 8.20 `env` — Environment & directories
+
+```xiom
+const OS: Str     = "windows";
+const ARCH: Str   = "x86_64";
+const FAMILY: Str = "windows";   // "unix" or "windows"
+
+fn var(name: Str) -> Result[Str, Str]
+fn var_opt(name: Str) -> Option[Str]
+fn set_var(name: Str, value: Str)
+fn remove_var(name: Str)
+fn vars() -> Vec[(Str, Str)]
+fn args() -> Vec[Str]
+fn args_os() -> Vec[Str]
+fn current_exe() -> Result[Str, Str]
+fn current_dir() -> Result[Str, Str]
+fn set_current_dir(path: Str) -> Result[Unit, Str]
+fn temp_dir() -> Str
+fn home_dir() -> Option[Str]
+fn data_dir() -> Option[Str]
+fn cache_dir() -> Option[Str]
+fn config_dir() -> Option[Str]
+fn executable_dir() -> Option[Str]
+fn join_paths(a: Str, b: Str) -> Str
+fn path_separator() -> Str
+```
+
+---
+
+### 8.21 `os` — Platform, processes, filesystem walk
+
+```xiom
+type ChildProcess = { pid: Int; stdin: Int; stdout: Int; stderr: Int; }
+type FileWatcher  = { path: Str; recursive: Bool; }
+type FileEvent    = enum { Created(path: Str), Modified(path: Str), Deleted(path: Str), Renamed(from: Str, to: Str) }
+type Pipe         = { read_fd: Int; write_fd: Int; }
+
+fn platform() -> Str
+fn cpu_count() -> Int
+fn total_memory() -> Int
+fn free_memory() -> Int
+fn env_set(name: Str, value: Str)
+fn env_unset(name: Str)
+fn current_dir() -> Str
+fn set_current_dir(path: Str) -> Result[Unit, Str]
+fn temp_dir() -> Str
+fn home_dir() -> Option[Str]
+fn walk_dir(path: Str, callback: fn(Str, Metadata) -> Unit) -> Result[Unit, Str]
+fn walk_dir_filtered(path: Str, pattern: Str, callback: fn(Str, Metadata) -> Unit) -> Result[Unit, Str]
+fn watch_file(path: Str) -> Result[FileWatcher, Str]
+fn watch_dir(path: Str, recursive: Bool) -> Result[FileWatcher, Str]
+fn FileWatcher.poll(self) -> Result[Vec[FileEvent], Str]
+fn FileWatcher.close(self)
+fn ChildProcess.wait(self) -> Result[Int, Str]
+fn ChildProcess.kill(self) -> Result[Unit, Str]
+fn ChildProcess.id(self) -> Int
+fn on_signal(signal: Int, handler: fn(Int) -> Unit)
+fn raise_signal(signal: Int)
+fn create_pipe() -> Result[Pipe, Str]
+fn Pipe.read(self, buf: &mut Vec[UInt8]) -> Result[Int, Str]
+fn Pipe.write(self, data: &Vec[UInt8]) -> Result[Int, Str]
+fn Pipe.close_read(self)
+fn Pipe.close_write(self)
+fn disk_free(path: Str) -> Result[Int, Str]
+fn disk_total(path: Str) -> Result[Int, Str]
+fn file_size_bytes(path: Str) -> Result[Int, Str]
+
+const SIGINT: Int = 2;  const SIGTERM: Int = 15;  const SIGKILL: Int = 9;
+const SIGUSR1: Int = 10;  const SIGUSR2: Int = 12;
+```
+
+---
+
+### 8.22 `sync` — Synchronization primitives
+
+```xiom
+type Mutex[T]      = { inner: *UInt8; data: *T; }
+type MutexGuard[T] = { mutex: Mutex[T]; }
+type RwLock[T]     = { inner: *UInt8; rcond: *UInt8; wcond: *UInt8; data: *T; state: *Int; }
+type ReadGuard[T]  = { lock: RwLock[T]; }
+type WriteGuard[T] = { lock: RwLock[T]; }
+type Condvar       = { inner: *UInt8; }
+type Once          = { inner: *UInt8; state: *Int; }
+type Barrier       = { inner: *UInt8; cond: *UInt8; count: Int; waiting: *Int; generation: *Int; }
+type Arc[T]        = { ptr: *ArcInner[T]; }
+type ArcInner[T]   = { count: *Int; value: T; }
+type AtomicBool    = { ptr: *Int; }
+type AtomicInt     = { ptr: *Int; }
+
+fn Mutex.new[T](value: T) -> Mutex[T]
+fn Mutex.lock[T](self) -> MutexGuard[T]
+fn Mutex.try_lock[T](self) -> Option[MutexGuard[T]]
+fn Mutex.into_inner[T](self) -> T
+fn MutexGuard.get[T](self) -> T
+fn MutexGuard.get_mut[T](self) -> T
+fn MutexGuard.drop[T](self)
+fn RwLock.new[T](data: T) -> RwLock[T]
+fn RwLock.read[T](self) -> ReadGuard[T]
+fn RwLock.write[T](self) -> WriteGuard[T]
+fn RwLock.try_read[T](self) -> Option[ReadGuard[T]]
+fn RwLock.try_write[T](self) -> Option[WriteGuard[T]]
+fn ReadGuard.get[T](self) -> T
+fn WriteGuard.get[T](self) -> T
+fn WriteGuard.get_mut[T](self) -> T
+fn Condvar.new() -> Condvar
+fn Condvar.wait[T](self, guard: MutexGuard[T]) -> MutexGuard[T]
+fn Condvar.notify_one(self)
+fn Condvar.notify_all(self)
+fn Once.new() -> Once
+fn Once.call_once(self, f: fn())
+fn Once.is_completed(self) -> Bool
+fn Barrier.new(n: Int) -> Barrier
+fn Barrier.wait(self)
+fn Arc.new[T](value: T) -> Arc[T]
+fn Arc.clone[T](self) -> Arc[T]
+fn Arc.get[T](self) -> T
+fn Arc.strong_count[T](self) -> Int
+fn Arc.ptr_eq[T, U](self, other: &Arc[U]) -> Bool
+fn Arc.drop[T](self)
+fn AtomicBool.new(val: Bool) -> AtomicBool
+fn AtomicBool.load(self) -> Bool
+fn AtomicBool.store(self, val: Bool)
+fn AtomicBool.swap(self, val: Bool) -> Bool
+fn AtomicBool.compare_exchange(self, current: Bool, new: Bool) -> Bool
+fn AtomicInt.new(val: Int) -> AtomicInt
+fn AtomicInt.load(self) -> Int
+fn AtomicInt.store(self, val: Int)
+fn AtomicInt.fetch_add(self, val: Int) -> Int
+fn AtomicInt.fetch_sub(self, val: Int) -> Int
+fn AtomicInt.swap(self, val: Int) -> Int
+fn AtomicInt.compare_exchange(self, current: Int, new: Int) -> Bool
+```
+
+---
+
+### 8.23 `thread` — Threads & scopes
+
+```xiom
+type Thread        = { handle: *UInt8; id: Int; }
+type JoinHandle[T] = { thread: Thread; result_buf: *UInt8; }
+type Scope         = {}
+
+fn spawn[T](f: fn() -> T) -> JoinHandle[T]
+fn spawn_with_name[T](name: Str, f: fn() -> T) -> JoinHandle[T]
+fn JoinHandle.join[T](self) -> Result[T, Str]
+fn JoinHandle.is_finished[T](self) -> Bool
+fn JoinHandle.thread[T](self) -> Thread
+fn JoinHandle.detach[T](self)
+fn Thread.current() -> Thread
+fn Thread.id(self) -> Int
+fn Thread.name(self) -> Option[Str]
+fn sleep_ms(ms: Int)
+fn sleep(ms: Int)
+fn yield_now()
+fn scope[T](f: fn(&Scope) -> T) -> T
+fn Scope.spawn[T](self, f: fn() -> T) -> JoinHandle[T]
+fn available_parallelism() -> Int
+fn hardware_threads() -> Int
+fn current_thread_id() -> Int
+```
+
+---
+
+### 8.24 `async` — Cooperative executor & channels
+
+```xiom
+type Executor   = { ready: Vec[fn()]; timers: Vec[Timer]; }
+type Channel[T] = { items: Vec[T]; closed: Bool; cap: Int; }
+
+fn Executor.new() -> Executor
+fn Executor.spawn(self, task: fn())
+fn Executor.at(self, deadline: Int, task: fn())
+fn Executor.step(self) -> Bool
+fn Executor.fire_due_timers(self)
+fn Executor.run(self)
+fn Executor.block_on(self, task: fn())
+fn spawn(task: fn())
+fn run()
+fn block_on(task: fn())
+fn delay(ms: Int, task: fn())
+fn sleep_ms(ms: Int)
+fn Channel.bounded[T](capacity: Int) -> Channel[T]
+fn Channel.unbounded[T]() -> Channel[T]
+fn Channel.send[T](value: T)
+fn Channel.recv[T]() -> T
+fn Channel.try_recv[T]() -> Option[T]
+fn Channel.close[T]()
+```
+
+---
+
+### 8.25 `net` — TCP, UDP, HTTP, DNS, URL
+
+```xiom
+type TcpStream    = { fd: Int; }
+type TcpListener  = { fd: Int; }
+type UdpSocket    = { fd: Int; }
+type NetError     = { message: Str; code: Int; }
+type HttpResponse = { status: Int; body: Str; }
+type HttpMethod   = enum { GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS }
+type UrlParts     = { scheme: Str; host: Str; port: Int; path: Str; query: Str; fragment: Str; }
+
+fn tcp_connect(host: Str, port: Int) -> Result[TcpStream, NetError]
+fn tcp_listen(host: Str, port: Int) -> Result[TcpListener, NetError]
+fn TcpStream.read(self, buf: &mut Vec[UInt8]) -> Result[Int, NetError]
+fn TcpStream.write(self, data: &Vec[UInt8]) -> Result[Int, NetError]
+fn TcpStream.close(self) -> Result[Unit, NetError]
+fn TcpListener.accept(self) -> Result[(TcpStream, Str), NetError]
+fn http_get(url: Str) -> Result[HttpResponse, NetError]
+fn http_post(url: Str, body: Str) -> Result[HttpResponse, NetError]
+fn udp_bind(host: Str, port: Int) -> Result[UdpSocket, NetError]
+fn UdpSocket.send_to(self, data: &Vec[UInt8], addr: Str, port: Int) -> Result[Int, NetError]
+fn UdpSocket.recv_from(self, buf: &mut Vec[UInt8]) -> Result[(Int, Str, Int), NetError]
+fn UdpSocket.close(self) -> Result[Unit, NetError]
+fn resolve_host(hostname: Str) -> Result[Vec[Str], NetError]
+fn local_addr(port: Int) -> Result[Str, NetError]
+fn parse_url(url: Str) -> Result[UrlParts, NetError]
+```
+
+---
+
+### 8.26 `ffi` — Thin C FFI wrappers
+
+```xiom
+fn extern_c(name: Str) -> Int
+fn alloc(size: Int) -> *UInt8
+fn free(ptr: *UInt8)
+fn memcpy(dest: *UInt8, src: *UInt8, size: Int)
+fn size_of[T]() -> Int
+fn align_of[T]() -> Int
+```
+
+---
+
+### 8.27 `cell` — Interior mutability
+
+```xiom
+type Cell[T]    = { value: T; }
+type RefCell[T] = { value: T; borrows: Int; }
+type Ref[T]     = { cell: RefCell[T]; }
+type RefMut[T]  = { cell: RefCell[T]; }
+
+fn Cell.new[T](value: T) -> Cell[T]
+fn Cell.get[T](self) -> T
+fn Cell.set[T](self, value: T)
+fn Cell.replace[T](self, value: T) -> T
+fn Cell.swap[T](self, other: &Cell[T])
+fn RefCell.new[T](value: T) -> RefCell[T]
+fn RefCell.borrow[T](self) -> Ref[T]
+fn RefCell.borrow_mut[T](self) -> RefMut[T]
+fn RefCell.try_borrow[T](self) -> Option[Ref[T]]
+fn RefCell.try_borrow_mut[T](self) -> Option[RefMut[T]]
+fn RefCell.replace[T](self, value: T) -> T
+fn Ref.get[T](self) -> T
+fn RefMut.get[T](self) -> T
+fn RefMut.set[T](self, value: T)
+```
+
+---
+
+### 8.28 `rc` — Reference counting
+
+```xiom
+type RcInner[T] = { strong: Int; weak: Int; value: T; }
+type Rc[T]      = { ptr: *RcInner[T]; }
+type Weak[T]    = { ptr: *RcInner[T]; }
+
+fn Rc.new[T](value: T) -> Rc[T]
+fn Rc.clone[T](self) -> Rc[T]
+fn Rc.strong_count[T](self) -> Int
+fn Rc.weak_count[T](self) -> Int
+fn Rc.get[T](self) -> T
+fn Rc.ptr_eq[T, U](self, other: &Rc[U]) -> Bool
+fn Rc.downgrade[T](self) -> Weak[T]
+fn Rc.unwrap_or_clone[T: Clone](self) -> T
+fn Rc.drop[T](self)
+fn Weak.upgrade[T](self) -> Option[Rc[T]]
+fn Weak.strong_count[T](self) -> Int
+fn Weak.weak_count[T](self) -> Int
+fn Weak.drop[T](self)
+```
+
+---
+
+### 8.29 `serialize` — JSON serialization
+
+```xiom
+interface Serialize   { fn serialize(self) -> Result[Str, SerializeError]; fn serialize_json(self) -> Result[Str, SerializeError]; fn serialize_bytes(self) -> Result[Vec[UInt8], SerializeError]; }
+interface Deserialize { fn deserialize(data: Str) -> Result[Self, SerializeError]; fn deserialize_json(data: Str) -> Result[Self, SerializeError]; fn deserialize_bytes(data: Vec[UInt8]) -> Result[Self, SerializeError]; }
+type SerializeError = { kind: Int; message: Str; path: Str; line: Int; col: Int; }
+type JsonValue = enum {
+  Null,
+  Bool(value: Bool),
+  Number(value: Float64),
+  String(value: Str),
+  Array(items: Vec[JsonValue]),
+  Object(entries: Map[Str, JsonValue]),
+}
+
+fn SerializeError.format_error() -> Str
+fn detect_format(data: &Vec[UInt8]) -> Str
+fn is_valid_json(data: Str) -> Bool
+fn is_valid_bytes(data: &Vec[UInt8]) -> Bool
+fn json_string(s: Str) -> Str
+fn json_number(n: Float64) -> Str
+fn json_bool(b: Bool) -> Str
+fn json_null() -> Str
+fn json_array(items: Vec[Str]) -> Str
+fn json_object(pairs: Vec[(Str, Str)]) -> Str
+fn to_json[T: Serialize](value: T) -> Result[Str, SerializeError]
+fn from_json[T: Deserialize](s: Str) -> Result[T, SerializeError]
+fn json_parse(data: Str) -> Result[JsonValue, SerializeError]
+fn parse_json(s: Str) -> Result[JsonValue, SerializeError]
+fn JsonValue.to_str(self) -> Str
+fn JsonValue.get(self, key: Str) -> Option[JsonValue]
+fn JsonValue.index(self, i: Int) -> Option[JsonValue]
+fn little_endian() -> Bool
+fn big_endian() -> Bool
+```
+
+---
+
+### 8.30 `crypto` — Hashing, HMAC, AES, RSA, KDFs
+
+```xiom
+type KeyPair = { public: Vec[UInt8]; private: Vec[UInt8]; }
+
+fn sha256(data: &Vec[UInt8]) -> Vec[UInt8]
+fn sha256_accelerated(data: &Vec[UInt8]) -> Vec[UInt8]
+fn sha256_hex(data: &Vec[UInt8]) -> Str
+fn sha512(data: &Vec[UInt8]) -> Vec[UInt8]
+fn md5(data: &Vec[UInt8]) -> Vec[UInt8]
+fn blake3(data: &Vec[UInt8]) -> Vec[UInt8]
+fn hmac_sha256(key: &Vec[UInt8], data: &Vec[UInt8]) -> Vec[UInt8]
+fn aes_encrypt(key: &Vec[UInt8], plaintext: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn aes_decrypt(key: &Vec[UInt8], ciphertext: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn aes_encrypt_gcm(key: &Vec[UInt8], nonce: &Vec[UInt8], plaintext: &Vec[UInt8], aad: &Vec[UInt8]) -> Result[(Vec[UInt8], Vec[UInt8]), Str]
+fn aes_decrypt_gcm(key: &Vec[UInt8], nonce: &Vec[UInt8], ciphertext: &Vec[UInt8], tag: &Vec[UInt8], aad: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn generate_rsa_keypair(bits: Int) -> Result[KeyPair, Str]
+fn rsa_encrypt(public_key: &Vec[UInt8], data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn rsa_decrypt(private_key: &Vec[UInt8], data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn rsa_sign(private_key: &Vec[UInt8], data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn rsa_verify(public_key: &Vec[UInt8], data: &Vec[UInt8], signature: &Vec[UInt8]) -> Result[Bool, Str]
+fn pbkdf2(password: &Str, salt: &Vec[UInt8], iterations: Int, key_len: Int) -> Vec[UInt8]
+fn argon2(password: &Str, salt: &Vec[UInt8], memory: Int, iterations: Int, parallelism: Int) -> Vec[UInt8]
+fn secure_random_bytes(count: Int) -> Vec[UInt8]
+fn constant_time_compare(a: &Vec[UInt8], b: &Vec[UInt8]) -> Bool
+```
+
+---
+
+### 8.31 `compress` — gzip, zlib, deflate, brotli, lz4, snappy
+
+```xiom
+interface Compressor { fn compress(self, data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]; fn decompress(self, data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]; }
+type GzipCompressor = { level: Int; }
+
+fn GzipCompressor.new() -> GzipCompressor
+fn GzipCompressor.with_level(level: Int) -> GzipCompressor
+fn gzip_compress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn gzip_compress_level(data: &Vec[UInt8], level: Int) -> Result[Vec[UInt8], Str]
+fn gzip_decompress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn deflate_compress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn deflate_decompress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn deflate_compress_level(data: &Vec[UInt8], level: Int) -> Result[Vec[UInt8], Str]
+fn zlib_compress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn zlib_compress_level(data: &Vec[UInt8], level: Int) -> Result[Vec[UInt8], Str]
+fn zlib_decompress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn brotli_compress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn brotli_compress_level(data: &Vec[UInt8], quality: Int) -> Result[Vec[UInt8], Str]
+fn brotli_decompress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn lz4_compress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn lz4_decompress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn snappy_compress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn snappy_decompress(data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]
+fn compression_ratio(original: Int, compressed: Int) -> Float64
+fn is_compressed(data: &Vec[UInt8]) -> Bool
+fn detect_format(data: &Vec[UInt8]) -> Str
+```
+
+---
+
+### 8.32 `encoding` — base64, hex, URL, UTF-8
+
+```xiom
+fn base64_encode(data: &Vec[UInt8]) -> Str
+fn base64_decode(encoded: Str) -> Result[Vec[UInt8], Str]
+fn base64url_encode(data: &Vec[UInt8]) -> Str
+fn base64url_decode(encoded: Str) -> Result[Vec[UInt8], Str]
+fn hex_encode(data: &Vec[UInt8]) -> Str
+fn hex_decode(encoded: Str) -> Result[Vec[UInt8], Str]
+fn hex_encode_upper(data: &Vec[UInt8]) -> Str
+fn url_encode(data: Str) -> Str
+fn url_decode(encoded: Str) -> Result[Str, Str]
+fn percent_encode(data: Str) -> Str
+fn percent_decode(encoded: Str) -> Result[Str, Str]
+fn utf8_encode(s: Str) -> Vec[UInt8]
+fn utf8_decode(data: &Vec[UInt8]) -> Result[Str, Str]
+fn utf8_valid(data: &Vec[UInt8]) -> Bool
+fn utf8_char_len(first_byte: UInt8) -> Int
+fn binary_to_text(data: &Vec[UInt8], format: Int) -> Str
+fn text_to_binary(text: Str, format: Int) -> Result[Vec[UInt8], Str]
+```
+
+---
+
+### 8.33 `regex` — Regular expressions
+
+Supported: `.  *  +  ?  ^  $  [abc]  [a-z]  [^abc]  \d \w \s  \D \W \S`.
+```xiom
+type Regex    = { pattern: Str; compiled: Int; }
+type Match    = { start: Int; end: Int; text: Str; }
+type Captures = { groups: Vec[Option[Match]]; }
+
+fn Regex.new(pattern: Str) -> Result[Regex, Str]
+fn Regex.is_match(self, text: Str) -> Bool
+fn Regex.find(self, text: Str) -> Option[Match]
+fn Regex.find_all(self, text: Str) -> Vec[Match]
+fn Regex.captures(self, text: Str) -> Option[Captures]
+fn Regex.replace(self, text: Str, replacement: Str) -> Str
+fn Regex.replace_all(self, text: Str, replacement: Str) -> Str
+fn Regex.split(self, text: Str) -> Vec[Str]
+fn Regex.match_count(self, text: Str) -> Int
+fn Captures.get(self, index: Int) -> Option[Match]
+fn Captures.get_named(self, name: Str) -> Option[Match]
+fn Captures.len(self) -> Int
+fn regex_escape(pattern: Str) -> Str
+fn is_valid_regex(pattern: Str) -> Bool
+```
+
+---
+
+### 8.34 `rand` — Random numbers & distributions
+
+```xiom
+interface Rng { fn next_int(self) -> Int; fn next_float(self) -> Float64; fn next_bytes(self, buf: &mut Vec[UInt8]); }
+type StdRng = { state: Int; }
+
+fn StdRng.new() -> StdRng
+fn StdRng.from_seed(seed: Int) -> StdRng
+fn random() -> Float64
+fn random_int(min: Int, max: Int) -> Int
+fn random_float(min: Float64, max: Float64) -> Float64
+fn random_bool() -> Bool
+fn random_bytes(count: Int) -> Vec[UInt8]
+fn sample_uniform(min: Float64, max: Float64) -> Float64
+fn sample_normal(mean: Float64, stddev: Float64) -> Float64
+fn sample_exponential(lambda: Float64) -> Float64
+fn sample_bernoulli(p: Float64) -> Bool
+fn sample_binomial(n: Int, p: Float64) -> Int
+fn sample_poisson(lambda: Float64) -> Int
+fn sample_gamma(shape: Float64, scale: Float64) -> Float64
+fn sample_beta(alpha: Float64, beta: Float64) -> Float64
+fn shuffle[T](items: &mut Vec[T])
+fn pick[T](items: &Vec[T]) -> Option[&T]
+fn pick_n[T](items: &Vec[T], n: Int) -> Vec[&T]
+fn weighted_pick[T](items: &Vec[T], weights: &Vec[Float64]) -> Option[&T]
+fn uuid_v4() -> Str
+fn uuid_v7() -> Str
+fn seed_from_entropy()
+fn seed_from_time()
+fn seed_from_value(seed: Int)
+```
+
+---
+
+### 8.35 `log` — Structured logging
+
+```xiom
+type LogLevel = enum { Trace, Debug, Info, Warn, Error, Fatal }
+type LogEntry = { level: LogLevel; message: Str; file: Str; line: Int; timestamp: Int; data: Map[Str, Str]; }
+
+fn trace(msg: Str)
+fn debug(msg: Str)
+fn info(msg: Str)
+fn warn(msg: Str)
+fn error(msg: Str)
+fn fatal(msg: Str)
+fn trace_with(msg: Str, data: Map[Str, Str])
+fn debug_with(msg: Str, data: Map[Str, Str])
+fn info_with(msg: Str, data: Map[Str, Str])
+fn warn_with(msg: Str, data: Map[Str, Str])
+fn error_with(msg: Str, data: Map[Str, Str])
+fn set_level(level: LogLevel)
+fn get_level() -> LogLevel
+fn set_output(file: Str) -> Result[Unit, Str]
+fn set_output_json(enabled: Bool)
+fn set_output_color(enabled: Bool)
+fn entries_since(instant: Instant) -> Vec[LogEntry]
+fn clear_log()
+```
+
+---
+
+### 8.36 `test` — Contract-aware test framework
+
+```xiom
+type TestResult      = { passed: Bool; name: Str; message: Str; contract_failures: Vec[ContractFailure]; duration_ms: Int; }
+type ContractFailure = { clause: Str; expression: Str; values: Str; location: Str; }
+
+fn assert(condition: Bool, name: Str) -> TestResult
+fn assert_eq[T: Eq](expected: T, actual: T, name: Str) -> TestResult
+fn assert_ne[T: Eq](expected: T, actual: T, name: Str) -> TestResult
+fn assert_lt[T: Ord](left: T, right: T, name: Str) -> TestResult
+fn assert_gt[T: Ord](left: T, right: T, name: Str) -> TestResult
+fn assert_contains(haystack: Str, needle: Str, name: Str) -> TestResult
+fn assert_ok[T, E](result: Result[T, E], name: Str) -> TestResult
+fn assert_err[T, E](result: Result[T, E], name: Str) -> TestResult
+fn assert_some[T](option: Option[T], name: Str) -> TestResult
+fn assert_none[T](option: Option[T], name: Str) -> TestResult
+fn assert_contract[T](value: T, predicate: fn(&T) -> Bool, name: Str) -> TestResult
+fn run(test: fn() -> TestResult) -> Int
+fn run_all(tests: Vec[fn() -> TestResult]) -> Int
+fn run_filtered(tests: Vec[fn() -> TestResult], filter: Str) -> Int
+fn format_results(results: Vec[TestResult]) -> Str
+fn format_results_json(results: Vec[TestResult]) -> Str
+fn bench(name: Str, f: fn()) -> TestResult
+```
+
+---
+
+### 8.37 `bench` — Benchmarking
+
+```xiom
+type BenchResult = { name: Str; iterations: Int; total_ns: Int; mean_ns: Int; min_ns: Int; max_ns: Int; stddev_ns: Int; }
+
+fn run_bench(name: Str, f: fn()) -> BenchResult
+fn run_bench_n(name: Str, iterations: Int, f: fn()) -> BenchResult
+fn compare(a: BenchResult, b: BenchResult) -> Str
+fn black_box[T](value: T) -> T
+```
+
+---
+
+### 8.38 `contracts` — Contract introspection & coverage
+
+```xiom
+type ContractClause      = { ... }
+type FunctionContracts   = { ... }
+type TypeContracts       = { ... }
+type ContractIndex       = { ... }
+type ContractCheckResult = { ... }
+
+fn verify_invariants[T](value: &T) -> Vec[ContractCheckResult]
+fn verify_function_contracts(func: Str, args: Map[Str, Str]) -> Vec[ContractCheckResult]
+fn check_invariant[T](value: &T, invariant: Str) -> ContractCheckResult
+fn build_contract_index() -> ContractIndex
+fn get_function_contracts(name: Str) -> Option[Vec[FunctionContracts]]
+fn get_type_contracts(name: Str) -> Option[Vec[TypeContracts]]
+fn find_functions_using_type(type_name: Str) -> Vec[Str]
+fn find_invariants_using_field(type_name: Str, field_name: Str) -> Vec[ContractClause]
+fn export_contracts_json() -> Str
+fn export_contracts_markdown() -> Str
+fn export_contracts_openapi() -> Str
+fn reset_contract_coverage()
+fn record_contract_hit(clause: ContractClause, input_values: Map[Str, Str])
+fn get_contract_coverage() -> Map[Str, Bool]
+fn get_uncovered_contracts() -> Vec[ContractClause]
+fn coverage_percentage() -> Float64
+fn can_compose(f_requires: Vec[ContractClause], g_ensures: Vec[ContractClause]) -> Str
+fn verify_chain(fns: Vec[Str]) -> Result[Unit, Vec[ContractCheckResult]]
+fn total_contracts() -> Int
+fn total_requires() -> Int
+fn total_ensures() -> Int
+fn total_invariants() -> Int
+fn functions_with_contracts() -> Int
+fn types_with_invariants() -> Int
+fn contract_density() -> Float64
+```
+
+---
+
+### 8.39 `reflect` — Runtime type information
+
+```xiom
+type TypeId    = { id: Int; }
+type TypeInfo  = { ... }
+type FieldInfo = { ... }
+interface Any  { ... }
+
+fn type_count() -> Int
+fn type_name_by_id(id: Int) -> Str
+fn type_id_by_name(name: Str) -> Int
+fn type_field_count(id: Int) -> Int
+fn TypeId.of[T]() -> TypeId
+fn type_name[T]() -> Str
+fn type_size[T]() -> Int
+fn type_align[T]() -> Int
+fn downcast_ref[T: Any](value: &dyn Any) -> Option[&T]
+fn downcast_mut[T: Any](value: &mut dyn Any) -> Option[&mut T]
+fn reflect_type[T]() -> TypeInfo
+fn type_info_by_name(name: Str) -> Option[TypeInfo]
+fn all_types() -> Vec[TypeInfo]
+```
+
+---
+
+### C FFI
 
 ```xiom
 extern "C" {
@@ -567,12 +1927,7 @@ fn alloc(size: UInt) -> *UInt8 {
 }
 ```
 
-### When generating code, follow this rule:
-
-1. **Use the types** — they're real. `Option[T]`, `Result[T,E]`, `Vec[T]`, `Map[K,V]` are well-defined.
-2. **Implement the functions** — every function signature is correct. Add `{ ... }` bodies instead of `;`.
-3. **Built-ins don't need stdlib** — `Option`, `Result`, `Vec` operations are compiler primitives. You don't need to import `xiom.core` to use them.
-4. **For FFI** — use `extern "C"` directly. The C runtime handles linking.
+Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/*.c`) provides the `xiom_*` helpers used by `io`, `os`, `sync`, `thread`, `net`, and `async`, and is linked by `xiomc` on every native build — no manual setup needed. Use `--link`, `--link-path`, and `--c-source` (section 11) to link additional native libraries.
 
 ---
 
@@ -694,15 +2049,67 @@ fn connect(host: Str, port: Port) -> Result[Conn, NetError]
 
 ---
 
-## 11. Compiler CLI
+## 11. Compiler CLI (`xiomc`)
 
+```
+USAGE:
+  xiomc [OPTIONS] <source.xi> [more.xi ...]
+
+OPTIONS:
+  --help                Show help message and exit
+  --version             Print compiler version and exit
+  -o <output>           Output binary path (default per target: a.exe / a.wasm / a.out)
+  --run                 Compile and run, then print the exit code (native target only)
+  --emit-ir             Print LLVM IR to stdout (no binary produced)
+  --target <target>     Target backend: native (default), wasm, arm, riscv
+  --no-contracts        Disable contract runtime checks (strips requires/ensures/invariant guards)
+  --diagnostics=json    Emit diagnostics as JSON (type/borrow/codegen errors, or {"status":"ok"})
+  --dump-contracts      Print the program's contract index as JSON and exit
+  --verify              Generate SMT-LIB contract verification output (to stdout)
+  --verify-output <f>   Write SMT-LIB verification output to file <f>
+  --timeout <seconds>   Compilation timeout watchdog (default: 60; 0 disables)
+  --max-memory-mb <N>   Memory budget in MB; abort if exceeded (default: 0 = disabled)
+  --link <name>         Link a native library (repeatable; emits -l<name>, e.g. --link vulkan-1)
+  --link-path <dir>     Add a library search path (repeatable; emits -L<dir>)
+  --c-source <file>     Link an extra C or object file (repeatable)
+```
+
+**Behavior notes**
+- With no `-o`, no `--run`, and `--target native`, `xiomc` prints LLVM IR to stdout (same as `--emit-ir`).
+- Contracts are **enabled by default**; runtime guards trap via `@llvm.trap()` on violation. Use `--no-contracts` to strip them.
+- Multiple source files are merged into one program (see section 17). Passing a directory containing `package.xi` loads the modules it lists; otherwise all `.xi` files in the directory are compiled.
+- The `use xiom.*` standard library resolves automatically for any program (via the compiler's stdlib search path; override with the `XIOM_STDLIB` env var).
+
+**Targets** (LLVM triple → default output)
+| `--target` | Triple | Default output |
+|------------|--------|----------------|
+| `native` (default) | `x86_64-pc-windows-msvc` | `a.exe` |
+| `wasm` | `wasm32-unknown-unknown` | `a.wasm` |
+| `arm` | `aarch64-unknown-linux-gnu` | `a.out` |
+| `riscv` | `riscv64gc-unknown-linux-gnu` | `a.out` |
+
+**Toolchain dependencies**
+- Required: `clang` (LLVM) — compiles IR to a native binary.
+- Optional: `opt` (LLVM) — runs an `-O1` optimization pass over the IR.
+- Optional: `nasm` — assembles hardware-accelerated crypto/memcpy runtime objects.
+
+**Examples**
 ```bash
-xiomc source.xi                              # print LLVM IR
-xiomc --emit-ir source.xi                    # print LLVM IR
-xiomc -o prog.exe source.xi                  # compile to native
-xiomc --run source.xi                        # compile + run
-xiomc --target wasm -o prog.wasm source.xi   # compile to WASM
-xiomc --no-contracts source.xi               # disable runtime checks
+xiomc source.xi                              # print LLVM IR (native, no -o/--run)
+xiomc --emit-ir source.xi                    # print LLVM IR explicitly
+xiomc -o prog.exe source.xi                  # compile to native binary
+xiomc --run source.xi                        # compile + run, print exit code
+xiomc --target wasm -o prog.wasm source.xi   # compile to WebAssembly
+xiomc --target arm -o prog.out source.xi     # cross-compile to aarch64
+xiomc --no-contracts -o prog.exe source.xi   # release build without contract guards
+xiomc --diagnostics=json source.xi           # machine-readable diagnostics
+xiomc --dump-contracts source.xi             # contract index as JSON
+xiomc --verify source.xi                      # emit SMT-LIB for Z3
+xiomc --verify-output out.smt2 source.xi     # write SMT-LIB to a file
+xiomc --timeout 120 --max-memory-mb 2048 big.xi
+xiomc --link vulkan-1 --link-path C:/VulkanSDK/lib -o app.exe app.xi
+xiomc --c-source glue.c -o app.exe app.xi
+xiomc --run src/main.xi src/types.xi src/utils.xi   # multi-file merge
 
 # Via cargo
 cargo run -p xiomc -- --run source.xi

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — Memory Model</title>
+<title>xiom — Memory Model</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="" class="logo">
-      <img src="" alt="AXIOM">
-      AXIOM
+      <img src="" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="spec.html">Spec</a>
@@ -96,7 +96,7 @@
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Memory Model</h1>
-      <p>AXIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
+      <p>xiom uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
 <p>The model uses <strong>lexical scope borrowing</strong> — simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.</p>
 <h2>Ownership Rules</h2>
 <table>
@@ -131,7 +131,7 @@
 </table>
 <h2>Borrowing</h2>
 <p>Borrows expire at the end of the block or statement they are created in. You can see when a borrow ends by looking at the braces.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>consume</span>(data: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }          <span class='cm'>// takes ownership</span>
 <span class='kw'>fn</span> <span class='func'>read_only</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }       <span class='cm'>// read borrow</span>
 <span class='kw'>fn</span> <span class='func'>mutate</span>(data: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }      <span class='cm'>// write borrow</span>
@@ -147,7 +147,7 @@
 <p>This is a constraint, not a bug — it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
 <h2>Clone</h2>
 <p>Use <code>.clone()</code> to explicitly duplicate a value:</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>let</span> a = <span class='ty'>Vec</span>.<span class='func'>new</span>();
 a.<span class='func'>push</span>(<span class='num'>1</span>);
 
@@ -160,7 +160,7 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 <p>Types with <code>derive[Clone]</code> get automatic clone implementations. Manual <code>clone()</code> methods can be written for types that need custom duplication logic.</p>
 <h2>Move Semantics</h2>
 <p>Passing a value to a function moves ownership:</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>take</span>(v: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
   <span class='cm'>// v <span class='kw'>is</span> owned here — freed at end of scope</span>
 }
@@ -170,7 +170,7 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 <span class='cm'>// data <span class='kw'>is</span> no longer valid here</span>
 </code></pre>
 <p>Use borrows when you don't need ownership:</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>inspect</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
   <span class='cm'>// read-only access — caller retains ownership</span>
 }
@@ -181,7 +181,7 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 </code></pre>
 <h2>Unsafe Blocks</h2>
 <p>Raw pointer arithmetic and C interop that cannot be verified by the compiler are permitted only inside explicit <code>unsafe { }</code> blocks.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>unsafe</span> {
   <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>some_c_function</span>();
   <span class='kw'>let</span> value = *raw;   <span class='cm'>// dereference — programmer guarantees validity</span>
@@ -192,7 +192,7 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 <table>
 <tr>
 <th></th>
-<th>AXIOM</th>
+<th>xiom</th>
 <th>Rust</th>
 </tr>
 <tr>
@@ -228,7 +228,7 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="spec.html">Spec</a>
       <a href="docs/">Docs</a>

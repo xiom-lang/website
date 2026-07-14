@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — Getting Started</title>
+<title>xiom — Getting Started</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="" class="logo">
-      <img src="" alt="AXIOM">
-      AXIOM
+      <img src="" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="spec.html">Spec</a>
@@ -106,14 +106,14 @@
 </ul>
 <h2>Build from Source</h2>
 <pre class="language-bash"><code>
-git clone https:<span class='cm'>//gitea.example.com/axiom-lang/axiom.git</span>
-cd axiom
+git clone https:<span class='cm'>//gitea.example.com/xiom-lang/xiom.git</span>
+cd xiom
 cargo build
 cargo test          # <span class='num'>234</span> tests should pass
 </code></pre>
 <h2>Your First Program</h2>
 <p>Create a file <code>hello.ax</code>:</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>add</span>(a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>) -> <span class='ty'>Int</span> {
   <span class='kw'>return</span> a + b;
 }
@@ -125,21 +125,21 @@ cargo test          # <span class='num'>234</span> tests should pass
 <p>Compile and run:</p>
 <pre class="language-bash"><code>
 # View LLVM IR
-cargo run -p axiomc -- --emit-ir hello.ax
+cargo run -p xiomc -- --emit-ir hello.ax
 
 # Compile to native binary
-cargo run -p axiomc -- -o hello.exe hello.ax
+cargo run -p xiomc -- -o hello.exe hello.ax
 
 # Compile and <span class='func'>run</span>(prints exit code)
-cargo run -p axiomc -- --run hello.ax
+cargo run -p xiomc -- --run hello.ax
 # → exit code: <span class='num'>30</span>
 
 # Compile to WASM
-cargo run -p axiomc -- --target wasm -o hello.wasm hello.ax
+cargo run -p xiomc -- --target wasm -o hello.wasm hello.ax
 # → wasm size: <span class='num'>618</span> bytes
 </code></pre>
 <h2>Try in Browser</h2>
-<p>Open the <a href="https://axiom-lang.org/playground">AXIOM Playground</a> to write and compile AXIOM directly in your browser. No install required.</p>
+<p>Open the <a href="https://xiom-lang.org/playground">xiom Playground</a> to write and compile xiom directly in your browser. No install required.</p>
 <h2>CLI Reference</h2>
 <table>
 <tr>
@@ -181,21 +181,21 @@ cargo run -p axiomc -- --target wasm -o hello.wasm hello.ax
 </table>
 <h2>Project Structure</h2>
 <pre><code>
-AXIOM/
+xiom/
 ├── crates/             # Rust bootstrap <span class='func'>compiler</span>(permanent)
-│   ├── axiom-ast/      # AST node definitions
-│   ├── axiom-lexer/    # Tokenizer
-│   ├── axiom-parser/   # Recursive descent parser
-│   ├── axiom-check/    # Type checker + borrow checker + <span class='kw'>module</span> resolver
-│   ├── axiom-codegen/  # LLVM IR emitter + contracts + <span class='kw'>derive</span> + generics
-│   └── axiomc/         # CLI binary
-├── selfhost/           # AXIOM <span class='kw'>self</span>-hosted compiler
-│   ├── axiom-lexer.ax
-│   ├── axiom-parser.ax
-│   ├── axiom-check.ax
-│   ├── axiom-codegen.ax
-│   └── axiomc.ax
-├── stdlib/             # Standard <span class='func'>library</span>(AXIOM source)
+│   ├── xiom-ast/      # AST node definitions
+│   ├── xiom-lexer/    # Tokenizer
+│   ├── xiom-parser/   # Recursive descent parser
+│   ├── xiom-check/    # Type checker + borrow checker + <span class='kw'>module</span> resolver
+│   ├── xiom-codegen/  # LLVM IR emitter + contracts + <span class='kw'>derive</span> + generics
+│   └── xiomc/         # CLI binary
+├── selfhost/           # xiom <span class='kw'>self</span>-hosted compiler
+│   ├── xiom-lexer.ax
+│   ├── xiom-parser.ax
+│   ├── xiom-check.ax
+│   ├── xiom-codegen.ax
+│   └── xiomc.ax
+├── stdlib/             # Standard <span class='func'>library</span>(xiom source)
 ├── examples/           # Example programs
 ├── specs/              # Language specification
 ├── docs/               # Documentation
@@ -204,8 +204,8 @@ AXIOM/
 </code></pre>
 <h2>Editor Support</h2>
 <ul>
-<li><strong>VS Code</strong> — Install <code>vscode-axiom</code> extension for syntax highlighting</li>
-<li><strong>Any editor</strong> — AXIOM uses <code>.ax</code> file extension. Set up <code>.ax</code> → plain text with 4-space indentation for now. Full LSP support planned for Phase 3.</li>
+<li><strong>VS Code</strong> — Install <code>vscode-xiom</code> extension for syntax highlighting</li>
+<li><strong>Any editor</strong> — xiom uses <code>.ax</code> file extension. Set up <code>.ax</code> → plain text with 4-space indentation for now. Full LSP support planned for Phase 3.</li>
 </ul>
 <h2>Next Steps</h2>
 <ul>
@@ -221,7 +221,7 @@ AXIOM/
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="spec.html">Spec</a>
       <a href="docs/">Docs</a>

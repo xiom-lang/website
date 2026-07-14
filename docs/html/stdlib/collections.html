@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — Collections Library</title>
+<title>xiom — Collections Library</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="../" class="logo">
-      <img src="../" alt="AXIOM">
-      AXIOM
+      <img src="../" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="../spec.html">Spec</a>
@@ -98,12 +98,12 @@
       <h1 style="font-size:36px;margin-bottom:24px;">Collections Library</h1>
       <p>The <code>collections</code> module provides general-purpose data structures: dynamic arrays, hash maps, hash sets, linked lists, queues, stacks, double-ended queues, sorted maps, sorted sets, and slice utilities.</p>
 <pre><code>
-<span class='kw'>use</span> axiom.collections;
+<span class='kw'>use</span> xiom.collections;
 </code></pre>
 <hr>
 <h2>Vec</h2>
 <p>A contiguous growable array type, backed by a heap-allocated buffer with length and capacity tracking. <code>Vec</code> provides amortized O(1) push, O(1) pop, and O(1) index access.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Vec</span>[T] = {
   data: *T;
   len: <span class='ty'>Int</span>;
@@ -112,415 +112,415 @@
 </code></pre>
 <h3><code>Vec.new()</code></h3>
 <p>Creates a new, empty <code>Vec</code> with no initial allocation.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.new[T]() -> <span class='ty'>Vec</span>[T];
 </code></pre>
 <h3><code>Vec.with_capacity(cap)</code></h3>
 <p>Creates a new, empty <code>Vec</code> pre-allocated with space for at least <code>cap</code> elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.with_capacity[T](cap: <span class='ty'>Int</span>) -> <span class='ty'>Vec</span>[T];
 </code></pre>
 <h3><code>Vec.push(value)</code></h3>
 <p>Appends a value to the end of the vector, growing the backing buffer if necessary.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.push[T](value: T);
 </code></pre>
 <h3><code>Vec.pop()</code></h3>
 <p>Removes and returns the last element. Returns <code>None</code> if the vector is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.pop[T]() -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>Vec.get(index)</code></h3>
 <p>Returns a reference to the element at <code>index</code>, or <code>None</code> if the index is out of bounds.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.get[T](index: <span class='ty'>Int</span>) -> <span class='ty'>Option</span>[&T];
 </code></pre>
 <h3><code>Vec.len()</code></h3>
 <p>Returns the number of elements in the vector.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.len[T]() -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>Vec.is_empty()</code></h3>
 <p>Returns true if the vector contains no elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.is_empty[T]() -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Vec.clear()</code></h3>
 <p>Removes all elements from the vector; the backing buffer is not freed.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.clear[T]();
 </code></pre>
 <h3><code>Vec.insert(index, value)</code></h3>
 <p>Inserts <code>value</code> at position <code>index</code>, shifting all subsequent elements to the right.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.insert[T](index: <span class='ty'>Int</span>, value: T);
 </code></pre>
 <h3><code>Vec.remove(index)</code></h3>
 <p>Removes and returns the element at position <code>index</code>, shifting all subsequent elements to the left. Returns <code>None</code> if the index is out of bounds.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.remove[T](index: <span class='ty'>Int</span>) -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>Vec.first()</code></h3>
 <p>Returns a reference to the first element, or <code>None</code> if the vector is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.first[T]() -> <span class='ty'>Option</span>[&T];
 </code></pre>
 <h3><code>Vec.last()</code></h3>
 <p>Returns a reference to the last element, or <code>None</code> if the vector is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.last[T]() -> <span class='ty'>Option</span>[&T];
 </code></pre>
 <h3><code>Vec.set(index, value)</code></h3>
 <p>Overwrites the element at <code>index</code> with <code>value</code>. Panics if the index is out of bounds.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Vec</span>.set[T](index: <span class='ty'>Int</span>, value: T);
 </code></pre>
 <hr>
 <h2>Map</h2>
 <p>A hash map from keys of type <code>K</code> to values of type <code>V</code>. Provides average O(1) insert, lookup, and remove.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Map</span>[K, V] = {}
 </code></pre>
 <h3><code>Map.new()</code></h3>
 <p>Creates a new, empty hash map.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.new[K, V]() -> <span class='ty'>Map</span>[K, V];
 </code></pre>
 <h3><code>Map.insert(key, value)</code></h3>
 <p>Inserts a key-value pair into the map. If the key already exists, the value is replaced.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.insert[K, V](key: K, value: V);
 </code></pre>
 <h3><code>Map.get(key)</code></h3>
 <p>Returns a reference to the value associated with <code>key</code>, or <code>None</code> if the key is not present.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.get[K, V](key: &K) -> <span class='ty'>Option</span>[&V];
 </code></pre>
 <h3><code>Map.remove(key)</code></h3>
 <p>Removes the key-value pair for <code>key</code> and returns the value. Returns <code>None</code> if the key is not present.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.remove[K, V](key: &K) -> <span class='ty'>Option</span>[V];
 </code></pre>
 <h3><code>Map.contains(key)</code></h3>
 <p>Returns true if the map contains an entry for <code>key</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.contains[K, V](key: &K) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Map.len()</code></h3>
 <p>Returns the number of key-value pairs in the map.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.len[K, V]() -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>Map.keys()</code></h3>
 <p>Returns a <code>Vec[K]</code> containing all keys in the map. The order is not guaranteed.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.keys[K, V]() -> <span class='ty'>Vec</span>[K];
 </code></pre>
 <h3><code>Map.values()</code></h3>
 <p>Returns a <code>Vec[V]</code> containing all values in the map. The order is not guaranteed.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.values[K, V]() -> <span class='ty'>Vec</span>[V];
 </code></pre>
 <h3><code>Map.clear()</code></h3>
 <p>Removes all key-value pairs from the map.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Map</span>.clear[K, V]();
 </code></pre>
 <hr>
 <h2>Set</h2>
 <p>A hash set of values of type <code>T</code>. Provides average O(1) insert, lookup, and remove.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Set</span>[T] = {}
 </code></pre>
 <h3><code>Set.new()</code></h3>
 <p>Creates a new, empty hash set.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Set</span>.new[T]() -> <span class='ty'>Set</span>[T];
 </code></pre>
 <h3><code>Set.insert(value)</code></h3>
 <p>Inserts a value into the set. If the value was already present, the set is unchanged.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Set</span>.insert[T](value: T);
 </code></pre>
 <h3><code>Set.remove(value)</code></h3>
 <p>Removes <code>value</code> from the set. No-op if the value is not present.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Set</span>.remove[T](value: &T);
 </code></pre>
 <h3><code>Set.contains(value)</code></h3>
 <p>Returns true if the set contains <code>value</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Set</span>.contains[T](value: &T) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Set.len()</code></h3>
 <p>Returns the number of elements in the set.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Set</span>.len[T]() -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>Set.union(other)</code></h3>
 <p>Returns a new set containing all elements from <code>self</code> and <code>other</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Set</span>.union[T](other: &<span class='ty'>Set</span>[T]) -> <span class='ty'>Set</span>[T];
 </code></pre>
 <h3><code>Set.intersection(other)</code></h3>
 <p>Returns a new set containing elements present in both <code>self</code> and <code>other</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Set</span>.intersection[T](other: &<span class='ty'>Set</span>[T]) -> <span class='ty'>Set</span>[T];
 </code></pre>
 <h3><code>Set.difference(other)</code></h3>
 <p>Returns a new set containing elements present in <code>self</code> but not in <code>other</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Set</span>.difference[T](other: &<span class='ty'>Set</span>[T]) -> <span class='ty'>Set</span>[T];
 </code></pre>
 <hr>
 <h2>LinkedList</h2>
 <p>A doubly-linked list providing O(1) insertion and removal at both ends.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> LinkedList[T] = {}
 </code></pre>
 <h3><code>LinkedList.new()</code></h3>
 <p>Creates a new, empty linked list.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> LinkedList.new[T]() -> LinkedList[T];
 </code></pre>
 <h3><code>LinkedList.push_front(value)</code></h3>
 <p>Prepends <code>value</code> to the front of the list.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> LinkedList.push_front[T](value: T);
 </code></pre>
 <h3><code>LinkedList.push_back(value)</code></h3>
 <p>Appends <code>value</code> to the end of the list.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> LinkedList.push_back[T](value: T);
 </code></pre>
 <h3><code>LinkedList.pop_front()</code></h3>
 <p>Removes and returns the first element. Returns <code>None</code> if the list is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> LinkedList.pop_front[T]() -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>LinkedList.pop_back()</code></h3>
 <p>Removes and returns the last element. Returns <code>None</code> if the list is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> LinkedList.pop_back[T]() -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>LinkedList.len()</code></h3>
 <p>Returns the number of elements in the list.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> LinkedList.len[T]() -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>LinkedList.is_empty()</code></h3>
 <p>Returns true if the list contains no elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> LinkedList.is_empty[T]() -> <span class='ty'>Bool</span>;
 </code></pre>
 <hr>
 <h2>Queue</h2>
 <p>A first-in-first-out (FIFO) queue.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> Queue[T] = {}
 </code></pre>
 <h3><code>Queue.new()</code></h3>
 <p>Creates a new, empty queue.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Queue.new[T]() -> Queue[T];
 </code></pre>
 <h3><code>Queue.enqueue(value)</code></h3>
 <p>Adds <code>value</code> to the back of the queue.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Queue.enqueue[T](value: T);
 </code></pre>
 <h3><code>Queue.dequeue()</code></h3>
 <p>Removes and returns the element at the front of the queue. Returns <code>None</code> if the queue is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Queue.dequeue[T]() -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>Queue.peek()</code></h3>
 <p>Returns a reference to the front element without removing it. Returns <code>None</code> if the queue is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Queue.peek[T]() -> <span class='ty'>Option</span>[&T];
 </code></pre>
 <h3><code>Queue.len()</code></h3>
 <p>Returns the number of elements in the queue.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Queue.len[T]() -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>Queue.is_empty()</code></h3>
 <p>Returns true if the queue contains no elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> Queue.is_empty[T]() -> <span class='ty'>Bool</span>;
 </code></pre>
 <hr>
 <h2>Stack</h2>
 <p>A last-in-first-out (LIFO) stack.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Stack</span>[T] = {}
 </code></pre>
 <h3><code>Stack.new()</code></h3>
 <p>Creates a new, empty stack.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Stack</span>.new[T]() -> <span class='ty'>Stack</span>[T];
 </code></pre>
 <h3><code>Stack.push(value)</code></h3>
 <p>Pushes <code>value</code> onto the top of the stack.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Stack</span>.push[T](value: T);
 </code></pre>
 <h3><code>Stack.pop()</code></h3>
 <p>Removes and returns the top element. Returns <code>None</code> if the stack is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Stack</span>.pop[T]() -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>Stack.peek()</code></h3>
 <p>Returns a reference to the top element without removing it. Returns <code>None</code> if the stack is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Stack</span>.peek[T]() -> <span class='ty'>Option</span>[&T];
 </code></pre>
 <h3><code>Stack.len()</code></h3>
 <p>Returns the number of elements on the stack.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Stack</span>.len[T]() -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>Stack.is_empty()</code></h3>
 <p>Returns true if the stack contains no elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Stack</span>.is_empty[T]() -> <span class='ty'>Bool</span>;
 </code></pre>
 <hr>
 <h2>VecDeque</h2>
 <p>A double-ended queue implemented with a growable ring buffer. Provides O(1) push and pop at both ends.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> VecDeque[T] = { data: <span class='ty'>Vec</span>[T]; head: <span class='ty'>Int</span>; tail: <span class='ty'>Int</span>; }
 </code></pre>
 <h3><code>VecDeque.new()</code></h3>
 <p>Creates a new, empty <code>VecDeque</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>new</span>() -> VecDeque[T];
 </code></pre>
 <h3><code>VecDeque.with_capacity(cap)</code></h3>
 <p>Creates a new, empty <code>VecDeque</code> pre-allocated with space for at least <code>cap</code> elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>with_capacity</span>(cap: <span class='ty'>Int</span>) -> VecDeque[T];
 </code></pre>
 <h3><code>VecDeque.push_front(value)</code></h3>
 <p>Prepends <code>value</code> to the front of the deque.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>push_front</span>(<span class='kw'>self</span>, value: T);
 </code></pre>
 <h3><code>VecDeque.push_back(value)</code></h3>
 <p>Appends <code>value</code> to the back of the deque.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>push_back</span>(<span class='kw'>self</span>, value: T);
 </code></pre>
 <h3><code>VecDeque.pop_front()</code></h3>
 <p>Removes and returns the front element. Returns <code>None</code> if the deque is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>pop_front</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>VecDeque.pop_back()</code></h3>
 <p>Removes and returns the back element. Returns <code>None</code> if the deque is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>pop_back</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[T];
 </code></pre>
 <h3><code>VecDeque.front()</code></h3>
 <p>Returns a reference to the front element without removing it. Returns <code>None</code> if the deque is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>front</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[&T];
 </code></pre>
 <h3><code>VecDeque.back()</code></h3>
 <p>Returns a reference to the back element without removing it. Returns <code>None</code> if the deque is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>back</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[&T];
 </code></pre>
 <h3><code>VecDeque.len()</code></h3>
 <p>Returns the number of elements in the deque.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> VecDeque[T].<span class='func'>len</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
 </code></pre>
 <hr>
 <h2>BTreeMap</h2>
 <p>A sorted map implemented as a B-tree. Keys must implement <code>Ord</code>. Provides O(log n) insert, lookup, and remove, with ordered iteration.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> BTreeMap[K: <span class='ty'>Ord</span>, V] = { ... }
 </code></pre>
 <h3><code>BTreeMap.new()</code></h3>
 <p>Creates a new, empty <code>BTreeMap</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeMap[K: <span class='ty'>Ord</span>, V].<span class='func'>new</span>() -> BTreeMap[K, V];
 </code></pre>
 <h3><code>BTreeMap.insert(key, value)</code></h3>
 <p>Inserts a key-value pair. If the key already existed, the old value is returned wrapped in <code>Some</code>; otherwise <code>None</code> is returned.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeMap[K: <span class='ty'>Ord</span>, V].<span class='func'>insert</span>(<span class='kw'>self</span>, key: K, value: V) -> <span class='ty'>Option</span>[V];
 </code></pre>
 <h3><code>BTreeMap.get(key)</code></h3>
 <p>Returns a reference to the value associated with <code>key</code>, or <code>None</code> if the key is not present.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeMap[K: <span class='ty'>Ord</span>, V].<span class='func'>get</span>(<span class='kw'>self</span>, key: &K) -> <span class='ty'>Option</span>[&V];
 </code></pre>
 <h3><code>BTreeMap.remove(key)</code></h3>
 <p>Removes the key-value pair for <code>key</code> and returns the value. Returns <code>None</code> if the key is not present.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeMap[K: <span class='ty'>Ord</span>, V].<span class='func'>remove</span>(<span class='kw'>self</span>, key: &K) -> <span class='ty'>Option</span>[V];
 </code></pre>
 <h3><code>BTreeMap.contains_key(key)</code></h3>
 <p>Returns true if the map contains an entry for <code>key</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeMap[K: <span class='ty'>Ord</span>, V].<span class='func'>contains_key</span>(<span class='kw'>self</span>, key: &K) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>BTreeMap.first_entry()</code></h3>
 <p>Returns the smallest key-value pair in the map, or <code>None</code> if the map is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeMap[K: <span class='ty'>Ord</span>, V].<span class='func'>first_entry</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[(K, V)];
 </code></pre>
 <h3><code>BTreeMap.last_entry()</code></h3>
 <p>Returns the largest key-value pair in the map, or <code>None</code> if the map is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeMap[K: <span class='ty'>Ord</span>, V].<span class='func'>last_entry</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[(K, V)];
 </code></pre>
 <h3><code>BTreeMap.len()</code></h3>
 <p>Returns the number of key-value pairs in the map.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeMap[K: <span class='ty'>Ord</span>, V].<span class='func'>len</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
 </code></pre>
 <hr>
 <h2>BTreeSet</h2>
 <p>A sorted set implemented as a B-tree. Values must implement <code>Ord</code>. Provides O(log n) insert, lookup, and remove, with ordered iteration.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> BTreeSet[T: <span class='ty'>Ord</span>] = { ... }
 </code></pre>
 <h3><code>BTreeSet.new()</code></h3>
 <p>Creates a new, empty <code>BTreeSet</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeSet[T: <span class='ty'>Ord</span>].<span class='func'>new</span>() -> BTreeSet[T];
 </code></pre>
 <h3><code>BTreeSet.insert(value)</code></h3>
 <p>Inserts a value. Returns true if the value was newly inserted, false if it was already present.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeSet[T: <span class='ty'>Ord</span>].<span class='func'>insert</span>(<span class='kw'>self</span>, value: T) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>BTreeSet.remove(value)</code></h3>
 <p>Removes a value. Returns true if the value was present and removed, false otherwise.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeSet[T: <span class='ty'>Ord</span>].<span class='func'>remove</span>(<span class='kw'>self</span>, value: &T) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>BTreeSet.contains(value)</code></h3>
 <p>Returns true if the set contains <code>value</code>.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeSet[T: <span class='ty'>Ord</span>].<span class='func'>contains</span>(<span class='kw'>self</span>, value: &T) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>BTreeSet.first()</code></h3>
 <p>Returns a reference to the smallest element, or <code>None</code> if the set is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeSet[T: <span class='ty'>Ord</span>].<span class='func'>first</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span><&T>;
 </code></pre>
 <h3><code>BTreeSet.last()</code></h3>
 <p>Returns a reference to the largest element, or <code>None</code> if the set is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeSet[T: <span class='ty'>Ord</span>].<span class='func'>last</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span><&T>;
 </code></pre>
 <h3><code>BTreeSet.len()</code></h3>
 <p>Returns the number of elements in the set.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> BTreeSet[T: <span class='ty'>Ord</span>].<span class='func'>len</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
 </code></pre>
 <hr>
@@ -528,27 +528,27 @@
 <p>Utility methods on <code>Slice[T]</code>, a borrowed view into a contiguous sequence of elements.</p>
 <h3><code>Slice.len()</code></h3>
 <p>Returns the number of elements in the slice.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Slice</span>[T].<span class='func'>len</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>Slice.is_empty()</code></h3>
 <p>Returns true if the slice contains no elements.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Slice</span>[T].<span class='func'>is_empty</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Slice.first()</code></h3>
 <p>Returns a reference to the first element, or <code>None</code> if the slice is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Slice</span>[T].<span class='func'>first</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span><&T>;
 </code></pre>
 <h3><code>Slice.last()</code></h3>
 <p>Returns a reference to the last element, or <code>None</code> if the slice is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Slice</span>[T].<span class='func'>last</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span><&T>;
 </code></pre>
 <h3><code>Slice.get(index)</code></h3>
 <p>Returns a reference to the element at <code>index</code>, or <code>None</code> if out of bounds.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Slice</span>[T].<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Option</span><&T>;
 </code></pre>
     </main>
@@ -558,7 +558,7 @@
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="../" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AXIOM — `axiom.async` — Async Programming</title>
+<title>xiom — `xiom.async` — Async Programming</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,8 @@
 <nav>
   <div class="wrap">
     <a href="../" class="logo">
-      <img src="../" alt="AXIOM">
-      AXIOM
+      <img src="../" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="../spec.html">Spec</a>
@@ -95,16 +95,16 @@
 
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">`axiom.async` — Async Programming</h1>
+      <h1 style="font-size:36px;margin-bottom:24px;">`xiom.async` — Async Programming</h1>
       <p>Provides primitives for asynchronous task execution and message passing between concurrent tasks.</p>
-<pre class="language-axiom"><code>
-<span class='kw'>use</span> axiom.<span class='kw'>async</span>;
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.<span class='kw'>async</span>;
 </code></pre>
 <hr>
 <h2>Task Spawning</h2>
 <h3><code>spawn(task)</code></h3>
 <p>Launches a new asynchronous task that runs the given closure. The task is scheduled on the runtime's thread pool and executes concurrently with the caller.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'><span class='kw'>spawn</span></span>(task: <span class='func'><span class='kw'>fn</span></span>())
 </code></pre>
 <hr>
@@ -112,37 +112,37 @@
 <p>Communication primitives for sending values between concurrent tasks. Channels come in bounded (capacity-limited) and unbounded variants.</p>
 <h3><code>Channel[T]</code></h3>
 <p>A typed channel for sending values of type <code>T</code> between tasks. Internally uses a ring buffer.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Channel</span>[T] = { }
 </code></pre>
 <h3><code>Channel.bounded(capacity)</code></h3>
 <p>Creates a new bounded channel with the given buffer capacity. The channel can hold at most <code>capacity</code> messages before <code>send</code> blocks.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Channel</span>.bounded[T](capacity: <span class='ty'>Int</span>) -> <span class='ty'>Channel</span>[T]
 </code></pre>
 <h3><code>Channel.unbounded()</code></h3>
 <p>Creates a new unbounded channel with no limit on buffer size. <code>send</code> never blocks.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Channel</span>.unbounded[T]() -> <span class='ty'>Channel</span>[T]
 </code></pre>
 <h3><code>Channel.send(value)</code></h3>
 <p>Sends a value into the channel. For bounded channels, this blocks if the buffer is full. For unbounded channels, this always succeeds immediately.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Channel</span>.send[T](value: T)
 </code></pre>
 <h3><code>Channel.recv()</code></h3>
 <p>Receives a value from the channel, blocking the current task until a message is available.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Channel</span>.recv[T]() -> T
 </code></pre>
 <h3><code>Channel.try_recv()</code></h3>
 <p>Attempts to receive a value without blocking. Returns <code>Some(value)</code> if a message is available, or <code>None</code> if the channel is empty.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Channel</span>.try_recv[T]() -> <span class='ty'>Option</span>[T]
 </code></pre>
 <h3><code>Channel.close()</code></h3>
 <p>Closes the channel, preventing further sends. Outstanding messages can still be received. Once the buffer is drained, <code>recv</code> returns an error or signals the end of the stream.</p>
-<pre class="language-axiom"><code>
+<pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='ty'>Channel</span>.close[T]()
 </code></pre>
     </main>
@@ -152,7 +152,7 @@
 
 <footer>
   <div class="wrap">
-    <p>AXIOM v0.12.0 · <a href="../" style="color:var(--signal);">axiom-lang.org</a></p>
+    <p>xiom v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>
