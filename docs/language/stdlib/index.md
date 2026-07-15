@@ -1,6 +1,6 @@
 # Standard Library
 
-> 39 modules. All ship with the compiler in `stdlib/xiom/`.
+> 40 modules. All ship with the compiler in `stdlib/xiom/`.
 > Types (Option, Result, Vec, Int, Str...) are built-in — no import needed.
 > Functions live in modules — import with `use xiom.<module>`.
 
@@ -40,6 +40,7 @@
 | [math](math.md) | Constants (PI, E, TAU), basic math (sqrt, pow, abs, min, max, floor, ceil, round), trigonometry (sin, cos, tan, asin, acos, atan), exponential/log (exp, log, log2, log10), interpolation (clamp, lerp), random numbers |
 | [num](num.md) | Numeric traits: abs, signum, is_positive, is_negative, pow, sqrt, cbrt, gcd, lcm, byte conversion, saturating/wrapping operations |
 | [cmp](cmp.md) | Comparison traits: Compare, PartialOrd, Ord, Eq, min, max, clamp |
+| [simd](simd.md) | Hardware-accelerated SIMD vectors: Vec4f/Vec8f/Vec16f (Float32), Vec2d/Vec4d/Vec8d (Float64), Vec4i/Vec8i (Int32), Vec8s (Int16), Vec16b (Int8). SSE/AVX/AVX2/AVX-512/NEON with scalar fallback |
 
 ## Concurrency
 
