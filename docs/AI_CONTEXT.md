@@ -3,6 +3,8 @@
 > **Version:** v1.0 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 39-module standard library.
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
+> **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
+
 > **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiomc` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
 > Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
