@@ -1,12 +1,9 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v0.45.3 | **Branch:** `feat/architect` | **Status:** Production-ready. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 39-module standard library. 461 tests passing (47 parser + 74 checker + 41 smoke + 86 e2e + 213 ecosystem).
+> **Version:** v1.0 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 39-module standard library.
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
-> **Infrastructure:** Website: https://xiom-lang.org | Registry: https://registry.xiom-lang.org | Playground: https://play.xiom-lang.org | Repository: https://git.xiom-lang.org/xiom/xiom
-> **Ecosystem:** `xiom install <package>`, `xiom publish`, `xiom new`, `xiom init`, `xiom bench`, `xiom registry`, lockfile support.
-
-> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiomc` compiler CLI (section 11), package management (section 12), and code-generation guidance (sections 9, 16, 17).
+> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiomc` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
 > Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
 ---
@@ -1934,6 +1931,306 @@ Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/
 
 ---
 
+### 8.40 `vulkan` — GPU Graphics & Compute (Ecosystem Package)
+
+First-party Vulkan GPU bindings for XIOM (`ecosystem/xiom-vulkan/`). Uses a flat C-ABI bridge (`xiom_vk_bridge.c`) that wraps Vulkan + GLFW into a compact API. All GPU resources are opaque handles validated by magic numbers. Import with `use xiom.vulkan;`.
+
+**Prerequisites:** Vulkan SDK >= 1.3 (`VULKAN_SDK`), GLFW 3.4 (`GLFW_DIR`), LLVM/clang, Rust toolchain. Build via `ecosystem/xiom-vulkan/build.ps1` (Windows) or `build.sh` (Linux/macOS).
+
+```powershell
+# Build 2D demo (default)
+.\ecosystem\xiom-vulkan\build.ps1
+# Build and run 3D cube
+.\ecosystem\xiom-vulkan\build.ps1 -Target demo3d -Run
+# GPU particle fountain
+.\ecosystem\xiom-vulkan\build.ps1 -Target particles -Run
+```
+
+Build pipeline: `GLSL → glslc → SPIR-V header → clang → bridge.obj → xiomc --c-source bridge.obj --link vulkan-1 --link glfw3`
+
+#### Architecture
+
+```
+XIOM Application
+    │
+xiom.vulkan  (safe wrappers with contracts)
+    │
+extern "C" FFI  (xvk_* flat C bridge)
+    │
+xiom_vk_bridge.c  (~4000 lines C)
+    │
+vulkan-1.dll + glfw3.dll  (native)
+```
+
+#### Lifecycle API
+
+```xiom
+fn create_app(title: Str, width: Int, height: Int) -> Result[Int, Str]
+  requires: width > 0; requires: height > 0
+
+fn destroy_app(app: Int)
+  requires: app != 0
+
+fn should_close(app: Int) -> Bool
+fn poll(app: Int)
+fn now() -> Float64
+fn device_type(app: Int) -> Int
+fn last_error() -> Str
+fn get_framebuffer_size(app: Int) -> (Int, Int)
+```
+
+#### Frame API
+
+```xiom
+fn set_clear_color(app: Int, r: Float32, g: Float32, b: Float32)
+  // Must be called BEFORE begin_frame.
+
+fn begin_frame(app: Int) -> Int
+  // Returns: 1=OK, 0=skip (resize), -1=fatal
+
+fn end_frame(app: Int)
+```
+
+#### Drawing API (Legacy, Hardcoded Pipelines)
+
+```xiom
+fn draw_triangle_2d(app: Int, r: Float32, g: Float32, b: Float32)
+fn draw_quad_2d(app: Int, cx: Float32, cy: Float32, hw: Float32, hh: Float32, r: Float32, g: Float32, b: Float32)
+fn draw_cube_3d(app: Int, angle: Float32)
+fn draw_cube_3d_at(app: Int, angle: Float32, px: Float32, py: Float32, pz: Float32, scale: Float32)
+fn particles_enable(app: Int, count: Int) -> Bool
+fn draw_particles(app: Int, dt: Float32)
+```
+
+#### Buffer API
+
+```xiom
+fn buffer_create(app: Int, size: Int, usage: Int, memory: Int) -> Result[Int, Str]
+  // usage: 1=vertex, 2=index, 4=uniform, 8=storage, 16=transfer-src, 32=transfer-dst
+  // memory: 1=device-local, 2=host-visible+coherent, 3=host-visible+cached
+
+fn buffer_destroy(app: Int, buf: Int)
+fn buffer_size(app: Int, buf: Int) -> Int
+fn buffer_map(app: Int, buf: Int) -> Bool
+fn buffer_unmap(app: Int, buf: Int)
+fn buffer_write_float(app: Int, buf: Int, offset: Int, data: Vec[Float32])
+fn buffer_read_float(app: Int, buf: Int, offset: Int, count: Int) -> Vec[Float32]
+```
+
+#### Image & Texture API
+
+```xiom
+fn image_create_2d(app: Int, width: Int, height: Int, format: Int, usage: Int, mip_levels: Int) -> Result[Int, Str]
+  // format: 1=RGBA8_UNORM, 2=RGBA8_SRGB, 3=RGBA32_SFLOAT, 4=R32_SFLOAT, 5=D32_SFLOAT
+  // usage: 1=sampled, 2=color-attachment, 4=depth, 8=transfer-src, 16=transfer-dst, 32=storage
+
+fn image_destroy(app: Int, img: Int)
+fn image_view_create(app: Int, img: Int, format: Int, aspect: Int) -> Result[Int, Str]
+fn image_view_destroy(app: Int, view: Int)
+fn image_transition(app: Int, img: Int, old_layout: Int, new_layout: Int)
+  // layout: 0=undefined, 1=color-attachment, 2=shader-read, 3=transfer-src, 4=transfer-dst, 5=depth, 6=present
+```
+
+#### Sampler API
+
+```xiom
+fn sampler_create(app: Int, filter: Int, address_u: Int, address_v: Int, mip_mode: Int, max_lod: Float32) -> Result[Int, Str]
+  // filter: 0=nearest, 1=linear
+  // address: 0=repeat, 1=clamp-edge, 2=clamp-border
+  // mip_mode: 0=nearest, 1=linear
+
+fn sampler_destroy(app: Int, sampler: Int)
+```
+
+#### Shader Module API
+
+```xiom
+fn shader_create(app: Int, code: Vec[UInt32]) -> Result[Int, Str]
+fn shader_create_named(app: Int, name: Str) -> Result[Int, Str]
+  // Names: "triangle_vert", "triangle_frag", "cube_vert", "cube_frag",
+  //   "quad_vert", "quad_frag", "particle_vert", "particle_frag",
+  //   "particle_render_vert", "particle_render_frag", "compute_particles",
+  //   "texture_quad_vert", "texture_quad_frag", "uniform_cube_vert", "uniform_cube_frag"
+
+fn shader_destroy(app: Int, shader: Int)
+```
+
+#### Pipeline Layout & Descriptor Set Layout API
+
+```xiom
+fn pipeline_layout_create(app: Int, push_size: Int, push_stages: Int, desc_layouts: Vec[Int]) -> Result[Int, Str]
+  // push_stages: 1=vertex, 2=fragment, 3=both, 4=compute
+
+fn pipeline_layout_destroy(app: Int, layout: Int)
+
+fn desc_set_layout_create(app: Int, bindings: Vec[Int32]) -> Result[Int, Str]
+  // bindings: flat array [binding, type, count, stage, ...] per binding
+  //   type: 0=uniform-buffer, 1=storage-buffer, 2=combined-image-sampler
+  //   stage: 1=vertex, 2=fragment, 3=both, 4=compute
+
+fn desc_set_layout_destroy(app: Int, layout: Int)
+```
+
+#### Pipeline API
+
+```xiom
+fn pipeline_create_graphics(app: Int,
+    topology: Int,       // 0=triangle-list, 1=point-list, 2=line-list
+    cull_mode: Int,      // 0=none, 1=front, 2=back
+    depth_test: Bool, depth_write: Bool, blend: Bool,
+    vert_shader: Int, frag_shader: Int,
+    layout: Int, render_pass: Int,
+    bindings: Vec[Int32],   // flat [binding, stride, input_rate] repeated
+    attributes: Vec[Int32]  // flat [location, binding, format, offset] repeated
+  ) -> Result[Int, Str]
+
+fn pipeline_create_compute(app: Int, shader: Int, layout: Int) -> Result[Int, Str]
+fn pipeline_destroy(app: Int, pipeline: Int)
+```
+
+#### Descriptor Pool & Set API
+
+```xiom
+fn desc_pool_create(app: Int, pool_sizes: Vec[Int32], max_sets: Int) -> Result[Int, Str]
+  // pool_sizes: [type, count, ...] pairs
+fn desc_pool_destroy(app: Int, pool: Int)
+fn desc_set_allocate(app: Int, pool: Int, layout: Int) -> Result[Int, Str]
+fn desc_set_write_buffer(app: Int, set: Int, binding: Int, buf: Int, offset: Int, range: Int, desc_type: Int)
+fn desc_set_write_image(app: Int, set: Int, binding: Int, sampler: Int, image_view: Int)
+```
+
+#### Render Pass & Framebuffer API
+
+```xiom
+fn render_pass_create(app: Int, color_formats: Vec[Int32], depth_format: Int) -> Result[Int, Str]
+  // color_formats: [format, load_op, store_op, final_layout] repeated
+
+fn render_pass_destroy(app: Int, rp: Int)
+fn framebuffer_create(app: Int, render_pass: Int, attachments: Vec[Int], width: Int, height: Int) -> Result[Int, Str]
+fn framebuffer_destroy(app: Int, fb: Int)
+```
+
+#### Command Recording API (between begin_frame/end_frame)
+
+```xiom
+fn cmd_bind_vertex_buffer(app: Int, binding: Int, buf: Int, offset: Int)
+fn cmd_bind_index_buffer(app: Int, buf: Int, offset: Int, index_type: Int)  // 0=uint16, 1=uint32
+fn cmd_bind_pipeline(app: Int, pipeline: Int)
+fn cmd_bind_descriptor_sets(app: Int, layout: Int, first_set: Int, sets: Vec[Int])
+fn cmd_push_constants_float(app: Int, layout: Int, stages: Int, offset: Int, data: Vec[Float32])
+fn cmd_draw(app: Int, vertex_count: Int, instance_count: Int, first_vertex: Int, first_instance: Int)
+fn cmd_draw_indexed(app: Int, index_count: Int, instance_count: Int, first_index: Int, vertex_offset: Int, first_instance: Int)
+```
+
+#### Multi-Pass & Compute API
+
+```xiom
+fn begin_custom_pass(app: Int, render_pass: Int, framebuffer: Int, width: Int, height: Int, r: Float32, g: Float32, b: Float32) -> Int
+fn end_custom_pass(app: Int) -> Int
+fn compute_dispatch(app: Int, pipeline: Int, layout: Int, x: Int, y: Int, z: Int)
+```
+
+#### Offscreen API (headless testing)
+
+```xiom
+fn offscreen_create(width: Int, height: Int) -> Result[Int, Str]
+fn offscreen_render_triangle(app: Int, r: Float32, g: Float32, b: Float32) -> Bool
+fn offscreen_pixel(app: Int, x: Int, y: Int) -> Int       // 0xRRGGBBAA
+fn offscreen_hash(app: Int) -> Int                          // FNV-1a of framebuffer
+fn offscreen_destroy(app: Int)
+```
+
+#### Convenience Wrapper (`xiom.vulkan.wrapper` in `src/wrapper.xi`)
+
+```xiom
+type VulkanApp = { handle: Int; width: Int; height: Int; }
+
+fn VulkanApp.new(title: Str, width: Int, height: Int) -> Result[VulkanApp, Str]
+fn VulkanApp.is_open() -> Bool
+fn VulkanApp.frame_2d(r: Float32, g: Float32, b: Float32)
+fn VulkanApp.frame_3d(angle: Float32)
+fn VulkanApp.frame_particles(dt: Float32)
+fn VulkanApp.close()
+```
+
+#### Complete XIOM Program (Particles Demo)
+
+```xiom
+module xiom.vulkan.demo_particles
+use xiom.io;
+use xiom.vulkan;
+
+fn main() -> Int {
+  let app = create_app("XIOM Vulkan — Particle Fountain", 800, 600);
+  match app {
+    Err(e) => { io.println(e); return 1; }
+    Ok(a) => {
+      particles_enable(a, 3000);
+      var last = now();
+      while !should_close(a) {
+        poll(a);
+        let t = now();
+        let dt = (t - last) as Float32;
+        last = t;
+        set_clear_color(a, 0.02, 0.02, 0.05);
+        let status = begin_frame(a);
+        if status == 1 {
+          draw_particles(a, dt);
+          end_frame(a);
+        } elif status == -1 { break; }
+      }
+      destroy_app(a);
+      return 0;
+    }
+  }
+}
+```
+
+#### Available Demos
+
+| Target | File | Description |
+|--------|------|-------------|
+| `demo2d` | `examples/demo_2d.xi` | 2D triangle with cycling sinusoidal colors |
+| `demo3d` | `examples/demo_3d.xi` | Rotating 3D cube |
+| `particles` | `examples/demo_particles.xi` | 3000-particle fountain |
+| `shapes` | `examples/demo_shapes.xi` | 4 colored quads + rainbow triangle |
+| `cubes` | `examples/demo_cubes.xi` | 3x3 grid of spinning cubes |
+| `vertex_buffer` | `examples/demo_vertex_buffer.xi` | Vertex + index buffer workflow |
+| `test` | `tests/test_vulkan.xi` | Headless CI-safe tests |
+
+#### Embedded Shaders (compiled offline by glslc)
+
+The C bridge embeds 15 SPIR-V shader arrays in `xvk_shaders_generated.h`. Create shader modules at runtime via `shader_create_named(app, "name")`.
+
+**Pipeline configurations (hardcoded for legacy draw calls):**
+
+| Pipeline | Shaders | Topology | Depth | Culling |
+|----------|---------|----------|-------|---------|
+| 2D triangle | `triangle_vert`, `triangle_frag` | triangle list | off | CW front, back cull |
+| 3D cube | `cube_vert`, `cube_frag` | triangle list | on | CW front, back cull |
+| 2D quad | `quad_vert`, `quad_frag` | triangle list | off | CW front, back cull |
+| Particle | `particle_vert`, `particle_frag` | point list | off | none |
+
+#### Compiler Flags for Vulkan
+
+| Flag | Purpose |
+|------|---------|
+| `--link vulkan-1` | Link Vulkan loader library |
+| `--link glfw3` | Link GLFW library |
+| `--link-path <dir>` | Library search path |
+| `--c-source <file>` | Compile + link C source/object file |
+
+#### Important Rules
+
+- **Clear color timing**: `set_clear_color` MUST be called BEFORE `begin_frame`. The clear values are consumed at render-pass-begin time.
+- **Winding order**: All shaders use CW winding with `VK_FRONT_FACE_COUNTER_CLOCKWISE`. CCW triangles are back-face culled.
+- **Handle validation**: All handles use magic-number validation. Zero handles are rejected.
+- **Push constants**: Maximum 128 bytes per call.
+- **Multi-pass**: `begin_custom_pass` ends the default render pass. `end_custom_pass` re-begins it.
+- **Compute dispatch**: Automatically ends the active render pass before dispatching.
+
+---
+
 ## 9. Code Patterns & Best Practices
 
 ### 9.1 Return Early Pattern
@@ -2058,176 +2355,69 @@ fn connect(host: Str, port: Port) -> Result[Conn, NetError]
 USAGE:
   xiomc [OPTIONS] <source.xi> [more.xi ...]
 
-COMPILE OPTIONS:
+OPTIONS:
   --help                Show help message and exit
   --version             Print compiler version and exit
   -o <output>           Output binary path (default per target: a.exe / a.wasm / a.out)
   --run                 Compile and run, then print the exit code (native target only)
   --emit-ir             Print LLVM IR to stdout (no binary produced)
-  --check               Type-check only, no codegen (fast feedback loop)
   --target <target>     Target backend: native (default), wasm, arm, riscv
-
-BUILD MODE OPTIONS:
-  --release             Release build: O3 optimization + auto-strip contract guards
-  --debug / -g          Emit DWARF/PDB debug symbols (via clang -g)
-  --shared              Build as DLL/.so (passes -shared to clang)
-  --static              Compile to .o object file (static library)
-  --no-contracts        Disable contract runtime checks
-  --strict              Strict mode: error on unsafe without #[safety_audit],
-                        unknown types, missing contracts
-
-DIAGNOSTICS:
-  --diagnostics=json    Emit JSON diagnostics with suggestion and note fields
+  --no-contracts        Disable contract runtime checks (strips requires/ensures/invariant guards)
+  --diagnostics=json    Emit diagnostics as JSON (type/borrow/codegen errors, or {"status":"ok"})
   --dump-contracts      Print the program's contract index as JSON and exit
   --verify              Generate SMT-LIB contract verification output (to stdout)
   --verify-output <f>   Write SMT-LIB verification output to file <f>
-
-RESOURCE LIMITS:
-  --timeout <seconds>   Compilation timeout (default: 300, 0 disables)
-  --max-depth <N>       Recursion depth limit (default: 500, max: 10000)
+  --timeout <seconds>   Compilation timeout watchdog (default: 60; 0 disables)
   --max-memory-mb <N>   Memory budget in MB; abort if exceeded (default: 0 = disabled)
-
-LINKING:
-  --link <name>         Link a native library (repeatable; emits -l<name>)
+  --link <name>         Link a native library (repeatable; emits -l<name>, e.g. --link vulkan-1)
   --link-path <dir>     Add a library search path (repeatable; emits -L<dir>)
   --c-source <file>     Link an extra C or object file (repeatable)
-
-PACKAGE MANAGEMENT (Phase 5d):
-  xiom install <pkg>    Install a package from the registry
-  xiom install          Install all dependencies from package.xi
-  xiom update           Refresh installed packages (--frozen/--locked for verify)
-  xiom publish          Publish current package (git tag + push + registry submit)
-  xiom new <name>       Create a new project scaffold
-  xiom init             Initialize project in current directory
-  xiom registry init    Initialize local package registry (~/.xiom/registry.json)
-  xiom registry add <n> <url>  Add package to local registry
-  xiom registry list    List local registry packages
-
-TESTING & BENCHMARKS:
-  xiom test <dir>       Discover and run all .xi test files (default: examples/)
-  xiom bench <file>     Benchmark runner: compile --release, run N iterations
-  xiom bench --count N  Number of benchmark iterations (default: 10)
-
-OTHER:
-  xiom clean            Remove build artifacts (*.exe, *.ll, *.obj, *.o, etc.)
-  xiom fmt <file>       Canonical formatter (xiom-fmt crate)
-  xiom doc              Generate HTML documentation (xiom-doc crate)
 ```
 
 **Behavior notes**
-- With `--check`, the compiler exits after type + borrow checking — no codegen, no binary. Use for fast iteration.
-- Contracts are **enabled by default**; runtime guards trap via `@llvm.trap()` on violation. `--release` auto-strips them. Use `--no-contracts` for explicit strip.
-- `#[safety_audit(justification: "...")]` documents unsafe blocks. In `--strict` mode, unsafe blocks without this attribute produce warnings.
-- Multiple source files are merged into one program. Passing a directory containing `package.xi` loads modules it lists.
-- The `use xiom.*` stdlib resolves automatically via the compiler's stdlib search path.
-- `?` operator propagates errors: `let x = foo()?` unwraps Ok/Some, early-returns Err/None.
+- With no `-o`, no `--run`, and `--target native`, `xiomc` prints LLVM IR to stdout (same as `--emit-ir`).
+- Contracts are **enabled by default**; runtime guards trap via `@llvm.trap()` on violation. Use `--no-contracts` to strip them.
+- Multiple source files are merged into one program (see section 17). Passing a directory containing `package.xi` loads the modules it lists; otherwise all `.xi` files in the directory are compiled.
+- The `use xiom.*` standard library resolves automatically for any program (via the compiler's stdlib search path; override with the `XIOM_STDLIB` env var).
+
+**Targets** (LLVM triple → default output)
+| `--target` | Triple | Default output |
+|------------|--------|----------------|
+| `native` (default) | `x86_64-pc-windows-msvc` | `a.exe` |
+| `wasm` | `wasm32-unknown-unknown` | `a.wasm` |
+| `arm` | `aarch64-unknown-linux-gnu` | `a.out` |
+| `riscv` | `riscv64gc-unknown-linux-gnu` | `a.out` |
+
+**Toolchain dependencies**
+- Required: `clang` (LLVM) — compiles IR to a native binary.
+- Optional: `opt` (LLVM) — runs an `-O1` optimization pass over the IR.
+- Optional: `nasm` — assembles hardware-accelerated crypto/memcpy runtime objects.
 
 **Examples**
 ```bash
-# Compilation
 xiomc source.xi                              # print LLVM IR (native, no -o/--run)
+xiomc --emit-ir source.xi                    # print LLVM IR explicitly
 xiomc -o prog.exe source.xi                  # compile to native binary
 xiomc --run source.xi                        # compile + run, print exit code
-xiomc --check source.xi                      # type-check only (fast)
-xiomc --release -o prog.exe source.xi        # optimized release build
-
-# Cross-compilation
 xiomc --target wasm -o prog.wasm source.xi   # compile to WebAssembly
 xiomc --target arm -o prog.out source.xi     # cross-compile to aarch64
-xiomc --target riscv -o prog.out source.xi   # cross-compile to riscv64
-
-# Diagnostics
-xiomc --diagnostics=json source.xi           # structured JSON output
+xiomc --no-contracts -o prog.exe source.xi   # release build without contract guards
+xiomc --diagnostics=json source.xi           # machine-readable diagnostics
 xiomc --dump-contracts source.xi             # contract index as JSON
-xiomc --verify source.xi                     # emit SMT-LIB for Z3
-xiomc --strict --diagnostics=json source.xi  # strict mode with JSON
+xiomc --verify source.xi                      # emit SMT-LIB for Z3
+xiomc --verify-output out.smt2 source.xi     # write SMT-LIB to a file
+xiomc --timeout 120 --max-memory-mb 2048 big.xi
+xiomc --link vulkan-1 --link-path C:/VulkanSDK/lib -o app.exe app.xi
+xiomc --c-source glue.c -o app.exe app.xi
+xiomc --run src/main.xi src/types.xi src/utils.xi   # multi-file merge
 
-# Resource control
-xiomc --timeout 120 --max-depth 1000 big.xi
-xiomc --max-memory-mb 2048 huge.xi
-
-# Testing & benchmarking
-xiomc --test examples/stdlib_smoke/          # run all smoke tests
-xiomc bench --count 100 my_bench.xi          # benchmark 100 iterations
-
-# Package management
-xiom install http-server                     # install a package
-xiom publish                                 # publish current package
-xiom new myproject                           # create project scaffold
-
-# Maintenance
-xiomc --clean                                # remove build artifacts
+# Via cargo
+cargo run -p xiomc -- --run source.xi
 ```
 
 ---
 
-## 12. Package Management & Ecosystem
-
-### 12.1 `package.xi` Manifest
-
-```xiom
-name: "my-project"
-version: "1.0.0"
-authors: ["Your Name"]
-license: "MIT"
-description: "My XIOM project"
-
-dependencies: [
-  "http-server: ^1.2.0",
-  "json: ^2.0.0",
-]
-
-sources: [
-  "src/main.xi",
-  "src/utils.xi",
-]
-
-tests: [
-  "tests/test_main.xi",
-]
-```
-
-### 12.2 Registry
-
-- **Registry URL:** https://registry.xiom-lang.org/packages.json
-- **Local registry:** `~/.xiom/registry.json` (managed via `xiom registry add/list`)
-- **Registry format:** JSON object with `"packages"` key mapping names → `{repo, description, license}`
-
-### 12.3 Lockfile (`xiom.lock`)
-
-```json
-{
-  "version": 1,
-  "packages": [
-    { "name": "http-server", "version": "1.2.0", "source": "registry" }
-  ]
-}
-```
-
-### 12.4 Project Scaffold
-
-```
-myproject/
-├── package.xi       ← project manifest
-├── src/main.xi      ← entry point
-├── tests/
-│   └── test_main.xi ← tests
-└── .gitignore
-```
-
-### 12.5 Infrastructure URLs
-
-| Service | URL |
-|---------|-----|
-| Website | https://xiom-lang.org |
-| Registry | https://registry.xiom-lang.org |
-| Playground | https://play.xiom-lang.org |
-| Repository | https://git.xiom-lang.org/xiom/xiom |
-| Documentation | https://docs.xiom-lang.org |
-
----
-
-## 13. Complete XIOM Program (Reference)
+## 12. Complete XIOM Program (Reference)
 
 ```xiom
 module examples.bounded_stack
