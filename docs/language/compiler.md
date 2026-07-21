@@ -100,7 +100,7 @@ See the [full version history](https://xiom-lang.org/versions) for all releases.
 ## Build from Source
 
 ```bash
-git clone https://gitea.example.com/xiom-lang/xiom.git
+git clone https://github.com/XIOM-lang/XIOM.git 
 cd xiom
 cargo build
 cargo test     # 213 tests
