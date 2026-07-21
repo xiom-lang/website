@@ -358,7 +358,7 @@ Starts only when Phase 1 is stable enough to write the compiler in XIOM itself.
 - New compiler compiles itself — bootstrap complete
 - **Phase 0 Rust compiler kept as permanent bootstrap fallback** — never deleted
 
-> **✅ Self-hosting achieved at v0.11.0 "Self-Hosted"** (2026-07-01). The XIOM compiler (`selfhost/xiomc_v11_test.xi`) compiles to a native binary that emits real LLVM IR — `define i64 @add(...)` with `add i64` instructions and `call i64 @add(...)`. Full C runtime body parser provides file I/O, string interning, character access, IR emission, and function table management. 213 tests passing.
+> **✅ Self-hosting achieved at v0.11.0 "Self-Hosted"** (2026-07-01). The XIOM compiler (`selfhost/xiom_v11_test.xi`) compiles to a native binary that emits real LLVM IR — `define i64 @add(...)` with `add i64` instructions and `call i64 @add(...)`. Full C runtime body parser provides file I/O, string interning, character access, IR emission, and function table management. 213 tests passing.
 
 #### 2B — AI Tooling (Built During Self-Hosting)
 
