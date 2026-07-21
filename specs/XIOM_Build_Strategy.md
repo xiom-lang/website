@@ -401,7 +401,7 @@ Starts after Phase 3 compiler is production-stable and self-hosting.
 | **XiomDB** — Embedded KV store (gated on ecosystem libraries) | 📋 Planned |
 | **XiomVDB** — Vector database (gated on XiomDB) | 📋 Planned |
 
-**Design principle:** All ecosystem libraries are written in XIOM, compiled by xiomc, and distributed as packages via `xiom pkg`. The compiler does not change for ecosystem work.
+**Design principle:** All ecosystem libraries are written in XIOM, compiled by xiom, and distributed as packages via `xiom pkg`. The compiler does not change for ecosystem work.
 
 ---
 

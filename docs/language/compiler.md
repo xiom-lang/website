@@ -18,7 +18,7 @@
 ## CLI Reference
 
 ```bash
-xiomc [flags] <source.xi>
+xiom [flags] <source.xi>
 ```
 
 | Flag | Description |
@@ -35,7 +35,7 @@ xiomc [flags] <source.xi>
 ### Via Cargo
 
 ```bash
-cargo run -p xiomc -- [flags] <source.xi>
+cargo run -p xiom -- [flags] <source.xi>
 ```
 
 ## Targets
@@ -56,7 +56,7 @@ cargo run -p xiomc -- [flags] <source.xi>
 | `xiom-parser` | Recursive descent LL(1) parser | ~1,450 |
 | `xiom-check` | Type checker + Borrow checker + Module resolver | ~1,415 |
 | `xiom-codegen` | LLVM IR emitter + Contracts + Derive + Generics | ~1,405 |
-| `xiomc` | CLI binary | ~220 |
+| `xiom` | CLI binary | ~220 |
 
 ## Self-Hosted Compiler
 
@@ -68,7 +68,7 @@ The XIOM compiler itself is written in XIOM (`selfhost/` directory). It is compi
 | `selfhost/xiom-parser.xi` | Recursive descent parser in XIOM |
 | `selfhost/xiom-check.xi` | Type checker in XIOM |
 | `selfhost/xiom-codegen.xi` | LLVM IR emitter in XIOM |
-| `selfhost/xiomc.xi` | CLI driver in XIOM |
+| `selfhost/xiom.xi` | CLI driver in XIOM |
 
 ## Version History
 
