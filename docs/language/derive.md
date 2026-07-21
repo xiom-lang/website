@@ -11,6 +11,7 @@ The `derive` clause instructs the compiler to generate correct-by-construction i
 | `Display` | Canonical string representation. Structs format as `TypeName{ field: value, ... }`. |
 | `Hash` | Structural hash — every field hashed and combined. Compatible with `Eq`. |
 | `Ord` | Lexicographic ordering — fields compared in declaration order. |
+| `Debug` | Debug representation via `.fmt()`. Defaults to Display output unless overridden. |
 
 ## Usage
 
@@ -50,7 +51,7 @@ enum Option[T] {
   None,
 } derive[Eq, Clone]
 
-// Enums with variant data can derive Clone, Display
+// Enums with variant data can derive Clone, Display, Debug
 // Enums with only unit variants can also derive Eq, Hash, Ord
 ```
 

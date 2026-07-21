@@ -1,11 +1,11 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v1.0 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 39-module standard library.
+> **Version:** v0.49.8 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 40-module standard library.
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
 
-> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiom` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
+> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 40-module standard library (section 8), the `xiom` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
 > Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
 ---
@@ -128,6 +128,12 @@ match state {
   AgentState.Idle              => wait(),
   AgentState.Patrolling(route) => follow(route),
 }
+
+// if let — desugars to match
+if let Some(v) = maybe_val { use(v); } else { fallback(); }
+
+// while let — desugars to while true + match
+while let Some(v) = next() { process(v); }
 ```
 
 **Rules:**
@@ -150,6 +156,9 @@ true | false    // Bool
 
 // Arithmetic
 a + b   a - b   a * b   a / b   a % b   -a
+
+// Compound assignment (desugars to x = x + y)
+x += 1;    x -= 2;    x *= 3;    x /= 4;    x %= 5;
 
 // Comparison — returns Bool
 a == b   a != b   a < b   a > b   a <= b   a >= b
@@ -222,7 +231,7 @@ type  enum  interface  derive
 requires  ensures  invariant
 true  false  self  result
 Some  None  Ok  Err
-unsafe  extern  is
+unsafe  extern  is  and  or  not  where
 ```
 
 `result` is only valid inside `ensures` clauses.
@@ -277,6 +286,10 @@ type Point = {
 - Types with `invariant` cannot derive `Eq`, `Hash`, `Ord`.
 - `invariant` clauses apply after every mutation.
 
+// Tuple struct with synthesized field names _0, _1
+type Pair = (Int, Int) derive[Eq, Clone]
+var p = Pair{ _0: 1, _1: 2 };
+
 ### 3.4 Enums
 
 ```xiom
@@ -293,6 +306,7 @@ enum AgentState {
 - Variants can carry named fields: `VariantName(field: Type)`.
 - Unit variants have no parentheses.
 - Trailing commas allowed.
+- Supported derives: `Eq`, `Clone`, `Display`, `Hash`, `Ord`, `Debug`. `Debug` generates `.fmt()` which defaults to Display output.
 
 ### 3.5 Interfaces
 
@@ -493,7 +507,7 @@ fn private_helper() { }   // module-private (default)
 
 ## 8. Standard Library — Production API Reference
 
-The standard library is 39 modules under `xiom.*`. Every module is fully implemented and callable. Import a module with `use xiom.<module>;` then call it.
+The standard library is 40 modules under `xiom.*`. Every module is fully implemented and callable. Import a module with `use xiom.<module>;` then call it.
 
 **Calling conventions:**
 - **Free functions** are called through their module: `math.sqrt(x)`, `string.str_concat(a, b)`, `io.println(msg)`, `rand.random()`.
@@ -506,7 +520,7 @@ The standard library is 39 modules under `xiom.*`. Every module is fully impleme
 ### When generating code, follow these rules:
 
 1. **Use the types** — `Option[T]`, `Result[T,E]`, `Vec[T]`, `Map[K,V]`, `Set[T]`, `Str` are fully defined. `Option`, `Result`, `Vec`, and arithmetic/comparison/control flow are compiler primitives and need no import.
-2. **Use the stdlib** — all 39 modules are implemented. Import with `use xiom.<module>;` and call the documented functions. DO NOT reimplement stdlib functions.
+2. **Use the stdlib** — all 40 modules are implemented. Import with `use xiom.<module>;` and call the documented functions. DO NOT reimplement stdlib functions.
 3. **Call through the module** — `io.println(...)`, `math.sqrt(...)`, `string.str_split(...)`, `json = serialize.json_parse(...)`. Methods on stdlib types use dot syntax on the value.
 4. **For FFI** — use `extern "C"` directly; the C runtime links standard libc plus the XIOM runtime automatically. See the C FFI block at the end of this section.
 
@@ -522,6 +536,9 @@ type Option[T]     = { is_some: Bool; value: T; }
 type Result[T, E]  = { is_ok: Bool; value: T; error: E; }
 type Box[T]        = { ptr: *T; }
 type BinaryHeap[T] = { data: Vec[T]; invariant: data.len() >= 0; }
+type Cow[T]        = { owned: Option[T]; borrowed: &T; }
+type PhantomData[T] = { }
+type MaybeUninit[T] = { value: T; initialized: Bool; }
 ```
 
 **Interfaces**
@@ -539,6 +556,12 @@ interface Iterator[T]     { fn next(self) -> Option[T]; fn size_hint(self) -> (I
 interface IntoIterator[T] { fn into_iter(self) -> Iterator[T]; }
 interface Default { fn default() -> Self; }
 interface Drop    { fn drop(self); }
+interface FromStr { fn from_str(s: Str) -> Result[Self, Str]; }
+interface Debug   { fn fmt(self, f: &mut Formatter) -> Result[Unit, FmtError]; }
+interface Deref   { type Target; fn deref(self) -> &Self.Target; }
+interface DerefMut { fn deref_mut(self) -> &mut Self.Target; }
+interface AsRef[T]   { fn as_ref(self) -> &T; }
+interface AsMut[T]   { fn as_mut(self) -> &mut T; }
 ```
 
 **Functions & intrinsics**
@@ -912,7 +935,7 @@ Pure fallbacks (no libm): `sqrt_pure`, `pow_pure`, `abs_float_pure`, `floor_pure
 
 ---
 
-### 8.7 `num` — Numeric traits & integer/float utilities
+### 8.7 `num` — Numeric traits & integer/float utilities (with merged crypto primitives)
 
 ```xiom
 interface Neg  { fn neg(self) -> Self; }
@@ -966,6 +989,8 @@ fn parse_int(s: Str) -> Result[Int, Str]
 fn parse_float(s: Str) -> Result[Float64, Str]
 fn parse_int_radix(s: Str, radix: Int) -> Result[Int, Str]
 ```
+
+> **Note:** Several crypto primitive modules (`aes`, `sha`, `b64`, `ed25519`, `hex`, `md5`, `pbkdf`, `random`) were merged from packages into stdlib. Use `use xiom.crypto;` for the unified crypto API — see section 8.30.
 
 ---
 
@@ -2356,6 +2381,9 @@ fn connect(host: Str, port: Port) -> Result[Conn, NetError]
 ```
 USAGE:
   xiom [OPTIONS] <source.xi> [more.xi ...]
+  xiom doctor             Check for required toolchain dependencies
+  xiom build              Build a project (directory containing package.xi)
+  xiom pkg install <name> Install a package from the registry
 
 OPTIONS:
   --help                Show help message and exit
@@ -2365,15 +2393,28 @@ OPTIONS:
   --emit-ir             Print LLVM IR to stdout (no binary produced)
   --target <target>     Target backend: native (default), wasm, arm, riscv
   --no-contracts        Disable contract runtime checks (strips requires/ensures/invariant guards)
+  --runtime-contracts   Force contract checks in release builds (overrides --no-contracts)
+  --sanitize=<type>     Enable sanitizer: address, undefined, leak, thread
+  --stack-protector     Enable stack canaries
   --diagnostics=json    Emit diagnostics as JSON (type/borrow/codegen errors, or {"status":"ok"})
   --dump-contracts      Print the program's contract index as JSON and exit
   --verify              Generate SMT-LIB contract verification output (to stdout)
   --verify-output <f>   Write SMT-LIB verification output to file <f>
+  --graph               Print dependency graph (DOT format)
+  --graph=mermaid       Print dependency graph (Mermaid format)
+  --parallel            Enable parallel compilation
+  --jobs <N>            Set number of parallel compilation jobs
   --timeout <seconds>   Compilation timeout watchdog (default: 60; 0 disables)
   --max-memory-mb <N>   Memory budget in MB; abort if exceeded (default: 0 = disabled)
   --link <name>         Link a native library (repeatable; emits -l<name>, e.g. --link vulkan-1)
   --link-path <dir>     Add a library search path (repeatable; emits -L<dir>)
   --c-source <file>     Link an extra C or object file (repeatable)
+
+SUBCOMMANDS:
+  doctor                Check for required toolchain dependencies (clang, opt, nasm)
+  build                 Build an entire project directory (looks for package.xi)
+  pkg install <name>    Install a package from the XIOM package registry
+  doc --html            Generate HTML documentation from source
 ```
 
 **Behavior notes**
@@ -2404,14 +2445,24 @@ xiom --run source.xi                        # compile + run, print exit code
 xiom --target wasm -o prog.wasm source.xi   # compile to WebAssembly
 xiom --target arm -o prog.out source.xi     # cross-compile to aarch64
 xiom --no-contracts -o prog.exe source.xi   # release build without contract guards
+xiom --runtime-contracts -o prog.exe source.xi  # force contracts in release
 xiom --diagnostics=json source.xi           # machine-readable diagnostics
 xiom --dump-contracts source.xi             # contract index as JSON
 xiom --verify source.xi                      # emit SMT-LIB for Z3
 xiom --verify-output out.smt2 source.xi     # write SMT-LIB to a file
+xiom --graph source.xi                      # dependency graph (DOT)
+xiom --graph=mermaid source.xi             # dependency graph (Mermaid)
+xiom --parallel --jobs 4 source.xi          # parallel compilation, 4 jobs
+xiom --sanitize=address --run source.xi     # compile with address sanitizer
+xiom --stack-protector -o prog.exe source.xi # enable stack canaries
 xiom --timeout 120 --max-memory-mb 2048 big.xi
 xiom --link vulkan-1 --link-path C:/VulkanSDK/lib -o app.exe app.xi
 xiom --c-source glue.c -o app.exe app.xi
 xiom --run src/main.xi src/types.xi src/utils.xi   # multi-file merge
+xiom doctor                                 # check toolchain dependencies
+xiom build                                  # build project from current directory
+xiom pkg install xiom-vulkan               # install package from registry
+xiom doc --html                             # generate HTML documentation
 
 # Via cargo
 cargo run -p xiom -- --run source.xi
@@ -2819,8 +2870,8 @@ src/main.xi      → module myproject (use logic, entry point)
 | Cross-file type resolution | ✓ |
 | Cross-file function calls | ✓ (via merge path) |
 | 30+ file projects | ✓ (benchmark suite verified) |
-| Package manager / `xiom install` | ✗ (Phase 5) |
-| Build system / `xiom build` | ✗ (Phase 5) |
+| Package manager / `xiom pkg install` | ✓ |
+| Build system / `xiom build` | ✓ |
 
 ### When AI Generates Multi-File Code
 
