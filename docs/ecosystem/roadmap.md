@@ -131,13 +131,13 @@ xiom explicitly does NOT bless a single solution for:
 
 ```powershell
 # 1. Create the binding spec
-# ecosystem/xiom-vulkan/vulkan.xiom-bind
+# packages/xiom-vulkan/vulkan.xiom-bind
 
 # 2. Generate XIOM extern blocks
-xiom ffigen ecosystem/xiom-vulkan/vulkan.xiom-bind
+xiom ffigen packages/xiom-vulkan/vulkan.xiom-bind
 
 # 3. Create the XIOM wrapper
-# ecosystem/xiom-vulkan/vulkan.xi
+# packages/xiom-vulkan/vulkan.xi
 
 # 4. Publish to registry
 xiom pkg publish

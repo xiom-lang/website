@@ -1935,17 +1935,17 @@ Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/
 
 ### 8.40 `vulkan` — GPU Graphics & Compute (Ecosystem Package)
 
-First-party Vulkan GPU bindings for XIOM (`ecosystem/xiom-vulkan/`). Uses a flat C-ABI bridge (`xiom_vk_bridge.c`) that wraps Vulkan + GLFW into a compact API. All GPU resources are opaque handles validated by magic numbers. Import with `use xiom.vulkan;`.
+First-party Vulkan GPU bindings for XIOM (`packages/xiom-vulkan/`). Uses a flat C-ABI bridge (`xiom_vk_bridge.c`) that wraps Vulkan + GLFW into a compact API. All GPU resources are opaque handles validated by magic numbers. Import with `use xiom.vulkan;`.
 
-**Prerequisites:** Vulkan SDK >= 1.3 (`VULKAN_SDK`), GLFW 3.4 (`GLFW_DIR`), LLVM/clang, Rust toolchain. Build via `ecosystem/xiom-vulkan/build.ps1` (Windows) or `build.sh` (Linux/macOS).
+**Prerequisites:** Vulkan SDK >= 1.3 (`VULKAN_SDK`), GLFW 3.4 (`GLFW_DIR`), LLVM/clang, Rust toolchain. Build via `packages/xiom-vulkan/build.ps1` (Windows) or `build.sh` (Linux/macOS).
 
 ```powershell
 # Build 2D demo (default)
-.\ecosystem\xiom-vulkan\build.ps1
+.\packages\xiom-vulkan\build.ps1
 # Build and run 3D cube
-.\ecosystem\xiom-vulkan\build.ps1 -Target demo3d -Run
+.\packages\xiom-vulkan\build.ps1 -Target demo3d -Run
 # GPU particle fountain
-.\ecosystem\xiom-vulkan\build.ps1 -Target particles -Run
+.\packages\xiom-vulkan\build.ps1 -Target particles -Run
 ```
 
 Build pipeline: `GLSL → glslc → SPIR-V header → clang → bridge.obj → xiomc --c-source bridge.obj --link vulkan-1 --link glfw3`
