@@ -17,6 +17,13 @@ cargo build
 cargo test          # 234 tests should pass
 ```
 
+Verify your toolchain dependencies:
+
+```bash
+cargo run -p xiom -- doctor
+# → Checks: clang ✓  opt ✓  nasm ✓
+```
+
 ## Your First Program
 
 Create a file `hello.xi`:

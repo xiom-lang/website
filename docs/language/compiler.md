@@ -74,6 +74,7 @@ The XIOM compiler itself is written in XIOM (`selfhost/` directory). It is compi
 
 | Version | Codename | Phase | Tests | LOC |
 |---------|----------|-------|-------|-----|
+| **v0.49.8** | Production | 2C+ | 234 | ~10,000 |
 | **v0.11.0** | Self-Hosted | Eco | 213 | ~10,000 |
 | v0.10.0 | Sovereign | 3 | 208 | ~9,600 |
 | v0.4.0 | Mirror | 2B | 124 | ~7,020 |
