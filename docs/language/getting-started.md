@@ -20,6 +20,11 @@ cargo test          # 234 tests should pass
 Verify your toolchain dependencies:
 
 ```bash
+# Using standalone binary (after build)
+xiom doctor
+# → Checks: clang ✓  opt ✓  nasm ✓
+
+# Using cargo (development)
 cargo run -p xiom -- doctor
 # → Checks: clang ✓  opt ✓  nasm ✓
 ```
@@ -41,19 +46,25 @@ fn main() -> Int {
 Compile and run:
 
 ```bash
-# View LLVM IR
-cargo run -p xiom -- --emit-ir hello.xi
+# Using standalone binary
+xiom --emit-ir hello.xi
 
 # Compile to native binary
-cargo run -p xiom -- -o hello.exe hello.xi
+xiom -o hello.exe hello.xi
 
 # Compile and run (prints exit code)
-cargo run -p xiom -- --run hello.xi
+xiom --run hello.xi
 # → exit code: 30
 
 # Compile to WASM
-cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
+xiom --target wasm -o hello.wasm hello.xi
 # → wasm size: 618 bytes
+
+# Development via cargo
+cargo run -p xiom -- --emit-ir hello.xi
+cargo run -p xiom -- -o hello.exe hello.xi
+cargo run -p xiom -- --run hello.xi
+cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
 ```
 
 ## Try in Browser
