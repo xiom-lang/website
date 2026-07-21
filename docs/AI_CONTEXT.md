@@ -5,7 +5,7 @@
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
 
-> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiomc` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
+> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 39-module standard library (section 8), the `xiom` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
 > Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
 ---
@@ -1929,7 +1929,7 @@ fn alloc(size: UInt) -> *UInt8 {
 }
 ```
 
-Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/*.c`) provides the `xiom_*` helpers used by `io`, `os`, `sync`, `thread`, `net`, and `async`, and is linked by `xiomc` on every native build — no manual setup needed. Use `--link`, `--link-path`, and `--c-source` (section 11) to link additional native libraries.
+Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/*.c`) provides the `xiom_*` helpers used by `io`, `os`, `sync`, `thread`, `net`, and `async`, and is linked by `xiom` on every native build — no manual setup needed. Use `--link`, `--link-path`, and `--c-source` (section 11) to link additional native libraries.
 
 ---
 
@@ -1948,7 +1948,7 @@ First-party Vulkan GPU bindings for XIOM (`packages/xiom-vulkan/`). Uses a flat 
 .\packages\xiom-vulkan\build.ps1 -Target particles -Run
 ```
 
-Build pipeline: `GLSL → glslc → SPIR-V header → clang → bridge.obj → xiomc --c-source bridge.obj --link vulkan-1 --link glfw3`
+Build pipeline: `GLSL → glslc → SPIR-V header → clang → bridge.obj → xiom --c-source bridge.obj --link vulkan-1 --link glfw3`
 
 #### Architecture
 
@@ -2351,11 +2351,11 @@ fn connect(host: Str, port: Port) -> Result[Conn, NetError]
 
 ---
 
-## 11. Compiler CLI (`xiomc`)
+## 11. Compiler CLI (`xiom`)
 
 ```
 USAGE:
-  xiomc [OPTIONS] <source.xi> [more.xi ...]
+  xiom [OPTIONS] <source.xi> [more.xi ...]
 
 OPTIONS:
   --help                Show help message and exit
@@ -2377,7 +2377,7 @@ OPTIONS:
 ```
 
 **Behavior notes**
-- With no `-o`, no `--run`, and `--target native`, `xiomc` prints LLVM IR to stdout (same as `--emit-ir`).
+- With no `-o`, no `--run`, and `--target native`, `xiom` prints LLVM IR to stdout (same as `--emit-ir`).
 - Contracts are **enabled by default**; runtime guards trap via `@llvm.trap()` on violation. Use `--no-contracts` to strip them.
 - Multiple source files are merged into one program (see section 17). Passing a directory containing `package.xi` loads the modules it lists; otherwise all `.xi` files in the directory are compiled.
 - The `use xiom.*` standard library resolves automatically for any program (via the compiler's stdlib search path; override with the `XIOM_STDLIB` env var).
@@ -2397,24 +2397,24 @@ OPTIONS:
 
 **Examples**
 ```bash
-xiomc source.xi                              # print LLVM IR (native, no -o/--run)
-xiomc --emit-ir source.xi                    # print LLVM IR explicitly
-xiomc -o prog.exe source.xi                  # compile to native binary
-xiomc --run source.xi                        # compile + run, print exit code
-xiomc --target wasm -o prog.wasm source.xi   # compile to WebAssembly
-xiomc --target arm -o prog.out source.xi     # cross-compile to aarch64
-xiomc --no-contracts -o prog.exe source.xi   # release build without contract guards
-xiomc --diagnostics=json source.xi           # machine-readable diagnostics
-xiomc --dump-contracts source.xi             # contract index as JSON
-xiomc --verify source.xi                      # emit SMT-LIB for Z3
-xiomc --verify-output out.smt2 source.xi     # write SMT-LIB to a file
-xiomc --timeout 120 --max-memory-mb 2048 big.xi
-xiomc --link vulkan-1 --link-path C:/VulkanSDK/lib -o app.exe app.xi
-xiomc --c-source glue.c -o app.exe app.xi
-xiomc --run src/main.xi src/types.xi src/utils.xi   # multi-file merge
+xiom source.xi                              # print LLVM IR (native, no -o/--run)
+xiom --emit-ir source.xi                    # print LLVM IR explicitly
+xiom -o prog.exe source.xi                  # compile to native binary
+xiom --run source.xi                        # compile + run, print exit code
+xiom --target wasm -o prog.wasm source.xi   # compile to WebAssembly
+xiom --target arm -o prog.out source.xi     # cross-compile to aarch64
+xiom --no-contracts -o prog.exe source.xi   # release build without contract guards
+xiom --diagnostics=json source.xi           # machine-readable diagnostics
+xiom --dump-contracts source.xi             # contract index as JSON
+xiom --verify source.xi                      # emit SMT-LIB for Z3
+xiom --verify-output out.smt2 source.xi     # write SMT-LIB to a file
+xiom --timeout 120 --max-memory-mb 2048 big.xi
+xiom --link vulkan-1 --link-path C:/VulkanSDK/lib -o app.exe app.xi
+xiom --c-source glue.c -o app.exe app.xi
+xiom --run src/main.xi src/types.xi src/utils.xi   # multi-file merge
 
 # Via cargo
-cargo run -p xiomc -- --run source.xi
+cargo run -p xiom -- --run source.xi
 ```
 
 ---
@@ -2733,13 +2733,13 @@ pub fn helper() -> Int { return 42; }
 
 **Option A — Compile all files at once (recommended for AI-generated code):**
 ```bash
-xiomc --run src/main.xi src/types.xi src/utils.xi src/lib.xi
+xiom --run src/main.xi src/types.xi src/utils.xi src/lib.xi
 ```
 The compiler merges all files into one program. Use this for projects with 2-30 files.
 
 **Option B — Single file with lazy loading (catalog):**
 ```bash
-xiomc --run src/main.xi
+xiom --run src/main.xi
 ```
 The compiler lazy-loads other files via the ModuleCatalog. Works for files in the same directory or `examples/` root.
 
@@ -2814,7 +2814,7 @@ src/main.xi      → module myproject (use logic, entry point)
 | Capability | Status |
 |-----------|--------|
 | Single-file programs | ✓ |
-| Multi-file merge (pass all files to xiomc) | ✓ |
+| Multi-file merge (pass all files to xiom) | ✓ |
 | ModuleCatalog lazy loading | ✓ |
 | Cross-file type resolution | ✓ |
 | Cross-file function calls | ✓ (via merge path) |

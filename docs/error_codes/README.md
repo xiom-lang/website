@@ -31,6 +31,6 @@ Each XIOM diagnostic carries a code in the format `XNNNN`. Codes are stable — 
 ## Using `--explain`
 
 ```bash
-xiomc --explain X0001
+xiom --explain X0001
 # Opens docs/error_codes/X0001.md or displays inline
 ```

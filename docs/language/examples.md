@@ -2,7 +2,7 @@
 
 > Copy, paste, compile, run. Every example is self-contained.
 > **Types are built-in** (no import). **Functions need imports** (`use xiom.io;`).
-> Compile: `xiom --run file.xi` (or `cargo run -p xiomc -- --run file.xi` for dev).
+> Compile: `xiom --run file.xi` (or `cargo run -p xiom -- --run file.xi` for dev).
 
 ---
 

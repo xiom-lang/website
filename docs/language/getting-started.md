@@ -35,17 +35,17 @@ Compile and run:
 
 ```bash
 # View LLVM IR
-cargo run -p xiomc -- --emit-ir hello.xi
+cargo run -p xiom -- --emit-ir hello.xi
 
 # Compile to native binary
-cargo run -p xiomc -- -o hello.exe hello.xi
+cargo run -p xiom -- -o hello.exe hello.xi
 
 # Compile and run (prints exit code)
-cargo run -p xiomc -- --run hello.xi
+cargo run -p xiom -- --run hello.xi
 # → exit code: 30
 
 # Compile to WASM
-cargo run -p xiomc -- --target wasm -o hello.wasm hello.xi
+cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
 # → wasm size: 618 bytes
 ```
 
@@ -76,13 +76,13 @@ XIOM/
 │   ├── xiom-parser/   # Recursive descent parser
 │   ├── xiom-check/    # Type checker + borrow checker + module resolver
 │   ├── xiom-codegen/  # LLVM IR emitter + contracts + derive + generics
-│   └── xiomc/         # CLI binary
+│   └── xiom/         # CLI binary
 ├── selfhost/           # XIOM self-hosted compiler
 │   ├── xiom-lexer.xi
 │   ├── xiom-parser.xi
 │   ├── xiom-check.xi
 │   ├── xiom-codegen.xi
-│   └── xiomc.xi
+│   └── xiom.xi
 ├── stdlib/             # Standard library (XIOM source)
 ├── examples/           # Example programs
 ├── specs/              # Language specification
