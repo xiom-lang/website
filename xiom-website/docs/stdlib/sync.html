@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XIOM — `xiom.sync` — Synchronization Primitives</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../../img/xiom-icon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../../" class="logo">
+      <img src="../../img/xiom-icon.ico" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="../../spec.html">Spec</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../ecosystem.html">Ecosystem</a>
+      <a href="../../versions.html">Versions</a>
+      <a href="../../playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../../download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="../index.html" style="color:var(--muted);">Overview</a>
+        <a href="../getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="../concepts.html" style="color:var(--muted);">Concepts</a>
+        <a href="../examples.html" style="color:var(--muted);">By Example</a>
+        <a href="../syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="../types.html" style="color:var(--muted);">Type System</a>
+        <a href="../memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="../contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="../error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="../modules.html" style="color:var(--muted);">Modules</a>
+        <a href="../generics.html" style="color:var(--muted);">Generics</a>
+        <a href="../derive.html" style="color:var(--muted);">Derive</a>
+        <a href="../ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="../compiler.html" style="color:var(--muted);">Compiler</a>
+        <a href="../AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
+        <div style="margin-top:20px;"></div>
+        <a href="../api.html" style="color:var(--paper);font-weight:500;;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>
+        <a href="core.html" style="color:var(--muted);">core</a>
+        <a href="io.html" style="color:var(--muted);">io</a>
+        <a href="collections.html" style="color:var(--muted);">collections</a>
+        <a href="string.html" style="color:var(--muted);">string</a>
+        <a href="math.html" style="color:var(--muted);">math</a>
+        <a href="sync.html" style="color:var(--signal);font-weight:500;">sync</a>
+        <a href="async.html" style="color:var(--muted);">async</a>
+        <a href="net.html" style="color:var(--muted);">net</a>
+        <a href="crypto.html" style="color:var(--muted);">crypto</a>
+        <a href="serialize.html" style="color:var(--muted);">serialize</a>
+        <a href="test.html" style="color:var(--muted);">test</a>
+        <a href="iter.html" style="color:var(--muted);">iter</a>
+        <a href="error.html" style="color:var(--muted);">error</a>
+        <a href="char.html" style="color:var(--muted);">char</a>
+        <a href="path.html" style="color:var(--muted);">path</a>
+        <a href="array.html" style="color:var(--muted);">array</a>
+        <a href="encoding.html" style="color:var(--muted);">encoding</a>
+        <a href="num.html" style="color:var(--muted);">num</a>
+        <a href="cmp.html" style="color:var(--muted);">cmp</a>
+        <a href="thread.html" style="color:var(--muted);">thread</a>
+        <a href="mem.html" style="color:var(--muted);">mem</a>
+        <a href="ptr.html" style="color:var(--muted);">ptr</a>
+        <a href="alloc.html" style="color:var(--muted);">alloc</a>
+        <a href="rc.html" style="color:var(--muted);">rc</a>
+        <a href="os.html" style="color:var(--muted);">os</a>
+        <a href="env.html" style="color:var(--muted);">env</a>
+        <a href="time.html" style="color:var(--muted);">time</a>
+        <a href="convert.html" style="color:var(--muted);">convert</a>
+        <a href="cell.html" style="color:var(--muted);">cell</a>
+        <a href="fmt.html" style="color:var(--muted);">fmt</a>
+        <a href="hash.html" style="color:var(--muted);">hash</a>
+        <a href="compress.html" style="color:var(--muted);">compress</a>
+        <a href="rand.html" style="color:var(--muted);">rand</a>
+        <a href="regex.html" style="color:var(--muted);">regex</a>
+        <a href="bench.html" style="color:var(--muted);">bench</a>
+        <a href="log.html" style="color:var(--muted);">log</a>
+        <a href="contracts.html" style="color:var(--muted);">contracts</a>
+        <a href="reflect.html" style="color:var(--muted);">reflect</a>
+        <a href="ffi.html" style="color:var(--muted);">ffi</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">`xiom.sync` — Synchronization Primitives</h1>
+      <p>Provides thread-safe synchronization primitives for coordinating access to shared state across concurrent tasks.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.sync;
+</code></pre>
+<hr>
+<h2>Mutex</h2>
+<p>A mutual exclusion primitive that guards shared data. Only one thread may hold the lock at a time.</p>
+<h3><code>Mutex[T]</code></h3>
+<p>A type wrapping a value <code>T</code> with a lock flag. The data can only be accessed through a <code>MutexGuard</code>.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ty'>Mutex</span>[T] = { data: T; locked: <span class='ty'>Bool</span>; }
+</code></pre>
+<h3><code>Mutex.new(data)</code></h3>
+<p>Creates a new <code>Mutex</code> protecting the given value. The mutex starts in the unlocked state.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Mutex</span>.new[T](data: T) -> <span class='ty'>Mutex</span>[T]
+</code></pre>
+<h3><code>Mutex.lock(self)</code></h3>
+<p>Blocks the current thread until the lock is acquired, then returns a <code>MutexGuard</code> that provides access to the protected data. The guard releases the lock when dropped.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Mutex</span>.lock[T](<span class='kw'>self</span>) -> MutexGuard[T]
+</code></pre>
+<h3><code>Mutex.try_lock(self)</code></h3>
+<p>Attempts to acquire the lock without blocking. Returns <code>Some(guard)</code> if the lock was acquired, or <code>None</code> if another thread holds the lock.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Mutex</span>.try_lock[T](<span class='kw'>self</span>) -> <span class='ty'>Option</span>[MutexGuard[T]]
+</code></pre>
+<h3><code>MutexGuard[T]</code></h3>
+<p>An RAII guard that holds a locked <code>Mutex</code>. The lock is released when this value is dropped.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> MutexGuard[T] = { mutex: <span class='ty'>Mutex</span>[T]; }
+</code></pre>
+<h3><code>MutexGuard.get(self)</code></h3>
+<p>Returns an immutable reference to the data protected by the mutex.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> MutexGuard.get[T](<span class='kw'>self</span>) -> &T
+</code></pre>
+<h3><code>MutexGuard.get_mut(self)</code></h3>
+<p>Returns a mutable reference to the data protected by the mutex.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> MutexGuard.get_mut[T](<span class='kw'>self</span>) -> &mut T
+</code></pre>
+<hr>
+<h2>RwLock</h2>
+<p>A reader-writer lock allowing concurrent reads or exclusive writes.</p>
+<h3><code>RwLock[T]</code></h3>
+<p>A type wrapping a value <code>T</code> with reader and writer tracking for fine-grained concurrency control.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ty'>RwLock</span>[T] = { data: T; readers: <span class='ty'>Int</span>; writer: <span class='ty'>Bool</span>; }
+</code></pre>
+<h3><code>RwLock.new(data)</code></h3>
+<p>Creates a new <code>RwLock</code> protecting the given value.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RwLock</span>.new[T](data: T) -> <span class='ty'>RwLock</span>[T]
+</code></pre>
+<h3><code>RwLock.read(self)</code></h3>
+<p>Acquires a shared read lock, blocking if a writer holds the lock. Multiple readers may hold the lock simultaneously.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RwLock</span>.read[T](<span class='kw'>self</span>) -> ReadGuard[T]
+</code></pre>
+<h3><code>RwLock.write(self)</code></h3>
+<p>Acquires an exclusive write lock, blocking until all readers and writers have released the lock.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RwLock</span>.write[T](<span class='kw'>self</span>) -> WriteGuard[T]
+</code></pre>
+<h3><code>RwLock.try_read(self)</code></h3>
+<p>Attempts to acquire a read lock without blocking. Returns <code>Some(ReadGuard)</code> on success, <code>None</code> if a writer holds the lock.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RwLock</span>.try_read[T](<span class='kw'>self</span>) -> <span class='ty'>Option</span><ReadGuard[T]>
+</code></pre>
+<h3><code>RwLock.try_write(self)</code></h3>
+<p>Attempts to acquire a write lock without blocking. Returns <code>Some(WriteGuard)</code> on success, <code>None</code> if the lock is contended.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RwLock</span>.try_write[T](<span class='kw'>self</span>) -> <span class='ty'>Option</span><WriteGuard[T]>
+</code></pre>
+<h3><code>ReadGuard[T]</code></h3>
+<p>An RAII guard that holds a shared read lock on an <code>RwLock</code>. The read count is decremented when dropped.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> ReadGuard[T] = { lock: <span class='ty'>RwLock</span>[T]; }
+</code></pre>
+<h3><code>WriteGuard[T]</code></h3>
+<p>An RAII guard that holds an exclusive write lock on an <code>RwLock</code>. The writer flag is cleared when dropped.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> WriteGuard[T] = { lock: <span class='ty'>RwLock</span>[T]; }
+</code></pre>
+<hr>
+<h2>Condvar</h2>
+<p>A condition variable for blocking threads until a condition is signaled. Typically used with a <code>Mutex</code>.</p>
+<h3><code>Condvar</code></h3>
+<p>A synchronization primitive that blocks threads until notified.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> Condvar = { waiters: <span class='ty'>Int</span>; }
+</code></pre>
+<h3><code>Condvar.new()</code></h3>
+<p>Creates a new condition variable with no waiters.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> Condvar.<span class='func'>new</span>() -> Condvar
+</code></pre>
+<h3><code>Condvar.wait(self, guard)</code></h3>
+<p>Blocks the current thread, temporarily releasing the <code>MutexGuard</code>. The guard is re-acquired when the thread wakes.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> Condvar.wait[T](<span class='kw'>self</span>, guard: MutexGuard[T]) -> MutexGuard[T]
+</code></pre>
+<h3><code>Condvar.notify_one(self)</code></h3>
+<p>Wakes up one blocked thread waiting on this condition variable.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> Condvar.<span class='func'>notify_one</span>(<span class='kw'>self</span>)
+</code></pre>
+<h3><code>Condvar.notify_all(self)</code></h3>
+<p>Wakes up all threads blocked on this condition variable.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> Condvar.<span class='func'>notify_all</span>(<span class='kw'>self</span>)
+</code></pre>
+<hr>
+<h2>Once</h2>
+<p>A synchronization primitive for one-time initialization of a function or value.</p>
+<h3><code>Once</code></h3>
+<p>Tracks whether a one-time operation has been executed.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> Once = { done: <span class='ty'>Bool</span>; }
+</code></pre>
+<h3><code>Once.new()</code></h3>
+<p>Creates a new <code>Once</code> in the uninitialized state.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> Once.<span class='func'>new</span>() -> Once
+</code></pre>
+<h3><code>Once.call_once(self, f)</code></h3>
+<p>Calls the provided function <code>f</code> exactly once, even if invoked from multiple threads concurrently. Subsequent calls are no-ops.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> Once.<span class='func'>call_once</span>(<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>())
+</code></pre>
+<hr>
+<h2>Arc (Atomic Reference Counting)</h2>
+<p>A thread-safe reference-counted pointer for sharing ownership across threads.</p>
+<h3><code>Arc[T]</code></h3>
+<p>An atomically reference-counted pointer to a value of type <code>T</code>.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ty'>Arc</span>[T] = { ptr: *T; count: <span class='ty'>Int</span>; }
+</code></pre>
+<h3><code>Arc.new(value)</code></h3>
+<p>Creates a new <code>Arc</code> wrapping the given value with an initial reference count of 1.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Arc</span>.new[T](value: T) -> <span class='ty'>Arc</span>[T]
+</code></pre>
+<h3><code>Arc.clone(self)</code></h3>
+<p>Increments the reference count and returns a new <code>Arc</code> pointing to the same data.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Arc</span>.clone[T](<span class='kw'>self</span>) -> <span class='ty'>Arc</span>[T]
+</code></pre>
+<h3><code>Arc.get(self)</code></h3>
+<p>Returns an immutable reference to the inner value.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Arc</span>.get[T](<span class='kw'>self</span>) -> &T
+</code></pre>
+<h3><code>Arc.strong_count(self)</code></h3>
+<p>Returns the current strong reference count of the <code>Arc</code>.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Arc</span>.strong_count[T](<span class='kw'>self</span>) -> <span class='ty'>Int</span>
+</code></pre>
+<h3><code>Arc.ptr_eq(self, other)</code></h3>
+<p>Returns <code>true</code> if two <code>Arc</code> pointers reference the same heap allocation.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Arc</span>.ptr_eq[T, U](<span class='kw'>self</span>, other: &<span class='ty'>Arc</span>[U]) -> <span class='ty'>Bool</span>
+</code></pre>
+<hr>
+<h2>Atomic Types</h2>
+<p>Lock-free atomic primitives for safe concurrent access to boolean and integer values.</p>
+<h3><code>AtomicBool</code></h3>
+<p>A boolean value that can be safely read and modified from multiple threads.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> AtomicBool = { val: <span class='ty'>Bool</span>; }
+</code></pre>
+<h3><code>AtomicBool.new(val)</code></h3>
+<p>Creates a new <code>AtomicBool</code> with the given initial value.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicBool.<span class='func'>new</span>(val: <span class='ty'>Bool</span>) -> AtomicBool
+</code></pre>
+<h3><code>AtomicBool.load(self)</code></h3>
+<p>Atomically reads the current value of the atomic boolean.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicBool.<span class='func'>load</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>
+</code></pre>
+<h3><code>AtomicBool.store(self, val)</code></h3>
+<p>Atomically writes a new value to the atomic boolean.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicBool.<span class='func'>store</span>(<span class='kw'>self</span>, val: <span class='ty'>Bool</span>)
+</code></pre>
+<h3><code>AtomicBool.swap(self, val)</code></h3>
+<p>Atomically stores a value and returns the previous value.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicBool.<span class='func'>swap</span>(<span class='kw'>self</span>, val: <span class='ty'>Bool</span>) -> <span class='ty'>Bool</span>
+</code></pre>
+<h3><code>AtomicInt</code></h3>
+<p>An integer value that can be safely read and modified from multiple threads using atomic operations.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> AtomicInt = { val: <span class='ty'>Int</span>; }
+</code></pre>
+<h3><code>AtomicInt.new(val)</code></h3>
+<p>Creates a new <code>AtomicInt</code> with the given initial value.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicInt.<span class='func'>new</span>(val: <span class='ty'>Int</span>) -> AtomicInt
+</code></pre>
+<h3><code>AtomicInt.load(self)</code></h3>
+<p>Atomically reads the current value of the atomic integer.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicInt.<span class='func'>load</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>
+</code></pre>
+<h3><code>AtomicInt.store(self, val)</code></h3>
+<p>Atomically writes a new value to the atomic integer.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicInt.<span class='func'>store</span>(<span class='kw'>self</span>, val: <span class='ty'>Int</span>)
+</code></pre>
+<h3><code>AtomicInt.fetch_add(self, val)</code></h3>
+<p>Atomically adds <code>val</code> to the current value and returns the previous value.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicInt.<span class='func'>fetch_add</span>(<span class='kw'>self</span>, val: <span class='ty'>Int</span>) -> <span class='ty'>Int</span>
+</code></pre>
+<h3><code>AtomicInt.fetch_sub(self, val)</code></h3>
+<p>Atomically subtracts <code>val</code> from the current value and returns the previous value.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> AtomicInt.<span class='func'>fetch_sub</span>(<span class='kw'>self</span>, val: <span class='ty'>Int</span>) -> <span class='ty'>Int</span>
+</code></pre>
+<hr>
+<h2>Barrier</h2>
+<p>A barrier that blocks a fixed set of threads until all have arrived.</p>
+<h3><code>Barrier</code></h3>
+<p>Synchronizes <code>n</code> threads so that each waits at the barrier until all have reached it.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ty'>Barrier</span> = { count: <span class='ty'>Int</span>; generation: <span class='ty'>Int</span>; }
+</code></pre>
+<h3><code>Barrier.new(n)</code></h3>
+<p>Creates a new barrier that blocks until <code>n</code> threads have called <code>wait</code>.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Barrier</span>.<span class='func'>new</span>(n: <span class='ty'>Int</span>) -> <span class='ty'>Barrier</span>
+</code></pre>
+<h3><code>Barrier.wait(self)</code></h3>
+<p>Blocks the current thread until all threads in the barrier set have called <code>wait</code>. After the barrier is reached, all threads are released.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Barrier</span>.<span class='func'>wait</span>(<span class='kw'>self</span>)
+</code></pre>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>XIOM v0.12.0 · <a href="../../" style="color:var(--signal);">xiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../../spec.html">Spec</a>
+      <a href="../../docs/">Docs</a>
+      <a href="../../ecosystem.html">Ecosystem</a>
+      <a href="../../download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
