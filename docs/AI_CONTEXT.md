@@ -2390,7 +2390,8 @@ OPTIONS:
   --version             Print compiler version and exit
   -o <output>           Output binary path (default per target: a.exe / a.wasm / a.out)
   --run                 Compile and run, then print the exit code (native target only)
-  --emit-ir             Print LLVM IR to stdout (no binary produced)
+   --emit-ir             Print LLVM IR to stdout (no binary produced)
+   --emit-tokens         Print token stream to stdout (lexer output, for debugging/playground)
   --target <target>     Target backend: native (default), wasm, arm, riscv
   --no-contracts        Disable contract runtime checks (strips requires/ensures/invariant guards)
   --runtime-contracts   Force contract checks in release builds (overrides --no-contracts)
@@ -2439,6 +2440,7 @@ SUBCOMMANDS:
 **Examples**
 ```bash
 xiom source.xi                              # print LLVM IR (native, no -o/--run)
+xiom --emit-tokens source.xi                 # lexer output: token stream
 xiom --emit-ir source.xi                    # print LLVM IR explicitly
 xiom -o prog.exe source.xi                  # compile to native binary
 xiom --run source.xi                        # compile + run, print exit code
