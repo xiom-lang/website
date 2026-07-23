@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XIOM — A language where intent is verified</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="img/xiom-icon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#11161D;
+    --panel:#161E29;
+    --panel-raised:#1B2430;
+    --line:#2A3A4D;
+    --line-soft:#212B38;
+    --paper:#ECE8DE;
+    --paper-dim:#C9C5B8;
+    --muted:#7E8896;
+    --signal:#FF8A3D;
+    --signal-dim:#A65B26;
+    --verified:#6FCF97;
+    --verified-dim:#3E7A57;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 40px;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.01em;color:var(--paper);}
+  code,.mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+
+  /* grid texture */
+  .blueprint-bg{
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:48px 48px;
+  }
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(17,22,29,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:0.02em;}
+  .logo-mark{width:20px;height:20px;border:1.5px solid var(--signal);position:relative;transform:rotate(45deg);}
+  .logo-mark::after{content:'';position:absolute;inset:4px;border:1px solid var(--signal);opacity:0.5;}
+  .navlinks{display:flex;gap:36px;font-size:14px;color:var(--muted);}
+  .navlinks a:hover{color:var(--paper);}
+  .nav-cta{
+    border:1px solid var(--line);
+    padding:8px 18px;
+    font-size:13px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--paper-dim);
+  }
+  .nav-cta:hover{border-color:var(--signal);color:var(--signal);}
+
+  /* hero */
+  .hero{padding:96px 0 80px;position:relative;}
+  .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--signal);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:20px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:'';width:24px;height:1px;background:var(--signal);}
+  .hero h1{font-size:46px;line-height:1.12;margin-bottom:24px;}
+  .hero h1 em{font-style:normal;color:var(--signal);}
+  .hero p.lede{font-size:17px;color:var(--paper-dim);max-width:480px;margin-bottom:32px;}
+  .hero-ctas{display:flex;gap:14px;}
+  .btn-primary{
+    background:var(--signal);color:var(--ink);
+    padding:13px 24px;font-size:14px;font-weight:600;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .btn-primary:hover{background:#ffa15e;}
+  .btn-secondary{
+    border:1px solid var(--line);color:var(--paper);
+    padding:13px 24px;font-size:14px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .btn-secondary:hover{border-color:var(--paper-dim);}
+
+  /* code proof panel */
+  .proof-panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    position:relative;
+  }
+  .proof-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 18px;border-bottom:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+  }
+  .proof-dots{display:flex;gap:6px;}
+  .proof-dots span{width:8px;height:8px;border-radius:50%;background:var(--line);}
+  .proof-body{padding:24px;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.9;position:relative;}
+  .proof-body .ln{color:var(--muted);display:inline-block;width:20px;user-select:none;}
+  .kw{color:#8FB8E8;}
+  .fn{color:#E8C589;}
+  .clause{
+    border-radius:3px;
+    padding:1px 4px;
+    margin:0 -4px;
+    transition:background 0.4s ease, box-shadow 0.4s ease;
+  }
+  .clause.checking{background:rgba(255,138,61,0.12);box-shadow:inset 0 0 0 1px rgba(255,138,61,0.4);}
+  .clause.pass{background:rgba(111,207,151,0.1);box-shadow:inset 0 0 0 1px rgba(111,207,151,0.4);}
+  .clause-tick{
+    display:inline-block;width:14px;text-align:center;opacity:0;
+    color:var(--verified);transition:opacity 0.3s ease;
+  }
+  .clause.pass .clause-tick{opacity:1;}
+  .stamp{
+    position:absolute;top:18px;right:22px;
+    border:2px solid var(--verified);
+    color:var(--verified);
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;font-weight:600;letter-spacing:0.08em;
+    padding:6px 12px;
+    transform:rotate(6deg);
+    opacity:0;
+    transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  .stamp.show{opacity:1;transform:rotate(6deg) scale(1);}
+
+  /* pillars */
+  .pillars{padding:64px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+  .pillar{background:var(--ink);padding:32px;}
+  .pillar-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--signal);letter-spacing:0.12em;margin-bottom:14px;}
+  .pillar h3{font-size:20px;margin-bottom:10px;}
+  .pillar p{font-size:14px;color:var(--muted);}
+
+  /* idea section */
+  .idea{padding:96px 0;}
+  .idea-grid{display:grid;grid-template-columns:200px 1fr;gap:48px;}
+  .idea-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:0.08em;padding-top:6px;}
+  .idea h2{font-size:32px;margin-bottom:20px;max-width:640px;}
+  .idea p{color:var(--paper-dim);font-size:15.5px;max-width:620px;margin-bottom:16px;}
+  .idea-quote{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;color:var(--paper);
+    border-left:2px solid var(--signal);
+    padding-left:20px;margin:28px 0;
+    max-width:580px;
+  }
+
+  /* ownership demo */
+  .scope-demo{padding:80px 0;border-top:1px solid var(--line);}
+  .scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+  .scope-grid h2{font-size:28px;margin-bottom:16px;}
+  .scope-grid p{color:var(--paper-dim);font-size:15px;margin-bottom:14px;}
+  .scope-code{
+    background:var(--panel);border:1px solid var(--line);padding:24px;
+    font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;
+    position:relative;
+  }
+  .brace{position:relative;}
+  .scope-bracket{
+    position:absolute;left:-14px;top:0;bottom:0;width:6px;
+    border-left:2px solid var(--signal);border-radius:0;
+    opacity:0.85;
+  }
+  .scope-note{
+    position:absolute;right:-1px;top:0;
+    font-size:11px;color:var(--signal);
+    transform:translateX(calc(100% + 10px));
+    white-space:nowrap;
+  }
+
+  /* roadmap */
+  .roadmap{padding:88px 0;border-top:1px solid var(--line);}
+  .roadmap h2{font-size:28px;margin-bottom:48px;}
+  .timeline{display:flex;border:1px solid var(--line);}
+  .phase{flex:1;border-right:1px solid var(--line);padding:22px 20px;position:relative;}
+  .phase:last-child{border-right:none;}
+  .phase-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;}
+  .phase h4{font-size:15px;margin-bottom:8px;}
+  .phase p{font-size:12.5px;color:var(--muted);margin-bottom:14px;min-height:50px;}
+  .status{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:0.06em;padding:4px 8px;display:inline-block;
+  }
+  .status.done{color:var(--verified);border:1px solid var(--verified-dim);}
+  .status.active{color:var(--signal);border:1px solid var(--signal-dim);}
+  .status.planned{color:var(--muted);border:1px solid var(--line);}
+
+  /* footer */
+  footer{padding:48px 0;border-top:1px solid var(--line);}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;}
+  footer p{font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+  .foot-links{display:flex;gap:28px;font-size:13px;color:var(--muted);}
+  .foot-links a:hover{color:var(--paper);}
+
+  @media (max-width:860px){
+    .hero-grid,.scope-grid,.idea-grid{grid-template-columns:1fr;}
+    .pillars-grid{grid-template-columns:1fr;}
+    .timeline{flex-direction:column;}
+    .phase{border-right:none;border-bottom:1px solid var(--line);}
+    .hero h1{font-size:34px;}
+    .navlinks{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="logo-mark"></span>XIOM</div>
+    <div class="navlinks">
+      <a href="#idea">Why</a>
+      <a href="#pillars">Pillars</a>
+      <a href="#ownership">Ownership</a>
+      <a href="#roadmap">Roadmap</a>
+    </div>
+    <a class="nav-cta" href="#">view spec.md</a>
+  </div>
+</nav>
+
+<header class="hero blueprint-bg">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Systems language · contracts as compiler input</div>
+        <h1>Specification and implementation are <em>the same artifact.</em></h1>
+        <p class="lede">XIOM puts what a function promises directly in its signature — not in a comment, not in a test, not in someone's head. The compiler reads it. The compiler enforces it.</p>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="playground/">try in browser</a>
+          <a class="btn-secondary" href="#idea">read the purpose</a>
+        </div>
+      </div>
+
+      <div class="proof-panel" id="proofPanel">
+        <div class="proof-header">
+          <span>divide.xi</span>
+          <div class="proof-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="proof-body">
+<span class="ln">1</span><span class="kw">fn</span> <span class="fn">divide</span>(a: Float64, b: Float64) -&gt; Float64
+<span class="ln">2</span>  <span class="clause" id="c1"><span class="clause-tick">✓</span><span class="kw">requires:</span> b != 0.0</span>
+<span class="ln">3</span>  <span class="clause" id="c2"><span class="clause-tick">✓</span><span class="kw">ensures:</span>  result * b == a</span>
+<span class="ln">4</span>{
+<span class="ln">5</span>  <span class="kw">return</span> a / b
+<span class="ln">6</span>}
+        </div>
+        <div class="stamp" id="stamp">VERIFIED</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="pillars" id="pillars">
+  <div class="wrap">
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="pillar-tag">01 / SAFE</div>
+        <h3>No GC. No null. No surprises.</h3>
+        <p>Memory behaviour is explicit and deterministic. Ownership through lexical scope borrowing — same guarantee as Rust, without lifetime annotations.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-tag">02 / VERIFIED</div>
+        <h3>Contracts the compiler enforces.</h3>
+        <p>Runtime guards from Phase 1, static proof via Z3 from Phase 3. When a contract passes, you trust the output — human-written or AI-generated.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-tag">03 / PRECISE</div>
+        <h3>One way to write each thing.</h3>
+        <p>No implicit behaviour. No hidden control flow. <code style="color:var(--paper)">derive</code> handles the boilerplate that AI and humans both get wrong.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="idea" id="idea">
+  <div class="wrap">
+    <div class="idea-grid">
+      <div class="idea-label">WHY WE'RE<br>BUILDING THIS</div>
+      <div>
+        <h2>The contract between programmer and compiler hasn't changed since 1972. We think it should.</h2>
+        <p>Most code today isn't written by one engineer who holds the whole system in their head. It's written by teams, maintained by people who didn't write it, and increasingly generated by AI tools that produce syntactically correct output with no understanding of intent.</p>
+        <div class="idea-quote">When AI generates a function, or a junior engineer modifies one, the contract layer catches what code review misses — not because the reviewer is negligent, but because the compiler never gets tired.</div>
+        <p>Code review can't be the only safety layer when the volume of generated code exceeds what humans can read. So the safety moves into the language itself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scope-demo" id="ownership">
+  <div class="wrap">
+    <div class="scope-grid">
+      <div>
+        <h2>Borrows expire where you can see them.</h2>
+        <p>No lifetime parameters. No annotations. The compiler infers borrow validity from scope nesting alone — readable by looking at the braces, not by chasing references across the file.</p>
+        <p style="color:var(--signal);font-family:'JetBrains Mono',monospace;font-size:13px;">— lexical scope borrowing, decided Phase 0</p>
+      </div>
+      <div class="scope-code">
+<span class="kw">fn</span> <span class="fn">example</span>() {<br>
+&nbsp;&nbsp;<span class="brace">let v = Vec.new()<span class="scope-bracket" style="top:0;height:1.4em;"></span></span><br>
+&nbsp;&nbsp;<span class="brace">read_only(&amp;v)<span class="scope-bracket" style="top:0;height:1.4em;"></span><span class="scope-note">borrow ends here</span></span><br>
+&nbsp;&nbsp;<span class="brace">mutate(&amp;mut v)<span class="scope-bracket" style="top:0;height:1.4em;"></span><span class="scope-note">exclusive, scoped</span></span><br>
+&nbsp;&nbsp;consume(v)&nbsp;&nbsp;<span style="color:var(--muted);">// v moves, no longer usable</span><br>
+}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="roadmap" id="roadmap">
+  <div class="wrap">
+    <h2>Build order, not a wishlist.</h2>
+    <div class="timeline">
+      <div class="phase">
+        <div class="phase-num">PHASE 0</div>
+        <h4>Working pipeline</h4>
+        <p>Lexer, parser, LLVM IR. Native + WASM hello world. 36 tests.</p>
+        <span class="status done">done</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num">PHASE 1</div>
+        <h4>Full language surface</h4>
+        <p>Ownership, generics, contracts as runtime guards, derive, stdlib.</p>
+        <span class="status active">in progress</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num">PHASE 2</div>
+        <h4>Self-hosting</h4>
+        <p>Compiler rewritten in XIOM, compiled by XIOM. Bootstrap complete.</p>
+        <span class="status planned">planned</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num">PHASE 3</div>
+        <h4>Ecosystem</h4>
+        <p>Z3 static proof, package registry, LSP, formatter, XiomDB.</p>
+        <span class="status planned">planned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>XIOM — v0.1.0 Pipeline. Spec v0.3.</p>
+    <div class="foot-links">
+      <a href="#">Spec</a>
+      <a href="#">Build strategy</a>
+      <a href="#">Gitea</a>
+      <a href="playground/">Playground</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function runProof(){
+    const c1 = document.getElementById('c1');
+    const c2 = document.getElementById('c2');
+    const stamp = document.getElementById('stamp');
+    [c1,c2].forEach(c=>c.classList.remove('checking','pass'));
+    stamp.classList.remove('show');
+
+    setTimeout(()=>c1.classList.add('checking'), 400);
+    setTimeout(()=>{c1.classList.remove('checking');c1.classList.add('pass');}, 1100);
+    setTimeout(()=>c2.classList.add('checking'), 1300);
+    setTimeout(()=>{c2.classList.remove('checking');c2.classList.add('pass');}, 2000);
+    setTimeout(()=>stamp.classList.add('show'), 2300);
+  }
+  runProof();
+  setInterval(runProof, 6000);
+</script>
+
+</body>
+</html>

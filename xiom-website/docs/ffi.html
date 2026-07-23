@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XIOM — C FFI (Foreign Function Interface)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../img/xiom-icon.ico" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="../spec.html">Spec</a>
+      <a href="../docs/">Docs</a>
+      <a href="../ecosystem.html">Ecosystem</a>
+      <a href="../versions.html">Versions</a>
+      <a href="../playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="concepts.html" style="color:var(--muted);">Concepts</a>
+        <a href="examples.html" style="color:var(--muted);">By Example</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--signal);font-weight:500;">C FFI</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+        <a href="../AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
+        <div style="margin-top:20px;"></div>
+        <a href="api.html" style="color:var(--paper);font-weight:500;;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>
+        <a href="stdlib/core.html" style="color:var(--muted);">core</a>
+        <a href="stdlib/io.html" style="color:var(--muted);">io</a>
+        <a href="stdlib/collections.html" style="color:var(--muted);">collections</a>
+        <a href="stdlib/string.html" style="color:var(--muted);">string</a>
+        <a href="stdlib/math.html" style="color:var(--muted);">math</a>
+        <a href="stdlib/sync.html" style="color:var(--muted);">sync</a>
+        <a href="stdlib/async.html" style="color:var(--muted);">async</a>
+        <a href="stdlib/net.html" style="color:var(--muted);">net</a>
+        <a href="stdlib/crypto.html" style="color:var(--muted);">crypto</a>
+        <a href="stdlib/serialize.html" style="color:var(--muted);">serialize</a>
+        <a href="stdlib/test.html" style="color:var(--muted);">test</a>
+        <a href="stdlib/iter.html" style="color:var(--muted);">iter</a>
+        <a href="stdlib/error.html" style="color:var(--muted);">error</a>
+        <a href="stdlib/char.html" style="color:var(--muted);">char</a>
+        <a href="stdlib/path.html" style="color:var(--muted);">path</a>
+        <a href="stdlib/array.html" style="color:var(--muted);">array</a>
+        <a href="stdlib/encoding.html" style="color:var(--muted);">encoding</a>
+        <a href="stdlib/num.html" style="color:var(--muted);">num</a>
+        <a href="stdlib/cmp.html" style="color:var(--muted);">cmp</a>
+        <a href="stdlib/thread.html" style="color:var(--muted);">thread</a>
+        <a href="stdlib/mem.html" style="color:var(--muted);">mem</a>
+        <a href="stdlib/ptr.html" style="color:var(--muted);">ptr</a>
+        <a href="stdlib/alloc.html" style="color:var(--muted);">alloc</a>
+        <a href="stdlib/rc.html" style="color:var(--muted);">rc</a>
+        <a href="stdlib/os.html" style="color:var(--muted);">os</a>
+        <a href="stdlib/env.html" style="color:var(--muted);">env</a>
+        <a href="stdlib/time.html" style="color:var(--muted);">time</a>
+        <a href="stdlib/convert.html" style="color:var(--muted);">convert</a>
+        <a href="stdlib/cell.html" style="color:var(--muted);">cell</a>
+        <a href="stdlib/fmt.html" style="color:var(--muted);">fmt</a>
+        <a href="stdlib/hash.html" style="color:var(--muted);">hash</a>
+        <a href="stdlib/compress.html" style="color:var(--muted);">compress</a>
+        <a href="stdlib/rand.html" style="color:var(--muted);">rand</a>
+        <a href="stdlib/regex.html" style="color:var(--muted);">regex</a>
+        <a href="stdlib/bench.html" style="color:var(--muted);">bench</a>
+        <a href="stdlib/log.html" style="color:var(--muted);">log</a>
+        <a href="stdlib/contracts.html" style="color:var(--muted);">contracts</a>
+        <a href="stdlib/reflect.html" style="color:var(--muted);">reflect</a>
+        <a href="stdlib/ffi.html" style="color:var(--muted);">ffi</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">C FFI (Foreign Function Interface)</h1>
+      <p>XIOM has zero-cost C interoperability. C functions and types are declared in <code>extern</code> blocks. The compiler generates no wrapper code. C ABI calling conventions are used directly.</p>
+<p><code>unsafe</code> is required because the compiler cannot verify C memory safety.</p>
+<h2>Extern Blocks</h2>
+<pre class="language-xiom"><code>
+<span class='kw'>extern</span> <span class='str'>C</span> {
+  <span class='kw'>fn</span> <span class='func'>malloc</span>(size: <span class='ty'>UInt</span>) -> *<span class='ty'>UInt8</span>
+  <span class='kw'>fn</span> <span class='func'>free</span>(ptr: *<span class='ty'>UInt8</span>)
+  <span class='kw'>fn</span> <span class='func'>strlen</span>(s: *<span class='ty'>UInt8</span>) -> <span class='ty'>UInt</span>
+  <span class='kw'>fn</span> <span class='func'>printf</span>(format: *<span class='ty'>UInt8</span>, ...) -> <span class='ty'>Int32</span>
+}
+</code></pre>
+<h2>Calling C Functions</h2>
+<pre class="language-xiom"><code>
+<span class='kw'>fn</span> <span class='func'>c_string_length</span>(ptr: *<span class='ty'>UInt8</span>) -> <span class='ty'>UInt</span> {
+  <span class='kw'>unsafe</span> { <span class='kw'>return</span> <span class='func'>strlen</span>(ptr); }
+}
+
+<span class='kw'>fn</span> <span class='func'>allocate_buffer</span>(size: <span class='ty'>UInt</span>) -> *<span class='ty'>UInt8</span> {
+  <span class='kw'>unsafe</span> { <span class='kw'>return</span> <span class='func'>malloc</span>(size); }
+}
+</code></pre>
+<h2>Raw Pointers</h2>
+<p>Raw pointers (<code>*T</code>) are only usable inside <code>unsafe</code> blocks. They cannot be dereferenced in safe code.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>unsafe</span> {
+  <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>some_c_function</span>();
+  <span class='kw'>let</span> value = *raw;   <span class='cm'>// dereference — programmer guarantees validity</span>
+  *raw = <span class='num'>42</span>;          <span class='cm'>// write through pointer</span>
+}
+</code></pre>
+<h2>Safe Wrappers</h2>
+<p>The recommended pattern is to wrap C libraries with safe XIOM interfaces that add contracts:</p>
+<pre class="language-xiom"><code>
+<span class='kw'>fn</span> <span class='func'>safe_alloc</span>(size: <span class='ty'>UInt</span>) -> <span class='ty'>Option</span>[*<span class='ty'>UInt8</span>]
+  <span class='kw'>requires</span>: size > <span class='num'>0</span>
+{
+  <span class='kw'>unsafe</span> {
+    <span class='kw'>let</span> ptr = <span class='func'>malloc</span>(size);
+    <span class='kw'>if</span> ptr == <span class='func'>null_ptr</span>() {
+      <span class='kw'>return</span> <span class='kw'>None</span>;
+    }
+    <span class='kw'>return</span> <span class='kw'>Some</span>(ptr);
+  }
+}
+
+<span class='kw'>fn</span> <span class='func'>safe_free</span>(ptr: *<span class='ty'>UInt8</span>) {
+  <span class='kw'>unsafe</span> { <span class='func'>free</span>(ptr) }
+}
+</code></pre>
+<h2>Type Mapping</h2>
+<table>
+<tr>
+<th>C Type</th>
+<th>XIOM Type</th>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td><code>Int32</code></td>
+</tr>
+<tr>
+<td><code>unsigned int</code></td>
+<td><code>UInt32</code></td>
+</tr>
+<tr>
+<td><code>long</code></td>
+<td><code>Int64</code></td>
+</tr>
+<tr>
+<td><code>size_t</code></td>
+<td><code>UInt</code></td>
+</tr>
+<tr>
+<td><code>char</code></td>
+<td><code>Int8</code></td>
+</tr>
+<tr>
+<td><code>char*</code></td>
+<td><code>*UInt8</code></td>
+</tr>
+<tr>
+<td><code>void*</code></td>
+<td><code>*UInt8</code></td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td><code>Float32</code></td>
+</tr>
+<tr>
+<td><code>double</code></td>
+<td><code>Float64</code></td>
+</tr>
+</table>
+<h2>C-ABI Export</h2>
+<p>XIOM functions can be exported with C ABI for consumption from other languages:</p>
+<pre class="language-xiom"><code>
+<span class='kw'>extern</span> <span class='str'>C</span> <span class='kw'>fn</span> <span class='func'>xiom_add</span>(a: <span class='ty'>Int32</span>, b: <span class='ty'>Int32</span>) -> <span class='ty'>Int32</span> {
+  <span class='kw'>return</span> a + b;
+}
+</code></pre>
+<p>This compiles to a standard C-callable symbol that can be linked from Rust, Python, or any language with C FFI.</p>
+<h2>Strategy</h2>
+<p>XIOM does not rewrite C libraries. It wraps them with safe interfaces and contract-verified preconditions:</p>
+<table>
+<tr>
+<th>Library</th>
+<th>C LOC</th>
+<th>XIOM Wrapper LOC</th>
+</tr>
+<tr>
+<td>SQLite</td>
+<td>150,000</td>
+<td>~200</td>
+</tr>
+<tr>
+<td>OpenSSL</td>
+<td>500,000</td>
+<td>~300</td>
+</tr>
+<tr>
+<td>BLAS</td>
+<td>100,000+</td>
+<td>~150</td>
+</tr>
+</table>
+<p>The C library provides battle-tested implementation. The XIOM wrapper adds contracts and type safety.</p>
+<h2>FFI Best Practices</h2>
+<ul>
+<li><strong>Always use <code>unsafe</code> blocks</strong> — never call C functions outside <code>unsafe { }</code>.</li>
+<li><strong>Wrap with safe functions</strong> — expose a safe XIOM interface with contracts.</li>
+<li><strong>Validate at the boundary</strong> — check pointer validity, buffer sizes, and nullability.</li>
+<li><strong>Auto-infer contracts from C headers</strong> — planned Phase 3 feature for mechanical binding generation.</li>
+</ul>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>XIOM v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../spec.html">Spec</a>
+      <a href="../docs/">Docs</a>
+      <a href="../ecosystem.html">Ecosystem</a>
+      <a href="../download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

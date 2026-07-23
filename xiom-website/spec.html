@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XIOM — Language Specification v0.3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="img/xiom-icon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <img src="img/xiom-logo_bg.png" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="spec.html" class="active">Spec</a>
+      <a href="docs.html">Docs</a>
+      <a href="ecosystem.html">Ecosystem</a>
+      <a href="versions.html">Versions</a>
+      <a href="playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="download.html">download</a>
+  </div>
+</nav>
+
+<header class="hero blueprint-bg" style="padding:48px 0;">
+  <div class="wrap">
+    <div class="eyebrow">Language Reference · Version 0.3</div>
+    <h1>XIOM Language Specification</h1>
+    <p class="lede">The normative definition of the XIOM language. This is the single source of truth for syntax, types, memory model, contracts, and compiler behavior.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Overview -->
+  <div class="content-section">
+    <h2>1. Overview &amp; Core Goals</h2>
+    <p>XIOM is a compiled, statically typed, memory-safe systems programming language. It is designed around three properties that no existing mainstream language provides simultaneously:</p>
+    <table>
+      <tr><th style="width:120px;">SAFE</th><td>Ownership-based memory safety with no garbage collector and no runtime. Memory is freed deterministically when the owner leaves scope.</td></tr>
+      <tr><th>VERIFIED</th><td>Pre-conditions, post-conditions, and type invariants are first-class language constructs enforced by the compiler, not documentation conventions.</td></tr>
+      <tr><th>PRECISE</th><td>The grammar is unambiguous. Every construct has exactly one canonical form. No implicit coercions, no hidden allocations, no surprising control flow.</td></tr>
+    </table>
+    <p>XIOM compiles to native machine code via LLVM and to WebAssembly as a co-equal target. The compiler is intended to be self-hosted once the language reaches stability.</p>
+  </div>
+
+  <!-- Design Principles -->
+  <div class="content-section">
+    <h2>2. Design Principles</h2>
+
+    <h3>2.1 One Way To Write Each Thing</h3>
+    <p>Every construct has exactly one canonical syntax. Formatting is part of the language specification. The canonical formatter (<code>xiom fmt</code>) is part of the compiler toolchain.</p>
+
+    <h3>2.2 Explicit Over Implicit</h3>
+    <p>Nothing happens without being written. Memory allocation is visible. Type conversions are explicit. If a function can fail, its return type says so. If a value can be absent, its type says so.</p>
+
+    <h3>2.3 Contracts Are Specification</h3>
+    <p>Contracts (<code>requires</code>, <code>ensures</code>, <code>invariant</code>) are not assert statements. They are formal specifications that the compiler reasons about. At minimum they compile to checked runtime guards with precise error messages.</p>
+
+    <h3>2.4 No Null</h3>
+    <p>The language has no <code>null</code>, <code>nil</code>, or <code>undefined</code> value. Absence is expressed through <code>Option[T]</code>. The compiler enforces exhaustive handling of the absent case at every use site.</p>
+
+    <h3>2.5 Errors Are Types</h3>
+    <p>Functions that can fail return <code>Result[T, E]</code>. There are no exceptions. The <code>?</code> operator propagates errors explicitly.</p>
+
+    <h3>2.6 Structural Interfaces</h3>
+    <p>A type satisfies an interface if it has the required fields and methods. No <code>implements</code> declaration is needed.</p>
+
+    <h3>2.7 Comptime Is the Only Metaprogramming</h3>
+    <p>There is no preprocessor, no macro system, and no template language. All compile-time code generation uses <code>comptime</code>.</p>
+
+    <h3>2.8 Derive — Compiler-Generated Correctness</h3>
+    <p>For common interfaces (<code>Eq</code>, <code>Clone</code>, <code>Display</code>, <code>Hash</code>, <code>Ord</code>), the programmer declares intent and the compiler generates the implementation. The generated code is always correct by construction.</p>
+  </div>
+
+  <!-- Syntax Preview -->
+  <div class="content-section">
+    <h2>3. Syntax Preview</h2>
+
+    <h3>Variables</h3>
+    <pre><code><span class="kw">let</span> x: <span class="ty">Int</span> = 42           <span class="cm">// immutable binding</span>
+<span class="kw">var</span> y: <span class="ty">Float64</span> = 3.14     <span class="cm">// mutable binding</span>
+<span class="kw">let</span> name = <span class="str">"XIOM"</span>        <span class="cm">// type inferred</span></code></pre>
+
+    <h3>Functions with Contracts</h3>
+    <pre><code><span class="kw">fn</span> <span class="fn">divide</span>(a: <span class="ty">Float64</span>, b: <span class="ty">Float64</span>) -> <span class="ty">Float64</span>
+  <span class="kw">requires:</span> b != 0.0
+  <span class="kw">ensures:</span>  result * b == a
+{
+  <span class="kw">return</span> a / b
+}</code></pre>
+
+    <h3>Types with Derive</h3>
+    <pre><code><span class="kw">type</span> <span class="ty">Point</span> = {
+  x: <span class="ty">Float64</span>;
+  y: <span class="ty">Float64</span>;
+} <span class="kw">derive</span>[<span class="attr">Eq</span>, <span class="attr">Clone</span>, <span class="attr">Display</span>]
+
+<span class="cm">// Compiler generates eq(), clone(), to_str() automatically</span></code></pre>
+
+    <h3>Generics with Inline Constraints</h3>
+    <pre><code><span class="kw">fn</span> <span class="fn">max</span>[T: <span class="ty">Comparable</span>](a: T, b: T) -> T {
+  <span class="kw">if</span> a > b { <span class="kw">return</span> a }
+  <span class="kw">return</span> b
+}
+
+<span class="kw">let</span> m = max(<span class="num">10</span>, <span class="num">20</span>)   <span class="cm">// T = Int, inferred</span></code></pre>
+
+    <h3>Algebraic Types</h3>
+    <pre><code><span class="kw">enum</span> <span class="ty">AgentState</span> {
+  Idle,
+  Patrolling(route: <span class="ty">Vec</span>[<span class="ty">Vector3</span>]),
+  Attacking(target: <span class="ty">EntityId</span>),
+  Dead(cause: <span class="ty">DamageCause</span>),
+}</code></pre>
+
+    <h3>Error Handling</h3>
+    <pre><code><span class="kw">fn</span> <span class="fn">loadFile</span>(path: <span class="ty">Str</span>) -> <span class="ty">Result</span>[<span class="ty">File</span>, <span class="ty">IOError</span>] {
+  <span class="kw">let</span> f = open(path)?   <span class="cm">// ? propagates error up</span>
+  <span class="kw">return</span> Ok(f)
+}
+
+<span class="kw">match</span> loadFile(<span class="str">"data.bin"</span>) {
+  Ok(file)  => process(file),
+  Err(e)    => log.error(e.message),
+}</code></pre>
+
+    <h3>Methods with Implicit Self</h3>
+    <pre><code><span class="kw">pub fn</span> <span class="ty">Vec3</span>.<span class="fn">dot</span>(other: &<span class="ty">Vec3</span>) -> <span class="ty">Float32</span> {
+  <span class="kw">return</span> x * other.x + y * other.y + z * other.z
+  <span class="cm">// self is implicit — fields accessed directly</span>
+}</code></pre>
+
+    <h3>Structural Interfaces</h3>
+    <pre><code><span class="kw">interface</span> <span class="ty">Comparable</span> {
+  <span class="kw">fn</span> <span class="fn">compare</span>(other: &<span class="ty">Self</span>) -> <span class="ty">Int</span>
+}
+
+<span class="kw">type</span> <span class="ty">Score</span> = { value: <span class="ty">Int</span> }
+
+<span class="kw">fn</span> <span class="ty">Score</span>.<span class="fn">compare</span>(other: &<span class="ty">Score</span>) -> <span class="ty">Int</span> {
+  <span class="kw">if</span> value < other.value { <span class="kw">return</span> -<span class="num">1</span> }
+  <span class="kw">if</span> value > other.value { <span class="kw">return</span>  <span class="num">1</span> }
+  <span class="kw">return</span> <span class="num">0</span>
+}
+<span class="cm">// Score satisfies Comparable — no implements keyword needed</span></code></pre>
+  </div>
+
+  <!-- Type System -->
+  <div class="content-section">
+    <h2>4. Primitive Types</h2>
+    <table>
+      <tr><th>Type</th><th>Width</th><th>Description</th></tr>
+      <tr><td><code>Bool</code></td><td>1 bit</td><td>Only <code>true</code> or <code>false</code>. No integer coercion.</td></tr>
+      <tr><td><code>Int</code></td><td>Platform (64-bit)</td><td>Signed. Default integer type.</td></tr>
+      <tr><td><code>Int8</code>–<code>Int64</code></td><td>8–64 bits</td><td>Explicit-width signed integers.</td></tr>
+      <tr><td><code>UInt</code></td><td>Platform (64-bit)</td><td>Unsigned. Use for sizes and indices.</td></tr>
+      <tr><td><code>UInt8</code>–<code>UInt64</code></td><td>8–64 bits</td><td>Explicit-width unsigned integers. <code>UInt8</code> aliased as <code>Byte</code>.</td></tr>
+      <tr><td><code>Float32</code></td><td>IEEE 754 single</td><td></td></tr>
+      <tr><td><code>Float64</code></td><td>IEEE 754 double</td><td>Default float type.</td></tr>
+      <tr><td><code>Char</code></td><td>32 bits</td><td>Unicode scalar value. Not a byte.</td></tr>
+      <tr><td><code>Str</code></td><td>Fat pointer</td><td>Immutable UTF-8 slice. Not null-terminated.</td></tr>
+    </table>
+
+    <h3>Compound Types</h3>
+    <table>
+      <tr><th>Type</th><th>Description</th></tr>
+      <tr><td><code>Option[T]</code></td><td>Either <code>Some(value)</code> or <code>None</code>. Replaces null.</td></tr>
+      <tr><td><code>Result[T, E]</code></td><td>Either <code>Ok(value)</code> or <code>Err(error)</code>. Replaces exceptions.</td></tr>
+      <tr><td><code>Vec[T]</code></td><td>Heap-allocated growable array.</td></tr>
+      <tr><td><code>Map[K, V]</code></td><td>Hash map. K must satisfy <code>Hash</code> and <code>Eq</code>.</td></tr>
+      <tr><td><code>Set[T]</code></td><td>Hash set. T must satisfy <code>Hash</code> and <code>Eq</code>.</td></tr>
+      <tr><td><code>(T, U, ...)</code></td><td>Tuple. Fixed arity, mixed types.</td></tr>
+      <tr><td><code>*T</code></td><td>Raw pointer. Only usable inside <code>unsafe</code> blocks.</td></tr>
+    </table>
+  </div>
+
+  <!-- Memory Model -->
+  <div class="content-section">
+    <h2>5. Memory Model</h2>
+    <p>XIOM uses ownership semantics for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope. The model uses <strong>lexical scope borrowing</strong> — simpler than Rust's lifetime system while providing the same core safety guarantee.</p>
+
+    <h3>Ownership Rules</h3>
+    <table>
+      <tr><th>Rule</th><th>Description</th></tr>
+      <tr><td>Single Owner</td><td>Every value has exactly one owner at any time. Assignment moves ownership.</td></tr>
+      <tr><td>Scope Lifetime</td><td>A value is freed when its owning binding leaves scope.</td></tr>
+      <tr><td>Read Borrow (<code>&amp;T</code>)</td><td>Multiple simultaneous read borrows allowed. No mutation.</td></tr>
+      <tr><td>Write Borrow (<code>&amp;mut T</code>)</td><td>Exactly one write borrow at a time. No other borrows.</td></tr>
+      <tr><td>Explicit Clone</td><td>Duplicating requires <code>.clone()</code>. No implicit deep copy.</td></tr>
+      <tr><td>Move On Call</td><td>Passing a value to a function moves ownership unless the parameter is a borrow.</td></tr>
+    </table>
+    <p>Borrows cannot be stored in struct fields. Borrows cannot be returned from functions. This is a constraint, not a bug — it is the design.</p>
+
+    <pre><code><span class="kw">fn</span> <span class="fn">consume</span>(data: <span class="ty">Vec</span>[<span class="ty">Int</span>]) { }          <span class="cm">// takes ownership</span>
+<span class="kw">fn</span> <span class="fn">read_only</span>(data: &<span class="ty">Vec</span>[<span class="ty">Int</span>]) { }         <span class="cm">// read borrow</span>
+<span class="kw">fn</span> <span class="fn">mutate</span>(data: &<span class="kw">mut</span> <span class="ty">Vec</span>[<span class="ty">Int</span>]) { }       <span class="cm">// write borrow</span>
+
+<span class="kw">let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+read_only(&v)        <span class="cm">// borrow, v still valid</span>
+mutate(&<span class="kw">mut</span> v)       <span class="cm">// write borrow, v still valid</span>
+consume(v)           <span class="cm">// move — v no longer usable</span></code></pre>
+  </div>
+
+  <!-- Contract System -->
+  <div class="content-section">
+    <h2>6. Contract System</h2>
+    <p>Contracts are the formal specification layer of XIOM. They transform function signatures from documentation into machine-checkable specifications. In Phase 1, contracts compile to runtime guards with precise error messages. Static proof via Z3 SMT solver is a planned Phase 3 integration.</p>
+
+    <h3>Keywords</h3>
+    <table>
+      <tr><th>Keyword</th><th>Semantics</th></tr>
+      <tr><td><code>requires</code></td><td>Pre-condition. Must hold when the function is called. Caller is responsible.</td></tr>
+      <tr><td><code>ensures</code></td><td>Post-condition. Must hold when the function returns. Implementation is responsible.</td></tr>
+      <tr><td><code>invariant</code></td><td>Type-level contract. Must hold after every mutation of a value of this type.</td></tr>
+      <tr><td><code>result</code></td><td>Refers to the return value inside an <code>ensures</code> clause.</td></tr>
+      <tr><td><code>self@pre</code></td><td>Value of <code>self</code> at the moment the function was entered.</td></tr>
+    </table>
+
+    <h3>Type Invariants</h3>
+    <pre><code><span class="kw">type</span> <span class="ty">Health</span> = {
+  current: <span class="ty">Int</span>;
+  maximum: <span class="ty">Int</span>;
+  <span class="kw">invariant:</span> current >= <span class="num">0</span>;
+  <span class="kw">invariant:</span> current <= maximum;
+  <span class="kw">invariant:</span> maximum > <span class="num">0</span>;
+}
+<span class="cm">// The compiler rejects any code that could violate these invariants.</span></code></pre>
+
+    <h3>Contract Collection Methods</h3>
+    <table>
+      <tr><th>Method</th><th>Meaning</th></tr>
+      <tr><td><code>.is_sorted()</code></td><td>Elements are in non-decreasing order</td></tr>
+      <tr><td><code>.all(closure)</code></td><td>All elements satisfy the predicate</td></tr>
+      <tr><td><code>.none(closure)</code></td><td>No element satisfies the predicate</td></tr>
+      <tr><td><code>.contains(value)</code></td><td>Collection contains the given value</td></tr>
+    </table>
+  </div>
+
+  <!-- Targets -->
+  <div class="content-section">
+    <h2>7. Target Platforms</h2>
+    <table>
+      <tr><th>Target</th><th>Path</th></tr>
+      <tr><td>x86_64 Windows / Linux / macOS</td><td>XIOM → LLVM → native</td></tr>
+      <tr><td>aarch64 macOS / iOS / Android</td><td>XIOM → LLVM → native</td></tr>
+      <tr><td>riscv64 Linux</td><td>XIOM → LLVM → native</td></tr>
+      <tr><td>WASM (browsers, Node.js, edge, WASI)</td><td>XIOM → LLVM → WASM32</td></tr>
+    </table>
+    <p>GPU and console targets are library concerns accessed through C FFI — they are not language features.</p>
+  </div>
+
+  <!-- Comparison -->
+  <div class="content-section">
+    <h2>8. XIOM vs Existing Languages</h2>
+    <table>
+      <tr><th>Feature</th><th>XIOM</th><th>Rust</th><th>Go</th><th>Zig</th></tr>
+      <tr><td>Memory model</td><td>Ownership, lexical borrows</td><td>Full borrow checker + lifetimes</td><td>GC</td><td>Manual</td></tr>
+      <tr><td>Contracts</td><td>First-class, compiler-enforced</td><td>Assertions only</td><td>None</td><td>None</td></tr>
+      <tr><td>Null safety</td><td><code>Option[T]</code></td><td><code>Option&lt;T&gt;</code></td><td>Null exists</td><td>Null exists</td></tr>
+      <tr><td>Error handling</td><td><code>Result[T, E]</code> + <code>?</code></td><td><code>Result&lt;T, E&gt;</code> + <code>?</code></td><td>Multi-return</td><td>Error unions</td></tr>
+      <tr><td>Generics</td><td>Comptime, inline constraints</td><td>Trait bounds</td><td>Limited</td><td>comptime</td></tr>
+      <tr><td>Interfaces</td><td>Structural</td><td>Nominal</td><td>Structural</td><td>—</td></tr>
+      <tr><td>Derive</td><td>Compiler-generated</td><td><code>#[derive(...)]</code></td><td>None (manual)</td><td>None</td></tr>
+      <tr><td>WASM target</td><td>First-class, co-equal</td><td>Supported</td><td>Limited</td><td>Supported</td></tr>
+      <tr><td>C FFI</td><td>Zero-cost</td><td>Zero-cost</td><td>Cgo (overhead)</td><td>First-class</td></tr>
+      <tr><td>Method receiver</td><td>Implicit <code>self</code>, inferred</td><td>Explicit <code>&amp;self</code></td><td>Explicit</td><td>Explicit</td></tr>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>XIOM Language Specification v0.3 — Living document. All syntax subject to revision until v1.0.</p>
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="docs.html">Docs</a>
+      <a href="ecosystem.html">Ecosystem</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

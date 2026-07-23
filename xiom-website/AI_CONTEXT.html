@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XIOM — XIOM — AI Coding Reference</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../../resource/img/xiom-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../../resource/img/xiom-icon.png" alt="XIOM" style="width:20px;height:20px;">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="../spec.html">Spec</a>
+      <a href="../docs/">Docs</a>
+      <a href="../ecosystem.html">Ecosystem</a>
+      <a href="../versions.html">Versions</a>
+      <a href="../playground/">Playground</a>
+    </div>
+    <a class="nav-cta" href="../download.html">download</a>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px;">
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;">
+
+    <nav style="position:sticky;top:80px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:16px;">DOCUMENTATION</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+        <a href="index.html" style="color:var(--muted);">Overview</a>
+        <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="examples.html" style="color:var(--muted);">By Example</a>
+        <a href="syntax.html" style="color:var(--muted);">Syntax</a>
+        <a href="types.html" style="color:var(--muted);">Type System</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="contracts.html" style="color:var(--muted);">Contracts</a>
+        <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
+        <a href="modules.html" style="color:var(--muted);">Modules</a>
+        <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
+        <a href="ffi.html" style="color:var(--muted);">C FFI</a>
+        <a href="stdlib.html" style="color:var(--muted);">Standard Library</a>
+        <a href="compiler.html" style="color:var(--muted);">Compiler</a>
+        <a href="../AI_CONTEXT.html" style="color:var(--signal);font-weight:500;">AI Coding Ref</a>
+      </div>
+    </nav>
+
+    <main class="content-section" style="border:none;padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">**Version:** v0.16.0 | **Tests:** 234 passing | **Status:** Self-hosted compiler</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">XIOM — AI Coding Reference</h1>
+      <h1>XIOM — AI Coding Reference</h1>
+<blockquote><p><strong>Purpose:</strong> Feed this document into any LLM context window to enable correct XIOM code generation.</p></blockquote>
+<blockquote><p><strong>Version:</strong> v0.16.0 | <strong>Tests:</strong> 234 passing | <strong>Status:</strong> Self-hosted compiler</p></blockquote>
+<blockquote><p></p></blockquote>
+<blockquote><p>This document is the single source of truth for AI-generated XIOM code.</p></blockquote>
+<blockquote><p>Every rule stated here is enforced by the compiler. No exceptions.</p></blockquote>
+<hr>
+<h2>1. Language Identity</h2>
+<p>XIOM is a compiled, statically typed, memory-safe systems language.</p>
+<pre><code>
+Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM IR → clang → binary
+</code></pre>
+<p><strong>Three non-negotiable properties:</strong></p>
+<table>
+<tr>
+<th>SAFE</th>
+<th>No GC. No null. Ownership with lexical scope borrowing. Use-after-free and double-free are compile errors.</th>
+</tr>
+<tr>
+<td>VERIFIED</td>
+<td><code>requires</code>, <code>ensures</code>, <code>invariant</code> are compiler-enforced, not comments. Runtime guards from Phase 1, static proof from Phase 3.</td>
+</tr>
+<tr>
+<td>PRECISE</td>
+<td>One canonical form per construct. No implicit coercions, hidden allocations, or surprising control flow.</td>
+</tr>
+</table>
+<p><strong>What XIOM rejects:</strong></p>
+<ul>
+<li>No <code>null</code> / <code>nil</code> / <code>undefined</code>. Use <code>Option[T]</code>.</li>
+<li>No exceptions. Use <code>Result[T, E]</code>.</li>
+<li>No implicit type conversions. All casts are explicit.</li>
+<li>No operator overloading. No hidden constructors.</li>
+<li>No preprocessor, macros, or templates. Only <code>comptime</code>.</li>
+<li>No lifetime annotations. Borrow scope is lexical (visible by braces).</li>
+</ul>
+<hr>
+<h2>2. Complete Syntax Rules</h2>
+<h3>2.1 Variables</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>let</span> x: <span class=<span class="str">"ty"</span>>Int</span> = <span class="num">42</span>           <span class=<span class="str">"cm"</span>>// immutable — cannot be reassigned</span>
+<span class=<span class="str">"kw"</span>>var</span> y: <span class=<span class="str">"ty"</span>>Float64</span> = <span class="num">3.14</span>     <span class=<span class="str">"cm"</span>>// mutable — can be reassigned with =</span>
+<span class=<span class="str">"kw"</span>>let</span> name = <span class="str">"XIOM"</span>        <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred — <span class=<span class="str">"ty"</span>>Str</span></span>
+<span class=<span class="str">"kw"</span>>let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred — <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]</span>
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li><code>let</code> = immutable. <code>var</code> = mutable.</li>
+<li>Type annotation optional when compiler can infer.</li>
+<li>Inference does NOT cross function boundaries. Function signatures always fully annotated.</li>
+<li>Every statement MUST end with <code>;</code>. The last expression in a block (tail expression) does NOT.</li>
+</ul>
+<h3>2.2 Functions</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> add(a: <span class=<span class="str">"ty"</span>>Int</span>, b: <span class=<span class="str">"ty"</span>>Int</span>) -> <span class=<span class="str">"ty"</span>>Int</span> {
+  <span class=<span class="str">"kw"</span>>return</span> a + b;
+}
+
+<span class=<span class="str">"cm"</span>>// Void function — no <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>type</span> annotation</span>
+<span class=<span class="str">"kw"</span>>fn</span> log(message: <span class=<span class="str">"ty"</span>>Str</span>) {
+  io.print(message);
+}
+
+<span class=<span class="str">"cm"</span>>// With contracts (between signature and body)</span>
+<span class=<span class="str">"kw"</span>>fn</span> divide(a: <span class=<span class="str">"ty"</span>>Float64</span>, b: <span class=<span class="str">"ty"</span>>Float64</span>) -> <span class=<span class="str">"ty"</span>>Float64</span>
+  <span class=<span class="str">"kw"</span>>requires</span>: b != <span class="num">0.0</span>
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> * b == a
+{
+  <span class=<span class="str">"kw"</span>>return</span> a / b;
+}
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>All parameters must have type annotations.</li>
+<li>Return type is required unless the function returns nothing.</li>
+<li><code>requires</code> and <code>ensures</code> go between signature and body.</li>
+<li><code>return</code> always needs <code>;</code>. Tail expressions do not.</li>
+<li>Functions are not first-class values for assignment. Use closures.</li>
+</ul>
+<h3>2.3 Methods</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Vec3</span> = { x: <span class=<span class="str">"ty"</span>>Float32</span>; y: <span class=<span class="str">"ty"</span>>Float32</span>; z: <span class=<span class="str">"ty"</span>>Float32</span>; }
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Vec3</span>.dot(other: &<span class=<span class="str">"ty"</span>>Vec3</span>) -> <span class=<span class="str">"ty"</span>>Float32</span> {
+  <span class=<span class="str">"kw"</span>>return</span> x * other.x + y * other.y + z * other.z;
+  <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>self</span> <span class=<span class="str">"kw"</span>>is</span> IMPLICIT — never write <span class=<span class="str">"kw"</span>>self</span>.x, just x</span>
+}
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Vec3</span>.set_x(value: <span class=<span class="str">"ty"</span>>Float32</span>) {
+  x = value;   <span class=<span class="str">"cm"</span>>// compiler infers <span class=<span class="str">"kw"</span>>self</span>: &mut <span class=<span class="str">"ty"</span>>Self</span> because field <span class=<span class="str">"kw"</span>>is</span> mutated</span>
+}
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>Method syntax: <code>fn TypeName.methodName(params) -> ReturnType</code></li>
+<li><code>self</code> is IMPLICIT. Access fields directly: <code>x</code>, not <code>self.x</code>.</li>
+<li>Compiler infers <code>&Self</code> or <code>&mut Self</code> from body. If ANY field is mutated → <code>&mut Self</code>.</li>
+<li>Methods are defined OUTSIDE the type declaration, in the same module.</li>
+</ul>
+<h3>2.4 Control Flow</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>if</span> x > <span class="num">0</span> {
+  <span class=<span class="str">"kw"</span>>return</span> <span class="num">1</span>;
+} <span class=<span class="str">"kw"</span>>elif</span> x < <span class="num">0</span> {
+  <span class=<span class="str">"kw"</span>>return</span> -<span class="num">1</span>;
+} <span class=<span class="str">"kw"</span>>else</span> {
+  <span class=<span class="str">"kw"</span>>return</span> <span class="num">0</span>;
+}
+
+<span class=<span class="str">"kw"</span>>while</span> count > <span class="num">0</span> {
+  count = count - <span class="num">1</span>;
+}
+
+<span class=<span class="str">"kw"</span>>for</span> item <span class=<span class="str">"kw"</span>>in</span> items {
+  process(item);
+}
+
+<span class=<span class="str">"kw"</span>>match</span> value {
+  <span class=<span class="str">"kw"</span>>Some</span>(v) => process(v),
+  <span class=<span class="str">"kw"</span>>None</span>    => {},
+}
+
+<span class=<span class="str">"kw"</span>>match</span> state {
+  AgentState.Idle              => wait(),
+  AgentState.Patrolling(route) => follow(route),
+}
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li><code>if</code> / <code>elif</code> / <code>else</code> — exactly this spelling. Not <code>else if</code>.</li>
+<li><code>match</code> arms use <code>=></code> not <code>:</code>.</li>
+<li>Every <code>match</code> must cover ALL cases. Non-exhaustive = compile error.</li>
+<li>Wildcard is <code>_</code>, not <code>default</code> or <code>otherwise</code>.</li>
+<li>Match arms that are blocks need no separator. Single-expression arms end with <code>,</code>.</li>
+</ul>
+<h3>2.5 Expressions</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"cm"</span>>// Literals</span>
+<span class="num">42</span>              <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Int</span></span>
+100_000         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Int</span> with separators</span>
+<span class="num">3.14</span>            <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Float64</span></span>
+<span class=<span class="str">"kw"</span>>true</span> | <span class=<span class="str">"kw"</span>>false</span>    <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Bool</span></span>
+<span class="str">"hello"</span>         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Str</span> — always double quotes</span>
+'A'             <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Char</span> — always single quotes</span>
+
+<span class=<span class="str">"cm"</span>>// Arithmetic</span>
+a + b   a - b   a * b   a / b   a % b   -a
+
+<span class=<span class="str">"cm"</span>>// Comparison — returns <span class=<span class="str">"ty"</span>>Bool</span></span>
+a == b   a != b   a < b   a > b   a <= b   a >= b
+
+<span class=<span class="str">"cm"</span>>// Logical — both operands must be <span class=<span class="str">"ty"</span>>Bool</span></span>
+!a          a && b          a || b
+
+<span class=<span class="str">"cm"</span>>// Struct literal — TypeName{ field: value, ... }</span>
+<span class=<span class="str">"kw"</span>>let</span> p = <span class=<span class="str">"ty"</span>>Point</span>{ x: <span class="num">1.0</span>, y: <span class="num">2.0</span> };
+
+<span class=<span class="str">"cm"</span>>// Array literal</span>
+<span class=<span class="str">"kw"</span>>let</span> nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class=<span class="str">"kw"</span>>let</span> empty: <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>] = [];
+
+<span class=<span class="str">"cm"</span>>// Field access</span>
+<span class=<span class="str">"kw"</span>>let</span> dist = p.x * p.x + p.y * p.y;
+
+<span class=<span class="str">"cm"</span>>// Function call</span>
+<span class=<span class="str">"kw"</span>>let</span> <span class=<span class="str">"kw"</span>>result</span> = add(<span class="num">10</span>, <span class="num">20</span>);
+
+<span class=<span class="str">"cm"</span>>// Generic call — explicit <span class=<span class="str">"kw"</span>>type</span> parameter</span>
+<span class=<span class="str">"kw"</span>>let</span> n = max[<span class=<span class="str">"ty"</span>>Int</span>](<span class="num">10</span>, <span class="num">20</span>);
+<span class=<span class="str">"kw"</span>>let</span> n = max(<span class="num">10</span>, <span class="num">20</span>);       <span class=<span class="str">"cm"</span>>// inferred</span>
+
+<span class=<span class="str">"cm"</span>>// Error propagation</span>
+<span class=<span class="str">"kw"</span>>let</span> f = open(path)?;
+
+<span class=<span class="str">"cm"</span>>// Reference creation</span>
+<span class=<span class="str">"kw"</span>>let</span> r = &x;
+<span class=<span class="str">"kw"</span>>let</span> rm = &mut x;
+
+<span class=<span class="str">"cm"</span>>// Constructors</span>
+<span class=<span class="str">"kw"</span>>Some</span>(value) | <span class=<span class="str">"kw"</span>>None</span>
+<span class=<span class="str">"kw"</span>>Ok</span>(value) | <span class=<span class="str">"kw"</span>>Err</span>(error)
+
+<span class=<span class="str">"cm"</span>>// Closures</span>
+<span class=<span class="str">"kw"</span>>let</span> doubler = <span class=<span class="str">"kw"</span>>fn</span>(x: <span class=<span class="str">"ty"</span>>Int</span>) -> <span class=<span class="str">"ty"</span>>Int</span> { <span class=<span class="str">"kw"</span>>return</span> x * <span class="num">2</span>; };
+<span class=<span class="str">"kw"</span>>let</span> tripler = |x| x * <span class="num">3</span>;
+
+<span class=<span class="str">"cm"</span>>// Other</span>
+<span class=<span class="str">"kw"</span>>await</span> fetch(url)           <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>async</span></span>
+<span class=<span class="str">"kw"</span>>comptime</span> heavy()           <span class=<span class="str">"cm"</span>>// compile-time eval</span>
+x <span class=<span class="str">"kw"</span>>is</span> <span class=<span class="str">"kw"</span>>Some</span>                  <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> test</span>
+items.len()@pre            <span class=<span class="str">"cm"</span>>// pre-state (contracts only)</span>
+</code></pre>
+<h3>2.6 Operator Precedence (Highest to Lowest)</h3>
+<table>
+<tr>
+<th>Level</th>
+<th>Operators</th>
+</tr>
+<tr>
+<td>10</td>
+<td><code>.</code> <code>()</code> <code>[]</code> <code>@pre</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>!</code> <code>-</code>(unary) <code>&</code> <code>&mut</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>*</code> <code>/</code> <code>%</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>+</code> <code>-</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>==</code> <code>!=</code> <code><</code> <code>></code> <code><=</code> <code>>=</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>is</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>&&</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>`\</td>
+<td>\</td>
+<td>`</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>=></code></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>?</code></td>
+</tr>
+</table>
+<h3>2.7 Keywords (Complete List)</h3>
+<pre><code>
+<span class=<span class="str">"kw"</span>>let</span>  <span class=<span class="str">"kw"</span>>var</span>  <span class=<span class="str">"kw"</span>>const</span>  <span class=<span class="str">"kw"</span>>fn</span>  <span class=<span class="str">"kw"</span>>return</span>
+<span class=<span class="str">"kw"</span>>if</span>  <span class=<span class="str">"kw"</span>>elif</span>  <span class=<span class="str">"kw"</span>>else</span>  <span class=<span class="str">"kw"</span>>match</span>  <span class=<span class="str">"kw"</span>>while</span>  <span class=<span class="str">"kw"</span>>for</span>  <span class=<span class="str">"kw"</span>>in</span>
+<span class=<span class="str">"kw"</span>>spawn</span>  <span class=<span class="str">"kw"</span>>async</span>  <span class=<span class="str">"kw"</span>>await</span>  <span class=<span class="str">"kw"</span>>comptime</span>
+<span class=<span class="str">"kw"</span>>module</span>  <span class=<span class="str">"kw"</span>>use</span>  <span class=<span class="str">"kw"</span>>pub</span>  <span class=<span class="str">"kw"</span>>as</span>
+<span class=<span class="str">"kw"</span>>type</span>  <span class=<span class="str">"kw"</span>>enum</span>  <span class=<span class="str">"kw"</span>>interface</span>  <span class=<span class="str">"kw"</span>>derive</span>
+<span class=<span class="str">"kw"</span>>requires</span>  <span class=<span class="str">"kw"</span>>ensures</span>  <span class=<span class="str">"kw"</span>>invariant</span>
+<span class=<span class="str">"kw"</span>>true</span>  <span class=<span class="str">"kw"</span>>false</span>  <span class=<span class="str">"kw"</span>>self</span>  <span class=<span class="str">"kw"</span>>result</span>
+<span class=<span class="str">"kw"</span>>Some</span>  <span class=<span class="str">"kw"</span>>None</span>  <span class=<span class="str">"kw"</span>>Ok</span>  <span class=<span class="str">"kw"</span>>Err</span>
+<span class=<span class="str">"kw"</span>>unsafe</span>  <span class=<span class="str">"kw"</span>>extern</span>  <span class=<span class="str">"kw"</span>>is</span>
+</code></pre>
+<p><code>result</code> is only valid inside <code>ensures</code> clauses. <code>self</code> is implicit in methods — never write it explicitly. <code>is</code> is used for type testing: <code>value is Some</code>.</p>
+<hr>
+<h2>3. Type System</h2>
+<h3>3.1 Primitive Types</h3>
+<table>
+<tr>
+<th>Type</th>
+<th>Width</th>
+<th>Example</th>
+</tr>
+<tr>
+<td><code>Bool</code></td>
+<td>1 bit</td>
+<td><code>true</code>, <code>false</code></td>
+</tr>
+<tr>
+<td><code>Int</code></td>
+<td>64-bit signed</td>
+<td><code>42</code></td>
+</tr>
+<tr>
+<td><code>Int8</code>–<code>Int64</code></td>
+<td>8–64 bits</td>
+<td><code>let x: Int32 = 1;</code></td>
+</tr>
+<tr>
+<td><code>UInt</code>–<code>UInt64</code></td>
+<td>8–64 bits unsigned</td>
+<td><code>let n: UInt = 100;</code></td>
+</tr>
+<tr>
+<td><code>Float32</code></td>
+<td>IEEE 754 single</td>
+<td><code>let f: Float32 = 1.0;</code></td>
+</tr>
+<tr>
+<td><code>Float64</code></td>
+<td>IEEE 754 double</td>
+<td><code>3.14</code> (default)</td>
+</tr>
+<tr>
+<td><code>Char</code></td>
+<td>32-bit Unicode</td>
+<td><code>'A'</code>, <code>'λ'</code></td>
+</tr>
+<tr>
+<td><code>Str</code></td>
+<td>UTF-8 slice</td>
+<td><code>"hello"</code></td>
+</tr>
+<tr>
+<td><code>Unit</code></td>
+<td><code>()</code></td>
+<td>Void return, empty tuple</td>
+</tr>
+</table>
+<h3>3.2 Compound Types</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"ty"</span>>Option</span>[T]        <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>Some</span>(value) | <span class=<span class="str">"kw"</span>>None</span></span>
+<span class=<span class="str">"ty"</span>>Result</span>[T, E]     <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>Ok</span>(value) | <span class=<span class="str">"kw"</span>>Err</span>(error)</span>
+<span class=<span class="str">"ty"</span>>Vec</span>[T]           <span class=<span class="str">"cm"</span>>// Heap-allocated growable array</span>
+<span class=<span class="str">"ty"</span>>Map</span>[K, V]        <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Hash</span> map (K: <span class=<span class="str">"ty"</span>>Hash</span> + <span class=<span class="str">"ty"</span>>Eq</span>)</span>
+<span class=<span class="str">"ty"</span>>Set</span>[T]           <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Hash</span> set (T: <span class=<span class="str">"ty"</span>>Hash</span> + <span class=<span class="str">"ty"</span>>Eq</span>)</span>
+(T, U, ...)     <span class=<span class="str">"cm"</span>>// Tuple</span>
+[N]T             <span class=<span class="str">"cm"</span>>// Fixed-size array (N <span class=<span class="str">"kw"</span>>is</span> <span class=<span class="str">"kw"</span>>comptime</span>)</span>
+*T               <span class=<span class="str">"cm"</span>>// Raw pointer (<span class=<span class="str">"kw"</span>>unsafe</span> only)</span>
+&T               <span class=<span class="str">"cm"</span>>// Read borrow</span>
+&mut T           <span class=<span class="str">"cm"</span>>// Write borrow</span>
+</code></pre>
+<h3>3.3 Structs</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Point</span> = {
+  x: <span class=<span class="str">"ty"</span>>Float64</span>;
+  y: <span class=<span class="str">"ty"</span>>Float64</span>;
+} <span class=<span class="str">"kw"</span>>derive</span>[<span class=<span class="str">"ty"</span>>Eq</span>, <span class=<span class="str">"ty"</span>>Clone</span>, <span class=<span class="str">"ty"</span>>Display</span>]
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>Fields separated by <code>;</code> (not <code>,</code>).</li>
+<li><code>derive</code> is optional. Supported: <code>Eq</code>, <code>Clone</code>, <code>Display</code>, <code>Hash</code>, <code>Ord</code>.</li>
+<li>Types with <code>invariant</code> cannot derive <code>Eq</code>, <code>Hash</code>, <code>Ord</code>.</li>
+<li><code>invariant</code> clauses apply after every mutation.</li>
+</ul>
+<h3>3.4 Enums</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>enum</span> <span class=<span class="str">"ty"</span>>Option</span>[T] { <span class=<span class="str">"kw"</span>>Some</span>(value: T), <span class=<span class="str">"kw"</span>>None</span> }
+<span class=<span class="str">"kw"</span>>enum</span> AgentState {
+  Idle,
+  Patrolling(route: <span class=<span class="str">"ty"</span>>Vec</span>[Vector3]),
+  Attacking(target: EntityId),
+}
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>Variants separated by <code>,</code>.</li>
+<li>Variants can carry named fields: <code>VariantName(field: Type)</code>.</li>
+<li>Unit variants have no parentheses.</li>
+<li>Trailing commas allowed.</li>
+</ul>
+<h3>3.5 Interfaces</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>interface</span> <span class=<span class="str">"ty"</span>>Comparable</span> {
+  <span class=<span class="str">"kw"</span>>fn</span> compare(other: &<span class=<span class="str">"ty"</span>>Self</span>) -> <span class=<span class="str">"ty"</span>>Int</span>;  <span class=<span class="str">"cm"</span>>// -<span class="num">1</span>, <span class="num">0</span>, <span class="num">1</span></span>
+}
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>A type satisfies an interface by HAVING the required methods. No <code>implements</code> keyword.</li>
+<li>Satisfaction checked at USE SITE.</li>
+<li>Interface methods in the declaration end with <code>;</code> (no body).</li>
+</ul>
+<h3>3.6 Generics</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"cm"</span>>// Type constraint inline on parameter</span>
+<span class=<span class="str">"kw"</span>>fn</span> max[T: <span class=<span class="str">"ty"</span>>Comparable</span>](a: T, b: T) -> T { ... }
+
+<span class=<span class="str">"cm"</span>>// Multiple constraints</span>
+<span class=<span class="str">"kw"</span>>fn</span> dedup[T: <span class=<span class="str">"ty"</span>>Eq</span> + <span class=<span class="str">"ty"</span>>Hash</span>](items: &mut <span class=<span class="str">"ty"</span>>Vec</span>[T]) { ... }
+
+<span class=<span class="str">"cm"</span>>// Explicit <span class=<span class="str">"kw"</span>>type</span> parameter at call site (required when not inferrable)</span>
+<span class=<span class="str">"kw"</span>>let</span> n = parse[<span class=<span class="str">"ty"</span>>Int</span>](<span class="str">"<span class="num">42</span>"</span>);
+
+<span class=<span class="str">"cm"</span>>// Generic <span class=<span class="str">"kw"</span>>type</span></span>
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Stack</span>[T] = { items: <span class=<span class="str">"ty"</span>>Vec</span>[T]; capacity: <span class=<span class="str">"ty"</span>>UInt</span>; }
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>Type constraints go inline: <code>[T: Interface]</code>, NOT <code>requires: T satisfies Interface</code>.</li>
+<li><code>requires</code> is ONLY for value-level preconditions.</li>
+<li>Monomorphisation: two-pass (register + specialize). Zero runtime overhead.</li>
+<li>Type parameter MUST be annotatable if it appears only in return type.</li>
+</ul>
+<hr>
+<h2>4. Memory Model — CRITICAL</h2>
+<h3>4.1 Ownership Rules</h3>
+<table>
+<tr>
+<th>Rule</th>
+<th>Effect</th>
+</tr>
+<tr>
+<td>Single owner</td>
+<td>Assignment MOVES ownership. Old binding invalid.</td>
+</tr>
+<tr>
+<td>Scope lifetime</td>
+<td>Value freed at end of owning scope. Deterministic.</td>
+</tr>
+<tr>
+<td><code>&T</code> (read borrow)</td>
+<td>Multiple simultaneous. No mutation during reads.</td>
+</tr>
+<tr>
+<td><code>&mut T</code> (write borrow)</td>
+<td>EXACTLY ONE. No other borrows active.</td>
+</tr>
+<tr>
+<td><code>.clone()</code></td>
+<td>Explicit deep copy. Required to duplicate.</td>
+</tr>
+<tr>
+<td>Move on call</td>
+<td>Passing value to function MOVES it. Use <code>&</code> to borrow.</td>
+</tr>
+</table>
+<h3>4.2 Borrow Scope</h3>
+<p>Borrows expire at end of block or statement. Visible by braces.</p>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> consume(v: <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) { }           <span class=<span class="str">"cm"</span>>// takes ownership</span>
+<span class=<span class="str">"kw"</span>>fn</span> read(v: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) { }             <span class=<span class="str">"cm"</span>>// read borrow</span>
+<span class=<span class="str">"kw"</span>>fn</span> write(v: &mut <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) { }        <span class=<span class="str">"cm"</span>>// write borrow</span>
+
+<span class=<span class="str">"kw"</span>>let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+read(&v);        <span class=<span class="str">"cm"</span>>// borrow — v still valid</span>
+write(&mut v);   <span class=<span class="str">"cm"</span>>// write borrow — exclusive</span>
+consume(v);      <span class=<span class="str">"cm"</span>>// move — v NO LONGER VALID</span>
+<span class=<span class="str">"cm"</span>>// read(&v);     // COMPILE ERROR: <span class=<span class="str">"kw"</span>>use</span> after move</span>
+</code></pre>
+<h3>4.3 Restrictions (These Are Compile Errors)</h3>
+<ul>
+<li>❌ Borrow stored in struct field</li>
+<li>❌ Borrow returned from function</li>
+<li>❌ Use after move</li>
+<li>❌ Write borrow while read borrow active</li>
+<li>❌ Multiple write borrows simultaneously</li>
+<li>❌ Mutation through <code>&T</code></li>
+<li>✅ Clone instead of borrow for struct storage</li>
+<li>✅ Return owned type, not borrow</li>
+</ul>
+<h3>4.4 Unsafe</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>unsafe</span> {
+  <span class=<span class="str">"kw"</span>>let</span> raw: *<span class=<span class="str">"ty"</span>>Int</span> = some_c_function();
+  <span class=<span class="str">"kw"</span>>let</span> value = *raw;
+}
+</code></pre>
+<p><code>unsafe</code> is a declaration of programmer responsibility. Only needed for C FFI and raw pointer ops.</p>
+<hr>
+<h2>5. Contract System</h2>
+<h3>5.1 Keywords</h3>
+<table>
+<tr>
+<th>Keyword</th>
+<th>Where</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td><code>requires:</code></td>
+<td>Function</td>
+<td>Pre-condition. Caller responsible.</td>
+</tr>
+<tr>
+<td><code>ensures:</code></td>
+<td>Function</td>
+<td>Post-condition. Implementation responsible.</td>
+</tr>
+<tr>
+<td><code>invariant:</code></td>
+<td>Type body</td>
+<td>Must hold after every mutation.</td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td>Inside <code>ensures</code></td>
+<td>References the return value.</td>
+</tr>
+<tr>
+<td><code>self@pre</code></td>
+<td>Inside <code>ensures</code></td>
+<td>Value of self at function entry.</td>
+</tr>
+</table>
+<h3>5.2 Examples</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> divide(a: <span class=<span class="str">"ty"</span>>Float64</span>, b: <span class=<span class="str">"ty"</span>>Float64</span>) -> <span class=<span class="str">"ty"</span>>Float64</span>
+  <span class=<span class="str">"kw"</span>>requires</span>: b != <span class="num">0.0</span>
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> * b == a
+{
+  <span class=<span class="str">"kw"</span>>return</span> a / b;
+}
+
+<span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Health</span> = {
+  current: <span class=<span class="str">"ty"</span>>Int</span>;
+  maximum: <span class=<span class="str">"ty"</span>>Int</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: current >= <span class="num">0</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: current <= maximum;
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> pop[T](stack: &mut <span class=<span class="str">"ty"</span>>Stack</span>[T]) -> <span class=<span class="str">"ty"</span>>Option</span>[T]
+  <span class=<span class="str">"kw"</span>>requires</span>: !stack.is_empty()
+</code></pre>
+<h3>5.3 Contract Collection Methods</h3>
+<table>
+<tr>
+<th>Method</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td><code>.is_sorted()</code></td>
+<td>Elements non-decreasing</td>
+</tr>
+<tr>
+<td>`.all(\</td>
+<td>x\</td>
+<td>pred)`</td>
+<td>All satisfy predicate</td>
+</tr>
+<tr>
+<td>`.none(\</td>
+<td>x\</td>
+<td>pred)`</td>
+<td>None satisfy predicate</td>
+</tr>
+<tr>
+<td><code>.contains(value)</code></td>
+<td>Collection contains value</td>
+</tr>
+<tr>
+<td><code>.len()</code></td>
+<td>Element count</td>
+</tr>
+<tr>
+<td><code>.is_empty()</code></td>
+<td>Equivalent to <code>.len() == 0</code></td>
+</tr>
+</table>
+<h3>5.4 Verification Modes</h3>
+<table>
+<tr>
+<th>Mode</th>
+<th>Behavior</th>
+</tr>
+<tr>
+<td>Default</td>
+<td>Runtime guards. <code>@llvm.trap()</code> on violation with file/line message.</td>
+</tr>
+<tr>
+<td><code>--no-contracts</code></td>
+<td>Strips all checks.</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>Z3 static proof (planned).</td>
+</tr>
+</table>
+<hr>
+<h2>6. Error Handling</h2>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Result</span> <span class=<span class="str">"kw"</span>>type</span></span>
+<span class=<span class="str">"kw"</span>>fn</span> parse(s: <span class=<span class="str">"ty"</span>>Str</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[<span class=<span class="str">"ty"</span>>Int</span>, <span class=<span class="str">"ty"</span>>ParseError</span>] { ... }
+
+<span class=<span class="str">"cm"</span>>// ? propagates error</span>
+<span class=<span class="str">"kw"</span>>fn</span> load(path: <span class=<span class="str">"ty"</span>>Str</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[Config, <span class=<span class="str">"ty"</span>>AppError</span>] {
+  <span class=<span class="str">"kw"</span>>let</span> file = io.read_file(path)?;
+  <span class=<span class="str">"kw"</span>>let</span> config = parse(file)?;
+  <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Ok</span>(config);
+}
+
+<span class=<span class="str">"cm"</span>>// Match must be exhaustive</span>
+<span class=<span class="str">"kw"</span>>match</span> <span class=<span class="str">"kw"</span>>result</span> {
+  <span class=<span class="str">"kw"</span>>Ok</span>(value) => <span class=<span class="str">"kw"</span>>use</span>(value),
+  <span class=<span class="str">"kw"</span>>Err</span>(e)    => handle(e),
+}
+
+<span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Option</span></span>
+<span class=<span class="str">"kw"</span>>let</span> val: <span class=<span class="str">"ty"</span>>Option</span>[<span class=<span class="str">"ty"</span>>Int</span>] = <span class=<span class="str">"kw"</span>>Some</span>(<span class="num">10</span>);
+<span class=<span class="str">"kw"</span>>let</span> n = val.unwrap_or(<span class="num">0</span>);
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li><code>E</code> in <code>Result[T, E]</code> is ANY type. No Error interface required.</li>
+<li><code>?</code> only inside functions returning <code>Result</code> or <code>Option</code>.</li>
+<li>Every <code>match</code> on <code>Result</code>/<code>Option</code>/enum MUST handle all variants.</li>
+</ul>
+<hr>
+<h2>7. Module System</h2>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>module</span> myproject.math     <span class=<span class="str">"cm"</span>>// declare <span class=<span class="str">"kw"</span>>module</span> (must be first line of file)</span>
+
+<span class=<span class="str">"kw"</span>>use</span> xiom.io;             <span class=<span class="str">"cm"</span>>// import <span class=<span class="str">"kw"</span>>module</span></span>
+<span class=<span class="str">"kw"</span>>use</span> xiom.collections.<span class=<span class="str">"ty"</span>>Vec</span>;     <span class=<span class="str">"cm"</span>>// import single <span class=<span class="str">"kw"</span>>type</span></span>
+<span class=<span class="str">"kw"</span>>use</span> xiom.collections.<span class=<span class="str">"ty"</span>>Vec</span> <span class=<span class="str">"kw"</span>>as</span> V; <span class=<span class="str">"cm"</span>>// alias</span>
+<span class=<span class="str">"kw"</span>>use</span> xiom.collections.*;        <span class=<span class="str">"cm"</span>>// glob import (discouraged)</span>
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> public_api() { }   <span class=<span class="str">"cm"</span>>// visible outside <span class=<span class="str">"kw"</span>>module</span></span>
+<span class=<span class="str">"kw"</span>>fn</span> private_helper() { }   <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>module</span>-private (default)</span>
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li><code>module</code> declaration must be the FIRST statement in a file.</li>
+<li>All declarations are private by default. <code>pub</code> makes them visible.</li>
+<li>No <code>protected</code> or <code>friend</code> visibility.</li>
+<li><code>package.xi</code> at project root defines dependencies.</li>
+</ul>
+<hr>
+<h2>8. Standard Library Quick Reference</h2>
+<p>43 modules. Import with <code>use xiom.<module></code>. Full reference at <code>docs/language/stdlib.md</code>.</p>
+<h3>All Modules</h3>
+<table>
+<tr>
+<th>Module</th>
+<th>Key Items</th>
+</tr>
+<tr>
+<td><code>core</code></td>
+<td><code>Option[T]</code>, <code>Result[T, E]</code>, <code>panic()</code>, <code>assert()</code>, <code>is_sorted()</code>, <code>all()</code>, <code>none()</code></td>
+</tr>
+<tr>
+<td><code>io</code></td>
+<td><code>print()</code>, <code>println()</code>, <code>read_file()</code>, <code>write_file()</code>, <code>file_exists()</code>, <code>args()</code></td>
+</tr>
+<tr>
+<td><code>collections</code></td>
+<td><code>Vec[T]</code> (push, pop, get, len), <code>Map[K,V]</code> (insert, get), <code>Set[T]</code></td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td><code>str_len()</code>, <code>str_concat()</code>, <code>str_split()</code>, <code>str_trim()</code>, <code>format()</code>, <code>replace()</code></td>
+</tr>
+<tr>
+<td><code>math</code></td>
+<td><code>abs()</code>, <code>sqrt()</code>, <code>sin()</code>, <code>cos()</code>, <code>pow()</code>, <code>random()</code>, <code>PI</code></td>
+</tr>
+<tr>
+<td><code>ffi</code></td>
+<td><code>extern "C"</code>, <code>unsafe</code>, <code>*T</code> raw pointers</td>
+</tr>
+<tr>
+<td><code>async</code></td>
+<td><code>spawn()</code>, <code>Channel.bounded()</code>, <code>.send()</code>, <code>.recv()</code></td>
+</tr>
+<tr>
+<td><code>net</code></td>
+<td><code>tcp_connect()</code>, <code>tcp_listen()</code>, <code>http_get()</code>, <code>http_post()</code></td>
+</tr>
+<tr>
+<td><code>os</code></td>
+<td><code>exec()</code>, <code>env()</code>, <code>exit()</code>, <code>platform()</code></td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td><code>now()</code>, <code>sleep()</code>, <code>Duration</code>, <code>Timer</code></td>
+</tr>
+<tr>
+<td><code>sync</code></td>
+<td><code>Mutex[T]</code>, <code>RwLock[T]</code>, <code>Arc[T]</code>, <code>Barrier</code></td>
+</tr>
+<tr>
+<td><code>iter</code></td>
+<td><code>map()</code>, <code>filter()</code>, <code>fold()</code>, <code>zip()</code>, <code>take()</code>, <code>skip()</code></td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td><code>test()</code>, <code>assert_eq()</code>, <code>assert_ok()</code>, <code>run_tests()</code></td>
+</tr>
+<tr>
+<td><code>serialize</code></td>
+<td><code>to_json()</code>, <code>from_json()</code>, <code>to_bincode()</code>, <code>from_bincode()</code></td>
+</tr>
+<tr>
+<td><code>bench</code></td>
+<td><code>bench()</code>, <code>BenchConfig</code>, <code>BenchResult</code></td>
+</tr>
+<tr>
+<td><code>log</code></td>
+<td><code>info()</code>, <code>warn()</code>, <code>error()</code>, <code>debug()</code>, <code>LogLevel</code></td>
+</tr>
+<tr>
+<td><code>contracts</code></td>
+<td><code>requires()</code>, <code>ensures()</code>, <code>invariant()</code></td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>Error</code>, <code>ErrorKind</code>, <code>into()</code>, <code>from()</code></td>
+</tr>
+<tr>
+<td><code>fmt</code></td>
+<td><code>format()</code>, <code>print()</code>, <code>println()</code>, <code>Display</code></td>
+</tr>
+<tr>
+<td><code>hash</code></td>
+<td><code>hash()</code>, <code>Hash</code>, <code>Hasher</code>, <code>sip_hash()</code></td>
+</tr>
+<tr>
+<td><code>num</code></td>
+<td><code>Num</code>, <code>parse()</code>, <code>to_string()</code>, <code>from_str()</code></td>
+</tr>
+<tr>
+<td><code>cmp</code></td>
+<td><code>Ordering</code>, <code>max()</code>, <code>min()</code>, <code>clamp()</code></td>
+</tr>
+<tr>
+<td><code>convert</code></td>
+<td><code>From</code>, <code>Into</code>, <code>from()</code>, <code>into()</code></td>
+</tr>
+<tr>
+<td><code>cell</code></td>
+<td><code>Cell[T]</code>, <code>RefCell[T]</code></td>
+</tr>
+<tr>
+<td><code>rc</code></td>
+<td><code>Rc[T]</code>, <code>Weak[T]</code></td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td><code>Path</code>, <code>join()</code>, <code>parent()</code>, <code>extension()</code>, <code>exists()</code></td>
+</tr>
+<tr>
+<td><code>mem</code></td>
+<td><code>size_of()</code>, <code>align_of()</code>, <code>addr_of()</code></td>
+</tr>
+<tr>
+<td><code>ptr</code></td>
+<td><code>null()</code>, <code>is_null()</code>, <code>offset()</code></td>
+</tr>
+<tr>
+<td><code>char</code></td>
+<td><code>is_digit()</code>, <code>is_alpha()</code>, <code>to_upper()</code>, <code>to_lower()</code></td>
+</tr>
+<tr>
+<td><code>array</code></td>
+<td><code>Array[T; N]</code>, <code>repeat()</code>, <code>from_fn()</code></td>
+</tr>
+<tr>
+<td><code>encoding</code></td>
+<td><code>base64_encode()</code>, <code>base64_decode()</code>, <code>hex_encode()</code>, <code>hex_decode()</code></td>
+</tr>
+<tr>
+<td><code>rand</code></td>
+<td><code>random()</code>, <code>seed()</code>, <code>shuffle()</code>, <code>choose()</code></td>
+</tr>
+<tr>
+<td><code>compress</code></td>
+<td><code>gzip()</code>, <code>gunzip()</code>, <code>zlib()</code>, <code>unzlib()</code></td>
+</tr>
+<tr>
+<td><code>crypto</code></td>
+<td><code>sha256()</code>, <code>aes_encrypt()</code>, <code>aes_decrypt()</code></td>
+</tr>
+<tr>
+<td><code>regex</code></td>
+<td><code>Regex</code>, <code>is_match()</code>, <code>find()</code>, <code>replace()</code></td>
+</tr>
+<tr>
+<td><code>alloc</code></td>
+<td><code>alloc()</code>, <code>dealloc()</code>, <code>realloc()</code></td>
+</tr>
+<tr>
+<td><code>thread</code></td>
+<td><code>spawn()</code>, <code>join()</code>, <code>ThreadPool</code></td>
+</tr>
+<tr>
+<td><code>reflect</code></td>
+<td><code>type_name()</code>, <code>fields()</code>, <code>is_enum()</code>, <code>is_struct()</code></td>
+</tr>
+<tr>
+<td><code>env</code></td>
+<td><code>get_var()</code>, <code>set_var()</code>, <code>home_dir()</code>, <code>temp_dir()</code></td>
+</tr>
+</table>
+<h3>C FFI</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>extern</span> <span class="str">"C"</span> {
+  <span class=<span class="str">"kw"</span>>fn</span> malloc(size: <span class=<span class="str">"ty"</span>>UInt</span>) -> *<span class=<span class="str">"ty"</span>>UInt8</span>;
+  <span class=<span class="str">"kw"</span>>fn</span> free(ptr: *<span class=<span class="str">"ty"</span>>UInt8</span>);
+  <span class=<span class="str">"kw"</span>>fn</span> printf(format: *<span class=<span class="str">"ty"</span>>UInt8</span>, ...) -> <span class=<span class="str">"ty"</span>>Int32</span>;
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> alloc(size: <span class=<span class="str">"ty"</span>>UInt</span>) -> *<span class=<span class="str">"ty"</span>>UInt8</span> {
+  <span class=<span class="str">"kw"</span>>unsafe</span> { <span class=<span class="str">"kw"</span>>return</span> malloc(size); }
+}
+</code></pre>
+<hr>
+<h2>9. Code Patterns & Best Practices</h2>
+<h3>9.1 Return Early Pattern</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>fn</span> process(data: <span class=<span class="str">"ty"</span>>Option</span>[Data]) -> <span class=<span class="str">"ty"</span>>Result</span>[Output, <span class=<span class="str">"ty"</span>>AppError</span>] {
+  <span class=<span class="str">"kw"</span>>match</span> data {
+    <span class=<span class="str">"kw"</span>>None</span> => <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Err</span>(<span class=<span class="str">"ty"</span>>AppError</span>{ message: <span class="str">"no data"</span> }),
+    <span class=<span class="str">"kw"</span>>Some</span>(d) => {
+      <span class=<span class="str">"cm"</span>>// process d</span>
+    }
+  }
+  <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Ok</span>(output);
+}
+</code></pre>
+<h3>9.2 Ownership-Safe Patterns</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"cm"</span>>// BAD: borrow returned from function ❌</span>
+<span class=<span class="str">"kw"</span>>fn</span> get_ref(v: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) -> &<span class=<span class="str">"ty"</span>>Int</span> {
+  <span class=<span class="str">"kw"</span>>return</span> &v[<span class="num">0</span>];   <span class=<span class="str">"cm"</span>>// COMPILE ERROR: cannot <span class=<span class="str">"kw"</span>>return</span> borrow</span>
+}
+
+<span class=<span class="str">"cm"</span>>// GOOD: <span class=<span class="str">"kw"</span>>return</span> owned value ✅</span>
+<span class=<span class="str">"kw"</span>>fn</span> get_owned(v: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) -> <span class=<span class="str">"ty"</span>>Int</span> {
+  <span class=<span class="str">"kw"</span>>return</span> v[<span class="num">0</span>];     <span class=<span class="str">"cm"</span>>// copy/clone at call site</span>
+}
+
+<span class=<span class="str">"cm"</span>>// BAD: borrow stored <span class=<span class="str">"kw"</span>>in</span> struct ❌</span>
+<span class=<span class="str">"kw"</span>>type</span> Container = {
+  ref: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>];   <span class=<span class="str">"cm"</span>>// COMPILE ERROR: borrow <span class=<span class="str">"kw"</span>>in</span> struct</span>
+}
+
+<span class=<span class="str">"cm"</span>>// GOOD: owned <span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"kw"</span>>in</span> struct ✅</span>
+<span class=<span class="str">"kw"</span>>type</span> Container = {
+  data: <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>];
+}
+</code></pre>
+<h3>9.3 Contract-Driven Design</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"cm"</span>>// Write contracts BEFORE implementation</span>
+<span class=<span class="str">"kw"</span>>fn</span> withdraw(account: &mut Account, amount: <span class=<span class="str">"ty"</span>>Float64</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[<span class=<span class="str">"ty"</span>>Unit</span>, <span class=<span class="str">"ty"</span>>Str</span>]
+  <span class=<span class="str">"kw"</span>>requires</span>: amount > <span class="num">0.0</span>
+  <span class=<span class="str">"kw"</span>>requires</span>: account.balance >= amount
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> <span class=<span class="str">"kw"</span>>is</span> <span class=<span class="str">"kw"</span>>Ok</span> => account.balance == account.balance@pre - amount
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> <span class=<span class="str">"kw"</span>>is</span> <span class=<span class="str">"kw"</span>>Err</span> => account.balance == account.balance@pre
+{
+  <span class=<span class="str">"kw"</span>>if</span> account.balance < amount {
+    <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Err</span>(<span class="str">"insufficient funds"</span>);
+  }
+  account.balance = account.balance - amount;
+  <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Ok</span>(());
+}
+</code></pre>
+<h3>9.4 Error Propagation</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"cm"</span>>// Use ? <span class=<span class="str">"kw"</span>>for</span> clean error propagation</span>
+<span class=<span class="str">"kw"</span>>fn</span> load_config(path: <span class=<span class="str">"ty"</span>>Str</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[Config, <span class=<span class="str">"ty"</span>>AppError</span>] {
+  <span class=<span class="str">"kw"</span>>let</span> file   = io.read_file(path)?;
+  <span class=<span class="str">"kw"</span>>let</span> config = parse(file)?;
+  <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Ok</span>(config);
+}
+
+<span class=<span class="str">"cm"</span>>// DON'T: manual <span class=<span class="str">"kw"</span>>match</span> <span class=<span class="str">"kw"</span>>for</span> every error</span>
+<span class=<span class="str">"kw"</span>>fn</span> load_config_verbose(path: <span class=<span class="str">"ty"</span>>Str</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[Config, <span class=<span class="str">"ty"</span>>AppError</span>] {
+  <span class=<span class="str">"kw"</span>>let</span> file = <span class=<span class="str">"kw"</span>>match</span> io.read_file(path) {
+    <span class=<span class="str">"kw"</span>>Ok</span>(f) => f,
+    <span class=<span class="str">"kw"</span>>Err</span>(e) => <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Err</span>(<span class=<span class="str">"ty"</span>>AppError</span>{ message: e.message }),
+  };
+  <span class=<span class="str">"cm"</span>>// ...</span>
+}
+</code></pre>
+<h3>9.5 Type-Driven Validation</h3>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"cm"</span>>// Use types with invariants instead of runtime checks</span>
+<span class=<span class="str">"kw"</span>>type</span> Email = {
+  value: <span class=<span class="str">"ty"</span>>Str</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: value.contains(<span class="str">"@"</span>);
+  <span class=<span class="str">"kw"</span>>invariant</span>: value.len() > <span class="num">0</span>;
+}
+
+<span class=<span class="str">"kw"</span>>type</span> Port = {
+  number: <span class=<span class="str">"ty"</span>>Int</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: number > <span class="num">0</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: number < <span class="num">65536</span>;
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> connect(host: <span class=<span class="str">"ty"</span>>Str</span>, port: Port) -> <span class=<span class="str">"ty"</span>>Result</span>[Conn, <span class=<span class="str">"ty"</span>>NetError</span>]
+  <span class=<span class="str">"kw"</span>>requires</span>: host.len() > <span class="num">0</span>
+</code></pre>
+<hr>
+<h2>10. Common Mistakes (Compile Errors You Will Hit)</h2>
+<table>
+<tr>
+<th>Mistake</th>
+<th>Error</th>
+<th>Fix</th>
+</tr>
+<tr>
+<td>Missing <code>;</code> after statement</td>
+<td><code>expected ';', found ...</code></td>
+<td>Every statement needs <code>;</code> except tail expressions and block closers.</td>
+</tr>
+<tr>
+<td><code>else if</code> instead of <code>elif</code></td>
+<td><code>expected identifier</code></td>
+<td>Use <code>elif</code>, not <code>else if</code>.</td>
+</tr>
+<tr>
+<td><code>self.x</code> in method</td>
+<td>Not a compile error but stylistically wrong</td>
+<td>Fields accessed directly: <code>x</code>, not <code>self.x</code>.</td>
+</tr>
+<tr>
+<td>Returning a borrow</td>
+<td><code>cannot return borrow</code></td>
+<td>Return owned type or clone.</td>
+</tr>
+<tr>
+<td>Storing borrow in struct</td>
+<td><code>borrow in struct not allowed</code></td>
+<td>Store owned type, not <code>&T</code>.</td>
+</tr>
+<tr>
+<td>Using value after move</td>
+<td><code>value used after move</code></td>
+<td>Clone before move, or restructure to borrow.</td>
+</tr>
+<tr>
+<td>Non-exhaustive match</td>
+<td><code>non-exhaustive match</code></td>
+<td>Add wildcard <code>_</code> or handle all variants.</td>
+</tr>
+<tr>
+<td><code>?</code> outside Result fn</td>
+<td><code>? cannot be used here</code></td>
+<td>Only use <code>?</code> in functions returning <code>Result</code> or <code>Option</code>.</td>
+</tr>
+<tr>
+<td>Undefined variable</td>
+<td><code>undefined variable</code></td>
+<td>Check scope. Variables from outer scopes are accessible.</td>
+</tr>
+<tr>
+<td>Type mismatch</td>
+<td><code>expected X, found Y</code></td>
+<td>Check function signature. No implicit conversions.</td>
+</tr>
+<tr>
+<td>Missing contract fulfillment</td>
+<td><code>contract violated: requires ...</code></td>
+<td>Caller must satisfy <code>requires</code>. Implementation must satisfy <code>ensures</code>.</td>
+</tr>
+</table>
+<hr>
+<h2>11. Compiler CLI</h2>
+<pre class="language-bash"><code>
+xiom source.xi                              # print LLVM IR
+xiom --emit-ir source.xi                    # print LLVM IR
+xiom -o prog.exe source.xi                  # compile to native
+xiom --run source.xi                        # compile + run
+xiom --target wasm -o prog.wasm source.xi   # compile to WASM
+xiom --no-contracts source.xi               # disable runtime checks
+
+# Via cargo
+cargo run -p xiom -- --run source.xi
+</code></pre>
+<hr>
+<h2>12. Complete XIOM Program (Reference)</h2>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>module</span> examples.bounded_stack
+
+<span class=<span class="str">"kw"</span>>use</span> xiom.io;
+<span class=<span class="str">"kw"</span>>use</span> xiom.collections.<span class=<span class="str">"ty"</span>>Vec</span>;
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"ty"</span>>Stack</span>[T] = {
+  items: <span class=<span class="str">"ty"</span>>Vec</span>[T];
+  capacity: <span class=<span class="str">"ty"</span>>Int</span>;
+  <span class=<span class="str">"kw"</span>>invariant</span>: items.len() <= capacity;
+  <span class=<span class="str">"kw"</span>>invariant</span>: capacity > <span class="num">0</span>;
+}
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Stack</span>.new[T](capacity: <span class=<span class="str">"ty"</span>>Int</span>) -> <span class=<span class="str">"ty"</span>>Result</span>[<span class=<span class="str">"ty"</span>>Stack</span>[T], <span class=<span class="str">"ty"</span>>Str</span>]
+  <span class=<span class="str">"kw"</span>>requires</span>: capacity > <span class="num">0</span>
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> <span class=<span class="str">"kw"</span>>is</span> <span class=<span class="str">"kw"</span>>Ok</span>
+{
+  <span class=<span class="str">"kw"</span>>if</span> capacity <= <span class="num">0</span> {
+    <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Err</span>(<span class="str">"capacity must be positive"</span>);
+  }
+  <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Ok</span>(<span class=<span class="str">"ty"</span>>Stack</span>[T]{ items: <span class=<span class="str">"ty"</span>>Vec</span>[T].new(), capacity: capacity });
+}
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Stack</span>.push[T](value: T) -> <span class=<span class="str">"ty"</span>>Result</span>[<span class=<span class="str">"ty"</span>>Unit</span>, <span class=<span class="str">"ty"</span>>Str</span>]
+  <span class=<span class="str">"kw"</span>>requires</span>: items.len() < capacity
+  <span class=<span class="str">"kw"</span>>ensures</span>:  <span class=<span class="str">"kw"</span>>result</span> <span class=<span class="str">"kw"</span>>is</span> <span class=<span class="str">"kw"</span>>Ok</span> => items.len() == items.len()@pre + <span class="num">1</span>
+{
+  <span class=<span class="str">"kw"</span>>if</span> items.len() >= capacity {
+    <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Err</span>(<span class="str">"stack <span class="</span>kw<span class="str">">is</span> full"</span>);
+  }
+  items.push(value);
+  <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Ok</span>(());
+}
+
+<span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Stack</span>.pop[T]() -> <span class=<span class="str">"ty"</span>>Option</span>[T] {
+  <span class=<span class="str">"kw"</span>>return</span> items.pop();
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> main() -> <span class=<span class="str">"ty"</span>>Result</span>[<span class=<span class="str">"ty"</span>>Unit</span>, <span class=<span class="str">"ty"</span>>Str</span>] {
+  <span class=<span class="str">"kw"</span>>var</span> s = <span class=<span class="str">"ty"</span>>Stack</span>.new[<span class=<span class="str">"ty"</span>>Int</span>](<span class="num">3</span>)?;
+  s.push(<span class="num">10</span>)?;
+  s.push(<span class="num">20</span>)?;
+  s.push(<span class="num">30</span>)?;
+
+  <span class=<span class="str">"kw"</span>>match</span> s.push(<span class="num">40</span>) {
+    <span class=<span class="str">"kw"</span>>Ok</span>(()) => io.println(<span class="str">"unexpected"</span>),
+    <span class=<span class="str">"kw"</span>>Err</span>(e) => io.println(e),
+  };
+
+  <span class=<span class="str">"kw"</span>>while</span> !s.is_empty() {
+    <span class=<span class="str">"kw"</span>>match</span> s.pop() {
+      <span class=<span class="str">"kw"</span>>Some</span>(v) => io.println(v.to_string()),
+      <span class=<span class="str">"kw"</span>>None</span>    => {},
+    };
+  }
+
+  <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>Ok</span>(());
+}
+</code></pre>
+<hr>
+<h2>13. File Extensions & Project Structure</h2>
+<pre><code>
+project/
+├── package.xi           # package manifest
+├── src/
+│   ├── main.xi          # entry point (must have <span class=<span class="str">"kw"</span>>module</span> declaration)
+│   └── lib.xi           # library code
+├── deps/                # resolved dependencies (generated)
+└── tests/               # test files
+</code></pre>
+<ul>
+<li>XIOM source: <code>.xi</code></li>
+<li>Package manifest: <code>package.xi</code></li>
+<li>C FFI bindings: <code>.xiom-bind</code></li>
+<li>One <code>module</code> declaration per file. Must be first statement.</li>
+<li>Modules correspond to directory structure.</li>
+</ul>
+<hr>
+<h2>14. Testing</h2>
+<pre class="language-xiom"><code>
+<span class=<span class="str">"kw"</span>>use</span> xiom.test;
+
+<span class=<span class="str">"kw"</span>>fn</span> test_push_updates_length() {
+  <span class=<span class="str">"kw"</span>>var</span> s = <span class=<span class="str">"ty"</span>>Stack</span>.new[<span class=<span class="str">"ty"</span>>Int</span>](<span class="num">5</span>).unwrap();
+  s.push(<span class="num">42</span>).unwrap();
+  assert_eq(s.len(), <span class="num">1</span>);
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> test_pop_empty_returns_none() {
+  <span class=<span class="str">"kw"</span>>var</span> s = <span class=<span class="str">"ty"</span>>Stack</span>.new[<span class=<span class="str">"ty"</span>>Int</span>](<span class="num">5</span>).unwrap();
+  assert_none(s.pop());
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> test_contract_violation_caught() {
+  <span class=<span class="str">"kw"</span>>var</span> s = <span class=<span class="str">"ty"</span>>Stack</span>.new[<span class=<span class="str">"ty"</span>>Int</span>](<span class="num">1</span>).unwrap();
+  s.push(<span class="num">1</span>).unwrap();
+  <span class=<span class="str">"kw"</span>>let</span> <span class=<span class="str">"kw"</span>>result</span> = s.push(<span class="num">2</span>);
+  assert_err(<span class=<span class="str">"kw"</span>>result</span>);
+}
+
+<span class=<span class="str">"kw"</span>>fn</span> main() {
+  run_tests();
+}
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>Test functions prefixed with <code>test_</code>.</li>
+<li><code>assert_eq</code>, <code>assert_ne</code>, <code>assert_true</code>, <code>assert_ok</code>, <code>assert_err</code>, <code>assert_some</code>, <code>assert_none</code>.</li>
+<li><code>run_tests()</code> executes all registered tests.</li>
+<li>Contracts ARE tests — <code>requires</code>/<code>ensures</code> check at runtime.</li>
+</ul>
+<hr>
+<h2>15. Self-Hosting Note</h2>
+<p>The XIOM compiler is written in XIOM (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent — never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.</p>
+<hr>
+<p><strong>This document is the AI's complete reference for XIOM code generation.</strong> <strong>When in doubt, refer to the exact syntax and rules above. The compiler enforces everything stated here.</strong></p>
+    </main>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>XIOM v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
+    <div class="foot-links">
+      <a href="../spec.html">Spec</a>
+      <a href="../docs/">Docs</a>
+      <a href="../ecosystem.html">Ecosystem</a>
+      <a href="../download.html">Download</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
