@@ -14,7 +14,7 @@
 git clone https://github.com/XIOM-lang/XIOM.git 
 cd xiom
 cargo build
-cargo test          # 234 tests should pass
+cargo test          # 1041 tests should pass
 ```
 
 Verify your toolchain dependencies:
