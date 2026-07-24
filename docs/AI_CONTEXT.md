@@ -36,6 +36,12 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 
 ## 2. Complete Syntax Rules
 
+> **Import rules:** All examples below include explicit `use xiom.io;` declarations.
+> In scripting mode (`xiom run`), the compiler auto-adds `use xiom.io;` — but for
+> standard compilation (`xiom file.xi`), `xiom --check`, and WASM targets, you MUST
+> include `use xiom.io;` explicitly. AI agents should always include explicit imports
+> to ensure code works in all compilation modes.
+
 ### 2.1 Variables
 
 ```xiom
@@ -54,6 +60,8 @@ let v = [1, 2, 3]         // type inferred — Vec[Int]
 ### 2.2 Functions
 
 ```xiom
+use xiom.io;
+
 fn add(a: Int, b: Int) -> Int {
   return a + b;
 }
