@@ -2434,6 +2434,14 @@ SUBCOMMANDS:
 
 ### 11.1 Scripting Mode (`xiom run`)
 
+> **IMPORTANT:** `xiom run` does NOT relax type checking. All XIOM type rules apply
+> identically in scripting mode and AOT compilation. The only differences are:
+> 1. Auto-added `use xiom.io;` (if not already present)
+> 2. Auto-wrapped `fn main() { ... }` around top-level code
+> 3. Shebang (`#!`) line is skipped
+>
+> `io.println(5 + 3)` is a type error in ALL modes — use `io.println((5+3).to_str())`.
+
 XIOM supports a scripting mode where top-level code is automatically wrapped
 in `fn main()` — no boilerplate required.
 
