@@ -257,7 +257,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <a href="{home_path}docs/">Docs</a>
       <a href="{home_path}ecosystem.html">Ecosystem</a>
       <a href="{home_path}versions.html">Versions</a>
-      <a href="{home_path}playground/">Playground</a>
+      <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
     <a class="nav-cta" href="{home_path}download.html">download</a>
   </div>
@@ -458,6 +458,7 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
         )
 
         out = output_dir / fname.replace('.md', ext).replace('../', '')
+        out.parent.mkdir(parents=True, exist_ok=True)  # M8: ensure subdirectories exist
         out.write_text(html, encoding='utf-8')
         print(f"  {fname} -> {out.relative_to(ROOT)}")
 
