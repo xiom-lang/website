@@ -2416,6 +2416,60 @@ SUBCOMMANDS:
   build                 Build an entire project directory (looks for package.xi)
   pkg install <name>    Install a package from the XIOM package registry
   doc --html            Generate HTML documentation from source
+  run <file.xi>         JIT/scripting execution — run a .xi script immediately
+  run -e "<code>"       Execute inline XIOM code
+  run -                 Read script from stdin and execute
+  run --watch <file>    Watch a script file and re-run on changes
+  --standalone <file>   Convert a script to a standalone production binary (-o <out>)
+  --scaffold            With --standalone: also create a project directory structure
+```
+
+### 11.1 Scripting Mode (`xiom run`)
+
+XIOM supports a scripting mode where top-level code is automatically wrapped
+in `fn main()` — no boilerplate required.
+
+**Implicit main wrapping:**
+```xiom
+// myscript.xi — just write statements:
+io.println("hello world");
+
+// xiom run myscript.xi automatically wraps this as:
+//   use xiom.io;
+//   fn main() { io.println("hello world"); }
+```
+
+**Shebang support:**
+```xiom
+#!/usr/bin/env xiom
+io.println("executable script!");
+```
+```bash
+chmod +x myscript.xi
+./myscript.xi  # or: xiom run myscript.xi
+```
+
+**Standalone binary:**
+```bash
+# Convert a script to a production binary
+xiom --standalone myscript.xi -o mytool
+./mytool
+
+# With project scaffolding
+xiom --standalone --scaffold myscript.xi
+# Creates: myscript/
+#   src/main.xi     (canonicalized script)
+#   package.xi      (project manifest)
+```
+
+**Script cache:**
+Repeated runs of the same script are instant — compiled binaries are
+content-hash cached in `~/.xiom/jit/`.
+
+**Watch mode:**
+```bash
+xiom run --watch myscript.xi
+# Polls every 500ms, re-runs on file change. Ctrl+C to stop.
 ```
 
 **Behavior notes**
