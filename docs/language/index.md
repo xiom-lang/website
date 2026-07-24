@@ -1,12 +1,13 @@
 # XIOM Language Documentation
 
-> **Compiler:** v0.49.8 | **Spec:** v0.3 | **Tests:** 234 passing
+> **Compiler:** v0.51.0 | **Tests:** 1041 passing | **Status:** Production Hardening
 
 ## Contents
 
 | Section | Description |
 |---------|-------------|
 | [Getting Started](getting-started.md) | Installation, first program, CLI reference |
+| [Language Reference](reference.md) | Complete language reference — all syntax, types, patterns in one document |
 | [Concepts](concepts.md) | XIOM for programmers from other languages — Java, C++, Python, Rust, Go |
 | [By Example](examples.md) | Progressive examples from Hello World to generics + contracts |
 | [Syntax](syntax.md) | Full language syntax: variables, functions, control flow, expressions |
@@ -16,8 +17,10 @@
 | [Error Handling](error-handling.md) | Result, Option, ? operator, match exhaustion |
 | [Modules](modules.md) | module/use/pub, visibility, packages, method declarations |
 | [Generics](generics.md) | Comptime monomorphisation, inline type constraints, interface bounds |
+| [Pattern Matching](pattern-matching.md) | match, if let, while let, destructuring |
 | [Derive](derive.md) | Compiler-generated Eq, Clone, Display, Hash, Ord |
 | [C FFI](ffi.md) | Zero-cost C interoperability, extern blocks, unsafe |
+| [Scripting Mode](../M10_SCRIPTING_MODE.md) | xiom run, shebang, standalone, REPL, JIT |
 | [Compiler](compiler.md) | Pipeline overview, CLI flags, build targets, WASM |
 | [Standard Library](stdlib.md) | Complete API reference for all 40 stdlib modules |
 | [AI Coding Reference](../AI_CONTEXT.md) | Single-file AI prompt — inject into any LLM to enable XIOM code generation |
@@ -102,12 +105,11 @@ For a complete list of planned and in-progress packages, see the [Expansion Road
 
 | Phase | Version | Status |
 |-------|---------|--------|
-| Phase 0 | v0.1.0 "Pipeline" | Released — working pipeline, 36 tests |
-| Phase 1 | v0.2.0 "Guardian" | Released — full language surface, 87 tests |
-| Phase 1.5 | v0.2.5 "Hardened" | Released — 13 bug fixes, 109 tests |
-| Phase 2 | v0.4.0 "Mirror" | Released — self-host compiler, 124 tests |
-| Phase 2C | v0.10.0 "Sovereign" | Released — production self-hosting, 208 tests |
-| Phase 2C | v0.11.0 "Self-Hosted" | Released — full self-hosting, 213 tests |
-| Phase 2C+ | v0.49.8 | **Current** — 40-module stdlib, xiom doctor, if let/while let, compound assignment, tuple structs, Debug derive, parallel compilation, sanitizers, package manager |
+| Phase 0 | v0.1.0 "Pipeline" | Released — working pipeline |
+| Phase 1 | v0.2.0 "Guardian" | Released — full language surface |
+| Phase 2 | v0.4.0 "Mirror" | Released — self-host compiler |
+| Phase 2C | v0.11.0 "Self-Hosted" | Released — full self-hosting |
+| Phase 2C+ | v0.50.0 | Released — 40-module stdlib, scripting, JIT, contracts |
+| Phase 8B | **v0.51.0** | **Current** — production hardening, 1041 tests, M1–M12 complete |
 
 See [Compiler Version History](compiler.md#version-history) for the full changelog.
