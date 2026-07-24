@@ -22,7 +22,7 @@
       <a href="docs/">Docs</a>
       <a href="ecosystem.html">Ecosystem</a>
       <a href="versions.html">Versions</a>
-      <a href="playground/">Playground</a>
+      <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
     <a class="nav-cta" href="download.html">download</a>
   </div>
@@ -96,7 +96,7 @@
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
       <h1 style="font-size:36px;margin-bottom:24px;">C FFI (Foreign Function Interface)</h1>
-      <p>xiom has zero-cost C interoperability. C functions and types are declared in <code>extern</code> blocks. The compiler generates no wrapper code. C ABI calling conventions are used directly.</p>
+      <p>XIOM has zero-cost C interoperability. C functions and types are declared in <code>extern</code> blocks. The compiler generates no wrapper code. C ABI calling conventions are used directly.</p>
 <p><code>unsafe</code> is required because the compiler cannot verify C memory safety.</p>
 <h2>Extern Blocks</h2>
 <pre class="language-xiom"><code>
@@ -127,7 +127,7 @@
 }
 </code></pre>
 <h2>Safe Wrappers</h2>
-<p>The recommended pattern is to wrap C libraries with safe xiom interfaces that add contracts:</p>
+<p>The recommended pattern is to wrap C libraries with safe XIOM interfaces that add contracts:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>safe_alloc</span>(size: <span class='ty'>UInt</span>) -> <span class='ty'>Option</span>[*<span class='ty'>UInt8</span>]
   <span class='kw'>requires</span>: size > <span class='num'>0</span>
@@ -149,7 +149,7 @@
 <table>
 <tr>
 <th>C Type</th>
-<th>xiom Type</th>
+<th>XIOM Type</th>
 </tr>
 <tr>
 <td><code>int</code></td>
@@ -189,7 +189,7 @@
 </tr>
 </table>
 <h2>C-ABI Export</h2>
-<p>xiom functions can be exported with C ABI for consumption from other languages:</p>
+<p>XIOM functions can be exported with C ABI for consumption from other languages:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>extern</span> <span class='str'>C</span> <span class='kw'>fn</span> <span class='func'>xiom_add</span>(a: <span class='ty'>Int32</span>, b: <span class='ty'>Int32</span>) -> <span class='ty'>Int32</span> {
   <span class='kw'>return</span> a + b;
@@ -197,12 +197,12 @@
 </code></pre>
 <p>This compiles to a standard C-callable symbol that can be linked from Rust, Python, or any language with C FFI.</p>
 <h2>Strategy</h2>
-<p>xiom does not rewrite C libraries. It wraps them with safe interfaces and contract-verified preconditions:</p>
+<p>XIOM does not rewrite C libraries. It wraps them with safe interfaces and contract-verified preconditions:</p>
 <table>
 <tr>
 <th>Library</th>
 <th>C LOC</th>
-<th>xiom Wrapper LOC</th>
+<th>XIOM Wrapper LOC</th>
 </tr>
 <tr>
 <td>SQLite</td>
@@ -220,11 +220,11 @@
 <td>~150</td>
 </tr>
 </table>
-<p>The C library provides battle-tested implementation. The xiom wrapper adds contracts and type safety.</p>
+<p>The C library provides battle-tested implementation. The XIOM wrapper adds contracts and type safety.</p>
 <h2>FFI Best Practices</h2>
 <ul>
 <li><strong>Always use <code>unsafe</code> blocks</strong> — never call C functions outside <code>unsafe { }</code>.</li>
-<li><strong>Wrap with safe functions</strong> — expose a safe xiom interface with contracts.</li>
+<li><strong>Wrap with safe functions</strong> — expose a safe XIOM interface with contracts.</li>
 <li><strong>Validate at the boundary</strong> — check pointer validity, buffer sizes, and nullability.</li>
 <li><strong>Auto-infer contracts from C headers</strong> — planned Phase 3 feature for mechanical binding generation.</li>
 </ul>

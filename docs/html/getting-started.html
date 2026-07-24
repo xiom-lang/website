@@ -22,7 +22,7 @@
       <a href="docs/">Docs</a>
       <a href="ecosystem.html">Ecosystem</a>
       <a href="versions.html">Versions</a>
-      <a href="playground/">Playground</a>
+      <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
     <a class="nav-cta" href="download.html">download</a>
   </div>
@@ -106,13 +106,23 @@
 </ul>
 <h2>Build from Source</h2>
 <pre class="language-bash"><code>
-git clone https:<span class='cm'>//gitea.example.com/xiom-lang/xiom.git</span>
+git clone https:<span class='cm'>//github.com/XIOM-lang/XIOM.git </span>
 cd xiom
 cargo build
 cargo test          # <span class='num'>234</span> tests should pass
 </code></pre>
+<p>Verify your toolchain dependencies:</p>
+<pre class="language-bash"><code>
+# Using standalone <span class='func'>binary</span>(after build)
+xiom doctor
+# → Checks: clang ✓  opt ✓  nasm ✓
+
+# Using <span class='func'>cargo</span>(development)
+cargo run -p xiom -- doctor
+# → Checks: clang ✓  opt ✓  nasm ✓
+</code></pre>
 <h2>Your First Program</h2>
-<p>Create a file <code>hello.ax</code>:</p>
+<p>Create a file <code>hello.xi</code>:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>add</span>(a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>) -> <span class='ty'>Int</span> {
   <span class='kw'>return</span> a + b;
@@ -124,22 +134,28 @@ cargo test          # <span class='num'>234</span> tests should pass
 </code></pre>
 <p>Compile and run:</p>
 <pre class="language-bash"><code>
-# View LLVM IR
-cargo run -p xiom -- --emit-ir hello.ax
+# Using standalone binary
+xiom --emit-ir hello.xi
 
 # Compile to native binary
-cargo run -p xiom -- -o hello.exe hello.ax
+xiom -o hello.exe hello.xi
 
 # Compile and <span class='func'>run</span>(prints exit code)
-cargo run -p xiom -- --run hello.ax
+xiom --run hello.xi
 # → exit code: <span class='num'>30</span>
 
 # Compile to WASM
-cargo run -p xiom -- --target wasm -o hello.wasm hello.ax
+xiom --target wasm -o hello.wasm hello.xi
 # → wasm size: <span class='num'>618</span> bytes
+
+# Development via cargo
+cargo run -p xiom -- --emit-ir hello.xi
+cargo run -p xiom -- -o hello.exe hello.xi
+cargo run -p xiom -- --run hello.xi
+cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
 </code></pre>
 <h2>Try in Browser</h2>
-<p>Open the <a href="https://xiom-lang.org/playground">xiom Playground</a> to write and compile xiom directly in your browser. No install required.</p>
+<p>Open the <a href="https://xiom-lang.org/playground">XIOM Playground</a> to write and compile XIOM directly in your browser. No install required.</p>
 <h2>CLI Reference</h2>
 <table>
 <tr>
@@ -147,23 +163,23 @@ cargo run -p xiom -- --target wasm -o hello.wasm hello.ax
 <th>Description</th>
 </tr>
 <tr>
-<td><code><source.ax></code></td>
+<td><code><source.xi></code></td>
 <td>Print LLVM IR to stdout</td>
 </tr>
 <tr>
-<td><code>--emit-ir <source.ax></code></td>
+<td><code>--emit-ir <source.xi></code></td>
 <td>Print LLVM IR to stdout</td>
 </tr>
 <tr>
-<td><code>-o <output> <source.ax></code></td>
+<td><code>-o <output> <source.xi></code></td>
 <td>Compile to native binary</td>
 </tr>
 <tr>
-<td><code>--run <source.ax></code></td>
+<td><code>--run <source.xi></code></td>
 <td>Compile and run, print exit code</td>
 </tr>
 <tr>
-<td><code>--target wasm -o <out.wasm> <source.ax></code></td>
+<td><code>--target wasm -o <out.wasm> <source.xi></code></td>
 <td>Compile to WASM</td>
 </tr>
 <tr>
@@ -181,7 +197,7 @@ cargo run -p xiom -- --target wasm -o hello.wasm hello.ax
 </table>
 <h2>Project Structure</h2>
 <pre><code>
-xiom/
+XIOM/
 ├── crates/             # Rust bootstrap <span class='func'>compiler</span>(permanent)
 │   ├── xiom-ast/      # AST node definitions
 │   ├── xiom-lexer/    # Tokenizer
@@ -189,13 +205,13 @@ xiom/
 │   ├── xiom-check/    # Type checker + borrow checker + <span class='kw'>module</span> resolver
 │   ├── xiom-codegen/  # LLVM IR emitter + contracts + <span class='kw'>derive</span> + generics
 │   └── xiom/         # CLI binary
-├── selfhost/           # xiom <span class='kw'>self</span>-hosted compiler
-│   ├── xiom-lexer.ax
-│   ├── xiom-parser.ax
-│   ├── xiom-check.ax
-│   ├── xiom-codegen.ax
-│   └── xiom.ax
-├── stdlib/             # Standard <span class='func'>library</span>(xiom source)
+├── selfhost/           # XIOM <span class='kw'>self</span>-hosted compiler
+│   ├── xiom-lexer.xi
+│   ├── xiom-parser.xi
+│   ├── xiom-check.xi
+│   ├── xiom-codegen.xi
+│   └── xiom.xi
+├── stdlib/             # Standard <span class='func'>library</span>(XIOM source)
 ├── examples/           # Example programs
 ├── specs/              # Language specification
 ├── docs/               # Documentation
@@ -205,7 +221,7 @@ xiom/
 <h2>Editor Support</h2>
 <ul>
 <li><strong>VS Code</strong> — Install <code>vscode-xiom</code> extension for syntax highlighting</li>
-<li><strong>Any editor</strong> — xiom uses <code>.ax</code> file extension. Set up <code>.ax</code> → plain text with 4-space indentation for now. Full LSP support planned for Phase 3.</li>
+<li><strong>Any editor</strong> — XIOM uses <code>.xi</code> file extension. Set up <code>.xi</code> → plain text with 4-space indentation for now. Full LSP support planned for Phase 3.</li>
 </ul>
 <h2>Next Steps</h2>
 <ul>

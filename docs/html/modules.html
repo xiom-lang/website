@@ -22,7 +22,7 @@
       <a href="docs/">Docs</a>
       <a href="ecosystem.html">Ecosystem</a>
       <a href="versions.html">Versions</a>
-      <a href="playground/">Playground</a>
+      <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
     <a class="nav-cta" href="download.html">download</a>
   </div>
@@ -149,9 +149,9 @@
 </code></pre>
 <p>Methods are dispatched structurally — any type with matching method signatures satisfies the interface, regardless of module boundaries.</p>
 <h2>Package Manifest</h2>
-<p>Packages are defined by a <code>package.ax</code> manifest file at the project root. Dependencies are resolved at build time. Version pinning uses semantic versioning.</p>
+<p>Packages are defined by a <code>package.xi</code> manifest file at the project root. Dependencies are resolved at build time. Version pinning uses semantic versioning.</p>
 <pre class="language-xiom"><code>
-<span class='cm'>// package.ax</span>
+<span class='cm'>// package.xi</span>
 package {
   name:    <span class='str'>myproject</span>
   version: <span class='str'><span class='num'>1.0</span>.<span class='num'>0</span></span>
@@ -162,7 +162,7 @@ package {
 }
 </code></pre>
 <h2>Package Manager</h2>
-<p>The package manager resolves dependencies from the <a href="https://gitea.example.com/xiom-lang/registry">xiom package registry</a>:</p>
+<p>The package manager resolves dependencies from the <a href="https://gitea.example.com/xiom-lang/registry">XIOM package registry</a>:</p>
 <pre class="language-bash"><code>
 xiom get xiom-std     # fetch and compile a dependency
 xiom build             # build the current package
@@ -172,14 +172,14 @@ xiom run               # build and run
 <h2>File Organization</h2>
 <pre><code>
 myproject/
-├── package.ax              # package manifest
+├── package.xi              # package manifest
 ├── src/
-│   ├── main.ax             # entry point
-│   └── lib.ax              # library code
+│   ├── main.xi             # entry point
+│   └── lib.xi              # library code
 └── deps/                   # resolved <span class='func'>dependencies</span>(generated)
 </code></pre>
 <h2>Standard Library</h2>
-<p>The standard library ships with the compiler in <code>stdlib/xiom/</code>. 39 modules covering core types, I/O, collections, text, math, concurrency, networking, memory, system, utilities, crypto, and testing.</p>
+<p>The standard library ships with the compiler in <code>stdlib/xiom/</code>. 40 modules covering core types, I/O, collections, text, math, concurrency, networking, memory, system, utilities, crypto, and testing.</p>
 <p>For the full stdlib reference with every type, function, and signature, see the <a href="stdlib.html">Standard Library Reference</a>.</p>
 <h3>Quick Index</h3>
 <table>
@@ -226,6 +226,10 @@ myproject/
 <tr>
 <td><strong>Utilities</strong></td>
 <td><code>iter</code>, <code>convert</code>, <code>cell</code>, <code>fmt</code>, <code>hash</code></td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td><code>simd</code></td>
 </tr>
 <tr>
 <td><strong>Security</strong></td>
