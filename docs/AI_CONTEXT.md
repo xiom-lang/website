@@ -2592,13 +2592,171 @@ fn main() {
 
 ---
 
-## 15. Self-Hosting Note
+## 15. Debugging
+
+XIOM provides full source-level debugging through `xiom-dbg`, a Debug Adapter Protocol (DAP) server
+compatible with VS Code, JetBrains IDEs, and any DAP-compliant editor. Under the hood it wraps
+GDB/MI (or CDB on Windows) giving you breakpoints, stepping, variable inspection, and expression
+evaluation on XIOM source code.
+
+### 15.1 Compiling for Debug
+
+Compile with debug symbols using the `-g` flag:
+
+```bash
+xiom -g -o app.exe main.xi
+```
+
+This emits DWARF debug information that GDB (and `xiom-dbg`) use for source-level debugging.
+Without `-g`, breakpoints and variable names are not available.
+
+### 15.2 Launching the Debugger
+
+**VS Code / IDE (DAP mode):**
+
+Add a launch configuration to `.vscode/launch.json`:
+
+```json
+{
+    "type": "xiom",
+    "request": "launch",
+    "program": "${workspaceFolder}/app.exe",
+    "stopOnEntry": true,
+    "contractTraps": true,
+    "cwd": "${workspaceFolder}"
+}
+```
+
+The `"type": "xiom"` extension launches `xiom-dbg` as the DAP adapter.
+
+**CLI (JSON API mode):**
+
+`xiom-dbg` also exposes a structured JSON API for scripting and custom tooling:
+
+```bash
+xiom-dbg --json
+```
+
+Commands: `launch`, `set-breakpoint <file> <line>`, `delete-breakpoint <id>`,
+`step`, `step-in`, `continue`, `stack`, `variables`, `registers`,
+`memory <addr> <size>`, `evaluate <expr>`, `threads`, `terminate`, `help`.
+
+**Fallback (raw GDB):**
+
+Debug symbols are standard DWARF. Any GDB-compatible debugger works directly:
+
+```bash
+gdb ./app.exe
+(gdb) break main.xi:10
+(gdb) run
+(gdb) print variable_name
+```
+
+### 15.3 Breakpoints
+
+Source-level breakpoints are set by file and line number:
+
+```xiom
+// Set a breakpoint here (line 42 in main.xi)
+fn calculate(x: Int) -> Int {
+    return x * 2;  // <- breakpoint at main.xi:43
+}
+```
+
+In VS Code: click the gutter next to the line number.
+In JSON API: `set-breakpoint main.xi 43`
+In GDB directly: `break main.xi:43`
+
+**Breakpoint capabilities:**
+- **Source-level**: Set at any executable line in a `.xi` file
+- **Function entry**: `breakpoint set fn_name` — set at function prologue
+- **Contract violation**: `contractTraps: true` in DAP mode catches `requires`/`ensures`/`invariant` violations as exception breakpoints
+- **Conditional breakpoints**: Not yet supported (planned Phase 4)
+- **Hit-count breakpoints**: Not yet supported (planned Phase 4)
+- **Logpoints/tracepoints**: Not yet supported (planned Phase 4)
+
+### 15.4 Stepping Commands
+
+| Command | DAP | JSON API | GDB | Description |
+|---------|-----|----------|-----|-------------|
+| Continue | `continue` | `continue` | `c` | Resume execution until next breakpoint |
+| Step over | `next` | `step` | `n` | Execute current line, stop at next line |
+| Step into | `stepIn` | `step-in` | `s` | Enter function call on current line |
+| Pause | `pause` | (not exposed) | Ctrl+C | Interrupt running program |
+
+### 15.5 Variable Inspection
+
+When stopped at a breakpoint, you can inspect:
+
+**Local variables:**
+```bash
+# JSON API
+>> variables
+
+# GDB
+(gdb) info locals
+```
+
+**Arbitrary expressions** (hover in VS Code, or explicit eval):
+```bash
+# JSON API
+>> evaluate "items.len() + count"
+
+# GDB
+(gdb) print items.len() + count
+```
+
+**Memory inspection:**
+```bash
+# JSON API — read 256 bytes at address 0x7fff1234
+>> memory 0x7fff1234 256
+
+# GDB
+(gdb) x/256xb 0x7fff1234
+```
+
+### 15.6 Contract Violation Debugging
+
+When a `requires`, `ensures`, or `invariant` fails at runtime, the program traps
+with file/line information. With `contractTraps: true` in the DAP launch config,
+the debugger catches these as exception breakpoints, showing you exactly which
+contract failed and where:
+
+```
+Contract violation: requires: b != 0.0
+  at main.xi:15 in fn divide(a: Float64, b: Float64) -> Float64
+```
+
+### 15.7 Architecture
+
+`xiom-dbg` has a dual-mode architecture:
+
+```
+VS Code / IDE
+     │ DAP (stdin/stdout JSON)
+     ▼
+┌──────────┐     GDB/MI protocol      ┌─────┐
+│ xiom-dbg │ ───────────────────────► │ GDB │ ──► target process
+└──────────┘                           └─────┘
+     │
+     │ JSON API mode (--json)
+     ▼
+Custom GUI / scripts / AI agents
+```
+
+Two debugger backends:
+- **GDB/MI** (primary, cross-platform): Full breakpoint, step, variable, memory support
+- **CDB/WinDbg** (Windows): Basic breakpoints and stepping
+
+---
+
+## 16. Self-Hosting Note
 
 The XIOM compiler is written in XIOM (`selfhost/` directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent — never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.
 
 ---
 
-## 16. AI Coding Best Practices for XIOM
+## 17. AI Coding Best Practices for XIOM
 
 > Use this section as system prompt when generating XIOM code with an LLM.
 
@@ -2741,7 +2899,7 @@ items.push(create_data());        // move — no clone
 
 ---
 
-## 17. Multi-File Projects & Module System — AI Guide
+## 18. Multi-File Projects & Module System — AI Guide
 
 > When generating large XIOM projects across multiple files, follow these rules to ensure the compiler resolves everything correctly.
 
