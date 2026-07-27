@@ -1,6 +1,6 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v0.49.8 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 40-module standard library.
+> **Version:** v0.52.7 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 40-module standard library. 1060/1060 tests, zero warnings.
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
@@ -2434,11 +2434,15 @@ SUBCOMMANDS:
 
 ### 11.1 Scripting Mode (`xiom run`)
 
+> **CRITICAL DISTINCTION:** `xiom --run file.xi` is **AOT compilation** — requires `fn main()`.
+> `xiom run file.xi` is **scripting mode** — auto-wraps top-level code in `fn main()`.
+
 > **IMPORTANT:** `xiom run` does NOT relax type checking. All XIOM type rules apply
 > identically in scripting mode and AOT compilation. The only differences are:
-> 1. Auto-added `use xiom.io;` (if not already present)
+> 1. Auto-added `use xiom.io;` and `use xiom.convert;` (if not already present)
 > 2. Auto-wrapped `fn main() { ... }` around top-level code
 > 3. Shebang (`#!`) line is skipped
+> 4. `use` statements must be on separate lines (not `use a; use b; code` on same line)
 >
 > `io.println(5 + 3)` is a type error in ALL modes — use `io.println((5+3).to_str())`.
 
