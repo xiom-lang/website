@@ -5,6 +5,17 @@
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
 
+> **⚠️ KNOWN DEVIATIONS.** When the compiler rejects spec-conformant code, the
+> compiler has a bug. These bugs are tracked in `docs/ROADMAP.md` and
+> `SESSION.md` under "KNOWN ISSUES." During code generation, if the compiler
+> rejects valid spec constructs, work around the limitation (use the supported
+> syntax variant) and reference the tracked issue. **Do not conclude the
+> specification is wrong** — the spec is the target; the compiler is catching up.
+> Currently tracked gaps include: `|| expr` zero-arg closures parsed as OR,
+> `&mut` in method params has limited support, variable shadowing with `var`
+> in blocks is a checker limitation, and float literal `-1.5` unary negation
+> is a parser limitation.
+
 > **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 40-module standard library (section 8), the `xiom` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
 > Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
@@ -104,7 +115,10 @@ pub fn Vec3.set_x(value: Float32) {
 
 **Rules:**
 - Method syntax: `fn TypeName.methodName(params) -> ReturnType`
-- `self` is IMPLICIT. Access fields directly: `x`, not `self.x`.
+- `self` is IMPLICIT in method bodies. Access fields directly: `x`, not `self.x`.
+  The `self` / `&self` / `&mut self` parameter shown in stdlib signatures is
+  **documentation notation** indicating the receiver's ownership mode — it is
+  never written at call sites or in method implementations.
 - Compiler infers `&Self` or `&mut Self` from body. If ANY field is mutated → `&mut Self`.
 - Methods are defined OUTSIDE the type declaration, in the same module.
 
@@ -239,12 +253,16 @@ type  enum  interface  derive
 requires  ensures  invariant
 true  false  self  result
 Some  None  Ok  Err
-unsafe  extern  is  and  or  not  where
+unsafe  extern  is  and(reserved)  or(reserved)  not(reserved)  where(reserved)
 ```
 
 `result` is only valid inside `ensures` clauses.
-`self` is implicit in methods — never write it explicitly.
+`self` is implicit in method bodies — never write it in code. In stdlib
+signatures, `self`/`&self`/`&mut self` is documentation notation showing the
+receiver's ownership mode; it is not written at call sites or in implementations.
 `is` is used for type testing: `value is Some`.
+`and`, `or`, `not`, `where` are reserved for future use. Use `&&`, `||`, `!`,
+and inline `[T: Interface]` constraints instead.
 
 ---
 
@@ -294,9 +312,11 @@ type Point = {
 - Types with `invariant` cannot derive `Eq`, `Hash`, `Ord`.
 - `invariant` clauses apply after every mutation.
 
+```xiom
 // Tuple struct with synthesized field names _0, _1
 type Pair = (Int, Int) derive[Eq, Clone]
 var p = Pair{ _0: 1, _1: 2 };
+```
 
 ### 3.4 Enums
 
@@ -385,13 +405,21 @@ consume(v);      // move — v NO LONGER VALID
 ### 4.3 Restrictions (These Are Compile Errors)
 
 - ❌ Borrow stored in struct field
-- ❌ Borrow returned from function
+- ❌ Borrow returned from function (to stack-local data)
 - ❌ Use after move
 - ❌ Write borrow while read borrow active
 - ❌ Multiple write borrows simultaneously
 - ❌ Mutation through `&T`
 - ✅ Clone instead of borrow for struct storage
 - ✅ Return owned type, not borrow
+
+> **Returning borrows:** The ban applies to returning a borrow to data whose
+> lifetime ends when the function returns — local variables, parameters passed
+> by value, and temporaries. Functions that return `Option[&T]`, `&[N]T`, or
+> other references to heap-allocated, caller-provided, or globally-owned data
+> (e.g., `array.first()`, `Slice.get()`, `Box.get()`) are permitted because the
+> referent outlives the function call. The compiler enforces this via lexical
+> lifetime analysis.
 
 ### 4.4 Unsafe
 
@@ -456,7 +484,8 @@ fn pop[T](stack: &mut Stack[T]) -> Option[T]
 |------|----------|
 | Default | Runtime guards. `@llvm.trap()` on violation with file/line message. |
 | `--no-contracts` | Strips all checks. |
-| Phase 3 | Z3 static proof (planned). |
+| `--verify` `--dump-contracts` | SMT-LIB generation (implemented). Use `xiom-verify` CLI for Z3 integration. |
+| Phase 3 | Closed-loop static proof engine (in development). |
 
 ---
 
@@ -524,6 +553,14 @@ The standard library is 40 modules under `xiom.*`. Every module is fully impleme
 - **`use` a single item** to call it unqualified: `use xiom.collections.Vec;` then `Vec[Int].new()`.
 
 **Signatures below are copied verbatim from the source.** Some collection/method signatures show explicit type params like `Vec.push[T]` — at call sites the receiver's type is inferred, so you write `v.push(x)`.
+
+> **Canonical API rule:** When multiple functions serve the same purpose, prefer
+> the most specific/idiomatic one. Key examples:
+> - Prefer **`Int.to_str()`** (method syntax), then `core.to_string()` (free function)
+> - Prefer **`num.parse_int(s)`** over `core.to_int_from_str(s)` for string parsing
+> - Prefer **`num.parse_float(s)`** over `core.to_float_from_str(s)` for float parsing
+> - Prefer **`string.str_len(s)`** (module-qualified caller) or **`s.len()`** (method)
+> - Prefer **`io.read_file(path)`** over `io.fopen()` for simple file reads
 
 ### When generating code, follow these rules:
 
@@ -1357,7 +1394,19 @@ fn sleep_until(instant: Instant)
 const OS: Str     = "windows";
 const ARCH: Str   = "x86_64";
 const FAMILY: Str = "windows";   // "unix" or "windows"
+```
 
+> **Platform constants** reflect the **host compilation target**:
+> - `OS`: `"windows"`, `"linux"`, `"macos"`
+> - `ARCH`: `"x86_64"`, `"aarch64"`, `"arm"`, `"riscv64"`, `"wasm32"`
+> - `FAMILY`: `"windows"` or `"unix"` (Linux, macOS, BSD)
+>
+> Use `xiom build --target <triple>` for cross-compilation (e.g.,
+> `x86_64-linux-gnu`, `wasm32-unknown-unknown`, `aarch64-macos-none`).
+> To query the active target at runtime, check `env.OS` / `env.ARCH` rather
+> than hardcoding values.
+
+```xiom
 fn var(name: Str) -> Result[Str, Str]
 fn var_opt(name: Str) -> Option[Str]
 fn set_var(name: Str, value: Str)
