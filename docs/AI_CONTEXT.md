@@ -1,6 +1,6 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v0.52.7 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 40-module standard library. 1060/1060 tests, zero warnings.
+> **Version:** v0.53.0 | **Status:** Production. Compiler + 40-module stdlib. 2192/2197 E2E (99.77%).
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
