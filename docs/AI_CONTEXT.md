@@ -1,6 +1,6 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v0.53.0 | **Status:** Production. Compiler + 40-module stdlib. 2192/2197 E2E (99.77%).
+> **Version:** v0.55.0 | **Status:** Production. Compiler + 40-module stdlib. 2197/2197 E2E (100%).
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
@@ -225,6 +225,29 @@ await fetch(url)           // async
 comptime heavy()           // compile-time eval
 x is Some                  // type test
 items.len()@pre            // pre-state (contracts only)
+
+// v0.54: Compile-time evaluation
+const { 40 + 2 }            // compile-time constant block → evaluated to 42
+sizeof::<Int>()              // type size (compile-time)
+align_of::<Point>()          // type alignment (compile-time)
+type_id::<Int>()             // FNV-1a type hash (compile-time)
+field_offset::<Point>("x")  // field byte offset (compile-time)
+is_signed::<Int>()           // Bool: is type signed? (compile-time)
+
+// v0.55: Inline assembly (Intel syntax, GCC-style constraints)
+asm("nop");
+asm("mov $0, $1" : "=r"(result) : "r"(input));
+
+// v0.55: defer — guaranteed scope-exit execution
+defer { cleanup(); }
+defer io.println("done");
+
+// v0.55: Never type — diverging function
+fn abort() -> ! { loop {} }
+
+// v0.55: Turbofish — explicit generic type parameter
+let n = parse::<Int>("42");
+let a = align_of::<Float64>();
 ```
 
 ### 2.6 Operator Precedence (Highest to Lowest)
@@ -247,7 +270,7 @@ items.len()@pre            // pre-state (contracts only)
 ```
 let  var  const  fn  return
 if  elif  else  match  while  for  in
-spawn  async  await  comptime
+spawn  async  await  comptime  defer  asm
 module  use  pub  as
 type  enum  interface  derive
 requires  ensures  invariant
@@ -281,6 +304,7 @@ and inline `[T: Interface]` constraints instead.
 | `Char` | 32-bit Unicode | `'A'`, `'λ'` |
 | `Str` | UTF-8 slice | `"hello"` |
 | `Unit` | `()` | Void return, empty tuple |
+| `!` | Never (bottom type) | Diverging functions, exhaustiveness proofs |
 
 ### 3.2 Compound Types
 
@@ -607,6 +631,10 @@ interface Deref   { type Target; fn deref(self) -> &Self.Target; }
 interface DerefMut { fn deref_mut(self) -> &mut Self.Target; }
 interface AsRef[T]   { fn as_ref(self) -> &T; }
 interface AsMut[T]   { fn as_mut(self) -> &mut T; }
+
+// v0.55: Thread safety marker interfaces (auto-derived, no methods)
+interface Send { }
+interface Sync { }
 ```
 
 **Functions & intrinsics**
@@ -1531,6 +1559,22 @@ fn AtomicInt.fetch_add(self, val: Int) -> Int
 fn AtomicInt.fetch_sub(self, val: Int) -> Int
 fn AtomicInt.swap(self, val: Int) -> Int
 fn AtomicInt.compare_exchange(self, current: Int, new: Int) -> Bool
+```
+
+### 8.22a `channel` — MPSC Channel (v0.55)
+
+```xiom
+type Channel[T] = { _handle: *Int; }     // Bounded MPSC ring buffer (64 slots)
+type Sender[T] = { _chan: *Channel[T]; }
+type Receiver[T] = { _chan: *Channel[T]; }
+
+fn channel[T]() -> (Sender[T], Receiver[T])
+fn Sender.send[T](value: T)
+fn Receiver.recv[T]() -> T
+fn Receiver.try_recv[T]() -> Option[T]
+
+// Backed by C runtime: xiom_channel_create/send/recv/try_recv/close.
+// Uses mutex + condition variable for thread safety.
 ```
 
 ---
@@ -2458,6 +2502,13 @@ OPTIONS:
   --dump-contracts      Print the program's contract index as JSON and exit
   --verify              Generate SMT-LIB contract verification output (to stdout)
   --verify-output <f>   Write SMT-LIB verification output to file <f>
+  --debug / -g          Emit debug symbols (DWARF/PDB) for source-level debugging
+  --lto                 Enable ThinLTO link-time optimization (20-40% smaller/faster)
+  --cache               Enable binary caching for instant re-execution (~500ms→5ms)
+  --jit                 In-process JIT compilation via clang DLL loading
+  --strict              Enable strict mode (extra warnings as errors)
+  --strict-exhaustive   Non-exhaustive match warnings → hard errors
+  --overflow-checks     Runtime integer overflow checking (trap on overflow)
   --graph               Print dependency graph (DOT format)
   --graph=mermaid       Print dependency graph (Mermaid format)
   --parallel            Enable parallel compilation
@@ -2471,12 +2522,16 @@ OPTIONS:
 SUBCOMMANDS:
   doctor                Check for required toolchain dependencies (clang, opt, nasm)
   build                 Build an entire project directory (looks for package.xi)
+  build-runtime         Pre-compile C runtime shared library for JIT (libxiom_runtime.dll/.so)
   pkg install <name>    Install a package from the XIOM package registry
   doc --html            Generate HTML documentation from source
   run <file.xi>         JIT/scripting execution — run a .xi script immediately
   run -e "<code>"       Execute inline XIOM code
   run -                 Read script from stdin and execute
   run --watch <file>    Watch a script file and re-run on changes
+  run --cache           Enable script caching for instant re-runs
+  run --jit             Use in-process JIT compilation (shared library loading)
+  run --no-cache        Disable script caching
   --standalone <file>   Convert a script to a standalone production binary (-o <out>)
   --scaffold            With --standalone: also create a project directory structure
 ```
