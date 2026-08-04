@@ -1,6 +1,7 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v0.55.0 | **Status:** Production. Compiler + 40-module stdlib. 2197/2197 E2E (100%).
+> **Version:** v0.56.0-pre | **Status:** Production. Compiler + 40-module stdlib. 27/27 E2E core (100%), 19/19 selfhost gates cleared.
+> **New in v0.56:** `move` keyword for spawn captures, overflow checks ON by default, parallel codegen (`--parallel-codegen`), DWARF debug metadata (`--debug`), Send/Sync enforcement, Z3 verifier deterministic.
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
@@ -242,6 +243,10 @@ asm("mov $0, $1" : "=r"(result) : "r"(input));
 defer { cleanup(); }
 defer io.println("done");
 
+// v0.55/v0.56: spawn — OS thread creation with optional move captures
+spawn { heavy_work(); }
+spawn move { var x = captured_var + 1; }  // v0.56: move semantics for captures
+
 // v0.55: Never type — diverging function
 fn abort() -> ! { loop {} }
 
@@ -270,7 +275,7 @@ let a = align_of::<Float64>();
 ```
 let  var  const  fn  return
 if  elif  else  match  while  for  in
-spawn  async  await  comptime  defer  asm
+spawn  async  await  comptime  defer  asm  move
 module  use  pub  as
 type  enum  interface  derive
 requires  ensures  invariant
