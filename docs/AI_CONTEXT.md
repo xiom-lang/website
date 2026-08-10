@@ -2514,7 +2514,24 @@ fn bigfloat_get_round_mode() -> RoundMode
 // comparisons
 fn bigfloat_compare(a: &BigFloat, b: &BigFloat) -> Int
 fn bigfloat_eq / lt / le / gt / ge(a: &BigFloat, b: &BigFloat) -> Bool
+// transcendentals (Phase C — pure XIOM series, zero deps, precision-honoring)
+fn bigfloat_pi_with_precision(precision: Int) -> BigFloat   // Machin series
+fn bigfloat_e_with_precision(precision: Int) -> BigFloat    // Taylor series
+fn bigfloat_exp(f: &BigFloat) -> BigFloat                   // ln(10) reduction + Taylor
+fn bigfloat_ln(f: &BigFloat) -> BigFloat                    // requires: f > 0 (atanh series)
+fn bigfloat_log10(f: &BigFloat) -> BigFloat                 // requires: f > 0
+fn bigfloat_sin / cos / tan(f: &BigFloat) -> BigFloat       // pi/2 quadrant reduction
+fn bigfloat_atan(f: &BigFloat) -> BigFloat                  // argument halving + series
+fn bigfloat_atan2(y: &BigFloat, x: &BigFloat) -> BigFloat
+fn bigfloat_pow_bf(base: &BigFloat, exp: &BigFloat) -> BigFloat  // requires: base >= 0
 ```
+
+Transcendentals compute at max(operand precisions, 64) + 4 guard digits and
+round back with the current RoundMode; complexity is O(prec²) series (fine to
+a few thousand digits); arguments are limited to |x| < ~9e18 (reduction needs
+x/ln10 or x/(π/2) to fit an Int). The `IntFrac` split type is pub (part of the
+public surface — catalog fns returning module-local private struct types are
+degraded to i64 by the checker, docs/COMPILER_BUGS.md BUG 9).
 
 Exactness notes: power-of-10 inputs parse/format exactly (`0.1 + 0.2 == 0.3`, `"3.14"` round-trips); `to_float64` is the only lossy conversion. `bigfloat_from_float` is exact for values whose decimal expansion is <= 15 digits (all f64 round-trip guarantees).
 
