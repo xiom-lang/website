@@ -1,7 +1,8 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v0.56.0-pre | **Status:** Production. Compiler + 40-module stdlib. 27/27 E2E core (100%), 19/19 selfhost gates cleared.
+> **Version:** v0.57.0 | **Status:** Production. Compiler + 60-module stdlib. 27/27 E2E core (100%), 19/19 selfhost gates cleared.
 > **New in v0.56:** `move` keyword for spawn captures, overflow checks ON by default, parallel codegen (`--parallel-codegen`), DWARF debug metadata (`--debug`), Send/Sync enforcement, Z3 verifier deterministic.
+> **New in v0.57 (Unsafe Confinement):** every `unsafe` block is a confined transaction — guard-heap arena isolation (req d), stack guard pages (req e), SEH/sigsetjmp fault trapping (req f), once-only transient-fault retry (req h), Copy-Out of Str tails (req i), zero-escape gates (T002/T003/T005/T006/T007), `#[unsafe_no_retry]`, and `#[unsafe_direct]` (trusted escape hatch, `--enable-unsafe-direct`).
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
@@ -17,7 +18,7 @@
 > in blocks is a checker limitation, and float literal `-1.5` unary negation
 > is a parser limitation.
 
-> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 40-module standard library (section 8), the `xiom` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
+> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 60-module standard library (section 8), the `xiom` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
 > Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
 ---
@@ -450,7 +451,7 @@ consume(v);      // move — v NO LONGER VALID
 > referent outlives the function call. The compiler enforces this via lexical
 > lifetime analysis.
 
-### 4.4 Unsafe
+### 4.4 Unsafe (Confined Blocks — v0.57)
 
 ```xiom
 unsafe {
@@ -460,6 +461,39 @@ unsafe {
 ```
 
 `unsafe` is a declaration of programmer responsibility. Only needed for C FFI and raw pointer ops.
+
+**Unsafe Confinement model (v0.57 — all requirements enforced by the compiler):**
+
+| Requirement | Rule |
+|-------------|------|
+| (a) Lexical | `unsafe` applies STRICTLY to the block `{ }`. `unsafe fn/module/struct/impl` is a hard error. |
+| (b) Extern gate (T002) | Calling an `extern "C"` function from safe code is a hard error. Exempt: fns declaring `requires`/`ensures` contracts (sanctioned safe-wrapper pattern). |
+| (c) Signature gate (T003) | A safe fn cannot return a raw pointer (`*T`). Unsafe-internal helpers exempt via `block_contains_unsafe`. |
+| (d) Pre-entry contracts (T007) | A fn whose ENTIRE body is one unsafe block must declare `requires`. |
+| (e) Heap isolation | Allocations inside the block route to a per-thread guard arena (slabs); discarded wholesale at block exit. |
+| (f) Stack guard | A per-thread guard page is armed at block entry; a stack overflow faults at the red zone before adjacent memory is written. |
+| (g) Fault trap | A hardware fault inside the block is caught by the SEH/sigsetjmp trampoline; the process survives and the block yields a recoverable zero (HardwareFault). |
+| (h) Transient retry | A transient fault is retried ONCE on a fresh memory slot; `#[unsafe_no_retry]` disables it. |
+| (i) Zero escape (T005) | A raw pointer, `&T`/`&mut T`, fn type, or struct containing them CANNOT be an unsafe block's tail. Str tails are Copy-Out'd to the main heap before the arena resets. |
+| (j) FFI ownership (T006) | An extern returning `*T` inside a confined block must be converted to an owned XIOM type (`ffi.safe_ptr_from_raw`, `box_from_ptr`, `vec_from_ptr_with_free`, `str_from_ptr_owned`) before the tail. |
+
+**Attributes:**
+
+```xiom
+#[unsafe_no_retry]   // fn-level: disable once-only transient retry (deterministic faults)
+#[unsafe_direct]     // fn-level: trusted escape hatch — plain unsafe, no trampoline/arena/
+                     // guard page. Restricted to stdlib/selfhost; user code needs
+                     // --enable-unsafe-direct. Counted against an audited cap.
+```
+
+**Runtime types (stdlib/xiom/error.xi):**
+
+```xiom
+pub type HardwareFault     = { signal: Str; pc: UInt64; retried: Bool; }
+pub type ContractViolation = { contract: Str; }
+```
+
+**Error recovery:** the fault path returns a type-correct zero for the enclosing fn's return type (recoverable indicator); the process never crashes on a confined fault. Faults are classified: 1 = SIGSEGV/AV, 2 = SIGILL, 3 = SIGFPE, 4 = STACK_OVERFLOW, 5 = GUARD_PAGE, 6 = other.
 
 ---
 
@@ -573,7 +607,7 @@ fn private_helper() { }   // module-private (default)
 
 ## 8. Standard Library — Production API Reference
 
-The standard library is 40 modules under `xiom.*`. Every module is fully implemented and callable. Import a module with `use xiom.<module>;` then call it.
+The standard library is 60 modules under `xiom.*` (organized into category folders: `num/`, `math/`, `text/`, `collect/`, `hash/`, `format/`, `os/`, `net/`, `rand/`). Every module is fully implemented and callable. Import a module with `use xiom.<module>;` then call it.
 
 **Calling conventions:**
 - **Free functions** are called through their module: `math.sqrt(x)`, `string.str_concat(a, b)`, `io.println(msg)`, `rand.random()`.
@@ -594,7 +628,7 @@ The standard library is 40 modules under `xiom.*`. Every module is fully impleme
 ### When generating code, follow these rules:
 
 1. **Use the types** — `Option[T]`, `Result[T,E]`, `Vec[T]`, `Map[K,V]`, `Set[T]`, `Str` are fully defined. `Option`, `Result`, `Vec`, and arithmetic/comparison/control flow are compiler primitives and need no import.
-2. **Use the stdlib** — all 40 modules are implemented. Import with `use xiom.<module>;` and call the documented functions. DO NOT reimplement stdlib functions.
+2. **Use the stdlib** — all 60 modules are implemented. Import with `use xiom.<module>;` and call the documented functions. DO NOT reimplement stdlib functions.
 3. **Call through the module** — `io.println(...)`, `math.sqrt(...)`, `string.str_split(...)`, `json = serialize.json_parse(...)`. Methods on stdlib types use dot syntax on the value.
 4. **For FFI** — use `extern "C"` directly; the C runtime links standard libc plus the XIOM runtime automatically. See the C FFI block at the end of this section.
 
@@ -1315,7 +1349,7 @@ fn dealloc_layout(ptr: *mut UInt8, layout: Layout)
 
 ---
 
-### 8.17 `error` — Error trait hierarchy
+### 8.17 `error` — Error trait hierarchy & fault types
 
 ```xiom
 interface Error { fn source(self) -> Option[Error]; fn description(self) -> Str; fn cause(self) -> Option[Error]; }
@@ -1329,6 +1363,19 @@ fn context[T, E](result: Result[T, E], msg: Str) -> Result[T, Str]
 fn capture_backtrace() -> Backtrace
 fn Backtrace.display(self) -> Str
 ```
+
+**v0.57 Unsafe Confinement fault types** (produced by the fault trap when a
+confined `unsafe` block hits a hardware fault):
+
+```xiom
+pub type HardwareFault = { signal: Str; pc: UInt64; retried: Bool; }
+pub type ContractViolation = { contract: Str; }
+```
+
+`HardwareFault.signal` is one of `"SIGSEGV"`, `"SIGILL"`, `"SIGFPE"`,
+`"STACK_OVERFLOW"`, `"GUARD_PAGE"`, `"UNKNOWN_FAULT"`; `pc` is the faulting
+instruction address; `retried` is `true` when the block was delivered on a
+transient-fault retry (requirement h).
 
 ---
 
@@ -2062,6 +2109,15 @@ fn alloc(size: UInt) -> *UInt8 {
 
 Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/*.c`) provides the `xiom_*` helpers used by `io`, `os`, `sync`, `thread`, `net`, and `async`, and is linked by `xiom` on every native build — no manual setup needed. Use `--link`, `--link-path`, and `--c-source` (section 11) to link additional native libraries.
 
+**v0.57 FFI ownership (T006):** an extern call returning `*T` inside a confined `unsafe` block must convert its result to an owned XIOM type before the block's tail. `xiom.ffi` provides:
+
+```xiom
+fn safe_ptr_from_raw(ptr: *UInt8, size: Int) -> Result[SafePtr, Str]
+// box_from_ptr / vec_from_ptr_with_free / str_from_ptr_owned (plan-named conversions)
+```
+
+Unconverted extern-returned pointers reaching a block tail are a compile error (T006).
+
 ---
 
 ### 8.40 `vulkan` — GPU Graphics & Compute (Ecosystem Package)
@@ -2503,6 +2559,7 @@ OPTIONS:
   --runtime-contracts   Force contract checks in release builds (overrides --no-contracts)
   --sanitize=<type>     Enable sanitizer: address, undefined, leak, thread
   --stack-protector     Enable stack canaries
+  --enable-unsafe-direct  D2.1/v0.57: allow `#[unsafe_direct]` (trusted escape hatch) in user code (stdlib/selfhost always allowed)
   --diagnostics=json    Emit diagnostics as JSON (type/borrow/codegen errors, or {"status":"ok"})
   --dump-contracts      Print the program's contract index as JSON and exit
   --verify              Generate SMT-LIB contract verification output (to stdout)
