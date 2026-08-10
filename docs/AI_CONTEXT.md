@@ -2420,6 +2420,106 @@ The C bridge embeds 15 SPIR-V shader arrays in `xvk_shaders_generated.h`. Create
 
 ---
 
+### 8.41 `bigint` — Arbitrary-precision signed integers (production, 2026-08-10)
+
+`stdlib/xiom/bigint.xi` — base-10⁹ limb representation (`BigInt = { digits: Vec[Int]; negative: Bool; }`), little-endian limbs. Covers the full i128/u128 native range and far beyond (arbitrary precision — "256-bit" and larger needs are served directly). Import with `use xiom.bigint;` and call `xiom.bigint.<fn>`. The original 14 fns are unchanged (frozen); the production layer below is additive. All div-family fns require a non-zero divisor; `bigint_from_base` requires base in 2..36; `bigint_pow` requires exp >= 0.
+
+```xiom
+// constants (pure constructors — see docs/COMPILER_BUGS.md BUG 3)
+fn bigint_zero() -> BigInt
+fn bigint_one() -> BigInt
+fn bigint_two() -> BigInt
+fn bigint_ten() -> BigInt
+// constructors / conversions
+fn bigint_from_int(n: Int) -> BigInt                       // original
+fn bigint_from_u64(n: UInt64) -> BigInt                    // full 0..2^64-1 (unsigned-correct via num.u64_* helpers)
+fn bigint_from_str(s: Str) -> Result[BigInt, Str]          // original
+fn bigint_from_hex(s: Str) -> Result[BigInt, Str]          // "ff", "-1a" (case-insensitive, no 0x)
+fn bigint_from_base(s: Str, base: Int) -> Result[BigInt, Str]  // 2..36
+fn bigint_to_str(b: &BigInt) -> Str                        // original
+fn bigint_to_hex(b: &BigInt) -> Str                        // lowercase
+fn bigint_to_base(b: &BigInt, base: Int) -> Str            // uppercase digits
+fn bigint_to_int(b: &BigInt) -> Result[Int, Str]           // range-checked (i64)
+// predicates
+fn bigint_is_zero / is_one / is_even / is_odd / is_negative(b: &BigInt) -> Bool
+fn bigint_sign(b: &BigInt) -> Int                          // -1/0/1 (original)
+// arithmetic
+fn bigint_add / sub / mul / div_mod / neg / abs (original)
+fn bigint_div(a: &BigInt, b: &BigInt) -> BigInt            // truncating; requires: !zero(b)
+fn bigint_mod(a: &BigInt, m: &BigInt) -> BigInt            // original; non-negative result
+fn bigint_pow(base: &BigInt, exp: Int) -> BigInt           // original; requires: exp >= 0
+fn bigint_pow_mod(base: &BigInt, exp: &BigInt, m: &BigInt) -> BigInt  // square-and-multiply
+fn bigint_sqrt(b: &BigInt) -> BigInt                       // floor sqrt; requires: !negative
+fn bigint_sqrt_rem(b: &BigInt) -> (BigInt, BigInt)         // (sqrt, n - sqrt^2)
+// number theory
+fn bigint_gcd(a: &BigInt, b: &BigInt) -> BigInt            // original
+fn bigint_lcm(a: &BigInt, b: &BigInt) -> BigInt
+fn bigint_ext_gcd(a: &BigInt, b: &BigInt) -> (BigInt, BigInt, BigInt)  // (g, x, y): a*x + b*y = g
+fn bigint_is_prime(b: &BigInt) -> Bool                     // Miller-Rabin; deterministic < 3.3e24
+fn bigint_next_prime(b: &BigInt) -> BigInt
+fn bigint_factorial(n: Int) -> BigInt                      // requires: n >= 0
+fn bigint_binomial(n: Int, k: Int) -> BigInt               // requires: 0 <= k <= n
+fn bigint_fibonacci(n: Int) -> BigInt                      // requires: n >= 0
+// bitwise (two's-complement semantics, virtual infinite sign extension)
+fn bigint_bit_and / bit_or / bit_xor(a: &BigInt, b: &BigInt) -> BigInt
+fn bigint_shift_left(b: &BigInt, n: Int) -> BigInt         // original — DECIMAL shift (x10^n)
+fn bigint_shift_right(b: &BigInt, n: Int) -> BigInt        // arithmetic bit shift (floor /2^n)
+fn bigint_popcount(b: &BigInt) -> Int                      // set bits in |b|
+fn bigint_bit_len(b: &BigInt) -> Int                       // bits to represent |b|; 0 for zero
+// comparisons (wrap compare)
+fn bigint_eq / lt / le / gt / ge(a: &BigInt, b: &BigInt) -> Bool
+```
+
+Note: `bigint_div_mod` was re-verified and its estimator fixed (2026-08-10) — the original single-limb estimate produced wrong quotients for multi-limb dividends (documented in docs/COMPILER_BUGS.md NOTE 7); it is now Knuth-style (two-limb window, single-limb fast path, upward fixup) and satisfies `q*b + r == a`, `0 <= r < |b|`.
+
+### 8.42 `bigfloat` — Arbitrary-precision decimal floating point (2026-08-10)
+
+`stdlib/xiom/num/bigfloat.xi` + flat aggregate `stdlib/xiom/bigfloat.xi` (D3/D4b). Power-of-10 representation: `value = sign * significand * 10^exponent` with a normalized BigInt significand and a decimal `precision` field. Import `use xiom.num.bigfloat;` and call `bigfloat.<fn>` (leaf), or `use xiom.bigfloat;` and call the full dotted path `xiom.num.bigfloat.<fn>`. Default precision 64 digits; arithmetic honors `max(a.precision, b.precision)` and rounds with the current RoundMode (default Nearest, ties-to-even). Zero external deps (no MPFR — transcendentals are a later phase; see the TODO block in the module).
+
+```xiom
+type RoundMode = enum { Nearest, Up, Down, Zero }
+type BigFloat = { sign: Bool; exponent: Int; significand: BigInt; precision: Int; }
+// constants (pure constructors)
+fn bigfloat_zero / one / two / ten / half() -> BigFloat
+fn bigfloat_pi() -> BigFloat        // 100 digits
+fn bigfloat_e() -> BigFloat         // 100 digits
+// constructors
+fn bigfloat_from_int(n: Int) -> BigFloat
+fn bigfloat_from_float(f: Float64) -> BigFloat   // exact to 15 significant digits; requires: finite
+fn bigfloat_from_str(s: Str) -> Result[BigFloat, Str]   // "3.14159", "-1e-10", "2.5E+3", ".5"
+fn bigfloat_from_bigint(b: &BigInt) -> BigFloat
+fn bigfloat_with_precision(n: Int, precision: Int) -> BigFloat  // requires: precision >= 1
+// conversions
+fn bigfloat_to_str(f: &BigFloat) -> Str                       // exact stored value
+fn bigfloat_to_str_prec(f: &BigFloat, digits: Int) -> Str     // round to digits (current mode)
+fn bigfloat_to_bigint(f: &BigFloat) -> BigInt                 // truncates toward zero
+fn bigfloat_to_float64(f: &BigFloat) -> Option[Float64]       // None on overflow beyond f64
+// predicates
+fn bigfloat_is_zero / is_negative(f: &BigFloat) -> Bool
+fn bigfloat_sign(f: &BigFloat) -> Int
+fn bigfloat_precision(f: &BigFloat) -> Int
+// arithmetic (all round to max precision with current RoundMode)
+fn bigfloat_add / sub / mul(a: &BigFloat, b: &BigFloat) -> BigFloat
+fn bigfloat_div(a: &BigFloat, b: &BigFloat) -> BigFloat       // requires: !zero(b)
+fn bigfloat_neg / abs(f: &BigFloat) -> BigFloat
+fn bigfloat_inv(f: &BigFloat) -> BigFloat                     // requires: !zero(f)
+fn bigfloat_sqrt(f: &BigFloat) -> BigFloat                    // requires: !negative
+fn bigfloat_pow(base: &BigFloat, exp: Int) -> BigFloat        // requires: exp >= 0
+// rounding
+fn bigfloat_floor / ceil / round / trunc(f: &BigFloat) -> BigFloat  // round: ties-to-even
+fn bigfloat_fract(f: &BigFloat) -> BigFloat                   // fractional part, sign of f
+fn bigfloat_with_rounding(f: &BigFloat, mode: RoundMode, digits: Int) -> BigFloat
+fn bigfloat_set_round_mode(mode: RoundMode)                   // thread-local default
+fn bigfloat_get_round_mode() -> RoundMode
+// comparisons
+fn bigfloat_compare(a: &BigFloat, b: &BigFloat) -> Int
+fn bigfloat_eq / lt / le / gt / ge(a: &BigFloat, b: &BigFloat) -> Bool
+```
+
+Exactness notes: power-of-10 inputs parse/format exactly (`0.1 + 0.2 == 0.3`, `"3.14"` round-trips); `to_float64` is the only lossy conversion. `bigfloat_from_float` is exact for values whose decimal expansion is <= 15 digits (all f64 round-trip guarantees).
+
+---
+
 ## 9. Code Patterns & Best Practices
 
 ### 9.1 Return Early Pattern
