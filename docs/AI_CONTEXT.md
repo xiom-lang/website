@@ -744,6 +744,23 @@ const FLOAT64_EPSILON: Float64 = 2.220446049250313e-16;
 
 ### 8.2 `collections` — Vec, Map, Set, and more
 
+**2026-08-11 additions (collect/ folder, all Int keys/values):**
+`collect/skiplist.xi` — SkipList (ordered, O(log n) expected, deterministic
+LCG levels, dup-rejected insert); `collect/trie.xi` — Trie (lowercase a-z,
+insert/contains/remove/complete (autocomplete, lexicographic DFS)/
+has_prefix); `collect/cuckoo.xi` — CuckooMap (two multiplicative-hash
+tables, ≤16 relocations then grow); `collect/fenwick.xi` — FenwickTree
+(1-based, add/sum/range/get); `collect/objectpool.xi` — ObjectPool
+(acquire/release with double-release rejection); `collect/queue.xi`
+SpscRing — lock-free SPSC ring (AtomicInt head/tail, push/pop/len);
+`collect/cache.xi` ArcCache — Adaptive Replacement Cache (T1/T2/B1/B2 + p
+adaptation). All follow the flat-parallel-Vec[Int] arena pattern
+(tree.xi/graph.xi convention): Vec-of-struct instantiations crash combined
+programs at startup (BUG 16) and `&mut Vec[T]` args that are struct FIELDS
+copy (mutations lost) — list ops are inlined on the parent struct. NOTE:
+skiplist and trie must not be imported into the same program until BUG 16
+is fixed (smokes are split accordingly).
+
 ```xiom
 type Vec[T]        = { data: *T; len: Int; cap: Int; }
 type Map[K, V]     = { keys: Vec[K]; values: Vec[V]; }
@@ -868,6 +885,15 @@ fn Slice.get[T](index: Int) -> Option[T]
 
 ### 8.3 `string` — UTF-8 string operations
 
+**2026-08-11 additions:** `str_translate(s, from, to)` (tr-utility, chars
+beyond `to` are removed), `str_rot13`, `str_rot47` (ASCII 33..126),
+`str_caesar(s, shift)` (a-z/A-Z, wraps, negative shifts OK), `str_atbash`,
+`str_abbreviate(s, max_len)` (middle "..." — front half rounded up),
+`str_obfuscate(s, visible)` ('*' mask). All ASCII-scoped by design; the
+`_mk_byte` helper renders 32..126 only. NOTE: `==` between two runtime
+Vec[Str] ELEMENTS lowers to pointer compare (BUG 17) — compare string
+content byte-wise (see `text.similarity._str_eq`).
+
 Call as `string.<fn>(...)`.
 ```xiom
 fn str_len(s: Str) -> Int
@@ -971,6 +997,21 @@ fn Cursor.into_inner(self) -> Vec[UInt8]
 ---
 
 ### 8.5 `fmt` — Formatting & Display
+
+**2026-08-11 (G13):** printf/scanf-style formatting landed. Typed families
+(no variadics in XIOM): `sprintf_i1/i2(spec, ints...)`, `sprintf_f1/f2(spec,
+floats...)`, `sprintf_s1/s2(spec, strs...)`, plus Vec-based `sprintf_i/sprintf_s`.
+Conversions: `%d %i %u %x %X %o %b` (negatives wrap to u64 two's complement),
+`%f %F %e %E %g %G` (C semantics, half-away rounding, `%e` at least 2-digit
+exponents, `%g` strips trailing zeros), `%s` with width/precision, `%%`.
+Flags `- 0 + `, width, `.prec`. Wrong conversion family / missing args →
+`Err` (no silent failures). `sscanf(s, spec)` → `Result[Vec[Str], Str]`,
+`sscanf_ints` → `Result[Vec[Int], Str]` (overflow-checked `%d/%x`), and
+`sscanf_floats` → `FloatScan` (8 fixed slots — Vec[Float64] is compiler-broken,
+BUG 12); `%c`/width/`*` suppression supported; numeric conversions skip
+leading whitespace (C semantics). `convert.float_to_string` was fixed (was
+fptosi bit-pattern garbage) and is now %.15g-style; `float_to_fixed_str`/
+`float_to_sci_str` added.
 
 ```xiom
 interface Display { fn fmt(self, f: &mut Formatter) -> Result[Unit, FmtError]; }
@@ -1417,6 +1458,14 @@ fn path_separator() -> Str
 ---
 
 ### 8.19 `time` — Duration, Instant, SystemTime, DateTime
+
+**2026-08-11 additions:** `strftime(spec, &Date) -> Str` and
+`strptime(s, spec) -> DateParse { is_ok, date }` — C-style formatting with
+`%Y %y %m %d %H %M %S %j %w %u %%` (Date carries no time-of-day; %H/%M/%S
+format as 00 and parse-but-ignore). strptime validates month/day ranges
+(leap-aware) and rejects unsupported conversions → `is_ok = false`. It
+returns `DateParse` (not `Option[Date]`) because Option-of-struct payloads
+collide with Option[Int] in codegen (BUG 12 family).
 
 ```xiom
 type Duration   = { secs: Int; nanos: Int; }
@@ -2468,9 +2517,21 @@ fn bigint_popcount(b: &BigInt) -> Int                      // set bits in |b|
 fn bigint_bit_len(b: &BigInt) -> Int                       // bits to represent |b|; 0 for zero
 // comparisons (wrap compare)
 fn bigint_eq / lt / le / gt / ge(a: &BigInt, b: &BigInt) -> Bool
+// fixed-width bridges (256-bit framing, 2026-08-11) — exact range-checked
+fn bigint_to_u64(b: &BigInt) -> Result[UInt64, Str]   // 0 .. 2^64-1
+fn bigint_to_u128(b: &BigInt) -> Result[UInt128, Str] // 0 .. 2^128-1
+fn bigint_to_i128(b: &BigInt) -> Result[Int128, Str]  // -2^127 .. 2^127-1
 ```
 
 Note: `bigint_div_mod` was re-verified and its estimator fixed (2026-08-10) — the original single-limb estimate produced wrong quotients for multi-limb dividends (documented in docs/COMPILER_BUGS.md NOTE 7); it is now Knuth-style (two-limb window, single-limb fast path, upward fixup) and satisfies `q*b + r == a`, `0 <= r < |b|`.
+
+256-bit framing note (2026-08-11): BigInt is arbitrary precision and covers
+256-bit+ natively; `bigint_to_u64/u128/i128` are the exact range-checked
+bridges for fixed-width consumers (Err on out-of-range — no silent
+truncation). The planned `bigfloat_to_float128` bridge is blocked by
+docs/COMPILER_BUGS.md BUG 13 (fp128 needs __divtf3/__floatditf/__trunctfdf2
+compiler-rt helpers missing from the link line); TODO(compiler) noted in
+`stdlib/xiom/num/bigfloat.xi`.
 
 ### 8.42 `bigfloat` — Arbitrary-precision decimal floating point (2026-08-10)
 
@@ -2554,12 +2615,41 @@ String metrics: `damerau_levenshtein_distance` (OSA), `jaro_similarity`,
 celsius/fahrenheit/kelvin conversions, `miles_to_km`/`km_to_miles`,
 `human_size` (rounded 1-decimal, integer math).
 
+**2026-08-11 additions (`text/similarity.xi`):** `ngram_extract(s, n) ->
+Vec[Str]`, `jaccard_similarity(a, b, n)` (n-gram Jaccard, 0 on empty,
+1 on identical), `longest_common_prefix(a, b) -> Int`,
+`longest_common_suffix(a, b) -> Int`. Element-to-element string equality
+uses a byte-wise helper (`_str_eq`) — see BUG 17.
+
 ### 8.45 `hash` — 64-bit additions (2026-08-11)
 
 `xxhash64(data: &Vec[UInt8], seed: Int) -> Int` — canonical XXH64 (block
 rounds + 8/4/1-byte tails, verified against a C reference implementation);
 `fnv1_32(s: Str) -> Int` — FNV-1. 64-bit results wrap naturally in i64
 arithmetic; logical shifts are emulated with masks.
+
+### 8.46 `hash` — XXH3, SipHash, SuperFastHash, Adler-32 (2026-08-11)
+
+`hash/xxhash.xi` additions (module `xiom.hash.xxhash`): `xxh3_64(data)`,
+`xxh3_64_with_seed(data, seed: UInt64)`, `xxh3_128(data) -> Xxh128
+{low64, high64}`, `xxh3_128_with_seed` — faithful ports of the official
+XXH3 (xxHash v0.8.3, scalar path, seeded-secret semantics). Every vector in
+smoke_hash3 was generated from a clang-built reference of the official
+header (seed-0 empty/a/abc/message digest/fox/80-byte for both widths, plus
+seeded "abc"@42).
+
+New sublibs: `hash/siphash.xi` (`siphash24`, `siphash13`, `siphash24_zerokey`
+— canonical SipHash-2-4/1-3, key as two UInt64 halves; note `hash.sip_hash`
+in the flat module is an old DJB2 wrapper, NOT SipHash), `hash/superfast.xi`
+(`superfast32` — Paul Hsieh), `hash/crc.xi` (`adler32` — RFC 1950,
+"Wikipedia" → 0x11e60398). All verified against the same C reference.
+
+Implementation notes (compiler quirks worked around): UInt64→UInt128 casts
+sext and UInt128 `>>` is ashr (BUG 14 — the 64×64→128 product builds from
+32-bit halves and masks the shift); single-var `var mask; return x & mask`
+bodies lose the mask when inlined (BUG 15 — the two-var form is mandatory);
+UInt64 tuples collide with Int tuples in codegen (named structs, e.g.
+`U64Pair`/`SipState`, are used instead).
 
 ---
 
