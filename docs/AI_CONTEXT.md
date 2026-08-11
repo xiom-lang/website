@@ -2535,6 +2535,32 @@ degraded to i64 by the checker, docs/COMPILER_BUGS.md BUG 9).
 
 Exactness notes: power-of-10 inputs parse/format exactly (`0.1 + 0.2 == 0.3`, `"3.14"` round-trips); `to_float64` is the only lossy conversion. `bigfloat_from_float` is exact for values whose decimal expansion is <= 15 digits (all f64 round-trip guarantees).
 
+### 8.43 `bigfloat` — Phase C.5 elementary functions (2026-08-11)
+
+Built on the Phase C primitives (pure XIOM, same precision contract): `log2`,
+`exp2`, `cbrt` (Newton, sign-symmetric, exact exponent reduction), `hypot`,
+`sinh`/`cosh`/`tanh`, `asin`/`acos` (exact endpoints), `asinh`/`acosh`/`atanh`,
+`to_str_sci(s, digits)` (`"1.2346e+3"`), `from_ratio(n, d)`, `pow10(f, n)`
+(exact exponent shift), `floor_int`/`ceil_int`/`round_int`/`trunc_int`
+(i64 range-checked).
+
+### 8.44 `misc` — extended utilities (2026-08-11)
+
+String metrics: `damerau_levenshtein_distance` (OSA), `jaro_similarity`,
+`jaro_winkler_similarity`, `hamming_distance` (-1 on length mismatch),
+`longest_common_subsequence`. Text: `to_camel_case`/`to_pascal_case`/
+`to_snake_case`/`to_kebab_case` (camelCase-boundary aware), `to_roman`/
+`from_roman` (1..3999), `ordinal`, `pluralize`, `is_anagram`. Units:
+celsius/fahrenheit/kelvin conversions, `miles_to_km`/`km_to_miles`,
+`human_size` (rounded 1-decimal, integer math).
+
+### 8.45 `hash` — 64-bit additions (2026-08-11)
+
+`xxhash64(data: &Vec[UInt8], seed: Int) -> Int` — canonical XXH64 (block
+rounds + 8/4/1-byte tails, verified against a C reference implementation);
+`fnv1_32(s: Str) -> Int` — FNV-1. 64-bit results wrap naturally in i64
+arithmetic; logical shifts are emulated with masks.
+
 ---
 
 ## 9. Code Patterns & Best Practices
