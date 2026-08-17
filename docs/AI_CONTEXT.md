@@ -1,8 +1,9 @@
 # XIOM — AI Coding Reference (Language + Standard Library)
 
-> **Version:** v0.57.0 | **Status:** Production. Compiler + 60-module stdlib. 27/27 E2E core (100%), 19/19 selfhost gates cleared.
+> **Version:** v0.58.0 | **Status:** Production. Compiler + stdlib (512 modules, 6,379 pub fns). 27/27 E2E core (100%), 19/19 selfhost gates cleared.
 > **New in v0.56:** `move` keyword for spawn captures, overflow checks ON by default, parallel codegen (`--parallel-codegen`), DWARF debug metadata (`--debug`), Send/Sync enforcement, Z3 verifier deterministic.
 > **New in v0.57 (Unsafe Confinement):** every `unsafe` block is a confined transaction — guard-heap arena isolation (req d), stack guard pages (req e), SEH/sigsetjmp fault trapping (req f), once-only transient-fault retry (req h), Copy-Out of Str tails (req i), zero-escape gates (T002/T003/T005/T006/T007), `#[unsafe_no_retry]`, and `#[unsafe_direct]` (trusted escape hatch, `--enable-unsafe-direct`).
+> **New in v0.58 (Debug & Numeric Policy):** secure numeric policy (Int↔Float mixing requires explicit `as`; int literals may adopt float; same-family widening stays auto), labeled loops (`@label: while` / `break @label;`), debug intrinsics (`assert(cond[, msg])`, `dbg!()`, `todo!()`, `unimplemented!()`, `debugger;`) with release stripping (`--keep-debug-checks` to retain), `else if` accepted as a desugared `elif`, sublib-prefix resolution (`use xiom.os; os.platform.<fn>`), and release-stripped contracts (`--runtime-contracts` to force).
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
@@ -161,11 +162,31 @@ while let Some(v) = next() { process(v); }
 ```
 
 **Rules:**
-- `if` / `elif` / `else` — exactly this spelling. Not `else if`.
+- `if` / `elif` / `else` — canonical spelling; `else if` is ALSO accepted as a
+  desugared form of `elif` (a following `if` after `else` chains as an `elif`;
+  the resulting AST is identical).
 - `match` arms use `=>` not `:`.
 - Every `match` must cover ALL cases. Non-exhaustive = compile error.
 - Wildcard is `_`, not `default` or `otherwise`.
 - Match arms that are blocks need no separator. Single-expression arms end with `,`.
+
+**Labeled loops (v0.58):** loops may carry a label for `break`/`continue`
+targeting (Rust-style):
+
+```xiom
+@outer: while i < 10 {
+  var j = 0;
+  while j < 10 {
+    j = j + 1;
+    if j > 5 { break @outer; }   // breaks the OUTER loop
+  }
+  i = i + 1;
+}
+```
+
+Syntax: `@label: while cond { ... }` (also `@label: for ...`). `break @label;`
+and `continue @label;` exit/continue the labeled loop. Unlabeled `break`/
+`continue` behave as before (innermost loop).
 
 ### 2.5 Expressions
 
@@ -285,6 +306,28 @@ Some  None  Ok  Err
 unsafe  extern  is  and(reserved)  or(reserved)  not(reserved)  where(reserved)
 ```
 
+**Debug intrinsics (v0.58)** — usable anywhere in fn bodies:
+
+```xiom
+assert(cond);                 // statement: panic with location on false
+assert(cond, "message");      // statement: panic with message on false
+var x = dbg!(expr);           // expression: prints "[dbg] <value>" to stdout,
+                              // then evaluates to expr's VALUE
+todo!();                      // statement: panic "todo!() at file:line"
+unimplemented!();             // statement: panic "unimplemented!() at file:line"
+debugger;                     // statement: break into the attached debugger
+                              // (no-op when none; used with xiom-dbg)
+```
+
+- `assert` panics via `xiom_panic` (stderr + exit 1) — it is a statement, not
+  an expression.
+- `dbg!` prints the formatted value (Int, Float, Str, Bool) and returns the
+  value, so it can wrap any expression.
+- **Release builds strip `assert`, `dbg!`, and `debugger;`** (contracts are
+  stripped too unless `--runtime-contracts`); `--keep-debug-checks` retains
+  them. `todo!()`/`unimplemented!()` are always emitted (they are markers, not
+  probes).
+
 `result` is only valid inside `ensures` clauses.
 `self` is implicit in method bodies — never write it in code. In stdlib
 signatures, `self`/`&self`/`&mut self` is documentation notation showing the
@@ -311,6 +354,24 @@ and inline `[T: Interface]` constraints instead.
 | `Str` | UTF-8 slice | `"hello"` |
 | `Unit` | `()` | Void return, empty tuple |
 | `!` | Never (bottom type) | Diverging functions, exhaustiveness proofs |
+
+**Numeric policy (v0.58) — secure mixing rules:**
+
+- **Int ↔ Float mixing in arithmetic, comparisons, and typed bindings
+  requires an explicit `as` cast** (Rust-style): `x + y` where `x: Int` and
+  `y: Float64` is a compile error; write `x as Float64 + y` or
+  `x + y as Int`.
+- **Int literals may adopt the float type** of the other operand:
+  `1 + 2.5` is valid — the literal `1` adopts `Float64`.
+- **Same-family widening stays automatic**: `Int8 + Int` widens to `Int`
+  (and to `Int64`/`Int128`/`UInt` per the widest operand); `Float32 + Float64`
+  widens to `Float64`. No cast needed within a family.
+- **Float literal without a decimal part** (e.g. `2.0`) is still a float;
+  use `as Int` to convert explicitly.
+- Narrowing (`Float64 → Float32`, `Int → Int8`) is NEVER implicit — always
+  `as`.
+- `as` casts are checked: value-preserving when possible, truncating for
+  narrowing, bit-exact for int↔float reinterpretations as documented per pair.
 
 ### 3.2 Compound Types
 
@@ -2758,7 +2819,7 @@ fn connect(host: Str, port: Port) -> Result[Conn, NetError]
 | Mistake | Error | Fix |
 |---------|-------|-----|
 | Missing `;` after statement | `expected ';', found ...` | Every statement needs `;` except tail expressions and block closers. |
-| `else if` instead of `elif` | `expected identifier` | Use `elif`, not `else if`. |
+| `else if` instead of `elif` | (accepted since v0.58) | `else if` desugars to `elif`; `elif` remains the canonical spelling. |
 | `self.x` in method | Not a compile error but stylistically wrong | Fields accessed directly: `x`, not `self.x`. |
 | Returning a borrow | `cannot return borrow` | Return owned type or clone. |
 | Storing borrow in struct | `borrow in struct not allowed` | Store owned type, not `&T`. |
@@ -2790,9 +2851,11 @@ OPTIONS:
   --target <target>     Target backend: native (default), wasm, arm, riscv
   --no-contracts        Disable contract runtime checks (strips requires/ensures/invariant guards)
   --runtime-contracts   Force contract checks in release builds (overrides --no-contracts)
+  --keep-debug-checks   v0.58: keep assert/dbg!/debugger; in RELEASE builds (debug builds always keep them)
+  --release             Optimized release build (-O3); strips contracts and debug checks by default
   --sanitize=<type>     Enable sanitizer: address, undefined, leak, thread
   --stack-protector     Enable stack canaries
-  --enable-unsafe-direct  D2.1/v0.57: allow `#[unsafe_direct]` (trusted escape hatch) in user code (stdlib/selfhost always allowed)
+  --enable-unsafe-direct  D2.1/v0.57: allow `#[unsafe_direct]` (trusted escape hatch) in user code (stdlib/selfhost always allowed). v0.58: prints a prominent warning on every invocation so release build logs cannot silently contain unguarded code
   --diagnostics=json    Emit diagnostics as JSON (type/borrow/codegen errors, or {"status":"ok"})
   --dump-contracts      Print the program's contract index as JSON and exit
   --verify              Generate SMT-LIB contract verification output (to stdout)
