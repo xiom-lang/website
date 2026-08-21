@@ -352,7 +352,7 @@ pub fn parse_float(s: Str) -> Result[Float64, Str];
 ```
 
 ### `parse_int_radix(s, radix)`
-Parses a string as an integer in the given radix (2–36).
+Parses a string as an integer in the given radix (2-36).
 
 ```
 pub fn parse_int_radix(s: Str, radix: Int) -> Result[Int, Str];

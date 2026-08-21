@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>XIOM — XIOM — AI Coding Reference</title>
+<title>XIOM -- XIOM -- AI Coding Reference</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../../img/xiom-icon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -95,7 +95,7 @@
 
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">**Version:** v0.16.0 | **Tests:** 234 passing | **Status:** Self-hosted compiler</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">XIOM — AI Coding Reference</h1>
+      <h1 style="font-size:36px;margin-bottom:24px;">XIOM -- AI Coding Reference</h1>
       <blockquote><p><strong>Purpose:</strong> Feed this document into any LLM context window to enable correct XIOM code generation.</p></blockquote>
 <blockquote><p><strong>Version:</strong> v0.16.0 | <strong>Tests:</strong> 234 passing | <strong>Status:</strong> Self-hosted compiler</p></blockquote>
 <blockquote><p></p></blockquote>
@@ -105,7 +105,7 @@
 <h2>1. Language Identity</h2>
 <p>XIOM is a compiled, statically typed, memory-safe systems language.</p>
 <pre><code>
-Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM IR → clang → binary
+Pipeline: .xi -> Lexer -> Parser -> Type Checker -> Borrow Checker -> LLVM IR -> clang -> binary
 </code></pre>
 <p><strong>Three non-negotiable properties:</strong></p>
 <table>
@@ -135,10 +135,10 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <h2>2. Complete Syntax Rules</h2>
 <h3>2.1 Variables</h3>
 <pre class="language-xiom"><code>
-<span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>           <span class='cm'>// immutable — cannot be reassigned</span>
-<span class='kw'>var</span> y: <span class='ty'>Float64</span> = <span class='num'>3.14</span>     <span class='cm'>// mutable — can be reassigned with =</span>
-<span class='kw'>let</span> name = <span class='str'>XIOM</span>        <span class='cm'>// <span class='kw'>type</span> inferred — <span class='ty'>Str</span></span>
-<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>]         <span class='cm'>// <span class='kw'>type</span> inferred — <span class='ty'>Vec</span>[<span class='ty'>Int</span>]</span>
+<span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>           <span class='cm'>// immutable -- cannot be reassigned</span>
+<span class='kw'>var</span> y: <span class='ty'>Float64</span> = <span class='num'>3.14</span>     <span class='cm'>// mutable -- can be reassigned with =</span>
+<span class='kw'>let</span> name = <span class='str'>XIOM</span>        <span class='cm'>// <span class='kw'>type</span> inferred -- <span class='ty'>Str</span></span>
+<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>]         <span class='cm'>// <span class='kw'>type</span> inferred -- <span class='ty'>Vec</span>[<span class='ty'>Int</span>]</span>
 </code></pre>
 <p><strong>Rules:</strong></p>
 <ul>
@@ -153,7 +153,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
   <span class='kw'>return</span> a + b;
 }
 
-<span class='cm'>// Void function — no <span class='kw'>return</span> <span class='kw'>type</span> annotation</span>
+<span class='cm'>// Void function -- no <span class='kw'>return</span> <span class='kw'>type</span> annotation</span>
 <span class='kw'>fn</span> <span class='func'>log</span>(message: <span class='ty'>Str</span>) {
   io.<span class='func'>print</span>(message);
 }
@@ -180,7 +180,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(other: &<span class='ty'>Vec3</span>) -> <span class='ty'>Float32</span> {
   <span class='kw'>return</span> x * other.x + y * other.y + z * other.z;
-  <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> IMPLICIT — never write <span class='kw'>self</span>.x, just x</span>
+  <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> IMPLICIT -- never write <span class='kw'>self</span>.x, just x</span>
 }
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>set_x</span>(value: <span class='ty'>Float32</span>) {
@@ -191,7 +191,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <ul>
 <li>Method syntax: <code>fn TypeName.methodName(params) -> ReturnType</code></li>
 <li><code>self</code> is IMPLICIT. Access fields directly: <code>x</code>, not <code>self.x</code>.</li>
-<li>Compiler infers <code>&Self</code> or <code>&mut Self</code> from body. If ANY field is mutated → <code>&mut Self</code>.</li>
+<li>Compiler infers <code>&Self</code> or <code>&mut Self</code> from body. If ANY field is mutated -> <code>&mut Self</code>.</li>
 <li>Methods are defined OUTSIDE the type declaration, in the same module.</li>
 </ul>
 <h3>2.4 Control Flow</h3>
@@ -224,7 +224,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 </code></pre>
 <p><strong>Rules:</strong></p>
 <ul>
-<li><code>if</code> / <code>elif</code> / <code>else</code> — exactly this spelling. Not <code>else if</code>.</li>
+<li><code>if</code> / <code>elif</code> / <code>else</code> -- exactly this spelling. Not <code>else if</code>.</li>
 <li><code>match</code> arms use <code>=></code> not <code>:</code>.</li>
 <li>Every <code>match</code> must cover ALL cases. Non-exhaustive = compile error.</li>
 <li>Wildcard is <code>_</code>, not <code>default</code> or <code>otherwise</code>.</li>
@@ -237,19 +237,19 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 100_000         <span class='cm'>// <span class='ty'>Int</span> with separators</span>
 <span class='num'>3.14</span>            <span class='cm'>// <span class='ty'>Float64</span></span>
 <span class='kw'>true</span> | <span class='kw'>false</span>    <span class='cm'>// <span class='ty'>Bool</span></span>
-<span class='str'>hello</span>         <span class='cm'>// <span class='ty'>Str</span> — always double quotes</span>
-'A'             <span class='cm'>// <span class='ty'>Char</span> — always single quotes</span>
+<span class='str'>hello</span>         <span class='cm'>// <span class='ty'>Str</span> -- always double quotes</span>
+'A'             <span class='cm'>// <span class='ty'>Char</span> -- always single quotes</span>
 
 <span class='cm'>// Arithmetic</span>
 a + b   a - b   a * b   a / b   a % b   -a
 
-<span class='cm'>// Comparison — returns <span class='ty'>Bool</span></span>
+<span class='cm'>// Comparison -- returns <span class='ty'>Bool</span></span>
 a == b   a != b   a < b   a > b   a <= b   a >= b
 
-<span class='cm'>// Logical — both operands must be <span class='ty'>Bool</span></span>
+<span class='cm'>// Logical -- both operands must be <span class='ty'>Bool</span></span>
 !a          a && b          a || b
 
-<span class='cm'>// Struct literal — TypeName{ field: value, ... }</span>
+<span class='cm'>// Struct literal -- TypeName{ field: value, ... }</span>
 <span class='kw'>let</span> p = <span class='ty'>Point</span>{ x: <span class='num'>1.0</span>, y: <span class='num'>2.0</span> };
 
 <span class='cm'>// Array literal</span>
@@ -262,7 +262,7 @@ a == b   a != b   a < b   a > b   a <= b   a >= b
 <span class='cm'>// Function call</span>
 <span class='kw'>let</span> <span class='kw'>result</span> = <span class='func'>add</span>(<span class='num'>10</span>, <span class='num'>20</span>);
 
-<span class='cm'>// Generic call — explicit <span class='kw'>type</span> parameter</span>
+<span class='cm'>// Generic call -- explicit <span class='kw'>type</span> parameter</span>
 <span class='kw'>let</span> n = max[<span class='ty'>Int</span>](<span class='num'>10</span>, <span class='num'>20</span>);
 <span class='kw'>let</span> n = <span class='func'>max</span>(<span class='num'>10</span>, <span class='num'>20</span>);       <span class='cm'>// inferred</span>
 
@@ -348,7 +348,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>Some</span>  <span class='kw'>None</span>  <span class='kw'>Ok</span>  <span class='kw'>Err</span>
 <span class='kw'>unsafe</span>  <span class='kw'>extern</span>  <span class='kw'>is</span>
 </code></pre>
-<p><code>result</code> is only valid inside <code>ensures</code> clauses. <code>self</code> is implicit in methods — never write it explicitly. <code>is</code> is used for type testing: <code>value is Some</code>.</p>
+<p><code>result</code> is only valid inside <code>ensures</code> clauses. <code>self</code> is implicit in methods -- never write it explicitly. <code>is</code> is used for type testing: <code>value is Some</code>.</p>
 <hr>
 <h2>3. Type System</h2>
 <h3>3.1 Primitive Types</h3>
@@ -369,13 +369,13 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <td><code>42</code></td>
 </tr>
 <tr>
-<td><code>Int8</code>–<code>Int64</code></td>
-<td>8–64 bits</td>
+<td><code>Int8</code>-<code>Int64</code></td>
+<td>8-64 bits</td>
 <td><code>let x: Int32 = 1;</code></td>
 </tr>
 <tr>
-<td><code>UInt</code>–<code>UInt64</code></td>
-<td>8–64 bits unsigned</td>
+<td><code>UInt</code>-<code>UInt64</code></td>
+<td>8-64 bits unsigned</td>
 <td><code>let n: UInt = 100;</code></td>
 </tr>
 <tr>
@@ -391,7 +391,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <tr>
 <td><code>Char</code></td>
 <td>32-bit Unicode</td>
-<td><code>'A'</code>, <code>'λ'</code></td>
+<td><code>'A'</code>, <code>'lambda'</code></td>
 </tr>
 <tr>
 <td><code>Str</code></td>
@@ -481,7 +481,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <li>Type parameter MUST be annotatable if it appears only in return type.</li>
 </ul>
 <hr>
-<h2>4. Memory Model — CRITICAL</h2>
+<h2>4. Memory Model -- CRITICAL</h2>
 <h3>4.1 Ownership Rules</h3>
 <table>
 <tr>
@@ -521,21 +521,21 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>write</span>(v: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }        <span class='cm'>// write borrow</span>
 
 <span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>read</span>(&v);        <span class='cm'>// borrow — v still valid</span>
-<span class='func'>write</span>(&mut v);   <span class='cm'>// write borrow — exclusive</span>
-<span class='func'>consume</span>(v);      <span class='cm'>// move — v NO LONGER VALID</span>
+<span class='func'>read</span>(&v);        <span class='cm'>// borrow -- v still valid</span>
+<span class='func'>write</span>(&mut v);   <span class='cm'>// write borrow -- exclusive</span>
+<span class='func'>consume</span>(v);      <span class='cm'>// move -- v NO LONGER VALID</span>
 <span class='cm'>// <span class='func'>read</span>(&v);     // COMPILE ERROR: <span class='kw'>use</span> after move</span>
 </code></pre>
 <h3>4.3 Restrictions (These Are Compile Errors)</h3>
 <ul>
-<li>❌ Borrow stored in struct field</li>
-<li>❌ Borrow returned from function</li>
-<li>❌ Use after move</li>
-<li>❌ Write borrow while read borrow active</li>
-<li>❌ Multiple write borrows simultaneously</li>
-<li>❌ Mutation through <code>&T</code></li>
-<li>✅ Clone instead of borrow for struct storage</li>
-<li>✅ Return owned type, not borrow</li>
+<li>[FAIL] Borrow stored in struct field</li>
+<li>[FAIL] Borrow returned from function</li>
+<li>[FAIL] Use after move</li>
+<li>[FAIL] Write borrow while read borrow active</li>
+<li>[FAIL] Multiple write borrows simultaneously</li>
+<li>[FAIL] Mutation through <code>&T</code></li>
+<li>[OK] Clone instead of borrow for struct storage</li>
+<li>[OK] Return owned type, not borrow</li>
 </ul>
 <h3>4.4 Unsafe</h3>
 <pre class="language-xiom"><code>
@@ -896,22 +896,22 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </code></pre>
 <h3>9.2 Ownership-Safe Patterns</h3>
 <pre class="language-xiom"><code>
-<span class='cm'>// BAD: borrow returned from function ❌</span>
+<span class='cm'>// BAD: borrow returned from function [FAIL]</span>
 <span class='kw'>fn</span> <span class='func'>get_ref</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) -> &<span class='ty'>Int</span> {
   <span class='kw'>return</span> &v[<span class='num'>0</span>];   <span class='cm'>// COMPILE ERROR: cannot <span class='kw'>return</span> borrow</span>
 }
 
-<span class='cm'>// GOOD: <span class='kw'>return</span> owned value ✅</span>
+<span class='cm'>// GOOD: <span class='kw'>return</span> owned value [OK]</span>
 <span class='kw'>fn</span> <span class='func'>get_owned</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) -> <span class='ty'>Int</span> {
   <span class='kw'>return</span> v[<span class='num'>0</span>];     <span class='cm'>// copy/clone at call site</span>
 }
 
-<span class='cm'>// BAD: borrow stored <span class='kw'>in</span> struct ❌</span>
+<span class='cm'>// BAD: borrow stored <span class='kw'>in</span> struct [FAIL]</span>
 <span class='kw'>type</span> Container = {
   ref: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>];   <span class='cm'>// COMPILE ERROR: borrow <span class='kw'>in</span> struct</span>
 }
 
-<span class='cm'>// GOOD: owned <span class='kw'>type</span> <span class='kw'>in</span> struct ✅</span>
+<span class='cm'>// GOOD: owned <span class='kw'>type</span> <span class='kw'>in</span> struct [OK]</span>
 <span class='kw'>type</span> Container = {
   data: <span class='ty'>Vec</span>[<span class='ty'>Int</span>];
 }
@@ -1110,12 +1110,12 @@ cargo run -p xiom -- --run source.xi
 <h2>13. File Extensions & Project Structure</h2>
 <pre><code>
 project/
-├── package.xi           # package manifest
-├── src/
-│   ├── main.xi          # entry <span class='func'>point</span>(must have <span class='kw'>module</span> declaration)
-│   └── lib.xi           # library code
-├── deps/                # resolved <span class='func'>dependencies</span>(generated)
-└── tests/               # test files
+|-- package.xi           # package manifest
+|-- src/
+|   |-- main.xi          # entry <span class='func'>point</span>(must have <span class='kw'>module</span> declaration)
+|   `-- lib.xi           # library code
+|-- deps/                # resolved <span class='func'>dependencies</span>(generated)
+`-- tests/               # test files
 </code></pre>
 <ul>
 <li>XIOM source: <code>.xi</code></li>
@@ -1156,11 +1156,11 @@ project/
 <li>Test functions prefixed with <code>test_</code>.</li>
 <li><code>assert_eq</code>, <code>assert_ne</code>, <code>assert_true</code>, <code>assert_ok</code>, <code>assert_err</code>, <code>assert_some</code>, <code>assert_none</code>.</li>
 <li><code>run_tests()</code> executes all registered tests.</li>
-<li>Contracts ARE tests — <code>requires</code>/<code>ensures</code> check at runtime.</li>
+<li>Contracts ARE tests -- <code>requires</code>/<code>ensures</code> check at runtime.</li>
 </ul>
 <hr>
 <h2>15. Self-Hosting Note</h2>
-<p>The XIOM compiler is written in XIOM (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent — never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.</p>
+<p>The XIOM compiler is written in XIOM (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent -- never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.</p>
 <hr>
 <p><strong>This document is the AI's complete reference for XIOM code generation.</strong> <strong>When in doubt, refer to the exact syntax and rules above. The compiler enforces everything stated here.</strong></p>
     </main>
@@ -1170,7 +1170,7 @@ project/
 
 <footer>
   <div class="wrap">
-    <p>XIOM v0.12.0 · <a href="../../" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>XIOM v0.12.0 - <a href="../../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../../spec.html">Spec</a>
       <a href="../../docs/">Docs</a>

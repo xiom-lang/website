@@ -1,6 +1,6 @@
 # Syntax Reference
 
-> **Quick look:** `let x = 42;` · `fn name(args) -> Type { ... }` · `if/elif/else` · `match x { Arm => ..., }` · `;` on every statement
+> **Quick look:** `let x = 42;` - `fn name(args) -> Type { ... }` - `if/elif/else` - `match x { Arm => ..., }` - `;` on every statement
 
 ## Variables
 
@@ -12,8 +12,8 @@ let v = [1, 2, 3];         // type inferred as Vec[Int]
 let t = (1, true);         // type inferred as (Int, Bool)
 ```
 
-- `let` — immutable binding. Cannot be reassigned.
-- `var` — mutable binding. Can be reassigned with `=`.
+- `let` -- immutable binding. Cannot be reassigned.
+- `var` -- mutable binding. Can be reassigned with `=`.
 - Type annotations are optional when the compiler can infer the type.
 - Type inference does not cross function boundaries.
 
@@ -50,13 +50,13 @@ fn divide(a: Float64, b: Float64) -> Float64
 ```xiom
 pub type Vec3 = { x: Float32; y: Float32; z: Float32; }
 
-// self is implicit — fields accessed directly
+// self is implicit -- fields accessed directly
 pub fn Vec3.dot(other: &Vec3) -> Float32 {
   return x * other.x + y * other.y + z * other.z;
 }
 
 pub fn Vec3.set_x(value: Float32) {
-  x = value;   // self is &mut Vec3 — mutation detected
+  x = value;   // self is &mut Vec3 -- mutation detected
 }
 ```
 
@@ -182,10 +182,10 @@ let y = max(a, b);           // inferred type parameter
 ### Closures
 
 ```xiom
-// fn(params) { body } — closure expression
+// fn(params) { body } -- closure expression
 let doubler = fn(x: Int) -> Int { return x * 2; };
 
-// |params| body — pipe closure
+// |params| body -- pipe closure
 let tripler = |x| x * 3;
 ```
 

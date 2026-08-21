@@ -1,4 +1,4 @@
-# `xiom.sync` — Synchronization Primitives
+# `xiom.sync` -- Synchronization Primitives
 
 Provides thread-safe synchronization primitives for coordinating access to shared state across concurrent tasks.
 

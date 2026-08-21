@@ -6,11 +6,11 @@ The `derive` clause instructs the compiler to generate correct-by-construction i
 
 | Derive | Generated Behavior |
 |--------|-------------------|
-| `Eq` | Structural equality — every field compared. Two values are equal if all fields are equal. |
-| `Clone` | Deep copy — every field cloned recursively. |
+| `Eq` | Structural equality -- every field compared. Two values are equal if all fields are equal. |
+| `Clone` | Deep copy -- every field cloned recursively. |
 | `Display` | Canonical string representation. Structs format as `TypeName{ field: value, ... }`. |
-| `Hash` | Structural hash — every field hashed and combined. Compatible with `Eq`. |
-| `Ord` | Lexicographic ordering — fields compared in declaration order. |
+| `Hash` | Structural hash -- every field hashed and combined. Compatible with `Eq`. |
+| `Ord` | Lexicographic ordering -- fields compared in declaration order. |
 | `Debug` | Debug representation via `.fmt()`. Defaults to Display output unless overridden. |
 
 ## Usage
@@ -22,14 +22,14 @@ type Point = {
 } derive[Eq, Clone, Display]
 
 // Compiler generates:
-//   fn Point.eq(other: &Point) -> Bool     — x == x && y == y
-//   fn Point.clone() -> Point              — deep copy of both fields
-//   fn Point.to_str() -> Str               — "Point{ x: 1.0, y: 2.0 }"
+//   fn Point.eq(other: &Point) -> Bool     -- x == x && y == y
+//   fn Point.clone() -> Point              -- deep copy of both fields
+//   fn Point.to_str() -> Str               -- "Point{ x: 1.0, y: 2.0 }"
 ```
 
 ## Invariant Restriction
 
-Types with `invariant` clauses cannot derive `Eq`, `Hash`, or `Ord`. Invariants make structural equality semantically ambiguous — two values with different internal state may both satisfy the same invariant. `Clone` and `Display` remain available.
+Types with `invariant` clauses cannot derive `Eq`, `Hash`, or `Ord`. Invariants make structural equality semantically ambiguous -- two values with different internal state may both satisfy the same invariant. `Clone` and `Display` remain available.
 
 ```xiom
 type Health = {
@@ -38,7 +38,7 @@ type Health = {
   invariant: current >= 0;
   invariant: current <= maximum;
 } derive[Clone, Display]
-// Eq, Hash, Ord are rejected — invariants make equality/hashing ambiguous
+// Eq, Hash, Ord are rejected -- invariants make equality/hashing ambiguous
 ```
 
 ## Enums
@@ -95,7 +95,7 @@ store double %self.x, double* %x_ptr
 
 ```llvm
 ; Lexicographic field-by-field comparison with branch dispatch
-; Compare field 0 → if not equal, return; else compare field 1...
+; Compare field 0 -> if not equal, return; else compare field 1...
 ```
 
 ## Custom Implementations

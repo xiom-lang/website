@@ -4,18 +4,18 @@
 
 ```
 .xi source
-  → Lexer           (tokenize — 55+ token kinds)
-  → Parser          (AST — LL(1), no backtracking)
-  → Type Checker    (primitives, structs, functions, interface satisfaction, Send/Sync)
-  → Borrow Checker  (lexical scope — &T, &mut T, move semantics, E001 warnings)
-  → CTFE            (compile-time function evaluation — const exprs, builtins, pure fn VM)
-  → LLVM IR         (text emission, human-readable)
-     ├─ Contracts   (runtime guards — @llvm.trap on violation)
-     ├─ DWARF DI    (function-level debug metadata — per-function !DISubprogram)
-     ├─ Derive      (Eq, Clone, Display, Hash, Ord, Debug — struct + enum)
-     ├─ Generics    (monomorphisation — register + specialize, worklist)
-     └─ Parallel    (rayon per-function IR emission — --parallel-codegen)
-  → clang           (native .exe, .out, .wasm)
+  -> Lexer           (tokenize -- 55+ token kinds)
+  -> Parser          (AST -- LL(1), no backtracking)
+  -> Type Checker    (primitives, structs, functions, interface satisfaction, Send/Sync)
+  -> Borrow Checker  (lexical scope -- &T, &mut T, move semantics, E001 warnings)
+  -> CTFE            (compile-time function evaluation -- const exprs, builtins, pure fn VM)
+  -> LLVM IR         (text emission, human-readable)
+     |- Contracts   (runtime guards -- @llvm.trap on violation)
+     |- DWARF DI    (function-level debug metadata -- per-function !DISubprogram)
+     |- Derive      (Eq, Clone, Display, Hash, Ord, Debug -- struct + enum)
+     |- Generics    (monomorphisation -- register + specialize, worklist)
+     `- Parallel    (rayon per-function IR emission -- --parallel-codegen)
+  -> clang           (native .exe, .out, .wasm)
 ```
 
 ## CLI Reference (v0.56.0-pre)
@@ -29,31 +29,31 @@ xiom [flags] <source.xi>
 | Flag | Description | Default |
 |------|-------------|---------|
 | `-o <output>` | Output binary path | `a.exe` (Win) / `a.out` (Linux) |
-| `--run` | Compile and run, print exit code | — |
-| `--check` | Type-check only, no binary | — |
-| `--emit-ir` | Print LLVM IR to stdout | — |
-| `--release` | clang -O3 optimization | — |
+| `--run` | Compile and run, print exit code | -- |
+| `--check` | Type-check only, no binary | -- |
+| `--emit-ir` | Print LLVM IR to stdout | -- |
+| `--release` | clang -O3 optimization | -- |
 | `--debug` / `-g` | DWARF/PDB debug info (DIFile, DICompileUnit, DISubprogram) | off |
 | `--lto` | ThinLTO link-time optimization (`-flto=thin`) | off |
 | `--jit` | In-process DLL JIT compilation (xiom-jit) | off |
 | `--jit --lazy` | JIT with SHA-256 incremental cache | off |
 | `--cache` | Binary cache by source hash | off |
-| `--no-cache` | Disable caching | — |
+| `--no-cache` | Disable caching | -- |
 | `--parallel` | Rayon-based parallel parse | off |
 | `--parallel-codegen` | Rayon-based per-function IR emission | off |
 | `--target wasm` | Compile to `wasm32-unknown-unknown` | native |
 | `--target arm` | Compile to `aarch64-unknown-linux-gnu` | native |
 | `--shared` | Compile to shared library (.dll/.so) | off |
-| `--standalone <file> -o <exe>` | Script-to-binary | — |
+| `--standalone <file> -o <exe>` | Script-to-binary | -- |
 
 ### Safety Flags
 
 | Flag | Description | Default |
 |------|-------------|---------|
 | `--overflow-checks` | Integer overflow traps (`@llvm.trap`) | **ON** (v0.56) |
-| `--no-overflow-checks` | Disable overflow checks | — |
+| `--no-overflow-checks` | Disable overflow checks | -- |
 | `--no-contracts` | Disable all contract runtime guards | off |
-| `--strict-exhaustive` | Non-exhaustive match → hard error | off |
+| `--strict-exhaustive` | Non-exhaustive match -> hard error | off |
 | `--sanitize=address` | Enable ASan | off |
 | `--sanitize=undefined` | Enable UBSan | off |
 | `--sanitize=thread` | Enable TSan | off |
@@ -99,9 +99,9 @@ xiom clean --cache            Clear JIT cache
 
 | Target | Status |
 |--------|--------|
-| `x86_64-pc-windows-msvc` | ✅ Verified |
-| `x86_64-unknown-linux-gnu` | ✅ Verified (WSL build + compile + run) |
-| `wasm32-unknown-unknown` | ✅ Verified |
+| `x86_64-pc-windows-msvc` | [OK] Verified |
+| `x86_64-unknown-linux-gnu` | [OK] Verified (WSL build + compile + run) |
+| `wasm32-unknown-unknown` | [OK] Verified |
 | `aarch64-apple-darwin` | Planned |
 
 ## Language Features (v0.56)

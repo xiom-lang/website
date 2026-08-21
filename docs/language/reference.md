@@ -17,13 +17,13 @@ fn main() -> Int {
 }
 ```
 
-Scripts (via `xiom run`) may omit `fn main()` — the compiler wraps top-level code automatically. See [Scripting Mode](../M10_SCRIPTING_MODE.md).
+Scripts (via `xiom run`) may omit `fn main()` -- the compiler wraps top-level code automatically. See [Scripting Mode](../M10_SCRIPTING_MODE.md).
 
 ---
 
 ## Variables and Constants
 
-### `var` — Mutable variable
+### `var` -- Mutable variable
 
 ```xiom
 var x: Int = 0;        // type-annotated
@@ -31,14 +31,14 @@ var y = 42;            // type-inferred
 var z: Float64 = 3.14;
 ```
 
-### `let` — Immutable binding
+### `let` -- Immutable binding
 
 ```xiom
 let name: Str = "xiom";     // cannot be reassigned
 let pi: Float64 = 3.14159;
 ```
 
-### `const` — Compile-time constant
+### `const` -- Compile-time constant
 
 ```xiom
 pub const MAX: Int = 1024;
@@ -141,7 +141,7 @@ if x > 0 {
 }
 ```
 
-### `match` — Pattern matching
+### `match` -- Pattern matching
 
 ```xiom
 match value {
@@ -190,7 +190,7 @@ for i in [0, 1, 2, 3] {
 }
 ```
 
-### `loop` — infinite loop
+### `loop` -- infinite loop
 
 ```xiom
 loop {
@@ -249,17 +249,17 @@ x += 1;              // compound: +=, -=, *=, /=, %=, &=, |=, ^=
 
 ```xiom
 x as Float64;         // safe numeric cast
-x as Int;             // truncating float→int
+x as Int;             // truncating float->int
 ```
 
-### `is` — Type check
+### `is` -- Type check
 
 ```xiom
 result is Ok;         // true if result matches Ok pattern
 value is Some;        // true if value is Some variant
 ```
 
-### `?` — Error propagation
+### `?` -- Error propagation
 
 ```xiom
 let file = io.read_file(path)?;
@@ -270,7 +270,7 @@ let file = io.read_file(path)?;
 //   }
 ```
 
-### `=>` — Implication (contracts only)
+### `=>` -- Implication (contracts only)
 
 ```xiom
 requires: x > 0 => result > 0
@@ -380,8 +380,8 @@ use xiom.collections.Map;    // import specific type
 XIOM uses lexical-scope ownership. When a value leaves scope, it is freed.
 
 ```xiom
-fn take_ownership(v: Vec[Int]) { ... } // v is moved — caller loses access
-fn borrow_read(v: &Vec[Int]) { ... }   // v is borrowed — caller keeps access
+fn take_ownership(v: Vec[Int]) { ... } // v is moved -- caller loses access
+fn borrow_read(v: &Vec[Int]) { ... }   // v is borrowed -- caller keeps access
 fn borrow_write(v: &mut Vec[Int]) { ... } // exclusive mutable borrow
 ```
 

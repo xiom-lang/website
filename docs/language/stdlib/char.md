@@ -23,21 +23,21 @@ pub fn is_alphanumeric(c: Char) -> Bool;
 ```
 
 ### `is_ascii(c)`
-Returns `true` if the character is in the ASCII range (U+0000–U+007F).
+Returns `true` if the character is in the ASCII range (U+0000-U+007F).
 
 ```
 pub fn is_ascii(c: Char) -> Bool;
 ```
 
 ### `is_control(c)`
-Returns `true` if the character is a control character (U+0000–U+001F, U+007F–U+009F).
+Returns `true` if the character is a control character (U+0000-U+001F, U+007F-U+009F).
 
 ```
 pub fn is_control(c: Char) -> Bool;
 ```
 
 ### `is_digit(c)`
-Returns `true` if the character is an ASCII decimal digit (0–9).
+Returns `true` if the character is an ASCII decimal digit (0-9).
 
 ```
 pub fn is_digit(c: Char) -> Bool;
@@ -97,14 +97,14 @@ pub fn to_uppercase(c: Char) -> Char;
 ## Digit Conversion
 
 ### `to_digit(c, radix)`
-Converts a character to its numeric digit value in the given radix (2–36). Returns `None` if the character is not a valid digit.
+Converts a character to its numeric digit value in the given radix (2-36). Returns `None` if the character is not a valid digit.
 
 ```
 pub fn to_digit(c: Char, radix: Int) -> Option[Int];
 ```
 
 ### `from_digit(n, radix)`
-Converts a numeric digit value (0–35) to its character representation in the given radix (2–36). Returns `None` if the value is out of range.
+Converts a numeric digit value (0-35) to its character representation in the given radix (2-36). Returns `None` if the value is out of range.
 
 ```
 pub fn from_digit(n: Int, radix: Int) -> Option[Char];
@@ -113,7 +113,7 @@ pub fn from_digit(n: Int, radix: Int) -> Option[Char];
 ## UTF-8 Encoding
 
 ### `len_utf8(c)`
-Returns the number of UTF-8 bytes required to encode the character (1–4).
+Returns the number of UTF-8 bytes required to encode the character (1-4).
 
 ```
 pub fn len_utf8(c: Char) -> Int;

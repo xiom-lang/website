@@ -1,4 +1,4 @@
-# XIOM — Build Strategy & Decision Log
+# XIOM -- Build Strategy & Decision Log
 
 > This document captures how we are building XIOM, in what order, and why.
 > It is a living document. Decisions made here are binding until explicitly revised.
@@ -9,17 +9,17 @@
 
 **Self-hosting is the final validation, not the driver.**
 
-The v0.9.x–v0.11.x self-hosting MVP proved the concept — the XIOM language CAN express a compiler. But pursuing self-hosting while the Rust compiler was still unstable caused benchmark breakage and diverted focus from hardening. The revised strategy:
+The v0.9.x-v0.11.x self-hosting MVP proved the concept -- the XIOM language CAN express a compiler. But pursuing self-hosting while the Rust compiler was still unstable caused benchmark breakage and diverted focus from hardening. The revised strategy:
 
-1. **Finish the Rust compiler first** — all language features, all contracts, all generics, Z3 static verification, debugger, LSP, CLI toolchain, hot reload, benchmark suite. The Rust compiler is the PERMANENT bootstrap fallback — NEVER deleted.
-2. **Self-host LAST** — when the language is stable (no breaking syntax changes for 6+ months) and the standard library is mature enough to write a compiler in XIOM. Self-hosting is a validation milestone, not a development milestone.
-3. **Byte-for-byte identical output** — the self-hosting bootstrap is successful when the XIOM-compiled compiler produces bit-identical IR to the Rust-compiled version for all test programs. This is the strongest possible correctness signal.
+1. **Finish the Rust compiler first** -- all language features, all contracts, all generics, Z3 static verification, debugger, LSP, CLI toolchain, hot reload, benchmark suite. The Rust compiler is the PERMANENT bootstrap fallback -- NEVER deleted.
+2. **Self-host LAST** -- when the language is stable (no breaking syntax changes for 6+ months) and the standard library is mature enough to write a compiler in XIOM. Self-hosting is a validation milestone, not a development milestone.
+3. **Byte-for-byte identical output** -- the self-hosting bootstrap is successful when the XIOM-compiled compiler produces bit-identical IR to the Rust-compiled version for all test programs. This is the strongest possible correctness signal.
 
 ### Phase Structure (Revised)
 
 | Phase | Focus | Self-Hosting? |
 |-------|-------|---------------|
-| **Phase 0** (done) | Working pipeline: lex → parse → check → codegen | No |
+| **Phase 0** (done) | Working pipeline: lex -> parse -> check -> codegen | No |
 | **Phase 1** (done) | Full language surface: ownership, contracts, generics, modules | No |
 | **Phase 2** (now) | Hardening: performance, warnings, benchmarks, multi-file, hot reload, incremental compilation | No |
 | **Phase 3** (next) | Verification & Toolchain: Z3 static contracts, debugger, LSP, CLI, visual benchmarks, WASM playground | No |
@@ -31,7 +31,7 @@ The v0.9.x–v0.11.x self-hosting MVP proved the concept — the XIOM language C
 1. **The Rust compiler is our primary development tool.** It must be fast, reliable, and feature-complete before we ask it to compile a second compiler.
 2. **Z3 static verification makes contracts zero-cost.** This is THE killer feature. It must ship before we freeze the language for self-hosting.
 3. **Toolchain (debugger, LSP, CLI) makes the language usable.** Nobody adopts a language without a debugger. These are prerequisites for real-world adoption.
-4. **Self-hosting is a test of correctness, not a feature.** It proves the language can express a complex real-world program. It does not make the compiler faster or safer — the Rust compiler already is.
+4. **Self-hosting is a test of correctness, not a feature.** It proves the language can express a complex real-world program. It does not make the compiler faster or safer -- the Rust compiler already is.
 
 ---
 
@@ -53,7 +53,7 @@ of how borrows work. The borrow syntax (`&`, `&mut`) is included in
 the grammar from day one. The checker that enforces it is a Phase 1 problem.
 
 Phase 0 parses borrow syntax correctly. It does not enforce borrow rules.
-That is not a gap — it is the correct sequencing.
+That is not a gap -- it is the correct sequencing.
 
 ---
 
@@ -74,9 +74,9 @@ XIOM uses **lexical scope borrowing**.
 ```xiom
 fn example() {
     let v = Vec.new()
-    read_only(&v)      // borrow created and expires inside this call — safe
-    mutate(&mut v)     // write borrow — exclusive for duration of call
-    consume(v)         // ownership moves — v no longer usable
+    read_only(&v)      // borrow created and expires inside this call -- safe
+    mutate(&mut v)     // write borrow -- exclusive for duration of call
+    consume(v)         // ownership moves -- v no longer usable
 }
 ```
 
@@ -140,14 +140,14 @@ we wire in a theorem prover.
 
 WASM is a co-equal target alongside native from Phase 0.
 
-If the LLVM pipeline works for native x86-64, WASM costs almost nothing extra —
+If the LLVM pipeline works for native x86-64, WASM costs almost nothing extra --
 it is the same IR with a different LLVM backend flag.
 
 Proving both targets work in Phase 0 validates the entire deployment story early.
 
 ---
 
-## Decision: `derive` — Compiler-Generated Interfaces
+## Decision: `derive` -- Compiler-Generated Interfaces
 
 **Status: DECIDED**
 
@@ -165,7 +165,7 @@ type Point = {
 - **Phase 1:** Type checker generates the implementations at interface satisfaction time.
 
 **Rationale:** Every hand-written `eq` or `clone` method is a chance for AI or a tired
-programmer to miss a field. The compiler never misses. This is not syntactic sugar —
+programmer to miss a field. The compiler never misses. This is not syntactic sugar --
 it is correctness by construction. It also reduces token consumption for AI-generated code
 by eliminating boilerplate that AI frequently gets wrong.
 
@@ -181,24 +181,24 @@ internal state may both satisfy the same invariant). `Clone` and `Display` remai
 
 Type-level interface requirements are declared inline with the type parameter,
 not as separate `requires` clauses. This separates type requirements from
-value-level preconditions — two different verification mechanisms that should
+value-level preconditions -- two different verification mechanisms that should
 not share syntax.
 
 ```xiom
-// Type constraint — inline with the parameter
+// Type constraint -- inline with the parameter
 fn sort[T: Ord](items: &mut Vec[T])
 
 // Multiple constraints
 fn dedup[T: Eq + Hash](items: &mut Vec[T])
 
-// Value precondition — requires clause
+// Value precondition -- requires clause
 fn pop[T](stack: &mut Stack[T]) -> Option[T]
   requires: !stack.is_empty()
 ```
 
 **Rationale:** Mixing type-level and value-level requirements in `requires` conflates
 two different verification stages (compile-time type checking vs. runtime contract guarding).
-Rust, Swift, and Haskell all separate these — for good reason. The inline syntax
+Rust, Swift, and Haskell all separate these -- for good reason. The inline syntax
 (`[T: Ord]`) is familiar, concise, and unambiguous.
 
 ---
@@ -219,19 +219,19 @@ Methods are declared using `TypeName.methodName` syntax.
 ```xiom
 fn Vec3.dot(other: &Vec3) -> Float32 {
   return x * other.x + y * other.y + z * other.z
-  // self is &Vec3 — read-only, inferred from body
+  // self is &Vec3 -- read-only, inferred from body
 }
 
 fn Vec3.set_x(value: Float32) {
   x = value
-  // self is &mut Vec3 — field mutation detected in body
+  // self is &mut Vec3 -- field mutation detected in body
 }
 ```
 
 The compiler infers the receiver type:
-- Method body does not mutate fields → `self: &Self`
-- Method body mutates any field → `self: &mut Self`
-- Mut anywhere in the body wins — the receiver is `&mut Self`
+- Method body does not mutate fields -> `self: &Self`
+- Method body mutates any field -> `self: &mut Self`
+- Mut anywhere in the body wins -- the receiver is `&mut Self`
 
 **Rationale:** Explicit receiver parameters are boilerplate that add no information.
 Rust, Swift, and Python all synthesize or implicitly pass the receiver. The programmer
@@ -250,7 +250,7 @@ it must be annotated explicitly at the call site.
 ```xiom
 fn parse[T](s: Str) -> Result[T, ParseError] { ... }
 
-// T cannot be inferred — must be explicit
+// T cannot be inferred -- must be explicit
 let n = parse[Int]("42")
 
 // T inferred from argument
@@ -295,81 +295,81 @@ Result[Data, MyCustomErrorEnum]
 
 **Rationale:** Rust required `Error` trait bounds early and spent years unwinding it.
 Forcing an interface on `E` constrains library authors for no safety benefit.
-The type system already ensures `E` is handled — that is sufficient.
+The type system already ensures `E` is handled -- that is sufficient.
 
 ---
 
 ## Build Order
 
-### Phase 0 — Working Pipeline (2–3 weeks, AI-assisted)
+### Phase 0 -- Working Pipeline (2-3 weeks, AI-assisted)
 
 **Goal:** Hello World compiles to native binary and WASM binary.
 Nothing more. Nothing less.
 
 | Step | What | Done? |
 |---|---|---|
-| 1 | Project structure — Rust workspace, crate layout | |
-| 2 | Lexer — tokenise all XIOM keywords, literals, operators | |
-| 3 | Parser — recursive descent, produce typed AST | |
-| 4 | Basic type checker — primitives, structs, enums, functions | |
-| 5 | Parse `derive` clauses, inline type constraints, method syntax — store in AST | |
-| 6 | LLVM IR emission — arithmetic, control flow, function calls | |
-| 7 | Native binary output — link and run | |
-| 8 | WASM binary output — same IR, WASM backend | |
-| 9 | Test suite — 200+ parser tests, 100+ type checker tests | |
+| 1 | Project structure -- Rust workspace, crate layout | |
+| 2 | Lexer -- tokenise all XIOM keywords, literals, operators | |
+| 3 | Parser -- recursive descent, produce typed AST | |
+| 4 | Basic type checker -- primitives, structs, enums, functions | |
+| 5 | Parse `derive` clauses, inline type constraints, method syntax -- store in AST | |
+| 6 | LLVM IR emission -- arithmetic, control flow, function calls | |
+| 7 | Native binary output -- link and run | |
+| 8 | WASM binary output -- same IR, WASM backend | |
+| 9 | Test suite -- 200+ parser tests, 100+ type checker tests | |
 
 **No generics. No ownership checking. No contracts.**
 A working pipeline first. Parse everything. Enforce nothing (yet).
 
 ---
 
-### Phase 1 — Full Language Surface (3–6 months)
+### Phase 1 -- Full Language Surface (3-6 months)
 
 Starts only when Phase 0 is complete and verified.
 
-- Ownership model — lexical scope borrowing
+- Ownership model -- lexical scope borrowing
 - Generics via comptime monomorphisation with inline constraints
-- Contracts as runtime guards — `requires`, `ensures`, `invariant`
-- Contract collection methods — `is_sorted`, `all`, `none`, `contains`
-- `derive` code generation — `Eq`, `Clone`, `Display`, `Hash`, `Ord`
+- Contracts as runtime guards -- `requires`, `ensures`, `invariant`
+- Contract collection methods -- `is_sorted`, `all`, `none`, `contains`
+- `derive` code generation -- `Eq`, `Clone`, `Display`, `Hash`, `Ord`
 - Enums with pattern matching and exhaustion checking
 - Module system and `use` declarations
 - Basic standard library: core, io, collections, string, math, ffi
-- Standard library conformance testing — `test` package with contract-aware runner
-- Error handling — `Result`, `Option`, `?` operator
+- Standard library conformance testing -- `test` package with contract-aware runner
+- Error handling -- `Result`, `Option`, `?` operator
 - Async runtime and channel primitives
-- Package manager prototype — local resolution only
+- Package manager prototype -- local resolution only
 - Canonical formatter (`xiom fmt`)
 - Language server (LSP) prototype
 
 ---
 
-### Phase 2 — Self-Hosting (6–12 months after Phase 1)
+### Phase 2 -- Self-Hosting (6-12 months after Phase 1)
 
 Starts only when Phase 1 is stable enough to write the compiler in XIOM itself.
 
-#### 2A — Core Compiler Rewrite
+#### 2A -- Core Compiler Rewrite
 
-- Rewrite lexer in XIOM — compiled by Phase 1 compiler
+- Rewrite lexer in XIOM -- compiled by Phase 1 compiler
 - Rewrite parser in XIOM
 - Rewrite type checker in XIOM
 - Rewrite IR emitter and LLVM bindings in XIOM
 - Compile new compiler with Phase 1 compiler
-- New compiler compiles itself — bootstrap complete
-- **Phase 0 Rust compiler kept as permanent bootstrap fallback** — never deleted
+- New compiler compiles itself -- bootstrap complete
+- **Phase 0 Rust compiler kept as permanent bootstrap fallback** -- never deleted
 
-> **✅ Self-hosting achieved at v0.11.0 "Self-Hosted"** (2026-07-01). The XIOM compiler (`selfhost/xiom_v11_test.xi`) compiles to a native binary that emits real LLVM IR — `define i64 @add(...)` with `add i64` instructions and `call i64 @add(...)`. Full C runtime body parser provides file I/O, string interning, character access, IR emission, and function table management. 213 tests passing.
+> **[OK] Self-hosting achieved at v0.11.0 "Self-Hosted"** (2026-07-01). The XIOM compiler (`selfhost/xiom_v11_test.xi`) compiles to a native binary that emits real LLVM IR -- `define i64 @add(...)` with `add i64` instructions and `call i64 @add(...)`. Full C runtime body parser provides file I/O, string interning, character access, IR emission, and function table management. 213 tests passing.
 
-#### 2B — AI Tooling (Built During Self-Hosting)
+#### 2B -- AI Tooling (Built During Self-Hosting)
 
-- **`--diagnostics=json`** — structured compiler output. Enables AI agents to parse errors without string-matching. 2-day addition to error-reporting path.
-- **`--dump-contracts`** — queryable contract index across a package. Emits JSON of every function's `requires`/`ensures`/`invariant`. AST traversal + output flag. AI tooling uses this during self-hosting to compose functions without reading source.
-- **Contract semantics audit** — track contract quality during Phase 2 corpus generation. Gate on Phase 3 Z3 work. Audit before building SMT integration.
-- **Borrow-error AI friction tracking** — measure agent failure rate on borrow errors. Data collection only. Informs ownership model revision decision.
+- **`--diagnostics=json`** -- structured compiler output. Enables AI agents to parse errors without string-matching. 2-day addition to error-reporting path.
+- **`--dump-contracts`** -- queryable contract index across a package. Emits JSON of every function's `requires`/`ensures`/`invariant`. AST traversal + output flag. AI tooling uses this during self-hosting to compose functions without reading source.
+- **Contract semantics audit** -- track contract quality during Phase 2 corpus generation. Gate on Phase 3 Z3 work. Audit before building SMT integration.
+- **Borrow-error AI friction tracking** -- measure agent failure rate on borrow errors. Data collection only. Informs ownership model revision decision.
 
 ---
 
-### Phase 3 — Ecosystem & Static Contracts (ongoing)
+### Phase 3 -- Ecosystem & Static Contracts (ongoing)
 
 - Z3 SMT integration for static contract verification (gated on Phase 2 contract audit)
 - Package registry
@@ -377,13 +377,13 @@ Starts only when Phase 1 is stable enough to write the compiler in XIOM itself.
 - Canonical formatter (`xiom fmt`)
 - Documentation generator (`xiom doc`)
 - Additional compiler targets
-- **WASM compiler distribution** — the compiler itself as WASM module for browser playground
+- **WASM compiler distribution** -- the compiler itself as WASM module for browser playground
 - **Mechanical FFI binding generation** with contract inference from C headers
-- **Showcase projects:** XiomDB (KV store → transactions) → XiomVDB (vector store) — gated on full self-hosting bootstrap (byte-for-byte identical compiler output)
+- **Showcase projects:** XiomDB (KV store -> transactions) -> XiomVDB (vector store) -- gated on full self-hosting bootstrap (byte-for-byte identical compiler output)
 
 ---
 
-### Ecosystem Phase — Libraries & Distribution
+### Ecosystem Phase -- Libraries & Distribution
 
 Starts after Phase 3 compiler is production-stable and self-hosting.
 
@@ -391,15 +391,15 @@ Starts after Phase 3 compiler is production-stable and self-hosting.
 
 | Milestone | Status |
 |-----------|--------|
-| **Installer** — `install.ps1` builds release binary, adds to PATH | ✅ v0.10.0 |
-| **HTTP library** — `xiom-http` with libcurl FFI bindings | 🚧 |
-| **Crypto library** — `xiom-crypto` with OpenSSL FFI bindings | 🚧 |
-| **SQL library** — `xiom-sql` with SQLite FFI bindings | 🚧 |
-| **GPU compute** — `xiom-gpu` with Vulkan FFI bindings | 📋 Planned |
-| **Package registry** — `xiom pkg publish` / `xiom pkg install` | 🚧 |
-| **CI/CD** — GitHub Actions build matrix | 📋 Planned |
-| **XiomDB** — Embedded KV store (gated on ecosystem libraries) | 📋 Planned |
-| **XiomVDB** — Vector database (gated on XiomDB) | 📋 Planned |
+| **Installer** -- `install.ps1` builds release binary, adds to PATH | [OK] v0.10.0 |
+| **HTTP library** -- `xiom-http` with libcurl FFI bindings | [WIP] |
+| **Crypto library** -- `xiom-crypto` with OpenSSL FFI bindings | [WIP] |
+| **SQL library** -- `xiom-sql` with SQLite FFI bindings | [WIP] |
+| **GPU compute** -- `xiom-gpu` with Vulkan FFI bindings | [CLIPBOARD] Planned |
+| **Package registry** -- `xiom pkg publish` / `xiom pkg install` | [WIP] |
+| **CI/CD** -- GitHub Actions build matrix | [CLIPBOARD] Planned |
+| **XiomDB** -- Embedded KV store (gated on ecosystem libraries) | [CLIPBOARD] Planned |
+| **XiomVDB** -- Vector database (gated on XiomDB) | [CLIPBOARD] Planned |
 
 **Design principle:** All ecosystem libraries are written in XIOM, compiled by xiom, and distributed as packages via `xiom pkg`. The compiler does not change for ecosystem work.
 
@@ -437,10 +437,10 @@ These were recommendations promoted to decisions on 2026-06-30.
 
 | Decision | Status | Source |
 |----------|--------|--------|
-| **Single `main` branch** — no per-OS forks. Conditional compilation for platform-specific code. CI build matrix per commit. | DECIDED | XIOM_CrossPlatform_Distribution.md |
+| **Single `main` branch** -- no per-OS forks. Conditional compilation for platform-specific code. CI build matrix per commit. | DECIDED | XIOM_CrossPlatform_Distribution.md |
 | **Three distribution paths:** pre-built binaries (primary), build-from-source (secondary), WASM compiler playground (tertiary). | DECIDED | XIOM_CrossPlatform_Distribution.md |
 | **Version manager** (`xiomup`) deferred to Phase 3. Design distribution infrastructure to support it from the start. | DEFERRED | XIOM_CrossPlatform_Distribution.md |
-| **Showcase projects:** XiomDB first (KV store → transactions), XiomVDB second (built on XiomDB storage engine). Gated on full self-hosting (byte-for-byte identical compiler output). | DECIDED | XIOM_Showcase_Projects.md |
+| **Showcase projects:** XiomDB first (KV store -> transactions), XiomVDB second (built on XiomDB storage engine). Gated on full self-hosting (byte-for-byte identical compiler output). | DECIDED | XIOM_Showcase_Projects.md |
 | **XiomDB scoped to Phase A (KV store, no transactions) before XiomVDB.** Transactions are Phase B, post-XiomVDB. | DECIDED | XIOM_Showcase_Projects.md |
 | **Both showcase projects expose C-ABI surface** for consumption from Rust/Python/Tauri. First outbound FFI test. | DECIDED | XIOM_Showcase_Projects.md |
 | **`--diagnostics=json`** structured compiler output. Built during Phase 2 self-hosting. | DECIDED | XIOM_Phase3_Recommendations.md |
@@ -448,9 +448,9 @@ These were recommendations promoted to decisions on 2026-06-30.
 | **Contract semantics audit** before Z3 integration. Phase 2 output audited for contract quality. Gate on Phase 3 SMT work. | DECIDED | XIOM_Phase3_Recommendations.md |
 | **Borrow-error AI friction tracking** during Phase 2. Ownership model revisable if data shows systematic agent failure. | DECIDED | XIOM_Phase3_Recommendations.md |
 | **Mechanical FFI binding generation** prioritized in Phase 3. Auto-infer contracts from C headers where possible. | DECIDED | XIOM_Phase3_Recommendations.md |
-| **WASM compiler distribution** — the compiler itself as a WASM module for browser playground. Phase 3. | DECIDED | XIOM_Phase3_Recommendations.md |
-| **Stdlib conformance testing** — `test` package with contract-aware runner. Phase 1 addition. | DECIDED | XIOM_Phase3_Recommendations.md |
-| **No AGI-oriented feature creep** — reaffirmed. All AI-tooling decisions trace to observable agent failure modes, not speculation. | DECIDED | XIOM_Phase3_Recommendations.md |
+| **WASM compiler distribution** -- the compiler itself as a WASM module for browser playground. Phase 3. | DECIDED | XIOM_Phase3_Recommendations.md |
+| **Stdlib conformance testing** -- `test` package with contract-aware runner. Phase 1 addition. | DECIDED | XIOM_Phase3_Recommendations.md |
+| **No AGI-oriented feature creep** -- reaffirmed. All AI-tooling decisions trace to observable agent failure modes, not speculation. | DECIDED | XIOM_Phase3_Recommendations.md |
 
 ---
 
@@ -462,21 +462,21 @@ These were recommendations promoted to decisions on 2026-06-30.
 
 | Test Type | Description | Phase |
 |-----------|-------------|-------|
-| **Unit tests** | Per-crate tests for lexer, parser, type checker, codegen | Phase 0–1 (in progress) |
+| **Unit tests** | Per-crate tests for lexer, parser, type checker, codegen | Phase 0-1 (in progress) |
 | **Stdlib conformance** | Contract-aware tests that verify every stdlib function satisfies its own contracts | Phase 1 |
-| **Differential correctness** | Same XIOM program compiled by Rust compiler AND XIOM compiler → diff the LLVM IR. Must be identical. Strongest correctness signal in Phase 2. | Phase 2A |
+| **Differential correctness** | Same XIOM program compiled by Rust compiler AND XIOM compiler -> diff the LLVM IR. Must be identical. Strongest correctness signal in Phase 2. | Phase 2A |
 | **Feature stress tests** | Programs targeting features the compiler source doesn't heavily exercise: async (100 concurrent tasks), float matrix multiply, 50-field struct derives, 10-level nested borrows, 5-level generic chains | Phase 2B |
 | **Compile-time benchmarks** | Per-commit metrics: 100-function file throughput, 10K-line scaling, 100-generic monomorphisation time, 500-borrow check time | Phase 2C |
-| **Regression tests** | Per-bug minimal reproduction. Every bug found during self-hosting becomes a regression test. | Phase 2C–ongoing |
-| **Ecosystem stress** | XiomDB and XiomVDB compile — real application-scale stress on the entire pipeline | Phase 3 |
+| **Regression tests** | Per-bug minimal reproduction. Every bug found during self-hosting becomes a regression test. | Phase 2C-ongoing |
+| **Ecosystem stress** | XiomDB and XiomVDB compile -- real application-scale stress on the entire pipeline | Phase 3 |
 
 ### Decision: Build During Phase 2, Not After
 
 **Status: DECIDED.** Stress tests run during self-hosting, not after. Reasoning:
 
 1. Catch regressions as the compiler is rewritten, not after it already compiled itself
-2. Fixing bugs post-self-host means fixing in XIOM and re-bootstrapping — a dependency loop
-3. The Rust fallback compiler is the active development tool during Phase 2 — use it to validate the XIOM compiler's output before retiring it
+2. Fixing bugs post-self-host means fixing in XIOM and re-bootstrapping -- a dependency loop
+3. The Rust fallback compiler is the active development tool during Phase 2 -- use it to validate the XIOM compiler's output before retiring it
 4. Differential tests produce the strongest correctness signal early (byte-for-byte IR comparison)
 
 ### What the Compiler Source Exercises vs. Doesn't
@@ -527,4 +527,4 @@ Decisions do not disappear. We keep a record of what we tried and why we moved o
 
 ---
 
-*XIOM Build Strategy — living document, updated as decisions are made.*
+*XIOM Build Strategy -- living document, updated as decisions are made.*

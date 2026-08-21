@@ -11,7 +11,7 @@ use xiom.math;
 ## Constants
 
 ### `PI`
-The mathematical constant π (pi), approximately 3.141592653589793.
+The mathematical constant pi (pi), approximately 3.141592653589793.
 
 ```xiom
 const PI: Float64;
@@ -25,7 +25,7 @@ const E: Float64;
 ```
 
 ### `TAU`
-The mathematical constant τ (tau), equal to 2π, approximately 6.283185307179586.
+The mathematical constant tau (tau), equal to 2pi, approximately 6.283185307179586.
 
 ```xiom
 const TAU: Float64;
@@ -140,28 +140,28 @@ fn tan(x: Float64) -> Float64;
 ```
 
 ### `asin(x)`
-Returns the arcsine of `x` in the range [-π/2, π/2]. Returns `NaN` if `|x| > 1`.
+Returns the arcsine of `x` in the range [-pi/2, pi/2]. Returns `NaN` if `|x| > 1`.
 
 ```xiom
 fn asin(x: Float64) -> Float64;
 ```
 
 ### `acos(x)`
-Returns the arccosine of `x` in the range [0, π]. Returns `NaN` if `|x| > 1`.
+Returns the arccosine of `x` in the range [0, pi]. Returns `NaN` if `|x| > 1`.
 
 ```xiom
 fn acos(x: Float64) -> Float64;
 ```
 
 ### `atan(x)`
-Returns the arctangent of `x` in the range [-π/2, π/2].
+Returns the arctangent of `x` in the range [-pi/2, pi/2].
 
 ```xiom
 fn atan(x: Float64) -> Float64;
 ```
 
 ### `atan2(y, x)`
-Returns the four-quadrant arctangent of `y / x` in the range [-π, π]. Uses the signs of both arguments to determine the correct quadrant.
+Returns the four-quadrant arctangent of `y / x` in the range [-pi, pi]. Uses the signs of both arguments to determine the correct quadrant.
 
 ```xiom
 fn atan2(y: Float64, x: Float64) -> Float64;

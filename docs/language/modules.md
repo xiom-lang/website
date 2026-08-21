@@ -13,9 +13,9 @@ module math.vector
 ## Importing
 
 ```xiom
-use math.vector              // imports the module — access as vector.Vec3
-use math.vector.Vec3         // imports one type — access as Vec3
-use math.vector.Vec3 as V3   // alias — access as V3
+use math.vector              // imports the module -- access as vector.Vec3
+use math.vector.Vec3         // imports one type -- access as Vec3
+use math.vector.Vec3 as V3   // alias -- access as V3
 use math.vector.*            // imports all public symbols (discouraged)
 ```
 
@@ -37,16 +37,16 @@ fn internal_helper() {  // private to this module
 
 ## Method Declarations
 
-Methods on a type are declared using the `TypeName.methodName` syntax. The receiver (`self`) is synthesized implicitly by the compiler — it does not appear in the parameter list.
+Methods on a type are declared using the `TypeName.methodName` syntax. The receiver (`self`) is synthesized implicitly by the compiler -- it does not appear in the parameter list.
 
 ```xiom
 pub fn Vec3.dot(other: &Vec3) -> Float32 {
   return x * other.x + y * other.y + z * other.z;
-  // self is implicit — fields accessed directly
+  // self is implicit -- fields accessed directly
 }
 
 pub fn Vec3.set_x(value: Float32) {
-  x = value;   // self is &mut Vec3 — field mutation detected
+  x = value;   // self is &mut Vec3 -- field mutation detected
 }
 ```
 
@@ -64,7 +64,7 @@ let v = Vec3{ x: 1.0, y: 2.0, z: 3.0 };
 let d = v.dot(&other);
 ```
 
-Methods are dispatched structurally — any type with matching method signatures satisfies the interface, regardless of module boundaries.
+Methods are dispatched structurally -- any type with matching method signatures satisfies the interface, regardless of module boundaries.
 
 ## Package Manifest
 
@@ -98,11 +98,11 @@ For the full ecosystem, see the [Ecosystem page](https://xiom-lang.org/ecosystem
 
 ```
 myproject/
-├── package.xi              # package manifest
-├── src/
-│   ├── main.xi             # entry point
-│   └── lib.xi              # library code
-└── deps/                   # resolved dependencies (generated)
+|-- package.xi              # package manifest
+|-- src/
+|   |-- main.xi             # entry point
+|   `-- lib.xi              # library code
+`-- deps/                   # resolved dependencies (generated)
 ```
 
 ## Standard Library

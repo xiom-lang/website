@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>XIOM — Memory Model</title>
+<title>XIOM -- Memory Model</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,10 +94,10 @@
     </nav>
 
     <main class="content-section" style="border:none;padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 - 234 tests</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Memory Model</h1>
       <p>XIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
-<p>The model uses <strong>lexical scope borrowing</strong> — simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.</p>
+<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.</p>
 <h2>Ownership Rules</h2>
 <table>
 <tr>
@@ -139,12 +139,12 @@
 <span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
 <span class='func'>read_only</span>(&v);        <span class='cm'>// borrow, v still valid</span>
 <span class='func'>mutate</span>(&mut v);       <span class='cm'>// write borrow, v still valid  </span>
-<span class='func'>consume</span>(v);           <span class='cm'>// move — v no longer usable here</span>
+<span class='func'>consume</span>(v);           <span class='cm'>// move -- v no longer usable here</span>
 <span class='cm'>// <span class='func'>read_only</span>(&v)     // COMPILE ERROR: v was moved</span>
 </code></pre>
 <h2>What the Model Cannot Handle</h2>
 <p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
-<p>This is a constraint, not a bug — it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
+<p>This is a constraint, not a bug -- it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
 <h2>Clone</h2>
 <p>Use <code>.clone()</code> to explicitly duplicate a value:</p>
 <pre class="language-xiom"><code>
@@ -152,17 +152,17 @@
 a.<span class='func'>push</span>(<span class='num'>1</span>);
 
 <span class='kw'>let</span> b = a.<span class='func'>clone</span>();    <span class='cm'>// explicit deep copy</span>
-<span class='cm'>// a <span class='kw'>is</span> still valid — ownership was not moved</span>
+<span class='cm'>// a <span class='kw'>is</span> still valid -- ownership was not moved</span>
 
 <span class='func'>consume</span>(a);           <span class='cm'>// a <span class='kw'>is</span> moved</span>
-<span class='cm'>// b <span class='kw'>is</span> still valid  — it was cloned, not moved</span>
+<span class='cm'>// b <span class='kw'>is</span> still valid  -- it was cloned, not moved</span>
 </code></pre>
 <p>Types with <code>derive[Clone]</code> get automatic clone implementations. Manual <code>clone()</code> methods can be written for types that need custom duplication logic.</p>
 <h2>Move Semantics</h2>
 <p>Passing a value to a function moves ownership:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>take</span>(v: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
-  <span class='cm'>// v <span class='kw'>is</span> owned here — freed at end of scope</span>
+  <span class='cm'>// v <span class='kw'>is</span> owned here -- freed at end of scope</span>
 }
 
 <span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
@@ -172,11 +172,11 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 <p>Use borrows when you don't need ownership:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>inspect</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
-  <span class='cm'>// read-only access — caller retains ownership</span>
+  <span class='cm'>// read-only access -- caller retains ownership</span>
 }
 
 <span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>inspect</span>(&data);       <span class='cm'>// borrow — data still valid</span>
+<span class='func'>inspect</span>(&data);       <span class='cm'>// borrow -- data still valid</span>
 <span class='func'>inspect</span>(&data);       <span class='cm'>// can borrow again</span>
 </code></pre>
 <h2>Unsafe Blocks</h2>
@@ -184,7 +184,7 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 <pre class="language-xiom"><code>
 <span class='kw'>unsafe</span> {
   <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>some_c_function</span>();
-  <span class='kw'>let</span> value = *raw;   <span class='cm'>// dereference — programmer guarantees validity</span>
+  <span class='kw'>let</span> value = *raw;   <span class='cm'>// dereference -- programmer guarantees validity</span>
 }
 </code></pre>
 <p>The <code>unsafe</code> keyword is a declaration that the programmer takes responsibility for memory safety inside that scope. Unsafe blocks are visible in code review and audits. They cannot be hidden.</p>
@@ -228,7 +228,7 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 
 <footer>
   <div class="wrap">
-    <p>XIOM v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>XIOM v0.12.0 - <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>

@@ -36,7 +36,7 @@
 
 ## Type Inference
 
-Types are inferred from context in `let` and `var` bindings and in closure parameters. Inference does not cross function boundaries — function signatures are always fully annotated.
+Types are inferred from context in `let` and `var` bindings and in closure parameters. Inference does not cross function boundaries -- function signatures are always fully annotated.
 
 ```xiom
 let x = 42;          // inferred: Int
@@ -98,7 +98,7 @@ fn Score.compare(other: &Score) -> Int {
   return 0;
 }
 
-// Score now satisfies Comparable — no declaration needed
+// Score now satisfies Comparable -- no declaration needed
 let result = max(Score{ value: 10 }, Score{ value: 20 });
 ```
 
@@ -113,7 +113,7 @@ fn sort[T: Ord](items: &mut Vec[T])
 fn dedup[T: Eq + Hash](items: &mut Vec[T])
 ```
 
-This separates type requirements from value preconditions — `requires` is for value-level conditions only.
+This separates type requirements from value preconditions -- `requires` is for value-level conditions only.
 
 ## Derive
 
@@ -121,11 +121,11 @@ The `derive` clause generates correct-by-construction implementations:
 
 | Derive | Generates |
 |--------|-----------|
-| `Eq` | Structural equality — every field compared |
-| `Clone` | Deep copy — every field cloned recursively |
+| `Eq` | Structural equality -- every field compared |
+| `Clone` | Deep copy -- every field cloned recursively |
 | `Display` | Canonical string representation |
-| `Hash` | Structural hash — every field hashed and combined |
-| `Ord` | Lexicographic ordering — fields compared in declaration order |
+| `Hash` | Structural hash -- every field hashed and combined |
+| `Ord` | Lexicographic ordering -- fields compared in declaration order |
 
 **Constraint:** Types with `invariant` clauses cannot derive `Eq`, `Hash`, or `Ord`. Invariants make equality semantically ambiguous. `Clone` and `Display` remain available.
 

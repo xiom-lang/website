@@ -1,4 +1,4 @@
-# XIOM Concepts — For Programmers from Other Languages
+# XIOM Concepts -- For Programmers from Other Languages
 
 > **You already know how to program.** This guide maps the concepts you know to how they work in XIOM. No fluff. Just translations.
 
@@ -8,25 +8,25 @@
 
 | Language | Closest mental model to XIOM |
 |----------|-------------------------------|
-| **Rust** | Ownership, Result/Option, traits-as-interfaces, derive macros → `derive[]`. You lose lifetimes and gain contracts. |
-| **Go** | Structural interfaces (same!), `if err != nil` → `Result[T,E]`, goroutines → `spawn`. You lose GC and null. |
-| **C++** | RAII, move semantics, templates → generics, `std::optional` → `Option[T]`. You lose inheritance, exceptions, and header files. |
-| **Python** | Type hints become mandatory. `Optional` → `Option[T]`. No `None`. No exceptions. |
-| **Java/C#** | Interfaces without `implements`. No `null`. No exceptions. No `class` — use structs + methods. |
-| **JavaScript** | `undefined` doesn't exist. Promises → async/await. No prototype chain. No `this`. |
+| **Rust** | Ownership, Result/Option, traits-as-interfaces, derive macros -> `derive[]`. You lose lifetimes and gain contracts. |
+| **Go** | Structural interfaces (same!), `if err != nil` -> `Result[T,E]`, goroutines -> `spawn`. You lose GC and null. |
+| **C++** | RAII, move semantics, templates -> generics, `std::optional` -> `Option[T]`. You lose inheritance, exceptions, and header files. |
+| **Python** | Type hints become mandatory. `Optional` -> `Option[T]`. No `None`. No exceptions. |
+| **Java/C#** | Interfaces without `implements`. No `null`. No exceptions. No `class` -- use structs + methods. |
+| **JavaScript** | `undefined` doesn't exist. Promises -> async/await. No prototype chain. No `this`. |
 
 ---
 
-## 1. No Null — Option[T] Instead
+## 1. No Null -- Option[T] Instead
 
 Every language has null. XIOM doesn't.
 
 | Language | Absence |
 |----------|---------|
-| Java/C# | `null` — crashes at runtime |
-| Python | `None` — crashes at runtime |
-| Rust | `Option<T>` — compiler enforces handling |
-| **XIOM** | **`Option[T]` — compiler enforces handling** |
+| Java/C# | `null` -- crashes at runtime |
+| Python | `None` -- crashes at runtime |
+| Rust | `Option<T>` -- compiler enforces handling |
+| **XIOM** | **`Option[T]` -- compiler enforces handling** |
 
 ```xiom
 // Instead of:  String name = null;
@@ -43,17 +43,17 @@ You cannot accidentally use `None` as a value. The compiler rejects it.
 
 ---
 
-## 2. No Exceptions — Result[T, E] Instead
+## 2. No Exceptions -- Result[T, E] Instead
 
 Every language has exceptions. XIOM doesn't.
 
 | Language | Error handling |
 |----------|---------------|
-| Java/C# | `try/catch` — invisible control flow |
-| Python | `try/except` — any line can throw |
-| Go | `if err != nil` — explicit but verbose |
-| Rust | `Result<T, E>` + `?` — explicit, clean |
-| **XIOM** | **`Result<T, E>` + `?` — explicit, clean** |
+| Java/C# | `try/catch` -- invisible control flow |
+| Python | `try/except` -- any line can throw |
+| Go | `if err != nil` -- explicit but verbose |
+| Rust | `Result<T, E>` + `?` -- explicit, clean |
+| **XIOM** | **`Result<T, E>` + `?` -- explicit, clean** |
 
 ```xiom
 // Instead of:  throw new IOException("file not found");
@@ -63,7 +63,7 @@ fn read_config(path: Str) -> Result[Config, Str] {
   return Ok(config);
 }
 
-// At the call site — must handle both cases
+// At the call site -- must handle both cases
 match read_config("config.json") {
   Ok(c)  => use(c),
   Err(e) => io.println("error: " + e),
@@ -74,35 +74,35 @@ The `?` operator is `try!` from Rust, `try` from Zig. It returns `Err(...)` imme
 
 ---
 
-## 3. Ownership — No GC, No Manual free()
+## 3. Ownership -- No GC, No Manual free()
 
 | Language | Memory management |
 |----------|------------------|
-| Java/C#/Python/Go | Garbage collector — pauses, unpredictable |
-| C | `malloc`/`free` — manual, error-prone |
-| C++ | RAII + smart pointers — complex rules |
-| Rust | Ownership + borrow checker + lifetimes — powerful but complex |
-| **XIOM** | **Ownership + lexical scope borrowing — same safety, no lifetimes** |
+| Java/C#/Python/Go | Garbage collector -- pauses, unpredictable |
+| C | `malloc`/`free` -- manual, error-prone |
+| C++ | RAII + smart pointers -- complex rules |
+| Rust | Ownership + borrow checker + lifetimes -- powerful but complex |
+| **XIOM** | **Ownership + lexical scope borrowing -- same safety, no lifetimes** |
 
 ```xiom
 // A value has ONE owner. Assignment moves ownership.
 let a = Vec.new();
-let b = a;       // a MOVED to b — a is now invalid
+let b = a;       // a MOVED to b -- a is now invalid
 // a.push(1);    // COMPILE ERROR: a was moved
 
 // Borrow temporarily with & (read) or &mut (write)
-read_only(&b);   // b is borrowed — still valid after
+read_only(&b);   // b is borrowed -- still valid after
 mutate(&mut b);  // exclusive write borrow
 
 // Clone to duplicate
-let c = b.clone();  // explicit copy — both valid
+let c = b.clone();  // explicit copy -- both valid
 ```
 
 **The key difference from Rust:** No lifetime annotations. Ever. Borrows expire at the end of the block where they're created. You can see when a borrow ends by looking at the braces.
 
 ---
 
-## 4. Structs + Methods — No Classes, No Inheritance
+## 4. Structs + Methods -- No Classes, No Inheritance
 
 XIOM has no `class`, no `extends`, no `implements`, no `virtual`, no `override`, no `protected`. Here's what you use instead:
 
@@ -116,7 +116,7 @@ XIOM has no `class`, no `extends`, no `implements`, no `virtual`, no `override`,
 | `virtual` / `override` | **Not supported.** Use structural interfaces for polymorphism. |
 | `abstract class` | **Not supported.** Use interfaces. |
 | Constructor | `fn TypeName.new() -> Type` method |
-| `this` / `self` | `self` is **implicit** — access fields directly |
+| `this` / `self` | `self` is **implicit** -- access fields directly |
 | `static` method | Free function `fn function_name()` |
 | Property getter/setter | Direct field access. Use methods for logic. |
 
@@ -128,7 +128,7 @@ type Point = {
 } derive[Eq, Clone, Display]  // auto-generate equality, clone, to-string
 
 pub fn Point.distance(other: &Point) -> Float64 {
-  // self is implicit — x means self.x
+  // self is implicit -- x means self.x
   let dx = x - other.x;
   let dy = y - other.y;
   return dx * dx + dy * dy;
@@ -137,9 +137,9 @@ pub fn Point.distance(other: &Point) -> Float64 {
 
 ---
 
-## 5. Polymorphism — Structural Interfaces
+## 5. Polymorphism -- Structural Interfaces
 
-XIOM has no inheritance. Polymorphism works through **structural interfaces** — if a type has the required methods, it satisfies the interface. No declaration needed.
+XIOM has no inheritance. Polymorphism works through **structural interfaces** -- if a type has the required methods, it satisfies the interface. No declaration needed.
 
 ```xiom
 // Define what "comparable" means
@@ -151,7 +151,7 @@ interface Comparable {
 type Score = { value: Int; }
 type Temperature = { kelvin: Float64; }
 
-// Implement compare for each — NO "implements" keyword needed
+// Implement compare for each -- NO "implements" keyword needed
 fn Score.compare(other: &Score) -> Int { return value - other.value; }
 fn Temperature.compare(other: &Temperature) -> Int { ... }
 
@@ -169,7 +169,7 @@ This is Go's interface model. It's also how Python's duck typing works, except c
 
 ---
 
-## 6. Contracts — Unique to XIOM
+## 6. Contracts -- Unique to XIOM
 
 No mainstream language has contracts as compiler-enforced specifications. This is XIOM's defining feature.
 
@@ -199,15 +199,15 @@ When a contract is violated at runtime, the program panics with the **exact** co
 
 ---
 
-## 7. Public / Private — Module-Based Visibility
+## 7. Public / Private -- Module-Based Visibility
 
 | Language | Privacy model |
 |----------|--------------|
 | Java/C# | `public`/`private`/`protected` on classes and members |
 | C++ | `public:`/`private:` sections in class body |
-| Python | `_convention` — not enforced |
-| Rust | `pub` — everything private by default |
-| **XIOM** | **`pub` — everything private by default** |
+| Python | `_convention` -- not enforced |
+| Rust | `pub` -- everything private by default |
+| **XIOM** | **`pub` -- everything private by default** |
 
 ```xiom
 module myproject.data;
@@ -221,7 +221,7 @@ pub fn User.validate() -> Bool {  // visible outside
   return email.contains("@");
 }
 
-fn hash_email(user: &User) -> Int {  // PRIVATE — only visible in this module
+fn hash_email(user: &User) -> Int {  // PRIVATE -- only visible in this module
   // ...
 }
 ```
@@ -230,15 +230,15 @@ No `protected`. No `friend`. No `package-private`. Just `pub` or private.
 
 ---
 
-## 8. Generics — Like Templates, But Type-Checked Before Instantiation
+## 8. Generics -- Like Templates, But Type-Checked Before Instantiation
 
 | Language | Generics |
 |----------|----------|
-| C++ | Templates — duck-typed, errors at instantiation |
-| Java | Type erasure — limited, no primitives |
-| C# | Reified generics — better, still class-based |
-| Rust/Go | Monomorphised — zero-cost, checked at definition |
-| **XIOM** | **Monomorphised — zero-cost, checked at definition** |
+| C++ | Templates -- duck-typed, errors at instantiation |
+| Java | Type erasure -- limited, no primitives |
+| C# | Reified generics -- better, still class-based |
+| Rust/Go | Monomorphised -- zero-cost, checked at definition |
+| **XIOM** | **Monomorphised -- zero-cost, checked at definition** |
 
 ```xiom
 // Instead of:  template<typename T> T max(T a, T b) { return a > b ? a : b; }
@@ -257,7 +257,7 @@ The `[T: Comparable]` constraint means: "T must have a `compare` method." The co
 
 ---
 
-## 9. Pattern Matching — Like switch, But Exhaustive
+## 9. Pattern Matching -- Like switch, But Exhaustive
 
 ```xiom
 // Instead of:  switch (value) { case 1: ... break; default: ... }
@@ -279,7 +279,7 @@ The compiler forces you to handle **every** variant. Missing a case is a compile
 
 ---
 
-## 10. Async — Like async/await, With Channels
+## 10. Async -- Like async/await, With Channels
 
 ```xiom
 use xiom.async;
@@ -312,23 +312,23 @@ match rx.recv() {
 
 ---
 
-## 11. Compile-Time Code — comptime
+## 11. Compile-Time Code -- comptime
 
 No preprocessor. No macros. No templates. One keyword: `comptime`.
 
 ```xiom
-// Evaluated at compile time — zero runtime cost
+// Evaluated at compile time -- zero runtime cost
 let size = comptime expensive_computation();
 
 // Generics are just comptime type parameters
 fn max[T: Comparable](a: T, b: T) -> T { ... }
 ```
 
-`comptime` is Zig's model — any expression can be marked compile-time. This is how generics, reflection, and specialization all work. One mechanism.
+`comptime` is Zig's model -- any expression can be marked compile-time. This is how generics, reflection, and specialization all work. One mechanism.
 
 ---
 
-## 12. C FFI — Call Any C Library
+## 12. C FFI -- Call Any C Library
 
 ```xiom
 extern "C" {
@@ -344,7 +344,7 @@ fn alloc(size: UInt) -> *UInt8
 }
 ```
 
-XIOM does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS — all accessed through FFI with contract-verified preconditions.
+XIOM does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS -- all accessed through FFI with contract-verified preconditions.
 
 ---
 

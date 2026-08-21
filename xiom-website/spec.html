@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>XIOM — Language Specification v0.3</title>
+<title>XIOM -- Language Specification v0.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="img/xiom-icon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
 
 <header class="hero blueprint-bg" style="padding:48px 0;">
   <div class="wrap">
-    <div class="eyebrow">Language Reference · Version 0.3</div>
+    <div class="eyebrow">Language Reference - Version 0.3</div>
     <h1>XIOM Language Specification</h1>
     <p class="lede">The normative definition of the XIOM language. This is the single source of truth for syntax, types, memory model, contracts, and compiler behavior.</p>
   </div>
@@ -75,7 +75,7 @@
     <h3>2.7 Comptime Is the Only Metaprogramming</h3>
     <p>There is no preprocessor, no macro system, and no template language. All compile-time code generation uses <code>comptime</code>.</p>
 
-    <h3>2.8 Derive — Compiler-Generated Correctness</h3>
+    <h3>2.8 Derive -- Compiler-Generated Correctness</h3>
     <p>For common interfaces (<code>Eq</code>, <code>Clone</code>, <code>Display</code>, <code>Hash</code>, <code>Ord</code>), the programmer declares intent and the compiler generates the implementation. The generated code is always correct by construction.</p>
   </div>
 
@@ -134,7 +134,7 @@
     <h3>Methods with Implicit Self</h3>
     <pre><code><span class="kw">pub fn</span> <span class="ty">Vec3</span>.<span class="fn">dot</span>(other: &<span class="ty">Vec3</span>) -> <span class="ty">Float32</span> {
   <span class="kw">return</span> x * other.x + y * other.y + z * other.z
-  <span class="cm">// self is implicit — fields accessed directly</span>
+  <span class="cm">// self is implicit -- fields accessed directly</span>
 }</code></pre>
 
     <h3>Structural Interfaces</h3>
@@ -149,7 +149,7 @@
   <span class="kw">if</span> value > other.value { <span class="kw">return</span>  <span class="num">1</span> }
   <span class="kw">return</span> <span class="num">0</span>
 }
-<span class="cm">// Score satisfies Comparable — no implements keyword needed</span></code></pre>
+<span class="cm">// Score satisfies Comparable -- no implements keyword needed</span></code></pre>
   </div>
 
   <!-- Type System -->
@@ -159,9 +159,9 @@
       <tr><th>Type</th><th>Width</th><th>Description</th></tr>
       <tr><td><code>Bool</code></td><td>1 bit</td><td>Only <code>true</code> or <code>false</code>. No integer coercion.</td></tr>
       <tr><td><code>Int</code></td><td>Platform (64-bit)</td><td>Signed. Default integer type.</td></tr>
-      <tr><td><code>Int8</code>–<code>Int64</code></td><td>8–64 bits</td><td>Explicit-width signed integers.</td></tr>
+      <tr><td><code>Int8</code>-<code>Int64</code></td><td>8-64 bits</td><td>Explicit-width signed integers.</td></tr>
       <tr><td><code>UInt</code></td><td>Platform (64-bit)</td><td>Unsigned. Use for sizes and indices.</td></tr>
-      <tr><td><code>UInt8</code>–<code>UInt64</code></td><td>8–64 bits</td><td>Explicit-width unsigned integers. <code>UInt8</code> aliased as <code>Byte</code>.</td></tr>
+      <tr><td><code>UInt8</code>-<code>UInt64</code></td><td>8-64 bits</td><td>Explicit-width unsigned integers. <code>UInt8</code> aliased as <code>Byte</code>.</td></tr>
       <tr><td><code>Float32</code></td><td>IEEE 754 single</td><td></td></tr>
       <tr><td><code>Float64</code></td><td>IEEE 754 double</td><td>Default float type.</td></tr>
       <tr><td><code>Char</code></td><td>32 bits</td><td>Unicode scalar value. Not a byte.</td></tr>
@@ -184,7 +184,7 @@
   <!-- Memory Model -->
   <div class="content-section">
     <h2>5. Memory Model</h2>
-    <p>XIOM uses ownership semantics for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope. The model uses <strong>lexical scope borrowing</strong> — simpler than Rust's lifetime system while providing the same core safety guarantee.</p>
+    <p>XIOM uses ownership semantics for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope. The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system while providing the same core safety guarantee.</p>
 
     <h3>Ownership Rules</h3>
     <table>
@@ -196,7 +196,7 @@
       <tr><td>Explicit Clone</td><td>Duplicating requires <code>.clone()</code>. No implicit deep copy.</td></tr>
       <tr><td>Move On Call</td><td>Passing a value to a function moves ownership unless the parameter is a borrow.</td></tr>
     </table>
-    <p>Borrows cannot be stored in struct fields. Borrows cannot be returned from functions. This is a constraint, not a bug — it is the design.</p>
+    <p>Borrows cannot be stored in struct fields. Borrows cannot be returned from functions. This is a constraint, not a bug -- it is the design.</p>
 
     <pre><code><span class="kw">fn</span> <span class="fn">consume</span>(data: <span class="ty">Vec</span>[<span class="ty">Int</span>]) { }          <span class="cm">// takes ownership</span>
 <span class="kw">fn</span> <span class="fn">read_only</span>(data: &<span class="ty">Vec</span>[<span class="ty">Int</span>]) { }         <span class="cm">// read borrow</span>
@@ -205,7 +205,7 @@
 <span class="kw">let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
 read_only(&v)        <span class="cm">// borrow, v still valid</span>
 mutate(&<span class="kw">mut</span> v)       <span class="cm">// write borrow, v still valid</span>
-consume(v)           <span class="cm">// move — v no longer usable</span></code></pre>
+consume(v)           <span class="cm">// move -- v no longer usable</span></code></pre>
   </div>
 
   <!-- Contract System -->
@@ -248,12 +248,12 @@ consume(v)           <span class="cm">// move — v no longer usable</span></cod
     <h2>7. Target Platforms</h2>
     <table>
       <tr><th>Target</th><th>Path</th></tr>
-      <tr><td>x86_64 Windows / Linux / macOS</td><td>XIOM → LLVM → native</td></tr>
-      <tr><td>aarch64 macOS / iOS / Android</td><td>XIOM → LLVM → native</td></tr>
-      <tr><td>riscv64 Linux</td><td>XIOM → LLVM → native</td></tr>
-      <tr><td>WASM (browsers, Node.js, edge, WASI)</td><td>XIOM → LLVM → WASM32</td></tr>
+      <tr><td>x86_64 Windows / Linux / macOS</td><td>XIOM -> LLVM -> native</td></tr>
+      <tr><td>aarch64 macOS / iOS / Android</td><td>XIOM -> LLVM -> native</td></tr>
+      <tr><td>riscv64 Linux</td><td>XIOM -> LLVM -> native</td></tr>
+      <tr><td>WASM (browsers, Node.js, edge, WASI)</td><td>XIOM -> LLVM -> WASM32</td></tr>
     </table>
-    <p>GPU and console targets are library concerns accessed through C FFI — they are not language features.</p>
+    <p>GPU and console targets are library concerns accessed through C FFI -- they are not language features.</p>
   </div>
 
   <!-- Comparison -->
@@ -266,7 +266,7 @@ consume(v)           <span class="cm">// move — v no longer usable</span></cod
       <tr><td>Null safety</td><td><code>Option[T]</code></td><td><code>Option&lt;T&gt;</code></td><td>Null exists</td><td>Null exists</td></tr>
       <tr><td>Error handling</td><td><code>Result[T, E]</code> + <code>?</code></td><td><code>Result&lt;T, E&gt;</code> + <code>?</code></td><td>Multi-return</td><td>Error unions</td></tr>
       <tr><td>Generics</td><td>Comptime, inline constraints</td><td>Trait bounds</td><td>Limited</td><td>comptime</td></tr>
-      <tr><td>Interfaces</td><td>Structural</td><td>Nominal</td><td>Structural</td><td>—</td></tr>
+      <tr><td>Interfaces</td><td>Structural</td><td>Nominal</td><td>Structural</td><td>--</td></tr>
       <tr><td>Derive</td><td>Compiler-generated</td><td><code>#[derive(...)]</code></td><td>None (manual)</td><td>None</td></tr>
       <tr><td>WASM target</td><td>First-class, co-equal</td><td>Supported</td><td>Limited</td><td>Supported</td></tr>
       <tr><td>C FFI</td><td>Zero-cost</td><td>Zero-cost</td><td>Cgo (overhead)</td><td>First-class</td></tr>
@@ -278,7 +278,7 @@ consume(v)           <span class="cm">// move — v no longer usable</span></cod
 
 <footer>
   <div class="wrap">
-    <p>XIOM Language Specification v0.3 — Living document. All syntax subject to revision until v1.0.</p>
+    <p>XIOM Language Specification v0.3 -- Living document. All syntax subject to revision until v1.0.</p>
     <div class="foot-links">
       <a href="index.html">Home</a>
       <a href="docs.html">Docs</a>

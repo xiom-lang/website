@@ -45,7 +45,7 @@ fn assert(condition: Bool, msg: Str);
 ```
 
 ### `panic_if(condition, msg)`
-Conditionally panics — if `condition` is true, calls `panic(msg)`. Useful for guard clauses.
+Conditionally panics -- if `condition` is true, calls `panic(msg)`. Useful for guard clauses.
 
 ```xiom
 fn panic_if(condition: Bool, msg: Str);

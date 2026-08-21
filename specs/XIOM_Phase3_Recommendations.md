@@ -1,4 +1,4 @@
-# XIOM — Phase 3 Recommendations & Phase 2 Enhancements
+# XIOM -- Phase 3 Recommendations & Phase 2 Enhancements
 
 > Companion to XIOM_Build_Strategy.md. Recommendations that enhance Phase 2
 > tooling and Phase 3 ecosystem work, with a focus on AI-agent ergonomics.
@@ -66,7 +66,7 @@ agents iterate on fixes without human translation of error text.
 
 Today, to know what a function promises, an agent (or human) must read the
 function body or trust a comment. XIOM's contracts already make this data
-exist in the AST — but nothing exposes it independent of parsing source.
+exist in the AST -- but nothing exposes it independent of parsing source.
 
 **Decision:** Add a `--dump-contracts` flag to the Phase 2 compiler that
 emits a structured index of every function's `requires`/`ensures`/`invariant`
@@ -85,10 +85,10 @@ clauses across a package, without requiring the body to be read at all.
 **Why Phase 2, not Phase 3:** This data already exists in the typed AST. It
 costs a new output flag and a traversal. It's what AI tooling needs during
 self-hosting to compose functions without reading every source file. Don't
-wait for Phase 3. Build it during the self-hosting effort itself — it's how
+wait for Phase 3. Build it during the self-hosting effort itself -- it's how
 the AI writing the compiler will understand what functions promise.
 
-**Stretch goal (post-Phase 2):** Contract composition checking — verifying
+**Stretch goal (post-Phase 2):** Contract composition checking -- verifying
 that a chain of calls satisfies each link's `requires` from the prior link's
 `ensures`, without re-deriving everything per call. This is a natural
 extension of the contract index, not a new mechanism.
@@ -104,10 +104,10 @@ extension of the contract index, not a new mechanism.
 **Status: DECIDED.** Sequencing risk. Audit before investing in SMT.
 
 Phase 1 contracts have only been exercised by the team itself. Phase 2
-self-hosting will be the first large, adversarial-scale corpus of contracts —
+self-hosting will be the first large, adversarial-scale corpus of contracts --
 written by AI tooling, against AI-generated XIOM code, at compiler scale.
 
-**Decision:** Treat the first 1–2 months of Phase 2 output as a contract
+**Decision:** Treat the first 1-2 months of Phase 2 output as a contract
 semantics audit. Track:
 - How often `requires`/`ensures` clauses are wrong, vague, or trivially true
 - Whether contract violations caught real bugs or just noise
@@ -123,7 +123,7 @@ must happen *before* Phase 3 SMT work starts, not after.
 
 ### 2. Track Borrow-Error AI Friction (With Escape Hatch)
 
-**Status: DECIDED — measurement with acknowledged revision path.**
+**Status: DECIDED -- measurement with acknowledged revision path.**
 
 Lexical scope borrowing is simpler for a human to read than Rust lifetimes.
 It is not yet known whether it is easier for an LLM to *generate correctly*
@@ -135,8 +135,8 @@ under those constraints.
   human intervention
 
 **Escape hatch:** If empirical data from Phase 2 shows agents cannot reliably
-generate correct borrow patterns under lexical scope — and structured
-diagnostics don't reduce the failure rate to acceptable levels — **the
+generate correct borrow patterns under lexical scope -- and structured
+diagnostics don't reduce the failure rate to acceptable levels -- **the
 ownership model is on the table for revision.** This is not a commitment to
 change it. It is an acknowledgment that a model designed for human readability
 may need adjustment if agents systematically fail against it. The measurement
@@ -150,7 +150,7 @@ doesn't help, the model itself is the second lever.
 
 ### 3. FFI as the Real Adoption Lever
 
-**Status: DECIDED — ecosystem priority within Phase 3 scope.**
+**Status: DECIDED -- ecosystem priority within Phase 3 scope.**
 
 Regardless of AI framing, the largest practical determinant of adoption for a
 new systems language is frictionless wrapping of existing C/C++/Rust
@@ -159,29 +159,29 @@ to prioritize it:
 
 - Make the FFI binding surface mechanical: minimal manual marshalling
   decisions per binding. Generating a binding should be a repetitive,
-  well-specified task — exactly what an agent does well and a human finds
+  well-specified task -- exactly what an agent does well and a human finds
   tedious.
 - Where possible, auto-infer contracts from C header metadata during binding
-  generation (e.g., non-null pointer annotations → `requires` clauses). This
+  generation (e.g., non-null pointer annotations -> `requires` clauses). This
   gives FFI bindings the same safety net as native XIOM code with no extra
   authoring cost.
 
 This is the unglamorous but highest-ROI ecosystem investment. Language design
-rarely decides adoption for a new systems language — packaging and interop
+rarely decides adoption for a new systems language -- packaging and interop
 friction does.
 
 ---
 
 ### 4. WASM Compiler Distribution Path
 
-**Status: DECIDED — unique to XIOM.**
+**Status: DECIDED -- unique to XIOM.**
 
-The XIOM compiler itself compiles to WASM (proven in Phase 0 — same
+The XIOM compiler itself compiles to WASM (proven in Phase 0 -- same
 pipeline flag as user programs). This enables a distribution path no other
 systems language currently offers:
 
 - A web-based XIOM playground where the compiler runs client-side in the
-  browser via WASM — no install, no backend server, no account
+  browser via WASM -- no install, no backend server, no account
 - Instant-on for new users: open a URL, write XIOM, see compiled output or
   run the WASM binary directly in the browser
 - The compiler WASM is a distribution artifact built by the same CI matrix
@@ -196,7 +196,7 @@ backend required. This is a competitive differentiator worth investing in.
 
 ### 5. Standard Library Conformance Testing
 
-**Status: DECIDED — Phase 1 addition.**
+**Status: DECIDED -- Phase 1 addition.**
 
 The showcase projects (XiomDB, XiomVDB) will test the language features.
 But the stdlib itself needs a conformance suite that tests whether every
@@ -207,23 +207,23 @@ function satisfies its own contracts:
 - Does `Result.unwrap` panic on `Err`?
 
 This is separate from compiler tests. It validates that the stdlib
-implementation is correct against its own stated contracts — the same
+implementation is correct against its own stated contracts -- the same
 contracts that user code relies on.
 
 **Implementation:** A `test` package in the stdlib that provides a contract-
-aware test runner. `fn test_push_respects_capacity` — the contract IS the
+aware test runner. `fn test_push_respects_capacity` -- the contract IS the
 test. Start during Phase 1 stdlib implementation.
 
 ---
 
 ### 6. No "AGI-Oriented" Feature Creep
 
-**Status: DECIDED — reaffirming existing decision.**
+**Status: DECIDED -- reaffirming existing decision.**
 
 The Purpose document already rejects "AGI infrastructure framing" as out of
 scope. Everything in this document is framed around today's AI coding agents
 and their concrete, observable failure modes (context limits, need for
-structured feedback, reliance on local reasoning) — not speculation about
+structured feedback, reliance on local reasoning) -- not speculation about
 what a future AGI might want. Keep this boundary explicit.
 
 ---
@@ -232,15 +232,15 @@ what a future AGI might want. Keep this boundary explicit.
 
 | # | Item | Status | Phase | Effort |
 |---|------|--------|-------|--------|
-| D1 | `--diagnostics=json` flag | **DECIDED** | Phase 2 | Low — new output format |
-| D2 | `--dump-contracts` contract index | **DECIDED** | Phase 2 | Low — AST traversal + output flag |
-| 1 | Contract semantics audit before Z3 | **DECIDED** | Phase 2→3 gate | No new scope — timing only |
+| D1 | `--diagnostics=json` flag | **DECIDED** | Phase 2 | Low -- new output format |
+| D2 | `--dump-contracts` contract index | **DECIDED** | Phase 2 | Low -- AST traversal + output flag |
+| 1 | Contract semantics audit before Z3 | **DECIDED** | Phase 2->3 gate | No new scope -- timing only |
 | 2 | Track borrow-error AI friction | **DECIDED** | Phase 2 | Measurement only |
-| 2b | Ownership model revision escape hatch | **DECIDED** (acknowledged) | Deferred to data | No action now — acknowledged path |
-| 3 | Mechanical FFI generation | **DECIDED** | Phase 3 | Medium — within existing FFI scope |
-| 4 | WASM compiler distribution | **DECIDED** | Phase 3 | Medium — compiler WASM + static playground |
-| 5 | Stdlib conformance testing | **DECIDED** | Phase 1 | Low — test package + contract runner |
-| 6 | No AGI-oriented feature creep | **DECIDED** | Ongoing | None — reaffirms existing decision |
+| 2b | Ownership model revision escape hatch | **DECIDED** (acknowledged) | Deferred to data | No action now -- acknowledged path |
+| 3 | Mechanical FFI generation | **DECIDED** | Phase 3 | Medium -- within existing FFI scope |
+| 4 | WASM compiler distribution | **DECIDED** | Phase 3 | Medium -- compiler WASM + static playground |
+| 5 | Stdlib conformance testing | **DECIDED** | Phase 1 | Low -- test package + contract runner |
+| 6 | No AGI-oriented feature creep | **DECIDED** | Ongoing | None -- reaffirms existing decision |
 
 ---
 
@@ -253,5 +253,5 @@ what a future AGI might want. Keep this boundary explicit.
 
 ---
 
-*XIOM Phase 3 Recommendations — Version 1.0. Decisions made 2026-06-30.*
+*XIOM Phase 3 Recommendations -- Version 1.0. Decisions made 2026-06-30.*
 *Recorded in XIOM_Build_Strategy.md decision log.*

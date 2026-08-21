@@ -28,10 +28,10 @@ fn divide(a: Float64, b: Float64) -> Float64
 **Type-level constraints** (which interfaces a generic parameter must satisfy) are declared **inline** with the type parameter, not as `requires` clauses. This separates type requirements from value preconditions:
 
 ```xiom
-// Type constraint — inline
+// Type constraint -- inline
 fn sort[T: Ord](items: &mut Vec[T])
 
-// Value precondition — requires clause
+// Value precondition -- requires clause
 fn pop[T](stack: &mut Stack[T]) -> Option[T]
   requires: !stack.is_empty()
 ```
@@ -48,7 +48,7 @@ type Health = {
 }
 
 // The compiler rejects any code that could violate these invariants.
-// No runtime crash — compile error.
+// No runtime crash -- compile error.
 ```
 
 The compiler guarantees these invariants hold after every mutation. Any code path that could violate them is a compile error.

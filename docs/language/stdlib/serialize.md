@@ -1,4 +1,4 @@
-# `xiom.serialize` — Serialization
+# `xiom.serialize` -- Serialization
 
 Provides interfaces and utilities for serializing and deserializing data in JSON and binary formats. Deserialization preserves and validates contracts (invariants).
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom — XIOM Concepts — For Programmers from Other Languages</title>
+<title>xiom -- XIOM Concepts -- For Programmers from Other Languages</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,8 +94,8 @@
     </nav>
 
     <main class="content-section" style="border:none;padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">XIOM Concepts — For Programmers from Other Languages</h1>
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 - 234 tests</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">XIOM Concepts -- For Programmers from Other Languages</h1>
       <blockquote><p><strong>You already know how to program.</strong> This guide maps the concepts you know to how they work in XIOM. No fluff. Just translations.</p></blockquote>
 <hr>
 <h2>If You're Coming From...</h2>
@@ -106,31 +106,31 @@
 </tr>
 <tr>
 <td><strong>Rust</strong></td>
-<td>Ownership, Result/Option, traits-as-interfaces, derive macros → <code>derive[]</code>. You lose lifetimes and gain contracts.</td>
+<td>Ownership, Result/Option, traits-as-interfaces, derive macros -> <code>derive[]</code>. You lose lifetimes and gain contracts.</td>
 </tr>
 <tr>
 <td><strong>Go</strong></td>
-<td>Structural interfaces (same!), <code>if err != nil</code> → <code>Result[T,E]</code>, goroutines → <code>spawn</code>. You lose GC and null.</td>
+<td>Structural interfaces (same!), <code>if err != nil</code> -> <code>Result[T,E]</code>, goroutines -> <code>spawn</code>. You lose GC and null.</td>
 </tr>
 <tr>
 <td><strong>C++</strong></td>
-<td>RAII, move semantics, templates → generics, <code>std::optional</code> → <code>Option[T]</code>. You lose inheritance, exceptions, and header files.</td>
+<td>RAII, move semantics, templates -> generics, <code>std::optional</code> -> <code>Option[T]</code>. You lose inheritance, exceptions, and header files.</td>
 </tr>
 <tr>
 <td><strong>Python</strong></td>
-<td>Type hints become mandatory. <code>Optional</code> → <code>Option[T]</code>. No <code>None</code>. No exceptions.</td>
+<td>Type hints become mandatory. <code>Optional</code> -> <code>Option[T]</code>. No <code>None</code>. No exceptions.</td>
 </tr>
 <tr>
 <td><strong>Java/C#</strong></td>
-<td>Interfaces without <code>implements</code>. No <code>null</code>. No exceptions. No <code>class</code> — use structs + methods.</td>
+<td>Interfaces without <code>implements</code>. No <code>null</code>. No exceptions. No <code>class</code> -- use structs + methods.</td>
 </tr>
 <tr>
 <td><strong>JavaScript</strong></td>
-<td><code>undefined</code> doesn't exist. Promises → async/await. No prototype chain. No <code>this</code>.</td>
+<td><code>undefined</code> doesn't exist. Promises -> async/await. No prototype chain. No <code>this</code>.</td>
 </tr>
 </table>
 <hr>
-<h2>1. No Null — Option[T] Instead</h2>
+<h2>1. No Null -- Option[T] Instead</h2>
 <p>Every language has null. XIOM doesn't.</p>
 <table>
 <tr>
@@ -139,19 +139,19 @@
 </tr>
 <tr>
 <td>Java/C#</td>
-<td><code>null</code> — crashes at runtime</td>
+<td><code>null</code> -- crashes at runtime</td>
 </tr>
 <tr>
 <td>Python</td>
-<td><code>None</code> — crashes at runtime</td>
+<td><code>None</code> -- crashes at runtime</td>
 </tr>
 <tr>
 <td>Rust</td>
-<td><code>Option<T></code> — compiler enforces handling</td>
+<td><code>Option<T></code> -- compiler enforces handling</td>
 </tr>
 <tr>
 <td><strong>XIOM</strong></td>
-<td><strong><code>Option[T]</code> — compiler enforces handling</strong></td>
+<td><strong><code>Option[T]</code> -- compiler enforces handling</strong></td>
 </tr>
 </table>
 <pre class="language-xiom"><code>
@@ -166,7 +166,7 @@
 </code></pre>
 <p>You cannot accidentally use <code>None</code> as a value. The compiler rejects it.</p>
 <hr>
-<h2>2. No Exceptions — Result[T, E] Instead</h2>
+<h2>2. No Exceptions -- Result[T, E] Instead</h2>
 <p>Every language has exceptions. XIOM doesn't.</p>
 <table>
 <tr>
@@ -175,23 +175,23 @@
 </tr>
 <tr>
 <td>Java/C#</td>
-<td><code>try/catch</code> — invisible control flow</td>
+<td><code>try/catch</code> -- invisible control flow</td>
 </tr>
 <tr>
 <td>Python</td>
-<td><code>try/except</code> — any line can throw</td>
+<td><code>try/except</code> -- any line can throw</td>
 </tr>
 <tr>
 <td>Go</td>
-<td><code>if err != nil</code> — explicit but verbose</td>
+<td><code>if err != nil</code> -- explicit but verbose</td>
 </tr>
 <tr>
 <td>Rust</td>
-<td><code>Result<T, E></code> + <code>?</code> — explicit, clean</td>
+<td><code>Result<T, E></code> + <code>?</code> -- explicit, clean</td>
 </tr>
 <tr>
 <td><strong>XIOM</strong></td>
-<td><strong><code>Result<T, E></code> + <code>?</code> — explicit, clean</strong></td>
+<td><strong><code>Result<T, E></code> + <code>?</code> -- explicit, clean</strong></td>
 </tr>
 </table>
 <pre class="language-xiom"><code>
@@ -202,7 +202,7 @@
   <span class='kw'>return</span> <span class='kw'>Ok</span>(config);
 }
 
-<span class='cm'>// At the call site — must handle both cases</span>
+<span class='cm'>// At the call site -- must handle both cases</span>
 <span class='kw'>match</span> <span class='func'>read_config</span>(<span class='str'>config.json</span>) {
   <span class='kw'>Ok</span>(c)  => <span class='func'><span class='kw'>use</span></span>(c),
   <span class='kw'>Err</span>(e) => io.<span class='func'>println</span>(<span class='str'>error: </span> + e),
@@ -210,7 +210,7 @@
 </code></pre>
 <p>The <code>?</code> operator is <code>try!</code> from Rust, <code>try</code> from Zig. It returns <code>Err(...)</code> immediately if the value is an error. Clean propagation without invisible control flow.</p>
 <hr>
-<h2>3. Ownership — No GC, No Manual free()</h2>
+<h2>3. Ownership -- No GC, No Manual free()</h2>
 <table>
 <tr>
 <th>Language</th>
@@ -218,41 +218,41 @@
 </tr>
 <tr>
 <td>Java/C#/Python/Go</td>
-<td>Garbage collector — pauses, unpredictable</td>
+<td>Garbage collector -- pauses, unpredictable</td>
 </tr>
 <tr>
 <td>C</td>
-<td><code>malloc</code>/<code>free</code> — manual, error-prone</td>
+<td><code>malloc</code>/<code>free</code> -- manual, error-prone</td>
 </tr>
 <tr>
 <td>C++</td>
-<td>RAII + smart pointers — complex rules</td>
+<td>RAII + smart pointers -- complex rules</td>
 </tr>
 <tr>
 <td>Rust</td>
-<td>Ownership + borrow checker + lifetimes — powerful but complex</td>
+<td>Ownership + borrow checker + lifetimes -- powerful but complex</td>
 </tr>
 <tr>
 <td><strong>XIOM</strong></td>
-<td><strong>Ownership + lexical scope borrowing — same safety, no lifetimes</strong></td>
+<td><strong>Ownership + lexical scope borrowing -- same safety, no lifetimes</strong></td>
 </tr>
 </table>
 <pre class="language-xiom"><code>
 <span class='cm'>// A value has ONE owner. Assignment moves ownership.</span>
 <span class='kw'>let</span> a = <span class='ty'>Vec</span>.<span class='func'>new</span>();
-<span class='kw'>let</span> b = a;       <span class='cm'>// a MOVED to b — a <span class='kw'>is</span> now invalid</span>
+<span class='kw'>let</span> b = a;       <span class='cm'>// a MOVED to b -- a <span class='kw'>is</span> now invalid</span>
 <span class='cm'>// a.<span class='func'>push</span>(<span class='num'>1</span>);    // COMPILE ERROR: a was moved</span>
 
 <span class='cm'>// Borrow temporarily with & (read) or &<span class='func'>mut</span>(write)</span>
-<span class='func'>read_only</span>(&b);   <span class='cm'>// b <span class='kw'>is</span> borrowed — still valid after</span>
+<span class='func'>read_only</span>(&b);   <span class='cm'>// b <span class='kw'>is</span> borrowed -- still valid after</span>
 <span class='func'>mutate</span>(&mut b);  <span class='cm'>// exclusive write borrow</span>
 
 <span class='cm'>// <span class='ty'>Clone</span> to duplicate</span>
-<span class='kw'>let</span> c = b.<span class='func'>clone</span>();  <span class='cm'>// explicit copy — both valid</span>
+<span class='kw'>let</span> c = b.<span class='func'>clone</span>();  <span class='cm'>// explicit copy -- both valid</span>
 </code></pre>
 <p><strong>The key difference from Rust:</strong> No lifetime annotations. Ever. Borrows expire at the end of the block where they're created. You can see when a borrow ends by looking at the braces.</p>
 <hr>
-<h2>4. Structs + Methods — No Classes, No Inheritance</h2>
+<h2>4. Structs + Methods -- No Classes, No Inheritance</h2>
 <p>XIOM has no <code>class</code>, no <code>extends</code>, no <code>implements</code>, no <code>virtual</code>, no <code>override</code>, no <code>protected</code>. Here's what you use instead:</p>
 <table>
 <tr>
@@ -293,7 +293,7 @@
 </tr>
 <tr>
 <td><code>this</code> / <code>self</code></td>
-<td><code>self</code> is <strong>implicit</strong> — access fields directly</td>
+<td><code>self</code> is <strong>implicit</strong> -- access fields directly</td>
 </tr>
 <tr>
 <td><code>static</code> method</td>
@@ -312,15 +312,15 @@
 } <span class='kw'>derive</span>[<span class='ty'>Eq</span>, <span class='ty'>Clone</span>, <span class='ty'>Display</span>]  <span class='cm'>// auto-generate equality, clone, to-string</span>
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>distance</span>(other: &<span class='ty'>Point</span>) -> <span class='ty'>Float64</span> {
-  <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> implicit — x means <span class='kw'>self</span>.x</span>
+  <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> implicit -- x means <span class='kw'>self</span>.x</span>
   <span class='kw'>let</span> dx = x - other.x;
   <span class='kw'>let</span> dy = y - other.y;
   <span class='kw'>return</span> dx * dx + dy * dy;
 }
 </code></pre>
 <hr>
-<h2>5. Polymorphism — Structural Interfaces</h2>
-<p>XIOM has no inheritance. Polymorphism works through <strong>structural interfaces</strong> — if a type has the required methods, it satisfies the interface. No declaration needed.</p>
+<h2>5. Polymorphism -- Structural Interfaces</h2>
+<p>XIOM has no inheritance. Polymorphism works through <strong>structural interfaces</strong> -- if a type has the required methods, it satisfies the interface. No declaration needed.</p>
 <pre class="language-xiom"><code>
 <span class='cm'>// Define what <span class='str'>comparable</span> means</span>
 <span class='kw'>interface</span> <span class='ty'>Comparable</span> {
@@ -331,7 +331,7 @@
 <span class='kw'>type</span> <span class='ty'>Score</span> = { value: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> Temperature = { kelvin: <span class='ty'>Float64</span>; }
 
-<span class='cm'>// Implement compare <span class='kw'>for</span> each — NO <span class='str'>implements</span> keyword needed</span>
+<span class='cm'>// Implement compare <span class='kw'>for</span> each -- NO <span class='str'>implements</span> keyword needed</span>
 <span class='kw'>fn</span> <span class='ty'>Score</span>.<span class='func'>compare</span>(other: &<span class='ty'>Score</span>) -> <span class='ty'>Int</span> { <span class='kw'>return</span> value - other.value; }
 <span class='kw'>fn</span> Temperature.<span class='func'>compare</span>(other: &Temperature) -> <span class='ty'>Int</span> { ... }
 
@@ -346,7 +346,7 @@
 </code></pre>
 <p>This is Go's interface model. It's also how Python's duck typing works, except compile-time verified.</p>
 <hr>
-<h2>6. Contracts — Unique to XIOM</h2>
+<h2>6. Contracts -- Unique to XIOM</h2>
 <p>No mainstream language has contracts as compiler-enforced specifications. This is XIOM's defining feature.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
@@ -387,7 +387,7 @@
 </table>
 <p>When a contract is violated at runtime, the program panics with the <strong>exact</strong> contract that failed, the file, and the line number. In debug mode, this replaces most unit tests.</p>
 <hr>
-<h2>7. Public / Private — Module-Based Visibility</h2>
+<h2>7. Public / Private -- Module-Based Visibility</h2>
 <table>
 <tr>
 <th>Language</th>
@@ -403,15 +403,15 @@
 </tr>
 <tr>
 <td>Python</td>
-<td><code>_convention</code> — not enforced</td>
+<td><code>_convention</code> -- not enforced</td>
 </tr>
 <tr>
 <td>Rust</td>
-<td><code>pub</code> — everything private by default</td>
+<td><code>pub</code> -- everything private by default</td>
 </tr>
 <tr>
 <td><strong>XIOM</strong></td>
-<td><strong><code>pub</code> — everything private by default</strong></td>
+<td><strong><code>pub</code> -- everything private by default</strong></td>
 </tr>
 </table>
 <pre class="language-xiom"><code>
@@ -426,13 +426,13 @@
   <span class='kw'>return</span> email.<span class='func'>contains</span>(<span class='str'>@</span>);
 }
 
-<span class='kw'>fn</span> <span class='func'>hash_email</span>(user: &User) -> <span class='ty'>Int</span> {  <span class='cm'>// PRIVATE — only visible <span class='kw'>in</span> this <span class='kw'>module</span></span>
+<span class='kw'>fn</span> <span class='func'>hash_email</span>(user: &User) -> <span class='ty'>Int</span> {  <span class='cm'>// PRIVATE -- only visible <span class='kw'>in</span> this <span class='kw'>module</span></span>
   <span class='cm'>// ...</span>
 }
 </code></pre>
 <p>No <code>protected</code>. No <code>friend</code>. No <code>package-private</code>. Just <code>pub</code> or private.</p>
 <hr>
-<h2>8. Generics — Like Templates, But Type-Checked Before Instantiation</h2>
+<h2>8. Generics -- Like Templates, But Type-Checked Before Instantiation</h2>
 <table>
 <tr>
 <th>Language</th>
@@ -440,23 +440,23 @@
 </tr>
 <tr>
 <td>C++</td>
-<td>Templates — duck-typed, errors at instantiation</td>
+<td>Templates -- duck-typed, errors at instantiation</td>
 </tr>
 <tr>
 <td>Java</td>
-<td>Type erasure — limited, no primitives</td>
+<td>Type erasure -- limited, no primitives</td>
 </tr>
 <tr>
 <td>C#</td>
-<td>Reified generics — better, still class-based</td>
+<td>Reified generics -- better, still class-based</td>
 </tr>
 <tr>
 <td>Rust/Go</td>
-<td>Monomorphised — zero-cost, checked at definition</td>
+<td>Monomorphised -- zero-cost, checked at definition</td>
 </tr>
 <tr>
 <td><strong>XIOM</strong></td>
-<td><strong>Monomorphised — zero-cost, checked at definition</strong></td>
+<td><strong>Monomorphised -- zero-cost, checked at definition</strong></td>
 </tr>
 </table>
 <pre class="language-xiom"><code>
@@ -473,7 +473,7 @@
 </code></pre>
 <p>The <code>[T: Comparable]</code> constraint means: "T must have a <code>compare</code> method." The compiler checks this before generating code. No template-instantiation-error soup.</p>
 <hr>
-<h2>9. Pattern Matching — Like switch, But Exhaustive</h2>
+<h2>9. Pattern Matching -- Like switch, But Exhaustive</h2>
 <pre class="language-xiom"><code>
 <span class='cm'>// Instead of:  <span class='func'>switch</span>(value) { case <span class='num'>1</span>: ... break; default: ... }</span>
 <span class='kw'>match</span> value {
@@ -491,7 +491,7 @@
 </code></pre>
 <p>The compiler forces you to handle <strong>every</strong> variant. Missing a case is a compile error. This eliminates an entire class of runtime bugs.</p>
 <hr>
-<h2>10. Async — Like async/await, With Channels</h2>
+<h2>10. Async -- Like async/await, With Channels</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.<span class='kw'>async</span>;
 
@@ -539,18 +539,18 @@
 </tr>
 </table>
 <hr>
-<h2>11. Compile-Time Code — comptime</h2>
+<h2>11. Compile-Time Code -- comptime</h2>
 <p>No preprocessor. No macros. No templates. One keyword: <code>comptime</code>.</p>
 <pre class="language-xiom"><code>
-<span class='cm'>// Evaluated at compile time — zero runtime cost</span>
+<span class='cm'>// Evaluated at compile time -- zero runtime cost</span>
 <span class='kw'>let</span> size = <span class='kw'>comptime</span> <span class='func'>expensive_computation</span>();
 
 <span class='cm'>// Generics are just <span class='kw'>comptime</span> <span class='kw'>type</span> parameters</span>
 <span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -> T { ... }
 </code></pre>
-<p><code>comptime</code> is Zig's model — any expression can be marked compile-time. This is how generics, reflection, and specialization all work. One mechanism.</p>
+<p><code>comptime</code> is Zig's model -- any expression can be marked compile-time. This is how generics, reflection, and specialization all work. One mechanism.</p>
 <hr>
-<h2>12. C FFI — Call Any C Library</h2>
+<h2>12. C FFI -- Call Any C Library</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>extern</span> <span class='str'>C</span> {
   <span class='kw'>fn</span> <span class='func'>malloc</span>(size: <span class='ty'>UInt</span>) -> *<span class='ty'>UInt8</span>;
@@ -564,7 +564,7 @@
   <span class='kw'>unsafe</span> { <span class='kw'>return</span> <span class='func'>malloc</span>(size); }
 }
 </code></pre>
-<p>XIOM does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS — all accessed through FFI with contract-verified preconditions.</p>
+<p>XIOM does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS -- all accessed through FFI with contract-verified preconditions.</p>
 <hr>
 <h2>Quick Comparison Table</h2>
 <table>
@@ -741,7 +741,7 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom v0.12.0 · <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom v0.12.0 - <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="spec.html">Spec</a>
       <a href="docs/">Docs</a>

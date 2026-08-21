@@ -2,7 +2,7 @@
 
 Language Reference Specification
 
-Version 0.3  —  Language Definition Only
+Version 0.3  --  Language Definition Only
 
 This document defines the XIOM language. Applications are out of scope.
 
@@ -37,7 +37,7 @@ XIOM is a compiled, statically typed, memory-safe systems programming language. 
 | PRECISE | The grammar is unambiguous. Every construct has exactly one canonical form. There are no implicit coercions, no hidden allocations, and no surprising control flow. |
 | :---: | :---- |
 
-XIOM is designed for a world where code is increasingly written by AI and maintained by people who did not write the original. Contracts are machine-readable intent that the compiler enforces — when AI generates a function, the contract layer catches what code review misses. The same mechanism protects human-written code against regressions, refactors, and team turnover.
+XIOM is designed for a world where code is increasingly written by AI and maintained by people who did not write the original. Contracts are machine-readable intent that the compiler enforces -- when AI generates a function, the contract layer catches what code review misses. The same mechanism protects human-written code against regressions, refactors, and team turnover.
 
 XIOM compiles to native machine code via LLVM and to WebAssembly. It has zero-cost C interoperability. The compiler is intended to be self-hosted once the language reaches stability.
 
@@ -73,7 +73,7 @@ A type satisfies an interface if it has the required fields and methods. No `imp
 
 There is no preprocessor, no macro system, and no template language. All compile-time code generation is done through the `comptime` keyword, which marks expressions and blocks to be evaluated at compile time. Generics, reflection, and specialisation all flow through this single mechanism.
 
-## 2.8  Derive — Compiler-Generated Correctness
+## 2.8  Derive -- Compiler-Generated Correctness
 
 For common interfaces (`Eq`, `Clone`, `Display`, `Hash`, `Ord`), the programmer declares intent and the compiler generates the implementation. This eliminates a class of bugs where AI or humans write a structurally correct but semantically wrong implementation by hand. The generated code is always correct by construction.
 
@@ -305,7 +305,7 @@ fn max[T: Comparable](a: T, b: T) -> T {
 // Multiple constraints
 fn dedup[T: Eq + Hash](items: &mut Vec[T]) { ... }
 
-// Call sites — T inferred from arguments
+// Call sites -- T inferred from arguments
 let m1 = max(10, 20)          // T = Int
 let m2 = max(1.5, 2.7)        // T = Float64
 ```
@@ -315,7 +315,7 @@ If a type parameter appears only in the return type and not in any argument, it 
 ```xiom
 fn parse[T](s: Str) -> Result[T, ParseError] { ... }
 
-let n = parse[Int]("42")   // T must be explicit — not inferrable from arguments
+let n = parse[Int]("42")   // T must be explicit -- not inferrable from arguments
 ```
 
 ## 4.5  Structural Interface Satisfaction
@@ -335,21 +335,21 @@ fn Score.compare(other: &Score) -> Int {
   return 0
 }
 
-// Score now satisfies Comparable — no declaration needed
+// Score now satisfies Comparable -- no declaration needed
 let result = max(Score{ value: 10 }, Score{ value: 20 })
 ```
 
-## 4.6  Derive — Compiler-Generated Interfaces
+## 4.6  Derive -- Compiler-Generated Interfaces
 
-The `derive` clause on a type or enum declaration instructs the compiler to generate the implementation of common interfaces. The generated code is guaranteed correct by construction — no hand-written bug can slip in.
+The `derive` clause on a type or enum declaration instructs the compiler to generate the implementation of common interfaces. The generated code is guaranteed correct by construction -- no hand-written bug can slip in.
 
 | Interface | Generated Behaviour |
 | :---- | :---- |
-| **Eq** | Structural equality — every field compared. Two values are equal if all fields are equal. |
-| **Clone** | Deep copy — every field cloned recursively. |
+| **Eq** | Structural equality -- every field compared. Two values are equal if all fields are equal. |
+| **Clone** | Deep copy -- every field cloned recursively. |
 | **Display** | Canonical string representation. Structs format as `TypeName{ field: value, ... }`. |
-| **Hash** | Structural hash — every field hashed and combined. Compatible with `Eq`. |
-| **Ord** | Lexicographic ordering — fields compared in declaration order. |
+| **Hash** | Structural hash -- every field hashed and combined. Compatible with `Eq`. |
+| **Ord** | Lexicographic ordering -- fields compared in declaration order. |
 
 ```xiom
 type Point = {
@@ -358,9 +358,9 @@ type Point = {
 } derive[Eq, Clone, Display]
 
 // Compiler generates:
-//   fn Point.eq(other: &Point) -> Bool        — x == x && y == y
-//   fn Point.clone() -> Point                 — deep copy of both fields
-//   fn Point.to_str() -> Str                  — "Point{ x: 1.0, y: 2.0 }"
+//   fn Point.eq(other: &Point) -> Bool        -- x == x && y == y
+//   fn Point.clone() -> Point                 -- deep copy of both fields
+//   fn Point.to_str() -> Str                  -- "Point{ x: 1.0, y: 2.0 }"
 
 // Type with invariants can only derive Clone and Display
 type Health = {
@@ -369,7 +369,7 @@ type Health = {
   invariant: current >= 0;
   invariant: current <= maximum;
 } derive[Clone, Display]
-// Eq, Hash, Ord are rejected — invariants make equality/hashing semantically ambiguous
+// Eq, Hash, Ord are rejected -- invariants make equality/hashing semantically ambiguous
 
 // Enums support derive too
 enum Option[T] {
@@ -385,7 +385,7 @@ enum Option[T] {
 
 # 5. Memory Model
 
-XIOM uses ownership semantics for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope. The model uses lexical scope borrowing — simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.
+XIOM uses ownership semantics for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope. The model uses lexical scope borrowing -- simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.
 
 ## 5.1  Ownership Rules
 
@@ -398,25 +398,25 @@ XIOM uses ownership semantics for memory management. There is no garbage collect
 | **Explicit Clone** | Duplicating a value requires `.clone()`. No implicit deep copy. |
 | **Move On Call** | Passing a value to a function moves ownership unless the parameter is a borrow. |
 
-Borrows cannot be stored in struct fields. Borrows cannot be returned from functions. These patterns require owned types or explicit cloning. This is a constraint, not a bug — it is the design. Lexical scope means you can always see when a borrow ends by looking at the braces.
+Borrows cannot be stored in struct fields. Borrows cannot be returned from functions. These patterns require owned types or explicit cloning. This is a constraint, not a bug -- it is the design. Lexical scope means you can always see when a borrow ends by looking at the braces.
 
 ```xiom
 fn consume(data: Vec[Int]) {
-  // data owned here — freed at end of this scope
+  // data owned here -- freed at end of this scope
 }
 
 fn read_only(data: &Vec[Int]) {
-  // read borrow — caller retains ownership
+  // read borrow -- caller retains ownership
 }
 
 fn mutate(data: &mut Vec[Int]) {
-  data.push(99)   // write borrow — exclusive access
+  data.push(99)   // write borrow -- exclusive access
 }
 
 let v = [1, 2, 3]
 read_only(&v)        // borrow, v still valid
 mutate(&mut v)       // write borrow, v still valid
-consume(v)           // move — v no longer usable here
+consume(v)           // move -- v no longer usable here
 // read_only(&v)     // COMPILE ERROR: v was moved
 ```
 
@@ -427,7 +427,7 @@ Raw pointer arithmetic and C interop that cannot be verified by the compiler are
 ```xiom
 unsafe {
   let raw: *Int = some_c_function()
-  let value = *raw   // dereference — programmer guarantees validity
+  let value = *raw   // dereference -- programmer guarantees validity
 }
 ```
 
@@ -459,10 +459,10 @@ fn divide(a: Float64, b: Float64) -> Float64
 Type-level constraints (which interfaces a generic parameter must satisfy) are declared inline with the type parameter, not as `requires` clauses. This separates type requirements from value preconditions:
 
 ```xiom
-// Type constraint — inline
+// Type constraint -- inline
 fn sort[T: Ord](items: &mut Vec[T])
 
-// Value precondition — requires clause
+// Value precondition -- requires clause
 fn pop[T](stack: &mut Stack[T]) -> Option[T]
   requires: !stack.is_empty()
 ```
@@ -479,7 +479,7 @@ type Health = {
 }
 
 // The compiler rejects any code that could violate these invariants.
-// No runtime crash — compile error.
+// No runtime crash -- compile error.
 ```
 
 ## 6.4  Contract Collection Methods
@@ -492,8 +492,8 @@ To reduce verbosity and prevent quantifier syntax errors (especially in AI-gener
 | `.all(closure)` | All elements satisfy the predicate | `forall i in 0..len => pred(items[i])` |
 | `.none(closure)` | No element satisfies the predicate | `forall i in 0..len => !pred(items[i])` |
 | `.contains(value)` | Collection contains the given value | `exists i in 0..len => items[i] == value` |
-| `.len()` | Number of elements (already present, used in contracts) | — |
-| `.is_empty()` | Collection is empty. Equivalent to `.len() == 0`. | — |
+| `.len()` | Number of elements (already present, used in contracts) | -- |
+| `.is_empty()` | Collection is empty. Equivalent to `.len() == 0`. | -- |
 
 ```xiom
 fn sort(items: &mut Vec[Int])
@@ -540,9 +540,9 @@ module math.vector
 ## 7.2  Importing
 
 ```xiom
-use math.vector              // imports the module — access as vector.Vec3
-use math.vector.Vec3         // imports one type — access as Vec3
-use math.vector.Vec3 as V3   // alias — access as V3
+use math.vector              // imports the module -- access as vector.Vec3
+use math.vector.Vec3         // imports one type -- access as Vec3
+use math.vector.Vec3 as V3   // alias -- access as V3
 use math.vector.*            // imports all public symbols (discouraged)
 ```
 
@@ -564,7 +564,7 @@ fn internal_helper() {  // private to this module
 
 ## 7.4  Method Declarations
 
-Methods on a type are declared using the `TypeName.methodName` syntax. The receiver (`self`) is synthesized implicitly by the compiler — it does not appear in the parameter list. The compiler infers the receiver type from the method body:
+Methods on a type are declared using the `TypeName.methodName` syntax. The receiver (`self`) is synthesized implicitly by the compiler -- it does not appear in the parameter list. The compiler infers the receiver type from the method body:
 
 - Methods that do not mutate fields get `self: &Self` (read borrow)
 - Methods that mutate fields get `self: &mut Self` (write borrow)
@@ -575,7 +575,7 @@ Methods on a type are declared using the `TypeName.methodName` syntax. The recei
 pub type Vec3 = { x: Float32; y: Float32; z: Float32; } derive[Eq, Clone, Display]
 
 pub fn Vec3.dot(other: &Vec3) -> Float32 {
-  return x * other.x + y * other.y + z * other.z  // self is &Vec3 — read-only
+  return x * other.x + y * other.y + z * other.z  // self is &Vec3 -- read-only
 }
 
 pub fn Vec3.normalize() -> Vec3 {
@@ -584,7 +584,7 @@ pub fn Vec3.normalize() -> Vec3 {
 }
 
 pub fn Vec3.set_x(value: Float32) {
-  x = value   // self is &mut Vec3 — field mutation detected
+  x = value   // self is &mut Vec3 -- field mutation detected
 }
 ```
 
@@ -628,7 +628,7 @@ async fn main() {
 
 ## 8.2  Spawn
 
-`spawn` launches a concurrent task. The spawned block may not capture mutable references from the outer scope — the compiler enforces this. Communication between tasks goes through channels.
+`spawn` launches a concurrent task. The spawned block may not capture mutable references from the outer scope -- the compiler enforces this. Communication between tasks goes through channels.
 
 ```xiom
 spawn {
@@ -701,7 +701,7 @@ match parse_int("42") {
   Err(e) => io.print_err(e.message)
 }
 
-// Matching an enum — all variants required
+// Matching an enum -- all variants required
 match state {
   AgentState.Idle              => ...
   AgentState.Patrolling(route) => ...
@@ -746,7 +746,7 @@ let n = val?
 XIOM IR is an explicit, typed, SSA-form intermediate representation. Every operation has an explicit type. Control flow is explicit. Ownership transfers are annotated. The IR is designed to be readable by both humans and AI systems.
 
 ```
-; XIOM IR — illustrative excerpt
+; XIOM IR -- illustrative excerpt
 fn @add(%a: Int, %b: Int) -> Int {
 block entry:
   %result = add.Int %a, %b
@@ -759,13 +759,13 @@ block entry:
 | Phase | Compiler Written In | What It Compiles |
 | :---- | :---- | :---- |
 | **0** | Rust | Minimal XIOM subset (no generics, no contracts, no ownership) |
-| **1** | XIOM subset | Full XIOM language — compiled by Phase 0 |
-| **2** | Full XIOM | Full XIOM compiler — compiled by Phase 1 |
+| **1** | XIOM subset | Full XIOM language -- compiled by Phase 0 |
+| **2** | Full XIOM | Full XIOM compiler -- compiled by Phase 1 |
 | **3** | Full XIOM | Self-hosting. Phase 0 Rust compiler retired. |
 
 # 11. Target Platforms
 
-XIOM produces output via two paths: LLVM for native and WASM for portable bytecode. Both paths are first-class. Platform-specific code is isolated in standard library platform modules. GPU and console targets are library concerns accessed through C FFI — they are not language features.
+XIOM produces output via two paths: LLVM for native and WASM for portable bytecode. Both paths are first-class. Platform-specific code is isolated in standard library platform modules. GPU and console targets are library concerns accessed through C FFI -- they are not language features.
 
 ## 11.1  Native Targets via LLVM
 
@@ -781,7 +781,7 @@ XIOM produces output via two paths: LLVM for native and WASM for portable byteco
 
 ## 11.2  WebAssembly
 
-The WASM target produces wasm32 binaries via LLVM's WebAssembly backend. WASI is supported for system-interface access outside the browser. The WASM binary contains no XIOM runtime — it is self-contained.
+The WASM target produces wasm32 binaries via LLVM's WebAssembly backend. WASI is supported for system-interface access outside the browser. The WASM binary contains no XIOM runtime -- it is self-contained.
 
 ## 11.3  C Interoperability
 
@@ -815,7 +815,7 @@ Error messages are part of the language design. A compiler that produces cryptic
 | SUGGESTION | Offer a concrete fix where one can be inferred. The compiler should solve problems, not just report them. |
 | :---: | :---- |
 
-### Example — Ownership Error
+### Example -- Ownership Error
 
 ```
 error[E0101]: value used after move
@@ -833,7 +833,7 @@ error[E0101]: value used after move
      parameter to a borrow:  fn consume(data: &Vec[Int])
 ```
 
-### Example — Contract Violation
+### Example -- Contract Violation
 
 ```
 error[E0202]: contract pre-condition cannot be satisfied
@@ -850,7 +850,7 @@ error[E0202]: contract pre-condition cannot be satisfied
      that returns Option[Float64].
 ```
 
-### Example — Interface Satisfaction
+### Example -- Interface Satisfaction
 
 ```
 error[E0301]: type does not satisfy interface
@@ -867,14 +867,14 @@ error[E0301]: type does not satisfy interface
 
 # 13. Complete Example Program
 
-The following program demonstrates: module declaration, types with invariants and derive, structural interface satisfaction, generics with inline constraints, error handling, and ownership — in a single working program. It implements a statically-bounded generic stack.
+The following program demonstrates: module declaration, types with invariants and derive, structural interface satisfaction, generics with inline constraints, error handling, and ownership -- in a single working program. It implements a statically-bounded generic stack.
 
 ```xiom
 module collections.stack
 
 use xiom.io
 
-// ── Type with invariants ──────────────────────────────────
+// -- Type with invariants ----------------------------------
 
 pub type Stack[T] = {
   items:    Vec[T];
@@ -883,7 +883,7 @@ pub type Stack[T] = {
   invariant: capacity > 0;
 }
 
-// ── Constructor ───────────────────────────────────────────
+// -- Constructor -------------------------------------------
 
 pub fn Stack.new[T](capacity: UInt) -> Result[Stack[T], Str]
   requires: capacity > 0
@@ -898,7 +898,7 @@ pub fn Stack.new[T](capacity: UInt) -> Result[Stack[T], Str]
   })
 }
 
-// ── Push ──────────────────────────────────────────────────
+// -- Push --------------------------------------------------
 
 pub fn Stack.push[T](value: T) -> Result[(), Str]
   requires: items.len() < capacity
@@ -911,7 +911,7 @@ pub fn Stack.push[T](value: T) -> Result[(), Str]
   return Ok(())
 }
 
-// ── Pop ───────────────────────────────────────────────────
+// -- Pop ---------------------------------------------------
 
 pub fn Stack.pop[T]() -> Option[T] {
   return items.pop()
@@ -925,7 +925,7 @@ pub fn Stack.len[T]() -> UInt {
   return items.len()
 }
 
-// ── Entry point ───────────────────────────────────────────
+// -- Entry point -------------------------------------------
 
 fn main() -> Result[(), Str] {
   var s = Stack.new[Int](3)?
@@ -956,75 +956,75 @@ fn main() -> Result[(), Str] {
 | :---- | :---- | :---- | :---- | :---- |
 | **Memory model** | Ownership, lexical borrows | Full borrow checker + lifetimes | GC | Manual |
 | **Contracts** | First-class, compiler-enforced | None (assertions only) | None | None |
-| **Null safety** | No null — `Option[T]` | No null — `Option<T>` | Null exists | Null exists |
+| **Null safety** | No null -- `Option[T]` | No null -- `Option<T>` | Null exists | Null exists |
 | **Error handling** | `Result[T, E]`, `?` operator | `Result<T, E>`, `?` operator | Multi-return, `if err != nil` | Error unions + try |
 | **Generics** | Comptime monomorphised, inline constraints | Monomorphised, trait bounds | Generics (limited) | comptime |
-| **Interfaces** | Structural, no `implements` | Nominal (`impl Trait for Type`) | Structural (interfaces) | — |
+| **Interfaces** | Structural, no `implements` | Nominal (`impl Trait for Type`) | Structural (interfaces) | -- |
 | **Derive** | Compiler-generated `Eq`, `Clone`, `Display`, `Hash`, `Ord` | `#[derive(...)]` macros | None (manual) | None |
 | **GC** | None | None | Yes | None |
 | **WASM target** | First-class, co-equal with native | Supported | Limited | Supported |
 | **C FFI** | Zero-cost, first-class | Zero-cost, first-class | Cgo (overhead) | First-class |
 | **Self-hosted** | Planned (Phase 2) | Yes | Yes | In progress |
-| **Grammar ambiguity** | None — canonical form | Some | Minimal | Minimal |
+| **Grammar ambiguity** | None -- canonical form | Some | Minimal | Minimal |
 | **Method receiver** | Implicit `self`, inferred | Explicit `&self` / `&mut self` | Explicit receiver | Explicit `self: *T` |
 
 # 15. Build Roadmap
 
 The following estimates assume a team of two to three compiler engineers with prior experience in at least one systems language. All timelines are realistic minimums, not targets. Compiler development consistently takes longer than estimated.
 
-## Phase 0 — Prototype Compiler  (2–3 weeks, AI-assisted)
+## Phase 0 -- Prototype Compiler  (2-3 weeks, AI-assisted)
 
-Written in Rust. Compiles a minimal subset of XIOM: primitives, functions, let/var bindings, if/match, basic structs and enums. Parses the full grammar including `derive`, inline type constraints, and method syntax — but does not enforce ownership or contracts. Goal: Hello World compiles to native binary and to WASM.
+Written in Rust. Compiles a minimal subset of XIOM: primitives, functions, let/var bindings, if/match, basic structs and enums. Parses the full grammar including `derive`, inline type constraints, and method syntax -- but does not enforce ownership or contracts. Goal: Hello World compiles to native binary and to WASM.
 
 - Define EBNF grammar fully before writing any code
-- Implement Lexer — tokenise all valid XIOM source
-- Implement Parser — produce typed AST from token stream
-- Implement basic type checker — primitives and function signatures
-- Parse `derive` clauses — codegen deferred to Phase 1
-- Emit LLVM IR for subset — link and run
+- Implement Lexer -- tokenise all valid XIOM source
+- Implement Parser -- produce typed AST from token stream
+- Implement basic type checker -- primitives and function signatures
+- Parse `derive` clauses -- codegen deferred to Phase 1
+- Emit LLVM IR for subset -- link and run
 - Emit WASM via LLVM WebAssembly backend
 - Test suite: 200+ parser tests, 100+ type checker tests
 
-## Phase 1 — Full Language Surface  (3–6 months)
+## Phase 1 -- Full Language Surface  (3-6 months)
 
 Still compiled by Phase 0 Rust compiler. Adds the full language surface: generics, ownership checker, contracts as runtime guards, modules, async, channels, error handling, C FFI, standard library core, and `derive` codegen.
 
-- Ownership model — lexical scope borrow checker
+- Ownership model -- lexical scope borrow checker
 - Generic type parameters via comptime with inline constraints
-- Contract syntax — `requires` / `ensures` / `invariant` as runtime guards
-- Contract collection methods — `is_sorted`, `all`, `none`, `contains`
-- `derive` code generation — `Eq`, `Clone`, `Display`, `Hash`, `Ord`
+- Contract syntax -- `requires` / `ensures` / `invariant` as runtime guards
+- Contract collection methods -- `is_sorted`, `all`, `none`, `contains`
+- `derive` code generation -- `Eq`, `Clone`, `Display`, `Hash`, `Ord`
 - Module system and package manifest
 - Async runtime and channel primitives
 - Standard library: core, io, collections, string, math, ffi
-- Package manager prototype — local resolution only
+- Package manager prototype -- local resolution only
 - Canonical formatter (`xiom fmt`)
 - Language server (LSP) prototype for editor integration
 
-## Phase 2 — Self-Hosting  (6–12 months after Phase 1)
+## Phase 2 -- Self-Hosting  (6-12 months after Phase 1)
 
-Rewrite the XIOM compiler in XIOM itself. Compiled by Phase 1. This is the most difficult phase — the language must be stable enough that the compiler can be its own largest test case.
+Rewrite the XIOM compiler in XIOM itself. Compiled by Phase 1. This is the most difficult phase -- the language must be stable enough that the compiler can be its own largest test case.
 
-- Rewrite Lexer in XIOM — compiled by Phase 1 compiler
+- Rewrite Lexer in XIOM -- compiled by Phase 1 compiler
 - Rewrite Parser in XIOM
 - Rewrite type checker in XIOM
 - Rewrite IR emitter and LLVM bindings in XIOM
 - Compile new compiler with Phase 1 compiler
-- New compiler compiles itself — bootstrap complete
+- New compiler compiles itself -- bootstrap complete
 - Phase 0 Rust compiler retired
 
-## Phase 3 — Stability & Ecosystem  (ongoing)
+## Phase 3 -- Stability & Ecosystem  (ongoing)
 
-Language specification locked. Breaking changes require a formal proposal and deprecation period. Ecosystem development — Z3 static contract verification, package registry, LSP, formatter, documentation tooling, additional compiler targets.
+Language specification locked. Breaking changes require a formal proposal and deprecation period. Ecosystem development -- Z3 static contract verification, package registry, LSP, formatter, documentation tooling, additional compiler targets.
 
 - Z3 SMT integration for static contract verification
 - Public package registry
 - Language server (LSP) production implementation
-- Canonical formatter (`xiom fmt`) — production implementation
+- Canonical formatter (`xiom fmt`) -- production implementation
 - Documentation generator (`xiom doc`)
 - Additional LLVM targets as needed
 - WASI full compliance
-- Formal specification document — normative, implementer-facing
+- Formal specification document -- normative, implementer-facing
 - Third-party compiler implementations welcomed
 
 ## Realistic Total Timeline
@@ -1038,7 +1038,7 @@ The build strategy document contains the authoritative timeline with per-phase b
 
 ---
 
-**XIOM Language Reference — Version 0.3**
+**XIOM Language Reference -- Version 0.3**
 
 This specification defines the language only. Standard library, toolchain, and ecosystem are separate documents.
 

@@ -41,7 +41,7 @@ pub fn GzipCompressor.new() -> GzipCompressor;
 ```
 
 ### `GzipCompressor.with_level(level)`
-Creates a new `GzipCompressor` with a specific compression level (0–9).
+Creates a new `GzipCompressor` with a specific compression level (0-9).
 
 ```
 pub fn GzipCompressor.with_level(level: Int) -> GzipCompressor;
@@ -62,7 +62,7 @@ pub fn gzip_decompress(data: &Vec[UInt8]) -> Result<Vec[UInt8], Str>;
 ```
 
 ### `gzip_compress_level(data, level)`
-Compresses data using gzip with a specific compression level (0–9).
+Compresses data using gzip with a specific compression level (0-9).
 
 ```
 pub fn gzip_compress_level(data: &Vec[UInt8], level: Int) -> Result<Vec[UInt8], Str>;
@@ -131,7 +131,7 @@ pub fn brotli_decompress(data: &Vec[UInt8]) -> Result<Vec[UInt8], Str>;
 ```
 
 ### `brotli_compress_level(data, quality)`
-Compresses data using Brotli with a specific quality level (0–11).
+Compresses data using Brotli with a specific quality level (0-11).
 
 ```
 pub fn brotli_compress_level(data: &Vec[UInt8], quality: Int) -> Result<Vec[UInt8], Str>;

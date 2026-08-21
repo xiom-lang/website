@@ -1,6 +1,6 @@
-# XIOM Error Codes — Reference
+# XIOM Error Codes -- Reference
 
-Each XIOM diagnostic carries a code in the format `XNNNN`. Codes are stable — once assigned, they are never deleted or reassigned.
+Each XIOM diagnostic carries a code in the format `XNNNN`. Codes are stable -- once assigned, they are never deleted or reassigned.
 
 ## Index
 
@@ -26,7 +26,7 @@ Each XIOM diagnostic carries a code in the format `XNNNN`. Codes are stable — 
 1. Create `docs/error_codes/{CODE}.md`
 2. Include: short description, bad example (compiling), fix, notes
 3. Add entry to this index
-4. Codes are never deleted — mark deprecated codes as such
+4. Codes are never deleted -- mark deprecated codes as such
 
 ## Using `--explain`
 

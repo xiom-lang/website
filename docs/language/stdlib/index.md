@@ -1,8 +1,8 @@
 # Standard Library
 
 > 40 modules. All ship with the compiler in `stdlib/xiom/`.
-> Types (Option, Result, Vec, Int, Str...) are built-in — no import needed.
-> Functions live in modules — import with `use xiom.<module>`.
+> Types (Option, Result, Vec, Int, Str...) are built-in -- no import needed.
+> Functions live in modules -- import with `use xiom.<module>`.
 
 ## Foundation
 
