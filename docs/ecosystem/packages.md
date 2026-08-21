@@ -1,16 +1,16 @@
-# XIOM — Package Guide
+# XIOM -- Package Guide
 
 ## Creating a Package
 
 ```
 mypackage/
-├── package.xi          # manifest
-├── src/
-│   └── lib.xi          # library code
-├── bindings/
-│   └── lib.xiom-bind  # FFI binding spec (if C FFI)
-└── tests/
-    └── test.xi         # test suite
+|-- package.xi          # manifest
+|-- src/
+|   `-- lib.xi          # library code
+|-- bindings/
+|   `-- lib.xiom-bind  # FFI binding spec (if C FFI)
+`-- tests/
+    `-- test.xi         # test suite
 ```
 
 ### package.xi
@@ -42,9 +42,9 @@ xiom pkg install mypackage
 
 ## Package Naming Convention
 
-- `xiom:xyz` — First-party official packages
-- `community:xyz` — Community packages
-- No prefix — Third-party packages
+- `xiom:xyz` -- First-party official packages
+- `community:xyz` -- Community packages
+- No prefix -- Third-party packages
 
 ## FFI Binding Template
 

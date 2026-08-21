@@ -47,7 +47,7 @@ match parse_int("42") {
   Err(e) => io.print_err(e.message),
 }
 
-// Matching an enum — all variants required
+// Matching an enum -- all variants required
 match state {
   AgentState.Idle              => wait(),
   AgentState.Patrolling(route) => follow(route),

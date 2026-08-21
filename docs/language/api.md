@@ -1,7 +1,7 @@
 # XIOM Standard Library API
 
-> **40 modules.** Types (`Option`, `Result`, `Vec`, `Int`, `Str`...) are built-in — no import needed.
-> Functions live in modules — import with `use xiom.<module>`.
+> **40 modules.** Types (`Option`, `Result`, `Vec`, `Int`, `Str`...) are built-in -- no import needed.
+> Functions live in modules -- import with `use xiom.<module>`.
 > Every module documented with signatures and descriptions.
 
 ---
@@ -175,7 +175,7 @@ C foreign function interface.
 ## Quick Reference
 
 ```xiom
-// Types — built-in, no import
+// Types -- built-in, no import
 Option[T]   Result[T, E]   Vec[T]   Map[K,V]   Set[T]
 Int         Float64        Bool     Str        Char
 
@@ -192,6 +192,6 @@ use xiom.crypto;       // crypto.sha256(&data)
 
 ## Production Status
 
-**v2.0 — Production-Grade Complete.** All 40 modules have full implementations with 374 safety contracts (`requires:` / `ensures:` / `invariant:`). C runtime: 4,221 lines covering file I/O, threading, sockets, SIMD intrinsics, and crypto hardware acceleration. Test suite: 450+ tests across 10 files. All `unsafe` blocks are guarded by contracts.
+**v2.0 -- Production-Grade Complete.** All 40 modules have full implementations with 374 safety contracts (`requires:` / `ensures:` / `invariant:`). C runtime: 4,221 lines covering file I/O, threading, sockets, SIMD intrinsics, and crypto hardware acceleration. Test suite: 450+ tests across 10 files. All `unsafe` blocks are guarded by contracts.
 
 See [stdlib-implementation.md](../../checklists/stdlib-implementation.md) for full status.

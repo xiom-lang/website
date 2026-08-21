@@ -1,25 +1,25 @@
-# XIOM — AI Coding Reference (Language + Standard Library)
+# XIOM -- AI Coding Reference (Language + Standard Library)
 
 > **Version:** v0.58.0 | **Status:** Production. Compiler + stdlib (512 modules, 6,379 pub fns). 27/27 E2E core (100%), 19/19 selfhost gates cleared.
 > **New in v0.56:** `move` keyword for spawn captures, overflow checks ON by default, parallel codegen (`--parallel-codegen`), DWARF debug metadata (`--debug`), Send/Sync enforcement, Z3 verifier deterministic.
-> **New in v0.57 (Unsafe Confinement):** every `unsafe` block is a confined transaction — guard-heap arena isolation (req d), stack guard pages (req e), SEH/sigsetjmp fault trapping (req f), once-only transient-fault retry (req h), Copy-Out of Str tails (req i), zero-escape gates (T002/T003/T005/T006/T007), `#[unsafe_no_retry]`, and `#[unsafe_direct]` (trusted escape hatch, `--enable-unsafe-direct`).
-> **New in v0.58 (Debug & Numeric Policy):** secure numeric policy (Int↔Float mixing requires explicit `as`; int literals may adopt float; same-family widening stays auto), labeled loops (`@label: while` / `break @label;`), debug intrinsics (`assert(cond[, msg])`, `dbg!()`, `todo!()`, `unimplemented!()`, `debugger;`) with release stripping (`--keep-debug-checks` to retain), `else if` accepted as a desugared `elif`, sublib-prefix resolution (`use xiom.os; os.platform.<fn>`), and release-stripped contracts (`--runtime-contracts` to force).
+> **New in v0.57 (Unsafe Confinement):** every `unsafe` block is a confined transaction -- guard-heap arena isolation (req d), stack guard pages (req e), SEH/sigsetjmp fault trapping (req f), once-only transient-fault retry (req h), Copy-Out of Str tails (req i), zero-escape gates (T002/T003/T005/T006/T007), `#[unsafe_no_retry]`, and `#[unsafe_direct]` (trusted escape hatch, `--enable-unsafe-direct`).
+> **New in v0.58 (Debug & Numeric Policy):** secure numeric policy (Int<->Float mixing requires explicit `as`; int literals may adopt float; same-family widening stays auto), labeled loops (`@label: while` / `break @label;`), debug intrinsics (`assert(cond[, msg])`, `dbg!()`, `todo!()`, `unimplemented!()`, `debugger;`) with release stripping (`--keep-debug-checks` to retain), `else if` accepted as a desugared `elif`, sublib-prefix resolution (`use xiom.os; os.platform.<fn>`), and release-stripped contracts (`--runtime-contracts` to force).
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
-> **⚠️ IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.
+> **[WARN] IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug -- file it, do NOT alter the spec. Only the XIOM language team may update this file.
 
-> **⚠️ KNOWN DEVIATIONS.** When the compiler rejects spec-conformant code, the
+> **[WARN] KNOWN DEVIATIONS.** When the compiler rejects spec-conformant code, the
 > compiler has a bug. These bugs are tracked in `docs/ROADMAP.md` and
 > `SESSION.md` under "KNOWN ISSUES." During code generation, if the compiler
 > rejects valid spec constructs, work around the limitation (use the supported
 > syntax variant) and reference the tracked issue. **Do not conclude the
-> specification is wrong** — the spec is the target; the compiler is catching up.
+> specification is wrong** -- the spec is the target; the compiler is catching up.
 > Currently tracked gaps include: `|| expr` zero-arg closures parsed as OR,
 > `&mut` in method params has limited support, variable shadowing with `var`
 > in blocks is a checker limitation, and float literal `-1.5` unary negation
 > is a parser limitation.
 
-> **Scope:** Core language (sections 1–7), memory & contract model, error handling, module system, the complete 60-module standard library (section 8), the `xiom` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
+> **Scope:** Core language (sections 1-7), memory & contract model, error handling, module system, the complete 60-module standard library (section 8), the `xiom` compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).
 > Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.
 
 ---
@@ -29,7 +29,7 @@
 XIOM is a compiled, statically typed, memory-safe systems language.
 
 ```
-Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM IR → clang → binary
+Pipeline: .xi -> Lexer -> Parser -> Type Checker -> Borrow Checker -> LLVM IR -> clang -> binary
 ```
 
 **Three non-negotiable properties:**
@@ -51,7 +51,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 ## 2. Complete Syntax Rules
 
 > **Import rules:** All examples below include explicit `use xiom.io;` declarations.
-> In scripting mode (`xiom run`), the compiler auto-adds `use xiom.io;` — but for
+> In scripting mode (`xiom run`), the compiler auto-adds `use xiom.io;` -- but for
 > standard compilation (`xiom file.xi`), `xiom --check`, and WASM targets, you MUST
 > include `use xiom.io;` explicitly. AI agents should always include explicit imports
 > to ensure code works in all compilation modes.
@@ -59,10 +59,10 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 ### 2.1 Variables
 
 ```xiom
-let x: Int = 42           // immutable — cannot be reassigned
-var y: Float64 = 3.14     // mutable — can be reassigned with =
-let name = "XIOM"        // type inferred — Str
-let v = [1, 2, 3]         // type inferred — Vec[Int]
+let x: Int = 42           // immutable -- cannot be reassigned
+var y: Float64 = 3.14     // mutable -- can be reassigned with =
+let name = "XIOM"        // type inferred -- Str
+let v = [1, 2, 3]         // type inferred -- Vec[Int]
 ```
 
 **Rules:**
@@ -80,7 +80,7 @@ fn add(a: Int, b: Int) -> Int {
   return a + b;
 }
 
-// Void function — no return type annotation
+// Void function -- no return type annotation
 fn log(message: Str) {
   io.print(message);
 }
@@ -108,7 +108,7 @@ pub type Vec3 = { x: Float32; y: Float32; z: Float32; }
 
 pub fn Vec3.dot(other: &Vec3) -> Float32 {
   return x * other.x + y * other.y + z * other.z;
-  // self is IMPLICIT — never write self.x, just x
+  // self is IMPLICIT -- never write self.x, just x
 }
 
 pub fn Vec3.set_x(value: Float32) {
@@ -120,9 +120,9 @@ pub fn Vec3.set_x(value: Float32) {
 - Method syntax: `fn TypeName.methodName(params) -> ReturnType`
 - `self` is IMPLICIT in method bodies. Access fields directly: `x`, not `self.x`.
   The `self` / `&self` / `&mut self` parameter shown in stdlib signatures is
-  **documentation notation** indicating the receiver's ownership mode — it is
+  **documentation notation** indicating the receiver's ownership mode -- it is
   never written at call sites or in method implementations.
-- Compiler infers `&Self` or `&mut Self` from body. If ANY field is mutated → `&mut Self`.
+- Compiler infers `&Self` or `&mut Self` from body. If ANY field is mutated -> `&mut Self`.
 - Methods are defined OUTSIDE the type declaration, in the same module.
 
 ### 2.4 Control Flow
@@ -154,15 +154,15 @@ match state {
   AgentState.Patrolling(route) => follow(route),
 }
 
-// if let — desugars to match
+// if let -- desugars to match
 if let Some(v) = maybe_val { use(v); } else { fallback(); }
 
-// while let — desugars to while true + match
+// while let -- desugars to while true + match
 while let Some(v) = next() { process(v); }
 ```
 
 **Rules:**
-- `if` / `elif` / `else` — canonical spelling; `else if` is ALSO accepted as a
+- `if` / `elif` / `else` -- canonical spelling; `else if` is ALSO accepted as a
   desugared form of `elif` (a following `if` after `else` chains as an `elif`;
   the resulting AST is identical).
 - `match` arms use `=>` not `:`.
@@ -196,8 +196,8 @@ and `continue @label;` exit/continue the labeled loop. Unlabeled `break`/
 100_000         // Int with separators
 3.14            // Float64
 true | false    // Bool
-"hello"         // Str — always double quotes
-'A'             // Char — always single quotes
+"hello"         // Str -- always double quotes
+'A'             // Char -- always single quotes
 
 // Arithmetic
 a + b   a - b   a * b   a / b   a % b   -a
@@ -205,13 +205,13 @@ a + b   a - b   a * b   a / b   a % b   -a
 // Compound assignment (desugars to x = x + y)
 x += 1;    x -= 2;    x *= 3;    x /= 4;    x %= 5;
 
-// Comparison — returns Bool
+// Comparison -- returns Bool
 a == b   a != b   a < b   a > b   a <= b   a >= b
 
-// Logical — both operands must be Bool
+// Logical -- both operands must be Bool
 !a          a && b          a || b
 
-// Struct literal — TypeName{ field: value, ... }
+// Struct literal -- TypeName{ field: value, ... }
 let p = Point{ x: 1.0, y: 2.0 };
 
 // Array literal
@@ -224,7 +224,7 @@ let dist = p.x * p.x + p.y * p.y;
 // Function call
 let result = add(10, 20);
 
-// Generic call — explicit type parameter
+// Generic call -- explicit type parameter
 let n = max[Int](10, 20);
 let n = max(10, 20);       // inferred
 
@@ -250,7 +250,7 @@ x is Some                  // type test
 items.len()@pre            // pre-state (contracts only)
 
 // v0.54: Compile-time evaluation
-const { 40 + 2 }            // compile-time constant block → evaluated to 42
+const { 40 + 2 }            // compile-time constant block -> evaluated to 42
 sizeof::<Int>()              // type size (compile-time)
 align_of::<Point>()          // type alignment (compile-time)
 type_id::<Int>()             // FNV-1a type hash (compile-time)
@@ -261,18 +261,18 @@ is_signed::<Int>()           // Bool: is type signed? (compile-time)
 asm("nop");
 asm("mov $0, $1" : "=r"(result) : "r"(input));
 
-// v0.55: defer — guaranteed scope-exit execution
+// v0.55: defer -- guaranteed scope-exit execution
 defer { cleanup(); }
 defer io.println("done");
 
-// v0.55/v0.56: spawn — OS thread creation with optional move captures
+// v0.55/v0.56: spawn -- OS thread creation with optional move captures
 spawn { heavy_work(); }
 spawn move { var x = captured_var + 1; }  // v0.56: move semantics for captures
 
-// v0.55: Never type — diverging function
+// v0.55: Never type -- diverging function
 fn abort() -> ! { loop {} }
 
-// v0.55: Turbofish — explicit generic type parameter
+// v0.55: Turbofish -- explicit generic type parameter
 let n = parse::<Int>("42");
 let a = align_of::<Float64>();
 ```
@@ -306,7 +306,7 @@ Some  None  Ok  Err
 unsafe  extern  is  and(reserved)  or(reserved)  not(reserved)  where(reserved)
 ```
 
-**Debug intrinsics (v0.58)** — usable anywhere in fn bodies:
+**Debug intrinsics (v0.58)** -- usable anywhere in fn bodies:
 
 ```xiom
 assert(cond);                 // statement: panic with location on false
@@ -319,7 +319,7 @@ debugger;                     // statement: break into the attached debugger
                               // (no-op when none; used with xiom-dbg)
 ```
 
-- `assert` panics via `xiom_panic` (stderr + exit 1) — it is a statement, not
+- `assert` panics via `xiom_panic` (stderr + exit 1) -- it is a statement, not
   an expression.
 - `dbg!` prints the formatted value (Int, Float, Str, Bool) and returns the
   value, so it can wrap any expression.
@@ -329,7 +329,7 @@ debugger;                     // statement: break into the attached debugger
   probes).
 
 `result` is only valid inside `ensures` clauses.
-`self` is implicit in method bodies — never write it in code. In stdlib
+`self` is implicit in method bodies -- never write it in code. In stdlib
 signatures, `self`/`&self`/`&mut self` is documentation notation showing the
 receiver's ownership mode; it is not written at call sites or in implementations.
 `is` is used for type testing: `value is Some`.
@@ -346,32 +346,32 @@ and inline `[T: Interface]` constraints instead.
 |------|-------|---------|
 | `Bool` | 1 bit | `true`, `false` |
 | `Int` | 64-bit signed | `42` |
-| `Int8`–`Int64` | 8–64 bits | `let x: Int32 = 1;` |
-| `UInt`–`UInt64` | 8–64 bits unsigned | `let n: UInt = 100;` |
+| `Int8`-`Int64` | 8-64 bits | `let x: Int32 = 1;` |
+| `UInt`-`UInt64` | 8-64 bits unsigned | `let n: UInt = 100;` |
 | `Float32` | IEEE 754 single | `let f: Float32 = 1.0;` |
 | `Float64` | IEEE 754 double | `3.14` (default) |
-| `Char` | 32-bit Unicode | `'A'`, `'λ'` |
+| `Char` | 32-bit Unicode | `'A'`, `'lambda'` |
 | `Str` | UTF-8 slice | `"hello"` |
 | `Unit` | `()` | Void return, empty tuple |
 | `!` | Never (bottom type) | Diverging functions, exhaustiveness proofs |
 
-**Numeric policy (v0.58) — secure mixing rules:**
+**Numeric policy (v0.58) -- secure mixing rules:**
 
-- **Int ↔ Float mixing in arithmetic, comparisons, and typed bindings
+- **Int <-> Float mixing in arithmetic, comparisons, and typed bindings
   requires an explicit `as` cast** (Rust-style): `x + y` where `x: Int` and
   `y: Float64` is a compile error; write `x as Float64 + y` or
   `x + y as Int`.
 - **Int literals may adopt the float type** of the other operand:
-  `1 + 2.5` is valid — the literal `1` adopts `Float64`.
+  `1 + 2.5` is valid -- the literal `1` adopts `Float64`.
 - **Same-family widening stays automatic**: `Int8 + Int` widens to `Int`
   (and to `Int64`/`Int128`/`UInt` per the widest operand); `Float32 + Float64`
   widens to `Float64`. No cast needed within a family.
 - **Float literal without a decimal part** (e.g. `2.0`) is still a float;
   use `as Int` to convert explicitly.
-- Narrowing (`Float64 → Float32`, `Int → Int8`) is NEVER implicit — always
+- Narrowing (`Float64 -> Float32`, `Int -> Int8`) is NEVER implicit -- always
   `as`.
 - `as` casts are checked: value-preserving when possible, truncating for
-  narrowing, bit-exact for int↔float reinterpretations as documented per pair.
+  narrowing, bit-exact for int<->float reinterpretations as documented per pair.
 
 ### 3.2 Compound Types
 
@@ -464,7 +464,7 @@ type Stack[T] = { items: Vec[T]; capacity: UInt; }
 
 ---
 
-## 4. Memory Model — CRITICAL
+## 4. Memory Model -- CRITICAL
 
 ### 4.1 Ownership Rules
 
@@ -487,32 +487,32 @@ fn read(v: &Vec[Int]) { }             // read borrow
 fn write(v: &mut Vec[Int]) { }        // write borrow
 
 let v = [1, 2, 3];
-read(&v);        // borrow — v still valid
-write(&mut v);   // write borrow — exclusive
-consume(v);      // move — v NO LONGER VALID
+read(&v);        // borrow -- v still valid
+write(&mut v);   // write borrow -- exclusive
+consume(v);      // move -- v NO LONGER VALID
 // read(&v);     // COMPILE ERROR: use after move
 ```
 
 ### 4.3 Restrictions (These Are Compile Errors)
 
-- ❌ Borrow stored in struct field
-- ❌ Borrow returned from function (to stack-local data)
-- ❌ Use after move
-- ❌ Write borrow while read borrow active
-- ❌ Multiple write borrows simultaneously
-- ❌ Mutation through `&T`
-- ✅ Clone instead of borrow for struct storage
-- ✅ Return owned type, not borrow
+- [FAIL] Borrow stored in struct field
+- [FAIL] Borrow returned from function (to stack-local data)
+- [FAIL] Use after move
+- [FAIL] Write borrow while read borrow active
+- [FAIL] Multiple write borrows simultaneously
+- [FAIL] Mutation through `&T`
+- [OK] Clone instead of borrow for struct storage
+- [OK] Return owned type, not borrow
 
 > **Returning borrows:** The ban applies to returning a borrow to data whose
-> lifetime ends when the function returns — local variables, parameters passed
+> lifetime ends when the function returns -- local variables, parameters passed
 > by value, and temporaries. Functions that return `Option[&T]`, `&[N]T`, or
 > other references to heap-allocated, caller-provided, or globally-owned data
 > (e.g., `array.first()`, `Slice.get()`, `Box.get()`) are permitted because the
 > referent outlives the function call. The compiler enforces this via lexical
 > lifetime analysis.
 
-### 4.4 Unsafe (Confined Blocks — v0.57)
+### 4.4 Unsafe (Confined Blocks -- v0.57)
 
 ```xiom
 unsafe {
@@ -523,7 +523,7 @@ unsafe {
 
 `unsafe` is a declaration of programmer responsibility. Only needed for C FFI and raw pointer ops.
 
-**Unsafe Confinement model (v0.57 — all requirements enforced by the compiler):**
+**Unsafe Confinement model (v0.57 -- all requirements enforced by the compiler):**
 
 | Requirement | Rule |
 |-------------|------|
@@ -542,7 +542,7 @@ unsafe {
 
 ```xiom
 #[unsafe_no_retry]   // fn-level: disable once-only transient retry (deterministic faults)
-#[unsafe_direct]     // fn-level: trusted escape hatch — plain unsafe, no trampoline/arena/
+#[unsafe_direct]     // fn-level: trusted escape hatch -- plain unsafe, no trampoline/arena/
                      // guard page. Restricted to stdlib/selfhost; user code needs
                      // --enable-unsafe-direct. Counted against an audited cap.
 ```
@@ -666,7 +666,7 @@ fn private_helper() { }   // module-private (default)
 
 ---
 
-## 8. Standard Library — Production API Reference
+## 8. Standard Library -- Production API Reference
 
 The standard library is 60 modules under `xiom.*` (organized into category folders: `num/`, `math/`, `text/`, `collect/`, `hash/`, `format/`, `os/`, `net/`, `rand/`). Every module is fully implemented and callable. Import a module with `use xiom.<module>;` then call it.
 
@@ -676,7 +676,7 @@ The standard library is 60 modules under `xiom.*` (organized into category folde
 - **Methods** are called on a value with implicit `self`: `v.push(x)`, `s.len()`, `d.as_millis()`, `arc.clone()`.
 - **`use` a single item** to call it unqualified: `use xiom.collections.Vec;` then `Vec[Int].new()`.
 
-**Signatures below are copied verbatim from the source.** Some collection/method signatures show explicit type params like `Vec.push[T]` — at call sites the receiver's type is inferred, so you write `v.push(x)`.
+**Signatures below are copied verbatim from the source.** Some collection/method signatures show explicit type params like `Vec.push[T]` -- at call sites the receiver's type is inferred, so you write `v.push(x)`.
 
 > **Canonical API rule:** When multiple functions serve the same purpose, prefer
 > the most specific/idiomatic one. Key examples:
@@ -688,14 +688,14 @@ The standard library is 60 modules under `xiom.*` (organized into category folde
 
 ### When generating code, follow these rules:
 
-1. **Use the types** — `Option[T]`, `Result[T,E]`, `Vec[T]`, `Map[K,V]`, `Set[T]`, `Str` are fully defined. `Option`, `Result`, `Vec`, and arithmetic/comparison/control flow are compiler primitives and need no import.
-2. **Use the stdlib** — all 60 modules are implemented. Import with `use xiom.<module>;` and call the documented functions. DO NOT reimplement stdlib functions.
-3. **Call through the module** — `io.println(...)`, `math.sqrt(...)`, `string.str_split(...)`, `json = serialize.json_parse(...)`. Methods on stdlib types use dot syntax on the value.
-4. **For FFI** — use `extern "C"` directly; the C runtime links standard libc plus the XIOM runtime automatically. See the C FFI block at the end of this section.
+1. **Use the types** -- `Option[T]`, `Result[T,E]`, `Vec[T]`, `Map[K,V]`, `Set[T]`, `Str` are fully defined. `Option`, `Result`, `Vec`, and arithmetic/comparison/control flow are compiler primitives and need no import.
+2. **Use the stdlib** -- all 60 modules are implemented. Import with `use xiom.<module>;` and call the documented functions. DO NOT reimplement stdlib functions.
+3. **Call through the module** -- `io.println(...)`, `math.sqrt(...)`, `string.str_split(...)`, `json = serialize.json_parse(...)`. Methods on stdlib types use dot syntax on the value.
+4. **For FFI** -- use `extern "C"` directly; the C runtime links standard libc plus the XIOM runtime automatically. See the C FFI block at the end of this section.
 
 ---
 
-### 8.1 `core` — Fundamental types, interfaces, and intrinsics
+### 8.1 `core` -- Fundamental types, interfaces, and intrinsics
 
 Built into the type system; you can use `Option`, `Result`, and these interfaces without importing.
 
@@ -803,22 +803,22 @@ const FLOAT64_EPSILON: Float64 = 2.220446049250313e-16;
 
 ---
 
-### 8.2 `collections` — Vec, Map, Set, and more
+### 8.2 `collections` -- Vec, Map, Set, and more
 
 **2026-08-11 additions (collect/ folder, all Int keys/values):**
-`collect/skiplist.xi` — SkipList (ordered, O(log n) expected, deterministic
-LCG levels, dup-rejected insert); `collect/trie.xi` — Trie (lowercase a-z,
+`collect/skiplist.xi` -- SkipList (ordered, O(log n) expected, deterministic
+LCG levels, dup-rejected insert); `collect/trie.xi` -- Trie (lowercase a-z,
 insert/contains/remove/complete (autocomplete, lexicographic DFS)/
-has_prefix); `collect/cuckoo.xi` — CuckooMap (two multiplicative-hash
-tables, ≤16 relocations then grow); `collect/fenwick.xi` — FenwickTree
-(1-based, add/sum/range/get); `collect/objectpool.xi` — ObjectPool
+has_prefix); `collect/cuckoo.xi` -- CuckooMap (two multiplicative-hash
+tables, <=16 relocations then grow); `collect/fenwick.xi` -- FenwickTree
+(1-based, add/sum/range/get); `collect/objectpool.xi` -- ObjectPool
 (acquire/release with double-release rejection); `collect/queue.xi`
-SpscRing — lock-free SPSC ring (AtomicInt head/tail, push/pop/len);
-`collect/cache.xi` ArcCache — Adaptive Replacement Cache (T1/T2/B1/B2 + p
+SpscRing -- lock-free SPSC ring (AtomicInt head/tail, push/pop/len);
+`collect/cache.xi` ArcCache -- Adaptive Replacement Cache (T1/T2/B1/B2 + p
 adaptation). All follow the flat-parallel-Vec[Int] arena pattern
 (tree.xi/graph.xi convention): Vec-of-struct instantiations crash combined
 programs at startup (BUG 16) and `&mut Vec[T]` args that are struct FIELDS
-copy (mutations lost) — list ops are inlined on the parent struct. NOTE:
+copy (mutations lost) -- list ops are inlined on the parent struct. NOTE:
 skiplist and trie must not be imported into the same program until BUG 16
 is fixed (smokes are split accordingly).
 
@@ -944,15 +944,15 @@ fn Slice.get[T](index: Int) -> Option[T]
 
 ---
 
-### 8.3 `string` — UTF-8 string operations
+### 8.3 `string` -- UTF-8 string operations
 
 **2026-08-11 additions:** `str_translate(s, from, to)` (tr-utility, chars
 beyond `to` are removed), `str_rot13`, `str_rot47` (ASCII 33..126),
 `str_caesar(s, shift)` (a-z/A-Z, wraps, negative shifts OK), `str_atbash`,
-`str_abbreviate(s, max_len)` (middle "..." — front half rounded up),
+`str_abbreviate(s, max_len)` (middle "..." -- front half rounded up),
 `str_obfuscate(s, visible)` ('*' mask). All ASCII-scoped by design; the
 `_mk_byte` helper renders 32..126 only. NOTE: `==` between two runtime
-Vec[Str] ELEMENTS lowers to pointer compare (BUG 17) — compare string
+Vec[Str] ELEMENTS lowers to pointer compare (BUG 17) -- compare string
 content byte-wise (see `text.similarity._str_eq`).
 
 Call as `string.<fn>(...)`.
@@ -985,7 +985,7 @@ fn byte_count(s: Str) -> Int
 
 ---
 
-### 8.4 `io` — Console, files, process, buffered I/O
+### 8.4 `io` -- Console, files, process, buffered I/O
 
 Call as `io.<fn>(...)`.
 
@@ -1057,7 +1057,7 @@ fn Cursor.into_inner(self) -> Vec[UInt8]
 
 ---
 
-### 8.5 `fmt` — Formatting & Display
+### 8.5 `fmt` -- Formatting & Display
 
 **2026-08-11 (G13):** printf/scanf-style formatting landed. Typed families
 (no variadics in XIOM): `sprintf_i1/i2(spec, ints...)`, `sprintf_f1/f2(spec,
@@ -1065,10 +1065,10 @@ floats...)`, `sprintf_s1/s2(spec, strs...)`, plus Vec-based `sprintf_i/sprintf_s
 Conversions: `%d %i %u %x %X %o %b` (negatives wrap to u64 two's complement),
 `%f %F %e %E %g %G` (C semantics, half-away rounding, `%e` at least 2-digit
 exponents, `%g` strips trailing zeros), `%s` with width/precision, `%%`.
-Flags `- 0 + `, width, `.prec`. Wrong conversion family / missing args →
-`Err` (no silent failures). `sscanf(s, spec)` → `Result[Vec[Str], Str]`,
-`sscanf_ints` → `Result[Vec[Int], Str]` (overflow-checked `%d/%x`), and
-`sscanf_floats` → `FloatScan` (8 fixed slots — Vec[Float64] is compiler-broken,
+Flags `- 0 + `, width, `.prec`. Wrong conversion family / missing args ->
+`Err` (no silent failures). `sscanf(s, spec)` -> `Result[Vec[Str], Str]`,
+`sscanf_ints` -> `Result[Vec[Int], Str]` (overflow-checked `%d/%x`), and
+`sscanf_floats` -> `FloatScan` (8 fixed slots -- Vec[Float64] is compiler-broken,
 BUG 12); `%c`/width/`*` suppression supported; numeric conversions skip
 leading whitespace (C semantics). `convert.float_to_string` was fixed (was
 fptosi bit-pattern garbage) and is now %.15g-style; `float_to_fixed_str`/
@@ -1100,7 +1100,7 @@ fn println(s: Str)
 
 ---
 
-### 8.6 `math` — Math functions & constants
+### 8.6 `math` -- Math functions & constants
 
 Call as `math.<fn>(...)`. libm-backed functions plus pure-XIOM fallbacks (`*_pure`).
 ```xiom
@@ -1149,7 +1149,7 @@ Pure fallbacks (no libm): `sqrt_pure`, `pow_pure`, `abs_float_pure`, `floor_pure
 
 ---
 
-### 8.7 `num` — Numeric traits & integer/float utilities (with merged crypto primitives)
+### 8.7 `num` -- Numeric traits & integer/float utilities (with merged crypto primitives)
 
 ```xiom
 interface Neg  { fn neg(self) -> Self; }
@@ -1204,11 +1204,11 @@ fn parse_float(s: Str) -> Result[Float64, Str]
 fn parse_int_radix(s: Str, radix: Int) -> Result[Int, Str]
 ```
 
-> **Note:** Several crypto primitive modules (`aes`, `sha`, `b64`, `ed25519`, `hex`, `md5`, `pbkdf`, `random`) were merged from packages into stdlib. Use `use xiom.crypto;` for the unified crypto API — see section 8.30.
+> **Note:** Several crypto primitive modules (`aes`, `sha`, `b64`, `ed25519`, `hex`, `md5`, `pbkdf`, `random`) were merged from packages into stdlib. Use `use xiom.crypto;` for the unified crypto API -- see section 8.30.
 
 ---
 
-### 8.8 `cmp` — Comparison & ordering
+### 8.8 `cmp` -- Comparison & ordering
 
 ```xiom
 type Ordering  = enum { Less, Equal, Greater }
@@ -1235,7 +1235,7 @@ fn Reverse.new[T](value: T) -> Reverse[T]
 
 ---
 
-### 8.9 `hash` — Hashing
+### 8.9 `hash` -- Hashing
 
 ```xiom
 interface Hash        { fn hash(self, hasher: Hasher); }
@@ -1259,7 +1259,7 @@ fn sip_hash(data: &Vec[UInt8]) -> UInt64
 
 ---
 
-### 8.10 `char` — Character operations
+### 8.10 `char` -- Character operations
 
 ```xiom
 fn is_alphabetic(c: Char) -> Bool
@@ -1282,7 +1282,7 @@ fn encode_utf8(c: Char, buf: &mut Vec[UInt8])
 
 ---
 
-### 8.11 `convert` — Type conversions
+### 8.11 `convert` -- Type conversions
 
 ```xiom
 interface From[T]    { fn from(value: T) -> Self; }
@@ -1302,7 +1302,7 @@ fn int_to_char(n: Int) -> Option[Char]
 
 ---
 
-### 8.12 `iter` — Iterators & adapters
+### 8.12 `iter` -- Iterators & adapters
 
 ```xiom
 type Range          = { start: Int; end: Int; }
@@ -1345,7 +1345,7 @@ fn Iterator[T].last(self) -> Option[T]
 
 ---
 
-### 8.13 `array` — Fixed-size array `[N]T` operations
+### 8.13 `array` -- Fixed-size array `[N]T` operations
 
 ```xiom
 fn len[T, const N: Int](arr: &[N]T) -> Int
@@ -1374,7 +1374,7 @@ fn contains[T: Eq](arr: &[N]T, x: &T) -> Bool
 
 ---
 
-### 8.14 `mem` — Memory utilities
+### 8.14 `mem` -- Memory utilities
 
 ```xiom
 type ManuallyDrop[T] = { value: T; }
@@ -1397,7 +1397,7 @@ fn ManuallyDrop.drop[T](self)
 
 ---
 
-### 8.15 `ptr` — Raw pointer operations (unsafe)
+### 8.15 `ptr` -- Raw pointer operations (unsafe)
 
 ```xiom
 fn null[T]() -> *T
@@ -1423,7 +1423,7 @@ fn from_mut[T](r: &mut T) -> *mut T
 
 ---
 
-### 8.16 `alloc` — Allocation
+### 8.16 `alloc` -- Allocation
 
 ```xiom
 type Layout      = { size: Int; align: Int; }
@@ -1451,7 +1451,7 @@ fn dealloc_layout(ptr: *mut UInt8, layout: Layout)
 
 ---
 
-### 8.17 `error` — Error trait hierarchy & fault types
+### 8.17 `error` -- Error trait hierarchy & fault types
 
 ```xiom
 interface Error { fn source(self) -> Option[Error]; fn description(self) -> Str; fn cause(self) -> Option[Error]; }
@@ -1481,7 +1481,7 @@ transient-fault retry (requirement h).
 
 ---
 
-### 8.18 `path` — Path manipulation
+### 8.18 `path` -- Path manipulation
 
 ```xiom
 type Path    = { inner: Str; }
@@ -1518,13 +1518,13 @@ fn path_separator() -> Str
 
 ---
 
-### 8.19 `time` — Duration, Instant, SystemTime, DateTime
+### 8.19 `time` -- Duration, Instant, SystemTime, DateTime
 
 **2026-08-11 additions:** `strftime(spec, &Date) -> Str` and
-`strptime(s, spec) -> DateParse { is_ok, date }` — C-style formatting with
+`strptime(s, spec) -> DateParse { is_ok, date }` -- C-style formatting with
 `%Y %y %m %d %H %M %S %j %w %u %%` (Date carries no time-of-day; %H/%M/%S
 format as 00 and parse-but-ignore). strptime validates month/day ranges
-(leap-aware) and rejects unsupported conversions → `is_ok = false`. It
+(leap-aware) and rejects unsupported conversions -> `is_ok = false`. It
 returns `DateParse` (not `Option[Date]`) because Option-of-struct payloads
 collide with Option[Int] in codegen (BUG 12 family).
 
@@ -1578,7 +1578,7 @@ fn sleep_until(instant: Instant)
 
 ---
 
-### 8.20 `env` — Environment & directories
+### 8.20 `env` -- Environment & directories
 
 ```xiom
 const OS: Str     = "windows";
@@ -1619,7 +1619,7 @@ fn path_separator() -> Str
 
 ---
 
-### 8.21 `os` — Platform, processes, filesystem walk
+### 8.21 `os` -- Platform, processes, filesystem walk
 
 ```xiom
 type ChildProcess = { pid: Int; stdin: Int; stdout: Int; stderr: Int; }
@@ -1663,7 +1663,7 @@ const SIGUSR1: Int = 10;  const SIGUSR2: Int = 12;
 
 ---
 
-### 8.22 `sync` — Synchronization primitives
+### 8.22 `sync` -- Synchronization primitives
 
 ```xiom
 type Mutex[T]      = { inner: *UInt8; data: *T; }
@@ -1723,7 +1723,7 @@ fn AtomicInt.swap(self, val: Int) -> Int
 fn AtomicInt.compare_exchange(self, current: Int, new: Int) -> Bool
 ```
 
-### 8.22a `channel` — MPSC Channel (v0.55)
+### 8.22a `channel` -- MPSC Channel (v0.55)
 
 ```xiom
 type Channel[T] = { _handle: *Int; }     // Bounded MPSC ring buffer (64 slots)
@@ -1741,7 +1741,7 @@ fn Receiver.try_recv[T]() -> Option[T]
 
 ---
 
-### 8.23 `thread` — Threads & scopes
+### 8.23 `thread` -- Threads & scopes
 
 ```xiom
 type Thread        = { handle: *UInt8; id: Int; }
@@ -1769,7 +1769,7 @@ fn current_thread_id() -> Int
 
 ---
 
-### 8.24 `async` — Cooperative executor & channels
+### 8.24 `async` -- Cooperative executor & channels
 
 ```xiom
 type Executor   = { ready: Vec[fn()]; timers: Vec[Timer]; }
@@ -1797,7 +1797,7 @@ fn Channel.close[T]()
 
 ---
 
-### 8.25 `net` — TCP, UDP, HTTP, DNS, URL
+### 8.25 `net` -- TCP, UDP, HTTP, DNS, URL
 
 ```xiom
 type TcpStream    = { fd: Int; }
@@ -1827,7 +1827,7 @@ fn parse_url(url: Str) -> Result[UrlParts, NetError]
 
 ---
 
-### 8.26 `ffi` — Thin C FFI wrappers
+### 8.26 `ffi` -- Thin C FFI wrappers
 
 ```xiom
 fn extern_c(name: Str) -> Int
@@ -1840,7 +1840,7 @@ fn align_of[T]() -> Int
 
 ---
 
-### 8.27 `cell` — Interior mutability
+### 8.27 `cell` -- Interior mutability
 
 ```xiom
 type Cell[T]    = { value: T; }
@@ -1866,7 +1866,7 @@ fn RefMut.set[T](self, value: T)
 
 ---
 
-### 8.28 `rc` — Reference counting
+### 8.28 `rc` -- Reference counting
 
 ```xiom
 type RcInner[T] = { strong: Int; weak: Int; value: T; }
@@ -1890,7 +1890,7 @@ fn Weak.drop[T](self)
 
 ---
 
-### 8.29 `serialize` — JSON serialization
+### 8.29 `serialize` -- JSON serialization
 
 ```xiom
 interface Serialize   { fn serialize(self) -> Result[Str, SerializeError]; fn serialize_json(self) -> Result[Str, SerializeError]; fn serialize_bytes(self) -> Result[Vec[UInt8], SerializeError]; }
@@ -1928,7 +1928,7 @@ fn big_endian() -> Bool
 
 ---
 
-### 8.30 `crypto` — Hashing, HMAC, AES, RSA, KDFs
+### 8.30 `crypto` -- Hashing, HMAC, AES, RSA, KDFs
 
 ```xiom
 type KeyPair = { public: Vec[UInt8]; private: Vec[UInt8]; }
@@ -1957,7 +1957,7 @@ fn constant_time_compare(a: &Vec[UInt8], b: &Vec[UInt8]) -> Bool
 
 ---
 
-### 8.31 `compress` — gzip, zlib, deflate, brotli, lz4, snappy
+### 8.31 `compress` -- gzip, zlib, deflate, brotli, lz4, snappy
 
 ```xiom
 interface Compressor { fn compress(self, data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]; fn decompress(self, data: &Vec[UInt8]) -> Result[Vec[UInt8], Str]; }
@@ -1988,7 +1988,7 @@ fn detect_format(data: &Vec[UInt8]) -> Str
 
 ---
 
-### 8.32 `encoding` — base64, hex, URL, UTF-8
+### 8.32 `encoding` -- base64, hex, URL, UTF-8
 
 ```xiom
 fn base64_encode(data: &Vec[UInt8]) -> Str
@@ -2012,7 +2012,7 @@ fn text_to_binary(text: Str, format: Int) -> Result[Vec[UInt8], Str]
 
 ---
 
-### 8.33 `regex` — Regular expressions
+### 8.33 `regex` -- Regular expressions
 
 Supported: `.  *  +  ?  ^  $  [abc]  [a-z]  [^abc]  \d \w \s  \D \W \S`.
 ```xiom
@@ -2038,7 +2038,7 @@ fn is_valid_regex(pattern: Str) -> Bool
 
 ---
 
-### 8.34 `rand` — Random numbers & distributions
+### 8.34 `rand` -- Random numbers & distributions
 
 ```xiom
 interface Rng { fn next_int(self) -> Int; fn next_float(self) -> Float64; fn next_bytes(self, buf: &mut Vec[UInt8]); }
@@ -2072,7 +2072,7 @@ fn seed_from_value(seed: Int)
 
 ---
 
-### 8.35 `log` — Structured logging
+### 8.35 `log` -- Structured logging
 
 ```xiom
 type LogLevel = enum { Trace, Debug, Info, Warn, Error, Fatal }
@@ -2100,7 +2100,7 @@ fn clear_log()
 
 ---
 
-### 8.36 `test` — Contract-aware test framework
+### 8.36 `test` -- Contract-aware test framework
 
 ```xiom
 type TestResult      = { passed: Bool; name: Str; message: Str; contract_failures: Vec[ContractFailure]; duration_ms: Int; }
@@ -2127,7 +2127,7 @@ fn bench(name: Str, f: fn()) -> TestResult
 
 ---
 
-### 8.37 `bench` — Benchmarking
+### 8.37 `bench` -- Benchmarking
 
 ```xiom
 type BenchResult = { name: Str; iterations: Int; total_ns: Int; mean_ns: Int; min_ns: Int; max_ns: Int; stddev_ns: Int; }
@@ -2140,7 +2140,7 @@ fn black_box[T](value: T) -> T
 
 ---
 
-### 8.38 `contracts` — Contract introspection & coverage
+### 8.38 `contracts` -- Contract introspection & coverage
 
 ```xiom
 type ContractClause      = { ... }
@@ -2178,7 +2178,7 @@ fn contract_density() -> Float64
 
 ---
 
-### 8.39 `reflect` — Runtime type information
+### 8.39 `reflect` -- Runtime type information
 
 ```xiom
 type TypeId    = { id: Int; }
@@ -2217,7 +2217,7 @@ fn alloc(size: UInt) -> *UInt8 {
 }
 ```
 
-Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/*.c`) provides the `xiom_*` helpers used by `io`, `os`, `sync`, `thread`, `net`, and `async`, and is linked by `xiom` on every native build — no manual setup needed. Use `--link`, `--link-path`, and `--c-source` (section 11) to link additional native libraries.
+Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/*.c`) provides the `xiom_*` helpers used by `io`, `os`, `sync`, `thread`, `net`, and `async`, and is linked by `xiom` on every native build -- no manual setup needed. Use `--link`, `--link-path`, and `--c-source` (section 11) to link additional native libraries.
 
 **v0.57 FFI ownership (T006):** an extern call returning `*T` inside a confined `unsafe` block must convert its result to an owned XIOM type before the block's tail. `xiom.ffi` provides:
 
@@ -2230,7 +2230,7 @@ Unconverted extern-returned pointers reaching a block tail are a compile error (
 
 ---
 
-### 8.40 `vulkan` — GPU Graphics & Compute (Ecosystem Package)
+### 8.40 `vulkan` -- GPU Graphics & Compute (Ecosystem Package)
 
 First-party Vulkan GPU bindings for XIOM (`packages/xiom-vulkan/`). Uses a flat C-ABI bridge (`xiom_vk_bridge.c`) that wraps Vulkan + GLFW into a compact API. All GPU resources are opaque handles validated by magic numbers. Import with `use xiom.vulkan;`.
 
@@ -2245,19 +2245,19 @@ First-party Vulkan GPU bindings for XIOM (`packages/xiom-vulkan/`). Uses a flat 
 .\packages\xiom-vulkan\build.ps1 -Target particles -Run
 ```
 
-Build pipeline: `GLSL → glslc → SPIR-V header → clang → bridge.obj → xiom --c-source bridge.obj --link vulkan-1 --link glfw3`
+Build pipeline: `GLSL -> glslc -> SPIR-V header -> clang -> bridge.obj -> xiom --c-source bridge.obj --link vulkan-1 --link glfw3`
 
 #### Architecture
 
 ```
 XIOM Application
-    │
+    |
 xiom.vulkan  (safe wrappers with contracts)
-    │
+    |
 extern "C" FFI  (xvk_* flat C bridge)
-    │
+    |
 xiom_vk_bridge.c  (~4000 lines C)
-    │
+    |
 vulkan-1.dll + glfw3.dll  (native)
 ```
 
@@ -2460,7 +2460,7 @@ use xiom.io;
 use xiom.vulkan;
 
 fn main() -> Int {
-  let app = create_app("XIOM Vulkan — Particle Fountain", 800, 600);
+  let app = create_app("XIOM Vulkan -- Particle Fountain", 800, 600);
   match app {
     Err(e) => { io.println(e); return 1; }
     Ok(a) => {
@@ -2530,12 +2530,12 @@ The C bridge embeds 15 SPIR-V shader arrays in `xvk_shaders_generated.h`. Create
 
 ---
 
-### 8.41 `bigint` — Arbitrary-precision signed integers (production, 2026-08-10)
+### 8.41 `bigint` -- Arbitrary-precision signed integers (production, 2026-08-10)
 
-`stdlib/xiom/bigint.xi` — base-10⁹ limb representation (`BigInt = { digits: Vec[Int]; negative: Bool; }`), little-endian limbs. Covers the full i128/u128 native range and far beyond (arbitrary precision — "256-bit" and larger needs are served directly). Import with `use xiom.bigint;` and call `xiom.bigint.<fn>`. The original 14 fns are unchanged (frozen); the production layer below is additive. All div-family fns require a non-zero divisor; `bigint_from_base` requires base in 2..36; `bigint_pow` requires exp >= 0.
+`stdlib/xiom/bigint.xi` -- base-109 limb representation (`BigInt = { digits: Vec[Int]; negative: Bool; }`), little-endian limbs. Covers the full i128/u128 native range and far beyond (arbitrary precision -- "256-bit" and larger needs are served directly). Import with `use xiom.bigint;` and call `xiom.bigint.<fn>`. The original 14 fns are unchanged (frozen); the production layer below is additive. All div-family fns require a non-zero divisor; `bigint_from_base` requires base in 2..36; `bigint_pow` requires exp >= 0.
 
 ```xiom
-// constants (pure constructors — see docs/COMPILER_BUGS.md BUG 3)
+// constants (pure constructors -- see docs/COMPILER_BUGS.md BUG 3)
 fn bigint_zero() -> BigInt
 fn bigint_one() -> BigInt
 fn bigint_two() -> BigInt
@@ -2572,31 +2572,31 @@ fn bigint_binomial(n: Int, k: Int) -> BigInt               // requires: 0 <= k <
 fn bigint_fibonacci(n: Int) -> BigInt                      // requires: n >= 0
 // bitwise (two's-complement semantics, virtual infinite sign extension)
 fn bigint_bit_and / bit_or / bit_xor(a: &BigInt, b: &BigInt) -> BigInt
-fn bigint_shift_left(b: &BigInt, n: Int) -> BigInt         // original — DECIMAL shift (x10^n)
+fn bigint_shift_left(b: &BigInt, n: Int) -> BigInt         // original -- DECIMAL shift (x10^n)
 fn bigint_shift_right(b: &BigInt, n: Int) -> BigInt        // arithmetic bit shift (floor /2^n)
 fn bigint_popcount(b: &BigInt) -> Int                      // set bits in |b|
 fn bigint_bit_len(b: &BigInt) -> Int                       // bits to represent |b|; 0 for zero
 // comparisons (wrap compare)
 fn bigint_eq / lt / le / gt / ge(a: &BigInt, b: &BigInt) -> Bool
-// fixed-width bridges (256-bit framing, 2026-08-11) — exact range-checked
+// fixed-width bridges (256-bit framing, 2026-08-11) -- exact range-checked
 fn bigint_to_u64(b: &BigInt) -> Result[UInt64, Str]   // 0 .. 2^64-1
 fn bigint_to_u128(b: &BigInt) -> Result[UInt128, Str] // 0 .. 2^128-1
 fn bigint_to_i128(b: &BigInt) -> Result[Int128, Str]  // -2^127 .. 2^127-1
 ```
 
-Note: `bigint_div_mod` was re-verified and its estimator fixed (2026-08-10) — the original single-limb estimate produced wrong quotients for multi-limb dividends (documented in docs/COMPILER_BUGS.md NOTE 7); it is now Knuth-style (two-limb window, single-limb fast path, upward fixup) and satisfies `q*b + r == a`, `0 <= r < |b|`.
+Note: `bigint_div_mod` was re-verified and its estimator fixed (2026-08-10) -- the original single-limb estimate produced wrong quotients for multi-limb dividends (documented in docs/COMPILER_BUGS.md NOTE 7); it is now Knuth-style (two-limb window, single-limb fast path, upward fixup) and satisfies `q*b + r == a`, `0 <= r < |b|`.
 
 256-bit framing note (2026-08-11): BigInt is arbitrary precision and covers
 256-bit+ natively; `bigint_to_u64/u128/i128` are the exact range-checked
-bridges for fixed-width consumers (Err on out-of-range — no silent
+bridges for fixed-width consumers (Err on out-of-range -- no silent
 truncation). The planned `bigfloat_to_float128` bridge is blocked by
 docs/COMPILER_BUGS.md BUG 13 (fp128 needs __divtf3/__floatditf/__trunctfdf2
 compiler-rt helpers missing from the link line); TODO(compiler) noted in
 `stdlib/xiom/num/bigfloat.xi`.
 
-### 8.42 `bigfloat` — Arbitrary-precision decimal floating point (2026-08-10)
+### 8.42 `bigfloat` -- Arbitrary-precision decimal floating point (2026-08-10)
 
-`stdlib/xiom/num/bigfloat.xi` + flat aggregate `stdlib/xiom/bigfloat.xi` (D3/D4b). Power-of-10 representation: `value = sign * significand * 10^exponent` with a normalized BigInt significand and a decimal `precision` field. Import `use xiom.num.bigfloat;` and call `bigfloat.<fn>` (leaf), or `use xiom.bigfloat;` and call the full dotted path `xiom.num.bigfloat.<fn>`. Default precision 64 digits; arithmetic honors `max(a.precision, b.precision)` and rounds with the current RoundMode (default Nearest, ties-to-even). Zero external deps (no MPFR — transcendentals are a later phase; see the TODO block in the module).
+`stdlib/xiom/num/bigfloat.xi` + flat aggregate `stdlib/xiom/bigfloat.xi` (D3/D4b). Power-of-10 representation: `value = sign * significand * 10^exponent` with a normalized BigInt significand and a decimal `precision` field. Import `use xiom.num.bigfloat;` and call `bigfloat.<fn>` (leaf), or `use xiom.bigfloat;` and call the full dotted path `xiom.num.bigfloat.<fn>`. Default precision 64 digits; arithmetic honors `max(a.precision, b.precision)` and rounds with the current RoundMode (default Nearest, ties-to-even). Zero external deps (no MPFR -- transcendentals are a later phase; see the TODO block in the module).
 
 ```xiom
 type RoundMode = enum { Nearest, Up, Down, Zero }
@@ -2636,7 +2636,7 @@ fn bigfloat_get_round_mode() -> RoundMode
 // comparisons
 fn bigfloat_compare(a: &BigFloat, b: &BigFloat) -> Int
 fn bigfloat_eq / lt / le / gt / ge(a: &BigFloat, b: &BigFloat) -> Bool
-// transcendentals (Phase C — pure XIOM series, zero deps, precision-honoring)
+// transcendentals (Phase C -- pure XIOM series, zero deps, precision-honoring)
 fn bigfloat_pi_with_precision(precision: Int) -> BigFloat   // Machin series
 fn bigfloat_e_with_precision(precision: Int) -> BigFloat    // Taylor series
 fn bigfloat_exp(f: &BigFloat) -> BigFloat                   // ln(10) reduction + Taylor
@@ -2649,15 +2649,15 @@ fn bigfloat_pow_bf(base: &BigFloat, exp: &BigFloat) -> BigFloat  // requires: ba
 ```
 
 Transcendentals compute at max(operand precisions, 64) + 4 guard digits and
-round back with the current RoundMode; complexity is O(prec²) series (fine to
+round back with the current RoundMode; complexity is O(prec2) series (fine to
 a few thousand digits); arguments are limited to |x| < ~9e18 (reduction needs
-x/ln10 or x/(π/2) to fit an Int). The `IntFrac` split type is pub (part of the
-public surface — catalog fns returning module-local private struct types are
+x/ln10 or x/(pi/2) to fit an Int). The `IntFrac` split type is pub (part of the
+public surface -- catalog fns returning module-local private struct types are
 degraded to i64 by the checker, docs/COMPILER_BUGS.md BUG 9).
 
 Exactness notes: power-of-10 inputs parse/format exactly (`0.1 + 0.2 == 0.3`, `"3.14"` round-trips); `to_float64` is the only lossy conversion. `bigfloat_from_float` is exact for values whose decimal expansion is <= 15 digits (all f64 round-trip guarantees).
 
-### 8.43 `bigfloat` — Phase C.5 elementary functions (2026-08-11)
+### 8.43 `bigfloat` -- Phase C.5 elementary functions (2026-08-11)
 
 Built on the Phase C primitives (pure XIOM, same precision contract): `log2`,
 `exp2`, `cbrt` (Newton, sign-symmetric, exact exponent reduction), `hypot`,
@@ -2666,7 +2666,7 @@ Built on the Phase C primitives (pure XIOM, same precision contract): `log2`,
 (exact exponent shift), `floor_int`/`ceil_int`/`round_int`/`trunc_int`
 (i64 range-checked).
 
-### 8.44 `misc` — extended utilities (2026-08-11)
+### 8.44 `misc` -- extended utilities (2026-08-11)
 
 String metrics: `damerau_levenshtein_distance` (OSA), `jaro_similarity`,
 `jaro_winkler_similarity`, `hamming_distance` (-1 on length mismatch),
@@ -2680,35 +2680,35 @@ celsius/fahrenheit/kelvin conversions, `miles_to_km`/`km_to_miles`,
 Vec[Str]`, `jaccard_similarity(a, b, n)` (n-gram Jaccard, 0 on empty,
 1 on identical), `longest_common_prefix(a, b) -> Int`,
 `longest_common_suffix(a, b) -> Int`. Element-to-element string equality
-uses a byte-wise helper (`_str_eq`) — see BUG 17.
+uses a byte-wise helper (`_str_eq`) -- see BUG 17.
 
-### 8.45 `hash` — 64-bit additions (2026-08-11)
+### 8.45 `hash` -- 64-bit additions (2026-08-11)
 
-`xxhash64(data: &Vec[UInt8], seed: Int) -> Int` — canonical XXH64 (block
+`xxhash64(data: &Vec[UInt8], seed: Int) -> Int` -- canonical XXH64 (block
 rounds + 8/4/1-byte tails, verified against a C reference implementation);
-`fnv1_32(s: Str) -> Int` — FNV-1. 64-bit results wrap naturally in i64
+`fnv1_32(s: Str) -> Int` -- FNV-1. 64-bit results wrap naturally in i64
 arithmetic; logical shifts are emulated with masks.
 
-### 8.46 `hash` — XXH3, SipHash, SuperFastHash, Adler-32 (2026-08-11)
+### 8.46 `hash` -- XXH3, SipHash, SuperFastHash, Adler-32 (2026-08-11)
 
 `hash/xxhash.xi` additions (module `xiom.hash.xxhash`): `xxh3_64(data)`,
 `xxh3_64_with_seed(data, seed: UInt64)`, `xxh3_128(data) -> Xxh128
-{low64, high64}`, `xxh3_128_with_seed` — faithful ports of the official
+{low64, high64}`, `xxh3_128_with_seed` -- faithful ports of the official
 XXH3 (xxHash v0.8.3, scalar path, seeded-secret semantics). Every vector in
 smoke_hash3 was generated from a clang-built reference of the official
 header (seed-0 empty/a/abc/message digest/fox/80-byte for both widths, plus
 seeded "abc"@42).
 
 New sublibs: `hash/siphash.xi` (`siphash24`, `siphash13`, `siphash24_zerokey`
-— canonical SipHash-2-4/1-3, key as two UInt64 halves; note `hash.sip_hash`
+-- canonical SipHash-2-4/1-3, key as two UInt64 halves; note `hash.sip_hash`
 in the flat module is an old DJB2 wrapper, NOT SipHash), `hash/superfast.xi`
-(`superfast32` — Paul Hsieh), `hash/crc.xi` (`adler32` — RFC 1950,
-"Wikipedia" → 0x11e60398). All verified against the same C reference.
+(`superfast32` -- Paul Hsieh), `hash/crc.xi` (`adler32` -- RFC 1950,
+"Wikipedia" -> 0x11e60398). All verified against the same C reference.
 
-Implementation notes (compiler quirks worked around): UInt64→UInt128 casts
-sext and UInt128 `>>` is ashr (BUG 14 — the 64×64→128 product builds from
+Implementation notes (compiler quirks worked around): UInt64->UInt128 casts
+sext and UInt128 `>>` is ashr (BUG 14 -- the 64x64->128 product builds from
 32-bit halves and masks the shift); single-var `var mask; return x & mask`
-bodies lose the mask when inlined (BUG 15 — the two-var form is mandatory);
+bodies lose the mask when inlined (BUG 15 -- the two-var form is mandatory);
 UInt64 tuples collide with Int tuples in codegen (named structs, e.g.
 `U64Pair`/`SipState`, are used instead).
 
@@ -2733,22 +2733,22 @@ fn process(data: Option[Data]) -> Result[Output, AppError] {
 ### 9.2 Ownership-Safe Patterns
 
 ```xiom
-// BAD: borrow returned from function ❌
+// BAD: borrow returned from function [FAIL]
 fn get_ref(v: &Vec[Int]) -> &Int {
   return &v[0];   // COMPILE ERROR: cannot return borrow
 }
 
-// GOOD: return owned value ✅
+// GOOD: return owned value [OK]
 fn get_owned(v: &Vec[Int]) -> Int {
   return v[0];     // copy/clone at call site
 }
 
-// BAD: borrow stored in struct ❌
+// BAD: borrow stored in struct [FAIL]
 type Container = {
   ref: &Vec[Int];   // COMPILE ERROR: borrow in struct
 }
 
-// GOOD: owned type in struct ✅
+// GOOD: owned type in struct [OK]
 type Container = {
   data: Vec[Int];
 }
@@ -2862,10 +2862,10 @@ OPTIONS:
   --verify-output <f>   Write SMT-LIB verification output to file <f>
   --debug / -g          Emit debug symbols (DWARF/PDB) for source-level debugging
   --lto                 Enable ThinLTO link-time optimization (20-40% smaller/faster)
-  --cache               Enable binary caching for instant re-execution (~500ms→5ms)
+  --cache               Enable binary caching for instant re-execution (~500ms->5ms)
   --jit                 In-process JIT compilation via clang DLL loading
   --strict              Enable strict mode (extra warnings as errors)
-  --strict-exhaustive   Non-exhaustive match warnings → hard errors
+  --strict-exhaustive   Non-exhaustive match warnings -> hard errors
   --overflow-checks     Runtime integer overflow checking (trap on overflow)
   --graph               Print dependency graph (DOT format)
   --graph=mermaid       Print dependency graph (Mermaid format)
@@ -2883,7 +2883,7 @@ SUBCOMMANDS:
   build-runtime         Pre-compile C runtime shared library for JIT (libxiom_runtime.dll/.so)
   pkg install <name>    Install a package from the XIOM package registry
   doc --html            Generate HTML documentation from source
-  run <file.xi>         JIT/scripting execution — run a .xi script immediately
+  run <file.xi>         JIT/scripting execution -- run a .xi script immediately
   run -e "<code>"       Execute inline XIOM code
   run -                 Read script from stdin and execute
   run --watch <file>    Watch a script file and re-run on changes
@@ -2896,8 +2896,8 @@ SUBCOMMANDS:
 
 ### 11.1 Scripting Mode (`xiom run`)
 
-> **CRITICAL DISTINCTION:** `xiom --run file.xi` is **AOT compilation** — requires `fn main()`.
-> `xiom run file.xi` is **scripting mode** — auto-wraps top-level code in `fn main()`.
+> **CRITICAL DISTINCTION:** `xiom --run file.xi` is **AOT compilation** -- requires `fn main()`.
+> `xiom run file.xi` is **scripting mode** -- auto-wraps top-level code in `fn main()`.
 
 > **IMPORTANT:** `xiom run` does NOT relax type checking. All XIOM type rules apply
 > identically in scripting mode and AOT compilation. The only differences are:
@@ -2906,14 +2906,14 @@ SUBCOMMANDS:
 > 3. Shebang (`#!`) line is skipped
 > 4. `use` statements must be on separate lines (not `use a; use b; code` on same line)
 >
-> `io.println(5 + 3)` is a type error in ALL modes — use `io.println((5+3).to_str())`.
+> `io.println(5 + 3)` is a type error in ALL modes -- use `io.println((5+3).to_str())`.
 
 XIOM supports a scripting mode where top-level code is automatically wrapped
-in `fn main()` — no boilerplate required.
+in `fn main()` -- no boilerplate required.
 
 **Implicit main wrapping:**
 ```xiom
-// myscript.xi — just write statements:
+// myscript.xi -- just write statements:
 io.println("hello world");
 
 // xiom run myscript.xi automatically wraps this as:
@@ -2945,7 +2945,7 @@ xiom --standalone --scaffold myscript.xi
 ```
 
 **Script cache:**
-Repeated runs of the same script are instant — compiled binaries are
+Repeated runs of the same script are instant -- compiled binaries are
 content-hash cached in `~/.xiom/jit/`.
 
 **Watch mode:**
@@ -2960,7 +2960,7 @@ xiom run --watch myscript.xi
 - Multiple source files are merged into one program (see section 17). Passing a directory containing `package.xi` loads the modules it lists; otherwise all `.xi` files in the directory are compiled.
 - The `use xiom.*` standard library resolves automatically for any program (via the compiler's stdlib search path; override with the `XIOM_STDLIB` env var).
 
-**Targets** (LLVM triple → default output)
+**Targets** (LLVM triple -> default output)
 | `--target` | Triple | Default output |
 |------------|--------|----------------|
 | `native` (default) | `x86_64-pc-windows-msvc` | `a.exe` |
@@ -2969,9 +2969,9 @@ xiom run --watch myscript.xi
 | `riscv` | `riscv64gc-unknown-linux-gnu` | `a.out` |
 
 **Toolchain dependencies**
-- Required: `clang` (LLVM) — compiles IR to a native binary.
-- Optional: `opt` (LLVM) — runs an `-O1` optimization pass over the IR.
-- Optional: `nasm` — assembles hardware-accelerated crypto/memcpy runtime objects.
+- Required: `clang` (LLVM) -- compiles IR to a native binary.
+- Optional: `opt` (LLVM) -- runs an `-O1` optimization pass over the IR.
+- Optional: `nasm` -- assembles hardware-accelerated crypto/memcpy runtime objects.
 
 **Examples**
 ```bash
@@ -3076,12 +3076,12 @@ fn main() -> Result[Unit, Str] {
 
 ```
 project/
-├── package.xi           # package manifest
-├── src/
-│   ├── main.xi          # entry point (must have module declaration)
-│   └── lib.xi           # library code
-├── deps/                # resolved dependencies (generated)
-└── tests/               # test files
+|-- package.xi           # package manifest
+|-- src/
+|   |-- main.xi          # entry point (must have module declaration)
+|   `-- lib.xi           # library code
+|-- deps/                # resolved dependencies (generated)
+`-- tests/               # test files
 ```
 
 - XIOM source: `.xi`
@@ -3124,7 +3124,7 @@ fn main() {
 - Test functions prefixed with `test_`.
 - `assert_eq`, `assert_ne`, `assert_true`, `assert_ok`, `assert_err`, `assert_some`, `assert_none`.
 - `run_tests()` executes all registered tests.
-- Contracts ARE tests — `requires`/`ensures` check at runtime.
+- Contracts ARE tests -- `requires`/`ensures` check at runtime.
 
 ---
 
@@ -3205,7 +3205,7 @@ In GDB directly: `break main.xi:43`
 
 **Breakpoint capabilities:**
 - **Source-level**: Set at any executable line in a `.xi` file
-- **Function entry**: `breakpoint set fn_name` — set at function prologue
+- **Function entry**: `breakpoint set fn_name` -- set at function prologue
 - **Contract violation**: `contractTraps: true` in DAP mode catches `requires`/`ensures`/`invariant` violations as exception breakpoints
 - **Conditional breakpoints**: Not yet supported (planned Phase 4)
 - **Hit-count breakpoints**: Not yet supported (planned Phase 4)
@@ -3244,7 +3244,7 @@ When stopped at a breakpoint, you can inspect:
 
 **Memory inspection:**
 ```bash
-# JSON API — read 256 bytes at address 0x7fff1234
+# JSON API -- read 256 bytes at address 0x7fff1234
 >> memory 0x7fff1234 256
 
 # GDB
@@ -3269,14 +3269,14 @@ Contract violation: requires: b != 0.0
 
 ```
 VS Code / IDE
-     │ DAP (stdin/stdout JSON)
-     ▼
-┌──────────┐     GDB/MI protocol      ┌─────┐
-│ xiom-dbg │ ───────────────────────► │ GDB │ ──► target process
-└──────────┘                           └─────┘
-     │
-     │ JSON API mode (--json)
-     ▼
+     | DAP (stdin/stdout JSON)
+     v
++----------+     GDB/MI protocol      +-----+
+| xiom-dbg | -----------------------> | GDB | --> target process
+`----------+                           `-----+
+     |
+     | JSON API mode (--json)
+     v
 Custom GUI / scripts / AI agents
 ```
 
@@ -3288,7 +3288,7 @@ Two debugger backends:
 
 ## 16. Self-Hosting Note
 
-The XIOM compiler is written in XIOM (`selfhost/` directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent — never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.
+The XIOM compiler is written in XIOM (`selfhost/` directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent -- never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.
 
 ---
 
@@ -3298,18 +3298,18 @@ The XIOM compiler is written in XIOM (`selfhost/` directory), compiled by the Ru
 
 ### Core Mindset
 
-1. **Always prioritize contracts** (`requires`, `ensures`, `invariant`) — this is XIOM's biggest strength over every other language. Write contracts BEFORE the function body.
-2. **Make code explicit and readable** — no hidden behavior, no magic numbers, no implicit conversions.
-3. **Ownership first** — prefer `&T` borrows when possible. Move when ownership transfer is needed. Clone sparingly.
-4. **Think in terms of verification, not just "it works"** — contracts are the specification. The compiler is the verifier.
+1. **Always prioritize contracts** (`requires`, `ensures`, `invariant`) -- this is XIOM's biggest strength over every other language. Write contracts BEFORE the function body.
+2. **Make code explicit and readable** -- no hidden behavior, no magic numbers, no implicit conversions.
+3. **Ownership first** -- prefer `&T` borrows when possible. Move when ownership transfer is needed. Clone sparingly.
+4. **Think in terms of verification, not just "it works"** -- contracts are the specification. The compiler is the verifier.
 
 ### Code Structure Rules
 
 - Start with contracts before implementation
 - Use `derive[Eq, Clone, Display]` liberally on types
 - Prefer `let` over `var` unless mutation is required
-- Keep functions small (≤50 lines) and focused on one task
-- Use structural interfaces — no `implements` keyword
+- Keep functions small (<=50 lines) and focused on one task
+- Use structural interfaces -- no `implements` keyword
 - Methods are defined OUTSIDE the type, using `fn Type.method()` syntax
 
 ### Good Patterns (DO)
@@ -3358,42 +3358,42 @@ type Email = {
 ### Bad Patterns (AVOID)
 
 ```xiom
-// ❌ Writing self.x in methods
+// [FAIL] Writing self.x in methods
 fn Point.get_x() -> Int { return self.x; }  // WRONG
-fn Point.get_x() -> Int { return x; }        // CORRECT — self is implicit
+fn Point.get_x() -> Int { return x; }        // CORRECT -- self is implicit
 
-// ❌ else if instead of elif
+// [FAIL] else if instead of elif
 if x > 0 { ... } else if x < 0 { ... }       // WRONG
 if x > 0 { ... } elif x < 0 { ... }           // CORRECT
 
-// ❌ Forgetting ; after statements
-let x = 5                                     // WRONG — needs ;
+// [FAIL] Forgetting ; after statements
+let x = 5                                     // WRONG -- needs ;
 let x = 5;                                    // CORRECT
 
-// ❌ Storing borrows in structs
+// [FAIL] Storing borrows in structs
 type Container = { ref: &Vec[Int]; }          // COMPILE ERROR
 
-// ❌ Returning borrows from functions
+// [FAIL] Returning borrows from functions
 fn get_ref(v: &Vec[Int]) -> &Int { return &v[0]; }  // COMPILE ERROR
 
-// ❌ Using to_string() for Display
+// [FAIL] Using to_string() for Display
 value.to_string()                              // WRONG
 value.to_str()                                 // CORRECT (derive Display)
 
-// ❌ Ignoring contract clauses
+// [FAIL] Ignoring contract clauses
 fn divide(a: Float64, b: Float64) -> Float64
   requires: b != 0.0                           // Must satisfy or trap
-{ return a / b; }                              // No check in body — contract handles it
+{ return a / b; }                              // No check in body -- contract handles it
 ```
 
 ### Method Design Rules
 
 ```
-✓ fn Vec3.dot(other: &Vec3) -> Float32           // method on type
-✓ fn Vec3.normalize() -> Vec3                    // returns new value
-✓ fn Vec3.set_x(value: Float32)                  // mutates self (inferred &mut Self)
-✗ fn Vec3.dot(self: &Vec3, ...)                  // never write self explicitly
-✗ fn dot(v: &Vec3, other: &Vec3) -> Float32     // use method syntax, not free function
+[OK] fn Vec3.dot(other: &Vec3) -> Float32           // method on type
+[OK] fn Vec3.normalize() -> Vec3                    // returns new value
+[OK] fn Vec3.set_x(value: Float32)                  // mutates self (inferred &mut Self)
+[FAIL] fn Vec3.dot(self: &Vec3, ...)                  // never write self explicitly
+[FAIL] fn dot(v: &Vec3, other: &Vec3) -> Float32     // use method syntax, not free function
 ```
 
 ### Contract Design Hierarchy
@@ -3408,12 +3408,12 @@ fn divide(a: Float64, b: Float64) -> Float64
 
 ### AI Coding Workflow (Step by Step)
 
-1. **Understand requirements** — what should this function do?
-2. **Design types first** — structs, enums with invariants
-3. **Write function signatures + contracts** — BEFORE the body
-4. **Implement body** — contracts guide the implementation
-5. **Add tests** — contracts ARE tests at runtime; add explicit test cases for edge conditions
-6. **Verify** — `xiom test` runs runtime checks; Phase 3 Z3 proves statically
+1. **Understand requirements** -- what should this function do?
+2. **Design types first** -- structs, enums with invariants
+3. **Write function signatures + contracts** -- BEFORE the body
+4. **Implement body** -- contracts guide the implementation
+5. **Add tests** -- contracts ARE tests at runtime; add explicit test cases for edge conditions
+6. **Verify** -- `xiom test` runs runtime checks; Phase 3 Z3 proves statically
 
 ### Performance-Aware Patterns
 
@@ -3429,13 +3429,13 @@ fn inspect(data: &Data) { ... }   // zero-cost read
 
 // Move into collections instead of cloning
 var items = Vec[Data].new();
-items.push(create_data());        // move — no clone
-items.push(create_data());        // move — no clone
+items.push(create_data());        // move -- no clone
+items.push(create_data());        // move -- no clone
 ```
 
 ---
 
-## 18. Multi-File Projects & Module System — AI Guide
+## 18. Multi-File Projects & Module System -- AI Guide
 
 > When generating large XIOM projects across multiple files, follow these rules to ensure the compiler resolves everything correctly.
 
@@ -3443,14 +3443,14 @@ items.push(create_data());        // move — no clone
 
 ```
 myproject/
-├── package.xi           ← manifest (name, version, deps)
-├── src/
-│   ├── main.xi          ← entry point: module myproject
-│   ├── types.xi         ← module myproject.types
-│   ├── utils.xi         ← module myproject.utils
-│   └── lib.xi           ← module myproject.lib
-└── tests/
-    └── test_main.xi     ← tests
+|-- package.xi           <- manifest (name, version, deps)
+|-- src/
+|   |-- main.xi          <- entry point: module myproject
+|   |-- types.xi         <- module myproject.types
+|   |-- utils.xi         <- module myproject.utils
+|   `-- lib.xi           <- module myproject.lib
+`-- tests/
+    `-- test_main.xi     <- tests
 ```
 
 **Rule:** Every `.xi` file MUST start with `module <name>;` as the FIRST statement (after comments).
@@ -3474,17 +3474,17 @@ module myproject.utils     // matches `use myproject.utils` in main.xi
 pub fn helper() -> Int { return 42; }
 ```
 
-**The file NAME doesn't matter — the `module` DECLARATION matters.** A file called `foo.xi` that declares `module myproject.utils` will be found when `use myproject.utils` is encountered.
+**The file NAME doesn't matter -- the `module` DECLARATION matters.** A file called `foo.xi` that declares `module myproject.utils` will be found when `use myproject.utils` is encountered.
 
 ### How to Compile Multi-File Projects
 
-**Option A — Compile all files at once (recommended for AI-generated code):**
+**Option A -- Compile all files at once (recommended for AI-generated code):**
 ```bash
 xiom --run src/main.xi src/types.xi src/utils.xi src/lib.xi
 ```
 The compiler merges all files into one program. Use this for projects with 2-30 files.
 
-**Option B — Single file with lazy loading (catalog):**
+**Option B -- Single file with lazy loading (catalog):**
 ```bash
 xiom --run src/main.xi
 ```
@@ -3495,7 +3495,7 @@ The compiler lazy-loads other files via the ModuleCatalog. Works for files in th
 1. **`module` MUST be first.** The very first non-comment line in every file:
    ```xiom
    // Comments OK here
-   module myproject.models    // ← MUST be line 1 (after comments)
+   module myproject.models    // <- MUST be line 1 (after comments)
    ```
 
 2. **`use` for cross-file imports.** After the module declaration:
@@ -3536,44 +3536,44 @@ The compiler lazy-loads other files via the ModuleCatalog. Works for files in th
 
 **Pattern 1: Library + Binary**
 ```
-src/types.xi     → module myproject.types
-src/lib.xi       → module myproject (use types, export pub fn)
-src/main.xi      → module myproject.main (use myproject, call pub fns)
+src/types.xi     -> module myproject.types
+src/lib.xi       -> module myproject (use types, export pub fn)
+src/main.xi      -> module myproject.main (use myproject, call pub fns)
 ```
 
 **Pattern 2: Feature Modules**
 ```
-src/main.xi      → module myproject (use math, use net, use db)
-src/math.xi      → module myproject.math (pub fn run_all() -> BenchResult)
-src/net.xi       → module myproject.net (pub fn run_all() -> BenchResult)
-src/db.xi        → module myproject.db (pub fn run_all() -> BenchResult)
+src/main.xi      -> module myproject (use math, use net, use db)
+src/math.xi      -> module myproject.math (pub fn run_all() -> BenchResult)
+src/net.xi       -> module myproject.net (pub fn run_all() -> BenchResult)
+src/db.xi        -> module myproject.db (pub fn run_all() -> BenchResult)
 ```
 
 **Pattern 3: Data + Logic Separation**
 ```
-src/types.xi     → module myproject.types (all type definitions)
-src/logic.xi     → module myproject.logic (use types, all business logic)
-src/main.xi      → module myproject (use logic, entry point)
+src/types.xi     -> module myproject.types (all type definitions)
+src/logic.xi     -> module myproject.logic (use types, all business logic)
+src/main.xi      -> module myproject (use logic, entry point)
 ```
 
 ### What the Compiler CAN Handle Today
 
 | Capability | Status |
 |-----------|--------|
-| Single-file programs | ✓ |
-| Multi-file merge (pass all files to xiom) | ✓ |
-| ModuleCatalog lazy loading | ✓ |
-| Cross-file type resolution | ✓ |
-| Cross-file function calls | ✓ (via merge path) |
-| 30+ file projects | ✓ (benchmark suite verified) |
-| Package manager / `xiom pkg install` | ✓ |
-| Build system / `xiom build` | ✓ |
+| Single-file programs | [OK] |
+| Multi-file merge (pass all files to xiom) | [OK] |
+| ModuleCatalog lazy loading | [OK] |
+| Cross-file type resolution | [OK] |
+| Cross-file function calls | [OK] (via merge path) |
+| 30+ file projects | [OK] (benchmark suite verified) |
+| Package manager / `xiom pkg install` | [OK] |
+| Build system / `xiom build` | [OK] |
 
 ### When AI Generates Multi-File Code
 
 1. **Generate all files with correct `module` declarations**
 2. **Share types via a `types.xi` file**
-3. **Compile with all file paths** — the merge path is most reliable
+3. **Compile with all file paths** -- the merge path is most reliable
 4. **If the catalog path is used**, ensure files are in the same directory or under `examples/`
 5. **Use `pub` on everything that crosses file boundaries**
 

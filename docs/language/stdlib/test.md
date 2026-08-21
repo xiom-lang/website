@@ -1,4 +1,4 @@
-# `xiom.test` — Test Framework
+# `xiom.test` -- Test Framework
 
 A contract-aware testing framework with assertions, contract verification, test runners, formatters, and benchmarking.
 
@@ -127,7 +127,7 @@ pub fn assert_none[T](option: Option[T], name: Str) -> TestResult
 
 ### `assert_contract(value, predicate, name)```
 
-Asserts that `value` satisfies the given `predicate`. Used for testing contract invariants at runtime — the predicate receives a reference to the value and must return `true` for the assertion to pass.
+Asserts that `value` satisfies the given `predicate`. Used for testing contract invariants at runtime -- the predicate receives a reference to the value and must return `true` for the assertion to pass.
 
 ```xiom
 pub fn assert_contract[T](value: T, predicate: fn(&T) -> Bool, name: Str) -> TestResult

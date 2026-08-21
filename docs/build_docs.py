@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 xiom Documentation Builder
-Converts docs/language/*.md → docs/html/ and website/docs/
+Converts docs/language/*.md -> docs/html/ and website/docs/
 Run: python docs/build_docs.py
 
 Outputs:
-  docs/html/         — static HTML, ships with releases, works from file://
-  website/docs/      — integrated into xiom-lang.org
+  docs/html/         -- static HTML, ships with releases, works from file://
+  website/docs/      -- integrated into xiom-lang.org
 """
 
 import os
@@ -22,7 +22,7 @@ OUT_WEBSITE = ROOT / "website" / "docs"
 STYLE_CSS = ROOT / "website" / "style.css"
 IMAGE_DIR = ROOT / "resource" / "img"
 
-# ── Markdown → HTML Converter ──────────────────────────────────────────
+# -- Markdown -> HTML Converter ------------------------------------------
 
 def md_to_html(text: str) -> str:
     """Convert markdown text to HTML body content."""
@@ -46,7 +46,7 @@ def md_to_html(text: str) -> str:
             p = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', p)
             # Italic
             p = re.sub(r'\*([^*]+)\*', r'<em>\1</em>', p)
-            # Links — convert .md to .html
+            # Links -- convert .md to .html
             def link_repl(m):
                 text, url = m.group(1), m.group(2)
                 url = re.sub(r'\.md$', '.html', url)
@@ -68,7 +68,7 @@ def md_to_html(text: str) -> str:
                 cell = re.sub(r'`([^`]+)`', r'<code>\1</code>', cell)
                 # Bold
                 cell = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', cell)
-                # Links — convert .md to .html
+                # Links -- convert .md to .html
                 def link_repl(m):
                     text, url = m.group(1), m.group(2)
                     url = re.sub(r'\.md$', '.html', url)
@@ -189,13 +189,13 @@ def md_to_html(text: str) -> str:
             q = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', q)
             out.append(f'<blockquote><p>{q}</p></blockquote>')
 
-        # Empty line → end paragraph
+        # Empty line -> end paragraph
         elif line.strip() == '':
             flush_paragraph(para_buf); para_buf = []
             flush_table()
             # Wrap consecutive <li> items in <ul> or <ol>
             if out and out[-1].startswith('<li>') and (len(out) == 1 or not out[-2].startswith('<li>')):
-                # Need to wrap list items — do it at flush time
+                # Need to wrap list items -- do it at flush time
                 pass
 
         else:
@@ -231,13 +231,13 @@ def md_to_html(text: str) -> str:
     return '\n'.join(result)
 
 
-# ── Page Template ──────────────────────────────────────────────────────
+# -- Page Template ------------------------------------------------------
 
 PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom — {title}</title>
+<title>xiom -- {title}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="{icon_path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -284,7 +284,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 
 <footer>
   <div class="wrap">
-    <p>xiom {version_short} · <a href="{home_path}" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom {version_short} - <a href="{home_path}" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="{home_path}spec.html">Spec</a>
       <a href="{home_path}docs/">Docs</a>
@@ -298,7 +298,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </html>"""
 
 
-# ── Navigation Sidebar ─────────────────────────────────────────────────
+# -- Navigation Sidebar -------------------------------------------------
 
 NAV_ORDER = [
     ("index.md", "Overview"),
@@ -319,7 +319,7 @@ NAV_ORDER = [
     ("../AI_CONTEXT.md", "AI Coding Ref"),
 ]
 
-# Stdlib modules — individual pages
+# Stdlib modules -- individual pages
 STDLIB_NAV = [
     ("stdlib/core.md", "core"),
     ("stdlib/io.md", "io"),
@@ -368,7 +368,7 @@ def build_nav(current_file: str, output_dir: str, ext: str = ".html") -> str:
     up = '../' * current_depth if current_depth > 0 else ''
 
     links = []
-    # Main nav items (skip _api — it's rendered as the section header below)
+    # Main nav items (skip _api -- it's rendered as the section header below)
     for fname, title in NAV_ORDER:
         if title == '_api':
             continue
@@ -379,7 +379,7 @@ def build_nav(current_file: str, output_dir: str, ext: str = ".html") -> str:
         color = 'color:var(--signal);font-weight:500;' if active else 'color:var(--muted);'
         links.append(f'<a href="{href}" style="{color}">{title}</a>')
 
-    # Standard Library — clickable section header
+    # Standard Library -- clickable section header
     api_href = 'api.html'
     if current_depth > 0:
         api_href = up + api_href
@@ -402,7 +402,7 @@ def build_nav(current_file: str, output_dir: str, ext: str = ".html") -> str:
     return '\n        '.join(links)
 
 
-# ── Build ──────────────────────────────────────────────────────────────
+# -- Build --------------------------------------------------------------
 
 def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: str = ".html"):
     """Build all markdown files to HTML."""
@@ -418,18 +418,18 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
         if src.exists():
             files.append((fname, src))
         else:
-            print(f"  [skip] {fname} — not found")
+            print(f"  [skip] {fname} -- not found")
 
     for fname, src in files:
         text = src.read_text(encoding='utf-8')
         title = text.split('\n')[0].lstrip('#').strip()
 
-        # Strip leading # Title from body — template already renders <h1>{title}</h1>
+        # Strip leading # Title from body -- template already renders <h1>{title}</h1>
         body_text = text
         if body_text.startswith('# '):
             body_text = body_text.split('\n', 1)[1].lstrip('\n')
         elif body_text.startswith('## '):
-            body_text = body_text  # keep it — it's a subsection header
+            body_text = body_text  # keep it -- it's a subsection header
 
         body = md_to_html(body_text)
 
@@ -448,7 +448,7 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
 
         html = PAGE_TEMPLATE.format(
             title=title,
-            version=version_line or "v0.12.0 · 234 tests",
+            version=version_line or "v0.12.0 - 234 tests",
             version_short="v0.12.0",
             body=body,
             nav_links=build_nav(fname, str(output_dir), ext),
@@ -465,7 +465,7 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
     print(f"\n  {len(files)} pages built to {output_dir.relative_to(ROOT)}/")
 
 
-# ── Main ───────────────────────────────────────────────────────────────
+# -- Main ---------------------------------------------------------------
 
 if __name__ == '__main__':
     print("xiom Documentation Builder\n")

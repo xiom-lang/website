@@ -6,7 +6,7 @@ XIOM supports structural pattern matching on enums, tuples, and literals via `ma
 
 ## `match` Expression
 
-The `match` expression is the primary pattern matching construct. It must be exhaustive — every variant must be covered.
+The `match` expression is the primary pattern matching construct. It must be exhaustive -- every variant must be covered.
 
 ```xiom
 match value {
@@ -137,7 +137,7 @@ if value is Some {
 
 ---
 
-## `if let` — Conditional Destructuring
+## `if let` -- Conditional Destructuring
 
 Binds variables only if the pattern matches:
 
@@ -168,7 +168,7 @@ if let Ok(Some(data)) = parse_and_lookup() {
 
 ---
 
-## `while let` — Looping Destructuring
+## `while let` -- Looping Destructuring
 
 Continues looping while the pattern matches:
 
@@ -258,6 +258,6 @@ match value {
 
 ## See Also
 
-- [Error Handling](error-handling.md) — `Result`, `Option`, `?` operator
-- [Type System](types.md) — enum and struct definitions
-- [Syntax](syntax.md) — expression grammar
+- [Error Handling](error-handling.md) -- `Result`, `Option`, `?` operator
+- [Type System](types.md) -- enum and struct definitions
+- [Syntax](syntax.md) -- expression grammar

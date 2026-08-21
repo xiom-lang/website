@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom — XIOM by Example</title>
+<title>xiom -- XIOM by Example</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,7 +94,7 @@
     </nav>
 
     <main class="content-section" style="border:none;padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 · 234 tests</div>
+      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 - 234 tests</div>
       <h1 style="font-size:36px;margin-bottom:24px;">XIOM by Example</h1>
       <blockquote><p>Copy, paste, compile, run. Every example is self-contained.</p></blockquote>
 <blockquote><p><strong>Types are built-in</strong> (no import). <strong>Functions need imports</strong> (<code>use xiom.io;</code>).</p></blockquote>
@@ -102,7 +102,7 @@
 <hr>
 <h2>1. Hello World</h2>
 <pre class="language-xiom"><code>
-<span class='cm'>// hello.xi — your first XIOM program</span>
+<span class='cm'>// hello.xi -- your first XIOM program</span>
 <span class='cm'>// Run: xiom --run hello.xi</span>
 <span class='kw'>use</span> xiom.io;
 
@@ -115,17 +115,17 @@ $ xiom --run hello.xi
 Hello, World!
 </code></pre>
 <p><code>use xiom.io;</code> imports the I/O module. <code>io.println()</code> prints to console. Every file that uses I/O needs this import.</p>
-<p><strong>Three ways to import — all valid:</strong></p>
+<p><strong>Three ways to import -- all valid:</strong></p>
 <pre class="language-xiom"><code>
-<span class='cm'>// Style A: <span class='kw'>module</span> <span class='func'>prefix</span>(recommended — clear origin)</span>
+<span class='cm'>// Style A: <span class='kw'>module</span> <span class='func'>prefix</span>(recommended -- clear origin)</span>
 <span class='kw'>use</span> xiom.io;
 <span class='kw'>fn</span> <span class='func'>main</span>() { io.<span class='func'>println</span>(<span class='str'>Hello</span>); }
 
-<span class='cm'>// Style B: glob <span class='func'>import</span>(shorter — <span class='kw'>for</span> small programs)</span>
+<span class='cm'>// Style B: glob <span class='func'>import</span>(shorter -- <span class='kw'>for</span> small programs)</span>
 <span class='kw'>use</span> xiom.io.*;
 <span class='kw'>fn</span> <span class='func'>main</span>() { <span class='func'>println</span>(<span class='str'>Hello</span>); }
 
-<span class='cm'>// Style C: single <span class='func'>import</span>(precise — import only what you need)</span>
+<span class='cm'>// Style C: single <span class='func'>import</span>(precise -- import only what you need)</span>
 <span class='kw'>use</span> xiom.io.println;
 <span class='kw'>fn</span> <span class='func'>main</span>() { <span class='func'>println</span>(<span class='str'>Hello</span>); }
 </code></pre>
@@ -133,11 +133,11 @@ Hello, World!
 <h2>2. Variables & Arithmetic</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>main</span>() -> <span class='ty'>Int</span> {
-  <span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>10</span>;           <span class='cm'>// immutable — cannot be reassigned</span>
-  <span class='kw'>var</span> y = <span class='num'>3.14</span>;              <span class='cm'>// mutable — can be reassigned, <span class='kw'>type</span> inferred <span class='kw'>as</span> <span class='ty'>Float64</span></span>
+  <span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>10</span>;           <span class='cm'>// immutable -- cannot be reassigned</span>
+  <span class='kw'>var</span> y = <span class='num'>3.14</span>;              <span class='cm'>// mutable -- can be reassigned, <span class='kw'>type</span> inferred <span class='kw'>as</span> <span class='ty'>Float64</span></span>
   <span class='kw'>let</span> z = x * <span class='num'>2</span>;             <span class='cm'>// <span class='kw'>type</span> inferred: <span class='ty'>Int</span></span>
   y = y + <span class='num'>1.0</span>;               <span class='cm'>// reassign mutable <span class='kw'>var</span></span>
-  <span class='kw'>return</span> x + z;              <span class='cm'>// <span class='num'>30</span> — <span class='func'>main</span>() can <span class='kw'>return</span> an exit code</span>
+  <span class='kw'>return</span> x + z;              <span class='cm'>// <span class='num'>30</span> -- <span class='func'>main</span>() can <span class='kw'>return</span> an exit code</span>
 }
 </code></pre>
 <pre><code>
@@ -165,9 +165,9 @@ $ xiom --run vars.xi
   <span class='kw'>let</span> <span class='kw'>result</span> = <span class='func'>add</span>(<span class='num'>10</span>, <span class='num'>20</span>);  <span class='cm'>// <span class='num'>30</span></span>
 }
 </code></pre>
-<p>Every parameter must have a type. Return type is required unless void. Functions call other functions — <code>greet()</code> calls <code>io.println()</code>.</p>
+<p>Every parameter must have a type. Return type is required unless void. Functions call other functions -- <code>greet()</code> calls <code>io.println()</code>.</p>
 <hr>
-<h2>4. Control Flow — Fibonacci</h2>
+<h2>4. Control Flow -- Fibonacci</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
 
@@ -183,7 +183,7 @@ $ xiom --run vars.xi
   io.<span class='func'>println</span>(<span class='str'><span class='func'>fib</span>(<span class='num'>10</span>) = </span> + <span class='func'>fib</span>(<span class='num'>10</span>).<span class='func'>to_str</span>());  <span class='cm'>// <span class='func'>fib</span>(<span class='num'>10</span>) = <span class='num'>55</span></span>
 }
 </code></pre>
-<p><code>if</code> / <code>elif</code> / <code>else</code> — note <code>elif</code>, not <code>else if</code>. <code>to_str()</code> converts numbers to strings for printing.</p>
+<p><code>if</code> / <code>elif</code> / <code>else</code> -- note <code>elif</code>, not <code>else if</code>. <code>to_str()</code> converts numbers to strings for printing.</p>
 <hr>
 <h2>5. Structs & Methods</h2>
 <pre class="language-xiom"><code>
@@ -200,7 +200,7 @@ $ xiom --run vars.xi
   <span class='kw'>return</span> dx * dx + dy * dy;
 }
 
-<span class='cm'>// Method on <span class='ty'>Point</span> — <span class='kw'>self</span> <span class='kw'>is</span> <span class='func'>implicit</span>(no <span class='kw'>self</span>.x, just x)</span>
+<span class='cm'>// Method on <span class='ty'>Point</span> -- <span class='kw'>self</span> <span class='kw'>is</span> <span class='func'>implicit</span>(no <span class='kw'>self</span>.x, just x)</span>
 <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>magnitude</span>() -> <span class='ty'>Float64</span> {
   <span class='kw'>return</span> x * x + y * y;
 }
@@ -213,7 +213,7 @@ $ xiom --run vars.xi
   <span class='kw'>return</span> <span class='num'>0</span>;
 }
 </code></pre>
-<p><code>derive[Eq, Clone, Display]</code> — compiler generates <code>eq()</code>, <code>clone()</code>, <code>to_str()</code> automatically. Methods use <code>fn TypeName.methodName()</code> — <code>self</code> is implicit.</p>
+<p><code>derive[Eq, Clone, Display]</code> -- compiler generates <code>eq()</code>, <code>clone()</code>, <code>to_str()</code> automatically. Methods use <code>fn TypeName.methodName()</code> -- <code>self</code> is implicit.</p>
 <hr>
 <h2>6. Enums & Pattern Matching</h2>
 <pre class="language-xiom"><code>
@@ -222,7 +222,7 @@ $ xiom --run vars.xi
 <span class='cm'>// Algebraic data <span class='kw'>type</span></span>
 <span class='kw'>enum</span> <span class='ty'>Option</span> { <span class='kw'>Some</span>(value: <span class='ty'>Int</span>), <span class='kw'>None</span> }
 
-<span class='cm'>// Match must cover all variants — compiler enforces this</span>
+<span class='cm'>// Match must cover all variants -- compiler enforces this</span>
 <span class='kw'>fn</span> <span class='func'>describe</span>(opt: <span class='ty'>Option</span>) -> <span class='ty'>Str</span> {
   <span class='kw'>match</span> opt {
     <span class='kw'>Some</span>(v) => <span class='str'>got </span> + v.<span class='func'>to_str</span>(),
@@ -235,9 +235,9 @@ $ xiom --run vars.xi
   io.<span class='func'>println</span>(<span class='func'>describe</span>(<span class='kw'>None</span>));               <span class='cm'>// <span class='str'>nothing</span></span>
 }
 </code></pre>
-<p>Every <code>match</code> must be exhaustive — missing a variant is a compile error. Use <code>_</code> as wildcard. Variants carry named fields: <code>VariantName(field: Type)</code>.</p>
+<p>Every <code>match</code> must be exhaustive -- missing a variant is a compile error. Use <code>_</code> as wildcard. Variants carry named fields: <code>VariantName(field: Type)</code>.</p>
 <hr>
-<h2>7. Error Handling — Result & ?</h2>
+<h2>7. Error Handling -- Result & ?</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
 
@@ -249,7 +249,7 @@ $ xiom --run vars.xi
   <span class='kw'>return</span> <span class='kw'>Ok</span>(a / b);
 }
 
-<span class='cm'>// ? operator propagates errors up — clean and readable</span>
+<span class='cm'>// ? operator propagates errors up -- clean and readable</span>
 <span class='kw'>fn</span> <span class='func'>compute</span>(x: <span class='ty'>Float64</span>, y: <span class='ty'>Float64</span>) -> <span class='ty'>Result</span>[<span class='ty'>Float64</span>, <span class='ty'>Str</span>] {
   <span class='kw'>let</span> step1 = <span class='func'>divide_safe</span>(x, y)?;
   <span class='kw'>let</span> step2 = <span class='func'>divide_safe</span>(step1, <span class='num'>2.0</span>)?;
@@ -263,9 +263,9 @@ $ xiom --run vars.xi
   };
 }
 </code></pre>
-<p><code>?</code> returns the error immediately. Only usable inside functions returning <code>Result</code> or <code>Option</code>. <code>E</code> in <code>Result[T, E]</code> can be any type — no Error interface required.</p>
+<p><code>?</code> returns the error immediately. Only usable inside functions returning <code>Result</code> or <code>Option</code>. <code>E</code> in <code>Result[T, E]</code> can be any type -- no Error interface required.</p>
 <hr>
-<h2>8. Contracts — Division by Zero Prevention</h2>
+<h2>8. Contracts -- Division by Zero Prevention</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
 
@@ -278,14 +278,14 @@ $ xiom --run vars.xi
   <span class='kw'>return</span> a / b;
 }
 
-<span class='cm'>// Type with <span class='kw'>invariant</span> — compiler checks after every mutation</span>
+<span class='cm'>// Type with <span class='kw'>invariant</span> -- compiler checks after every mutation</span>
 <span class='kw'>type</span> PositiveInt = {
   value: <span class='ty'>Int</span>;
   <span class='kw'>invariant</span>: value > <span class='num'>0</span>;
 }
 
 <span class='kw'>fn</span> <span class='func'>main</span>() {
-  <span class='kw'>let</span> x = <span class='func'>divide</span>(<span class='num'>10.0</span>, <span class='num'>2.0</span>);     <span class='cm'>// <span class='num'>5.0</span> — contract passes</span>
+  <span class='kw'>let</span> x = <span class='func'>divide</span>(<span class='num'>10.0</span>, <span class='num'>2.0</span>);     <span class='cm'>// <span class='num'>5.0</span> -- contract passes</span>
   io.<span class='func'>println</span>(<span class='str'><span class='num'>10.0</span> / <span class='num'>2.0</span> = </span> + x.<span class='func'>to_str</span>());
 
   <span class='cm'>// <span class='kw'>let</span> y = <span class='func'>divide</span>(<span class='num'>10.0</span>, <span class='num'>0.0</span>);  // RUNTIME PANIC: contract violated</span>
@@ -297,38 +297,38 @@ $ xiom --run vars.xi
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
 
-<span class='cm'>// Takes ownership — x moved here, caller can't <span class='kw'>use</span> it anymore</span>
+<span class='cm'>// Takes ownership -- x moved here, caller can't <span class='kw'>use</span> it anymore</span>
 <span class='kw'>fn</span> <span class='func'>take_ownership</span>(x: <span class='ty'>Int</span>) -> <span class='ty'>Int</span> {
   <span class='kw'>return</span> x + <span class='num'>1</span>;
 }
 
-<span class='cm'>// Borrows immutably — caller retains ownership, can still <span class='kw'>use</span> x</span>
+<span class='cm'>// Borrows immutably -- caller retains ownership, can still <span class='kw'>use</span> x</span>
 <span class='kw'>fn</span> <span class='func'>read_borrow</span>(x: &<span class='ty'>Int</span>) -> <span class='ty'>Int</span> {
   <span class='kw'>return</span> x + <span class='num'>0</span>;
 }
 
-<span class='cm'>// Borrows mutably — exclusive access, no other borrows active</span>
+<span class='cm'>// Borrows mutably -- exclusive access, no other borrows active</span>
 <span class='kw'>fn</span> <span class='func'>write_borrow</span>(x: &mut <span class='ty'>Int</span>) {
   x = x + <span class='num'>10</span>;
 }
 
 <span class='kw'>fn</span> <span class='func'>main</span>() -> <span class='ty'>Int</span> {
-  <span class='kw'>let</span> a = <span class='func'>take_ownership</span>(<span class='num'>41</span>);   <span class='cm'>// a = <span class='num'>42</span> — moved into function</span>
+  <span class='kw'>let</span> a = <span class='func'>take_ownership</span>(<span class='num'>41</span>);   <span class='cm'>// a = <span class='num'>42</span> -- moved into function</span>
   <span class='kw'>let</span> b = <span class='func'>read_borrow</span>(&a);      <span class='cm'>// &a = read borrow, a still valid</span>
   <span class='kw'>var</span> c = <span class='num'>5</span>;
-  <span class='func'>write_borrow</span>(&mut c);         <span class='cm'>// c = <span class='num'>15</span> — exclusive write</span>
+  <span class='func'>write_borrow</span>(&mut c);         <span class='cm'>// c = <span class='num'>15</span> -- exclusive write</span>
   <span class='kw'>return</span> a + b + c;             <span class='cm'>// <span class='num'>42</span> + <span class='num'>42</span> + <span class='num'>15</span> = <span class='num'>99</span></span>
 }
 </code></pre>
 <ul>
-<li><code>&T</code> — read borrow (multiple allowed, no mutation)</li>
-<li><code>&mut T</code> — write borrow (exclusive, one at a time)</li>
-<li>No <code>&</code> — move ownership (old binding invalid)</li>
-<li><code>.clone()</code> — explicit deep copy</li>
+<li><code>&T</code> -- read borrow (multiple allowed, no mutation)</li>
+<li><code>&mut T</code> -- write borrow (exclusive, one at a time)</li>
+<li>No <code>&</code> -- move ownership (old binding invalid)</li>
+<li><code>.clone()</code> -- explicit deep copy</li>
 <li>Borrows expire where you see the braces</li>
 </ul>
 <hr>
-<h2>10. Generics — Typed Stack</h2>
+<h2>10. Generics -- Typed Stack</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
 <span class='kw'>use</span> xiom.collections.<span class='ty'>Vec</span>;
@@ -375,7 +375,7 @@ $ xiom --run vars.xi
   s.<span class='func'>push</span>(<span class='num'>20</span>)?;
   s.<span class='func'>push</span>(<span class='num'>30</span>)?;
 
-  <span class='cm'>// This push should fail — stack <span class='kw'>is</span> full</span>
+  <span class='cm'>// This push should fail -- stack <span class='kw'>is</span> full</span>
   <span class='kw'>match</span> s.<span class='func'>push</span>(<span class='num'>40</span>) {
     <span class='kw'>Ok</span>(()) => io.<span class='func'>println</span>(<span class='str'>unexpected</span>),
     <span class='kw'>Err</span>(e) => io.<span class='func'>println</span>(<span class='str'>rejected: </span> + e),  <span class='cm'>// prints: rejected: stack <span class='kw'>is</span> full</span>
@@ -391,9 +391,9 @@ $ xiom --run vars.xi
   <span class='kw'>return</span> <span class='kw'>Ok</span>(());
 }
 </code></pre>
-<p>Generics + contracts + error handling + ownership — all in one program. The Stack's capacity invariant is checked after every mutation. The push contract verifies the element was actually added.</p>
+<p>Generics + contracts + error handling + ownership -- all in one program. The Stack's capacity invariant is checked after every mutation. The push contract verifies the element was actually added.</p>
 <hr>
-<h2>11. Interfaces — No <code>implements</code> Keyword</h2>
+<h2>11. Interfaces -- No <code>implements</code> Keyword</h2>
 <pre class="language-xiom"><code>
 <span class='cm'>// Define an <span class='kw'>interface</span></span>
 <span class='kw'>interface</span> <span class='ty'>Comparable</span> {
@@ -403,7 +403,7 @@ $ xiom --run vars.xi
 <span class='cm'>// Create a <span class='kw'>type</span></span>
 <span class='kw'>type</span> <span class='ty'>Score</span> = { value: <span class='ty'>Int</span>; }
 
-<span class='cm'>// Implement the <span class='kw'>interface</span> — just write the method</span>
+<span class='cm'>// Implement the <span class='kw'>interface</span> -- just write the method</span>
 <span class='kw'>fn</span> <span class='ty'>Score</span>.<span class='func'>compare</span>(other: &<span class='ty'>Score</span>) -> <span class='ty'>Int</span> {
   <span class='kw'>if</span> value < other.value { <span class='kw'>return</span> -<span class='num'>1</span>; }
   <span class='kw'>if</span> value > other.value { <span class='kw'>return</span>  <span class='num'>1</span>; }
@@ -423,18 +423,18 @@ $ xiom --run vars.xi
   <span class='kw'>return</span> winner.value;   <span class='cm'>// <span class='num'>20</span></span>
 }
 </code></pre>
-<p>No <code>implements</code> keyword. A type satisfies an interface by having the right methods. Structural typing — compose types across module boundaries without shared ancestry.</p>
+<p>No <code>implements</code> keyword. A type satisfies an interface by having the right methods. Structural typing -- compose types across module boundaries without shared ancestry.</p>
 <hr>
 <h2>12. Sort with Contract Verification</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
 <span class='kw'>use</span> xiom.collections.<span class='ty'>Vec</span>;
 
-<span class='cm'>// Contract <span class='kw'>ensures</span> the output IS sorted — verified at runtime</span>
+<span class='cm'>// Contract <span class='kw'>ensures</span> the output IS sorted -- verified at runtime</span>
 <span class='kw'>fn</span> <span class='func'>sort</span>(items: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>])
   <span class='kw'>ensures</span>: items.<span class='func'>is_sorted</span>()
 {
-  <span class='cm'>// Bubble sort — simple but correct</span>
+  <span class='cm'>// Bubble sort -- simple but correct</span>
   <span class='kw'>let</span> n = items.<span class='func'>len</span>();
   <span class='kw'>var</span> i = <span class='num'>0</span>;
   <span class='kw'>while</span> i < n {
@@ -450,7 +450,7 @@ $ xiom --run vars.xi
     }
     i = i + <span class='num'>1</span>;
   }
-  <span class='cm'>// Contract checked HERE — <span class='kw'>if</span> items <span class='kw'>is</span> NOT sorted, program panics</span>
+  <span class='cm'>// Contract checked HERE -- <span class='kw'>if</span> items <span class='kw'>is</span> NOT sorted, program panics</span>
 }
 
 <span class='kw'>fn</span> <span class='func'>main</span>() {
@@ -459,13 +459,13 @@ $ xiom --run vars.xi
   io.<span class='func'>println</span>(<span class='str'>sorted: </span> + nums.<span class='func'>get</span>(<span class='num'>0</span>).<span class='func'>unwrap</span>().<span class='func'>to_str</span>());  <span class='cm'>// <span class='num'>1</span></span>
 }
 </code></pre>
-<p>The <code>ensures: items.is_sorted()</code> contract is verified after <code>sort()</code> returns. If the implementation is buggy, the program panics with a clear message — no silent corruption.</p>
+<p>The <code>ensures: items.is_sorted()</code> contract is verified after <code>sort()</code> returns. If the implementation is buggy, the program panics with a clear message -- no silent corruption.</p>
 <hr>
 <h2>Next Steps</h2>
 <ul>
-<li><strong>21 example programs</strong> ship in <code>examples/</code> — compile any with <code>xiom --run examples/phase1_full.xi</code></li>
-<li><strong>Full stdlib reference</strong> — <a href="api.md">40 modules with API documentation</a></li>
-<li><strong>AI coding guide</strong> — <a href="../AI_CONTEXT.md">AI_CONTEXT.md</a> for LLM-powered XIOM code generation</li>
+<li><strong>21 example programs</strong> ship in <code>examples/</code> -- compile any with <code>xiom --run examples/phase1_full.xi</code></li>
+<li><strong>Full stdlib reference</strong> -- <a href="api.md">40 modules with API documentation</a></li>
+<li><strong>AI coding guide</strong> -- <a href="../AI_CONTEXT.md">AI_CONTEXT.md</a> for LLM-powered XIOM code generation</li>
 </ul>
     </main>
 
@@ -474,7 +474,7 @@ $ xiom --run vars.xi
 
 <footer>
   <div class="wrap">
-    <p>xiom v0.12.0 · <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom v0.12.0 - <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="spec.html">Spec</a>
       <a href="docs/">Docs</a>

@@ -1,4 +1,4 @@
-# `xiom.iter` — Iterators
+# `xiom.iter` -- Iterators
 
 Provides range types and iterator adapters for lazy, composable data processing over sequences.
 

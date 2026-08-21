@@ -1,6 +1,6 @@
-# XIOM Ecosystem — Expansion Roadmap
+# XIOM Ecosystem -- Expansion Roadmap
 
-> v0.14.1 — 38 stdlib modules, 75 conformance tests, 244 Rust tests.
+> v0.14.1 -- 38 stdlib modules, 75 conformance tests, 244 Rust tests.
 > This document defines the ecosystem expansion strategy.
 
 ## Philosophy
@@ -14,11 +14,11 @@
 ### What We Don't Bless
 
 xiom explicitly does NOT bless a single solution for:
-- **HTTP server frameworks** — let the ecosystem compete (Axum/Actix equivalents)
-- **ORM / query builders** — too tied to database choice
-- **GUI framework** — platform-fragmented, use Dear ImGui via FFI
-- **Parser combinators** — let libraries emerge organically
-- **Crypto implementations** — never write native crypto; always FFI-wrap (libsodium, OpenSSL)
+- **HTTP server frameworks** -- let the ecosystem compete (Axum/Actix equivalents)
+- **ORM / query builders** -- too tied to database choice
+- **GUI framework** -- platform-fragmented, use Dear ImGui via FFI
+- **Parser combinators** -- let libraries emerge organically
+- **Crypto implementations** -- never write native crypto; always FFI-wrap (libsodium, OpenSSL)
 
 ## Package Categories
 
@@ -26,101 +26,101 @@ xiom explicitly does NOT bless a single solution for:
 
 | Package | Status | Strategy |
 |---------|--------|----------|
-| `xiom:sql` (SQLite) | ✅ First-party FFI | SQLite C bindings |
-| `xiom:postgres` | 🚧 Community | libpq FFI bindings |
-| `xiom:mysql` | 🚧 Community | MySQL C connector FFI |
-| `xiom:redis` | 🚧 Community | hiredis FFI bindings |
-| `xiom:rocksdb` | 📋 Planned | RocksDB C FFI |
-| `xiom:sled` | 📋 Community | Pure XIOM embedded DB |
-| xiomDB (KV store) | 📋 Gated | Requires full self-hosting |
-| xiomVDB (vector DB) | 📋 Gated | Requires xiomDB |
+| `xiom:sql` (SQLite) | [OK] First-party FFI | SQLite C bindings |
+| `xiom:postgres` | [WIP] Community | libpq FFI bindings |
+| `xiom:mysql` | [WIP] Community | MySQL C connector FFI |
+| `xiom:redis` | [WIP] Community | hiredis FFI bindings |
+| `xiom:rocksdb` | [CLIPBOARD] Planned | RocksDB C FFI |
+| `xiom:sled` | [CLIPBOARD] Community | Pure XIOM embedded DB |
+| xiomDB (KV store) | [CLIPBOARD] Gated | Requires full self-hosting |
+| xiomVDB (vector DB) | [CLIPBOARD] Gated | Requires xiomDB |
 
 ### Networking & HTTP
 
 | Package | Status | Strategy |
 |---------|--------|----------|
-| `xiom:net` (HTTP client) | ✅ First-party FFI | libcurl C bindings |
-| `xiom:websocket` | 🚧 Community | libwebsockets FFI |
-| `xiom:grpc` | 📋 Community | gRPC C core FFI |
-| HTTP server (Axum-like) | 📋 Community | Not first-party blessed |
-| HTTP server (Actix-like) | 📋 Community | Not first-party blessed |
-| TLS/SSL | ✅ First-party FFI | OpenSSL/libressl bindings |
+| `xiom:net` (HTTP client) | [OK] First-party FFI | libcurl C bindings |
+| `xiom:websocket` | [WIP] Community | libwebsockets FFI |
+| `xiom:grpc` | [CLIPBOARD] Community | gRPC C core FFI |
+| HTTP server (Axum-like) | [CLIPBOARD] Community | Not first-party blessed |
+| HTTP server (Actix-like) | [CLIPBOARD] Community | Not first-party blessed |
+| TLS/SSL | [OK] First-party FFI | OpenSSL/libressl bindings |
 
 ### Cryptography & Security
 
 | Package | Status | Strategy |
 |---------|--------|----------|
-| `xiom:crypto` (hashing) | ✅ First-party FFI | OpenSSL SHA/ AES bindings |
-| `xiom:libsodium` | 🚧 First-party FFI | libsodium C bindings |
-| `xiom:jwt` | 🚧 Community | Pure XIOM JWT |
-| `xiom:bcrypt` | 🚧 Community | FFI-wrap bcrypt |
-| **⚠ Never write native crypto** — always FFI-wrap battle-tested C libraries |
+| `xiom:crypto` (hashing) | [OK] First-party FFI | OpenSSL SHA/ AES bindings |
+| `xiom:libsodium` | [WIP] First-party FFI | libsodium C bindings |
+| `xiom:jwt` | [WIP] Community | Pure XIOM JWT |
+| `xiom:bcrypt` | [WIP] Community | FFI-wrap bcrypt |
+| **[WARN] Never write native crypto** -- always FFI-wrap battle-tested C libraries |
 
 ### GPU & Graphics
 
 | Package | Status | Strategy |
 |---------|--------|----------|
-| `xiom:vulkan` | 🚧 First-party FFI | Vulkan C bindings |
-| `xiom:opengl` | 🚧 Community | OpenGL C bindings |
-| `xiom:wgpu` | 📋 Community | WebGPU native FFI |
-| `xiom:cuda` | 📋 Community | CUDA C FFI |
-| `xiom:opencl` | 📋 Community | OpenCL C FFI |
+| `xiom:vulkan` | [WIP] First-party FFI | Vulkan C bindings |
+| `xiom:opengl` | [WIP] Community | OpenGL C bindings |
+| `xiom:wgpu` | [CLIPBOARD] Community | WebGPU native FFI |
+| `xiom:cuda` | [CLIPBOARD] Community | CUDA C FFI |
+| `xiom:opencl` | [CLIPBOARD] Community | OpenCL C FFI |
 
 ### GUI
 
 | Approach | Status | Strategy |
 |----------|--------|----------|
-| Dear ImGui (C FFI) | 🚧 Community | MIT license, C API, cross-platform |
-| SDL2 windowing | 🚧 Community | SDL2 C FFI for window creation |
-| GLFW windowing | 🚧 Community | GLFW C FFI |
-| Native XIOM GUI | 📋 Future | Do NOT build now — platform fragmentation is a full-time job |
+| Dear ImGui (C FFI) | [WIP] Community | MIT license, C API, cross-platform |
+| SDL2 windowing | [WIP] Community | SDL2 C FFI for window creation |
+| GLFW windowing | [WIP] Community | GLFW C FFI |
+| Native XIOM GUI | [CLIPBOARD] Future | Do NOT build now -- platform fragmentation is a full-time job |
 
 ### Machine Learning & Math
 
 | Package | Status | Strategy |
 |---------|--------|----------|
-| `xiom:blas` | 🚧 Community | BLAS/LAPACK C FFI |
-| `xiom:tensorflow` | 📋 Community | TensorFlow C API FFI |
-| `xiom:onnx` | 📋 Community | ONNX Runtime C FFI |
-| `xiom:torch` | 📋 Community | LibTorch C FFI |
+| `xiom:blas` | [WIP] Community | BLAS/LAPACK C FFI |
+| `xiom:tensorflow` | [CLIPBOARD] Community | TensorFlow C API FFI |
+| `xiom:onnx` | [CLIPBOARD] Community | ONNX Runtime C FFI |
+| `xiom:torch` | [CLIPBOARD] Community | LibTorch C FFI |
 
 ### File Formats & Serialization
 
 | Package | Status | Strategy |
 |---------|--------|----------|
-| `xiom:serialize` | ✅ First-party | JSON, binary |
-| `xiom:toml` | 🚧 Community | Pure XIOM or tomlc99 FFI |
-| `xiom:yaml` | 🚧 Community | libyaml FFI |
-| `xiom:csv` | 🚧 Community | Pure XIOM |
-| `xiom:protobuf` | 📋 Community | protobuf C FFI |
-| `xiom:msgpack` | 🚧 Community | msgpack-c FFI |
+| `xiom:serialize` | [OK] First-party | JSON, binary |
+| `xiom:toml` | [WIP] Community | Pure XIOM or tomlc99 FFI |
+| `xiom:yaml` | [WIP] Community | libyaml FFI |
+| `xiom:csv` | [WIP] Community | Pure XIOM |
+| `xiom:protobuf` | [CLIPBOARD] Community | protobuf C FFI |
+| `xiom:msgpack` | [WIP] Community | msgpack-c FFI |
 
 ### Game Development (XIOM's Sweet Spot)
 
 | Package | Status | Strategy |
 |---------|--------|----------|
-| `xiom:vulkan` | 🚧 | Vulkan C FFI (graphics + compute) |
-| `xiom:glfw` | 🚧 | GLFW C FFI (windowing + input) |
-| `xiom:openal` | 🚧 | OpenAL C FFI (audio) |
-| `xiom:bullet` | 📋 | Bullet Physics C FFI |
-| `xiom:imgui` | 🚧 | Dear ImGui C FFI (debug UI) |
-| `xiom:stb` | 🚧 | stb_image C FFI (image loading) |
+| `xiom:vulkan` | [WIP] | Vulkan C FFI (graphics + compute) |
+| `xiom:glfw` | [WIP] | GLFW C FFI (windowing + input) |
+| `xiom:openal` | [WIP] | OpenAL C FFI (audio) |
+| `xiom:bullet` | [CLIPBOARD] | Bullet Physics C FFI |
+| `xiom:imgui` | [WIP] | Dear ImGui C FFI (debug UI) |
+| `xiom:stb` | [WIP] | stb_image C FFI (image loading) |
 
 ## Build Order
 
 ### Wave 1: Core FFI Bindings (First-party)
-1. `xiom:vulkan` — Vulkan C bindings via xiom ffigen
-2. `xiom:glfw` — GLFW windowing bindings
-3. `xiom:libsodium` — Secure crypto primitives
+1. `xiom:vulkan` -- Vulkan C bindings via xiom ffigen
+2. `xiom:glfw` -- GLFW windowing bindings
+3. `xiom:libsodium` -- Secure crypto primitives
 
 ### Wave 2: Game Dev Stack
-4. `xiom:imgui` — Dear ImGui debug UI
-5. `xiom:openal` — Audio
-6. `xiom:stb` — Image loading
+4. `xiom:imgui` -- Dear ImGui debug UI
+5. `xiom:openal` -- Audio
+6. `xiom:stb` -- Image loading
 
 ### Wave 3: Database Ecosystem
-7. `xiom:postgres` — PostgreSQL
-8. `xiom:redis` — Redis
+7. `xiom:postgres` -- PostgreSQL
+8. `xiom:redis` -- Redis
 
 ### Wave 4: Community Growth
 9. HTTP server frameworks emerge

@@ -1,4 +1,4 @@
-# `xiom.async` — Async Programming
+# `xiom.async` -- Async Programming
 
 Provides primitives for asynchronous task execution and message passing between concurrent tasks.
 

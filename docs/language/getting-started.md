@@ -22,11 +22,11 @@ Verify your toolchain dependencies:
 ```bash
 # Using standalone binary (after build)
 xiom doctor
-# → Checks: clang ✓  opt ✓  nasm ✓
+# -> Checks: clang [OK]  opt [OK]  nasm [OK]
 
 # Using cargo (development)
 cargo run -p xiom -- doctor
-# → Checks: clang ✓  opt ✓  nasm ✓
+# -> Checks: clang [OK]  opt [OK]  nasm [OK]
 ```
 
 ## Your First Program
@@ -54,11 +54,11 @@ xiom -o hello.exe hello.xi
 
 # Compile and run (prints exit code)
 xiom --run hello.xi
-# → exit code: 30
+# -> exit code: 30
 
 # Compile to WASM
 xiom --target wasm -o hello.wasm hello.xi
-# → wasm size: 618 bytes
+# -> wasm size: 618 bytes
 
 # Development via cargo
 cargo run -p xiom -- --emit-ir hello.xi
@@ -88,31 +88,31 @@ Open the [XIOM Playground](https://xiom-lang.org/playground) to write and compil
 
 ```
 XIOM/
-├── crates/             # Rust bootstrap compiler (permanent)
-│   ├── xiom-ast/      # AST node definitions
-│   ├── xiom-lexer/    # Tokenizer
-│   ├── xiom-parser/   # Recursive descent parser
-│   ├── xiom-check/    # Type checker + borrow checker + module resolver
-│   ├── xiom-codegen/  # LLVM IR emitter + contracts + derive + generics
-│   └── xiom/         # CLI binary
-├── selfhost/           # XIOM self-hosted compiler
-│   ├── xiom-lexer.xi
-│   ├── xiom-parser.xi
-│   ├── xiom-check.xi
-│   ├── xiom-codegen.xi
-│   └── xiom.xi
-├── stdlib/             # Standard library (XIOM source)
-├── examples/           # Example programs
-├── specs/              # Language specification
-├── docs/               # Documentation
-├── website/            # Official website
-└── playground/         # WASM playground
+|-- crates/             # Rust bootstrap compiler (permanent)
+|   |-- xiom-ast/      # AST node definitions
+|   |-- xiom-lexer/    # Tokenizer
+|   |-- xiom-parser/   # Recursive descent parser
+|   |-- xiom-check/    # Type checker + borrow checker + module resolver
+|   |-- xiom-codegen/  # LLVM IR emitter + contracts + derive + generics
+|   `-- xiom/         # CLI binary
+|-- selfhost/           # XIOM self-hosted compiler
+|   |-- xiom-lexer.xi
+|   |-- xiom-parser.xi
+|   |-- xiom-check.xi
+|   |-- xiom-codegen.xi
+|   `-- xiom.xi
+|-- stdlib/             # Standard library (XIOM source)
+|-- examples/           # Example programs
+|-- specs/              # Language specification
+|-- docs/               # Documentation
+|-- website/            # Official website
+`-- playground/         # WASM playground
 ```
 
 ## Editor Support
 
-- **VS Code** — Install `vscode-xiom` extension for syntax highlighting
-- **Any editor** — XIOM uses `.xi` file extension. Set up `.xi` → plain text with 4-space indentation for now. Full LSP support planned for Phase 3.
+- **VS Code** -- Install `vscode-xiom` extension for syntax highlighting
+- **Any editor** -- XIOM uses `.xi` file extension. Set up `.xi` -> plain text with 4-space indentation for now. Full LSP support planned for Phase 3.
 
 ## Next Steps
 

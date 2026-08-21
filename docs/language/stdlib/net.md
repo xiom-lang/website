@@ -1,4 +1,4 @@
-# `xiom.net` — Networking
+# `xiom.net` -- Networking
 
 Provides networking primitives including TCP, UDP, HTTP, DNS resolution, and URL parsing.
 

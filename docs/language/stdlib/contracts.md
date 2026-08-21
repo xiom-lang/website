@@ -97,7 +97,7 @@ Checks a single invariant expression against a value at runtime.
 pub fn check_invariant[T](value: &T, invariant: Str) -> ContractCheckResult;
 ```
 
-## Contract Index — Queryable Spec Database
+## Contract Index -- Queryable Spec Database
 
 ### `build_contract_index()`
 Builds a complete `ContractIndex` for the current package, containing all functions, types, and their contracts.

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom — XIOM — AI Coding Reference (Language + Standard Library)</title>
+<title>xiom -- XIOM -- AI Coding Reference (Language + Standard Library)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,18 +94,18 @@
     </nav>
 
     <main class="content-section" style="border:none;padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:12px;">**Version:** v0.49.8 | **Status:** Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 40-module standard library.</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">XIOM — AI Coding Reference (Language + Standard Library)</h1>
-      <blockquote><p><strong>Version:</strong> v0.49.8 | <strong>Status:</strong> Production. Compiler (lexer → parser → checker → borrow-checker → LLVM → native) + 40-module standard library.</p></blockquote>
+      <div class="eyebrow" style="margin-bottom:12px;">**Version:** v0.49.8 | **Status:** Production. Compiler (lexer -> parser -> checker -> borrow-checker -> LLVM -> native) + 40-module standard library.</div>
+      <h1 style="font-size:36px;margin-bottom:24px;">XIOM -- AI Coding Reference (Language + Standard Library)</h1>
+      <blockquote><p><strong>Version:</strong> v0.49.8 | <strong>Status:</strong> Production. Compiler (lexer -> parser -> checker -> borrow-checker -> LLVM -> native) + 40-module standard library.</p></blockquote>
 <blockquote><p>This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.</p></blockquote>
-<blockquote><p><strong>⚠️ IMMUTABLE DOCUMENT.</strong> This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in <code>docs/ROADMAP.md</code> Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug — file it, do NOT alter the spec. Only the XIOM language team may update this file.</p></blockquote>
-<blockquote><p><strong>Scope:</strong> Core language (sections 1–7), memory & contract model, error handling, module system, the complete 40-module standard library (section 8), the <code>xiom</code> compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).</p></blockquote>
+<blockquote><p><strong>[WARN] IMMUTABLE DOCUMENT.</strong> This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in <code>docs/ROADMAP.md</code> Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug -- file it, do NOT alter the spec. Only the XIOM language team may update this file.</p></blockquote>
+<blockquote><p><strong>Scope:</strong> Core language (sections 1-7), memory & contract model, error handling, module system, the complete 40-module standard library (section 8), the <code>xiom</code> compiler CLI (section 11), and code-generation guidance (sections 9, 16, 17).</p></blockquote>
 <blockquote><p>Every rule stated here is enforced by the compiler. No exceptions. Treat all documented stdlib types, functions, and CLI flags as fully implemented and callable.</p></blockquote>
 <hr>
 <h2>1. Language Identity</h2>
 <p>XIOM is a compiled, statically typed, memory-safe systems language.</p>
 <pre><code>
-Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM IR → clang → binary
+Pipeline: .xi -> Lexer -> Parser -> Type Checker -> Borrow Checker -> LLVM IR -> clang -> binary
 </code></pre>
 <p><strong>Three non-negotiable properties:</strong></p>
 <table>
@@ -135,10 +135,10 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <h2>2. Complete Syntax Rules</h2>
 <h3>2.1 Variables</h3>
 <pre class="language-xiom"><code>
-<span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>           <span class='cm'>// immutable — cannot be reassigned</span>
-<span class='kw'>var</span> y: <span class='ty'>Float64</span> = <span class='num'>3.14</span>     <span class='cm'>// mutable — can be reassigned with =</span>
-<span class='kw'>let</span> name = <span class='str'>XIOM</span>        <span class='cm'>// <span class='kw'>type</span> inferred — <span class='ty'>Str</span></span>
-<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>]         <span class='cm'>// <span class='kw'>type</span> inferred — <span class='ty'>Vec</span>[<span class='ty'>Int</span>]</span>
+<span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>           <span class='cm'>// immutable -- cannot be reassigned</span>
+<span class='kw'>var</span> y: <span class='ty'>Float64</span> = <span class='num'>3.14</span>     <span class='cm'>// mutable -- can be reassigned with =</span>
+<span class='kw'>let</span> name = <span class='str'>XIOM</span>        <span class='cm'>// <span class='kw'>type</span> inferred -- <span class='ty'>Str</span></span>
+<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>]         <span class='cm'>// <span class='kw'>type</span> inferred -- <span class='ty'>Vec</span>[<span class='ty'>Int</span>]</span>
 </code></pre>
 <p><strong>Rules:</strong></p>
 <ul>
@@ -153,7 +153,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
   <span class='kw'>return</span> a + b;
 }
 
-<span class='cm'>// Void function — no <span class='kw'>return</span> <span class='kw'>type</span> annotation</span>
+<span class='cm'>// Void function -- no <span class='kw'>return</span> <span class='kw'>type</span> annotation</span>
 <span class='kw'>fn</span> <span class='func'>log</span>(message: <span class='ty'>Str</span>) {
   io.<span class='func'>print</span>(message);
 }
@@ -180,7 +180,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(other: &<span class='ty'>Vec3</span>) -> <span class='ty'>Float32</span> {
   <span class='kw'>return</span> x * other.x + y * other.y + z * other.z;
-  <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> IMPLICIT — never write <span class='kw'>self</span>.x, just x</span>
+  <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> IMPLICIT -- never write <span class='kw'>self</span>.x, just x</span>
 }
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>set_x</span>(value: <span class='ty'>Float32</span>) {
@@ -191,7 +191,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <ul>
 <li>Method syntax: <code>fn TypeName.methodName(params) -> ReturnType</code></li>
 <li><code>self</code> is IMPLICIT. Access fields directly: <code>x</code>, not <code>self.x</code>.</li>
-<li>Compiler infers <code>&Self</code> or <code>&mut Self</code> from body. If ANY field is mutated → <code>&mut Self</code>.</li>
+<li>Compiler infers <code>&Self</code> or <code>&mut Self</code> from body. If ANY field is mutated -> <code>&mut Self</code>.</li>
 <li>Methods are defined OUTSIDE the type declaration, in the same module.</li>
 </ul>
 <h3>2.4 Control Flow</h3>
@@ -222,15 +222,15 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
   AgentState.Patrolling(route) => <span class='func'>follow</span>(route),
 }
 
-<span class='cm'>// <span class='kw'>if</span> <span class='kw'>let</span> — desugars to <span class='kw'>match</span></span>
+<span class='cm'>// <span class='kw'>if</span> <span class='kw'>let</span> -- desugars to <span class='kw'>match</span></span>
 <span class='kw'>if</span> <span class='kw'>let</span> <span class='kw'>Some</span>(v) = maybe_val { <span class='func'><span class='kw'>use</span></span>(v); } <span class='kw'>else</span> { <span class='func'>fallback</span>(); }
 
-<span class='cm'>// <span class='kw'>while</span> <span class='kw'>let</span> — desugars to <span class='kw'>while</span> <span class='kw'>true</span> + <span class='kw'>match</span></span>
+<span class='cm'>// <span class='kw'>while</span> <span class='kw'>let</span> -- desugars to <span class='kw'>while</span> <span class='kw'>true</span> + <span class='kw'>match</span></span>
 <span class='kw'>while</span> <span class='kw'>let</span> <span class='kw'>Some</span>(v) = <span class='func'>next</span>() { <span class='func'>process</span>(v); }
 </code></pre>
 <p><strong>Rules:</strong></p>
 <ul>
-<li><code>if</code> / <code>elif</code> / <code>else</code> — exactly this spelling. Not <code>else if</code>.</li>
+<li><code>if</code> / <code>elif</code> / <code>else</code> -- exactly this spelling. Not <code>else if</code>.</li>
 <li><code>match</code> arms use <code>=></code> not <code>:</code>.</li>
 <li>Every <code>match</code> must cover ALL cases. Non-exhaustive = compile error.</li>
 <li>Wildcard is <code>_</code>, not <code>default</code> or <code>otherwise</code>.</li>
@@ -243,8 +243,8 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 100_000         <span class='cm'>// <span class='ty'>Int</span> with separators</span>
 <span class='num'>3.14</span>            <span class='cm'>// <span class='ty'>Float64</span></span>
 <span class='kw'>true</span> | <span class='kw'>false</span>    <span class='cm'>// <span class='ty'>Bool</span></span>
-<span class='str'>hello</span>         <span class='cm'>// <span class='ty'>Str</span> — always double quotes</span>
-'A'             <span class='cm'>// <span class='ty'>Char</span> — always single quotes</span>
+<span class='str'>hello</span>         <span class='cm'>// <span class='ty'>Str</span> -- always double quotes</span>
+'A'             <span class='cm'>// <span class='ty'>Char</span> -- always single quotes</span>
 
 <span class='cm'>// Arithmetic</span>
 a + b   a - b   a * b   a / b   a % b   -a
@@ -252,13 +252,13 @@ a + b   a - b   a * b   a / b   a % b   -a
 <span class='cm'>// Compound <span class='func'>assignment</span>(desugars to x = x + y)</span>
 x += <span class='num'>1</span>;    x -= <span class='num'>2</span>;    x *= <span class='num'>3</span>;    x /= <span class='num'>4</span>;    x %= <span class='num'>5</span>;
 
-<span class='cm'>// Comparison — returns <span class='ty'>Bool</span></span>
+<span class='cm'>// Comparison -- returns <span class='ty'>Bool</span></span>
 a == b   a != b   a < b   a > b   a <= b   a >= b
 
-<span class='cm'>// Logical — both operands must be <span class='ty'>Bool</span></span>
+<span class='cm'>// Logical -- both operands must be <span class='ty'>Bool</span></span>
 !a          a && b          a || b
 
-<span class='cm'>// Struct literal — TypeName{ field: value, ... }</span>
+<span class='cm'>// Struct literal -- TypeName{ field: value, ... }</span>
 <span class='kw'>let</span> p = <span class='ty'>Point</span>{ x: <span class='num'>1.0</span>, y: <span class='num'>2.0</span> };
 
 <span class='cm'>// Array literal</span>
@@ -271,7 +271,7 @@ a == b   a != b   a < b   a > b   a <= b   a >= b
 <span class='cm'>// Function call</span>
 <span class='kw'>let</span> <span class='kw'>result</span> = <span class='func'>add</span>(<span class='num'>10</span>, <span class='num'>20</span>);
 
-<span class='cm'>// Generic call — explicit <span class='kw'>type</span> parameter</span>
+<span class='cm'>// Generic call -- explicit <span class='kw'>type</span> parameter</span>
 <span class='kw'>let</span> n = max[<span class='ty'>Int</span>](<span class='num'>10</span>, <span class='num'>20</span>);
 <span class='kw'>let</span> n = <span class='func'>max</span>(<span class='num'>10</span>, <span class='num'>20</span>);       <span class='cm'>// inferred</span>
 
@@ -357,7 +357,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>Some</span>  <span class='kw'>None</span>  <span class='kw'>Ok</span>  <span class='kw'>Err</span>
 <span class='kw'>unsafe</span>  <span class='kw'>extern</span>  <span class='kw'>is</span>  and  or  not  where
 </code></pre>
-<p><code>result</code> is only valid inside <code>ensures</code> clauses. <code>self</code> is implicit in methods — never write it explicitly. <code>is</code> is used for type testing: <code>value is Some</code>.</p>
+<p><code>result</code> is only valid inside <code>ensures</code> clauses. <code>self</code> is implicit in methods -- never write it explicitly. <code>is</code> is used for type testing: <code>value is Some</code>.</p>
 <hr>
 <h2>3. Type System</h2>
 <h3>3.1 Primitive Types</h3>
@@ -378,13 +378,13 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <td><code>42</code></td>
 </tr>
 <tr>
-<td><code>Int8</code>–<code>Int64</code></td>
-<td>8–64 bits</td>
+<td><code>Int8</code>-<code>Int64</code></td>
+<td>8-64 bits</td>
 <td><code>let x: Int32 = 1;</code></td>
 </tr>
 <tr>
-<td><code>UInt</code>–<code>UInt64</code></td>
-<td>8–64 bits unsigned</td>
+<td><code>UInt</code>-<code>UInt64</code></td>
+<td>8-64 bits unsigned</td>
 <td><code>let n: UInt = 100;</code></td>
 </tr>
 <tr>
@@ -400,7 +400,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <tr>
 <td><code>Char</code></td>
 <td>32-bit Unicode</td>
-<td><code>'A'</code>, <code>'λ'</code></td>
+<td><code>'A'</code>, <code>'lambda'</code></td>
 </tr>
 <tr>
 <td><code>Str</code></td>
@@ -492,7 +492,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <li>Type parameter MUST be annotatable if it appears only in return type.</li>
 </ul>
 <hr>
-<h2>4. Memory Model — CRITICAL</h2>
+<h2>4. Memory Model -- CRITICAL</h2>
 <h3>4.1 Ownership Rules</h3>
 <table>
 <tr>
@@ -532,21 +532,21 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>write</span>(v: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }        <span class='cm'>// write borrow</span>
 
 <span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>read</span>(&v);        <span class='cm'>// borrow — v still valid</span>
-<span class='func'>write</span>(&mut v);   <span class='cm'>// write borrow — exclusive</span>
-<span class='func'>consume</span>(v);      <span class='cm'>// move — v NO LONGER VALID</span>
+<span class='func'>read</span>(&v);        <span class='cm'>// borrow -- v still valid</span>
+<span class='func'>write</span>(&mut v);   <span class='cm'>// write borrow -- exclusive</span>
+<span class='func'>consume</span>(v);      <span class='cm'>// move -- v NO LONGER VALID</span>
 <span class='cm'>// <span class='func'>read</span>(&v);     // COMPILE ERROR: <span class='kw'>use</span> after move</span>
 </code></pre>
 <h3>4.3 Restrictions (These Are Compile Errors)</h3>
 <ul>
-<li>❌ Borrow stored in struct field</li>
-<li>❌ Borrow returned from function</li>
-<li>❌ Use after move</li>
-<li>❌ Write borrow while read borrow active</li>
-<li>❌ Multiple write borrows simultaneously</li>
-<li>❌ Mutation through <code>&T</code></li>
-<li>✅ Clone instead of borrow for struct storage</li>
-<li>✅ Return owned type, not borrow</li>
+<li>[FAIL] Borrow stored in struct field</li>
+<li>[FAIL] Borrow returned from function</li>
+<li>[FAIL] Use after move</li>
+<li>[FAIL] Write borrow while read borrow active</li>
+<li>[FAIL] Multiple write borrows simultaneously</li>
+<li>[FAIL] Mutation through <code>&T</code></li>
+<li>[OK] Clone instead of borrow for struct storage</li>
+<li>[OK] Return owned type, not borrow</li>
 </ul>
 <h3>4.4 Unsafe</h3>
 <pre class="language-xiom"><code>
@@ -714,7 +714,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <li><code>package.xi</code> at project root defines dependencies.</li>
 </ul>
 <hr>
-<h2>8. Standard Library — Production API Reference</h2>
+<h2>8. Standard Library -- Production API Reference</h2>
 <p>The standard library is 40 modules under <code>xiom.*</code>. Every module is fully implemented and callable. Import a module with <code>use xiom.<module>;</code> then call it.</p>
 <p><strong>Calling conventions:</strong></p>
 <ul>
@@ -723,16 +723,16 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <li><strong>Methods</strong> are called on a value with implicit <code>self</code>: <code>v.push(x)</code>, <code>s.len()</code>, <code>d.as_millis()</code>, <code>arc.clone()</code>.</li>
 <li><strong><code>use</code> a single item</strong> to call it unqualified: <code>use xiom.collections.Vec;</code> then <code>Vec[Int].new()</code>.</li>
 </ul>
-<p><strong>Signatures below are copied verbatim from the source.</strong> Some collection/method signatures show explicit type params like <code>Vec.push[T]</code> — at call sites the receiver's type is inferred, so you write <code>v.push(x)</code>.</p>
+<p><strong>Signatures below are copied verbatim from the source.</strong> Some collection/method signatures show explicit type params like <code>Vec.push[T]</code> -- at call sites the receiver's type is inferred, so you write <code>v.push(x)</code>.</p>
 <h3>When generating code, follow these rules:</h3>
 <ul>
-<li><strong>Use the types</strong> — <code>Option[T]</code>, <code>Result[T,E]</code>, <code>Vec[T]</code>, <code>Map[K,V]</code>, <code>Set[T]</code>, <code>Str</code> are fully defined. <code>Option</code>, <code>Result</code>, <code>Vec</code>, and arithmetic/comparison/control flow are compiler primitives and need no import.</li>
-<li><strong>Use the stdlib</strong> — all 40 modules are implemented. Import with <code>use xiom.<module>;</code> and call the documented functions. DO NOT reimplement stdlib functions.</li>
-<li><strong>Call through the module</strong> — <code>io.println(...)</code>, <code>math.sqrt(...)</code>, <code>string.str_split(...)</code>, <code>json = serialize.json_parse(...)</code>. Methods on stdlib types use dot syntax on the value.</li>
-<li><strong>For FFI</strong> — use <code>extern "C"</code> directly; the C runtime links standard libc plus the XIOM runtime automatically. See the C FFI block at the end of this section.</li>
+<li><strong>Use the types</strong> -- <code>Option[T]</code>, <code>Result[T,E]</code>, <code>Vec[T]</code>, <code>Map[K,V]</code>, <code>Set[T]</code>, <code>Str</code> are fully defined. <code>Option</code>, <code>Result</code>, <code>Vec</code>, and arithmetic/comparison/control flow are compiler primitives and need no import.</li>
+<li><strong>Use the stdlib</strong> -- all 40 modules are implemented. Import with <code>use xiom.<module>;</code> and call the documented functions. DO NOT reimplement stdlib functions.</li>
+<li><strong>Call through the module</strong> -- <code>io.println(...)</code>, <code>math.sqrt(...)</code>, <code>string.str_split(...)</code>, <code>json = serialize.json_parse(...)</code>. Methods on stdlib types use dot syntax on the value.</li>
+<li><strong>For FFI</strong> -- use <code>extern "C"</code> directly; the C runtime links standard libc plus the XIOM runtime automatically. See the C FFI block at the end of this section.</li>
 </ul>
 <hr>
-<h3>8.1 <code>core</code> — Fundamental types, interfaces, and intrinsics</h3>
+<h3>8.1 <code>core</code> -- Fundamental types, interfaces, and intrinsics</h3>
 <p>Built into the type system; you can use <code>Option</code>, <code>Result</code>, and these interfaces without importing.</p>
 <p><strong>Types</strong></p>
 <pre class="language-xiom"><code>
@@ -826,7 +826,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>const</span> FLOAT64_EPSILON: <span class='ty'>Float64</span> = <span class='num'>2.</span>220446049250313e-<span class='num'>16</span>;
 </code></pre>
 <hr>
-<h3>8.2 <code>collections</code> — Vec, Map, Set, and more</h3>
+<h3>8.2 <code>collections</code> -- Vec, Map, Set, and more</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Vec</span>[T]        = { data: *T; len: <span class='ty'>Int</span>; cap: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> <span class='ty'>Map</span>[K, V]     = { keys: <span class='ty'>Vec</span>[K]; values: <span class='ty'>Vec</span>[V]; }
@@ -941,7 +941,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='ty'>Slice</span>.get[T](index: <span class='ty'>Int</span>) -> <span class='ty'>Option</span>[T]
 </code></pre>
 <hr>
-<h3>8.3 <code>string</code> — UTF-8 string operations</h3>
+<h3>8.3 <code>string</code> -- UTF-8 string operations</h3>
 <p>Call as <code>string.<fn>(...)</code>.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>str_len</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Int</span>
@@ -970,7 +970,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>byte_count</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Int</span>
 </code></pre>
 <hr>
-<h3>8.4 <code>io</code> — Console, files, process, buffered I/O</h3>
+<h3>8.4 <code>io</code> -- Console, files, process, buffered I/O</h3>
 <p>Call as <code>io.<fn>(...)</code>.</p>
 <p><strong>Types & interfaces</strong></p>
 <pre class="language-xiom"><code>
@@ -1034,7 +1034,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> Cursor.<span class='func'>into_inner</span>(<span class='kw'>self</span>) -> <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]
 </code></pre>
 <hr>
-<h3>8.5 <code>fmt</code> — Formatting & Display</h3>
+<h3>8.5 <code>fmt</code> -- Formatting & Display</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Display</span> { <span class='kw'>fn</span> <span class='func'>fmt</span>(<span class='kw'>self</span>, f: &mut Formatter) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError]; }
 <span class='kw'>type</span> Formatter = { buf: <span class='ty'>Str</span>; width: <span class='ty'>Int</span>; precision: <span class='ty'>Int</span>; align: <span class='ty'>Int</span>; }
@@ -1059,7 +1059,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>println</span>(s: <span class='ty'>Str</span>)
 </code></pre>
 <hr>
-<h3>8.6 <code>math</code> — Math functions & constants</h3>
+<h3>8.6 <code>math</code> -- Math functions & constants</h3>
 <p>Call as <code>math.<fn>(...)</code>. libm-backed functions plus pure-XIOM fallbacks (<code>*_pure</code>).</p>
 <pre class="language-xiom"><code>
 <span class='kw'>const</span> PI: <span class='ty'>Float64</span>  = <span class='num'>3.141592653589793</span>;
@@ -1105,7 +1105,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 </code></pre>
 <p>Pure fallbacks (no libm): <code>sqrt_pure</code>, <code>pow_pure</code>, <code>abs_float_pure</code>, <code>floor_pure</code>, <code>ceil_pure</code>, <code>sin_pure</code>, <code>cos_pure</code>, <code>tan_pure</code>, <code>asin_pure</code>, <code>acos_pure</code>, <code>atan_pure</code>, <code>atan2_pure</code>, <code>exp_pure</code>, <code>ln_pure</code>, <code>log10_pure</code>, <code>log2_pure</code> (same signatures as their non-pure counterparts).</p>
 <hr>
-<h3>8.7 <code>num</code> — Numeric traits & integer/float utilities (with merged crypto primitives)</h3>
+<h3>8.7 <code>num</code> -- Numeric traits & integer/float utilities (with merged crypto primitives)</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> Neg  { <span class='kw'>fn</span> <span class='func'>neg</span>(<span class='kw'>self</span>) -> <span class='ty'>Self</span>; }
 <span class='kw'>interface</span> Rem  { <span class='kw'>fn</span> <span class='func'>rem</span>(<span class='kw'>self</span>, other: <span class='ty'>Self</span>) -> <span class='ty'>Self</span>; }
@@ -1158,9 +1158,9 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>parse_float</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Float64</span>, <span class='ty'>Str</span>]
 <span class='kw'>fn</span> <span class='func'>parse_int_radix</span>(s: <span class='ty'>Str</span>, radix: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>Str</span>]
 </code></pre>
-<blockquote><p><strong>Note:</strong> Several crypto primitive modules (<code>aes</code>, <code>sha</code>, <code>b64</code>, <code>ed25519</code>, <code>hex</code>, <code>md5</code>, <code>pbkdf</code>, <code>random</code>) were merged from packages into stdlib. Use <code>use xiom.crypto;</code> for the unified crypto API — see section 8.30.</p></blockquote>
+<blockquote><p><strong>Note:</strong> Several crypto primitive modules (<code>aes</code>, <code>sha</code>, <code>b64</code>, <code>ed25519</code>, <code>hex</code>, <code>md5</code>, <code>pbkdf</code>, <code>random</code>) were merged from packages into stdlib. Use <code>use xiom.crypto;</code> for the unified crypto API -- see section 8.30.</p></blockquote>
 <hr>
-<h3>8.8 <code>cmp</code> — Comparison & ordering</h3>
+<h3>8.8 <code>cmp</code> -- Comparison & ordering</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> Ordering  = <span class='kw'>enum</span> { Less, Equal, Greater }
 <span class='kw'>type</span> Reverse[T] = { value: T; }
@@ -1184,7 +1184,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> Reverse.new[T](value: T) -> Reverse[T]
 </code></pre>
 <hr>
-<h3>8.9 <code>hash</code> — Hashing</h3>
+<h3>8.9 <code>hash</code> -- Hashing</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Hash</span>        { <span class='kw'>fn</span> <span class='func'>hash</span>(<span class='kw'>self</span>, hasher: Hasher); }
 <span class='kw'>interface</span> Hasher      { <span class='kw'>fn</span> <span class='func'>write</span>(<span class='kw'>self</span>, bytes: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]); <span class='kw'>fn</span> <span class='func'>write_int</span>(<span class='kw'>self</span>, n: <span class='ty'>Int</span>); <span class='kw'>fn</span> <span class='func'>write_str</span>(<span class='kw'>self</span>, s: <span class='ty'>Str</span>); <span class='kw'>fn</span> <span class='func'>finish</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>; }
@@ -1205,7 +1205,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>sip_hash</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>UInt64</span>
 </code></pre>
 <hr>
-<h3>8.10 <code>char</code> — Character operations</h3>
+<h3>8.10 <code>char</code> -- Character operations</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>is_alphabetic</span>(c: <span class='ty'>Char</span>) -> <span class='ty'>Bool</span>
 <span class='kw'>fn</span> <span class='func'>is_alphanumeric</span>(c: <span class='ty'>Char</span>) -> <span class='ty'>Bool</span>
@@ -1225,7 +1225,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>encode_utf8</span>(c: <span class='ty'>Char</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>])
 </code></pre>
 <hr>
-<h3>8.11 <code>convert</code> — Type conversions</h3>
+<h3>8.11 <code>convert</code> -- Type conversions</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> From[T]    { <span class='kw'>fn</span> <span class='func'>from</span>(value: T) -> <span class='ty'>Self</span>; }
 <span class='kw'>interface</span> Into[T]    { <span class='kw'>fn</span> <span class='func'>into</span>(<span class='kw'>self</span>) -> T; }
@@ -1242,7 +1242,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>int_to_char</span>(n: <span class='ty'>Int</span>) -> <span class='ty'>Option</span>[<span class='ty'>Char</span>]
 </code></pre>
 <hr>
-<h3>8.12 <code>iter</code> — Iterators & adapters</h3>
+<h3>8.12 <code>iter</code> -- Iterators & adapters</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> Range          = { start: <span class='ty'>Int</span>; end: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> RangeInclusive = { start: <span class='ty'>Int</span>; end: <span class='ty'>Int</span>; current: <span class='ty'>Int</span>; done: <span class='ty'>Bool</span>; }
@@ -1282,7 +1282,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> Iterator[T].<span class='func'>last</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[T]
 </code></pre>
 <hr>
-<h3>8.13 <code>array</code> — Fixed-size array <code>[N]T</code> operations</h3>
+<h3>8.13 <code>array</code> -- Fixed-size array <code>[N]T</code> operations</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> len[T, <span class='kw'>const</span> N: <span class='ty'>Int</span>](arr: &[N]T) -> <span class='ty'>Int</span>
 <span class='kw'>fn</span> is_empty[T, <span class='kw'>const</span> N: <span class='ty'>Int</span>](arr: &[N]T) -> <span class='ty'>Bool</span>
@@ -1308,7 +1308,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> contains[T: <span class='ty'>Eq</span>](arr: &[N]T, x: &T) -> <span class='ty'>Bool</span>
 </code></pre>
 <hr>
-<h3>8.14 <code>mem</code> — Memory utilities</h3>
+<h3>8.14 <code>mem</code> -- Memory utilities</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> ManuallyDrop[T] = { value: T; }
 
@@ -1328,7 +1328,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> ManuallyDrop.drop[T](<span class='kw'>self</span>)
 </code></pre>
 <hr>
-<h3>8.15 <code>ptr</code> — Raw pointer operations (unsafe)</h3>
+<h3>8.15 <code>ptr</code> -- Raw pointer operations (unsafe)</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> null[T]() -> *T
 <span class='kw'>fn</span> null_mut[T]() -> *mut T
@@ -1351,7 +1351,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> from_mut[T](r: &mut T) -> *mut T
 </code></pre>
 <hr>
-<h3>8.16 <code>alloc</code> — Allocation</h3>
+<h3>8.16 <code>alloc</code> -- Allocation</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> Layout      = { size: <span class='ty'>Int</span>; align: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> AllocError  = { message: <span class='ty'>Str</span>; }
@@ -1376,7 +1376,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>dealloc_layout</span>(ptr: *mut <span class='ty'>UInt8</span>, layout: Layout)
 </code></pre>
 <hr>
-<h3>8.17 <code>error</code> — Error trait hierarchy</h3>
+<h3>8.17 <code>error</code> -- Error trait hierarchy</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> Error { <span class='kw'>fn</span> <span class='func'>source</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[Error]; <span class='kw'>fn</span> <span class='func'>description</span>(<span class='kw'>self</span>) -> <span class='ty'>Str</span>; <span class='kw'>fn</span> <span class='func'>cause</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span>[Error]; }
 <span class='kw'>type</span> ErrorChain = { errors: <span class='ty'>Vec</span>[<span class='ty'>Str</span>]; }
@@ -1390,7 +1390,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> Backtrace.<span class='func'>display</span>(<span class='kw'>self</span>) -> <span class='ty'>Str</span>
 </code></pre>
 <hr>
-<h3>8.18 <code>path</code> — Path manipulation</h3>
+<h3>8.18 <code>path</code> -- Path manipulation</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> Path    = { inner: <span class='ty'>Str</span>; }
 <span class='kw'>type</span> PathBuf = { inner: <span class='ty'>Str</span>; }
@@ -1424,7 +1424,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>path_separator</span>() -> <span class='ty'>Str</span>
 </code></pre>
 <hr>
-<h3>8.19 <code>time</code> — Duration, Instant, SystemTime, DateTime</h3>
+<h3>8.19 <code>time</code> -- Duration, Instant, SystemTime, DateTime</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Duration</span>   = { secs: <span class='ty'>Int</span>; nanos: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> <span class='ty'>Instant</span>    = { t: <span class='ty'>Int</span>; }
@@ -1473,7 +1473,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>sleep_until</span>(instant: <span class='ty'>Instant</span>)
 </code></pre>
 <hr>
-<h3>8.20 <code>env</code> — Environment & directories</h3>
+<h3>8.20 <code>env</code> -- Environment & directories</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>const</span> OS: <span class='ty'>Str</span>     = <span class='str'>windows</span>;
 <span class='kw'>const</span> ARCH: <span class='ty'>Str</span>   = <span class='str'>x86_64</span>;
@@ -1499,7 +1499,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>path_separator</span>() -> <span class='ty'>Str</span>
 </code></pre>
 <hr>
-<h3>8.21 <code>os</code> — Platform, processes, filesystem walk</h3>
+<h3>8.21 <code>os</code> -- Platform, processes, filesystem walk</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> ChildProcess = { pid: <span class='ty'>Int</span>; stdin: <span class='ty'>Int</span>; stdout: <span class='ty'>Int</span>; stderr: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> FileWatcher  = { path: <span class='ty'>Str</span>; recursive: <span class='ty'>Bool</span>; }
@@ -1540,7 +1540,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>const</span> SIGUSR1: <span class='ty'>Int</span> = <span class='num'>10</span>;  <span class='kw'>const</span> SIGUSR2: <span class='ty'>Int</span> = <span class='num'>12</span>;
 </code></pre>
 <hr>
-<h3>8.22 <code>sync</code> — Synchronization primitives</h3>
+<h3>8.22 <code>sync</code> -- Synchronization primitives</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Mutex</span>[T]      = { inner: *<span class='ty'>UInt8</span>; data: *T; }
 <span class='kw'>type</span> MutexGuard[T] = { mutex: <span class='ty'>Mutex</span>[T]; }
@@ -1599,7 +1599,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> AtomicInt.<span class='func'>compare_exchange</span>(<span class='kw'>self</span>, current: <span class='ty'>Int</span>, new: <span class='ty'>Int</span>) -> <span class='ty'>Bool</span>
 </code></pre>
 <hr>
-<h3>8.23 <code>thread</code> — Threads & scopes</h3>
+<h3>8.23 <code>thread</code> -- Threads & scopes</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> Thread        = { handle: *<span class='ty'>UInt8</span>; id: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> JoinHandle[T] = { thread: Thread; result_buf: *<span class='ty'>UInt8</span>; }
@@ -1624,7 +1624,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>current_thread_id</span>() -> <span class='ty'>Int</span>
 </code></pre>
 <hr>
-<h3>8.24 <code>async</code> — Cooperative executor & channels</h3>
+<h3>8.24 <code>async</code> -- Cooperative executor & channels</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> Executor   = { ready: <span class='ty'>Vec</span>[<span class='func'><span class='kw'>fn</span></span>()]; timers: <span class='ty'>Vec</span>[Timer]; }
 <span class='kw'>type</span> <span class='ty'>Channel</span>[T] = { items: <span class='ty'>Vec</span>[T]; closed: <span class='ty'>Bool</span>; cap: <span class='ty'>Int</span>; }
@@ -1649,7 +1649,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='ty'>Channel</span>.close[T]()
 </code></pre>
 <hr>
-<h3>8.25 <code>net</code> — TCP, UDP, HTTP, DNS, URL</h3>
+<h3>8.25 <code>net</code> -- TCP, UDP, HTTP, DNS, URL</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>TcpStream</span>    = { fd: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> <span class='ty'>TcpListener</span>  = { fd: <span class='ty'>Int</span>; }
@@ -1676,7 +1676,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>parse_url</span>(url: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[UrlParts, <span class='ty'>NetError</span>]
 </code></pre>
 <hr>
-<h3>8.26 <code>ffi</code> — Thin C FFI wrappers</h3>
+<h3>8.26 <code>ffi</code> -- Thin C FFI wrappers</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>extern_c</span>(name: <span class='ty'>Str</span>) -> <span class='ty'>Int</span>
 <span class='kw'>fn</span> <span class='func'>alloc</span>(size: <span class='ty'>Int</span>) -> *<span class='ty'>UInt8</span>
@@ -1686,7 +1686,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> align_of[T]() -> <span class='ty'>Int</span>
 </code></pre>
 <hr>
-<h3>8.27 <code>cell</code> — Interior mutability</h3>
+<h3>8.27 <code>cell</code> -- Interior mutability</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Cell</span>[T]    = { value: T; }
 <span class='kw'>type</span> <span class='ty'>RefCell</span>[T] = { value: T; borrows: <span class='ty'>Int</span>; }
@@ -1709,7 +1709,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> RefMut.set[T](<span class='kw'>self</span>, value: T)
 </code></pre>
 <hr>
-<h3>8.28 <code>rc</code> — Reference counting</h3>
+<h3>8.28 <code>rc</code> -- Reference counting</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> RcInner[T] = { strong: <span class='ty'>Int</span>; weak: <span class='ty'>Int</span>; value: T; }
 <span class='kw'>type</span> Rc[T]      = { ptr: *RcInner[T]; }
@@ -1730,7 +1730,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> Weak.drop[T](<span class='kw'>self</span>)
 </code></pre>
 <hr>
-<h3>8.29 <code>serialize</code> — JSON serialization</h3>
+<h3>8.29 <code>serialize</code> -- JSON serialization</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> Serialize   { <span class='kw'>fn</span> <span class='func'>serialize</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, SerializeError]; <span class='kw'>fn</span> <span class='func'>serialize_json</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, SerializeError]; <span class='kw'>fn</span> <span class='func'>serialize_bytes</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], SerializeError]; }
 <span class='kw'>interface</span> Deserialize { <span class='kw'>fn</span> <span class='func'>deserialize</span>(data: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Self</span>, SerializeError]; <span class='kw'>fn</span> <span class='func'>deserialize_json</span>(data: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Self</span>, SerializeError]; <span class='kw'>fn</span> <span class='func'>deserialize_bytes</span>(data: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Self</span>, SerializeError]; }
@@ -1765,7 +1765,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>big_endian</span>() -> <span class='ty'>Bool</span>
 </code></pre>
 <hr>
-<h3>8.30 <code>crypto</code> — Hashing, HMAC, AES, RSA, KDFs</h3>
+<h3>8.30 <code>crypto</code> -- Hashing, HMAC, AES, RSA, KDFs</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> KeyPair = { public: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]; private: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]; }
 
@@ -1791,7 +1791,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>constant_time_compare</span>(a: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], b: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Bool</span>
 </code></pre>
 <hr>
-<h3>8.31 <code>compress</code> — gzip, zlib, deflate, brotli, lz4, snappy</h3>
+<h3>8.31 <code>compress</code> -- gzip, zlib, deflate, brotli, lz4, snappy</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> Compressor { <span class='kw'>fn</span> <span class='func'>compress</span>(<span class='kw'>self</span>, data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>]; <span class='kw'>fn</span> <span class='func'>decompress</span>(<span class='kw'>self</span>, data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>]; }
 <span class='kw'>type</span> GzipCompressor = { level: <span class='ty'>Int</span>; }
@@ -1819,7 +1819,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>detect_format</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Str</span>
 </code></pre>
 <hr>
-<h3>8.32 <code>encoding</code> — base64, hex, URL, UTF-8</h3>
+<h3>8.32 <code>encoding</code> -- base64, hex, URL, UTF-8</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>base64_encode</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Str</span>
 <span class='kw'>fn</span> <span class='func'>base64_decode</span>(encoded: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>]
@@ -1840,7 +1840,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>text_to_binary</span>(text: <span class='ty'>Str</span>, format: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>]
 </code></pre>
 <hr>
-<h3>8.33 <code>regex</code> — Regular expressions</h3>
+<h3>8.33 <code>regex</code> -- Regular expressions</h3>
 <p>Supported: <code>.  *  +  ?  ^  $  [abc]  [a-z]  [^abc]  \d \w \s  \D \W \S</code>.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Regex</span>    = { pattern: <span class='ty'>Str</span>; compiled: <span class='ty'>Int</span>; }
@@ -1863,7 +1863,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>is_valid_regex</span>(pattern: <span class='ty'>Str</span>) -> <span class='ty'>Bool</span>
 </code></pre>
 <hr>
-<h3>8.34 <code>rand</code> — Random numbers & distributions</h3>
+<h3>8.34 <code>rand</code> -- Random numbers & distributions</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> <span class='ty'>Rng</span> { <span class='kw'>fn</span> <span class='func'>next_int</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>; <span class='kw'>fn</span> <span class='func'>next_float</span>(<span class='kw'>self</span>) -> <span class='ty'>Float64</span>; <span class='kw'>fn</span> <span class='func'>next_bytes</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]); }
 <span class='kw'>type</span> StdRng = { state: <span class='ty'>Int</span>; }
@@ -1894,7 +1894,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>seed_from_value</span>(seed: <span class='ty'>Int</span>)
 </code></pre>
 <hr>
-<h3>8.35 <code>log</code> — Structured logging</h3>
+<h3>8.35 <code>log</code> -- Structured logging</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> LogLevel = <span class='kw'>enum</span> { Trace, Debug, Info, Warn, Error, Fatal }
 <span class='kw'>type</span> LogEntry = { level: LogLevel; message: <span class='ty'>Str</span>; file: <span class='ty'>Str</span>; line: <span class='ty'>Int</span>; timestamp: <span class='ty'>Int</span>; data: <span class='ty'>Map</span>[<span class='ty'>Str</span>, <span class='ty'>Str</span>]; }
@@ -1919,7 +1919,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>clear_log</span>()
 </code></pre>
 <hr>
-<h3>8.36 <code>test</code> — Contract-aware test framework</h3>
+<h3>8.36 <code>test</code> -- Contract-aware test framework</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> TestResult      = { passed: <span class='ty'>Bool</span>; name: <span class='ty'>Str</span>; message: <span class='ty'>Str</span>; contract_failures: <span class='ty'>Vec</span>[ContractFailure]; duration_ms: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> ContractFailure = { clause: <span class='ty'>Str</span>; expression: <span class='ty'>Str</span>; values: <span class='ty'>Str</span>; location: <span class='ty'>Str</span>; }
@@ -1943,7 +1943,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>bench</span>(name: <span class='ty'>Str</span>, f: <span class='func'><span class='kw'>fn</span></span>()) -> TestResult
 </code></pre>
 <hr>
-<h3>8.37 <code>bench</code> — Benchmarking</h3>
+<h3>8.37 <code>bench</code> -- Benchmarking</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> BenchResult = { name: <span class='ty'>Str</span>; iterations: <span class='ty'>Int</span>; total_ns: <span class='ty'>Int</span>; mean_ns: <span class='ty'>Int</span>; min_ns: <span class='ty'>Int</span>; max_ns: <span class='ty'>Int</span>; stddev_ns: <span class='ty'>Int</span>; }
 
@@ -1953,7 +1953,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> black_box[T](value: T) -> T
 </code></pre>
 <hr>
-<h3>8.38 <code>contracts</code> — Contract introspection & coverage</h3>
+<h3>8.38 <code>contracts</code> -- Contract introspection & coverage</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> ContractClause      = { ... }
 <span class='kw'>type</span> FunctionContracts   = { ... }
@@ -1988,7 +1988,7 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 <span class='kw'>fn</span> <span class='func'>contract_density</span>() -> <span class='ty'>Float64</span>
 </code></pre>
 <hr>
-<h3>8.39 <code>reflect</code> — Runtime type information</h3>
+<h3>8.39 <code>reflect</code> -- Runtime type information</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> TypeId    = { id: <span class='ty'>Int</span>; }
 <span class='kw'>type</span> TypeInfo  = { ... }
@@ -2022,9 +2022,9 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
   <span class='kw'>unsafe</span> { <span class='kw'>return</span> <span class='func'>malloc</span>(size); }
 }
 </code></pre>
-<p>Standard libc functions link automatically. The XIOM C runtime (<code>stdlib/runtime/<em>.c</code>) provides the <code>xiom_</em></code> helpers used by <code>io</code>, <code>os</code>, <code>sync</code>, <code>thread</code>, <code>net</code>, and <code>async</code>, and is linked by <code>xiom</code> on every native build — no manual setup needed. Use <code>--link</code>, <code>--link-path</code>, and <code>--c-source</code> (section 11) to link additional native libraries.</p>
+<p>Standard libc functions link automatically. The XIOM C runtime (<code>stdlib/runtime/<em>.c</code>) provides the <code>xiom_</em></code> helpers used by <code>io</code>, <code>os</code>, <code>sync</code>, <code>thread</code>, <code>net</code>, and <code>async</code>, and is linked by <code>xiom</code> on every native build -- no manual setup needed. Use <code>--link</code>, <code>--link-path</code>, and <code>--c-source</code> (section 11) to link additional native libraries.</p>
 <hr>
-<h3>8.40 <code>vulkan</code> — GPU Graphics & Compute (Ecosystem Package)</h3>
+<h3>8.40 <code>vulkan</code> -- GPU Graphics & Compute (Ecosystem Package)</h3>
 <p>First-party Vulkan GPU bindings for XIOM (<code>packages/xiom-vulkan/</code>). Uses a flat C-ABI bridge (<code>xiom_vk_bridge.c</code>) that wraps Vulkan + GLFW into a compact API. All GPU resources are opaque handles validated by magic numbers. Import with <code>use xiom.vulkan;</code>.</p>
 <p><strong>Prerequisites:</strong> Vulkan SDK >= 1.3 (<code>VULKAN_SDK</code>), GLFW 3.4 (<code>GLFW_DIR</code>), LLVM/clang, Rust toolchain. Build via <code>packages/xiom-vulkan/build.ps1</code> (Windows) or <code>build.sh</code> (Linux/macOS).</p>
 <pre class="language-powershell"><code>
@@ -2035,17 +2035,17 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 # GPU particle fountain
 .\packages\xiom-vulkan\build.ps1 -Target particles -Run
 </code></pre>
-<p>Build pipeline: <code>GLSL → glslc → SPIR-V header → clang → bridge.obj → xiom --c-source bridge.obj --link vulkan-1 --link glfw3</code></p>
+<p>Build pipeline: <code>GLSL -> glslc -> SPIR-V header -> clang -> bridge.obj -> xiom --c-source bridge.obj --link vulkan-1 --link glfw3</code></p>
 <h4>Architecture</h4>
 <pre><code>
 XIOM Application
-    │
+    |
 xiom.<span class='func'>vulkan</span>(safe wrappers with contracts)
-    │
+    |
 <span class='kw'>extern</span> <span class='str'>C</span> FFI  (xvk_* flat C bridge)
-    │
+    |
 xiom_vk_bridge.<span class='func'>c</span>(~<span class='num'>4000</span> lines C)
-    │
+    |
 vulkan-<span class='num'>1.</span>dll + glfw3.<span class='func'>dll</span>(native)
 </code></pre>
 <h4>Lifecycle API</h4>
@@ -2216,7 +2216,7 @@ vulkan-<span class='num'>1.</span>dll + glfw3.<span class='func'>dll</span>(nati
 <span class='kw'>use</span> xiom.vulkan;
 
 <span class='kw'>fn</span> <span class='func'>main</span>() -> <span class='ty'>Int</span> {
-  <span class='kw'>let</span> app = <span class='func'>create_app</span>(<span class='str'>XIOM Vulkan — Particle Fountain</span>, <span class='num'>800</span>, <span class='num'>600</span>);
+  <span class='kw'>let</span> app = <span class='func'>create_app</span>(<span class='str'>XIOM Vulkan -- Particle Fountain</span>, <span class='num'>800</span>, <span class='num'>600</span>);
   <span class='kw'>match</span> app {
     <span class='kw'>Err</span>(e) => { io.<span class='func'>println</span>(e); <span class='kw'>return</span> <span class='num'>1</span>; }
     <span class='kw'>Ok</span>(a) => {
@@ -2371,22 +2371,22 @@ vulkan-<span class='num'>1.</span>dll + glfw3.<span class='func'>dll</span>(nati
 </code></pre>
 <h3>9.2 Ownership-Safe Patterns</h3>
 <pre class="language-xiom"><code>
-<span class='cm'>// BAD: borrow returned from function ❌</span>
+<span class='cm'>// BAD: borrow returned from function [FAIL]</span>
 <span class='kw'>fn</span> <span class='func'>get_ref</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) -> &<span class='ty'>Int</span> {
   <span class='kw'>return</span> &v[<span class='num'>0</span>];   <span class='cm'>// COMPILE ERROR: cannot <span class='kw'>return</span> borrow</span>
 }
 
-<span class='cm'>// GOOD: <span class='kw'>return</span> owned value ✅</span>
+<span class='cm'>// GOOD: <span class='kw'>return</span> owned value [OK]</span>
 <span class='kw'>fn</span> <span class='func'>get_owned</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) -> <span class='ty'>Int</span> {
   <span class='kw'>return</span> v[<span class='num'>0</span>];     <span class='cm'>// copy/clone at call site</span>
 }
 
-<span class='cm'>// BAD: borrow stored <span class='kw'>in</span> struct ❌</span>
+<span class='cm'>// BAD: borrow stored <span class='kw'>in</span> struct [FAIL]</span>
 <span class='kw'>type</span> Container = {
   ref: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>];   <span class='cm'>// COMPILE ERROR: borrow <span class='kw'>in</span> struct</span>
 }
 
-<span class='cm'>// GOOD: owned <span class='kw'>type</span> <span class='kw'>in</span> struct ✅</span>
+<span class='cm'>// GOOD: owned <span class='kw'>type</span> <span class='kw'>in</span> struct [OK]</span>
 <span class='kw'>type</span> Container = {
   data: <span class='ty'>Vec</span>[<span class='ty'>Int</span>];
 }
@@ -2547,7 +2547,7 @@ SUBCOMMANDS:
   build                 Build an entire project <span class='func'>directory</span>(looks <span class='kw'>for</span> package.xi)
   pkg install <name>    Install a package from the XIOM package registry
   doc --html            Generate HTML documentation from source
-  run <file.xi>         JIT/scripting execution — run a .xi script immediately
+  run <file.xi>         JIT/scripting execution -- run a .xi script immediately
   run -e <span class='str'><code></span>       Execute inline XIOM code
   run -                 Read script from stdin and execute
   run --watch <file>    Watch a script file and re-run on changes
@@ -2555,10 +2555,10 @@ SUBCOMMANDS:
   --scaffold            With --standalone: also create a project directory structure
 </code></pre>
 <h3>11.1 Scripting Mode (<code>xiom run</code>)</h3>
-<p>XIOM supports a scripting mode where top-level code is automatically wrapped in <code>fn main()</code> — no boilerplate required.</p>
+<p>XIOM supports a scripting mode where top-level code is automatically wrapped in <code>fn main()</code> -- no boilerplate required.</p>
 <p><strong>Implicit main wrapping:</strong></p>
 <pre class="language-xiom"><code>
-<span class='cm'>// myscript.xi — just write statements:</span>
+<span class='cm'>// myscript.xi -- just write statements:</span>
 io.<span class='func'>println</span>(<span class='str'>hello world</span>);
 
 <span class='cm'>// xiom run myscript.xi automatically wraps this <span class='kw'>as</span>:</span>
@@ -2586,7 +2586,7 @@ xiom --standalone --scaffold myscript.xi
 #   src/main.<span class='func'>xi</span>(canonicalized script)
 #   package.<span class='func'>xi</span>(project manifest)
 </code></pre>
-<p><strong>Script cache:</strong> Repeated runs of the same script are instant — compiled binaries are content-hash cached in <code>~/.xiom/jit/</code>.</p>
+<p><strong>Script cache:</strong> Repeated runs of the same script are instant -- compiled binaries are content-hash cached in <code>~/.xiom/jit/</code>.</p>
 <p><strong>Watch mode:</strong></p>
 <pre class="language-bash"><code>
 xiom run --watch myscript.xi
@@ -2599,7 +2599,7 @@ xiom run --watch myscript.xi
 <li>Multiple source files are merged into one program (see section 17). Passing a directory containing <code>package.xi</code> loads the modules it lists; otherwise all <code>.xi</code> files in the directory are compiled.</li>
 <li>The <code>use xiom.*</code> standard library resolves automatically for any program (via the compiler's stdlib search path; override with the <code>XIOM_STDLIB</code> env var).</li>
 </ul>
-<p><strong>Targets</strong> (LLVM triple → default output)</p>
+<p><strong>Targets</strong> (LLVM triple -> default output)</p>
 <table>
 <tr>
 <th><code>--target</code></th>
@@ -2629,9 +2629,9 @@ xiom run --watch myscript.xi
 </table>
 <p><strong>Toolchain dependencies</strong></p>
 <ul>
-<li>Required: <code>clang</code> (LLVM) — compiles IR to a native binary.</li>
-<li>Optional: <code>opt</code> (LLVM) — runs an <code>-O1</code> optimization pass over the IR.</li>
-<li>Optional: <code>nasm</code> — assembles hardware-accelerated crypto/memcpy runtime objects.</li>
+<li>Required: <code>clang</code> (LLVM) -- compiles IR to a native binary.</li>
+<li>Optional: <code>opt</code> (LLVM) -- runs an <code>-O1</code> optimization pass over the IR.</li>
+<li>Optional: <code>nasm</code> -- assembles hardware-accelerated crypto/memcpy runtime objects.</li>
 </ul>
 <p><strong>Examples</strong></p>
 <pre class="language-bash"><code>
@@ -2730,12 +2730,12 @@ cargo run -p xiom -- --run source.xi
 <h2>13. File Extensions & Project Structure</h2>
 <pre><code>
 project/
-├── package.xi           # package manifest
-├── src/
-│   ├── main.xi          # entry <span class='func'>point</span>(must have <span class='kw'>module</span> declaration)
-│   └── lib.xi           # library code
-├── deps/                # resolved <span class='func'>dependencies</span>(generated)
-└── tests/               # test files
+|-- package.xi           # package manifest
+|-- src/
+|   |-- main.xi          # entry <span class='func'>point</span>(must have <span class='kw'>module</span> declaration)
+|   `-- lib.xi           # library code
+|-- deps/                # resolved <span class='func'>dependencies</span>(generated)
+`-- tests/               # test files
 </code></pre>
 <ul>
 <li>XIOM source: <code>.xi</code></li>
@@ -2776,7 +2776,7 @@ project/
 <li>Test functions prefixed with <code>test_</code>.</li>
 <li><code>assert_eq</code>, <code>assert_ne</code>, <code>assert_true</code>, <code>assert_ok</code>, <code>assert_err</code>, <code>assert_some</code>, <code>assert_none</code>.</li>
 <li><code>run_tests()</code> executes all registered tests.</li>
-<li>Contracts ARE tests — <code>requires</code>/<code>ensures</code> check at runtime.</li>
+<li>Contracts ARE tests -- <code>requires</code>/<code>ensures</code> check at runtime.</li>
 </ul>
 <hr>
 <h2>15. Debugging</h2>
@@ -2827,7 +2827,7 @@ gdb ./app.exe
 <p><strong>Breakpoint capabilities:</strong></p>
 <ul>
 <li><strong>Source-level</strong>: Set at any executable line in a <code>.xi</code> file</li>
-<li><strong>Function entry</strong>: <code>breakpoint set fn_name</code> — set at function prologue</li>
+<li><strong>Function entry</strong>: <code>breakpoint set fn_name</code> -- set at function prologue</li>
 <li><strong>Contract violation</strong>: <code>contractTraps: true</code> in DAP mode catches <code>requires</code>/<code>ensures</code>/<code>invariant</code> violations as exception breakpoints</li>
 <li><strong>Conditional breakpoints</strong>: Not yet supported (planned Phase 4)</li>
 <li><strong>Hit-count breakpoints</strong>: Not yet supported (planned Phase 4)</li>
@@ -2891,7 +2891,7 @@ gdb ./app.exe
 </code></pre>
 <p><strong>Memory inspection:</strong></p>
 <pre class="language-bash"><code>
-# JSON API — read <span class='num'>256</span> bytes at address 0x7fff1234
+# JSON API -- read <span class='num'>256</span> bytes at address 0x7fff1234
 >> memory 0x7fff1234 <span class='num'>256</span>
 
 # GDB
@@ -2907,14 +2907,14 @@ Contract violation: <span class='kw'>requires</span>: b != <span class='num'>0.0
 <p><code>xiom-dbg</code> has a dual-mode architecture:</p>
 <pre><code>
 VS Code / IDE
-     │ DAP (stdin/stdout JSON)
-     ▼
-┌──────────┐     GDB/MI protocol      ┌─────┐
-│ xiom-dbg │ ───────────────────────► │ GDB │ ──► target process
-└──────────┘                           └─────┘
-     │
-     │ JSON API <span class='func'>mode</span>(--json)
-     ▼
+     | DAP (stdin/stdout JSON)
+     v
++----------+     GDB/MI protocol      +-----+
+| xiom-dbg | -----------------------> | GDB | --> target process
+`----------+                           `-----+
+     |
+     | JSON API <span class='func'>mode</span>(--json)
+     v
 Custom GUI / scripts / AI agents
 </code></pre>
 <p>Two debugger backends:</p>
@@ -2924,24 +2924,24 @@ Custom GUI / scripts / AI agents
 </ul>
 <hr>
 <h2>16. Self-Hosting Note</h2>
-<p>The XIOM compiler is written in XIOM (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent — never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.</p>
+<p>The XIOM compiler is written in XIOM (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent -- never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.</p>
 <hr>
 <h2>17. AI Coding Best Practices for XIOM</h2>
 <blockquote><p>Use this section as system prompt when generating XIOM code with an LLM.</p></blockquote>
 <h3>Core Mindset</h3>
 <ul>
-<li><strong>Always prioritize contracts</strong> (<code>requires</code>, <code>ensures</code>, <code>invariant</code>) — this is XIOM's biggest strength over every other language. Write contracts BEFORE the function body.</li>
-<li><strong>Make code explicit and readable</strong> — no hidden behavior, no magic numbers, no implicit conversions.</li>
-<li><strong>Ownership first</strong> — prefer <code>&T</code> borrows when possible. Move when ownership transfer is needed. Clone sparingly.</li>
-<li><strong>Think in terms of verification, not just "it works"</strong> — contracts are the specification. The compiler is the verifier.</li>
+<li><strong>Always prioritize contracts</strong> (<code>requires</code>, <code>ensures</code>, <code>invariant</code>) -- this is XIOM's biggest strength over every other language. Write contracts BEFORE the function body.</li>
+<li><strong>Make code explicit and readable</strong> -- no hidden behavior, no magic numbers, no implicit conversions.</li>
+<li><strong>Ownership first</strong> -- prefer <code>&T</code> borrows when possible. Move when ownership transfer is needed. Clone sparingly.</li>
+<li><strong>Think in terms of verification, not just "it works"</strong> -- contracts are the specification. The compiler is the verifier.</li>
 </ul>
 <h3>Code Structure Rules</h3>
 <ul>
 <li>Start with contracts before implementation</li>
 <li>Use <code>derive[Eq, Clone, Display]</code> liberally on types</li>
 <li>Prefer <code>let</code> over <code>var</code> unless mutation is required</li>
-<li>Keep functions small (≤50 lines) and focused on one task</li>
-<li>Use structural interfaces — no <code>implements</code> keyword</li>
+<li>Keep functions small (<=50 lines) and focused on one task</li>
+<li>Use structural interfaces -- no <code>implements</code> keyword</li>
 <li>Methods are defined OUTSIDE the type, using <code>fn Type.method()</code> syntax</li>
 </ul>
 <h3>Good Patterns (DO)</h3>
@@ -2987,40 +2987,40 @@ Custom GUI / scripts / AI agents
 </code></pre>
 <h3>Bad Patterns (AVOID)</h3>
 <pre class="language-xiom"><code>
-<span class='cm'>// ❌ Writing <span class='kw'>self</span>.x <span class='kw'>in</span> methods</span>
+<span class='cm'>// [FAIL] Writing <span class='kw'>self</span>.x <span class='kw'>in</span> methods</span>
 <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>get_x</span>() -> <span class='ty'>Int</span> { <span class='kw'>return</span> <span class='kw'>self</span>.x; }  <span class='cm'>// WRONG</span>
-<span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>get_x</span>() -> <span class='ty'>Int</span> { <span class='kw'>return</span> x; }        <span class='cm'>// CORRECT — <span class='kw'>self</span> <span class='kw'>is</span> implicit</span>
+<span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>get_x</span>() -> <span class='ty'>Int</span> { <span class='kw'>return</span> x; }        <span class='cm'>// CORRECT -- <span class='kw'>self</span> <span class='kw'>is</span> implicit</span>
 
-<span class='cm'>// ❌ <span class='kw'>else</span> <span class='kw'>if</span> instead of <span class='kw'>elif</span></span>
+<span class='cm'>// [FAIL] <span class='kw'>else</span> <span class='kw'>if</span> instead of <span class='kw'>elif</span></span>
 <span class='kw'>if</span> x > <span class='num'>0</span> { ... } <span class='kw'>else</span> <span class='kw'>if</span> x < <span class='num'>0</span> { ... }       <span class='cm'>// WRONG</span>
 <span class='kw'>if</span> x > <span class='num'>0</span> { ... } <span class='kw'>elif</span> x < <span class='num'>0</span> { ... }           <span class='cm'>// CORRECT</span>
 
-<span class='cm'>// ❌ Forgetting ; after statements</span>
-<span class='kw'>let</span> x = <span class='num'>5</span>                                     <span class='cm'>// WRONG — needs ;</span>
+<span class='cm'>// [FAIL] Forgetting ; after statements</span>
+<span class='kw'>let</span> x = <span class='num'>5</span>                                     <span class='cm'>// WRONG -- needs ;</span>
 <span class='kw'>let</span> x = <span class='num'>5</span>;                                    <span class='cm'>// CORRECT</span>
 
-<span class='cm'>// ❌ Storing borrows <span class='kw'>in</span> structs</span>
+<span class='cm'>// [FAIL] Storing borrows <span class='kw'>in</span> structs</span>
 <span class='kw'>type</span> Container = { ref: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]; }          <span class='cm'>// COMPILE ERROR</span>
 
-<span class='cm'>// ❌ Returning borrows from functions</span>
+<span class='cm'>// [FAIL] Returning borrows from functions</span>
 <span class='kw'>fn</span> <span class='func'>get_ref</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) -> &<span class='ty'>Int</span> { <span class='kw'>return</span> &v[<span class='num'>0</span>]; }  <span class='cm'>// COMPILE ERROR</span>
 
-<span class='cm'>// ❌ Using <span class='func'>to_string</span>() <span class='kw'>for</span> <span class='ty'>Display</span></span>
+<span class='cm'>// [FAIL] Using <span class='func'>to_string</span>() <span class='kw'>for</span> <span class='ty'>Display</span></span>
 value.<span class='func'>to_string</span>()                              <span class='cm'>// WRONG</span>
 value.<span class='func'>to_str</span>()                                 <span class='cm'>// CORRECT (<span class='kw'>derive</span> <span class='ty'>Display</span>)</span>
 
-<span class='cm'>// ❌ Ignoring contract clauses</span>
+<span class='cm'>// [FAIL] Ignoring contract clauses</span>
 <span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
   <span class='kw'>requires</span>: b != <span class='num'>0.0</span>                           <span class='cm'>// Must satisfy or trap</span>
-{ <span class='kw'>return</span> a / b; }                              <span class='cm'>// No check <span class='kw'>in</span> body — contract handles it</span>
+{ <span class='kw'>return</span> a / b; }                              <span class='cm'>// No check <span class='kw'>in</span> body -- contract handles it</span>
 </code></pre>
 <h3>Method Design Rules</h3>
 <pre><code>
-✓ <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(other: &<span class='ty'>Vec3</span>) -> <span class='ty'>Float32</span>           <span class='cm'>// method on <span class='kw'>type</span></span>
-✓ <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>normalize</span>() -> <span class='ty'>Vec3</span>                    <span class='cm'>// returns new value</span>
-✓ <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>set_x</span>(value: <span class='ty'>Float32</span>)                  <span class='cm'>// mutates <span class='func'><span class='kw'>self</span></span>(inferred &mut <span class='ty'>Self</span>)</span>
-✗ <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(<span class='kw'>self</span>: &<span class='ty'>Vec3</span>, ...)                  <span class='cm'>// never write <span class='kw'>self</span> explicitly</span>
-✗ <span class='kw'>fn</span> <span class='func'>dot</span>(v: &<span class='ty'>Vec3</span>, other: &<span class='ty'>Vec3</span>) -> <span class='ty'>Float32</span>     <span class='cm'>// <span class='kw'>use</span> method syntax, not free function</span>
+[OK] <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(other: &<span class='ty'>Vec3</span>) -> <span class='ty'>Float32</span>           <span class='cm'>// method on <span class='kw'>type</span></span>
+[OK] <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>normalize</span>() -> <span class='ty'>Vec3</span>                    <span class='cm'>// returns new value</span>
+[OK] <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>set_x</span>(value: <span class='ty'>Float32</span>)                  <span class='cm'>// mutates <span class='func'><span class='kw'>self</span></span>(inferred &mut <span class='ty'>Self</span>)</span>
+[FAIL] <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(<span class='kw'>self</span>: &<span class='ty'>Vec3</span>, ...)                  <span class='cm'>// never write <span class='kw'>self</span> explicitly</span>
+[FAIL] <span class='kw'>fn</span> <span class='func'>dot</span>(v: &<span class='ty'>Vec3</span>, other: &<span class='ty'>Vec3</span>) -> <span class='ty'>Float32</span>     <span class='cm'>// <span class='kw'>use</span> method syntax, not free function</span>
 </code></pre>
 <h3>Contract Design Hierarchy</h3>
 <table>
@@ -3051,12 +3051,12 @@ value.<span class='func'>to_str</span>()                                 <span c
 </table>
 <h3>AI Coding Workflow (Step by Step)</h3>
 <ul>
-<li><strong>Understand requirements</strong> — what should this function do?</li>
-<li><strong>Design types first</strong> — structs, enums with invariants</li>
-<li><strong>Write function signatures + contracts</strong> — BEFORE the body</li>
-<li><strong>Implement body</strong> — contracts guide the implementation</li>
-<li><strong>Add tests</strong> — contracts ARE tests at runtime; add explicit test cases for edge conditions</li>
-<li><strong>Verify</strong> — <code>xiom test</code> runs runtime checks; Phase 3 Z3 proves statically</li>
+<li><strong>Understand requirements</strong> -- what should this function do?</li>
+<li><strong>Design types first</strong> -- structs, enums with invariants</li>
+<li><strong>Write function signatures + contracts</strong> -- BEFORE the body</li>
+<li><strong>Implement body</strong> -- contracts guide the implementation</li>
+<li><strong>Add tests</strong> -- contracts ARE tests at runtime; add explicit test cases for edge conditions</li>
+<li><strong>Verify</strong> -- <code>xiom test</code> runs runtime checks; Phase 3 Z3 proves statically</li>
 </ul>
 <h3>Performance-Aware Patterns</h3>
 <pre class="language-xiom"><code>
@@ -3071,23 +3071,23 @@ value.<span class='func'>to_str</span>()                                 <span c
 
 <span class='cm'>// Move into collections instead of cloning</span>
 <span class='kw'>var</span> items = <span class='ty'>Vec</span>[Data].<span class='func'>new</span>();
-items.<span class='func'>push</span>(<span class='func'>create_data</span>());        <span class='cm'>// move — no clone</span>
-items.<span class='func'>push</span>(<span class='func'>create_data</span>());        <span class='cm'>// move — no clone</span>
+items.<span class='func'>push</span>(<span class='func'>create_data</span>());        <span class='cm'>// move -- no clone</span>
+items.<span class='func'>push</span>(<span class='func'>create_data</span>());        <span class='cm'>// move -- no clone</span>
 </code></pre>
 <hr>
-<h2>18. Multi-File Projects & Module System — AI Guide</h2>
+<h2>18. Multi-File Projects & Module System -- AI Guide</h2>
 <blockquote><p>When generating large XIOM projects across multiple files, follow these rules to ensure the compiler resolves everything correctly.</p></blockquote>
 <h3>File Structure Convention</h3>
 <pre><code>
 myproject/
-├── package.xi           ← <span class='func'>manifest</span>(name, version, deps)
-├── src/
-│   ├── main.xi          ← entry point: <span class='kw'>module</span> myproject
-│   ├── types.xi         ← <span class='kw'>module</span> myproject.types
-│   ├── utils.xi         ← <span class='kw'>module</span> myproject.utils
-│   └── lib.xi           ← <span class='kw'>module</span> myproject.lib
-└── tests/
-    └── test_main.xi     ← tests
+|-- package.xi           <- <span class='func'>manifest</span>(name, version, deps)
+|-- src/
+|   |-- main.xi          <- entry point: <span class='kw'>module</span> myproject
+|   |-- types.xi         <- <span class='kw'>module</span> myproject.types
+|   |-- utils.xi         <- <span class='kw'>module</span> myproject.utils
+|   `-- lib.xi           <- <span class='kw'>module</span> myproject.lib
+`-- tests/
+    `-- test_main.xi     <- tests
 </code></pre>
 <p><strong>Rule:</strong> Every <code>.xi</code> file MUST start with <code>module <name>;</code> as the FIRST statement (after comments).</p>
 <h3>Module Resolution (How the Compiler Finds Files)</h3>
@@ -3106,14 +3106,14 @@ myproject/
 <span class='kw'>module</span> myproject.utils     <span class='cm'>// matches `<span class='kw'>use</span> myproject.utils` <span class='kw'>in</span> main.xi</span>
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>helper</span>() -> <span class='ty'>Int</span> { <span class='kw'>return</span> <span class='num'>42</span>; }
 </code></pre>
-<p><strong>The file NAME doesn't matter — the <code>module</code> DECLARATION matters.</strong> A file called <code>foo.xi</code> that declares <code>module myproject.utils</code> will be found when <code>use myproject.utils</code> is encountered.</p>
+<p><strong>The file NAME doesn't matter -- the <code>module</code> DECLARATION matters.</strong> A file called <code>foo.xi</code> that declares <code>module myproject.utils</code> will be found when <code>use myproject.utils</code> is encountered.</p>
 <h3>How to Compile Multi-File Projects</h3>
-<p><strong>Option A — Compile all files at once (recommended for AI-generated code):</strong></p>
+<p><strong>Option A -- Compile all files at once (recommended for AI-generated code):</strong></p>
 <pre class="language-bash"><code>
 xiom --run src/main.xi src/types.xi src/utils.xi src/lib.xi
 </code></pre>
 <p>The compiler merges all files into one program. Use this for projects with 2-30 files.</p>
-<p><strong>Option B — Single file with lazy loading (catalog):</strong></p>
+<p><strong>Option B -- Single file with lazy loading (catalog):</strong></p>
 <pre class="language-bash"><code>
 xiom --run src/main.xi
 </code></pre>
@@ -3124,7 +3124,7 @@ xiom --run src/main.xi
 </ul>
 <pre class="language-xiom"><code>
    <span class='cm'>// Comments OK here</span>
-   <span class='kw'>module</span> myproject.models    <span class='cm'>// ← MUST be line <span class='num'>1</span> (after comments)</span>
+   <span class='kw'>module</span> myproject.models    <span class='cm'>// <- MUST be line <span class='num'>1</span> (after comments)</span>
 </code></pre>
 <ul>
 <li><strong><code>use</code> for cross-file imports.</strong> After the module declaration:</li>
@@ -3166,22 +3166,22 @@ xiom --run src/main.xi
 <h3>Common Multi-File Patterns</h3>
 <p><strong>Pattern 1: Library + Binary</strong></p>
 <pre><code>
-src/types.xi     → <span class='kw'>module</span> myproject.types
-src/lib.xi       → <span class='kw'>module</span> <span class='func'>myproject</span>(<span class='kw'>use</span> types, export <span class='kw'>pub</span> <span class='kw'>fn</span>)
-src/main.xi      → <span class='kw'>module</span> myproject.<span class='func'>main</span>(<span class='kw'>use</span> myproject, call <span class='kw'>pub</span> fns)
+src/types.xi     -> <span class='kw'>module</span> myproject.types
+src/lib.xi       -> <span class='kw'>module</span> <span class='func'>myproject</span>(<span class='kw'>use</span> types, export <span class='kw'>pub</span> <span class='kw'>fn</span>)
+src/main.xi      -> <span class='kw'>module</span> myproject.<span class='func'>main</span>(<span class='kw'>use</span> myproject, call <span class='kw'>pub</span> fns)
 </code></pre>
 <p><strong>Pattern 2: Feature Modules</strong></p>
 <pre><code>
-src/main.xi      → <span class='kw'>module</span> <span class='func'>myproject</span>(<span class='kw'>use</span> math, <span class='kw'>use</span> net, <span class='kw'>use</span> db)
-src/math.xi      → <span class='kw'>module</span> myproject.<span class='func'>math</span>(<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_all</span>() -> BenchResult)
-src/net.xi       → <span class='kw'>module</span> myproject.<span class='func'>net</span>(<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_all</span>() -> BenchResult)
-src/db.xi        → <span class='kw'>module</span> myproject.<span class='func'>db</span>(<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_all</span>() -> BenchResult)
+src/main.xi      -> <span class='kw'>module</span> <span class='func'>myproject</span>(<span class='kw'>use</span> math, <span class='kw'>use</span> net, <span class='kw'>use</span> db)
+src/math.xi      -> <span class='kw'>module</span> myproject.<span class='func'>math</span>(<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_all</span>() -> BenchResult)
+src/net.xi       -> <span class='kw'>module</span> myproject.<span class='func'>net</span>(<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_all</span>() -> BenchResult)
+src/db.xi        -> <span class='kw'>module</span> myproject.<span class='func'>db</span>(<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_all</span>() -> BenchResult)
 </code></pre>
 <p><strong>Pattern 3: Data + Logic Separation</strong></p>
 <pre><code>
-src/types.xi     → <span class='kw'>module</span> myproject.<span class='func'>types</span>(all <span class='kw'>type</span> definitions)
-src/logic.xi     → <span class='kw'>module</span> myproject.<span class='func'>logic</span>(<span class='kw'>use</span> types, all business logic)
-src/main.xi      → <span class='kw'>module</span> <span class='func'>myproject</span>(<span class='kw'>use</span> logic, entry point)
+src/types.xi     -> <span class='kw'>module</span> myproject.<span class='func'>types</span>(all <span class='kw'>type</span> definitions)
+src/logic.xi     -> <span class='kw'>module</span> myproject.<span class='func'>logic</span>(<span class='kw'>use</span> types, all business logic)
+src/main.xi      -> <span class='kw'>module</span> <span class='func'>myproject</span>(<span class='kw'>use</span> logic, entry point)
 </code></pre>
 <h3>What the Compiler CAN Handle Today</h3>
 <table>
@@ -3191,42 +3191,42 @@ src/main.xi      → <span class='kw'>module</span> <span class='func'>myproject
 </tr>
 <tr>
 <td>Single-file programs</td>
-<td>✓</td>
+<td>[OK]</td>
 </tr>
 <tr>
 <td>Multi-file merge (pass all files to xiom)</td>
-<td>✓</td>
+<td>[OK]</td>
 </tr>
 <tr>
 <td>ModuleCatalog lazy loading</td>
-<td>✓</td>
+<td>[OK]</td>
 </tr>
 <tr>
 <td>Cross-file type resolution</td>
-<td>✓</td>
+<td>[OK]</td>
 </tr>
 <tr>
 <td>Cross-file function calls</td>
-<td>✓ (via merge path)</td>
+<td>[OK] (via merge path)</td>
 </tr>
 <tr>
 <td>30+ file projects</td>
-<td>✓ (benchmark suite verified)</td>
+<td>[OK] (benchmark suite verified)</td>
 </tr>
 <tr>
 <td>Package manager / <code>xiom pkg install</code></td>
-<td>✓</td>
+<td>[OK]</td>
 </tr>
 <tr>
 <td>Build system / <code>xiom build</code></td>
-<td>✓</td>
+<td>[OK]</td>
 </tr>
 </table>
 <h3>When AI Generates Multi-File Code</h3>
 <ul>
 <li><strong>Generate all files with correct <code>module</code> declarations</strong></li>
 <li><strong>Share types via a <code>types.xi</code> file</strong></li>
-<li><strong>Compile with all file paths</strong> — the merge path is most reliable</li>
+<li><strong>Compile with all file paths</strong> -- the merge path is most reliable</li>
 <li><strong>If the catalog path is used</strong>, ensure files are in the same directory or under <code>examples/</code></li>
 <li><strong>Use <code>pub</code> on everything that crosses file boundaries</strong></li>
 </ul>
@@ -3239,7 +3239,7 @@ src/main.xi      → <span class='kw'>module</span> <span class='func'>myproject
 
 <footer>
   <div class="wrap">
-    <p>xiom v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom v0.12.0 - <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>

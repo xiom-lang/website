@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>XIOM — XIOM — AI Coding Reference</title>
+<title>XIOM -- XIOM -- AI Coding Reference</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="../../resource/img/xiom-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,8 +54,8 @@
 
     <main class="content-section" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">**Version:** v0.16.0 | **Tests:** 234 passing | **Status:** Self-hosted compiler</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">XIOM — AI Coding Reference</h1>
-      <h1>XIOM — AI Coding Reference</h1>
+      <h1 style="font-size:36px;margin-bottom:24px;">XIOM -- AI Coding Reference</h1>
+      <h1>XIOM -- AI Coding Reference</h1>
 <blockquote><p><strong>Purpose:</strong> Feed this document into any LLM context window to enable correct XIOM code generation.</p></blockquote>
 <blockquote><p><strong>Version:</strong> v0.16.0 | <strong>Tests:</strong> 234 passing | <strong>Status:</strong> Self-hosted compiler</p></blockquote>
 <blockquote><p></p></blockquote>
@@ -65,7 +65,7 @@
 <h2>1. Language Identity</h2>
 <p>XIOM is a compiled, statically typed, memory-safe systems language.</p>
 <pre><code>
-Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM IR → clang → binary
+Pipeline: .xi -> Lexer -> Parser -> Type Checker -> Borrow Checker -> LLVM IR -> clang -> binary
 </code></pre>
 <p><strong>Three non-negotiable properties:</strong></p>
 <table>
@@ -95,10 +95,10 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <h2>2. Complete Syntax Rules</h2>
 <h3>2.1 Variables</h3>
 <pre class="language-xiom"><code>
-<span class=<span class="str">"kw"</span>>let</span> x: <span class=<span class="str">"ty"</span>>Int</span> = <span class="num">42</span>           <span class=<span class="str">"cm"</span>>// immutable — cannot be reassigned</span>
-<span class=<span class="str">"kw"</span>>var</span> y: <span class=<span class="str">"ty"</span>>Float64</span> = <span class="num">3.14</span>     <span class=<span class="str">"cm"</span>>// mutable — can be reassigned with =</span>
-<span class=<span class="str">"kw"</span>>let</span> name = <span class="str">"XIOM"</span>        <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred — <span class=<span class="str">"ty"</span>>Str</span></span>
-<span class=<span class="str">"kw"</span>>let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred — <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]</span>
+<span class=<span class="str">"kw"</span>>let</span> x: <span class=<span class="str">"ty"</span>>Int</span> = <span class="num">42</span>           <span class=<span class="str">"cm"</span>>// immutable -- cannot be reassigned</span>
+<span class=<span class="str">"kw"</span>>var</span> y: <span class=<span class="str">"ty"</span>>Float64</span> = <span class="num">3.14</span>     <span class=<span class="str">"cm"</span>>// mutable -- can be reassigned with =</span>
+<span class=<span class="str">"kw"</span>>let</span> name = <span class="str">"XIOM"</span>        <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred -- <span class=<span class="str">"ty"</span>>Str</span></span>
+<span class=<span class="str">"kw"</span>>let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>type</span> inferred -- <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]</span>
 </code></pre>
 <p><strong>Rules:</strong></p>
 <ul>
@@ -113,7 +113,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
   <span class=<span class="str">"kw"</span>>return</span> a + b;
 }
 
-<span class=<span class="str">"cm"</span>>// Void function — no <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>type</span> annotation</span>
+<span class=<span class="str">"cm"</span>>// Void function -- no <span class=<span class="str">"kw"</span>>return</span> <span class=<span class="str">"kw"</span>>type</span> annotation</span>
 <span class=<span class="str">"kw"</span>>fn</span> log(message: <span class=<span class="str">"ty"</span>>Str</span>) {
   io.print(message);
 }
@@ -140,7 +140,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 
 <span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Vec3</span>.dot(other: &<span class=<span class="str">"ty"</span>>Vec3</span>) -> <span class=<span class="str">"ty"</span>>Float32</span> {
   <span class=<span class="str">"kw"</span>>return</span> x * other.x + y * other.y + z * other.z;
-  <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>self</span> <span class=<span class="str">"kw"</span>>is</span> IMPLICIT — never write <span class=<span class="str">"kw"</span>>self</span>.x, just x</span>
+  <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"kw"</span>>self</span> <span class=<span class="str">"kw"</span>>is</span> IMPLICIT -- never write <span class=<span class="str">"kw"</span>>self</span>.x, just x</span>
 }
 
 <span class=<span class="str">"kw"</span>>pub</span> <span class=<span class="str">"kw"</span>>fn</span> <span class=<span class="str">"ty"</span>>Vec3</span>.set_x(value: <span class=<span class="str">"ty"</span>>Float32</span>) {
@@ -151,7 +151,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 <ul>
 <li>Method syntax: <code>fn TypeName.methodName(params) -> ReturnType</code></li>
 <li><code>self</code> is IMPLICIT. Access fields directly: <code>x</code>, not <code>self.x</code>.</li>
-<li>Compiler infers <code>&Self</code> or <code>&mut Self</code> from body. If ANY field is mutated → <code>&mut Self</code>.</li>
+<li>Compiler infers <code>&Self</code> or <code>&mut Self</code> from body. If ANY field is mutated -> <code>&mut Self</code>.</li>
 <li>Methods are defined OUTSIDE the type declaration, in the same module.</li>
 </ul>
 <h3>2.4 Control Flow</h3>
@@ -184,7 +184,7 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 </code></pre>
 <p><strong>Rules:</strong></p>
 <ul>
-<li><code>if</code> / <code>elif</code> / <code>else</code> — exactly this spelling. Not <code>else if</code>.</li>
+<li><code>if</code> / <code>elif</code> / <code>else</code> -- exactly this spelling. Not <code>else if</code>.</li>
 <li><code>match</code> arms use <code>=></code> not <code>:</code>.</li>
 <li>Every <code>match</code> must cover ALL cases. Non-exhaustive = compile error.</li>
 <li>Wildcard is <code>_</code>, not <code>default</code> or <code>otherwise</code>.</li>
@@ -197,19 +197,19 @@ Pipeline: .xi → Lexer → Parser → Type Checker → Borrow Checker → LLVM 
 100_000         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Int</span> with separators</span>
 <span class="num">3.14</span>            <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Float64</span></span>
 <span class=<span class="str">"kw"</span>>true</span> | <span class=<span class="str">"kw"</span>>false</span>    <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Bool</span></span>
-<span class="str">"hello"</span>         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Str</span> — always double quotes</span>
-'A'             <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Char</span> — always single quotes</span>
+<span class="str">"hello"</span>         <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Str</span> -- always double quotes</span>
+'A'             <span class=<span class="str">"cm"</span>>// <span class=<span class="str">"ty"</span>>Char</span> -- always single quotes</span>
 
 <span class=<span class="str">"cm"</span>>// Arithmetic</span>
 a + b   a - b   a * b   a / b   a % b   -a
 
-<span class=<span class="str">"cm"</span>>// Comparison — returns <span class=<span class="str">"ty"</span>>Bool</span></span>
+<span class=<span class="str">"cm"</span>>// Comparison -- returns <span class=<span class="str">"ty"</span>>Bool</span></span>
 a == b   a != b   a < b   a > b   a <= b   a >= b
 
-<span class=<span class="str">"cm"</span>>// Logical — both operands must be <span class=<span class="str">"ty"</span>>Bool</span></span>
+<span class=<span class="str">"cm"</span>>// Logical -- both operands must be <span class=<span class="str">"ty"</span>>Bool</span></span>
 !a          a && b          a || b
 
-<span class=<span class="str">"cm"</span>>// Struct literal — TypeName{ field: value, ... }</span>
+<span class=<span class="str">"cm"</span>>// Struct literal -- TypeName{ field: value, ... }</span>
 <span class=<span class="str">"kw"</span>>let</span> p = <span class=<span class="str">"ty"</span>>Point</span>{ x: <span class="num">1.0</span>, y: <span class="num">2.0</span> };
 
 <span class=<span class="str">"cm"</span>>// Array literal</span>
@@ -222,7 +222,7 @@ a == b   a != b   a < b   a > b   a <= b   a >= b
 <span class=<span class="str">"cm"</span>>// Function call</span>
 <span class=<span class="str">"kw"</span>>let</span> <span class=<span class="str">"kw"</span>>result</span> = add(<span class="num">10</span>, <span class="num">20</span>);
 
-<span class=<span class="str">"cm"</span>>// Generic call — explicit <span class=<span class="str">"kw"</span>>type</span> parameter</span>
+<span class=<span class="str">"cm"</span>>// Generic call -- explicit <span class=<span class="str">"kw"</span>>type</span> parameter</span>
 <span class=<span class="str">"kw"</span>>let</span> n = max[<span class=<span class="str">"ty"</span>>Int</span>](<span class="num">10</span>, <span class="num">20</span>);
 <span class=<span class="str">"kw"</span>>let</span> n = max(<span class="num">10</span>, <span class="num">20</span>);       <span class=<span class="str">"cm"</span>>// inferred</span>
 
@@ -308,7 +308,7 @@ items.len()@pre            <span class=<span class="str">"cm"</span>>// pre-stat
 <span class=<span class="str">"kw"</span>>Some</span>  <span class=<span class="str">"kw"</span>>None</span>  <span class=<span class="str">"kw"</span>>Ok</span>  <span class=<span class="str">"kw"</span>>Err</span>
 <span class=<span class="str">"kw"</span>>unsafe</span>  <span class=<span class="str">"kw"</span>>extern</span>  <span class=<span class="str">"kw"</span>>is</span>
 </code></pre>
-<p><code>result</code> is only valid inside <code>ensures</code> clauses. <code>self</code> is implicit in methods — never write it explicitly. <code>is</code> is used for type testing: <code>value is Some</code>.</p>
+<p><code>result</code> is only valid inside <code>ensures</code> clauses. <code>self</code> is implicit in methods -- never write it explicitly. <code>is</code> is used for type testing: <code>value is Some</code>.</p>
 <hr>
 <h2>3. Type System</h2>
 <h3>3.1 Primitive Types</h3>
@@ -329,13 +329,13 @@ items.len()@pre            <span class=<span class="str">"cm"</span>>// pre-stat
 <td><code>42</code></td>
 </tr>
 <tr>
-<td><code>Int8</code>–<code>Int64</code></td>
-<td>8–64 bits</td>
+<td><code>Int8</code>-<code>Int64</code></td>
+<td>8-64 bits</td>
 <td><code>let x: Int32 = 1;</code></td>
 </tr>
 <tr>
-<td><code>UInt</code>–<code>UInt64</code></td>
-<td>8–64 bits unsigned</td>
+<td><code>UInt</code>-<code>UInt64</code></td>
+<td>8-64 bits unsigned</td>
 <td><code>let n: UInt = 100;</code></td>
 </tr>
 <tr>
@@ -351,7 +351,7 @@ items.len()@pre            <span class=<span class="str">"cm"</span>>// pre-stat
 <tr>
 <td><code>Char</code></td>
 <td>32-bit Unicode</td>
-<td><code>'A'</code>, <code>'λ'</code></td>
+<td><code>'A'</code>, <code>'lambda'</code></td>
 </tr>
 <tr>
 <td><code>Str</code></td>
@@ -441,7 +441,7 @@ items.len()@pre            <span class=<span class="str">"cm"</span>>// pre-stat
 <li>Type parameter MUST be annotatable if it appears only in return type.</li>
 </ul>
 <hr>
-<h2>4. Memory Model — CRITICAL</h2>
+<h2>4. Memory Model -- CRITICAL</h2>
 <h3>4.1 Ownership Rules</h3>
 <table>
 <tr>
@@ -481,21 +481,21 @@ items.len()@pre            <span class=<span class="str">"cm"</span>>// pre-stat
 <span class=<span class="str">"kw"</span>>fn</span> write(v: &mut <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) { }        <span class=<span class="str">"cm"</span>>// write borrow</span>
 
 <span class=<span class="str">"kw"</span>>let</span> v = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
-read(&v);        <span class=<span class="str">"cm"</span>>// borrow — v still valid</span>
-write(&mut v);   <span class=<span class="str">"cm"</span>>// write borrow — exclusive</span>
-consume(v);      <span class=<span class="str">"cm"</span>>// move — v NO LONGER VALID</span>
+read(&v);        <span class=<span class="str">"cm"</span>>// borrow -- v still valid</span>
+write(&mut v);   <span class=<span class="str">"cm"</span>>// write borrow -- exclusive</span>
+consume(v);      <span class=<span class="str">"cm"</span>>// move -- v NO LONGER VALID</span>
 <span class=<span class="str">"cm"</span>>// read(&v);     // COMPILE ERROR: <span class=<span class="str">"kw"</span>>use</span> after move</span>
 </code></pre>
 <h3>4.3 Restrictions (These Are Compile Errors)</h3>
 <ul>
-<li>❌ Borrow stored in struct field</li>
-<li>❌ Borrow returned from function</li>
-<li>❌ Use after move</li>
-<li>❌ Write borrow while read borrow active</li>
-<li>❌ Multiple write borrows simultaneously</li>
-<li>❌ Mutation through <code>&T</code></li>
-<li>✅ Clone instead of borrow for struct storage</li>
-<li>✅ Return owned type, not borrow</li>
+<li>[FAIL] Borrow stored in struct field</li>
+<li>[FAIL] Borrow returned from function</li>
+<li>[FAIL] Use after move</li>
+<li>[FAIL] Write borrow while read borrow active</li>
+<li>[FAIL] Multiple write borrows simultaneously</li>
+<li>[FAIL] Mutation through <code>&T</code></li>
+<li>[OK] Clone instead of borrow for struct storage</li>
+<li>[OK] Return owned type, not borrow</li>
 </ul>
 <h3>4.4 Unsafe</h3>
 <pre class="language-xiom"><code>
@@ -856,22 +856,22 @@ consume(v);      <span class=<span class="str">"cm"</span>>// move — v NO LONG
 </code></pre>
 <h3>9.2 Ownership-Safe Patterns</h3>
 <pre class="language-xiom"><code>
-<span class=<span class="str">"cm"</span>>// BAD: borrow returned from function ❌</span>
+<span class=<span class="str">"cm"</span>>// BAD: borrow returned from function [FAIL]</span>
 <span class=<span class="str">"kw"</span>>fn</span> get_ref(v: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) -> &<span class=<span class="str">"ty"</span>>Int</span> {
   <span class=<span class="str">"kw"</span>>return</span> &v[<span class="num">0</span>];   <span class=<span class="str">"cm"</span>>// COMPILE ERROR: cannot <span class=<span class="str">"kw"</span>>return</span> borrow</span>
 }
 
-<span class=<span class="str">"cm"</span>>// GOOD: <span class=<span class="str">"kw"</span>>return</span> owned value ✅</span>
+<span class=<span class="str">"cm"</span>>// GOOD: <span class=<span class="str">"kw"</span>>return</span> owned value [OK]</span>
 <span class=<span class="str">"kw"</span>>fn</span> get_owned(v: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>]) -> <span class=<span class="str">"ty"</span>>Int</span> {
   <span class=<span class="str">"kw"</span>>return</span> v[<span class="num">0</span>];     <span class=<span class="str">"cm"</span>>// copy/clone at call site</span>
 }
 
-<span class=<span class="str">"cm"</span>>// BAD: borrow stored <span class=<span class="str">"kw"</span>>in</span> struct ❌</span>
+<span class=<span class="str">"cm"</span>>// BAD: borrow stored <span class=<span class="str">"kw"</span>>in</span> struct [FAIL]</span>
 <span class=<span class="str">"kw"</span>>type</span> Container = {
   ref: &<span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>];   <span class=<span class="str">"cm"</span>>// COMPILE ERROR: borrow <span class=<span class="str">"kw"</span>>in</span> struct</span>
 }
 
-<span class=<span class="str">"cm"</span>>// GOOD: owned <span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"kw"</span>>in</span> struct ✅</span>
+<span class=<span class="str">"cm"</span>>// GOOD: owned <span class=<span class="str">"kw"</span>>type</span> <span class=<span class="str">"kw"</span>>in</span> struct [OK]</span>
 <span class=<span class="str">"kw"</span>>type</span> Container = {
   data: <span class=<span class="str">"ty"</span>>Vec</span>[<span class=<span class="str">"ty"</span>>Int</span>];
 }
@@ -1070,12 +1070,12 @@ cargo run -p xiom -- --run source.xi
 <h2>13. File Extensions & Project Structure</h2>
 <pre><code>
 project/
-├── package.xi           # package manifest
-├── src/
-│   ├── main.xi          # entry point (must have <span class=<span class="str">"kw"</span>>module</span> declaration)
-│   └── lib.xi           # library code
-├── deps/                # resolved dependencies (generated)
-└── tests/               # test files
+|-- package.xi           # package manifest
+|-- src/
+|   |-- main.xi          # entry point (must have <span class=<span class="str">"kw"</span>>module</span> declaration)
+|   `-- lib.xi           # library code
+|-- deps/                # resolved dependencies (generated)
+`-- tests/               # test files
 </code></pre>
 <ul>
 <li>XIOM source: <code>.xi</code></li>
@@ -1116,11 +1116,11 @@ project/
 <li>Test functions prefixed with <code>test_</code>.</li>
 <li><code>assert_eq</code>, <code>assert_ne</code>, <code>assert_true</code>, <code>assert_ok</code>, <code>assert_err</code>, <code>assert_some</code>, <code>assert_none</code>.</li>
 <li><code>run_tests()</code> executes all registered tests.</li>
-<li>Contracts ARE tests — <code>requires</code>/<code>ensures</code> check at runtime.</li>
+<li>Contracts ARE tests -- <code>requires</code>/<code>ensures</code> check at runtime.</li>
 </ul>
 <hr>
 <h2>15. Self-Hosting Note</h2>
-<p>The XIOM compiler is written in XIOM (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent — never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.</p>
+<p>The XIOM compiler is written in XIOM (<code>selfhost/</code> directory), compiled by the Rust bootstrap compiler. The Rust compiler is permanent -- never deleted. When fixing compiler bugs, verify with differential tests: compile same program with Rust compiler AND XIOM compiler, diff the LLVM IR. They must be identical.</p>
 <hr>
 <p><strong>This document is the AI's complete reference for XIOM code generation.</strong> <strong>When in doubt, refer to the exact syntax and rules above. The compiler enforces everything stated here.</strong></p>
     </main>
@@ -1130,7 +1130,7 @@ project/
 
 <footer>
   <div class="wrap">
-    <p>XIOM v0.12.0 · <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>XIOM v0.12.0 - <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>

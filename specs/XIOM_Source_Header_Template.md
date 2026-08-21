@@ -1,4 +1,4 @@
-# XIOM — Source File Header Template
+# XIOM -- Source File Header Template
 
 > Standard comment block to add above source files in the XIOM codebase.
 > Two versions below: full (for primary/original files) and short (for
@@ -7,10 +7,10 @@
 
 ---
 
-## Short version (default — use this on most files)
+## Short version (default -- use this on most files)
 
 ```
-// XIOM — [component name, e.g. Lexer / Parser / Type Checker]
+// XIOM -- [component name, e.g. Lexer / Parser / Type Checker]
 // Copyright (c) 2026 Eleftherios Notas
 // Licensed under the MIT or Apache-2.0 license, at your option.
 // See LICENSE-MIT and LICENSE-APACHE in the project root.
@@ -19,14 +19,14 @@
 ---
 
 ## Full version (use once, at the top of `main.rs`/entry point, or in a
-## small number of canonical files — not needed on every file)
+## small number of canonical files -- not needed on every file)
 
 ```
 // XIOM Programming Language
 // -----------------------------------------------------------------------
 // Copyright (c) 2026 Eleftherios Notas
 //
-// XIOM is an independent project by Lefteris Notas, founder of Ngonart OÜ.
+// XIOM is an independent project by Lefteris Notas, founder of Ngonart OU.
 //
 // Licensed under the MIT license <LICENSE-MIT or https://opensource.org/licenses/MIT>
 // or the Apache License, Version 2.0 <LICENSE-APACHE or
@@ -42,11 +42,11 @@
 ## Variant for files derived from Godot reference (once that work begins)
 
 Use this **in addition to** the short version, only on files where Godot's
-source was used as architectural reference per the earlier discussion —
+source was used as architectural reference per the earlier discussion --
 not on unrelated XIOM files.
 
 ```
-// XIOM — [component name]
+// XIOM -- [component name]
 // Copyright (c) 2026 Eleftherios Notas
 // Licensed under the MIT or Apache-2.0 license, at your option.
 //
@@ -66,7 +66,7 @@ not on unrelated XIOM files.
 | Most source files (lexer, parser, codegen, stdlib, etc.) | Short version |
 | Entry point / one or two canonical project files | Full version |
 | Any file built with Godot source as reference | Short version + Godot variant |
-| Generated files (build output, codegen artifacts) | None — generated files shouldn't carry hand-written headers |
+| Generated files (build output, codegen artifacts) | None -- generated files shouldn't carry hand-written headers |
 
 ---
 
@@ -75,10 +75,10 @@ not on unrelated XIOM files.
 Don't over-apply this. A header on every single file in a large codebase
 becomes noise, and is also extra surface area to keep in sync if the
 license or copyright year ever changes. The short version is intentionally
-terse for that reason — it's enough to assert copyright and point to the
+terse for that reason -- it's enough to assert copyright and point to the
 real LICENSE files, without repeating the full legal text everywhere.
 
 ---
 
-*Companion to XIOM_Website_Content_Spec.md (Part 1 & 2 — naming and
+*Companion to XIOM_Website_Content_Spec.md (Part 1 & 2 -- naming and
 copyright holder decisions).*

@@ -34,7 +34,7 @@ Raw pointers (`*T`) are only usable inside `unsafe` blocks. They cannot be deref
 ```xiom
 unsafe {
   let raw: *Int = some_c_function();
-  let value = *raw;   // dereference — programmer guarantees validity
+  let value = *raw;   // dereference -- programmer guarantees validity
   *raw = 42;          // write through pointer
 }
 ```
@@ -101,7 +101,7 @@ The C library provides battle-tested implementation. The XIOM wrapper adds contr
 
 ## FFI Best Practices
 
-1. **Always use `unsafe` blocks** — never call C functions outside `unsafe { }`.
-2. **Wrap with safe functions** — expose a safe XIOM interface with contracts.
-3. **Validate at the boundary** — check pointer validity, buffer sizes, and nullability.
-4. **Auto-infer contracts from C headers** — planned Phase 3 feature for mechanical binding generation.
+1. **Always use `unsafe` blocks** -- never call C functions outside `unsafe { }`.
+2. **Wrap with safe functions** -- expose a safe XIOM interface with contracts.
+3. **Validate at the boundary** -- check pointer validity, buffer sizes, and nullability.
+4. **Auto-infer contracts from C headers** -- planned Phase 3 feature for mechanical binding generation.

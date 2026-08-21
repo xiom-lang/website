@@ -63,7 +63,7 @@ fn has_neon() -> Bool;
 
 ## 128-bit Vector Types (SSE / NEON)
 
-### Vec4f — 4 × Float32
+### Vec4f -- 4 x Float32
 
 #### Constructors
 
@@ -147,14 +147,14 @@ fn Vec4f.max(self, other: Vec4f) -> Float32;
 ```
 
 ##### `Vec4f.get(self, index)`
-Extracts the value at lane `index` (0–3).
+Extracts the value at lane `index` (0-3).
 
 ```
 fn Vec4f.get(self, index: Int) -> Float32;
 ```
 
 ##### `Vec4f.set(self, index, value)`
-Sets the value at lane `index` (0–3) to `value`. Returns a new `Vec4f`.
+Sets the value at lane `index` (0-3) to `value`. Returns a new `Vec4f`.
 
 ```
 fn Vec4f.set(self, index: Int, value: Float32) -> Vec4f;
@@ -203,7 +203,7 @@ use xiom.io;
 
 fn main() {
   if !simd_supported() {
-    io.println("SIMD not available — using scalar fallback");
+    io.println("SIMD not available -- using scalar fallback");
   }
 
   let a = Vec4f.new(1.0, 2.0, 3.0, 4.0);
@@ -212,13 +212,13 @@ fn main() {
   let sum = a.add(b);        // [6.0, 8.0, 10.0, 12.0]
   let product = a.mul(b);    // [5.0, 12.0, 21.0, 32.0]
   let dp = a.dot(b);         // 70.0 (1*5 + 2*6 + 3*7 + 4*8)
-  let mag = a.len();         // sqrt(1+4+9+16) ≈ 5.477
+  let mag = a.len();         // sqrt(1+4+9+16) ~= 5.477
 }
 ```
 
 ---
 
-### Vec2d — 2 × Float64
+### Vec2d -- 2 x Float64
 
 128-bit double-precision vector.
 
@@ -276,14 +276,14 @@ fn Vec2d.dot(self, other: Vec2d) -> Float64;
 ```
 
 ##### `Vec2d.get(self, index)`
-Extracts the value at lane `index` (0–1).
+Extracts the value at lane `index` (0-1).
 
 ```
 fn Vec2d.get(self, index: Int) -> Float64;
 ```
 
 ##### `Vec2d.set(self, index, value)`
-Sets the value at lane `index` (0–1) to `value`. Returns a new `Vec2d`.
+Sets the value at lane `index` (0-1) to `value`. Returns a new `Vec2d`.
 
 ```
 fn Vec2d.set(self, index: Int, value: Float64) -> Vec2d;
@@ -291,7 +291,7 @@ fn Vec2d.set(self, index: Int, value: Float64) -> Vec2d;
 
 ---
 
-### Vec4i — 4 × Int32
+### Vec4i -- 4 x Int32
 
 128-bit integer vector.
 
@@ -328,14 +328,14 @@ fn Vec4i.mul(self, other: Vec4i) -> Vec4i;
 ```
 
 ##### `Vec4i.get(self, index)`
-Extracts the value at lane `index` (0–3).
+Extracts the value at lane `index` (0-3).
 
 ```
 fn Vec4i.get(self, index: Int) -> Int;
 ```
 
 ##### `Vec4i.set(self, index, value)`
-Sets the value at lane `index` (0–3) to `value`. Returns a new `Vec4i`.
+Sets the value at lane `index` (0-3) to `value`. Returns a new `Vec4i`.
 
 ```
 fn Vec4i.set(self, index: Int, value: Int) -> Vec4i;
@@ -343,7 +343,7 @@ fn Vec4i.set(self, index: Int, value: Int) -> Vec4i;
 
 ---
 
-### Vec8s — 8 × Int16
+### Vec8s -- 8 x Int16
 
 128-bit short integer vector.
 
@@ -373,14 +373,14 @@ fn Vec8s.sub(self, other: Vec8s) -> Vec8s;
 ```
 
 ##### `Vec8s.get(self, index)`
-Extracts the value at lane `index` (0–7).
+Extracts the value at lane `index` (0-7).
 
 ```
 fn Vec8s.get(self, index: Int) -> Int;
 ```
 
 ##### `Vec8s.set(self, index, value)`
-Sets the value at lane `index` (0–7) to `value`. Returns a new `Vec8s`.
+Sets the value at lane `index` (0-7) to `value`. Returns a new `Vec8s`.
 
 ```
 fn Vec8s.set(self, index: Int, value: Int) -> Vec8s;
@@ -388,7 +388,7 @@ fn Vec8s.set(self, index: Int, value: Int) -> Vec8s;
 
 ---
 
-### Vec16b — 16 × Int8
+### Vec16b -- 16 x Int8
 
 128-bit byte vector.
 
@@ -418,14 +418,14 @@ fn Vec16b.sub(self, other: Vec16b) -> Vec16b;
 ```
 
 ##### `Vec16b.get(self, index)`
-Extracts the value at lane `index` (0–15).
+Extracts the value at lane `index` (0-15).
 
 ```
 fn Vec16b.get(self, index: Int) -> Int;
 ```
 
 ##### `Vec16b.set(self, index, value)`
-Sets the value at lane `index` (0–15) to `value`. Returns a new `Vec16b`.
+Sets the value at lane `index` (0-15) to `value`. Returns a new `Vec16b`.
 
 ```
 fn Vec16b.set(self, index: Int, value: Int) -> Vec16b;
@@ -435,7 +435,7 @@ fn Vec16b.set(self, index: Int, value: Int) -> Vec16b;
 
 ## 256-bit Vector Types (AVX / AVX2)
 
-### Vec8f — 8 × Float32
+### Vec8f -- 8 x Float32
 
 #### Constructor
 
@@ -463,14 +463,14 @@ fn Vec8f.mul(self, other: Vec8f) -> Vec8f;
 ```
 
 ##### `Vec8f.get(self, index)`
-Extracts the value at lane `index` (0–7).
+Extracts the value at lane `index` (0-7).
 
 ```
 fn Vec8f.get(self, index: Int) -> Float32;
 ```
 
 ##### `Vec8f.set(self, index, value)`
-Sets the value at lane `index` (0–7) to `value`. Returns a new `Vec8f`.
+Sets the value at lane `index` (0-7) to `value`. Returns a new `Vec8f`.
 
 ```
 fn Vec8f.set(self, index: Int, value: Float32) -> Vec8f;
@@ -478,7 +478,7 @@ fn Vec8f.set(self, index: Int, value: Float32) -> Vec8f;
 
 ---
 
-### Vec4d — 4 × Float64
+### Vec4d -- 4 x Float64
 
 256-bit double-precision vector.
 
@@ -508,14 +508,14 @@ fn Vec4d.mul(self, other: Vec4d) -> Vec4d;
 ```
 
 ##### `Vec4d.get(self, index)`
-Extracts the value at lane `index` (0–3).
+Extracts the value at lane `index` (0-3).
 
 ```
 fn Vec4d.get(self, index: Int) -> Float64;
 ```
 
 ##### `Vec4d.set(self, index, value)`
-Sets the value at lane `index` (0–3) to `value`. Returns a new `Vec4d`.
+Sets the value at lane `index` (0-3) to `value`. Returns a new `Vec4d`.
 
 ```
 fn Vec4d.set(self, index: Int, value: Float64) -> Vec4d;
@@ -523,7 +523,7 @@ fn Vec4d.set(self, index: Int, value: Float64) -> Vec4d;
 
 ---
 
-### Vec8i — 8 × Int32
+### Vec8i -- 8 x Int32
 
 256-bit integer vector.
 
@@ -553,14 +553,14 @@ fn Vec8i.sub(self, other: Vec8i) -> Vec8i;
 ```
 
 ##### `Vec8i.get(self, index)`
-Extracts the value at lane `index` (0–7).
+Extracts the value at lane `index` (0-7).
 
 ```
 fn Vec8i.get(self, index: Int) -> Int;
 ```
 
 ##### `Vec8i.set(self, index, value)`
-Sets the value at lane `index` (0–7) to `value`. Returns a new `Vec8i`.
+Sets the value at lane `index` (0-7) to `value`. Returns a new `Vec8i`.
 
 ```
 fn Vec8i.set(self, index: Int, value: Int) -> Vec8i;
@@ -570,7 +570,7 @@ fn Vec8i.set(self, index: Int, value: Int) -> Vec8i;
 
 ## 512-bit Vector Types (AVX-512)
 
-### Vec16f — 16 × Float32
+### Vec16f -- 16 x Float32
 
 512-bit float vector.
 
@@ -600,14 +600,14 @@ fn Vec16f.mul(self, other: Vec16f) -> Vec16f;
 ```
 
 ##### `Vec16f.get(self, index)`
-Extracts the value at lane `index` (0–15).
+Extracts the value at lane `index` (0-15).
 
 ```
 fn Vec16f.get(self, index: Int) -> Float32;
 ```
 
 ##### `Vec16f.set(self, index, value)`
-Sets the value at lane `index` (0–15) to `value`. Returns a new `Vec16f`.
+Sets the value at lane `index` (0-15) to `value`. Returns a new `Vec16f`.
 
 ```
 fn Vec16f.set(self, index: Int, value: Float32) -> Vec16f;
@@ -615,7 +615,7 @@ fn Vec16f.set(self, index: Int, value: Float32) -> Vec16f;
 
 ---
 
-### Vec8d — 8 × Float64
+### Vec8d -- 8 x Float64
 
 512-bit double-precision vector.
 
@@ -645,14 +645,14 @@ fn Vec8d.mul(self, other: Vec8d) -> Vec8d;
 ```
 
 ##### `Vec8d.get(self, index)`
-Extracts the value at lane `index` (0–7).
+Extracts the value at lane `index` (0-7).
 
 ```
 fn Vec8d.get(self, index: Int) -> Float64;
 ```
 
 ##### `Vec8d.set(self, index, value)`
-Sets the value at lane `index` (0–7) to `value`. Returns a new `Vec8d`.
+Sets the value at lane `index` (0-7) to `value`. Returns a new `Vec8d`.
 
 ```
 fn Vec8d.set(self, index: Int, value: Float64) -> Vec8d;
@@ -679,20 +679,20 @@ Scalar fallback operations have no FFI dependencies and require no contracts.
 ## Architecture
 
 ```
-┌──────────────────────────────────┐
-│  xiom.simd (Safe XIOM API)       │
-│  Vec4f, Vec8f, Vec16f types      │
-│  add, mul, dot, sqrt, normalize  │
-│  Contracts: requires simd_       │
-│  supported                       │
-├──────────────────────────────────┤
-│  C FFI (extern "C")              │
-│  xiom_simd_f32x4_add, etc.       │
-├──────────────────────────────────┤
-│  simd_runtime.c (402 lines)      │
-│  x86_64: <x86intrin.h> SSE/AVX   │
-│  ARM64:  <arm_neon.h> NEON       │
-│  Scalar: portable C fallback     │
-│  CPUID feature detection         │
-└──────────────────────────────────┘
++----------------------------------+
+|  xiom.simd (Safe XIOM API)       |
+|  Vec4f, Vec8f, Vec16f types      |
+|  add, mul, dot, sqrt, normalize  |
+|  Contracts: requires simd_       |
+|  supported                       |
+|----------------------------------|
+|  C FFI (extern "C")              |
+|  xiom_simd_f32x4_add, etc.       |
+|----------------------------------|
+|  simd_runtime.c (402 lines)      |
+|  x86_64: <x86intrin.h> SSE/AVX   |
+|  ARM64:  <arm_neon.h> NEON       |
+|  Scalar: portable C fallback     |
+|  CPUID feature detection         |
+`----------------------------------+
 ```

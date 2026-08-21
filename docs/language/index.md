@@ -7,8 +7,8 @@
 | Section | Description |
 |---------|-------------|
 | [Getting Started](getting-started.md) | Installation, first program, CLI reference |
-| [Language Reference](reference.md) | Complete language reference — all syntax, types, patterns in one document |
-| [Concepts](concepts.md) | XIOM for programmers from other languages — Java, C++, Python, Rust, Go |
+| [Language Reference](reference.md) | Complete language reference -- all syntax, types, patterns in one document |
+| [Concepts](concepts.md) | XIOM for programmers from other languages -- Java, C++, Python, Rust, Go |
 | [By Example](examples.md) | Progressive examples from Hello World to generics + contracts |
 | [Syntax](syntax.md) | Full language syntax: variables, functions, control flow, expressions |
 | [Type System](types.md) | Primitive types, compound types, structs, enums, type inference |
@@ -23,16 +23,16 @@
 | [Scripting Mode](../M10_SCRIPTING_MODE.md) | xiom run, shebang, standalone, REPL, JIT |
 | [Compiler](compiler.md) | Pipeline overview, CLI flags, build targets, WASM |
 | [Standard Library](stdlib.md) | Complete API reference for all 40 stdlib modules |
-| [AI Coding Reference](../AI_CONTEXT.md) | Single-file AI prompt — inject into any LLM to enable XIOM code generation |
+| [AI Coding Reference](../AI_CONTEXT.md) | Single-file AI prompt -- inject into any LLM to enable XIOM code generation |
 
 ## Language Overview
 
 XIOM is a compiled, statically typed, memory-safe systems programming language.
 
 ```
-.xi source → Lexer → Parser → Type Checker → Borrow Checker
-           → LLVM IR (+ Contracts + Derive + Generics)
-           → clang → native .exe / .wasm
+.xi source -> Lexer -> Parser -> Type Checker -> Borrow Checker
+           -> LLVM IR (+ Contracts + Derive + Generics)
+           -> clang -> native .exe / .wasm
 ```
 
 ### Three Pillars
@@ -52,7 +52,7 @@ fn fib(n: Int) -> Int
 }
 
 fn main() -> Int {
-  return fib(10);  // → 55
+  return fib(10);  // -> 55
 }
 ```
 
@@ -105,11 +105,11 @@ For a complete list of planned and in-progress packages, see the [Expansion Road
 
 | Phase | Version | Status |
 |-------|---------|--------|
-| Phase 0 | v0.1.0 "Pipeline" | Released — working pipeline |
-| Phase 1 | v0.2.0 "Guardian" | Released — full language surface |
-| Phase 2 | v0.4.0 "Mirror" | Released — self-host compiler |
-| Phase 2C | v0.11.0 "Self-Hosted" | Released — full self-hosting |
-| Phase 2C+ | v0.50.0 | Released — 40-module stdlib, scripting, JIT, contracts |
-| Phase 8B | **v0.51.0** | **Current** — production hardening, 1041 tests, M1–M12 complete |
+| Phase 0 | v0.1.0 "Pipeline" | Released -- working pipeline |
+| Phase 1 | v0.2.0 "Guardian" | Released -- full language surface |
+| Phase 2 | v0.4.0 "Mirror" | Released -- self-host compiler |
+| Phase 2C | v0.11.0 "Self-Hosted" | Released -- full self-hosting |
+| Phase 2C+ | v0.50.0 | Released -- 40-module stdlib, scripting, JIT, contracts |
+| Phase 8B | **v0.51.0** | **Current** -- production hardening, 1041 tests, M1-M12 complete |
 
 See [Compiler Version History](compiler.md#version-history) for the full changelog.

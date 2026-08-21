@@ -1,4 +1,4 @@
-# XIOM — Cross-Platform Build & Distribution Recommendations
+# XIOM -- Cross-Platform Build & Distribution Recommendations
 
 > Companion to XIOM_Build_Strategy.md. Covers how the compiler gets built and
 > verified across targets, and how users install XIOM.
@@ -6,7 +6,7 @@
 
 ---
 
-## Part 1 — Cross-Platform Build Strategy
+## Part 1 -- Cross-Platform Build Strategy
 
 ### Decision: One Branch, Conditional Compilation, CI Matrix
 
@@ -23,7 +23,7 @@ Neither justifies a branch. XIOM's stdlib defines a `cfg`-style mechanism for
 OS-specific code once Phase 1.5 stdlib work reaches OS-facing APIs:
 
 ```xiom
-// illustrative — exact syntax TBD when XIOM defines its cfg mechanism
+// illustrative -- exact syntax TBD when XIOM defines its cfg mechanism
 fn Path.separator() -> Char
   cfg(target_os: "windows") { return '\\' }
   cfg(target_os: "linux", "macos") { return '/' }
@@ -41,10 +41,10 @@ fn Path.separator() -> Char
 | `aarch64-pc-windows-msvc` | Cross-compile |
 | `x86_64-apple-darwin` | Apple-hosted CI runner |
 | `aarch64-apple-darwin` | Apple-hosted CI runner |
-| `wasm32-unknown-unknown` | Already proven in Phase 0 — same pipeline, runs in CI |
+| `wasm32-unknown-unknown` | Already proven in Phase 0 -- same pipeline, runs in CI |
 
 LLVM cross-compilation covers most of the matrix without separate physical
-machines — LLVM can target `aarch64-unknown-linux-gnu` from an x86_64 host
+machines -- LLVM can target `aarch64-unknown-linux-gnu` from an x86_64 host
 directly. Real machines/VMs are only needed to **run and test** the output
 binary, not just build it.
 
@@ -57,7 +57,7 @@ binary, not just build it.
 2. Add the CI build matrix and additional target support as Phase 3 ecosystem
    work, alongside the package registry and LSP
 3. Reserve actual VMs/physical machines for final runtime verification per
-   target — not as a build/branch mechanism
+   target -- not as a build/branch mechanism
 
 This follows the Build Strategy principle: "the next phase only starts when
 the previous one is provably working."
@@ -70,7 +70,7 @@ real Mac hardware if available.
 
 ---
 
-## Part 2 — Distribution Model
+## Part 2 -- Distribution Model
 
 ### Decision: Three Distribution Paths
 
@@ -89,17 +89,17 @@ playground.
 #### Path 2: Build from Source (Secondary)
 
 - For security-conscious organizations, package maintainers, distros
-- Effectively free once self-hosting works — the CI matrix already proves the
+- Effectively free once self-hosting works -- the CI matrix already proves the
   source builds on every target
 
-#### Path 3: WASM Compiler Playground (Tertiary — Unique to XIOM)
+#### Path 3: WASM Compiler Playground (Tertiary -- Unique to XIOM)
 
 **This is the genuinely differentiated distribution path.** The XIOM compiler
-itself compiles to WASM (proven in Phase 0 — it's the same pipeline flag).
+itself compiles to WASM (proven in Phase 0 -- it's the same pipeline flag).
 This means:
 
 - A web-based XIOM playground where the compiler runs **client-side** in the
-  browser via WASM — no install, no backend server, no account
+  browser via WASM -- no install, no backend server, no account
 - Instant-on for new users: open a URL, write XIOM, see compiled output or
   run the WASM binary directly in the browser
 - The compiler WASM is a distribution artifact built by the same CI matrix
@@ -121,7 +121,7 @@ later.
 
 ---
 
-## Part 3 — What We Reject
+## Part 3 -- What We Reject
 
 | Approach | Why |
 |---|---|
@@ -135,15 +135,15 @@ later.
 
 | Question | Decision |
 |---|---|
-| Branch per OS? | **No** — one `main`, conditional compilation |
+| Branch per OS? | **No** -- one `main`, conditional compilation |
 | How to verify cross-platform builds? | CI build matrix, cross-compilation where possible |
 | When to physically test on a target? | Only for runtime verification, not build verification |
 | macOS CI/testing | Apple-hosted CI runners or real hardware |
 | When to build full cross-platform support? | Phase 3, after Phase 2 self-hosting proven on one platform |
-| Distribution model | Three paths: pre-built binaries (primary), build-from-source (secondary), WASM compiler playground (tertiary — differentiated) |
+| Distribution model | Three paths: pre-built binaries (primary), build-from-source (secondary), WASM compiler playground (tertiary -- differentiated) |
 | Version manager? | DEFERRED to Phase 3 (`xiomup`) |
 
 ---
 
-*XIOM Cross-Platform Build & Distribution — Version 1.0. Decisions made 2026-06-30.*
+*XIOM Cross-Platform Build & Distribution -- Version 1.0. Decisions made 2026-06-30.*
 *Recorded in XIOM_Build_Strategy.md decision log.*

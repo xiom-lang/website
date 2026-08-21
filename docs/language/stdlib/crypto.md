@@ -1,4 +1,4 @@
-# `xiom.crypto` — Cryptography
+# `xiom.crypto` -- Cryptography
 
 Provides cryptographic primitives including hashing, symmetric and asymmetric encryption, key derivation, and secure random number generation.
 

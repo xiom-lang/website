@@ -10,7 +10,7 @@ fn max[T: Comparable](a: T, b: T) -> T {
   return b;
 }
 
-// Call sites — T inferred from arguments
+// Call sites -- T inferred from arguments
 let m1 = max(10, 20);          // T = Int
 let m2 = max(1.5, 2.7);        // T = Float64
 ```
@@ -39,7 +39,7 @@ If a type parameter appears only in the return type and not in any argument, it 
 ```xiom
 fn parse[T](s: Str) -> Result[T, ParseError] { ... }
 
-let n = parse[Int]("42");   // T must be explicit — not inferrable from arguments
+let n = parse[Int]("42");   // T must be explicit -- not inferrable from arguments
 ```
 
 ## Generic Types
@@ -61,8 +61,8 @@ type Pair[A, B] = {
 
 Generics use **two-pass monomorphisation**:
 
-1. **Pass 1 — Register:** The compiler scans for concrete instantiations at call sites and registers them.
-2. **Pass 2 — Specialize:** For each registered instantiation, the compiler emits a specialized version with full type substitution.
+1. **Pass 1 -- Register:** The compiler scans for concrete instantiations at call sites and registers them.
+2. **Pass 2 -- Specialize:** For each registered instantiation, the compiler emits a specialized version with full type substitution.
 
 ```xiom
 // Source
@@ -76,7 +76,7 @@ fn identity_Int(x: Int) -> Int { return x; }
 fn identity_Str(x: Str) -> Str { return x; }
 ```
 
-This produces zero-overhead abstractions — generic code compiles to the same machine code as hand-specialized versions.
+This produces zero-overhead abstractions -- generic code compiles to the same machine code as hand-specialized versions.
 
 ## Interface Satisfaction
 
@@ -89,7 +89,7 @@ fn Score.compare(other: &Score) -> Int { ... }
 // Score now satisfies Comparable
 
 let winner = max(Score{ value: 10 }, Score{ value: 20 });
-// Compiler verifies: Score satisfies Comparable ✓
+// Compiler verifies: Score satisfies Comparable [OK]
 // Generates: max_Score(Score, Score) -> Score
 ```
 
@@ -110,7 +110,7 @@ error[E0301]: type does not satisfy interface
 
 ## Comptime
 
-`comptime` marks expressions and blocks to be evaluated at compile time. It is the single mechanism for all metaprogramming — generics, reflection, and specialisation all flow through it.
+`comptime` marks expressions and blocks to be evaluated at compile time. It is the single mechanism for all metaprogramming -- generics, reflection, and specialisation all flow through it.
 
 ```xiom
 let size = comptime expensive_computation();  // evaluated once, at compile time

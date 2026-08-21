@@ -115,7 +115,7 @@ pub fn utf8_valid(data: &Vec[UInt8]) -> Bool;
 ```
 
 ### `utf8_char_len(first_byte)`
-Returns the number of bytes (1–4) of a UTF-8 character given its leading byte.
+Returns the number of bytes (1-4) of a UTF-8 character given its leading byte.
 
 ```
 pub fn utf8_char_len(first_byte: UInt8) -> Int;
