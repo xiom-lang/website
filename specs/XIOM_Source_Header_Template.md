@@ -11,9 +11,8 @@
 
 ```
 // XIOM -- [component name, e.g. Lexer / Parser / Type Checker]
-// Copyright (c) 2026 Eleftherios Notas
-// Licensed under the MIT or Apache-2.0 license, at your option.
-// See LICENSE-MIT and LICENSE-APACHE in the project root.
+// Copyright (c) 2026 Eleftherios Notas - XIOM Foundation
+// Licensed under the Apache-2.0 license.
 ```
 
 ---
@@ -24,13 +23,12 @@
 ```
 // XIOM Programming Language
 // -----------------------------------------------------------------------
-// Copyright (c) 2026 Eleftherios Notas
+// Copyright (c) 2026 Eleftherios Notas - XIOM Foundation
 //
 // XIOM is an independent project by Lefteris Notas, founder of Ngonart OU.
 //
-// Licensed under the MIT license <LICENSE-MIT or https://opensource.org/licenses/MIT>
-// or the Apache License, Version 2.0 <LICENSE-APACHE or
-// https://www.apache.org/licenses/LICENSE-2.0>, at your option.
+// Licensed under the Apache License, Version 2.0 <LICENSE or
+// https://www.apache.org/licenses/LICENSE-2.0>.
 //
 // This file may not be copied, modified, or distributed except according
 // to those terms.
@@ -47,8 +45,8 @@ not on unrelated XIOM files.
 
 ```
 // XIOM -- [component name]
-// Copyright (c) 2026 Eleftherios Notas
-// Licensed under the MIT or Apache-2.0 license, at your option.
+// Copyright (c) 2026 Eleftherios Notas - XIOM Foundation
+// Licensed under the Apache-2.0 license.
 //
 // Portions of this file reference the Godot Engine (https://godotengine.org),
 // Copyright (c) 2014-present Godot Engine contributors, MIT License.
@@ -75,8 +73,8 @@ not on unrelated XIOM files.
 Don't over-apply this. A header on every single file in a large codebase
 becomes noise, and is also extra surface area to keep in sync if the
 license or copyright year ever changes. The short version is intentionally
-terse for that reason -- it's enough to assert copyright and point to the
-real LICENSE files, without repeating the full legal text everywhere.
+terse for that reason -- it's enough to assert copyright and the license
+terms, without repeating the full legal text everywhere.
 
 ---
 
