@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM -- Source File Header Template
 
 > Standard comment block to add above source files in the XIOM codebase.

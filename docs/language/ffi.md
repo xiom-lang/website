@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # C FFI (Foreign Function Interface)
 
 XIOM has zero-cost C interoperability. C functions and types are declared in `extern` blocks. The compiler generates no wrapper code. C ABI calling conventions are used directly.

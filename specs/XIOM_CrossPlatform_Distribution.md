@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM -- Cross-Platform Build & Distribution Recommendations
 
 > Companion to XIOM_Build_Strategy.md. Covers how the compiler gets built and

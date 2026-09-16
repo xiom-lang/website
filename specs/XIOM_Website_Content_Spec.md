@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM Website -- Content Spec (Pages, Copy, Naming & Licensing)
 
 > Companion to the xiom-landing.html mockup. That file covers visual design;

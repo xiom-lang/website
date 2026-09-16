@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Cell Module
 
 Interior mutability types: `Cell` (for `Copy` types) and `RefCell` (with runtime borrow checking).

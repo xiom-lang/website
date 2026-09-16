@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # `xiom.crypto` -- Cryptography
 
 Provides cryptographic primitives including hashing, symmetric and asymmetric encryption, key derivation, and secure random number generation.

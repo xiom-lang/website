@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Contracts Module
 
 Runtime queryable contract API: inspect `requires`, `ensures`, and `invariant` clauses for functions and types, verify contracts at runtime, export contract specs, and measure contract coverage.

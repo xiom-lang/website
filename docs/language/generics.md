@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Generics
 
 Generics are implemented through **comptime type parameters**. The type parameter is resolved at compile time, producing a monomorphised specialisation. No runtime dispatch, no boxing, no virtual calls unless explicitly requested via interface references.

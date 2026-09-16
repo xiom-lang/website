@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM -- Build Strategy & Decision Log
 
 > This document captures how we are building XIOM, in what order, and why.

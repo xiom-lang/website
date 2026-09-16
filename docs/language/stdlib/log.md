@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Log Module
 
 Structured logging with log levels, structured key-value pairs, runtime configuration, and in-memory log querying.

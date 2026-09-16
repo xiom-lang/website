@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # I/O Library
 
 The `io` module provides console input/output, file system manipulation, process interaction, timing, buffered I/O wrappers, standard streams, in-memory I/O cursors, and path utilities.

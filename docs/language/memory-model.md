@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Memory Model
 
 XIOM uses **ownership semantics** for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.

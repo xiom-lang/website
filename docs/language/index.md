@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM Language Documentation
 
 > **Compiler:** v0.51.0 | **Tests:** 1041 passing | **Status:** Production Hardening

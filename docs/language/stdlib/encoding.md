@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Encoding Module
 
 Text encoding and decoding utilities: Base64, Hex, URL, Percent, and UTF-8 encoding.

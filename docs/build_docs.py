@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+# SPDX-License-Identifier: MIT OR Apache-2.0
 """
 xiom Documentation Builder
 Converts docs/language/*.md -> docs/html/ and website/docs/

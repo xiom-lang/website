@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM Error Codes -- Reference
 
 Each XIOM diagnostic carries a code in the format `XNNNN`. Codes are stable -- once assigned, they are never deleted or reassigned.

@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Conversion Module
 
 Type conversion traits (`From`, `Into`, `TryFrom`, `TryInto`) and common conversion functions.

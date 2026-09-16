@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Numeric Module
 
 Extended numeric traits, operations, bounds, bit manipulation, float classification, and checked/saturating/wrapping arithmetic.
