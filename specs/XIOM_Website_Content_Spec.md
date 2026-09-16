@@ -17,19 +17,20 @@
   Lakeside Games and Ngonart publicly, and it's the name people will
   search for and recognize.
 - **Legal/copyright line (license file, copyright notice):**
-  `Eleftherios Notas` -- copyright notices carry more legal weight when
-  they match your legal name, since that's the name that would matter if
-  authorship or ownership were ever formally disputed. Many public figures
-  do exactly this split (public byline vs. legal copyright holder) without
-  any conflict -- it's not unusual or risky to use both.
+  `Eleftherios Notas - XIOM Foundation` -- copyright notices carry more
+  legal weight when they match the actual rights holder, and keeping the
+  legal name alongside the foundation preserves the authorship
+  attribution. Many public figures do exactly this split (public byline
+  vs. legal copyright holder) without any conflict -- it's not unusual or
+  risky to use both.
 
-You can also write it as `Eleftherios "Lefteris" Notas` in the LICENSE file
-itself if you want both visible in the one place that matters most legally,
-with `Lefteris Notas` used everywhere else.
+The LICENSE file carries the full legal copyright line
+(`Eleftherios Notas - XIOM Foundation`), with `Lefteris Notas` used
+everywhere else.
 
-### Personal copyright vs. Ngonart OU
+### Copyright holder vs. Ngonart OU
 
-**Recommendation: copyright holder should be you personally, not Ngonart OU.**
+**Recommendation: copyright holder is `Eleftherios Notas - XIOM Foundation`, not Ngonart OU.**
 
 XIOM is not currently a Ngonart business work product -- Ngonart is the
 publishing/B2B outsourcing entity for game dev contracting, and XIOM
@@ -47,50 +48,54 @@ your personal project, needing internal docs if you ever want to spin it
 out) -- not something to back into casually via a copyright line.
 
 **Split recommendation:**
-- **Copyright holder:** `Eleftherios Notas`, personally
+- **Copyright holder:** `Eleftherios Notas - XIOM Foundation`
 - **Public "built by" / attribution line:** Ngonart can still show up here
   without being the legal IP owner -- e.g. *"XIOM is an independent
   project by Lefteris Notas, founder of Ngonart OU."* This gets the brand
   association without the legal commitment.
 
 **Why this matters for open source specifically:** contributors and the
-wider ecosystem generally trust personal-maintainer copyright over
+wider ecosystem generally trust non-corporate maintainer copyright over
 corporate copyright for community language projects -- it signals the
 project won't get acquired, relicensed, or shut down by a corporate
 decision (a real, well-known concern after several high-profile
-"company relicensed the open-source project" controversies). Personal
+"company relicensed the open-source project" controversies). Foundation
 copyright with Ngonart as a visible-but-separate brand association is the
 stronger trust signal here, not a weaker one.
 
-If XIOM gains real traction later, the more common pattern at that scale
-is a dedicated foundation (Rust Foundation, Python Software Foundation
-model) rather than a company holding the IP -- a clean, deliberate
-transition to make later, not now.
+Copyright now rests with `Eleftherios Notas - XIOM Foundation` -- the
+dedicated-foundation pattern (Rust Foundation, Python Software Foundation
+model) rather than a company holding the IP.
 
 ---
 
 ## Part 2 -- Copyright Notice & License Block
 
-Given the Part-1 recommendation from our license conversation (MIT OR
-Apache-2.0 dual-license, following the Rust precedent), here's the standard
+XIOM is licensed under the Apache License, Version 2.0. Here's the standard
 block structure to include in the repo and reference on the website footer.
 
-**LICENSE file (repo root) -- dual license, two files:**
-- `LICENSE-MIT`
-- `LICENSE-APACHE`
+**LICENSE file (repo root):**
+- `LICENSE` -- Apache License, Version 2.0
 
-**Copyright line (top of each, and in source file headers if you choose to add them)
--- personal, not Ngonart OU, per Part 1:**
+**Copyright line -- `Eleftherios Notas - XIOM Foundation`, not Ngonart OU, per Part 1:**
 
-```
-Copyright (c) 2026 Eleftherios Notas
-```
-
-**README / website footer short form -- copyright personal, attribution can name Ngonart:**
+Source file headers:
 
 ```
-XIOM is dual-licensed under MIT or Apache-2.0, at your option.
-Copyright (c) 2026 Eleftherios Notas.
+Copyright (c) 2026 Eleftherios Notas - XIOM Foundation
+```
+
+LICENSE appendix boilerplate (canonical Apache form, no `(c)`):
+
+```
+Copyright 2026 Eleftherios Notas - XIOM Foundation
+```
+
+**README / website footer short form -- attribution can name Ngonart:**
+
+```
+XIOM is licensed under Apache-2.0.
+Copyright (c) 2026 Eleftherios Notas - XIOM Foundation.
 
 XIOM is an independent project by Lefteris Notas, founder of Ngonart OU.
 ```
