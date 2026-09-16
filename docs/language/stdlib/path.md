@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Path Module
 
 File path manipulation with `Path` (borrowed) and `PathBuf` (owned) types. Provides platform-aware path parsing, joining, and filesystem queries.

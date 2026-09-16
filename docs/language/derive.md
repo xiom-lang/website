@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Derive
 
 The `derive` clause instructs the compiler to generate correct-by-construction implementations of common interfaces. Every hand-written `eq` or `clone` method is a chance for error. The compiler never misses.

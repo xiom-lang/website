@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Benchmark Module
 
 Benchmarking framework: running benchmarks, collecting timing results, and preventing compiler optimizations.

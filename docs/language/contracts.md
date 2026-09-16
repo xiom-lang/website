@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Contracts
 
 Contracts are the formal specification layer of XIOM. They transform function signatures from documentation into machine-checkable specifications.

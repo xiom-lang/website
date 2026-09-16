@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM -- Phase 3 Recommendations & Phase 2 Enhancements
 
 > Companion to XIOM_Build_Strategy.md. Recommendations that enhance Phase 2

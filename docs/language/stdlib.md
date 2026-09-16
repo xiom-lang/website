@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Standard Library API
 
 > **Status:** Production-Grade v2.0 -- 40 modules, 374 safety contracts, 4,221 lines of C runtime, 450+ tests.

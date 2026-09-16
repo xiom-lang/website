@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Core Library
 
 The `core` module provides fundamental types, interfaces, and operations used throughout the XIOM standard library. It includes the `Option` and `Result` types for error handling, numeric conversions, collection contract predicates, core traits (interfaces), heap allocation via `Box`, the `BinaryHeap` priority queue, iterator support, numeric limits, and compile-time type introspection.

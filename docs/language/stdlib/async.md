@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # `xiom.async` -- Async Programming
 
 Provides primitives for asynchronous task execution and message passing between concurrent tasks.

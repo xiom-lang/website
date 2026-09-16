@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Memory Module
 
 Memory management utilities: swap, replace, drop, type size/alignment queries, and zeroed/uninitialized memory.

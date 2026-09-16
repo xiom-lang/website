@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # SIMD Module
 
 Hardware-accelerated SIMD (Single Instruction Multiple Data) vector types and operations. Provides 128-bit, 256-bit, and 512-bit vector types with arithmetic, geometric, and conversion operations. Falls back to scalar implementations when SIMD ISA extensions are unavailable.

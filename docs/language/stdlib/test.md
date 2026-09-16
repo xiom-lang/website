@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # `xiom.test` -- Test Framework
 
 A contract-aware testing framework with assertions, contract verification, test runners, formatters, and benchmarking.

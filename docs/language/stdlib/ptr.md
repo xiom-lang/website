@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Pointer Module
 
 Low-level pointer utilities: null pointers, read/write, volatile access, pointer arithmetic, and copy operations.

@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Pattern Matching
 
 XIOM supports structural pattern matching on enums, tuples, and literals via `match`, `if let`, and `while let`.

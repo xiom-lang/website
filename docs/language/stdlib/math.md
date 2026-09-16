@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Math Library
 
 The `math` module provides mathematical constants, basic arithmetic functions, trigonometric functions, logarithmic and exponential functions, bitwise operations, random number generation, and utility functions for floating-point values.

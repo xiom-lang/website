@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Collections Library
 
 The `collections` module provides general-purpose data structures: dynamic arrays, hash maps, hash sets, linked lists, queues, stacks, double-ended queues, sorted maps, sorted sets, and slice utilities.

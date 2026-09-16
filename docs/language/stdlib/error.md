@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Error Module
 
 Provides the `Error` interface, error chaining, backtrace capture, and error context wrapping.

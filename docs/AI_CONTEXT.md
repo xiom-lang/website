@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM -- AI Coding Reference (Language + Standard Library)
 
 > **Version:** v0.58.0 | **Status:** Production. Compiler + stdlib (512 modules, 6,379 pub fns). 27/27 E2E core (100%), 19/19 selfhost gates cleared.

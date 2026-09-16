@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # `xiom.iter` -- Iterators
 
 Provides range types and iterator adapters for lazy, composable data processing over sequences.

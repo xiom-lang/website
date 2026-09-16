@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM Showcase Projects -- XiomDB & XiomVDB
 
 > Two flagship projects to fully exercise the language post-Phase 3:

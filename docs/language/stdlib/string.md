@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # String Library
 
 The `string` module provides functions for inspecting, manipulating, and converting strings. Operations include length queries, concatenation, slicing, searching, splitting, trimming, case conversion, formatting, and extraction of characters, lines, and words.

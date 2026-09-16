@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # XIOM Concepts -- For Programmers from Other Languages
 
 > **You already know how to program.** This guide maps the concepts you know to how they work in XIOM. No fluff. Just translations.

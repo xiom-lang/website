@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
 # Error Handling
 
 XIOM has no exceptions. Functions that can fail return `Result[T, E]`. Absence of a value is expressed through `Option[T]`. The compiler enforces exhaustive handling of both at every use site.
