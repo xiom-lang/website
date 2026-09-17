@@ -58,5 +58,6 @@ curl -sI https://xiom-lang.org/install.ps1 | head -3
 
 - `docs/html/` is generated output; regenerate with `docs/build_docs.py`
   (the MkDocs migration is a planned follow-up, tracked in
-  `xiom-lang/.github`).
+  `xiom-lang/.github`). CI re-runs the generator and fails on drift; set
+  `XIOM_DOCS_VERSION` to stamp a release tag when building versioned docs.
 - Do not add secrets or environment-specific URLs; the site is fully static.
