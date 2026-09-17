@@ -46,11 +46,15 @@ from the site root, download from the mirror, verify SHA256 against
 
 Queue:
 
-1. **Version pinning**: add `-Version <tag>` / `--version <tag>` to both
-   installers so users can install a specific release (default: latest).
-2. **Verification surfaced on the page**: show the expected SHA256 per
-   archive (fetch `SHA256SUMS` next to `latest.json`) and the
-   `gh attestation verify` command beside it.
+1. **~~Version pinning~~ (done 2026-09-17)**: `-Version <tag>` and
+   `--version <tag>` on both installers; pinned installs use
+   `dl.xiom-lang.org/releases/<tag>/` directly and fail with a pointer to
+   `releases/index.json` when the tag is not on the mirror. Tested end to
+   end on Windows (v0.60.1) and via `sh` logic with a stubbed platform.
+2. **~~Verification surfaced on the page~~ (done 2026-09-17)**: the
+   download table shows the expected SHA256 per archive, filled from
+   `SHA256SUMS` next to `latest.json`, with the attestation command in the
+   verify section.
 3. **macOS**: when the compiler release enables macOS builds (`xiom` repo
    variable `RELEASE_BUILD_MACOS=true`), the page rows appear
    automatically; add `install.sh` macOS support (Homebrew clang check,
@@ -88,19 +92,28 @@ Queue:
    versions per release). Sources: `docs/language/` plus generated API
    pages. Keep old versions browsable; add redirects for the current
    `docs/html/*.html` paths so existing links keep working.
-3. **Stdlib/compiler API pages**: generate them in CI by checking out
-   `xiom-lang/xiom` and `xiom-lang/stdlib` at the release tag and running
-   `xiom doc`; never hand-maintain API listings.
+3. **Stdlib/compiler API pages**: `docs/build_api_docs.py` (done
+   2026-09-17) walks a stdlib checkout, runs `xiom-doc` over every source
+   and writes per-module MkDocs pages plus an index. Spike over the local
+   stdlib at v0.60.0: 44 modules, 517 files, 6,879 symbols, 0 parse
+   failures, ~8s. Remaining: run it in CI from the stdlib release tag and
+   wire the output into the MkDocs nav; the release archive ships only
+   `bin/xiom`, so CI must build `xiom-doc` from the xiom tag (a debug build
+   of the dep graph takes seconds; `--locked`).
 4. **Trigger**: the compiler release workflow fires a `repository_dispatch`
    at this repo; the docs job builds the versioned site and deploys through
    the VPS hook. Until that exists, the hourly pull keeps the current docs
    fresh.
-5. **`versions.html`**: make the version history read
-   `https://dl.xiom-lang.org/releases/index.json` (like the download page
-   reads `latest.json`) instead of hardcoded rows; link each version to its
-   release notes and its frozen docs URL once versioning lands.
+5. **~~`versions.html` from the mirror~~ (done 2026-09-17)**: the current
+   card and release table are read from
+   `https://dl.xiom-lang.org/releases/index.json` (mirror retains 20 tags);
+   pre-0.13 history has no artifacts and is no longer listed. Frozen docs
+   links land with the mike migration.
 6. **Link checking**: add a CI step that checks internal links and the
-   documented external URLs (installers, mirror, releases).
+   documented external URLs (installers, mirror, releases). Current
+   generator output has 8 known broken links per tree from stale sources
+   (`../M10_SCRIPTING_MODE.md`, `../ecosystem/*.md` which the generator
+   does not build, `../../checklists/stdlib-implementation.*`).
 
 ## Rules
 
@@ -123,14 +136,14 @@ from this repo to the VPS via /opt/xiom/bin/web-deploy.sh (cron minute 23);
 push to main and it publishes within the hour, or run the script on the VPS
 with the owner in PuTTY (outputs pasted back; never request credentials).
 
-Priority: (1) validate `xiom-doc` coverage over the stdlib repo (44 modules,
-517 .xi files) and build the API page driver; (2) plan and start the MkDocs
-Material + mike migration with versioned docs and redirects (the ops
-web-deploy.sh must stop publishing docs/html/ to the docs docroot); (3) add
--Version pinning and the checksum display to the installers and the download
-page; (4) make versions.html read dl.xiom-lang.org/releases/index.json (the
-mirror keeps 20 tags; pre-0.13 history has no artifacts, so decide curated
-vs mirror-only); (5) ecosystem doc pointers stay deferred until stdlib is
-100%. Keep the site static, ASCII-only, and driven by the mirror JSON files
-- never hardcode versions.
+Priority: (1) scaffold the MkDocs Material + mike migration and wire in the
+generated API pages (the API driver is done: `docs/build_api_docs.py`, 0
+parse failures over 517 stdlib files); note the local machine only has
+Python 3.7, so mkdocs/mike need a 3.8+ interpreter or a CI-verified setup.
+The ops web-deploy.sh must stop publishing docs/html/ to the docs docroot
+before versioned docs can go live. (2) Wire the API driver + docs build into
+CI: repository_dispatch from the compiler release, `xiom-doc` built from the
+xiom tag, mike deploy per version. (3) Ecosystem doc pointers stay deferred
+until stdlib is 100%. Keep the site static, ASCII-only, and driven by the
+mirror JSON files - never hardcode versions.
 ```
