@@ -8,8 +8,10 @@ repository; there is no build step for the marketing pages.
 | Path | Published to |
 |---|---|
 | `xiom-website/` | `https://xiom-lang.org` (site root, includes `img/` and `docs/`) |
-| `docs/html/` | `https://docs.xiom-lang.org` (generated documentation) |
+| `docs/html/` | `https://docs.xiom-lang.org` today (generated docs); also shipped as the standalone bundle |
 | `docs/language/`, `docs/ecosystem/`, `docs/error_codes/`, `docs/build_docs.py` | sources for the generated docs |
+| `docs/build_api_docs.py`, `docs/build_mkdocs.py`, `mkdocs.yml`, `requirements-docs.txt` | versioned MkDocs pipeline (mike) |
+| `docs/check_links.py` | relative-link check used by CI |
 | `specs/` | language specification and strategy documents |
 | `resource/img/` | shared image assets |
 
@@ -44,6 +46,36 @@ On the VPS (Contabo, HestiaCP, user `lefteris`):
   download from the mirror, verify SHA256 against `SHA256SUMS`, install into
   the user directory, and check for LLVM/Clang. Keep them in `xiom-website/`
   and test any change end to end (Windows locally, Linux in a container).
+
+## Versioned documentation (MkDocs Material + mike)
+
+The versioned site for `docs.xiom-lang.org` is built from:
+
+- `docs/language/*.md` (guides) plus `docs/AI_CONTEXT.md`
+- generated API pages from `docs/build_api_docs.py`, which runs the
+  `xiom-doc` binary over a `xiom-lang/stdlib` checkout
+- legacy redirect stubs derived from the published `docs/html/` layout
+
+`docs/build_mkdocs.py` assembles everything into `build/mkdocs-src/`
+(gitignored) and writes `SUMMARY.md` for the navigation; `mkdocs build
+--strict` must pass. `.github/workflows/docs-versioned.yml` runs the whole
+pipeline on `repository_dispatch: compiler-release` or manually
+(`workflow_dispatch`) and publishes with
+`mike deploy --push --update-aliases <tag> latest` to the `gh-pages` branch.
+
+Local verification (Python 3.8+; any managed interpreter works):
+
+```
+pip install -r requirements-docs.txt
+python docs/build_mkdocs.py --stdlib <stdlib-checkout> \
+    --xiom-doc <path-to-xiom-doc> --tag vX.Y.Z
+mkdocs build --strict
+```
+
+Ops dependency: `web-deploy.sh` currently publishes `docs/html/` to the docs
+docroot. Once the mike output is verified on `gh-pages`, the ops session
+switches the docs docroot to that branch; `docs/html/` stays as the
+standalone bundle used in compiler release packaging.
 
 ## Verification after a deploy
 
