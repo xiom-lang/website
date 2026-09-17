@@ -69,17 +69,20 @@ Queue:
 ## Workstream 2: documentation platform
 
 Current pipeline: `docs/build_docs.py` converts `docs/language/*.md` to
-`docs/html/` and a site copy. **Known issue after the monorepo split**: the
-script still writes `website/docs` and reads `website/style.css`; the site
-tree is now `xiom-website/`. Fix the paths and decide the canonical copy
-(suggestion: `docs/html/` is canonical for the docs subdomain, and
-`xiom-website/docs/` is a generated copy; or drop the site copy and make
-`docs.html` link to `https://docs.xiom-lang.org`).
+`docs/html/` and `xiom-website/docs/` (both generated; `docs/html/` is
+canonical for the docs subdomain, the site copy is published under
+`xiom-lang.org/docs/`). Fixed 2026-09-17: paths corrected for the
+`xiom-website/` split, every `docs/language/` source is in the nav, output
+is rebuilt from scratch (no orphan pages), generation is idempotent, and
+`.github/workflows/docs.yml` fails when committed output differs. Set
+`XIOM_DOCS_VERSION` to stamp pages (default `latest`); the mike migration
+replaces that stamping with per-version builds.
 
 Queue:
 
-1. **Fix and pin the generator**: correct the paths, run it in CI, and fail
-   the build when generated output differs from the committed copy.
+1. **~~Fix and pin the generator~~ (done 2026-09-17)**: paths, full nav
+   coverage, clean rebuild, and CI drift check in place. Remaining: decide
+   whether the site copy stays once mike versioning lands.
 2. **MkDocs Material + mike migration**: versioned documentation
    (`https://docs.xiom-lang.org/vX.Y.Z/` plus a `latest` alias, frozen
    versions per release). Sources: `docs/language/` plus generated API
@@ -120,12 +123,14 @@ from this repo to the VPS via /opt/xiom/bin/web-deploy.sh (cron minute 23);
 push to main and it publishes within the hour, or run the script on the VPS
 with the owner in PuTTY (outputs pasted back; never request credentials).
 
-Priority: (1) fix docs/build_docs.py for the split layout (website/ ->
-xiom-website/) and make generation reproducible in CI; (2) add -Version
-pinning and the checksum display to the installers and the download page;
-(3) plan and start the MkDocs Material + mike migration with versioned docs
-and redirects; (4) make versions.html read dl.xiom-lang.org/releases/index.json;
-(5) add ecosystem doc pointers to stdlib and registry repos. Keep the site
-static, ASCII-only, and driven by the mirror JSON files - never hardcode
-versions.
+Priority: (1) validate `xiom-doc` coverage over the stdlib repo (44 modules,
+517 .xi files) and build the API page driver; (2) plan and start the MkDocs
+Material + mike migration with versioned docs and redirects (the ops
+web-deploy.sh must stop publishing docs/html/ to the docs docroot); (3) add
+-Version pinning and the checksum display to the installers and the download
+page; (4) make versions.html read dl.xiom-lang.org/releases/index.json (the
+mirror keeps 20 tags; pre-0.13 history has no artifacts, so decide curated
+vs mirror-only); (5) ecosystem doc pointers stay deferred until stdlib is
+100%. Keep the site static, ASCII-only, and driven by the mirror JSON files
+- never hardcode versions.
 ```
