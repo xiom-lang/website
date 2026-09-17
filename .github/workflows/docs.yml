@@ -1,0 +1,42 @@
+# Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+# SPDX-License-Identifier: MIT OR Apache-2.0
+#
+# Fails when the committed generated docs do not match docs/build_docs.py
+# output. Run `python docs/build_docs.py` and commit the result to fix.
+
+name: docs
+
+on:
+  push:
+    paths:
+      - "docs/**"
+      - "xiom-website/docs/**"
+      - ".github/workflows/docs.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "xiom-website/docs/**"
+      - ".github/workflows/docs.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  generated-docs:
+    name: generated docs are current
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Regenerate docs
+        run: python docs/build_docs.py
+      - name: Fail when committed output differs
+        run: |
+          if [ -n "$(git status --porcelain -- docs/html xiom-website/docs)" ]; then
+            echo "::error::Generated docs are out of date. Run: python docs/build_docs.py"
+            git status --porcelain -- docs/html xiom-website/docs
+            git --no-pager diff --stat -- docs/html xiom-website/docs
+            exit 1
+          fi
