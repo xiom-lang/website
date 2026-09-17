@@ -1,0 +1,5250 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.60.1/api/io/">
+      
+      
+        <link rel="prev" href="../hash/">
+      
+      
+        <link rel="next" href="../iter/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>io - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stdlibio" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              io
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bufferxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        buffer.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="buffer.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-buf_reader_newfd-int-bufreader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn buf_reader_new(fd: Int) -&gt; BufReader
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_read_liner-mut-bufreader-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_read_line(r: &amp;mut BufReader) -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_read_bytesr-mut-bufreader-n-int-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_read_bytes(r: &amp;mut BufReader, n: Int) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_read_untilr-mut-bufreader-delim-uint8-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_read_until(r: &amp;mut BufReader, delim: UInt8) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_peekr-mut-bufreader-n-int-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_peek(r: &amp;mut BufReader, n: Int) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_seekr-mut-bufreader-pos-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_seek(r: &amp;mut BufReader, pos: Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_tellr-bufreader-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_tell(r: &amp;BufReader) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-buf_writer_newfd-int-bufwriter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn buf_writer_new(fd: Int) -&gt; BufWriter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-bw_writew-mut-bufwriter-data-vecuint8-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bw_write(w: &amp;mut BufWriter, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-bw_write_strw-mut-bufwriter-s-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bw_write_str(w: &amp;mut BufWriter, s: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-bw_flushw-mut-bufwriter-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bw_flush(w: &amp;mut BufWriter) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-bw_into_innerw-mut-bufwriter-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bw_into_inner(w: &amp;mut BufWriter) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consolexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        console.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="console.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_read_line-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_read_line() -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_read_char-optionchar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_read_char() -&gt; Option[Char]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_read_key-optionchar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_read_key() -&gt; Option[Char]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_writes-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_write(s: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_write_lines-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_write_line(s: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_write_errors-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_write_error(s: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_clear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_clear()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_set_titletitle-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_set_title(title: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_get_size-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_get_size() -&gt; (Int, Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_is_tty-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_is_tty() -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_passwordprompt-str-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_password(prompt: Str) -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_read_until_eof-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_read_until_eof() -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_flush" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_flush()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fs.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="fs.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_readpath-str-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_read(path: Str) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_writepath-str-data-vecuint8-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_write(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_appendpath-str-data-vecuint8-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_append(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_read_textpath-str-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_read_text(path: Str) -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_write_textpath-str-s-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_write_text(path: Str, s: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_copysrc-str-dst-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_movesrc-str-dst-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_move(src: Str, dst: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_existspath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_exists(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_is_filepath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_is_file(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_is_dirpath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_is_dir(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_sizepath-str-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_size(path: Str) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_mtimepath-str-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_mtime(path: Str) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_read_rangepath-str-offset-int-len-int-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_read_range(path: Str, offset: Int, len: Int) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_write_rangepath-str-offset-int-data-vecuint8-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_write_range(path: Str, offset: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_touchpath-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_touch(path: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_temp_dir-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_temp_dir() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ioxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        io.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="io.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type IOError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-seekfrom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum SeekFrom
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-printmsg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn print(msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-printlnmsg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn println(msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_line-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_line() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_int-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_int() -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_float-resultfloat64-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_float() -&gt; Result[Float64, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-parse_ints-str-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn parse_int(s: Str) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-parse_floats-str-resultfloat64-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn parse_float(s: Str) -&gt; Result[Float64, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_filepath-str-resultstr-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_file(path: Str) -&gt; Result[Str, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-write_filepath-str-content-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn write_file(path: Str, content: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-append_filepath-str-content-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn append_file(path: Str, content: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-file_existspath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn file_exists(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-is_dirpath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn is_dir(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-create_dirpath-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn create_dir(path: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-list_dirpath-str-resultvecstr-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn list_dir(path: Str) -&gt; Result[Vec[Str], IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-remove_filepath-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn remove_file(path: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-copy_filesrc-str-dst-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn copy_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-renamesrc-str-dst-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn rename(src: Str, dst: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exitcode-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exit(code: Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-args-vecstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn args() -&gt; Vec[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-env_varname-str-optionstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn env_var(name: Str) -&gt; Option[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-time_now-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn time_now() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-sleepms-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn sleep(ms: Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-openpath-str-mode-str-resultint-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn open(path: Str, mode: Str) -&gt; Result[Int, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-closehandle-int-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn close(handle: Int) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-bufreader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type BufReader
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-newreader-int-bufreader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn new(reader: Int) -&gt; BufReader
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_lineself-self-buf-mut-str-resultint-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_line(self: Self, buf: &amp;mut Str) -&gt; Result[Int, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-linesself-self-vecstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn lines(self: Self) -&gt; Vec[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-bufwriter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type BufWriter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-newwriter-int-bufwriter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn new(writer: Int) -&gt; BufWriter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type Metadata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-metadatapath-str-resultmetadata-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn metadata(path: Str) -&gt; Result[Metadata, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-set_permissionspath-str-perm-int-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn set_permissions(path: Str, perm: Int) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdin-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdin() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdout-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdout() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stderr-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stderr() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdin_file-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdin_file() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdout_file-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdout_file() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stderr_file-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stderr_file() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-cursor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type Cursor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-newdata-vecuint8-cursor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn new(data: Vec[UInt8]) -&gt; Cursor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-into_innerself-self-vecuint8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn into_inner(self: Self) -&gt; Vec[UInt8]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-join_pathsbase-str-child-str-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn join_paths(base: Str, child: Str) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-parent_pathpath-str-optionstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn parent_path(path: Str) -&gt; Option[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-file_namepath-str-optionstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn file_name(path: Str) -&gt; Option[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-extensionpath-str-optionstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn extension(path: Str) -&gt; Option[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-is_absolutepath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn is_absolute(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_line_trim-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_line_trim() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_all_stdin-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_all_stdin() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdin_read_line-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdin_read_line() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-flush_stdout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn flush_stdout()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn write_file_bytes(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_file_bytespath-str-resultvecuint8-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_file_bytes(path: Str) -&gt; Result[Vec[UInt8], IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-file_sizepath-str-optionint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn file_size(path: Str) -&gt; Option[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-file_modified_timepath-str-optionint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn file_modified_time(path: Str) -&gt; Option[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-move_filesrc-str-dst-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn move_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-dir_existspath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn dir_exists(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-create_dir_allpath-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn create_dir_all(path: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-list_dir_recursivepath-str-resultvecstr-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn list_dir_recursive(path: Str) -&gt; Result[Vec[Str], IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_file_linespath-str-resultvecstr-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_file_lines(path: Str) -&gt; Result[Vec[Str], IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn write_file_lines(path: Str, lines: &amp;Vec[Str]) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-append_linepath-str-line-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn append_line(path: Str, line: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pipe.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="pipe.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_create-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_create() -&gt; (Int, Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_readfd-int-buf-mut-vecuint8-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_read(fd: Int, buf: &amp;mut Vec[UInt8]) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_writefd-int-data-vecuint8-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_write(fd: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_closefd-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_close(fd: Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_is_openfd-int-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_is_open(fd: Int) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_read_linefd-int-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_read_line(fd: Int) -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_write_linefd-int-s-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_write_line(fd: Int, s: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_availablefd-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_available(fd: Int) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_read_timeoutfd-int-ms-int-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_read_timeout(fd: Int, ms: Int) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_write_timeoutfd-int-data-vecuint8-ms-int-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_write_timeout(fd: Int, data: &amp;Vec[UInt8], ms: Int) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bufferxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        buffer.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="buffer.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-buf_reader_newfd-int-bufreader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn buf_reader_new(fd: Int) -&gt; BufReader
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_read_liner-mut-bufreader-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_read_line(r: &amp;mut BufReader) -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_read_bytesr-mut-bufreader-n-int-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_read_bytes(r: &amp;mut BufReader, n: Int) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_read_untilr-mut-bufreader-delim-uint8-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_read_until(r: &amp;mut BufReader, delim: UInt8) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_peekr-mut-bufreader-n-int-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_peek(r: &amp;mut BufReader, n: Int) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_seekr-mut-bufreader-pos-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_seek(r: &amp;mut BufReader, pos: Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-br_tellr-bufreader-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn br_tell(r: &amp;BufReader) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-buf_writer_newfd-int-bufwriter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn buf_writer_new(fd: Int) -&gt; BufWriter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-bw_writew-mut-bufwriter-data-vecuint8-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bw_write(w: &amp;mut BufWriter, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-bw_write_strw-mut-bufwriter-s-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bw_write_str(w: &amp;mut BufWriter, s: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-bw_flushw-mut-bufwriter-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bw_flush(w: &amp;mut BufWriter) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-bw_into_innerw-mut-bufwriter-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bw_into_inner(w: &amp;mut BufWriter) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consolexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        console.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="console.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_read_line-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_read_line() -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_read_char-optionchar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_read_char() -&gt; Option[Char]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_read_key-optionchar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_read_key() -&gt; Option[Char]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_writes-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_write(s: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_write_lines-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_write_line(s: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_write_errors-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_write_error(s: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_clear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_clear()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_set_titletitle-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_set_title(title: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_get_size-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_get_size() -&gt; (Int, Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_is_tty-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_is_tty() -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_passwordprompt-str-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_password(prompt: Str) -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_read_until_eof-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_read_until_eof() -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-console_flush" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn console_flush()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fs.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="fs.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_readpath-str-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_read(path: Str) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_writepath-str-data-vecuint8-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_write(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_appendpath-str-data-vecuint8-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_append(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_read_textpath-str-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_read_text(path: Str) -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_write_textpath-str-s-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_write_text(path: Str, s: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_copysrc-str-dst-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_movesrc-str-dst-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_move(src: Str, dst: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_existspath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_exists(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_is_filepath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_is_file(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_is_dirpath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_is_dir(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_sizepath-str-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_size(path: Str) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_mtimepath-str-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_mtime(path: Str) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_read_rangepath-str-offset-int-len-int-resultvecuint8-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_read_range(path: Str, offset: Int, len: Int) -&gt; Result[Vec[UInt8], Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_write_rangepath-str-offset-int-data-vecuint8-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_write_range(path: Str, offset: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_touchpath-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_touch(path: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-fs_temp_dir-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn fs_temp_dir() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ioxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        io.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="io.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type IOError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-seekfrom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum SeekFrom
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-printmsg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn print(msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-printlnmsg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn println(msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_line-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_line() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_int-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_int() -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_float-resultfloat64-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_float() -&gt; Result[Float64, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-parse_ints-str-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn parse_int(s: Str) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-parse_floats-str-resultfloat64-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn parse_float(s: Str) -&gt; Result[Float64, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_filepath-str-resultstr-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_file(path: Str) -&gt; Result[Str, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-write_filepath-str-content-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn write_file(path: Str, content: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-append_filepath-str-content-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn append_file(path: Str, content: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-file_existspath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn file_exists(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-is_dirpath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn is_dir(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-create_dirpath-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn create_dir(path: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-list_dirpath-str-resultvecstr-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn list_dir(path: Str) -&gt; Result[Vec[Str], IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-remove_filepath-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn remove_file(path: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-copy_filesrc-str-dst-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn copy_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-renamesrc-str-dst-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn rename(src: Str, dst: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exitcode-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exit(code: Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-args-vecstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn args() -&gt; Vec[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-env_varname-str-optionstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn env_var(name: Str) -&gt; Option[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-time_now-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn time_now() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-sleepms-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn sleep(ms: Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-openpath-str-mode-str-resultint-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn open(path: Str, mode: Str) -&gt; Result[Int, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-closehandle-int-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn close(handle: Int) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-bufreader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type BufReader
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-newreader-int-bufreader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn new(reader: Int) -&gt; BufReader
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_lineself-self-buf-mut-str-resultint-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_line(self: Self, buf: &amp;mut Str) -&gt; Result[Int, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-linesself-self-vecstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn lines(self: Self) -&gt; Vec[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-bufwriter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type BufWriter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-newwriter-int-bufwriter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn new(writer: Int) -&gt; BufWriter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type Metadata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-metadatapath-str-resultmetadata-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn metadata(path: Str) -&gt; Result[Metadata, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-set_permissionspath-str-perm-int-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn set_permissions(path: Str, perm: Int) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdin-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdin() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdout-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdout() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stderr-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stderr() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdin_file-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdin_file() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdout_file-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdout_file() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stderr_file-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stderr_file() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-cursor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type Cursor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-newdata-vecuint8-cursor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn new(data: Vec[UInt8]) -&gt; Cursor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-into_innerself-self-vecuint8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn into_inner(self: Self) -&gt; Vec[UInt8]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-join_pathsbase-str-child-str-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn join_paths(base: Str, child: Str) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-parent_pathpath-str-optionstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn parent_path(path: Str) -&gt; Option[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-file_namepath-str-optionstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn file_name(path: Str) -&gt; Option[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-extensionpath-str-optionstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn extension(path: Str) -&gt; Option[Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-is_absolutepath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn is_absolute(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_line_trim-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_line_trim() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_all_stdin-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_all_stdin() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stdin_read_line-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stdin_read_line() -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-flush_stdout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn flush_stdout()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn write_file_bytes(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_file_bytespath-str-resultvecuint8-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_file_bytes(path: Str) -&gt; Result[Vec[UInt8], IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-file_sizepath-str-optionint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn file_size(path: Str) -&gt; Option[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-file_modified_timepath-str-optionint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn file_modified_time(path: Str) -&gt; Option[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-move_filesrc-str-dst-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn move_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-dir_existspath-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn dir_exists(path: Str) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-create_dir_allpath-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn create_dir_all(path: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-list_dir_recursivepath-str-resultvecstr-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn list_dir_recursive(path: Str) -&gt; Result[Vec[Str], IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-read_file_linespath-str-resultvecstr-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn read_file_lines(path: Str) -&gt; Result[Vec[Str], IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn write_file_lines(path: Str, lines: &amp;Vec[Str]) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-append_linepath-str-line-str-resultunit-ioerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn append_line(path: Str, line: Str) -&gt; Result[Unit, IOError]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pipe.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="pipe.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_create-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_create() -&gt; (Int, Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_readfd-int-buf-mut-vecuint8-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_read(fd: Int, buf: &amp;mut Vec[UInt8]) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_writefd-int-data-vecuint8-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_write(fd: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_closefd-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_close(fd: Int)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_is_openfd-int-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_is_open(fd: Int) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_read_linefd-int-resultstr-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_read_line(fd: Int) -&gt; Result[Str, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_write_linefd-int-s-str-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_write_line(fd: Int, s: Str) -&gt; Result[Unit, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_availablefd-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_available(fd: Int) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_read_timeoutfd-int-ms-int-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_read_timeout(fd: Int, ms: Int) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pipe_write_timeoutfd-int-data-vecuint8-ms-int-resultint-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pipe_write_timeout(fd: Int, data: &amp;Vec[UInt8], ms: Int) -&gt; Result[Int, Str]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="stdlibio"><code>stdlib.io</code><a class="headerlink" href="#stdlibio" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Generated from <code>v0.60.1</code>. 5 source files, 115 documented symbols.</p>
+</blockquote>
+<h2 id="bufferxi"><code>buffer.xi</code><a class="headerlink" href="#bufferxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-buf_reader_newfd-int-bufreader"><code>fn buf_reader_new(fd: Int) -&gt; BufReader</code><a class="headerlink" href="#fn-buf_reader_newfd-int-bufreader" title="Permanent link">&para;</a></h4>
+<h4 id="fn-br_read_liner-mut-bufreader-resultstr-str"><code>fn br_read_line(r: &amp;mut BufReader) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-br_read_liner-mut-bufreader-resultstr-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-br_read_bytesr-mut-bufreader-n-int-resultvecuint8-str"><code>fn br_read_bytes(r: &amp;mut BufReader, n: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-br_read_bytesr-mut-bufreader-n-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-br_read_untilr-mut-bufreader-delim-uint8-resultvecuint8-str"><code>fn br_read_until(r: &amp;mut BufReader, delim: UInt8) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-br_read_untilr-mut-bufreader-delim-uint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-br_peekr-mut-bufreader-n-int-resultvecuint8-str"><code>fn br_peek(r: &amp;mut BufReader, n: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-br_peekr-mut-bufreader-n-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-br_seekr-mut-bufreader-pos-int"><code>fn br_seek(r: &amp;mut BufReader, pos: Int)</code><a class="headerlink" href="#fn-br_seekr-mut-bufreader-pos-int" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Precondition:</strong> <code>pos &gt;= -2147483648 &amp;&amp; pos &lt;= 2147483647</code></li>
+<li><strong>Precondition:</strong> <code>r.inner != 0</code></li>
+</ul>
+<h4 id="fn-br_tellr-bufreader-int"><code>fn br_tell(r: &amp;BufReader) -&gt; Int</code><a class="headerlink" href="#fn-br_tellr-bufreader-int" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Precondition:</strong> <code>r.inner != 0</code></li>
+</ul>
+<h4 id="fn-buf_writer_newfd-int-bufwriter"><code>fn buf_writer_new(fd: Int) -&gt; BufWriter</code><a class="headerlink" href="#fn-buf_writer_newfd-int-bufwriter" title="Permanent link">&para;</a></h4>
+<h4 id="fn-bw_writew-mut-bufwriter-data-vecuint8-resultunit-str"><code>fn bw_write(w: &amp;mut BufWriter, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-bw_writew-mut-bufwriter-data-vecuint8-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-bw_write_strw-mut-bufwriter-s-str-resultunit-str"><code>fn bw_write_str(w: &amp;mut BufWriter, s: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-bw_write_strw-mut-bufwriter-s-str-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-bw_flushw-mut-bufwriter-resultunit-str"><code>fn bw_flush(w: &amp;mut BufWriter) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-bw_flushw-mut-bufwriter-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-bw_into_innerw-mut-bufwriter-int"><code>fn bw_into_inner(w: &amp;mut BufWriter) -&gt; Int</code><a class="headerlink" href="#fn-bw_into_innerw-mut-bufwriter-int" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="consolexi"><code>console.xi</code><a class="headerlink" href="#consolexi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-console_read_line-resultstr-str"><code>fn console_read_line() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-console_read_line-resultstr-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_read_char-optionchar"><code>fn console_read_char() -&gt; Option[Char]</code><a class="headerlink" href="#fn-console_read_char-optionchar" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_read_key-optionchar"><code>fn console_read_key() -&gt; Option[Char]</code><a class="headerlink" href="#fn-console_read_key-optionchar" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_writes-str"><code>fn console_write(s: Str)</code><a class="headerlink" href="#fn-console_writes-str" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-console_write_lines-str"><code>fn console_write_line(s: Str)</code><a class="headerlink" href="#fn-console_write_lines-str" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-console_write_errors-str"><code>fn console_write_error(s: Str)</code><a class="headerlink" href="#fn-console_write_errors-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_clear"><code>fn console_clear()</code><a class="headerlink" href="#fn-console_clear" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-console_set_titletitle-str"><code>fn console_set_title(title: Str)</code><a class="headerlink" href="#fn-console_set_titletitle-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_get_size-int-int"><code>fn console_get_size() -&gt; (Int, Int)</code><a class="headerlink" href="#fn-console_get_size-int-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_is_tty-bool"><code>fn console_is_tty() -&gt; Bool</code><a class="headerlink" href="#fn-console_is_tty-bool" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_passwordprompt-str-resultstr-str"><code>fn console_password(prompt: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-console_passwordprompt-str-resultstr-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_read_until_eof-resultstr-str"><code>fn console_read_until_eof() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-console_read_until_eof-resultstr-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-console_flush"><code>fn console_flush()</code><a class="headerlink" href="#fn-console_flush" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<hr />
+<hr />
+<hr />
+<h2 id="fsxi"><code>fs.xi</code><a class="headerlink" href="#fsxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-fs_readpath-str-resultvecuint8-str"><code>fn fs_read(path: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-fs_readpath-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_writepath-str-data-vecuint8-resultunit-str"><code>fn fs_write(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_writepath-str-data-vecuint8-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_appendpath-str-data-vecuint8-resultunit-str"><code>fn fs_append(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_appendpath-str-data-vecuint8-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_read_textpath-str-resultstr-str"><code>fn fs_read_text(path: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-fs_read_textpath-str-resultstr-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_write_textpath-str-s-str-resultunit-str"><code>fn fs_write_text(path: Str, s: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_write_textpath-str-s-str-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_copysrc-str-dst-str-resultunit-str"><code>fn fs_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_copysrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_movesrc-str-dst-str-resultunit-str"><code>fn fs_move(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_movesrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_existspath-str-bool"><code>fn fs_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_existspath-str-bool" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_is_filepath-str-bool"><code>fn fs_is_file(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_is_filepath-str-bool" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_is_dirpath-str-bool"><code>fn fs_is_dir(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_is_dirpath-str-bool" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_sizepath-str-resultint-str"><code>fn fs_size(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-fs_sizepath-str-resultint-str" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
+<h4 id="fn-fs_mtimepath-str-resultint-str"><code>fn fs_mtime(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-fs_mtimepath-str-resultint-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_read_rangepath-str-offset-int-len-int-resultvecuint8-str"><code>fn fs_read_range(path: Str, offset: Int, len: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-fs_read_rangepath-str-offset-int-len-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_write_rangepath-str-offset-int-data-vecuint8-resultint-str"><code>fn fs_write_range(path: Str, offset: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-fs_write_rangepath-str-offset-int-data-vecuint8-resultint-str" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
+<h4 id="fn-fs_touchpath-str-resultunit-str"><code>fn fs_touch(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_touchpath-str-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-fs_temp_dir-str"><code>fn fs_temp_dir() -&gt; Str</code><a class="headerlink" href="#fn-fs_temp_dir-str" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
+<hr />
+<hr />
+<hr />
+<h2 id="ioxi"><code>io.xi</code><a class="headerlink" href="#ioxi" title="Permanent link">&para;</a></h2>
+<h3 id="type-ioerror"><code>type IOError</code><a class="headerlink" href="#type-ioerror" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>message</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="enum-seekfrom"><code>enum SeekFrom</code><a class="headerlink" href="#enum-seekfrom" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>Start(_0: Int)</code></li>
+<li><code>End(_0: Int)</code></li>
+<li><code>Current(_0: Int)</code></li>
+</ul>
+<h3 id="fn-printmsg-str"><code>fn print(msg: Str)</code><a class="headerlink" href="#fn-printmsg-str" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h3 id="fn-printlnmsg-str"><code>fn println(msg: Str)</code><a class="headerlink" href="#fn-printlnmsg-str" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h3 id="fn-read_line-str"><code>fn read_line() -&gt; Str</code><a class="headerlink" href="#fn-read_line-str" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
+<h3 id="fn-read_int-resultint-str"><code>fn read_int() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-read_int-resultint-str" title="Permanent link">&para;</a></h3>
+<h3 id="fn-read_float-resultfloat64-str"><code>fn read_float() -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-read_float-resultfloat64-str" title="Permanent link">&para;</a></h3>
+<h3 id="fn-parse_ints-str-resultint-str"><code>fn parse_int(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-parse_ints-str-resultint-str" title="Permanent link">&para;</a></h3>
+<h3 id="fn-parse_floats-str-resultfloat64-str"><code>fn parse_float(s: Str) -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-parse_floats-str-resultfloat64-str" title="Permanent link">&para;</a></h3>
+<h3 id="fn-read_filepath-str-resultstr-ioerror"><code>fn read_file(path: Str) -&gt; Result[Str, IOError]</code><a class="headerlink" href="#fn-read_filepath-str-resultstr-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
+<h3 id="fn-write_filepath-str-content-str-resultunit-ioerror"><code>fn write_file(path: Str, content: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_filepath-str-content-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(path)</code></li>
+</ul>
+<h3 id="fn-append_filepath-str-content-str-resultunit-ioerror"><code>fn append_file(path: Str, content: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-append_filepath-str-content-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(path)</code></li>
+</ul>
+<h3 id="fn-file_existspath-str-bool"><code>fn file_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-file_existspath-str-bool" title="Permanent link">&para;</a></h3>
+<h3 id="fn-is_dirpath-str-bool"><code>fn is_dir(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_dirpath-str-bool" title="Permanent link">&para;</a></h3>
+<h3 id="fn-create_dirpath-str-resultunit-ioerror"><code>fn create_dir(path: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-create_dirpath-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>!file_exists(path)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; is_dir(path)</code></li>
+</ul>
+<h3 id="fn-list_dirpath-str-resultvecstr-ioerror"><code>fn list_dir(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-list_dirpath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>is_dir(path)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
+<h3 id="fn-remove_filepath-str-resultunit-ioerror"><code>fn remove_file(path: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-remove_filepath-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; !file_exists(path)</code></li>
+</ul>
+<h3 id="fn-copy_filesrc-str-dst-str-resultunit-ioerror"><code>fn copy_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-copy_filesrc-str-dst-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>src.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>dst.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>src != dst</code></li>
+<li><strong>Precondition:</strong> <code>file_exists(src)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(dst)</code></li>
+</ul>
+<h3 id="fn-renamesrc-str-dst-str-resultunit-ioerror"><code>fn rename(src: Str, dst: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-renamesrc-str-dst-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>src.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>dst.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; !file_exists(src) &amp;&amp; file_exists(dst)</code></li>
+</ul>
+<h3 id="fn-exitcode-int"><code>fn exit(code: Int)</code><a class="headerlink" href="#fn-exitcode-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>code &gt;= 0</code></li>
+</ul>
+<h3 id="fn-args-vecstr"><code>fn args() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-args-vecstr" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
+<h3 id="fn-env_varname-str-optionstr"><code>fn env_var(name: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-env_varname-str-optionstr" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h3 id="fn-time_now-int"><code>fn time_now() -&gt; Int</code><a class="headerlink" href="#fn-time_now-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h3 id="fn-sleepms-int"><code>fn sleep(ms: Int)</code><a class="headerlink" href="#fn-sleepms-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>ms &gt;= 0</code></li>
+</ul>
+<h3 id="fn-openpath-str-mode-str-resultint-ioerror"><code>fn open(path: Str, mode: Str) -&gt; Result[Int, IOError]</code><a class="headerlink" href="#fn-openpath-str-mode-str-resultint-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>mode.len() &gt; 0</code></li>
+</ul>
+<h3 id="fn-closehandle-int-resultunit-ioerror"><code>fn close(handle: Int) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-closehandle-int-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>handle != 0</code></li>
+</ul>
+<h3 id="type-bufreader"><code>type BufReader</code><a class="headerlink" href="#type-bufreader" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inner</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>buf</code></td>
+<td><code>Vec[UInt8]</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Invariants:</strong>
+- <code>inner &gt;= 0</code></p>
+<h3 id="fn-newreader-int-bufreader"><code>fn new(reader: Int) -&gt; BufReader</code><a class="headerlink" href="#fn-newreader-int-bufreader" title="Permanent link">&para;</a></h3>
+<h3 id="fn-read_lineself-self-buf-mut-str-resultint-ioerror"><code>fn read_line(self: Self, buf: &amp;mut Str) -&gt; Result[Int, IOError]</code><a class="headerlink" href="#fn-read_lineself-self-buf-mut-str-resultint-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>inner &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
+</ul>
+<h3 id="fn-linesself-self-vecstr"><code>fn lines(self: Self) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-linesself-self-vecstr" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
+<h3 id="type-bufwriter"><code>type BufWriter</code><a class="headerlink" href="#type-bufwriter" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inner</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>buf</code></td>
+<td><code>Vec[UInt8]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="fn-newwriter-int-bufwriter"><code>fn new(writer: Int) -&gt; BufWriter</code><a class="headerlink" href="#fn-newwriter-int-bufwriter" title="Permanent link">&para;</a></h3>
+<h3 id="type-metadata"><code>type Metadata</code><a class="headerlink" href="#type-metadata" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>size</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>is_file</code></td>
+<td><code>Bool</code></td>
+</tr>
+<tr>
+<td><code>is_dir</code></td>
+<td><code>Bool</code></td>
+</tr>
+<tr>
+<td><code>modified</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>created</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>permissions</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="fn-metadatapath-str-resultmetadata-ioerror"><code>fn metadata(path: Str) -&gt; Result[Metadata, IOError]</code><a class="headerlink" href="#fn-metadatapath-str-resultmetadata-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.size &gt;= 0</code></li>
+</ul>
+<h3 id="fn-set_permissionspath-str-perm-int-resultunit-ioerror"><code>fn set_permissions(path: Str, perm: Int) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-set_permissionspath-str-perm-int-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>perm &gt;= 0</code></li>
+</ul>
+<h3 id="fn-stdin-int"><code>fn stdin() -&gt; Int</code><a class="headerlink" href="#fn-stdin-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h3 id="fn-stdout-int"><code>fn stdout() -&gt; Int</code><a class="headerlink" href="#fn-stdout-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h3 id="fn-stderr-int"><code>fn stderr() -&gt; Int</code><a class="headerlink" href="#fn-stderr-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h3 id="fn-stdin_file-int"><code>fn stdin_file() -&gt; Int</code><a class="headerlink" href="#fn-stdin_file-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result != 0</code></li>
+</ul>
+<h3 id="fn-stdout_file-int"><code>fn stdout_file() -&gt; Int</code><a class="headerlink" href="#fn-stdout_file-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result != 0</code></li>
+</ul>
+<h3 id="fn-stderr_file-int"><code>fn stderr_file() -&gt; Int</code><a class="headerlink" href="#fn-stderr_file-int" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result != 0</code></li>
+</ul>
+<h3 id="type-cursor"><code>type Cursor</code><a class="headerlink" href="#type-cursor" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data</code></td>
+<td><code>Vec[UInt8]</code></td>
+</tr>
+<tr>
+<td><code>pos</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Invariants:</strong>
+- <code>pos &gt;= 0</code>
+- <code>pos &lt;= data.len()</code></p>
+<h3 id="fn-newdata-vecuint8-cursor"><code>fn new(data: Vec[UInt8]) -&gt; Cursor</code><a class="headerlink" href="#fn-newdata-vecuint8-cursor" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.pos == 0</code></li>
+</ul>
+<h3 id="fn-into_innerself-self-vecuint8"><code>fn into_inner(self: Self) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-into_innerself-self-vecuint8" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == self.data.len()</code></li>
+</ul>
+<h3 id="fn-join_pathsbase-str-child-str-str"><code>fn join_paths(base: Str, child: Str) -&gt; Str</code><a class="headerlink" href="#fn-join_pathsbase-str-child-str-str" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= base.len()</code></li>
+</ul>
+<h3 id="fn-parent_pathpath-str-optionstr"><code>fn parent_path(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-parent_pathpath-str-optionstr" title="Permanent link">&para;</a></h3>
+<h3 id="fn-file_namepath-str-optionstr"><code>fn file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_namepath-str-optionstr" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
+<h3 id="fn-extensionpath-str-optionstr"><code>fn extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-extensionpath-str-optionstr" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
+<h3 id="fn-is_absolutepath-str-bool"><code>fn is_absolute(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_absolutepath-str-bool" title="Permanent link">&para;</a></h3>
+<h3 id="fn-read_line_trim-str"><code>fn read_line_trim() -&gt; Str</code><a class="headerlink" href="#fn-read_line_trim-str" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
+<h3 id="fn-read_all_stdin-str"><code>fn read_all_stdin() -&gt; Str</code><a class="headerlink" href="#fn-read_all_stdin-str" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
+<h3 id="fn-stdin_read_line-str"><code>fn stdin_read_line() -&gt; Str</code><a class="headerlink" href="#fn-stdin_read_line-str" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
+<h3 id="fn-flush_stdout"><code>fn flush_stdout()</code><a class="headerlink" href="#fn-flush_stdout" title="Permanent link">&para;</a></h3>
+<h3 id="fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror"><code>fn write_file_bytes(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<h3 id="fn-read_file_bytespath-str-resultvecuint8-ioerror"><code>fn read_file_bytes(path: Str) -&gt; Result[Vec[UInt8], IOError]</code><a class="headerlink" href="#fn-read_file_bytespath-str-resultvecuint8-ioerror" title="Permanent link">&para;</a></h3>
+<h3 id="fn-file_sizepath-str-optionint"><code>fn file_size(path: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-file_sizepath-str-optionint" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
+<h3 id="fn-file_modified_timepath-str-optionint"><code>fn file_modified_time(path: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-file_modified_timepath-str-optionint" title="Permanent link">&para;</a></h3>
+<h3 id="fn-move_filesrc-str-dst-str-resultunit-ioerror"><code>fn move_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-move_filesrc-str-dst-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<h3 id="fn-dir_existspath-str-bool"><code>fn dir_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_existspath-str-bool" title="Permanent link">&para;</a></h3>
+<h3 id="fn-create_dir_allpath-str-resultunit-ioerror"><code>fn create_dir_all(path: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-create_dir_allpath-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<h3 id="fn-list_dir_recursivepath-str-resultvecstr-ioerror"><code>fn list_dir_recursive(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-list_dir_recursivepath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h3>
+<h3 id="fn-read_file_linespath-str-resultvecstr-ioerror"><code>fn read_file_lines(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-read_file_linespath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h3>
+<h3 id="fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror"><code>fn write_file_lines(path: Str, lines: &amp;Vec[Str]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<h3 id="fn-append_linepath-str-line-str-resultunit-ioerror"><code>fn append_line(path: Str, line: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-append_linepath-str-line-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
+<hr />
+<hr />
+<h2 id="pipexi"><code>pipe.xi</code><a class="headerlink" href="#pipexi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-pipe_create-int-int"><code>fn pipe_create() -&gt; (Int, Int)</code><a class="headerlink" href="#fn-pipe_create-int-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pipe_readfd-int-buf-mut-vecuint8-resultint-str"><code>fn pipe_read(fd: Int, buf: &amp;mut Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pipe_readfd-int-buf-mut-vecuint8-resultint-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pipe_writefd-int-data-vecuint8-resultint-str"><code>fn pipe_write(fd: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pipe_writefd-int-data-vecuint8-resultint-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pipe_closefd-int"><code>fn pipe_close(fd: Int)</code><a class="headerlink" href="#fn-pipe_closefd-int" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Precondition:</strong> <code>fd &gt;= 0</code></li>
+</ul>
+<h4 id="fn-pipe_is_openfd-int-bool"><code>fn pipe_is_open(fd: Int) -&gt; Bool</code><a class="headerlink" href="#fn-pipe_is_openfd-int-bool" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pipe_read_linefd-int-resultstr-str"><code>fn pipe_read_line(fd: Int) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-pipe_read_linefd-int-resultstr-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pipe_write_linefd-int-s-str-resultunit-str"><code>fn pipe_write_line(fd: Int, s: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-pipe_write_linefd-int-s-str-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pipe_availablefd-int-int"><code>fn pipe_available(fd: Int) -&gt; Int</code><a class="headerlink" href="#fn-pipe_availablefd-int-int" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-pipe_read_timeoutfd-int-ms-int-resultint-str"><code>fn pipe_read_timeout(fd: Int, ms: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pipe_read_timeoutfd-int-ms-int-resultint-str" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
+<h4 id="fn-pipe_write_timeoutfd-int-data-vecuint8-ms-int-resultint-str"><code>fn pipe_write_timeout(fd: Int, data: &amp;Vec[UInt8], ms: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pipe_write_timeoutfd-int-data-vecuint8-ms-int-resultint-str" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
+<hr />
+<hr />
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

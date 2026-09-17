@@ -1,0 +1,3982 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.60.1/api/test/">
+      
+      
+        <link rel="prev" href="../sync/">
+      
+      
+        <link rel="next" href="../text/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>test - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stdlibtest" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              test
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#assertxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        assert.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="assert.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-assertcond-bool-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert(cond: Bool, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_eqta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_eq[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_neta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ne[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_ltta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_lt[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_leta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_le[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_gtta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_gt[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_geta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ge[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_truecond-bool-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_true(cond: Bool, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_falsecond-bool-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_false(cond: Bool, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_neara-float64-b-float64-eps-float64-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_near(a: Float64, b: Float64, eps: Float64, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_containshaystack-str-needle-str-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_contains(haystack: Str, needle: Str, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_matchess-str-pattern-str-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_matches(s: Str, pattern: Str, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_oktr-resultt-str-msg-str-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ok[T](r: Result[T, Str], msg: Str) -&gt; T
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_errtr-resultt-str-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_err[T](r: Result[T, Str], msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_someto-optiont-msg-str-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_some[T](o: Option[T], msg: Str) -&gt; T
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_noneto-optiont-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_none[T](o: Option[T], msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_panicsf-fn-unit-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_panics(f: fn() -&gt; Unit, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_throwsf-fn-unit-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_throws(f: fn() -&gt; Unit, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_emptytv-vect-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_empty[T](v: &amp;Vec[T], msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_lentv-vect-n-int-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_len[T](v: &amp;Vec[T], n: Int, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harnessxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        harness.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="harness.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type Harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type TestReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-globaltests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type GlobalTests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_harness_new-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_harness_new() -&gt; Harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_add_testh-mut-harness-name-str-f-fn-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_add_test(h: &amp;mut Harness, name: Str, f: fn() -&gt; Result[Unit, Str])
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_runh-harness-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_run(h: &amp;Harness) -&gt; TestReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_run_filteredh-harness-filter-str-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_run_filtered(h: &amp;Harness, filter: Str) -&gt; TestReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_parallelh-harness-workers-int-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_parallel(h: &amp;Harness, workers: Int) -&gt; TestReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_skiph-mut-harness-name-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_skip(h: &amp;mut Harness, name: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_benchmarkh-mut-harness-name-str-f-fn-unit-iterations-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_benchmark(h: &amp;mut Harness, name: Str, f: fn() -&gt; Unit, iterations: Int) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_passedr-testreport-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_passed(r: &amp;TestReport) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_failedr-testreport-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_failed(r: &amp;TestReport) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_skippedr-testreport-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_skipped(r: &amp;TestReport) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_duration_msr-testreport-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_duration_ms(r: &amp;TestReport) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_printr-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_print(r: &amp;TestReport)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_jsonr-testreport-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_json(r: &amp;TestReport) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_main-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_main() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_registername-str-f-fn-resultunit-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_register(name: Str, f: fn() -&gt; Result[Unit, Str]) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="test.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-contractfailure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type ContractFailure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assertcondition-bool-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert(condition: Bool, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_eqtexpected-t-actual-t-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_eq[T](expected: T, actual: T, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_netexpected-t-actual-t-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ne[T](expected: T, actual: T, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_lttleft-t-right-t-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_lt[T](left: T, right: T, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_gttleft-t-right-t-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_gt[T](left: T, right: T, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_containshaystack-str-needle-str-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_contains(haystack: Str, needle: Str, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_okt-eresult-resultt-e-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ok[T, E](result: Result[T, E], name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_errt-eresult-resultt-e-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_err[T, E](result: Result[T, E], name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_sometoption-optiont-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_some[T](option: Option[T], name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_nonetoption-optiont-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_none[T](option: Option[T], name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_contracttvalue-t-predicate-fnt-bool-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_contract[T](value: T, predicate: fn(&amp;T) -&gt; Bool, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-runtest-fn-testresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn run(test: fn() -&gt; TestResult) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-run_alltests-vecfn-testresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn run_all(tests: Vec[fn() -&gt; TestResult]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-run_filteredtests-vecfn-testresult-filter-str-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn run_filtered(tests: Vec[fn() -&gt; TestResult], filter: Str) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-format_resultsresults-vectestresult-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn format_results(results: Vec[TestResult]) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-format_results_jsonresults-vectestresult-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn format_results_json(results: Vec[TestResult]) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-benchname-str-f-fn-unit-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bench(name: Str, f: fn() -&gt; Unit) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_falsecond-bool-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_false(cond: Bool, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_eq_intexpected-int-actual-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_eq_int(expected: Int, actual: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_ne_intexpected-int-actual-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ne_int(expected: Int, actual: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_gt_intleft-int-right-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_gt_int(left: Int, right: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_lt_intleft-int-right-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_lt_int(left: Int, right: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_ge_intleft-int-right-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ge_int(left: Int, right: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_le_intleft-int-right-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_le_int(left: Int, right: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_in_rangevalue-int-lo-int-hi-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_in_range(value: Int, lo: Int, hi: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_count_failuresresults-vectestresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_count_failures(results: Vec[TestResult]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_pass_countresults-vectestresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_pass_count(results: Vec[TestResult]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_fail_countresults-vectestresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_fail_count(results: Vec[TestResult]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_summaryresults-vectestresult-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_summary(results: Vec[TestResult]) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_reportresults-vectestresult-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_report(results: Vec[TestResult]) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#assertxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        assert.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="assert.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-assertcond-bool-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert(cond: Bool, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_eqta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_eq[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_neta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ne[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_ltta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_lt[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_leta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_le[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_gtta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_gt[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_geta-t-b-t-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ge[T](a: T, b: T, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_truecond-bool-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_true(cond: Bool, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_falsecond-bool-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_false(cond: Bool, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_neara-float64-b-float64-eps-float64-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_near(a: Float64, b: Float64, eps: Float64, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_containshaystack-str-needle-str-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_contains(haystack: Str, needle: Str, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_matchess-str-pattern-str-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_matches(s: Str, pattern: Str, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_oktr-resultt-str-msg-str-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ok[T](r: Result[T, Str], msg: Str) -&gt; T
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_errtr-resultt-str-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_err[T](r: Result[T, Str], msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_someto-optiont-msg-str-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_some[T](o: Option[T], msg: Str) -&gt; T
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_noneto-optiont-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_none[T](o: Option[T], msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_panicsf-fn-unit-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_panics(f: fn() -&gt; Unit, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_throwsf-fn-unit-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_throws(f: fn() -&gt; Unit, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_emptytv-vect-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_empty[T](v: &amp;Vec[T], msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_lentv-vect-n-int-msg-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_len[T](v: &amp;Vec[T], n: Int, msg: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harnessxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        harness.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="harness.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type Harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type TestReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-globaltests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type GlobalTests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_harness_new-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_harness_new() -&gt; Harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_add_testh-mut-harness-name-str-f-fn-resultunit-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_add_test(h: &amp;mut Harness, name: Str, f: fn() -&gt; Result[Unit, Str])
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_runh-harness-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_run(h: &amp;Harness) -&gt; TestReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_run_filteredh-harness-filter-str-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_run_filtered(h: &amp;Harness, filter: Str) -&gt; TestReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_parallelh-harness-workers-int-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_parallel(h: &amp;Harness, workers: Int) -&gt; TestReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_skiph-mut-harness-name-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_skip(h: &amp;mut Harness, name: Str)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harness_benchmarkh-mut-harness-name-str-f-fn-unit-iterations-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harness_benchmark(h: &amp;mut Harness, name: Str, f: fn() -&gt; Unit, iterations: Int) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_passedr-testreport-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_passed(r: &amp;TestReport) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_failedr-testreport-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_failed(r: &amp;TestReport) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_skippedr-testreport-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_skipped(r: &amp;TestReport) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_duration_msr-testreport-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_duration_ms(r: &amp;TestReport) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_printr-testreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_print(r: &amp;TestReport)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-report_jsonr-testreport-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn report_json(r: &amp;TestReport) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_main-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_main() -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_registername-str-f-fn-resultunit-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_register(name: Str, f: fn() -&gt; Result[Unit, Str]) -&gt; Bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="test.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-contractfailure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type ContractFailure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assertcondition-bool-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert(condition: Bool, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_eqtexpected-t-actual-t-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_eq[T](expected: T, actual: T, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_netexpected-t-actual-t-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ne[T](expected: T, actual: T, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_lttleft-t-right-t-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_lt[T](left: T, right: T, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_gttleft-t-right-t-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_gt[T](left: T, right: T, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_containshaystack-str-needle-str-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_contains(haystack: Str, needle: Str, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_okt-eresult-resultt-e-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ok[T, E](result: Result[T, E], name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_errt-eresult-resultt-e-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_err[T, E](result: Result[T, E], name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_sometoption-optiont-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_some[T](option: Option[T], name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_nonetoption-optiont-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_none[T](option: Option[T], name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_contracttvalue-t-predicate-fnt-bool-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_contract[T](value: T, predicate: fn(&amp;T) -&gt; Bool, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-runtest-fn-testresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn run(test: fn() -&gt; TestResult) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-run_alltests-vecfn-testresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn run_all(tests: Vec[fn() -&gt; TestResult]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-run_filteredtests-vecfn-testresult-filter-str-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn run_filtered(tests: Vec[fn() -&gt; TestResult], filter: Str) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-format_resultsresults-vectestresult-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn format_results(results: Vec[TestResult]) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-format_results_jsonresults-vectestresult-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn format_results_json(results: Vec[TestResult]) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-benchname-str-f-fn-unit-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn bench(name: Str, f: fn() -&gt; Unit) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_falsecond-bool-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_false(cond: Bool, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_eq_intexpected-int-actual-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_eq_int(expected: Int, actual: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_ne_intexpected-int-actual-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ne_int(expected: Int, actual: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_gt_intleft-int-right-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_gt_int(left: Int, right: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_lt_intleft-int-right-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_lt_int(left: Int, right: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_ge_intleft-int-right-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_ge_int(left: Int, right: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_le_intleft-int-right-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_le_int(left: Int, right: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-assert_in_rangevalue-int-lo-int-hi-int-name-str-testresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn assert_in_range(value: Int, lo: Int, hi: Int, name: Str) -&gt; TestResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_count_failuresresults-vectestresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_count_failures(results: Vec[TestResult]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_pass_countresults-vectestresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_pass_count(results: Vec[TestResult]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_fail_countresults-vectestresult-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_fail_count(results: Vec[TestResult]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_summaryresults-vectestresult-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_summary(results: Vec[TestResult]) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-test_reportresults-vectestresult-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn test_report(results: Vec[TestResult]) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="stdlibtest"><code>stdlib.test</code><a class="headerlink" href="#stdlibtest" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Generated from <code>v0.60.1</code>. 3 source files, 70 documented symbols.</p>
+</blockquote>
+<h2 id="assertxi"><code>assert.xi</code><a class="headerlink" href="#assertxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-assertcond-bool-msg-str"><code>fn assert(cond: Bool, msg: Str)</code><a class="headerlink" href="#fn-assertcond-bool-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_eqta-t-b-t-msg-str"><code>fn assert_eq[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_eqta-t-b-t-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_neta-t-b-t-msg-str"><code>fn assert_ne[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_neta-t-b-t-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_ltta-t-b-t-msg-str"><code>fn assert_lt[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_ltta-t-b-t-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_leta-t-b-t-msg-str"><code>fn assert_le[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_leta-t-b-t-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_gtta-t-b-t-msg-str"><code>fn assert_gt[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_gtta-t-b-t-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_geta-t-b-t-msg-str"><code>fn assert_ge[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_geta-t-b-t-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_truecond-bool-msg-str"><code>fn assert_true(cond: Bool, msg: Str)</code><a class="headerlink" href="#fn-assert_truecond-bool-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_falsecond-bool-msg-str"><code>fn assert_false(cond: Bool, msg: Str)</code><a class="headerlink" href="#fn-assert_falsecond-bool-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_neara-float64-b-float64-eps-float64-msg-str"><code>fn assert_near(a: Float64, b: Float64, eps: Float64, msg: Str)</code><a class="headerlink" href="#fn-assert_neara-float64-b-float64-eps-float64-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_containshaystack-str-needle-str-msg-str"><code>fn assert_contains(haystack: Str, needle: Str, msg: Str)</code><a class="headerlink" href="#fn-assert_containshaystack-str-needle-str-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_matchess-str-pattern-str-msg-str"><code>fn assert_matches(s: Str, pattern: Str, msg: Str)</code><a class="headerlink" href="#fn-assert_matchess-str-pattern-str-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_oktr-resultt-str-msg-str-t"><code>fn assert_ok[T](r: Result[T, Str], msg: Str) -&gt; T</code><a class="headerlink" href="#fn-assert_oktr-resultt-str-msg-str-t" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_errtr-resultt-str-msg-str"><code>fn assert_err[T](r: Result[T, Str], msg: Str)</code><a class="headerlink" href="#fn-assert_errtr-resultt-str-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_someto-optiont-msg-str-t"><code>fn assert_some[T](o: Option[T], msg: Str) -&gt; T</code><a class="headerlink" href="#fn-assert_someto-optiont-msg-str-t" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_noneto-optiont-msg-str"><code>fn assert_none[T](o: Option[T], msg: Str)</code><a class="headerlink" href="#fn-assert_noneto-optiont-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_panicsf-fn-unit-msg-str"><code>fn assert_panics(f: fn() -&gt; Unit, msg: Str)</code><a class="headerlink" href="#fn-assert_panicsf-fn-unit-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_throwsf-fn-unit-msg-str"><code>fn assert_throws(f: fn() -&gt; Unit, msg: Str)</code><a class="headerlink" href="#fn-assert_throwsf-fn-unit-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_emptytv-vect-msg-str"><code>fn assert_empty[T](v: &amp;Vec[T], msg: Str)</code><a class="headerlink" href="#fn-assert_emptytv-vect-msg-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-assert_lentv-vect-n-int-msg-str"><code>fn assert_len[T](v: &amp;Vec[T], n: Int, msg: Str)</code><a class="headerlink" href="#fn-assert_lentv-vect-n-int-msg-str" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="harnessxi"><code>harness.xi</code><a class="headerlink" href="#harnessxi" title="Permanent link">&para;</a></h2>
+<h4 id="type-harness"><code>type Harness</code><a class="headerlink" href="#type-harness" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>names</code></td>
+<td><code>Vec[Str]</code></td>
+</tr>
+<tr>
+<td><code>tests</code></td>
+<td><code>Vec[fn() -&gt; Result[Unit, Str]]</code></td>
+</tr>
+<tr>
+<td><code>skipped</code></td>
+<td><code>Vec[Str]</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="type-testreport"><code>type TestReport</code><a class="headerlink" href="#type-testreport" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>passed</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>failed</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>skipped</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>duration_ms</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Derives:</strong> <code>Clone</code></p>
+<h4 id="type-globaltests"><code>type GlobalTests</code><a class="headerlink" href="#type-globaltests" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>names</code></td>
+<td><code>Vec[Str]</code></td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-test_harness_new-harness"><code>fn test_harness_new() -&gt; Harness</code><a class="headerlink" href="#fn-test_harness_new-harness" title="Permanent link">&para;</a></h4>
+<h4 id="fn-harness_add_testh-mut-harness-name-str-f-fn-resultunit-str"><code>fn harness_add_test(h: &amp;mut Harness, name: Str, f: fn() -&gt; Result[Unit, Str])</code><a class="headerlink" href="#fn-harness_add_testh-mut-harness-name-str-f-fn-resultunit-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-harness_runh-harness-testreport"><code>fn harness_run(h: &amp;Harness) -&gt; TestReport</code><a class="headerlink" href="#fn-harness_runh-harness-testreport" title="Permanent link">&para;</a></h4>
+<h4 id="fn-harness_run_filteredh-harness-filter-str-testreport"><code>fn harness_run_filtered(h: &amp;Harness, filter: Str) -&gt; TestReport</code><a class="headerlink" href="#fn-harness_run_filteredh-harness-filter-str-testreport" title="Permanent link">&para;</a></h4>
+<h4 id="fn-harness_parallelh-harness-workers-int-testreport"><code>fn harness_parallel(h: &amp;Harness, workers: Int) -&gt; TestReport</code><a class="headerlink" href="#fn-harness_parallelh-harness-workers-int-testreport" title="Permanent link">&para;</a></h4>
+<h4 id="fn-harness_skiph-mut-harness-name-str"><code>fn harness_skip(h: &amp;mut Harness, name: Str)</code><a class="headerlink" href="#fn-harness_skiph-mut-harness-name-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-harness_benchmarkh-mut-harness-name-str-f-fn-unit-iterations-int-int"><code>fn harness_benchmark(h: &amp;mut Harness, name: Str, f: fn() -&gt; Unit, iterations: Int) -&gt; Int</code><a class="headerlink" href="#fn-harness_benchmarkh-mut-harness-name-str-f-fn-unit-iterations-int-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-report_passedr-testreport-int"><code>fn report_passed(r: &amp;TestReport) -&gt; Int</code><a class="headerlink" href="#fn-report_passedr-testreport-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-report_failedr-testreport-int"><code>fn report_failed(r: &amp;TestReport) -&gt; Int</code><a class="headerlink" href="#fn-report_failedr-testreport-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-report_skippedr-testreport-int"><code>fn report_skipped(r: &amp;TestReport) -&gt; Int</code><a class="headerlink" href="#fn-report_skippedr-testreport-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-report_duration_msr-testreport-int"><code>fn report_duration_ms(r: &amp;TestReport) -&gt; Int</code><a class="headerlink" href="#fn-report_duration_msr-testreport-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-report_printr-testreport"><code>fn report_print(r: &amp;TestReport)</code><a class="headerlink" href="#fn-report_printr-testreport" title="Permanent link">&para;</a></h4>
+<h4 id="fn-report_jsonr-testreport-str"><code>fn report_json(r: &amp;TestReport) -&gt; Str</code><a class="headerlink" href="#fn-report_jsonr-testreport-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-test_main-int"><code>fn test_main() -&gt; Int</code><a class="headerlink" href="#fn-test_main-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-test_registername-str-f-fn-resultunit-str-bool"><code>fn test_register(name: Str, f: fn() -&gt; Result[Unit, Str]) -&gt; Bool</code><a class="headerlink" href="#fn-test_registername-str-f-fn-resultunit-str-bool" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="testxi"><code>test.xi</code><a class="headerlink" href="#testxi" title="Permanent link">&para;</a></h2>
+<h3 id="type-testresult"><code>type TestResult</code><a class="headerlink" href="#type-testresult" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>passed</code></td>
+<td><code>Bool</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>contract_failures</code></td>
+<td><code>Vec[ContractFailure]</code></td>
+</tr>
+<tr>
+<td><code>duration_ms</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Derives:</strong> <code>Clone</code></p>
+<h3 id="type-contractfailure"><code>type ContractFailure</code><a class="headerlink" href="#type-contractfailure" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clause</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>expression</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>values</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td><code>Str</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Derives:</strong> <code>Clone</code></p>
+<h3 id="fn-assertcondition-bool-name-str-testresult"><code>fn assert(condition: Bool, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assertcondition-bool-name-str-testresult" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h3 id="fn-assert_eqtexpected-t-actual-t-name-str-testresult"><code>fn assert_eq[T](expected: T, actual: T, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_eqtexpected-t-actual-t-name-str-testresult" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h3 id="fn-assert_netexpected-t-actual-t-name-str-testresult"><code>fn assert_ne[T](expected: T, actual: T, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_netexpected-t-actual-t-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_lttleft-t-right-t-name-str-testresult"><code>fn assert_lt[T](left: T, right: T, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_lttleft-t-right-t-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_gttleft-t-right-t-name-str-testresult"><code>fn assert_gt[T](left: T, right: T, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_gttleft-t-right-t-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_containshaystack-str-needle-str-name-str-testresult"><code>fn assert_contains(haystack: Str, needle: Str, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_containshaystack-str-needle-str-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_okt-eresult-resultt-e-name-str-testresult"><code>fn assert_ok[T, E](result: Result[T, E], name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_okt-eresult-resultt-e-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_errt-eresult-resultt-e-name-str-testresult"><code>fn assert_err[T, E](result: Result[T, E], name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_errt-eresult-resultt-e-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_sometoption-optiont-name-str-testresult"><code>fn assert_some[T](option: Option[T], name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_sometoption-optiont-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_nonetoption-optiont-name-str-testresult"><code>fn assert_none[T](option: Option[T], name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_nonetoption-optiont-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_contracttvalue-t-predicate-fnt-bool-name-str-testresult"><code>fn assert_contract[T](value: T, predicate: fn(&amp;T) -&gt; Bool, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_contracttvalue-t-predicate-fnt-bool-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-runtest-fn-testresult-int"><code>fn run(test: fn() -&gt; TestResult) -&gt; Int</code><a class="headerlink" href="#fn-runtest-fn-testresult-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-run_alltests-vecfn-testresult-int"><code>fn run_all(tests: Vec[fn() -&gt; TestResult]) -&gt; Int</code><a class="headerlink" href="#fn-run_alltests-vecfn-testresult-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-run_filteredtests-vecfn-testresult-filter-str-int"><code>fn run_filtered(tests: Vec[fn() -&gt; TestResult], filter: Str) -&gt; Int</code><a class="headerlink" href="#fn-run_filteredtests-vecfn-testresult-filter-str-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-format_resultsresults-vectestresult-str"><code>fn format_results(results: Vec[TestResult]) -&gt; Str</code><a class="headerlink" href="#fn-format_resultsresults-vectestresult-str" title="Permanent link">&para;</a></h3>
+<h3 id="fn-format_results_jsonresults-vectestresult-str"><code>fn format_results_json(results: Vec[TestResult]) -&gt; Str</code><a class="headerlink" href="#fn-format_results_jsonresults-vectestresult-str" title="Permanent link">&para;</a></h3>
+<h3 id="fn-benchname-str-f-fn-unit-testresult"><code>fn bench(name: Str, f: fn() -&gt; Unit) -&gt; TestResult</code><a class="headerlink" href="#fn-benchname-str-f-fn-unit-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_falsecond-bool-name-str-testresult"><code>fn assert_false(cond: Bool, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_falsecond-bool-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_eq_intexpected-int-actual-int-name-str-testresult"><code>fn assert_eq_int(expected: Int, actual: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_eq_intexpected-int-actual-int-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_ne_intexpected-int-actual-int-name-str-testresult"><code>fn assert_ne_int(expected: Int, actual: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_ne_intexpected-int-actual-int-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_gt_intleft-int-right-int-name-str-testresult"><code>fn assert_gt_int(left: Int, right: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_gt_intleft-int-right-int-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_lt_intleft-int-right-int-name-str-testresult"><code>fn assert_lt_int(left: Int, right: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_lt_intleft-int-right-int-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_ge_intleft-int-right-int-name-str-testresult"><code>fn assert_ge_int(left: Int, right: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_ge_intleft-int-right-int-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_le_intleft-int-right-int-name-str-testresult"><code>fn assert_le_int(left: Int, right: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_le_intleft-int-right-int-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-assert_in_rangevalue-int-lo-int-hi-int-name-str-testresult"><code>fn assert_in_range(value: Int, lo: Int, hi: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_in_rangevalue-int-lo-int-hi-int-name-str-testresult" title="Permanent link">&para;</a></h3>
+<h3 id="fn-test_count_failuresresults-vectestresult-int"><code>fn test_count_failures(results: Vec[TestResult]) -&gt; Int</code><a class="headerlink" href="#fn-test_count_failuresresults-vectestresult-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-test_pass_countresults-vectestresult-int"><code>fn test_pass_count(results: Vec[TestResult]) -&gt; Int</code><a class="headerlink" href="#fn-test_pass_countresults-vectestresult-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-test_fail_countresults-vectestresult-int"><code>fn test_fail_count(results: Vec[TestResult]) -&gt; Int</code><a class="headerlink" href="#fn-test_fail_countresults-vectestresult-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-test_summaryresults-vectestresult-str"><code>fn test_summary(results: Vec[TestResult]) -&gt; Str</code><a class="headerlink" href="#fn-test_summaryresults-vectestresult-str" title="Permanent link">&para;</a></h3>
+<h3 id="fn-test_reportresults-vectestresult-str"><code>fn test_report(results: Vec[TestResult]) -&gt; Str</code><a class="headerlink" href="#fn-test_reportresults-vectestresult-str" title="Permanent link">&para;</a></h3>
+<hr />
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

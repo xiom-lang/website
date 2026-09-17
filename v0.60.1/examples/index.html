@@ -1,0 +1,2771 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.60.1/examples/">
+      
+      
+        <link rel="prev" href="../concepts/">
+      
+      
+        <link rel="next" href="../syntax/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>By Example - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xiom-by-example" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              By Example
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-hello-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Hello World
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-variables-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Variables &amp; Arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-control-flow-fibonacci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Control Flow -- Fibonacci
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-structs-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Structs &amp; Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-enums-pattern-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Enums &amp; Pattern Matching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-error-handling-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Error Handling -- Result &amp; ?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-contracts-division-by-zero-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Contracts -- Division by Zero Prevention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-ownership-borrowing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Ownership &amp; Borrowing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-generics-typed-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Generics -- Typed Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-interfaces-no-implements-keyword" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Interfaces -- No implements Keyword
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-sort-with-contract-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Sort with Contract Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-hello-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Hello World
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-variables-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Variables &amp; Arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-control-flow-fibonacci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Control Flow -- Fibonacci
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-structs-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Structs &amp; Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-enums-pattern-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Enums &amp; Pattern Matching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-error-handling-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Error Handling -- Result &amp; ?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-contracts-division-by-zero-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Contracts -- Division by Zero Prevention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-ownership-borrowing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Ownership &amp; Borrowing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-generics-typed-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Generics -- Typed Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-interfaces-no-implements-keyword" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Interfaces -- No implements Keyword
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-sort-with-contract-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Sort with Contract Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
+<h1 id="xiom-by-example">XIOM by Example<a class="headerlink" href="#xiom-by-example" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Copy, paste, compile, run. Every example is self-contained.
+<strong>Types are built-in</strong> (no import). <strong>Functions need imports</strong> (<code>use xiom.io;</code>).
+Compile: <code>xiom --run file.xi</code> (or <code>cargo run -p xiom -- --run file.xi</code> for dev).</p>
+</blockquote>
+<hr />
+<h2 id="1-hello-world">1. Hello World<a class="headerlink" href="#1-hello-world" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>// hello.xi -- your first XIOM program
+// Run: xiom --run hello.xi
+use xiom.io;
+
+fn main() {
+  io.println("Hello, World!");  // prints to console
+}
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>$ xiom --run hello.xi
+Hello, World!
+</code></pre></div>
+<p><code>use xiom.io;</code> imports the I/O module. <code>io.println()</code> prints to console. Every file that uses I/O needs this import.</p>
+<p><strong>Three ways to import -- all valid:</strong></p>
+<div class="highlight"><pre><span></span><code>// Style A: module prefix (recommended -- clear origin)
+use xiom.io;
+fn main() { io.println("Hello"); }
+
+// Style B: glob import (shorter -- for small programs)
+use xiom.io.*;
+fn main() { println("Hello"); }
+
+// Style C: single import (precise -- import only what you need)
+use xiom.io.println;
+fn main() { println("Hello"); }
+</code></pre></div>
+<hr />
+<h2 id="2-variables-arithmetic">2. Variables &amp; Arithmetic<a class="headerlink" href="#2-variables-arithmetic" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>fn main() -&gt; Int {
+  let x: Int = 10;           // immutable -- cannot be reassigned
+  var y = 3.14;              // mutable -- can be reassigned, type inferred as Float64
+  let z = x * 2;             // type inferred: Int
+  y = y + 1.0;               // reassign mutable var
+  return x + z;              // 30 -- main() can return an exit code
+}
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>$ xiom --run vars.xi
+# exit code: 30
+</code></pre></div>
+<p><code>let</code> = immutable. <code>var</code> = mutable. Type annotation optional when the compiler can infer. Every statement ends with <code>;</code>.</p>
+<hr />
+<h2 id="3-functions">3. Functions<a class="headerlink" href="#3-functions" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+
+// Functions with return values
+fn add(a: Int, b: Int) -&gt; Int {
+  return a + b;
+}
+
+// Functions returning nothing (void)
+fn greet(name: Str) {
+  io.println("Hello, " + name + "!");
+}
+
+fn main() {
+  greet("World");            // prints: Hello, World!
+  let result = add(10, 20);  // 30
+}
+</code></pre></div>
+<p>Every parameter must have a type. Return type is required unless void. Functions call other functions -- <code>greet()</code> calls <code>io.println()</code>.</p>
+<hr />
+<h2 id="4-control-flow-fibonacci">4. Control Flow -- Fibonacci<a class="headerlink" href="#4-control-flow-fibonacci" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+
+// Compute the nth Fibonacci number
+fn fib(n: Int) -&gt; Int
+  requires: n &gt;= 0        // contract: caller must pass non-negative n
+{
+  if n &lt;= 1 { return n; }
+  return fib(n - 1) + fib(n - 2);
+}
+
+fn main() {
+  io.println("fib(10) = " + fib(10).to_str());  // fib(10) = 55
+}
+</code></pre></div>
+<p><code>if</code> / <code>elif</code> / <code>else</code> -- note <code>elif</code>, not <code>else if</code>. <code>to_str()</code> converts numbers to strings for printing.</p>
+<hr />
+<h2 id="5-structs-methods">5. Structs &amp; Methods<a class="headerlink" href="#5-structs-methods" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>// A 2D point with compiler-generated equality, clone, and display
+type Point = {
+  x: Float64;
+  y: Float64;
+} derive[Eq, Clone, Display]
+
+// Free function taking references (borrows)
+fn distance(a: &amp;Point, b: &amp;Point) -&gt; Float64 {
+  let dx = a.x - b.x;
+  let dy = a.y - b.y;
+  return dx * dx + dy * dy;
+}
+
+// Method on Point -- self is implicit (no self.x, just x)
+fn Point.magnitude() -&gt; Float64 {
+  return x * x + y * y;
+}
+
+fn main() -&gt; Int {
+  let p1 = Point{ x: 0.0, y: 0.0 };
+  let p2 = Point{ x: 3.0, y: 4.0 };
+  let d = distance(&amp;p1, &amp;p2);   // 25.0
+  let m = p2.magnitude();       // 25.0
+  return 0;
+}
+</code></pre></div>
+<p><code>derive[Eq, Clone, Display]</code> -- compiler generates <code>eq()</code>, <code>clone()</code>, <code>to_str()</code> automatically. Methods use <code>fn TypeName.methodName()</code> -- <code>self</code> is implicit.</p>
+<hr />
+<h2 id="6-enums-pattern-matching">6. Enums &amp; Pattern Matching<a class="headerlink" href="#6-enums-pattern-matching" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+
+// Algebraic data type
+enum Option { Some(value: Int), None }
+
+// Match must cover all variants -- compiler enforces this
+fn describe(opt: Option) -&gt; Str {
+  match opt {
+    Some(v) =&gt; "got " + v.to_str(),
+    None    =&gt; "nothing",
+  }
+}
+
+fn main() {
+  io.println(describe(Some{ value: 42 }));  // "got 42"
+  io.println(describe(None));               // "nothing"
+}
+</code></pre></div>
+<p>Every <code>match</code> must be exhaustive -- missing a variant is a compile error. Use <code>_</code> as wildcard. Variants carry named fields: <code>VariantName(field: Type)</code>.</p>
+<hr />
+<h2 id="7-error-handling-result">7. Error Handling -- Result &amp; ?<a class="headerlink" href="#7-error-handling-result" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+
+// Returns Result instead of crashing on division by zero
+fn divide_safe(a: Float64, b: Float64) -&gt; Result[Float64, Str] {
+  if b == 0.0 {
+    return Err("division by zero");
+  }
+  return Ok(a / b);
+}
+
+// ? operator propagates errors up -- clean and readable
+fn compute(x: Float64, y: Float64) -&gt; Result[Float64, Str] {
+  let step1 = divide_safe(x, y)?;
+  let step2 = divide_safe(step1, 2.0)?;
+  return Ok(step2);
+}
+
+fn main() {
+  match compute(10.0, 2.0) {
+    Ok(result) =&gt; io.println("result: " + result.to_str()),  // "result: 2.5"
+    Err(msg)   =&gt; io.println("error: " + msg),
+  };
+}
+</code></pre></div>
+<p><code>?</code> returns the error immediately. Only usable inside functions returning <code>Result</code> or <code>Option</code>. <code>E</code> in <code>Result[T, E]</code> can be any type -- no Error interface required.</p>
+<hr />
+<h2 id="8-contracts-division-by-zero-prevention">8. Contracts -- Division by Zero Prevention<a class="headerlink" href="#8-contracts-division-by-zero-prevention" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+
+// requires: caller must ensure b != 0
+// ensures:  the implementation guarantees result * b == a
+fn divide(a: Float64, b: Float64) -&gt; Float64
+  requires: b != 0.0
+  ensures:  result * b == a
+{
+  return a / b;
+}
+
+// Type with invariant -- compiler checks after every mutation
+type PositiveInt = {
+  value: Int;
+  invariant: value &gt; 0;
+}
+
+fn main() {
+  let x = divide(10.0, 2.0);     // 5.0 -- contract passes
+  io.println("10.0 / 2.0 = " + x.to_str());
+
+  // let y = divide(10.0, 0.0);  // RUNTIME PANIC: contract violated
+}
+</code></pre></div>
+<p>Contracts are compiler-enforced. <code>requires</code> = caller's responsibility. <code>ensures</code> = implementation's responsibility. <code>invariant</code> = always true after any mutation.</p>
+<hr />
+<h2 id="9-ownership-borrowing">9. Ownership &amp; Borrowing<a class="headerlink" href="#9-ownership-borrowing" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+
+// Takes ownership -- x moved here, caller can't use it anymore
+fn take_ownership(x: Int) -&gt; Int {
+  return x + 1;
+}
+
+// Borrows immutably -- caller retains ownership, can still use x
+fn read_borrow(x: &amp;Int) -&gt; Int {
+  return x + 0;
+}
+
+// Borrows mutably -- exclusive access, no other borrows active
+fn write_borrow(x: &amp;mut Int) {
+  x = x + 10;
+}
+
+fn main() -&gt; Int {
+  let a = take_ownership(41);   // a = 42 -- moved into function
+  let b = read_borrow(&amp;a);      // &amp;a = read borrow, a still valid
+  var c = 5;
+  write_borrow(&amp;mut c);         // c = 15 -- exclusive write
+  return a + b + c;             // 42 + 42 + 15 = 99
+}
+</code></pre></div>
+<ul>
+<li><code>&amp;T</code> -- read borrow (multiple allowed, no mutation)</li>
+<li><code>&amp;mut T</code> -- write borrow (exclusive, one at a time)</li>
+<li>No <code>&amp;</code> -- move ownership (old binding invalid)</li>
+<li><code>.clone()</code> -- explicit deep copy</li>
+<li>Borrows expire where you see the braces</li>
+</ul>
+<hr />
+<h2 id="10-generics-typed-stack">10. Generics -- Typed Stack<a class="headerlink" href="#10-generics-typed-stack" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+use xiom.collections.Vec;
+
+// Generic stack with contract-verified invariants
+type Stack[T] = {
+  items: Vec[T];
+  capacity: Int;
+  invariant: items.len() &lt;= capacity;  // never overflow
+  invariant: capacity &gt; 0;             // always usable
+}
+
+fn Stack.new[T](capacity: Int) -&gt; Result[Stack[T], Str]
+  requires: capacity &gt; 0
+{
+  if capacity &lt;= 0 {
+    return Err("capacity must be positive");
+  }
+  return Ok(Stack[T]{ items: Vec[T].new(), capacity: capacity });
+}
+
+fn Stack.push[T](value: T) -&gt; Result[Unit, Str]
+  requires: items.len() &lt; capacity
+  ensures:  result is Ok =&gt; items.len() == items.len()@pre + 1
+{
+  if items.len() &gt;= capacity {
+    return Err("stack is full");
+  }
+  items.push(value);
+  return Ok(());
+}
+
+fn Stack.pop[T]() -&gt; Option[T] {
+  return items.pop();
+}
+
+fn Stack.is_empty[T]() -&gt; Bool {
+  return items.len() == 0;
+}
+
+fn main() -&gt; Result[Unit, Str] {
+  var s = Stack.new[Int](3)?;     // ? propagates error from new()
+  s.push(10)?;                     // ? propagates error from push()
+  s.push(20)?;
+  s.push(30)?;
+
+  // This push should fail -- stack is full
+  match s.push(40) {
+    Ok(()) =&gt; io.println("unexpected"),
+    Err(e) =&gt; io.println("rejected: " + e),  // prints: rejected: stack is full
+  };
+
+  io.println("popping:");
+  while !s.is_empty() {
+    match s.pop() {
+      Some(v) =&gt; io.println("  " + v.to_str()),
+      None    =&gt; {},
+    };
+  }
+  return Ok(());
+}
+</code></pre></div>
+<p>Generics + contracts + error handling + ownership -- all in one program. The Stack's capacity invariant is checked after every mutation. The push contract verifies the element was actually added.</p>
+<hr />
+<h2 id="11-interfaces-no-implements-keyword">11. Interfaces -- No <code>implements</code> Keyword<a class="headerlink" href="#11-interfaces-no-implements-keyword" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>// Define an interface
+interface Comparable {
+  fn compare(other: &amp;Self) -&gt; Int;  // returns -1, 0, or 1
+}
+
+// Create a type
+type Score = { value: Int; }
+
+// Implement the interface -- just write the method
+fn Score.compare(other: &amp;Score) -&gt; Int {
+  if value &lt; other.value { return -1; }
+  if value &gt; other.value { return  1; }
+  return 0;
+}
+
+// Generic function constrained by interface
+fn max[T: Comparable](a: T, b: T) -&gt; T {
+  if a.compare(&amp;b) &gt; 0 { return a; }
+  return b;
+}
+
+fn main() -&gt; Int {
+  let s1 = Score{ value: 10 };
+  let s2 = Score{ value: 20 };
+  let winner = max(s1, s2);
+  return winner.value;   // 20
+}
+</code></pre></div>
+<p>No <code>implements</code> keyword. A type satisfies an interface by having the right methods. Structural typing -- compose types across module boundaries without shared ancestry.</p>
+<hr />
+<h2 id="12-sort-with-contract-verification">12. Sort with Contract Verification<a class="headerlink" href="#12-sort-with-contract-verification" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+use xiom.collections.Vec;
+
+// Contract ensures the output IS sorted -- verified at runtime
+fn sort(items: &amp;mut Vec[Int])
+  ensures: items.is_sorted()
+{
+  // Bubble sort -- simple but correct
+  let n = items.len();
+  var i = 0;
+  while i &lt; n {
+    var j = 0;
+    while j &lt; n - i - 1 {
+      let a = items.get(j).unwrap();
+      let b = items.get(j + 1).unwrap();
+      if a &gt; b {
+        items.set(j, b);
+        items.set(j + 1, a);
+      }
+      j = j + 1;
+    }
+    i = i + 1;
+  }
+  // Contract checked HERE -- if items is NOT sorted, program panics
+}
+
+fn main() {
+  var nums: Vec[Int] = [4, 1, 3, 2];
+  sort(&amp;mut nums);
+  io.println("sorted: " + nums.get(0).unwrap().to_str());  // 1
+}
+</code></pre></div>
+<p>The <code>ensures: items.is_sorted()</code> contract is verified after <code>sort()</code> returns. If the implementation is buggy, the program panics with a clear message -- no silent corruption.</p>
+<hr />
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>21 example programs</strong> ship in <code>examples/</code> -- compile any with <code>xiom --run examples/phase1_full.xi</code></li>
+<li><strong>Full stdlib reference</strong> -- <a href="../api/">40 modules with API documentation</a></li>
+<li><strong>AI coding guide</strong> -- <a href="../AI_CONTEXT/">AI_CONTEXT.md</a> for LLM-powered XIOM code generation</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

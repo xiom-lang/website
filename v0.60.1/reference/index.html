@@ -1,0 +1,3729 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.60.1/reference/">
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../concepts/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Language Reference - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xiom-language-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Language Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#program-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Program Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables-and-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variables and Constants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variables and Constants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#var-mutable-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        var -- Mutable variable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#let-immutable-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        let -- Immutable binding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#const-compile-time-constant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        const -- Compile-time constant
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primitives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compound-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compound Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Type Aliases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-on-a-type-receiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method on a type (receiver)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generic-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generic function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impl-trait-return-type-m96" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        impl Trait return type (M9.6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Control Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-elif-else" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        if / elif / else
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match-pattern-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match -- Pattern matching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-let-while-let" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        if let / while let
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#while-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        while loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-loop-range-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        for loop (range-based)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loop-infinite-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        loop -- infinite loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#break-continue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        break / continue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitwise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bitwise
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-cast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Type cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-type-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is -- Type check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-error-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ? -- Error propagation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-implication-contracts-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        =&gt; -- Implication (contracts only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#string-interpolation-via" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String interpolation via +
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arrayvec-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Array/Vec indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#field-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Field access
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contracts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Handling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resultt-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result[T, E]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optiont" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option[T]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unwrapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unwrapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modules-and-visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules and Visibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ownership-and-borrowing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ownership and Borrowing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsafe-and-ffi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsafe and FFI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripting-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripting Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#program-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Program Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables-and-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variables and Constants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variables and Constants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#var-mutable-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        var -- Mutable variable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#let-immutable-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        let -- Immutable binding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#const-compile-time-constant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        const -- Compile-time constant
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primitives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compound-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compound Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Type Aliases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-on-a-type-receiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method on a type (receiver)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generic-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generic function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impl-trait-return-type-m96" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        impl Trait return type (M9.6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Control Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-elif-else" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        if / elif / else
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match-pattern-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match -- Pattern matching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-let-while-let" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        if let / while let
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#while-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        while loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-loop-range-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        for loop (range-based)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loop-infinite-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        loop -- infinite loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#break-continue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        break / continue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitwise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bitwise
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-cast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Type cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-type-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is -- Type check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-error-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ? -- Error propagation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-implication-contracts-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        =&gt; -- Implication (contracts only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#string-interpolation-via" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String interpolation via +
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arrayvec-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Array/Vec indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#field-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Field access
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contracts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Handling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resultt-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result[T, E]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optiont" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option[T]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unwrapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unwrapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modules-and-visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules and Visibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ownership-and-borrowing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ownership and Borrowing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsafe-and-ffi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsafe and FFI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripting-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripting Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<!--
+Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
+<h1 id="xiom-language-reference">XIOM Language Reference<a class="headerlink" href="#xiom-language-reference" title="Permanent link">&para;</a></h1>
+<p>Complete reference for every XIOM language construct. For tutorials and concepts, see <a href="../getting-started/">Getting Started</a> and <a href="../concepts/">Concepts</a>.</p>
+<hr />
+<h2 id="program-structure">Program Structure<a class="headerlink" href="#program-structure" title="Permanent link">&para;</a></h2>
+<p>A XIOM source file consists of top-level declarations: <code>fn</code>, <code>type</code>, <code>enum</code>, <code>interface</code>, <code>module</code>, <code>const</code>, <code>use</code>, <code>extern</code>.</p>
+<div class="highlight"><pre><span></span><code>use xiom.io;
+
+fn main() -&gt; Int {
+  io.println("Hello, world!");
+  return 0;
+}
+</code></pre></div>
+<p>Scripts (via <code>xiom run</code>) may omit <code>fn main()</code> -- the compiler wraps top-level code automatically.</p>
+<hr />
+<h2 id="variables-and-constants">Variables and Constants<a class="headerlink" href="#variables-and-constants" title="Permanent link">&para;</a></h2>
+<h3 id="var-mutable-variable"><code>var</code> -- Mutable variable<a class="headerlink" href="#var-mutable-variable" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>var x: Int = 0;        // type-annotated
+var y = 42;            // type-inferred
+var z: Float64 = 3.14;
+</code></pre></div>
+<h3 id="let-immutable-binding"><code>let</code> -- Immutable binding<a class="headerlink" href="#let-immutable-binding" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>let name: Str = "xiom";     // cannot be reassigned
+let pi: Float64 = 3.14159;
+</code></pre></div>
+<h3 id="const-compile-time-constant"><code>const</code> -- Compile-time constant<a class="headerlink" href="#const-compile-time-constant" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pub const MAX: Int = 1024;
+pub const PI: Float64 = 3.1415926535;
+</code></pre></div>
+<hr />
+<h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
+<h3 id="primitives">Primitives<a class="headerlink" href="#primitives" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Int</code></td>
+<td>Signed 64-bit integer</td>
+<td><code>42</code>, <code>-1</code></td>
+</tr>
+<tr>
+<td><code>Float64</code></td>
+<td>64-bit IEEE 754 float</td>
+<td><code>3.14</code>, <code>-0.5</code></td>
+</tr>
+<tr>
+<td><code>Bool</code></td>
+<td>Boolean</td>
+<td><code>true</code>, <code>false</code></td>
+</tr>
+<tr>
+<td><code>Str</code></td>
+<td>Immutable string</td>
+<td><code>"hello"</code></td>
+</tr>
+<tr>
+<td><code>Char</code></td>
+<td>Single Unicode character</td>
+<td><code>'a'</code>, <code>'\n'</code></td>
+</tr>
+<tr>
+<td><code>Unit</code></td>
+<td>Void / no value</td>
+<td><code>()</code></td>
+</tr>
+<tr>
+<td><code>UInt8</code></td>
+<td>Unsigned 8-bit integer</td>
+<td><code>255</code></td>
+</tr>
+<tr>
+<td><code>Int32</code></td>
+<td>Signed 32-bit integer</td>
+<td><code>-2147483648</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="compound-types">Compound Types<a class="headerlink" href="#compound-types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Struct</td>
+<td><code>type Point = { x: Float64; y: Float64; }</code></td>
+</tr>
+<tr>
+<td>Enum</td>
+<td><code>enum Color { Red, Green, Blue }</code></td>
+</tr>
+<tr>
+<td>Enum with data</td>
+<td><code>enum Option[T] { Some(T), None }</code></td>
+</tr>
+<tr>
+<td>Interface</td>
+<td><code>interface Comparable { fn compare(self, other: &amp;Self) -&gt; Int; }</code></td>
+</tr>
+<tr>
+<td>Tuple</td>
+<td><code>(Int, Str, Bool)</code></td>
+</tr>
+<tr>
+<td>Array (fixed)</td>
+<td><code>[3]Int</code></td>
+</tr>
+<tr>
+<td>Vec (dynamic)</td>
+<td><code>Vec[Int]</code></td>
+</tr>
+<tr>
+<td>Slice</td>
+<td><code>&amp;Slice[Int]</code></td>
+</tr>
+<tr>
+<td>Map</td>
+<td><code>Map[Str, Int]</code></td>
+</tr>
+<tr>
+<td>Set</td>
+<td><code>Set[Int]</code></td>
+</tr>
+<tr>
+<td>Reference</td>
+<td><code>&amp;T</code>, <code>&amp;mut T</code></td>
+</tr>
+<tr>
+<td>Raw pointer</td>
+<td><code>*T</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="type-aliases">Type Aliases<a class="headerlink" href="#type-aliases" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>type UserId = Int;
+type Point3D = { x: Float64; y: Float64; z: Float64; };
+</code></pre></div>
+<hr />
+<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
+<h3 id="basic-function">Basic function<a class="headerlink" href="#basic-function" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>fn add(a: Int, b: Int) -&gt; Int {
+  return a + b;
+}
+</code></pre></div>
+<h3 id="method-on-a-type-receiver">Method on a type (receiver)<a class="headerlink" href="#method-on-a-type-receiver" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pub fn Point.distance(self, other: &amp;Point) -&gt; Float64 {
+  let dx = self.x - other.x;
+  let dy = self.y - other.y;
+  return math.sqrt(dx * dx + dy * dy);
+}
+</code></pre></div>
+<h3 id="generic-function">Generic function<a class="headerlink" href="#generic-function" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>fn max[T: Comparable](a: T, b: T) -&gt; T {
+  if a &gt; b { return a; }
+  return b;
+}
+</code></pre></div>
+<h3 id="impl-trait-return-type-m96"><code>impl Trait</code> return type (M9.6)<a class="headerlink" href="#impl-trait-return-type-m96" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>fn get_display() -&gt; impl Display {
+  return 42;
+}
+</code></pre></div>
+<hr />
+<h2 id="control-flow">Control Flow<a class="headerlink" href="#control-flow" title="Permanent link">&para;</a></h2>
+<h3 id="if-elif-else"><code>if</code> / <code>elif</code> / <code>else</code><a class="headerlink" href="#if-elif-else" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>if x &gt; 0 {
+  io.println("positive");
+} elif x &lt; 0 {
+  io.println("negative");
+} else {
+  io.println("zero");
+}
+</code></pre></div>
+<h3 id="match-pattern-matching"><code>match</code> -- Pattern matching<a class="headerlink" href="#match-pattern-matching" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>match value {
+  Some(v) =&gt; io.println(v);
+  None =&gt; io.println("nothing");
+}
+</code></pre></div>
+<p>Multi-line arms use braces:</p>
+<div class="highlight"><pre><span></span><code>match result {
+  Ok(data) =&gt; {
+    process(data);
+    return data;
+  };
+  Err(e) =&gt; {
+    io.println(e.message);
+    return defaultValue;
+  };
+}
+</code></pre></div>
+<h3 id="if-let-while-let"><code>if let</code> / <code>while let</code><a class="headerlink" href="#if-let-while-let" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>if let Some(v) = maybe_val { use(v); }
+while let Some(item) = iter.next() { process(item); }
+</code></pre></div>
+<h3 id="while-loop"><code>while</code> loop<a class="headerlink" href="#while-loop" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>var i = 0;
+while i &lt; 10 {
+  io.println(i);
+  i = i + 1;
+}
+</code></pre></div>
+<h3 id="for-loop-range-based"><code>for</code> loop (range-based)<a class="headerlink" href="#for-loop-range-based" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>for i in [0, 1, 2, 3] {
+  io.println(i);
+}
+</code></pre></div>
+<h3 id="loop-infinite-loop"><code>loop</code> -- infinite loop<a class="headerlink" href="#loop-infinite-loop" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>loop {
+  // ...
+  if done { break; };
+}
+</code></pre></div>
+<h3 id="break-continue"><code>break</code> / <code>continue</code><a class="headerlink" href="#break-continue" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>while i &lt; 100 {
+  i = i + 1;
+  if i % 2 == 0 { continue; };
+  if i &gt; 50 { break; };
+  io.println(i);
+}
+</code></pre></div>
+<hr />
+<h2 id="expressions">Expressions<a class="headerlink" href="#expressions" title="Permanent link">&para;</a></h2>
+<h3 id="arithmetic">Arithmetic<a class="headerlink" href="#arithmetic" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>a + b    a - b    a * b    a / b    a % b
+</code></pre></div>
+<h3 id="comparison">Comparison<a class="headerlink" href="#comparison" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>a == b   a != b   a &lt; b    a &lt;= b   a &gt; b    a &gt;= b
+</code></pre></div>
+<h3 id="logical">Logical<a class="headerlink" href="#logical" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>a &amp;&amp; b   a || b   !a
+</code></pre></div>
+<h3 id="bitwise">Bitwise<a class="headerlink" href="#bitwise" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>a &amp; b    a | b    a ^ b    a &lt;&lt; b   a &gt;&gt; b   ~a
+</code></pre></div>
+<h3 id="assignment">Assignment<a class="headerlink" href="#assignment" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>x = value;           // simple
+x += 1;              // compound: +=, -=, *=, /=, %=, &amp;=, |=, ^=
+</code></pre></div>
+<h3 id="type-cast">Type cast<a class="headerlink" href="#type-cast" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>x as Float64;         // safe numeric cast
+x as Int;             // truncating float-&gt;int
+</code></pre></div>
+<h3 id="is-type-check"><code>is</code> -- Type check<a class="headerlink" href="#is-type-check" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>result is Ok;         // true if result matches Ok pattern
+value is Some;        // true if value is Some variant
+</code></pre></div>
+<h3 id="-error-propagation"><code>?</code> -- Error propagation<a class="headerlink" href="#-error-propagation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>let file = io.read_file(path)?;
+// Equivalent to:
+//   match io.read_file(path) {
+//     Ok(f) =&gt; f,
+//     Err(e) =&gt; return Err(e.into()),
+//   }
+</code></pre></div>
+<h3 id="-implication-contracts-only"><code>=&gt;</code> -- Implication (contracts only)<a class="headerlink" href="#-implication-contracts-only" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>requires: x &gt; 0 =&gt; result &gt; 0
+</code></pre></div>
+<h3 id="string-interpolation-via">String interpolation via <code>+</code><a class="headerlink" href="#string-interpolation-via" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>var msg = "Hello, " + name + "!";
+</code></pre></div>
+<h3 id="arrayvec-indexing">Array/Vec indexing<a class="headerlink" href="#arrayvec-indexing" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>arr[0]            // 0-indexed access
+vec[i]            // bounds-checked at runtime
+</code></pre></div>
+<h3 id="field-access">Field access<a class="headerlink" href="#field-access" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>point.x             // struct field
+enum_type.Variant   // enum variant
+type.method()       // method call
+</code></pre></div>
+<hr />
+<h2 id="contracts">Contracts<a class="headerlink" href="#contracts" title="Permanent link">&para;</a></h2>
+<p>Contracts are compile-time verified safety annotations.</p>
+<div class="highlight"><pre><span></span><code>fn divide(a: Float64, b: Float64) -&gt; Float64
+  requires: b != 0.0
+  ensures:  result * b == a
+{
+  return a / b;
+}
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>type NonEmptyStack[T] = {
+  items: Vec[T];
+  invariant: items.len() &gt; 0;
+}
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Clause</th>
+<th>Where</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>requires:</code></td>
+<td>fn</td>
+<td>Must be true when function is called</td>
+</tr>
+<tr>
+<td><code>ensures:</code></td>
+<td>fn</td>
+<td>Must be true when function returns</td>
+</tr>
+<tr>
+<td><code>invariant:</code></td>
+<td>type, enum</td>
+<td>Must hold for all instances of type</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h2>
+<h3 id="resultt-e"><code>Result[T, E]</code><a class="headerlink" href="#resultt-e" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>fn parse_int(s: Str) -&gt; Result[Int, Str] {
+  // ...
+  return Ok(value);
+  // or
+  return Err("invalid integer");
+}
+</code></pre></div>
+<h3 id="optiont"><code>Option[T]</code><a class="headerlink" href="#optiont" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>fn find_user(id: Int) -&gt; Option[User] {
+  // ...
+  return Some(user);
+  // or
+  return None;
+}
+</code></pre></div>
+<h3 id="unwrapping">Unwrapping<a class="headerlink" href="#unwrapping" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>let val = result.unwrap();           // panics on Err
+let val = result.unwrap_or(default); // safe fallback
+let val = option.unwrap_or(42);     // safe fallback for Option
+</code></pre></div>
+<hr />
+<h2 id="modules-and-visibility">Modules and Visibility<a class="headerlink" href="#modules-and-visibility" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>module mylib.data;           // namespace declaration
+
+pub fn public_api() { ... }; // visible outside module
+fn private_impl() { ... };   // module-private
+
+use xiom.io;                 // import module
+use xiom.collections.Map;    // import specific type
+</code></pre></div>
+<hr />
+<h2 id="ownership-and-borrowing">Ownership and Borrowing<a class="headerlink" href="#ownership-and-borrowing" title="Permanent link">&para;</a></h2>
+<p>XIOM uses lexical-scope ownership. When a value leaves scope, it is freed.</p>
+<div class="highlight"><pre><span></span><code>fn take_ownership(v: Vec[Int]) { ... } // v is moved -- caller loses access
+fn borrow_read(v: &amp;Vec[Int]) { ... }   // v is borrowed -- caller keeps access
+fn borrow_write(v: &amp;mut Vec[Int]) { ... } // exclusive mutable borrow
+</code></pre></div>
+<p>See <a href="../memory-model/">Memory Model</a> for the complete ownership and borrowing rules.</p>
+<hr />
+<h2 id="generics">Generics<a class="headerlink" href="#generics" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>fn identity[T](x: T) -&gt; T { return x; }
+
+type Pair[A, B] = { first: A; second: B; }
+
+enum Option[T] { Some(T), None }
+
+interface Add {
+  fn add(self, other: &amp;Self) -&gt; Self;
+}
+
+// Bounded generic
+fn sum[T: Add](a: T, b: T) -&gt; T {
+  return a.add(&amp;b);
+}
+</code></pre></div>
+<hr />
+<h2 id="unsafe-and-ffi">Unsafe and FFI<a class="headerlink" href="#unsafe-and-ffi" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>unsafe {
+  let ptr = malloc(1024);
+  free(ptr);
+}
+
+extern "C" {
+  fn printf(format: *UInt8, ...) -&gt; Int32;
+  fn malloc(size: UInt) -&gt; *UInt8;
+}
+</code></pre></div>
+<hr />
+<h2 id="scripting-mode">Scripting Mode<a class="headerlink" href="#scripting-mode" title="Permanent link">&para;</a></h2>
+<p>XIOM supports a scripting workflow via <code>xiom run</code>:</p>
+<div class="highlight"><pre><span></span><code>xiom<span class="w"> </span>run<span class="w"> </span>script.xi<span class="w">          </span><span class="c1"># JIT compile and execute</span>
+xiom<span class="w"> </span>run<span class="w"> </span>--watch<span class="w"> </span>script.xi<span class="w">  </span><span class="c1"># auto-recompile on changes</span>
+xiom<span class="w"> </span>repl<span class="w">                   </span><span class="c1"># interactive REPL</span>
+xiom<span class="w"> </span>--standalone<span class="w"> </span>script.xi<span class="w"> </span><span class="c1"># produce standalone binary</span>
+</code></pre></div>
+<p>Shebangs are supported:</p>
+<div class="highlight"><pre><span></span><code>#!/usr/bin/env xiom
+io.println("Hello from script!");
+</code></pre></div>
+<hr />
+<h2 id="cli-reference">CLI Reference<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xiom build file.xi</code></td>
+<td>Compile to native binary</td>
+</tr>
+<tr>
+<td><code>xiom run file.xi</code></td>
+<td>JIT compile and execute</td>
+</tr>
+<tr>
+<td><code>xiom --check file.xi</code></td>
+<td>Type-check only (no codegen)</td>
+</tr>
+<tr>
+<td><code>xiom doctor</code></td>
+<td>Verify toolchain (clang, opt)</td>
+</tr>
+<tr>
+<td><code>xiom pkg search &lt;q&gt;</code></td>
+<td>Search registry</td>
+</tr>
+<tr>
+<td><code>xiom pkg install &lt;pkg&gt;</code></td>
+<td>Install package</td>
+</tr>
+<tr>
+<td><code>xiom pkg publish</code></td>
+<td>Publish package to registry</td>
+</tr>
+<tr>
+<td><code>xiom doc file.xi</code></td>
+<td>Generate markdown docs</td>
+</tr>
+<tr>
+<td><code>xiom doc file.xi --html</code></td>
+<td>Generate HTML docs</td>
+</tr>
+<tr>
+<td><code>xiom fmt file.xi</code></td>
+<td>Format source code</td>
+</tr>
+<tr>
+<td><code>xiom repl</code></td>
+<td>Start interactive REPL</td>
+</tr>
+<tr>
+<td><code>xiom clean --cache</code></td>
+<td>Clean build cache</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../syntax/">Syntax</a></td>
+<td>Detailed grammar and expression syntax</td>
+</tr>
+<tr>
+<td><a href="../types/">Type System</a></td>
+<td>Full type hierarchy, inference rules</td>
+</tr>
+<tr>
+<td><a href="../contracts/">Contracts</a></td>
+<td>Deep dive on requires/ensures/invariant</td>
+</tr>
+<tr>
+<td><a href="../memory-model/">Memory Model</a></td>
+<td>Ownership, borrowing, move semantics</td>
+</tr>
+<tr>
+<td><a href="../generics/">Generics</a></td>
+<td>Comptime monomorphisation, bounds</td>
+</tr>
+<tr>
+<td><a href="../api/">Standard Library</a></td>
+<td>Complete API reference</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

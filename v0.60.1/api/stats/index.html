@@ -1,0 +1,5745 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.60.1/api/stats/">
+      
+      
+        <link rel="prev" href="../sort/">
+      
+      
+        <link rel="next" href="../string/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>stats - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stdlibstats" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              stats
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#distxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dist.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="dist.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-uniform_pdfx-float64-a-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn uniform_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-uniform_cdfx-float64-a-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn uniform_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_pdfx-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_cdfx-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_ppfp-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_ppf(p: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_pdfx-float64-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_pdf(x: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_cdfx-float64-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_cdf(x: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-poisson_pmfk-float64-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn poisson_pmf(k: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-binomial_pmfk-float64-n-float64-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn binomial_pmf(k: Float64, n: Float64, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_pmfk-float64-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_pmf(k: Float64, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-chi_squared_pdfx-float64-k-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn chi_squared_pdf(x: Float64, k: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-student_t_pdfx-float64-v-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn student_t_pdf(x: Float64, v: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-beta_pdfx-float64-a-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn beta_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-sample_normalmu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn sample_normal(mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-sample_uniforma-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn sample_uniform(a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#histogramxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        histogram.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="histogram.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type Histogram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_newbins-int-min-float64-max-float64-histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_new(bins: Int, min: Float64, max: Float64) -&gt; Histogram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_addh-histogram-value-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_add(h: Histogram, value: Float64)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_countsh-histogram-vecint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_counts(h: Histogram) -&gt; Vec[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_edgesh-histogram-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_edges(h: Histogram) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_normalizeh-histogram-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_normalize(h: Histogram) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_meanh-histogram-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_mean(h: Histogram) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_varianceh-histogram-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_variance(h: Histogram) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_quantileh-histogram-q-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_quantile(h: Histogram, q: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_modeh-histogram-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_mode(h: Histogram) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_mergea-histogram-b-histogram-histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_merge(a: Histogram, b: Histogram) -&gt; Histogram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#momentsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        moments.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="moments.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-meandata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-variancedata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn variance(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stddevdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stddev(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-skewnessdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn skewness(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-kurtosisdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn kurtosis(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-central_momentdata-vecfloat64-k-int-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn central_moment(data: &amp;Vec[Float64], k: Int) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-raw_momentdata-vecfloat64-k-int-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn raw_moment(data: &amp;Vec[Float64], k: Int) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-covariancex-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn covariance(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-weighted_meandata-vecfloat64-weights-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn weighted_mean(data: &amp;Vec[Float64], weights: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_meandata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harmonic_meandata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harmonic_mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-mediandata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn median(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-quantiledata-vecfloat64-q-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn quantile(data: &amp;Vec[Float64], q: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probabilityxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        probability.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="probability.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-uniform_pdfx-float64-a-float64-b-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn uniform_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-uniform_cdfx-float64-a-float64-b-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn uniform_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_pdfx-float64-mu-float64-sigma-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_cdfx-float64-mu-float64-sigma-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_quantilep-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_quantile(p: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_pdfx-float64-lambda-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_pdf(x: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_cdfx-float64-lambda-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_cdf(x: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-gamma_pdfx-float64-k-float64-theta-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn gamma_pdf(x: Float64, k: Float64, theta: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-gamma_cdfx-float64-k-float64-theta-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn gamma_cdf(x: Float64, k: Float64, theta: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-beta_pdfx-float64-a-float64-b-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn beta_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-beta_cdfx-float64-a-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn beta_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-chi2_pdfx-float64-k-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn chi2_pdf(x: Float64, k: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-chi2_cdfx-float64-k-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn chi2_cdf(x: Float64, k: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_pdfx-float64-v-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_pdf(x: Float64, v: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_cdfx-float64-v-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_cdf(x: Float64, v: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-f_pdfx-float64-d1-float64-d2-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn f_pdf(x: Float64, d1: Float64, d2: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-f_cdfx-float64-d1-float64-d2-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn f_cdf(x: Float64, d1: Float64, d2: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-weibull_pdfx-float64-shape-float64-scale-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn weibull_pdf(x: Float64, shape: Float64, scale: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-weibull_cdfx-float64-shape-float64-scale-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn weibull_cdf(x: Float64, shape: Float64, scale: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-lognormal_pdfx-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn lognormal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-lognormal_cdfx-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn lognormal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pareto_pdfx-float64-alpha-float64-xm-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pareto_pdf(x: Float64, alpha: Float64, xm: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pareto_cdfx-float64-alpha-float64-xm-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pareto_cdf(x: Float64, alpha: Float64, xm: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-poisson_pmfk-int-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn poisson_pmf(k: Int, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-poisson_cdfk-int-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn poisson_cdf(k: Int, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-binomial_pmfk-int-n-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn binomial_pmf(k: Int, n: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-binomial_cdfk-int-n-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn binomial_cdf(k: Int, n: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_pmfk-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_pmf(k: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_cdfk-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_cdf(k: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-negative_binomial_pmfk-int-r-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn negative_binomial_pmf(k: Int, r: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-negative_binomial_cdfk-int-r-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn negative_binomial_cdf(k: Int, r: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-hypergeometric_pmfk-int-n-int-k-int-n-int-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn hypergeometric_pmf(k: Int, n: Int, K: Int, N: Int) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-hypergeometric_cdfk-int-n-int-k-int-n-int-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn hypergeometric_cdf(k: Int, n: Int, K: Int, N: Int) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regressxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        regress.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="regress.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-regressionresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type RegressionResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-linear_regressionx-vecfloat64-y-vecfloat64-regressionresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn linear_regression(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; RegressionResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-slopex-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn slope(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-interceptx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn intercept(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-r_squaredx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn r_squared(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pearson_correlationx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pearson_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-spearman_correlationx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn spearman_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-polynomial_regressionx-vecfloat64-y-vecfloat64-degree-int-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn polynomial_regression(x: &amp;Vec[Float64], y: &amp;Vec[Float64], degree: Int) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_fitx-vecfloat64-y-vecfloat64-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_fit(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; (Float64, Float64)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-predict_lineslope-float64-intercept-float64-x-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn predict_line(slope: Float64, intercept: Float64, x: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-residualsx-vecfloat64-y-vecfloat64-slope-float64-intercept-float64-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn residuals(x: &amp;Vec[Float64], y: &amp;Vec[Float64], slope: Float64, intercept: Float64) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statisticsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        statistics.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="statistics.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-meandata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-mediandata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn median(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-modedata-vecfloat64-optionfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn mode(data: &amp;Vec[Float64]) -&gt; Option[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-variancedata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn variance(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-variance_popdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn variance_pop(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stddevdata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stddev(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stddev_popdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stddev_pop(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-rangedata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn range(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-iqrdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn iqr(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-quartilesdata-vecfloat64-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn quartiles(data: &amp;Vec[Float64]) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-percentiledata-vecfloat64-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn percentile(data: &amp;Vec[Float64], p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-skewnessdata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn skewness(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-kurtosisdata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn kurtosis(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-covariancex-vecfloat64-y-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn covariance(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-correlationx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-spearman_correlationx-vecfloat64-y-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn spearman_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-kendall_correlationx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn kendall_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-rmsdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn rms(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_meandata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harmonic_meandata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harmonic_mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-weighted_meandata-vecfloat64-weights-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn weighted_mean(data: &amp;Vec[Float64], weights: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-trimmed_meandata-vecfloat64-trim-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn trimmed_mean(data: &amp;Vec[Float64], trim: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-winsorized_meandata-vecfloat64-trim-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn winsorized_mean(data: &amp;Vec[Float64], trim: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-maddata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn mad(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-z_scorex-float64-mean-float64-stddev-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn z_score(x: Float64, mean: Float64, stddev: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stats.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="stats.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_mindata-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_min(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_maxdata-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_max(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_rangedata-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_range(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_modedata-vecint-optionint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_mode(data: &amp;Vec[Int]) -&gt; Option[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_variancedata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_variance(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_sample_variancedata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_sample_variance(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_stddev_fdata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_stddev_f(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_sample_stddevdata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_sample_stddev(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_q1data-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_q1(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_q3data-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_q3(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_iqrdata-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_iqr(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_sum_fdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_sum_f(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_mean_fdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_mean_f(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_stddev_f_fdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_stddev_f_f(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_covariancea-vecint-b-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_covariance(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_correlationa-vecint-b-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_correlation(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_histogramdata-vecint-bins-int-lo-int-hi-int-vecint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_histogram(data: &amp;Vec[Int], bins: Int, lo: Int, hi: Int) -&gt; Vec[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_geometric_meandata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_geometric_mean(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_harmonic_meandata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_harmonic_mean(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_zscorevalue-int-mean-float64-stddev-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_zscore(value: Int, mean: Float64, stddev: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_slopex-vecint-y-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_slope(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_interceptx-vecint-y-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_intercept(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_r_squaredx-vecint-y-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_r_squared(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="test.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_test_one_sampledata-vecfloat64-mu-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_test_one_sample(data: &amp;Vec[Float64], mu: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_test_two_samplea-vecfloat64-b-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_test_two_sample(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_test_paireda-vecfloat64-b-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_test_paired(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-chi_squared_testobserved-vecint-expected-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn chi_squared_test(observed: &amp;Vec[Int], expected: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-f_testa-vecfloat64-b-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn f_test(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-anova_one_waygroups-vecvecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn anova_one_way(groups: &amp;Vec[Vec[Float64]]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-p_value_from_tt-float64-df-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn p_value_from_t(t: Float64, df: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-p_value_from_chi2x-float64-df-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn p_value_from_chi2(x: Float64, df: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-z_scorex-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn z_score(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-confidence_intervaldata-vecfloat64-level-float64-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn confidence_interval(data: &amp;Vec[Float64], level: Float64) -&gt; (Float64, Float64)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-standard_errordata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn standard_error(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#distxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dist.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="dist.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-uniform_pdfx-float64-a-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn uniform_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-uniform_cdfx-float64-a-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn uniform_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_pdfx-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_cdfx-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_ppfp-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_ppf(p: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_pdfx-float64-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_pdf(x: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_cdfx-float64-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_cdf(x: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-poisson_pmfk-float64-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn poisson_pmf(k: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-binomial_pmfk-float64-n-float64-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn binomial_pmf(k: Float64, n: Float64, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_pmfk-float64-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_pmf(k: Float64, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-chi_squared_pdfx-float64-k-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn chi_squared_pdf(x: Float64, k: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-student_t_pdfx-float64-v-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn student_t_pdf(x: Float64, v: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-beta_pdfx-float64-a-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn beta_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-sample_normalmu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn sample_normal(mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-sample_uniforma-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn sample_uniform(a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#histogramxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        histogram.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="histogram.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type Histogram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_newbins-int-min-float64-max-float64-histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_new(bins: Int, min: Float64, max: Float64) -&gt; Histogram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_addh-histogram-value-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_add(h: Histogram, value: Float64)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_countsh-histogram-vecint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_counts(h: Histogram) -&gt; Vec[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_edgesh-histogram-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_edges(h: Histogram) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_normalizeh-histogram-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_normalize(h: Histogram) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_meanh-histogram-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_mean(h: Histogram) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_varianceh-histogram-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_variance(h: Histogram) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_quantileh-histogram-q-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_quantile(h: Histogram, q: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_modeh-histogram-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_mode(h: Histogram) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-histogram_mergea-histogram-b-histogram-histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn histogram_merge(a: Histogram, b: Histogram) -&gt; Histogram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#momentsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        moments.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="moments.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-meandata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-variancedata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn variance(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stddevdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stddev(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-skewnessdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn skewness(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-kurtosisdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn kurtosis(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-central_momentdata-vecfloat64-k-int-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn central_moment(data: &amp;Vec[Float64], k: Int) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-raw_momentdata-vecfloat64-k-int-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn raw_moment(data: &amp;Vec[Float64], k: Int) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-covariancex-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn covariance(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-weighted_meandata-vecfloat64-weights-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn weighted_mean(data: &amp;Vec[Float64], weights: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_meandata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harmonic_meandata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harmonic_mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-mediandata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn median(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-quantiledata-vecfloat64-q-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn quantile(data: &amp;Vec[Float64], q: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probabilityxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        probability.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="probability.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-uniform_pdfx-float64-a-float64-b-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn uniform_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-uniform_cdfx-float64-a-float64-b-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn uniform_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_pdfx-float64-mu-float64-sigma-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_cdfx-float64-mu-float64-sigma-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-normal_quantilep-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn normal_quantile(p: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_pdfx-float64-lambda-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_pdf(x: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_cdfx-float64-lambda-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_cdf(x: Float64, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-gamma_pdfx-float64-k-float64-theta-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn gamma_pdf(x: Float64, k: Float64, theta: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-gamma_cdfx-float64-k-float64-theta-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn gamma_cdf(x: Float64, k: Float64, theta: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-beta_pdfx-float64-a-float64-b-float64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn beta_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-beta_cdfx-float64-a-float64-b-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn beta_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-chi2_pdfx-float64-k-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn chi2_pdf(x: Float64, k: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-chi2_cdfx-float64-k-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn chi2_cdf(x: Float64, k: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_pdfx-float64-v-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_pdf(x: Float64, v: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_cdfx-float64-v-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_cdf(x: Float64, v: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-f_pdfx-float64-d1-float64-d2-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn f_pdf(x: Float64, d1: Float64, d2: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-f_cdfx-float64-d1-float64-d2-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn f_cdf(x: Float64, d1: Float64, d2: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-weibull_pdfx-float64-shape-float64-scale-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn weibull_pdf(x: Float64, shape: Float64, scale: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-weibull_cdfx-float64-shape-float64-scale-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn weibull_cdf(x: Float64, shape: Float64, scale: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-lognormal_pdfx-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn lognormal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-lognormal_cdfx-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn lognormal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pareto_pdfx-float64-alpha-float64-xm-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pareto_pdf(x: Float64, alpha: Float64, xm: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pareto_cdfx-float64-alpha-float64-xm-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pareto_cdf(x: Float64, alpha: Float64, xm: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-poisson_pmfk-int-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn poisson_pmf(k: Int, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-poisson_cdfk-int-lambda-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn poisson_cdf(k: Int, lambda: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-binomial_pmfk-int-n-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn binomial_pmf(k: Int, n: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-binomial_cdfk-int-n-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn binomial_cdf(k: Int, n: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_pmfk-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_pmf(k: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_cdfk-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_cdf(k: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-negative_binomial_pmfk-int-r-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn negative_binomial_pmf(k: Int, r: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-negative_binomial_cdfk-int-r-int-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn negative_binomial_cdf(k: Int, r: Int, p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-hypergeometric_pmfk-int-n-int-k-int-n-int-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn hypergeometric_pmf(k: Int, n: Int, K: Int, N: Int) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-hypergeometric_cdfk-int-n-int-k-int-n-int-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn hypergeometric_cdf(k: Int, n: Int, K: Int, N: Int) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regressxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        regress.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="regress.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-regressionresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type RegressionResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-linear_regressionx-vecfloat64-y-vecfloat64-regressionresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn linear_regression(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; RegressionResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-slopex-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn slope(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-interceptx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn intercept(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-r_squaredx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn r_squared(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-pearson_correlationx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn pearson_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-spearman_correlationx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn spearman_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-polynomial_regressionx-vecfloat64-y-vecfloat64-degree-int-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn polynomial_regression(x: &amp;Vec[Float64], y: &amp;Vec[Float64], degree: Int) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-exponential_fitx-vecfloat64-y-vecfloat64-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn exponential_fit(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; (Float64, Float64)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-predict_lineslope-float64-intercept-float64-x-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn predict_line(slope: Float64, intercept: Float64, x: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-residualsx-vecfloat64-y-vecfloat64-slope-float64-intercept-float64-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn residuals(x: &amp;Vec[Float64], y: &amp;Vec[Float64], slope: Float64, intercept: Float64) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statisticsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        statistics.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="statistics.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-meandata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-mediandata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn median(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-modedata-vecfloat64-optionfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn mode(data: &amp;Vec[Float64]) -&gt; Option[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-variancedata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn variance(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-variance_popdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn variance_pop(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stddevdata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stddev(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stddev_popdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stddev_pop(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-rangedata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn range(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-iqrdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn iqr(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-quartilesdata-vecfloat64-vecfloat64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn quartiles(data: &amp;Vec[Float64]) -&gt; Vec[Float64]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-percentiledata-vecfloat64-p-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn percentile(data: &amp;Vec[Float64], p: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-skewnessdata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn skewness(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-kurtosisdata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn kurtosis(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-covariancex-vecfloat64-y-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn covariance(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-correlationx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-spearman_correlationx-vecfloat64-y-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn spearman_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-kendall_correlationx-vecfloat64-y-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn kendall_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-rmsdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn rms(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-geometric_meandata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn geometric_mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-harmonic_meandata-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn harmonic_mean(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-weighted_meandata-vecfloat64-weights-vecfloat64-float64_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn weighted_mean(data: &amp;Vec[Float64], weights: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-trimmed_meandata-vecfloat64-trim-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn trimmed_mean(data: &amp;Vec[Float64], trim: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-winsorized_meandata-vecfloat64-trim-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn winsorized_mean(data: &amp;Vec[Float64], trim: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-maddata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn mad(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-z_scorex-float64-mean-float64-stddev-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn z_score(x: Float64, mean: Float64, stddev: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stats.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="stats.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_mindata-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_min(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_maxdata-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_max(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_rangedata-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_range(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_modedata-vecint-optionint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_mode(data: &amp;Vec[Int]) -&gt; Option[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_variancedata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_variance(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_sample_variancedata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_sample_variance(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_stddev_fdata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_stddev_f(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_sample_stddevdata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_sample_stddev(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_q1data-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_q1(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_q3data-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_q3(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_iqrdata-vecint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_iqr(data: &amp;Vec[Int]) -&gt; Int
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_sum_fdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_sum_f(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_mean_fdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_mean_f(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_stddev_f_fdata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_stddev_f_f(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_covariancea-vecint-b-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_covariance(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_correlationa-vecint-b-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_correlation(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_histogramdata-vecint-bins-int-lo-int-hi-int-vecint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_histogram(data: &amp;Vec[Int], bins: Int, lo: Int, hi: Int) -&gt; Vec[Int]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_geometric_meandata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_geometric_mean(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_harmonic_meandata-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_harmonic_mean(data: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_zscorevalue-int-mean-float64-stddev-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_zscore(value: Int, mean: Float64, stddev: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_slopex-vecint-y-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_slope(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_interceptx-vecint-y-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_intercept(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-stats_r_squaredx-vecint-y-vecint-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn stats_r_squared(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test.xi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="test.xi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_test_one_sampledata-vecfloat64-mu-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_test_one_sample(data: &amp;Vec[Float64], mu: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_test_two_samplea-vecfloat64-b-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_test_two_sample(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-t_test_paireda-vecfloat64-b-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn t_test_paired(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-chi_squared_testobserved-vecint-expected-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn chi_squared_test(observed: &amp;Vec[Int], expected: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-f_testa-vecfloat64-b-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn f_test(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-anova_one_waygroups-vecvecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn anova_one_way(groups: &amp;Vec[Vec[Float64]]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-p_value_from_tt-float64-df-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn p_value_from_t(t: Float64, df: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-p_value_from_chi2x-float64-df-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn p_value_from_chi2(x: Float64, df: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-z_scorex-float64-mu-float64-sigma-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn z_score(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-confidence_intervaldata-vecfloat64-level-float64-float64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn confidence_interval(data: &amp;Vec[Float64], level: Float64) -&gt; (Float64, Float64)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-standard_errordata-vecfloat64-float64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn standard_error(data: &amp;Vec[Float64]) -&gt; Float64
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="stdlibstats"><code>stdlib.stats</code><a class="headerlink" href="#stdlibstats" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Generated from <code>v0.60.1</code>. 8 source files, 142 documented symbols.</p>
+</blockquote>
+<h2 id="distxi"><code>dist.xi</code><a class="headerlink" href="#distxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-uniform_pdfx-float64-a-float64-b-float64-float64"><code>fn uniform_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-uniform_pdfx-float64-a-float64-b-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-uniform_cdfx-float64-a-float64-b-float64-float64"><code>fn uniform_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-uniform_cdfx-float64-a-float64-b-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-normal_pdfx-float64-mu-float64-sigma-float64-float64"><code>fn normal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normal_pdfx-float64-mu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-normal_cdfx-float64-mu-float64-sigma-float64-float64"><code>fn normal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normal_cdfx-float64-mu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-normal_ppfp-float64-mu-float64-sigma-float64-float64"><code>fn normal_ppf(p: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normal_ppfp-float64-mu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-exponential_pdfx-float64-lambda-float64-float64"><code>fn exponential_pdf(x: Float64, lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-exponential_pdfx-float64-lambda-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-exponential_cdfx-float64-lambda-float64-float64"><code>fn exponential_cdf(x: Float64, lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-exponential_cdfx-float64-lambda-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-poisson_pmfk-float64-lambda-float64-float64"><code>fn poisson_pmf(k: Float64, lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-poisson_pmfk-float64-lambda-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-binomial_pmfk-float64-n-float64-p-float64-float64"><code>fn binomial_pmf(k: Float64, n: Float64, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-binomial_pmfk-float64-n-float64-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-geometric_pmfk-float64-p-float64-float64"><code>fn geometric_pmf(k: Float64, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-geometric_pmfk-float64-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-chi_squared_pdfx-float64-k-float64-float64"><code>fn chi_squared_pdf(x: Float64, k: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-chi_squared_pdfx-float64-k-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-student_t_pdfx-float64-v-float64-float64"><code>fn student_t_pdf(x: Float64, v: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-student_t_pdfx-float64-v-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-beta_pdfx-float64-a-float64-b-float64-float64"><code>fn beta_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-beta_pdfx-float64-a-float64-b-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-sample_normalmu-float64-sigma-float64-float64"><code>fn sample_normal(mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_normalmu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-sample_uniforma-float64-b-float64-float64"><code>fn sample_uniform(a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_uniforma-float64-b-float64-float64" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="histogramxi"><code>histogram.xi</code><a class="headerlink" href="#histogramxi" title="Permanent link">&para;</a></h2>
+<h4 id="type-histogram"><code>type Histogram</code><a class="headerlink" href="#type-histogram" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bins</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>min</code></td>
+<td><code>Float64</code></td>
+</tr>
+<tr>
+<td><code>max</code></td>
+<td><code>Float64</code></td>
+</tr>
+<tr>
+<td><code>counts</code></td>
+<td><code>Vec[Int]</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-histogram_newbins-int-min-float64-max-float64-histogram"><code>fn histogram_new(bins: Int, min: Float64, max: Float64) -&gt; Histogram</code><a class="headerlink" href="#fn-histogram_newbins-int-min-float64-max-float64-histogram" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_addh-histogram-value-float64"><code>fn histogram_add(h: Histogram, value: Float64)</code><a class="headerlink" href="#fn-histogram_addh-histogram-value-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_countsh-histogram-vecint"><code>fn histogram_counts(h: Histogram) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-histogram_countsh-histogram-vecint" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_edgesh-histogram-vecfloat64"><code>fn histogram_edges(h: Histogram) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-histogram_edgesh-histogram-vecfloat64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_normalizeh-histogram-vecfloat64"><code>fn histogram_normalize(h: Histogram) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-histogram_normalizeh-histogram-vecfloat64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_meanh-histogram-float64"><code>fn histogram_mean(h: Histogram) -&gt; Float64</code><a class="headerlink" href="#fn-histogram_meanh-histogram-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_varianceh-histogram-float64"><code>fn histogram_variance(h: Histogram) -&gt; Float64</code><a class="headerlink" href="#fn-histogram_varianceh-histogram-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_quantileh-histogram-q-float64-float64"><code>fn histogram_quantile(h: Histogram, q: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-histogram_quantileh-histogram-q-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_modeh-histogram-int"><code>fn histogram_mode(h: Histogram) -&gt; Int</code><a class="headerlink" href="#fn-histogram_modeh-histogram-int" title="Permanent link">&para;</a></h4>
+<h4 id="fn-histogram_mergea-histogram-b-histogram-histogram"><code>fn histogram_merge(a: Histogram, b: Histogram) -&gt; Histogram</code><a class="headerlink" href="#fn-histogram_mergea-histogram-b-histogram-histogram" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="momentsxi"><code>moments.xi</code><a class="headerlink" href="#momentsxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-meandata-vecfloat64-float64"><code>fn mean(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-meandata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-variancedata-vecfloat64-float64"><code>fn variance(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-variancedata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-stddevdata-vecfloat64-float64"><code>fn stddev(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stddevdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-skewnessdata-vecfloat64-float64"><code>fn skewness(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-skewnessdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-kurtosisdata-vecfloat64-float64"><code>fn kurtosis(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-kurtosisdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-central_momentdata-vecfloat64-k-int-float64"><code>fn central_moment(data: &amp;Vec[Float64], k: Int) -&gt; Float64</code><a class="headerlink" href="#fn-central_momentdata-vecfloat64-k-int-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-raw_momentdata-vecfloat64-k-int-float64"><code>fn raw_moment(data: &amp;Vec[Float64], k: Int) -&gt; Float64</code><a class="headerlink" href="#fn-raw_momentdata-vecfloat64-k-int-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-covariancex-vecfloat64-y-vecfloat64-float64"><code>fn covariance(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-covariancex-vecfloat64-y-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-weighted_meandata-vecfloat64-weights-vecfloat64-float64"><code>fn weighted_mean(data: &amp;Vec[Float64], weights: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-weighted_meandata-vecfloat64-weights-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-geometric_meandata-vecfloat64-float64"><code>fn geometric_mean(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-geometric_meandata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-harmonic_meandata-vecfloat64-float64"><code>fn harmonic_mean(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-harmonic_meandata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-mediandata-vecfloat64-float64"><code>fn median(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-mediandata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-quantiledata-vecfloat64-q-float64-float64"><code>fn quantile(data: &amp;Vec[Float64], q: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-quantiledata-vecfloat64-q-float64-float64" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="probabilityxi"><code>probability.xi</code><a class="headerlink" href="#probabilityxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-uniform_pdfx-float64-a-float64-b-float64-float64_1"><code>fn uniform_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-uniform_pdfx-float64-a-float64-b-float64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-uniform_cdfx-float64-a-float64-b-float64-float64_1"><code>fn uniform_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-uniform_cdfx-float64-a-float64-b-float64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-normal_pdfx-float64-mu-float64-sigma-float64-float64_1"><code>fn normal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normal_pdfx-float64-mu-float64-sigma-float64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-normal_cdfx-float64-mu-float64-sigma-float64-float64_1"><code>fn normal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normal_cdfx-float64-mu-float64-sigma-float64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-normal_quantilep-float64-mu-float64-sigma-float64-float64"><code>fn normal_quantile(p: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normal_quantilep-float64-mu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-exponential_pdfx-float64-lambda-float64-float64_1"><code>fn exponential_pdf(x: Float64, lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-exponential_pdfx-float64-lambda-float64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-exponential_cdfx-float64-lambda-float64-float64_1"><code>fn exponential_cdf(x: Float64, lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-exponential_cdfx-float64-lambda-float64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-gamma_pdfx-float64-k-float64-theta-float64-float64"><code>fn gamma_pdf(x: Float64, k: Float64, theta: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-gamma_pdfx-float64-k-float64-theta-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-gamma_cdfx-float64-k-float64-theta-float64-float64"><code>fn gamma_cdf(x: Float64, k: Float64, theta: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-gamma_cdfx-float64-k-float64-theta-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-beta_pdfx-float64-a-float64-b-float64-float64_1"><code>fn beta_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-beta_pdfx-float64-a-float64-b-float64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-beta_cdfx-float64-a-float64-b-float64-float64"><code>fn beta_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-beta_cdfx-float64-a-float64-b-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-chi2_pdfx-float64-k-float64-float64"><code>fn chi2_pdf(x: Float64, k: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-chi2_pdfx-float64-k-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-chi2_cdfx-float64-k-float64-float64"><code>fn chi2_cdf(x: Float64, k: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-chi2_cdfx-float64-k-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-t_pdfx-float64-v-float64-float64"><code>fn t_pdf(x: Float64, v: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-t_pdfx-float64-v-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-t_cdfx-float64-v-float64-float64"><code>fn t_cdf(x: Float64, v: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-t_cdfx-float64-v-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-f_pdfx-float64-d1-float64-d2-float64-float64"><code>fn f_pdf(x: Float64, d1: Float64, d2: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f_pdfx-float64-d1-float64-d2-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-f_cdfx-float64-d1-float64-d2-float64-float64"><code>fn f_cdf(x: Float64, d1: Float64, d2: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f_cdfx-float64-d1-float64-d2-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-weibull_pdfx-float64-shape-float64-scale-float64-float64"><code>fn weibull_pdf(x: Float64, shape: Float64, scale: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-weibull_pdfx-float64-shape-float64-scale-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-weibull_cdfx-float64-shape-float64-scale-float64-float64"><code>fn weibull_cdf(x: Float64, shape: Float64, scale: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-weibull_cdfx-float64-shape-float64-scale-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-lognormal_pdfx-float64-mu-float64-sigma-float64-float64"><code>fn lognormal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-lognormal_pdfx-float64-mu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-lognormal_cdfx-float64-mu-float64-sigma-float64-float64"><code>fn lognormal_cdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-lognormal_cdfx-float64-mu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pareto_pdfx-float64-alpha-float64-xm-float64-float64"><code>fn pareto_pdf(x: Float64, alpha: Float64, xm: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-pareto_pdfx-float64-alpha-float64-xm-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pareto_cdfx-float64-alpha-float64-xm-float64-float64"><code>fn pareto_cdf(x: Float64, alpha: Float64, xm: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-pareto_cdfx-float64-alpha-float64-xm-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-poisson_pmfk-int-lambda-float64-float64"><code>fn poisson_pmf(k: Int, lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-poisson_pmfk-int-lambda-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-poisson_cdfk-int-lambda-float64-float64"><code>fn poisson_cdf(k: Int, lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-poisson_cdfk-int-lambda-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-binomial_pmfk-int-n-int-p-float64-float64"><code>fn binomial_pmf(k: Int, n: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-binomial_pmfk-int-n-int-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-binomial_cdfk-int-n-int-p-float64-float64"><code>fn binomial_cdf(k: Int, n: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-binomial_cdfk-int-n-int-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-geometric_pmfk-int-p-float64-float64"><code>fn geometric_pmf(k: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-geometric_pmfk-int-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-geometric_cdfk-int-p-float64-float64"><code>fn geometric_cdf(k: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-geometric_cdfk-int-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-negative_binomial_pmfk-int-r-int-p-float64-float64"><code>fn negative_binomial_pmf(k: Int, r: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-negative_binomial_pmfk-int-r-int-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-negative_binomial_cdfk-int-r-int-p-float64-float64"><code>fn negative_binomial_cdf(k: Int, r: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-negative_binomial_cdfk-int-r-int-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-hypergeometric_pmfk-int-n-int-k-int-n-int-float64"><code>fn hypergeometric_pmf(k: Int, n: Int, K: Int, N: Int) -&gt; Float64</code><a class="headerlink" href="#fn-hypergeometric_pmfk-int-n-int-k-int-n-int-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-hypergeometric_cdfk-int-n-int-k-int-n-int-float64"><code>fn hypergeometric_cdf(k: Int, n: Int, K: Int, N: Int) -&gt; Float64</code><a class="headerlink" href="#fn-hypergeometric_cdfk-int-n-int-k-int-n-int-float64" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="regressxi"><code>regress.xi</code><a class="headerlink" href="#regressxi" title="Permanent link">&para;</a></h2>
+<h4 id="type-regressionresult"><code>type RegressionResult</code><a class="headerlink" href="#type-regressionresult" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>slope</code></td>
+<td><code>Float64</code></td>
+</tr>
+<tr>
+<td><code>intercept</code></td>
+<td><code>Float64</code></td>
+</tr>
+<tr>
+<td><code>r2</code></td>
+<td><code>Float64</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-linear_regressionx-vecfloat64-y-vecfloat64-regressionresult"><code>fn linear_regression(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; RegressionResult</code><a class="headerlink" href="#fn-linear_regressionx-vecfloat64-y-vecfloat64-regressionresult" title="Permanent link">&para;</a></h4>
+<h4 id="fn-slopex-vecfloat64-y-vecfloat64-float64"><code>fn slope(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-slopex-vecfloat64-y-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-interceptx-vecfloat64-y-vecfloat64-float64"><code>fn intercept(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-interceptx-vecfloat64-y-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-r_squaredx-vecfloat64-y-vecfloat64-float64"><code>fn r_squared(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-r_squaredx-vecfloat64-y-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-pearson_correlationx-vecfloat64-y-vecfloat64-float64"><code>fn pearson_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-pearson_correlationx-vecfloat64-y-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-spearman_correlationx-vecfloat64-y-vecfloat64-float64"><code>fn spearman_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-spearman_correlationx-vecfloat64-y-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-polynomial_regressionx-vecfloat64-y-vecfloat64-degree-int-vecfloat64"><code>fn polynomial_regression(x: &amp;Vec[Float64], y: &amp;Vec[Float64], degree: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-polynomial_regressionx-vecfloat64-y-vecfloat64-degree-int-vecfloat64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-exponential_fitx-vecfloat64-y-vecfloat64-float64-float64"><code>fn exponential_fit(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; (Float64, Float64)</code><a class="headerlink" href="#fn-exponential_fitx-vecfloat64-y-vecfloat64-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-predict_lineslope-float64-intercept-float64-x-float64-float64"><code>fn predict_line(slope: Float64, intercept: Float64, x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-predict_lineslope-float64-intercept-float64-x-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-residualsx-vecfloat64-y-vecfloat64-slope-float64-intercept-float64-vecfloat64"><code>fn residuals(x: &amp;Vec[Float64], y: &amp;Vec[Float64], slope: Float64, intercept: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-residualsx-vecfloat64-y-vecfloat64-slope-float64-intercept-float64-vecfloat64" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="statisticsxi"><code>statistics.xi</code><a class="headerlink" href="#statisticsxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-meandata-vecfloat64-float64_1"><code>fn mean(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-meandata-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-mediandata-vecfloat64-float64_1"><code>fn median(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-mediandata-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-modedata-vecfloat64-optionfloat64"><code>fn mode(data: &amp;Vec[Float64]) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-modedata-vecfloat64-optionfloat64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-variancedata-vecfloat64-float64_1"><code>fn variance(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-variancedata-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-variance_popdata-vecfloat64-float64"><code>fn variance_pop(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-variance_popdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-stddevdata-vecfloat64-float64_1"><code>fn stddev(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stddevdata-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-stddev_popdata-vecfloat64-float64"><code>fn stddev_pop(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stddev_popdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-rangedata-vecfloat64-float64"><code>fn range(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-rangedata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-iqrdata-vecfloat64-float64"><code>fn iqr(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-iqrdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-quartilesdata-vecfloat64-vecfloat64"><code>fn quartiles(data: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-quartilesdata-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-percentiledata-vecfloat64-p-float64-float64"><code>fn percentile(data: &amp;Vec[Float64], p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-percentiledata-vecfloat64-p-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-skewnessdata-vecfloat64-float64_1"><code>fn skewness(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-skewnessdata-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-kurtosisdata-vecfloat64-float64_1"><code>fn kurtosis(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-kurtosisdata-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-covariancex-vecfloat64-y-vecfloat64-float64_1"><code>fn covariance(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-covariancex-vecfloat64-y-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-correlationx-vecfloat64-y-vecfloat64-float64"><code>fn correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-correlationx-vecfloat64-y-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-spearman_correlationx-vecfloat64-y-vecfloat64-float64_1"><code>fn spearman_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-spearman_correlationx-vecfloat64-y-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-kendall_correlationx-vecfloat64-y-vecfloat64-float64"><code>fn kendall_correlation(x: &amp;Vec[Float64], y: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-kendall_correlationx-vecfloat64-y-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-rmsdata-vecfloat64-float64"><code>fn rms(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-rmsdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-geometric_meandata-vecfloat64-float64_1"><code>fn geometric_mean(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-geometric_meandata-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-harmonic_meandata-vecfloat64-float64_1"><code>fn harmonic_mean(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-harmonic_meandata-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-weighted_meandata-vecfloat64-weights-vecfloat64-float64_1"><code>fn weighted_mean(data: &amp;Vec[Float64], weights: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-weighted_meandata-vecfloat64-weights-vecfloat64-float64_1" title="Permanent link">&para;</a></h4>
+<h4 id="fn-trimmed_meandata-vecfloat64-trim-float64-float64"><code>fn trimmed_mean(data: &amp;Vec[Float64], trim: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-trimmed_meandata-vecfloat64-trim-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-winsorized_meandata-vecfloat64-trim-float64-float64"><code>fn winsorized_mean(data: &amp;Vec[Float64], trim: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-winsorized_meandata-vecfloat64-trim-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-maddata-vecfloat64-float64"><code>fn mad(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-maddata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-z_scorex-float64-mean-float64-stddev-float64-float64"><code>fn z_score(x: Float64, mean: Float64, stddev: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-z_scorex-float64-mean-float64-stddev-float64-float64" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+<h2 id="statsxi"><code>stats.xi</code><a class="headerlink" href="#statsxi" title="Permanent link">&para;</a></h2>
+<h3 id="fn-stats_mindata-vecint-int"><code>fn stats_min(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_mindata-vecint-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_maxdata-vecint-int"><code>fn stats_max(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_maxdata-vecint-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_rangedata-vecint-int"><code>fn stats_range(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_rangedata-vecint-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_modedata-vecint-optionint"><code>fn stats_mode(data: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-stats_modedata-vecint-optionint" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_variancedata-vecint-float64"><code>fn stats_variance(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_variancedata-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_sample_variancedata-vecint-float64"><code>fn stats_sample_variance(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_sample_variancedata-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_stddev_fdata-vecint-float64"><code>fn stats_stddev_f(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_stddev_fdata-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_sample_stddevdata-vecint-float64"><code>fn stats_sample_stddev(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_sample_stddevdata-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_q1data-vecint-int"><code>fn stats_q1(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_q1data-vecint-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_q3data-vecint-int"><code>fn stats_q3(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_q3data-vecint-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_iqrdata-vecint-int"><code>fn stats_iqr(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_iqrdata-vecint-int" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_sum_fdata-vecfloat64-float64"><code>fn stats_sum_f(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_sum_fdata-vecfloat64-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_mean_fdata-vecfloat64-float64"><code>fn stats_mean_f(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_mean_fdata-vecfloat64-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_stddev_f_fdata-vecfloat64-float64"><code>fn stats_stddev_f_f(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_stddev_f_fdata-vecfloat64-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_covariancea-vecint-b-vecint-float64"><code>fn stats_covariance(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_covariancea-vecint-b-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_correlationa-vecint-b-vecint-float64"><code>fn stats_correlation(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_correlationa-vecint-b-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_histogramdata-vecint-bins-int-lo-int-hi-int-vecint"><code>fn stats_histogram(data: &amp;Vec[Int], bins: Int, lo: Int, hi: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-stats_histogramdata-vecint-bins-int-lo-int-hi-int-vecint" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_geometric_meandata-vecint-float64"><code>fn stats_geometric_mean(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_geometric_meandata-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_harmonic_meandata-vecint-float64"><code>fn stats_harmonic_mean(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_harmonic_meandata-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_zscorevalue-int-mean-float64-stddev-float64-float64"><code>fn stats_zscore(value: Int, mean: Float64, stddev: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-stats_zscorevalue-int-mean-float64-stddev-float64-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_slopex-vecint-y-vecint-float64"><code>fn stats_slope(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_slopex-vecint-y-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_interceptx-vecint-y-vecint-float64"><code>fn stats_intercept(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_interceptx-vecint-y-vecint-float64" title="Permanent link">&para;</a></h3>
+<h3 id="fn-stats_r_squaredx-vecint-y-vecint-float64"><code>fn stats_r_squared(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_r_squaredx-vecint-y-vecint-float64" title="Permanent link">&para;</a></h3>
+<hr />
+<hr />
+<h2 id="testxi"><code>test.xi</code><a class="headerlink" href="#testxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-t_test_one_sampledata-vecfloat64-mu-float64-float64"><code>fn t_test_one_sample(data: &amp;Vec[Float64], mu: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-t_test_one_sampledata-vecfloat64-mu-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-t_test_two_samplea-vecfloat64-b-vecfloat64-float64"><code>fn t_test_two_sample(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-t_test_two_samplea-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-t_test_paireda-vecfloat64-b-vecfloat64-float64"><code>fn t_test_paired(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-t_test_paireda-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-chi_squared_testobserved-vecint-expected-vecfloat64-float64"><code>fn chi_squared_test(observed: &amp;Vec[Int], expected: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-chi_squared_testobserved-vecint-expected-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-f_testa-vecfloat64-b-vecfloat64-float64"><code>fn f_test(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-f_testa-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-anova_one_waygroups-vecvecfloat64-float64"><code>fn anova_one_way(groups: &amp;Vec[Vec[Float64]]) -&gt; Float64</code><a class="headerlink" href="#fn-anova_one_waygroups-vecvecfloat64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-p_value_from_tt-float64-df-float64-float64"><code>fn p_value_from_t(t: Float64, df: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-p_value_from_tt-float64-df-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-p_value_from_chi2x-float64-df-float64-float64"><code>fn p_value_from_chi2(x: Float64, df: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-p_value_from_chi2x-float64-df-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-z_scorex-float64-mu-float64-sigma-float64-float64"><code>fn z_score(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-z_scorex-float64-mu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-confidence_intervaldata-vecfloat64-level-float64-float64-float64"><code>fn confidence_interval(data: &amp;Vec[Float64], level: Float64) -&gt; (Float64, Float64)</code><a class="headerlink" href="#fn-confidence_intervaldata-vecfloat64-level-float64-float64-float64" title="Permanent link">&para;</a></h4>
+<h4 id="fn-standard_errordata-vecfloat64-float64"><code>fn standard_error(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-standard_errordata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
+<hr />
+<hr />
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
