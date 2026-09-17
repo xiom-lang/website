@@ -62,11 +62,11 @@ jobs:
           echo "STDLIB_REF=${IN_STDLIB}" >> "$GITHUB_ENV"
           echo "COMPILER_REF=${IN_COMPILER}" >> "$GITHUB_ENV"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.12"
           cache: pip
@@ -76,22 +76,22 @@ jobs:
         run: pip install -r requirements-docs.txt
 
       - name: Checkout compiler sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           repository: xiom-lang/xiom
           ref: ${{ env.COMPILER_REF }}
           path: .deps/xiom
 
       - name: Checkout stdlib sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           repository: xiom-lang/stdlib
           ref: ${{ env.STDLIB_REF }}
           path: .deps/stdlib
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
         with:
           workspaces: .deps/xiom -> target
 
