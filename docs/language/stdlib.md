@@ -10,5 +10,3 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 > **Real networking:** BSD/Winsock sockets, TCP/UDP/DNS/HTTP.
 
 [Open Standard Library API ->](api.md)
-
-[Implementation Roadmap ->](../checklists/stdlib-implementation.md)
