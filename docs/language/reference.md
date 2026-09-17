@@ -21,7 +21,7 @@ fn main() -> Int {
 }
 ```
 
-Scripts (via `xiom run`) may omit `fn main()` -- the compiler wraps top-level code automatically. See [Scripting Mode](../M10_SCRIPTING_MODE.md).
+Scripts (via `xiom run`) may omit `fn main()` -- the compiler wraps top-level code automatically.
 
 ---
 

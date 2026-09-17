@@ -24,7 +24,6 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 | [Pattern Matching](pattern-matching.md) | match, if let, while let, destructuring |
 | [Derive](derive.md) | Compiler-generated Eq, Clone, Display, Hash, Ord |
 | [C FFI](ffi.md) | Zero-cost C interoperability, extern blocks, unsafe |
-| [Scripting Mode](../M10_SCRIPTING_MODE.md) | xiom run, shebang, standalone, REPL, JIT |
 | [Compiler](compiler.md) | Pipeline overview, CLI flags, build targets, WASM |
 | [Standard Library](stdlib.md) | Complete API reference for all 40 stdlib modules |
 | [AI Coding Reference](../AI_CONTEXT.md) | Single-file AI prompt -- inject into any LLM to enable XIOM code generation |
@@ -88,7 +87,7 @@ Ready to build with XIOM?
 | Write your first program | [Getting Started Tutorial](getting-started.md) |
 | Learn the language | [Syntax](syntax.md), [Type System](types.md), [Memory Model](memory-model.md) |
 | Browse the standard library | [Stdlib Reference](stdlib.md) |
-| Find or publish packages | [Ecosystem & Packages](../ecosystem/packages.md) |
+| Find or publish packages | [Ecosystem & Packages](https://xiom-lang.org/ecosystem.html) |
 
 ## Ecosystem
 
@@ -96,14 +95,13 @@ XIOM's ecosystem is organized across three tiers: first-party, first-party FFI b
 
 | Resource | Description |
 |----------|-------------|
-| [Expansion Roadmap](../ecosystem/roadmap.md) | Full strategy for database, networking, GPU, GUI, ML, game dev, and serialization packages |
-| [Package Guide](../ecosystem/packages.md) | How to create, structure, and publish XIOM packages |
+| [Ecosystem & Packages](https://xiom-lang.org/ecosystem.html) | Planned packages, organization layout, and how to publish |
 | `xiom:net` | First-party FFI HTTP client (libcurl) |
 | `xiom:sql` | First-party FFI SQLite bindings |
 | `xiom:serialize` | First-party JSON / binary serialization |
 | `xiom:crypto` | First-party FFI OpenSSL bindings |
 
-For a complete list of planned and in-progress packages, see the [Expansion Roadmap](../ecosystem/roadmap.md).
+For the planned package ecosystem, see [Ecosystem & Packages](https://xiom-lang.org/ecosystem.html).
 
 ## Current Status
 
@@ -116,4 +114,4 @@ For a complete list of planned and in-progress packages, see the [Expansion Road
 | Phase 2C+ | v0.50.0 | Released -- 40-module stdlib, scripting, JIT, contracts |
 | Phase 8B | **v0.51.0** | **Current** -- production hardening, 1041 tests, M1-M12 complete |
 
-See [Compiler Version History](compiler.md#version-history) for the full changelog.
+See the [release history](https://xiom-lang.org/versions.html) for the full changelog.
