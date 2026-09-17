@@ -47,110 +47,27 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     <div class="card" style="border-color:var(--signal);margin-bottom:24px;">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
         <div>
-          <h3 style="margin:0;">v0.11.0 "Self-Hosted"</h3>
-          <p style="color:var(--muted);margin:4px 0 0;">July 1, 2026 - Phase Eco - 213 tests</p>
+          <h3 style="margin:0;" id="current-tag">loading...</h3>
+          <p style="color:var(--muted);margin:4px 0 0;" id="current-date">fetching release data</p>
         </div>
         <span class="status active">current</span>
       </div>
-      <p style="color:var(--paper-dim);margin-top:16px;">Full self-hosting. The XIOM compiler produces real LLVM IR matching the Rust compiler's output for function definitions, arithmetic, and function calls. C runtime body parser with full extern C function support. 213 tests.</p>
+      <p style="color:var(--paper-dim);margin-top:16px;" id="current-notes">The latest release published on the mirror. See the release notes for compiler details and changes.</p>
       <div class="btn-group" style="margin-top:12px;">
         <a class="btn-secondary" href="download.html">download</a>
+        <a class="btn-secondary" id="current-link" href="https://github.com/xiom-lang/xiom/releases/latest">release notes</a>
       </div>
     </div>
   </div>
 
   <div class="content-section">
     <h2>All Releases</h2>
+    <p style="color:var(--muted);font-size:13px;margin-top:-8px;">Loaded from the release mirror. The mirror retains the most recent 20 releases and stores the archives, checksums, and attestations for each.</p>
     <table>
-      <tr><th>Version</th><th>Codename</th><th>Phase</th><th>Date</th><th>Tests</th><th>Key Milestone</th></tr>
-      <tr style="background:var(--panel);">
-        <td><strong>v0.12.0</strong></td>
-        <td>Production</td>
-        <td>Eco</td>
-        <td>2026-07-01</td>
-        <td>234</td>
-        <td>Production-ready compiler</td>
-      </tr>
-      <tr>
-        <td><strong>v0.11.0</strong></td>
-        <td>Self-Hosted</td>
-        <td>Eco</td>
-        <td>2026-07-01</td>
-        <td>213</td>
-        <td>Full self-hosting -- IR matches Rust compiler</td>
-      </tr>
-      <tr>
-        <td><strong>v0.10.0</strong></td>
-        <td>Sovereign</td>
-        <td>3</td>
-        <td>2026-06-30</td>
-        <td>208</td>
-        <td>Production self-hosting -- compiler compiles itself</td>
-      </tr>
-      <tr>
-        <td><strong>v0.9.5</strong></td>
-        <td>Self</td>
-        <td>3</td>
-        <td>2026-06-30</td>
-        <td>206</td>
-        <td>True self-hosting -- reads own source, structural hash</td>
-      </tr>
-      <tr>
-        <td><strong>v0.5.0</strong></td>
-        <td>Genesis</td>
-        <td>2C</td>
-        <td>2026-06-30</td>
-        <td>125</td>
-        <td>Bootstrap -- selfhost compiler processes own source</td>
-      </tr>
-      <tr>
-        <td><strong>v0.4.0</strong></td>
-        <td>Mirror</td>
-        <td>2B</td>
-        <td>2026-06-30</td>
-        <td>124</td>
-        <td>Differential IR correctness -- 12 programs matching</td>
-      </tr>
-      <tr>
-        <td><strong>v0.3.5</strong></td>
-        <td>PhoenixV</td>
-        <td>2B</td>
-        <td>2026-06-30</td>
-        <td>113</td>
-        <td>Differential correctness infrastructure</td>
-      </tr>
-      <tr>
-        <td><strong>v0.3.0</strong></td>
-        <td>Phoenix</td>
-        <td>2A</td>
-        <td>2026-06-30</td>
-        <td>109</td>
-        <td>First self-hosting stubs in XIOM</td>
-      </tr>
-      <tr>
-        <td><strong>v0.2.5</strong></td>
-        <td>Hardened</td>
-        <td>1.5</td>
-        <td>2026-06-30</td>
-        <td>109</td>
-        <td>13 bug fixes, interface dispatch, Vec runtime</td>
-      </tr>
-      <tr>
-        <td><strong>v0.2.0</strong></td>
-        <td>Guardian</td>
-        <td>1</td>
-        <td>2026-06-30</td>
-        <td>87</td>
-        <td>Full language surface -- ownership, contracts, generics</td>
-      </tr>
-      <tr>
-        <td><strong>v0.1.0</strong></td>
-        <td>Pipeline</td>
-        <td>0</td>
-        <td>2026-06-30</td>
-        <td>36</td>
-        <td>First working pipeline -- lexer -> parser -> LLVM IR -> binary</td>
-      </tr>
+      <tr><th>Version</th><th>Released</th><th>Release notes</th></tr>
+      <tbody id="release-rows">
+        <tr><td colspan="3">Loading release history...</td></tr>
+      </tbody>
     </table>
   </div>
 
@@ -192,6 +109,78 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     </div>
   </div>
 </footer>
+
+<script>
+(function () {
+  "use strict";
+  var INDEX = "https://dl.xiom-lang.org/releases/index.json";
+  var RELEASES = "https://github.com/xiom-lang/xiom/releases";
+
+  function notesUrl(tag) {
+    return RELEASES + "/tag/" + encodeURIComponent(tag);
+  }
+
+  function render(entries) {
+    var latest = entries[0];
+    var tag = document.getElementById("current-tag");
+    var date = document.getElementById("current-date");
+    var link = document.getElementById("current-link");
+    if (tag) tag.textContent = latest.tag;
+    if (date) date.textContent = latest.published ? "released " + latest.published.slice(0, 10) : "";
+    if (link) link.href = notesUrl(latest.tag);
+
+    var tbody = document.getElementById("release-rows");
+    if (!tbody) return;
+    tbody.textContent = "";
+    entries.forEach(function (entry) {
+      var row = document.createElement("tr");
+      var version = document.createElement("td");
+      var strong = document.createElement("strong");
+      strong.textContent = entry.tag;
+      version.appendChild(strong);
+      var released = document.createElement("td");
+      released.textContent = entry.published ? entry.published.slice(0, 10) : "-";
+      var notes = document.createElement("td");
+      var anchor = document.createElement("a");
+      anchor.href = notesUrl(entry.tag);
+      anchor.textContent = "release notes";
+      anchor.style.color = "var(--signal)";
+      notes.appendChild(anchor);
+      row.appendChild(version);
+      row.appendChild(released);
+      row.appendChild(notes);
+      tbody.appendChild(row);
+    });
+  }
+
+  function fail() {
+    var date = document.getElementById("current-date");
+    if (date) date.textContent = "could not load mirror data (offline or blocked)";
+    var tbody = document.getElementById("release-rows");
+    if (!tbody) return;
+    tbody.textContent = "";
+    var row = document.createElement("tr");
+    var cell = document.createElement("td");
+    cell.colSpan = 3;
+    var anchor = document.createElement("a");
+    anchor.href = RELEASES;
+    anchor.textContent = "See all releases on GitHub";
+    anchor.style.color = "var(--signal)";
+    cell.appendChild(anchor);
+    row.appendChild(cell);
+    tbody.appendChild(row);
+  }
+
+  fetch(INDEX, { cache: "no-store" })
+    .then(function (res) { if (!res.ok) throw new Error("index " + res.status); return res.json(); })
+    .then(function (data) {
+      var entries = data.releases || [];
+      if (!entries.length) throw new Error("empty index");
+      render(entries);
+    })
+    .catch(fail);
+})();
+</script>
 
 </body>
 </html>
