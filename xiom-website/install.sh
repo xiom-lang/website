@@ -9,15 +9,39 @@
 # instructions when missing.
 #
 # Usage:  curl -fsSL https://xiom-lang.org/install.sh | sh
+#         curl -fsSL https://xiom-lang.org/install.sh | sh -s -- --version v0.60.1
 
 set -eu
 
-MIRROR="https://dl.xiom-lang.org/latest.json"
+MIRROR_BASE="https://dl.xiom-lang.org"
+MIRROR="$MIRROR_BASE/latest.json"
 INSTALL_DIR="${XIOM_HOME:-$HOME/.local/share/xiom}"
 BIN_DIR="$HOME/.local/bin"
+VERSION=""
 
 say() { printf '%s\n' "$*"; }
 die() { printf 'error: %s\n' "$*" >&2; exit 1; }
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --version)
+      [ $# -ge 2 ] || die "--version needs a tag, e.g. --version v0.60.1"
+      VERSION="$2"
+      shift 2
+      ;;
+    --version=*)
+      VERSION="${1#*=}"
+      shift
+      ;;
+    -h|--help)
+      say "usage: install.sh [--version <tag>]"
+      exit 0
+      ;;
+    *)
+      die "unknown argument: $1"
+      ;;
+  esac
+done
 
 case "$(uname -s)" in
   Linux) ;;
@@ -35,22 +59,32 @@ command -v tar >/dev/null 2>&1 || die "tar is required"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
-say "Fetching release metadata from $MIRROR ..."
-curl -fsSL "$MIRROR" -o "$tmp/latest.json" || die "cannot fetch release metadata"
-
 url_for() {
   grep -o "\"url\": *\"[^\"]*$1\"" "$tmp/latest.json" | head -n 1 | cut -d'"' -f4
 }
 
-asset_url="$(url_for 'linux-x64.tar.gz')"
-sums_url="$(url_for 'SHA256SUMS')"
-[ -n "$asset_url" ] || die "no linux-x64 asset found in release metadata"
-[ -n "$sums_url" ] || die "SHA256SUMS missing from release metadata"
+if [ -n "$VERSION" ]; then
+  tag="$VERSION"
+  case "$tag" in v*) ;; *) tag="v$tag" ;; esac
+  ver="${tag#v}"
+  base="$MIRROR_BASE/releases/$tag"
+  asset_url="$base/xiom-$ver-linux-x64.tar.gz"
+  sums_url="$base/SHA256SUMS"
+  say "Pinned release: $tag"
+else
+  say "Fetching release metadata from $MIRROR ..."
+  curl -fsSL "$MIRROR" -o "$tmp/latest.json" || die "cannot fetch release metadata"
+  asset_url="$(url_for 'linux-x64.tar.gz')"
+  sums_url="$(url_for 'SHA256SUMS')"
+  [ -n "$asset_url" ] || die "no linux-x64 asset found in release metadata"
+  [ -n "$sums_url" ] || die "SHA256SUMS missing from release metadata"
+fi
 asset_name="${asset_url##*/}"
 
 say "Downloading $asset_name ..."
-curl -fsSL "$asset_url" -o "$tmp/$asset_name"
-curl -fsSL "$sums_url" -o "$tmp/SHA256SUMS"
+curl -fsSL "$asset_url" -o "$tmp/$asset_name" \
+  || die "cannot download $asset_name (does the version exist? see $MIRROR_BASE/releases/index.json)"
+curl -fsSL "$sums_url" -o "$tmp/SHA256SUMS" || die "cannot download SHA256SUMS"
 
 say "Verifying checksum ..."
 ( cd "$tmp" && sha256sum -c --ignore-missing SHA256SUMS ) || die "checksum verification failed"
