@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>XIOM -- Getting Started</title>
+<title>xiom -- <!--</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,15 +14,15 @@
 <nav>
   <div class="wrap">
     <a href="../" class="logo">
-      <img src="../img/xiom-icon.ico" alt="XIOM">
-      XIOM
+      <img src="../img/xiom-icon.ico" alt="xiom">
+      xiom
     </a>
     <div class="navlinks">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>
       <a href="../ecosystem.html">Ecosystem</a>
       <a href="../versions.html">Versions</a>
-      <a href="../playground/">Playground</a>
+      <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
     <a class="nav-cta" href="../download.html">download</a>
   </div>
@@ -36,6 +36,7 @@
       <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
         <a href="index.html" style="color:var(--muted);">Overview</a>
         <a href="getting-started.html" style="color:var(--signal);font-weight:500;">Getting Started</a>
+        <a href="reference.html" style="color:var(--muted);">Language Reference</a>
         <a href="concepts.html" style="color:var(--muted);">Concepts</a>
         <a href="examples.html" style="color:var(--muted);">By Example</a>
         <a href="syntax.html" style="color:var(--muted);">Syntax</a>
@@ -45,12 +46,15 @@
         <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
         <a href="modules.html" style="color:var(--muted);">Modules</a>
         <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="pattern-matching.html" style="color:var(--muted);">Pattern Matching</a>
         <a href="derive.html" style="color:var(--muted);">Derive</a>
         <a href="ffi.html" style="color:var(--muted);">C FFI</a>
         <a href="compiler.html" style="color:var(--muted);">Compiler</a>
-        <a href="../AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
+        <a href="stdlib.html" style="color:var(--muted);">Stdlib Reference</a>
+        <a href="AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
         <div style="margin-top:20px;"></div>
         <a href="api.html" style="color:var(--paper);font-weight:500;;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>
+        <a href="stdlib/index.html" style="color:var(--muted);">Overview</a>
         <a href="stdlib/core.html" style="color:var(--muted);">core</a>
         <a href="stdlib/io.html" style="color:var(--muted);">io</a>
         <a href="stdlib/collections.html" style="color:var(--muted);">collections</a>
@@ -85,6 +89,7 @@
         <a href="stdlib/compress.html" style="color:var(--muted);">compress</a>
         <a href="stdlib/rand.html" style="color:var(--muted);">rand</a>
         <a href="stdlib/regex.html" style="color:var(--muted);">regex</a>
+        <a href="stdlib/simd.html" style="color:var(--muted);">simd</a>
         <a href="stdlib/bench.html" style="color:var(--muted);">bench</a>
         <a href="stdlib/log.html" style="color:var(--muted);">log</a>
         <a href="stdlib/contracts.html" style="color:var(--muted);">contracts</a>
@@ -94,9 +99,11 @@
     </nav>
 
     <main class="content-section" style="border:none;padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 - 234 tests</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">Getting Started</h1>
-      <h2>Prerequisites</h2>
+      <div class="eyebrow" style="margin-bottom:12px;">latest</div>
+      <h1 style="font-size:36px;margin-bottom:24px;"><!--</h1>
+      <p><!-- Copyright (c) 2026 Eleftherios Notas and XIOM Foundation SPDX-License-Identifier: MIT OR Apache-2.0 --></p>
+<h1>Getting Started</h1>
+<h2>Prerequisites</h2>
 <ul>
 <li><strong>Rust</strong> 1.85+ (<a href="https://rustup.rs">rustup</a>)</li>
 <li><strong>LLVM/Clang</strong> 18+ for native compilation</li>
@@ -106,10 +113,20 @@
 </ul>
 <h2>Build from Source</h2>
 <pre class="language-bash"><code>
-git clone https:<span class='cm'>//gitea.example.com/xiom-lang/xiom.git</span>
+git clone https:<span class='cm'>//github.com/XIOM-lang/XIOM.git </span>
 cd xiom
 cargo build
-cargo test          # <span class='num'>234</span> tests should pass
+cargo test          # <span class='num'>1041</span> tests should pass
+</code></pre>
+<p>Verify your toolchain dependencies:</p>
+<pre class="language-bash"><code>
+# Using standalone <span class='func'>binary</span>(after build)
+xiom doctor
+# -> Checks: clang [OK]  opt [OK]  nasm [OK]
+
+# Using <span class='func'>cargo</span>(development)
+cargo run -p xiom -- doctor
+# -> Checks: clang [OK]  opt [OK]  nasm [OK]
 </code></pre>
 <h2>Your First Program</h2>
 <p>Create a file <code>hello.xi</code>:</p>
@@ -124,19 +141,25 @@ cargo test          # <span class='num'>234</span> tests should pass
 </code></pre>
 <p>Compile and run:</p>
 <pre class="language-bash"><code>
-# View LLVM IR
-cargo run -p xiom -- --emit-ir hello.xi
+# Using standalone binary
+xiom --emit-ir hello.xi
 
 # Compile to native binary
-cargo run -p xiom -- -o hello.exe hello.xi
+xiom -o hello.exe hello.xi
 
 # Compile and <span class='func'>run</span>(prints exit code)
-cargo run -p xiom -- --run hello.xi
+xiom --run hello.xi
 # -> exit code: <span class='num'>30</span>
 
 # Compile to WASM
-cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
+xiom --target wasm -o hello.wasm hello.xi
 # -> wasm size: <span class='num'>618</span> bytes
+
+# Development via cargo
+cargo run -p xiom -- --emit-ir hello.xi
+cargo run -p xiom -- -o hello.exe hello.xi
+cargo run -p xiom -- --run hello.xi
+cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
 </code></pre>
 <h2>Try in Browser</h2>
 <p>Open the <a href="https://xiom-lang.org/playground">XIOM Playground</a> to write and compile XIOM directly in your browser. No install required.</p>
@@ -209,10 +232,10 @@ XIOM/
 </ul>
 <h2>Next Steps</h2>
 <ul>
-<li>Read the [Syntax Guide](syntax.md)</li>
-<li>Explore the [Type System](types.md)</li>
-<li>Understand the [Memory Model](memory-model.md)</li>
-<li>Learn about [Contracts](contracts.md)</li>
+<li>Read the <a href="syntax.html">Syntax Guide</a></li>
+<li>Explore the <a href="types.html">Type System</a></li>
+<li>Understand the <a href="memory-model.html">Memory Model</a></li>
+<li>Learn about <a href="contracts.html">Contracts</a></li>
 </ul>
     </main>
 
@@ -221,7 +244,7 @@ XIOM/
 
 <footer>
   <div class="wrap">
-    <p>XIOM v0.12.0 - <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom latest - <a href="../" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
       <a href="../spec.html">Spec</a>
       <a href="../docs/">Docs</a>

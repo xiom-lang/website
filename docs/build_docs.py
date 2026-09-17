@@ -3,12 +3,14 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 """
 xiom Documentation Builder
-Converts docs/language/*.md -> docs/html/ and website/docs/
+Converts docs/language/*.md -> docs/html/ and xiom-website/docs/
 Run: python docs/build_docs.py
 
 Outputs:
   docs/html/         -- static HTML, ships with releases, works from file://
-  website/docs/      -- integrated into xiom-lang.org
+  xiom-website/docs/ -- integrated into xiom-lang.org
+
+Set XIOM_DOCS_VERSION to stamp pages with a release tag (default: latest).
 """
 
 import os
@@ -20,9 +22,13 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = ROOT / "docs" / "language"
 AI_CONTEXT = ROOT / "docs" / "AI_CONTEXT.md"
 OUT_HTML = ROOT / "docs" / "html"
-OUT_WEBSITE = ROOT / "website" / "docs"
-STYLE_CSS = ROOT / "website" / "style.css"
+OUT_WEBSITE = ROOT / "xiom-website" / "docs"
+STYLE_CSS = ROOT / "xiom-website" / "style.css"
 IMAGE_DIR = ROOT / "resource" / "img"
+
+# Stamped onto pages that carry no version line of their own. CI sets this to
+# the release tag being built; local runs default to "latest".
+DOCS_VERSION = os.environ.get("XIOM_DOCS_VERSION", "latest")
 
 # -- Markdown -> HTML Converter ------------------------------------------
 
@@ -37,6 +43,18 @@ def md_to_html(text: str) -> str:
     in_table = False
     table_rows = []
 
+    def link_repl(m):
+        text, url = m.group(1), m.group(2)
+        url = re.sub(r'\.md(?=#|$)', '.html', url)
+        # Links written as ../<page> refer to the docs root; built root pages
+        # are published flat, so drop the prefix for those.
+        if url.startswith('../') and url.rsplit('/', 1)[-1] in ROOT_PAGES:
+            url = url.rsplit('/', 1)[-1]
+        return f'<a href="{url}">{text}</a>'
+
+    def convert_links(s):
+        return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link_repl, s)
+
     def flush_paragraph(buf):
         if not buf:
             return
@@ -49,11 +67,7 @@ def md_to_html(text: str) -> str:
             # Italic
             p = re.sub(r'\*([^*]+)\*', r'<em>\1</em>', p)
             # Links -- convert .md to .html
-            def link_repl(m):
-                text, url = m.group(1), m.group(2)
-                url = re.sub(r'\.md$', '.html', url)
-                return f'<a href="{url}">{text}</a>'
-            p = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link_repl, p)
+            p = convert_links(p)
             out.append(f'<p>{p}</p>')
 
     def flush_table():
@@ -71,11 +85,7 @@ def md_to_html(text: str) -> str:
                 # Bold
                 cell = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', cell)
                 # Links -- convert .md to .html
-                def link_repl(m):
-                    text, url = m.group(1), m.group(2)
-                    url = re.sub(r'\.md$', '.html', url)
-                    return f'<a href="{url}">{text}</a>'
-                cell = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link_repl, cell)
+                cell = convert_links(cell)
                 out.append(f'<{tag}>{cell}</{tag}>')
             out.append('</tr>')
         out.append('</table>')
@@ -170,7 +180,7 @@ def md_to_html(text: str) -> str:
             item = line.strip()[2:]
             item = re.sub(r'`([^`]+)`', r'<code>\1</code>', item)
             item = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', item)
-            item = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', item)
+            item = convert_links(item)
             # Check if previous was list to avoid wrapping
             out.append(f'<li>{item}</li>')
 
@@ -180,6 +190,7 @@ def md_to_html(text: str) -> str:
             item = re.sub(r'^\d+\.\s*', '', line.strip())
             item = re.sub(r'`([^`]+)`', r'<code>\1</code>', item)
             item = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', item)
+            item = convert_links(item)
             out.append(f'<li>{item}</li>')
 
         # Blockquote
@@ -255,13 +266,13 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       xiom
     </a>
     <div class="navlinks">
-      <a href="{home_path}spec.html">Spec</a>
-      <a href="{home_path}docs/">Docs</a>
-      <a href="{home_path}ecosystem.html">Ecosystem</a>
-      <a href="{home_path}versions.html">Versions</a>
+      <a href="{site_base}spec.html">Spec</a>
+      <a href="{site_base}docs/">Docs</a>
+      <a href="{site_base}ecosystem.html">Ecosystem</a>
+      <a href="{site_base}versions.html">Versions</a>
       <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
-    <a class="nav-cta" href="{home_path}download.html">download</a>
+    <a class="nav-cta" href="{site_base}download.html">download</a>
   </div>
 </nav>
 
@@ -286,12 +297,12 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 
 <footer>
   <div class="wrap">
-    <p>xiom {version_short} - <a href="{home_path}" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom {version_short} - <a href="{site_base}" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
-      <a href="{home_path}spec.html">Spec</a>
-      <a href="{home_path}docs/">Docs</a>
-      <a href="{home_path}ecosystem.html">Ecosystem</a>
-      <a href="{home_path}download.html">Download</a>
+      <a href="{site_base}spec.html">Spec</a>
+      <a href="{site_base}docs/">Docs</a>
+      <a href="{site_base}ecosystem.html">Ecosystem</a>
+      <a href="{site_base}download.html">Download</a>
     </div>
   </div>
 </footer>
@@ -305,6 +316,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 NAV_ORDER = [
     ("index.md", "Overview"),
     ("getting-started.md", "Getting Started"),
+    ("reference.md", "Language Reference"),
     ("concepts.md", "Concepts"),
     ("examples.md", "By Example"),
     ("syntax.md", "Syntax"),
@@ -314,15 +326,21 @@ NAV_ORDER = [
     ("error-handling.md", "Error Handling"),
     ("modules.md", "Modules"),
     ("generics.md", "Generics"),
+    ("pattern-matching.md", "Pattern Matching"),
     ("derive.md", "Derive"),
     ("ffi.md", "C FFI"),
     ("compiler.md", "Compiler"),
+    ("stdlib.md", "Stdlib Reference"),
     ("api.md", "_api"),           # built but shown as sidebar section header
     ("../AI_CONTEXT.md", "AI Coding Ref"),
 ]
 
+# Output filenames of root pages, used to rewrite ../ links from nested sources.
+ROOT_PAGES = {fname.replace('../', '').replace('.md', '.html') for fname, _ in NAV_ORDER}
+
 # Stdlib modules -- individual pages
 STDLIB_NAV = [
+    ("stdlib/index.md", "Overview"),
     ("stdlib/core.md", "core"),
     ("stdlib/io.md", "io"),
     ("stdlib/collections.md", "collections"),
@@ -357,6 +375,7 @@ STDLIB_NAV = [
     ("stdlib/compress.md", "compress"),
     ("stdlib/rand.md", "rand"),
     ("stdlib/regex.md", "regex"),
+    ("stdlib/simd.md", "simd"),
     ("stdlib/bench.md", "bench"),
     ("stdlib/log.md", "log"),
     ("stdlib/contracts.md", "contracts"),
@@ -364,9 +383,13 @@ STDLIB_NAV = [
     ("stdlib/ffi.md", "ffi"),
 ]
 
-def build_nav(current_file: str, output_dir: str, ext: str = ".html") -> str:
-    """Build the navigation sidebar HTML with correct relative paths."""
-    current_depth = current_file.count('/')
+def build_nav(current_file: str, out_name: str, ext: str = ".html") -> str:
+    """Build the navigation sidebar HTML with correct relative paths.
+
+    Depth comes from the output path (out_name), not the source path: the
+    shared ../AI_CONTEXT.md source is written to the output root.
+    """
+    current_depth = out_name.count('/')
     up = '../' * current_depth if current_depth > 0 else ''
 
     links = []
@@ -374,8 +397,8 @@ def build_nav(current_file: str, output_dir: str, ext: str = ".html") -> str:
     for fname, title in NAV_ORDER:
         if title == '_api':
             continue
-        href = fname.replace(".md", ext)
-        if current_depth > 0 and '/' not in fname:
+        href = fname.replace('../', '').replace(".md", ext)
+        if current_depth > 0 and '/' not in href:
             href = up + href
         active = (fname == current_file)
         color = 'color:var(--signal);font-weight:500;' if active else 'color:var(--muted);'
@@ -406,9 +429,17 @@ def build_nav(current_file: str, output_dir: str, ext: str = ".html") -> str:
 
 # -- Build --------------------------------------------------------------
 
-def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: str = ".html"):
-    """Build all markdown files to HTML."""
-    output_dir.mkdir(parents=True, exist_ok=True)
+def build(output_dir: Path, home_path: str, css_path: str, icon_path: str,
+          ext: str = ".html", site_base: str = ""):
+    """Build all markdown files to HTML.
+
+    site_base prefixes links to the marketing site (e.g. "https://xiom-lang.org/"
+    for the standalone tree, "../" for the copy under xiom-website/).
+    """
+    # Rebuild from scratch so removed sources do not leave orphan pages behind.
+    if output_dir.exists():
+        shutil.rmtree(output_dir)
+    output_dir.mkdir(parents=True)
 
     files = []
     for fname, _ in NAV_ORDER + STDLIB_NAV:
@@ -442,26 +473,33 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str, ext: 
                 version_line = line.strip('>').strip()
                 break
 
-        # Adjust paths for files in subdirectories
-        depth = fname.count('/')
+        # Adjust paths for files in subdirectories. ../AI_CONTEXT.md lands at
+        # the output root, so the output path drives the relative links.
+        out_rel = fname.replace('.md', ext).replace('../', '')
+        depth = out_rel.count('/')
         file_css = '../' * depth + css_path
         file_icon = '../' * depth + icon_path
         file_home = '../' * depth + home_path
+        # Absolute site roots (standalone tree) need no depth adjustment.
+        file_site = site_base if site_base.startswith('http') else '../' * depth + site_base
 
+        short = re.search(r'v\d+\.\d+(?:\.\d+)?', version_line)
         html = PAGE_TEMPLATE.format(
             title=title,
-            version=version_line or "v0.12.0 - 234 tests",
-            version_short="v0.12.0",
+            version=version_line or DOCS_VERSION,
+            version_short=short.group(0) if short else DOCS_VERSION,
             body=body,
-            nav_links=build_nav(fname, str(output_dir), ext),
+            nav_links=build_nav(fname, out_rel, ext),
             home_path=file_home,
             css_path=file_css,
             icon_path=file_icon,
+            site_base=file_site,
         )
 
-        out = output_dir / fname.replace('.md', ext).replace('../', '')
+        out = output_dir / out_rel
         out.parent.mkdir(parents=True, exist_ok=True)  # M8: ensure subdirectories exist
-        out.write_text(html, encoding='utf-8')
+        with out.open('w', encoding='utf-8', newline='\n') as fh:
+            fh.write(html)
         print(f"  {fname} -> {out.relative_to(ROOT)}")
 
     print(f"\n  {len(files)} pages built to {output_dir.relative_to(ROOT)}/")
@@ -476,25 +514,28 @@ if __name__ == '__main__':
     print("[1/2] Building standalone HTML (docs/html/)...")
     build(
         output_dir=OUT_HTML,
-        home_path="",
+        home_path="index.html",
         css_path="style.css",
         icon_path="",
+        site_base="https://xiom-lang.org/",
     )
 
     # 2. Build website docs (integrated into xiom-lang.org)
-    print("\n[2/2] Building website docs (website/docs/)...")
+    print("\n[2/2] Building website docs (xiom-website/docs/)...")
     build(
         output_dir=OUT_WEBSITE,
         home_path="../",
         css_path="../style.css",
         icon_path="../img/xiom-icon.ico",
+        site_base="../",
     )
 
     # 3. Copy style.css to docs/html/ so standalone works
     style_dest = OUT_HTML / "style.css"
-    if STYLE_CSS.exists():
-        shutil.copy2(STYLE_CSS, style_dest)
-        print(f"\n  Copied style.css -> {style_dest.relative_to(ROOT)}")
+    if not STYLE_CSS.exists():
+        raise SystemExit(f"missing stylesheet: {STYLE_CSS}")
+    shutil.copy2(STYLE_CSS, style_dest)
+    print(f"\n  Copied style.css -> {style_dest.relative_to(ROOT)}")
 
     print("\nDone. Outputs:")
     print(f"  Standalone:  {OUT_HTML.relative_to(ROOT)}/  (ships with releases)")

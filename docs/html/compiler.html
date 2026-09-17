@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom -- Compiler</title>
+<title>xiom -- <!--</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,18 +13,18 @@
 
 <nav>
   <div class="wrap">
-    <a href="" class="logo">
+    <a href="index.html" class="logo">
       <img src="" alt="xiom">
       xiom
     </a>
     <div class="navlinks">
-      <a href="spec.html">Spec</a>
-      <a href="docs/">Docs</a>
-      <a href="ecosystem.html">Ecosystem</a>
-      <a href="versions.html">Versions</a>
+      <a href="https://xiom-lang.org/spec.html">Spec</a>
+      <a href="https://xiom-lang.org/docs/">Docs</a>
+      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
+      <a href="https://xiom-lang.org/versions.html">Versions</a>
       <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
-    <a class="nav-cta" href="download.html">download</a>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">download</a>
   </div>
 </nav>
 
@@ -36,6 +36,7 @@
       <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
         <a href="index.html" style="color:var(--muted);">Overview</a>
         <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="reference.html" style="color:var(--muted);">Language Reference</a>
         <a href="concepts.html" style="color:var(--muted);">Concepts</a>
         <a href="examples.html" style="color:var(--muted);">By Example</a>
         <a href="syntax.html" style="color:var(--muted);">Syntax</a>
@@ -45,12 +46,15 @@
         <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
         <a href="modules.html" style="color:var(--muted);">Modules</a>
         <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="pattern-matching.html" style="color:var(--muted);">Pattern Matching</a>
         <a href="derive.html" style="color:var(--muted);">Derive</a>
         <a href="ffi.html" style="color:var(--muted);">C FFI</a>
         <a href="compiler.html" style="color:var(--signal);font-weight:500;">Compiler</a>
-        <a href="../AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
+        <a href="stdlib.html" style="color:var(--muted);">Stdlib Reference</a>
+        <a href="AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
         <div style="margin-top:20px;"></div>
         <a href="api.html" style="color:var(--paper);font-weight:500;;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>
+        <a href="stdlib/index.html" style="color:var(--muted);">Overview</a>
         <a href="stdlib/core.html" style="color:var(--muted);">core</a>
         <a href="stdlib/io.html" style="color:var(--muted);">io</a>
         <a href="stdlib/collections.html" style="color:var(--muted);">collections</a>
@@ -85,6 +89,7 @@
         <a href="stdlib/compress.html" style="color:var(--muted);">compress</a>
         <a href="stdlib/rand.html" style="color:var(--muted);">rand</a>
         <a href="stdlib/regex.html" style="color:var(--muted);">regex</a>
+        <a href="stdlib/simd.html" style="color:var(--muted);">simd</a>
         <a href="stdlib/bench.html" style="color:var(--muted);">bench</a>
         <a href="stdlib/log.html" style="color:var(--muted);">log</a>
         <a href="stdlib/contracts.html" style="color:var(--muted);">contracts</a>
@@ -94,66 +99,228 @@
     </nav>
 
     <main class="content-section" style="border:none;padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:12px;">v0.12.0 - 234 tests</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">Compiler</h1>
-      <h2>Pipeline</h2>
+      <div class="eyebrow" style="margin-bottom:12px;">latest</div>
+      <h1 style="font-size:36px;margin-bottom:24px;"><!--</h1>
+      <p><!-- Copyright (c) 2026 Eleftherios Notas and XIOM Foundation SPDX-License-Identifier: MIT OR Apache-2.0 --></p>
+<h1>Compiler</h1>
+<h2>Pipeline</h2>
 <pre><code>
 .xi source
-  -> Lexer           (tokenize -- <span class='num'>40</span>+ token kinds)
+  -> Lexer           (tokenize -- <span class='num'>55</span>+ token kinds)
   -> Parser          (AST -- LL(<span class='num'>1</span>), no backtracking)
-  -> Type Checker    (primitives, structs, functions, <span class='kw'>interface</span> satisfaction)
-  -> Borrow Checker  (lexical scope -- &T, &mut T, move semantics)
+  -> Type Checker    (primitives, structs, functions, <span class='kw'>interface</span> satisfaction, Send/Sync)
+  -> Borrow Checker  (lexical scope -- &T, &mut T, move semantics, E001 warnings)
+  -> CTFE            (compile-time function evaluation -- <span class='kw'>const</span> exprs, builtins, pure <span class='kw'>fn</span> VM)
   -> LLVM IR         (text emission, human-readable)
      |- Contracts   (runtime guards -- @llvm.trap on violation)
-     |- Derive      (<span class='ty'>Eq</span>, <span class='ty'>Clone</span>, <span class='ty'>Display</span>, <span class='ty'>Hash</span>, <span class='ty'>Ord</span>)
-     `- Generics    (monomorphisation -- register + specialize)
-  -> <span class='func'>clang</span>(native .exe or .wasm)
+     |- DWARF DI    (function-level debug metadata -- per-function !DISubprogram)
+     |- Derive      (<span class='ty'>Eq</span>, <span class='ty'>Clone</span>, <span class='ty'>Display</span>, <span class='ty'>Hash</span>, <span class='ty'>Ord</span>, Debug -- struct + <span class='kw'>enum</span>)
+     |- Generics    (monomorphisation -- register + specialize, worklist)
+     `- Parallel    (rayon per-function IR emission -- --parallel-codegen)
+  -> <span class='func'>clang</span>(native .exe, .out, .wasm)
 </code></pre>
-<h2>CLI Reference</h2>
-<pre class="language-bash"><code>
+<h2>CLI Reference (v0.56.0-pre)</h2>
+<pre><code>
 xiom [flags] <source.xi>
 </code></pre>
+<h3>Compilation Flags</h3>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+<tr>
+<td><code>-o <output></code></td>
+<td>Output binary path</td>
+<td><code>a.exe</code> (Win) / <code>a.out</code> (Linux)</td>
+</tr>
+<tr>
+<td><code>--run</code></td>
+<td>Compile and run, print exit code</td>
+<td>--</td>
+</tr>
+<tr>
+<td><code>--check</code></td>
+<td>Type-check only, no binary</td>
+<td>--</td>
+</tr>
+<tr>
+<td><code>--emit-ir</code></td>
+<td>Print LLVM IR to stdout</td>
+<td>--</td>
+</tr>
+<tr>
+<td><code>--release</code></td>
+<td>clang -O3 optimization</td>
+<td>--</td>
+</tr>
+<tr>
+<td><code>--debug</code> / <code>-g</code></td>
+<td>DWARF/PDB debug info (DIFile, DICompileUnit, DISubprogram)</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--lto</code></td>
+<td>ThinLTO link-time optimization (<code>-flto=thin</code>)</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--jit</code></td>
+<td>In-process DLL JIT compilation (xiom-jit)</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--jit --lazy</code></td>
+<td>JIT with SHA-256 incremental cache</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--cache</code></td>
+<td>Binary cache by source hash</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--no-cache</code></td>
+<td>Disable caching</td>
+<td>--</td>
+</tr>
+<tr>
+<td><code>--parallel</code></td>
+<td>Rayon-based parallel parse</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--parallel-codegen</code></td>
+<td>Rayon-based per-function IR emission</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--target wasm</code></td>
+<td>Compile to <code>wasm32-unknown-unknown</code></td>
+<td>native</td>
+</tr>
+<tr>
+<td><code>--target arm</code></td>
+<td>Compile to <code>aarch64-unknown-linux-gnu</code></td>
+<td>native</td>
+</tr>
+<tr>
+<td><code>--shared</code></td>
+<td>Compile to shared library (.dll/.so)</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--standalone <file> -o <exe></code></td>
+<td>Script-to-binary</td>
+<td>--</td>
+</tr>
+</table>
+<h3>Safety Flags</h3>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+<tr>
+<td><code>--overflow-checks</code></td>
+<td>Integer overflow traps (<code>@llvm.trap</code>)</td>
+<td><strong>ON</strong> (v0.56)</td>
+</tr>
+<tr>
+<td><code>--no-overflow-checks</code></td>
+<td>Disable overflow checks</td>
+<td>--</td>
+</tr>
+<tr>
+<td><code>--no-contracts</code></td>
+<td>Disable all contract runtime guards</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--strict-exhaustive</code></td>
+<td>Non-exhaustive match -> hard error</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--sanitize=address</code></td>
+<td>Enable ASan</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--sanitize=undefined</code></td>
+<td>Enable UBSan</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--sanitize=thread</code></td>
+<td>Enable TSan</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--strict-mode</code></td>
+<td>Borrow errors (E001) become hard errors</td>
+<td>off</td>
+</tr>
+</table>
+<h3>Utility Flags</h3>
 <table>
 <tr>
 <th>Flag</th>
 <th>Description</th>
 </tr>
 <tr>
-<td>*(no flag)*</td>
-<td>Print LLVM IR to stdout</td>
+<td><code>--version</code></td>
+<td>Print version + test stats</td>
 </tr>
 <tr>
-<td><code>--emit-ir</code></td>
-<td>Print LLVM IR to stdout</td>
+<td><code>--help</code></td>
+<td>Print usage</td>
 </tr>
 <tr>
-<td><code>-o <output></code></td>
-<td>Compile to native binary</td>
+<td><code>--explain T001</code></td>
+<td>Error code reference</td>
 </tr>
 <tr>
-<td><code>--run</code></td>
-<td>Compile and run, print exit code</td>
+<td><code>--emit-tokens</code></td>
+<td>Print token stream</td>
 </tr>
 <tr>
-<td><code>--target wasm</code></td>
-<td>Compile to <code>wasm32-unknown-unknown</code></td>
-</tr>
-<tr>
-<td><code>--no-contracts</code></td>
-<td>Disable contract runtime checks</td>
-</tr>
-<tr>
-<td><code>--diagnostics=json</code></td>
-<td>Structured compiler output (Phase 2)</td>
+<td><code>--verify</code></td>
+<td>Z3 formal verification (requires <code>--dump-contracts</code>)</td>
 </tr>
 <tr>
 <td><code>--dump-contracts</code></td>
-<td>Queryable contract index (Phase 2)</td>
+<td>SMT-LIB contract generation</td>
+</tr>
+<tr>
+<td><code>--diagnostics=json</code></td>
+<td>Structured compiler output</td>
+</tr>
+<tr>
+<td><code>--max-depth <N></code></td>
+<td>Max recursion depth (default: 500)</td>
 </tr>
 </table>
-<h3>Via Cargo</h3>
-<pre class="language-bash"><code>
-cargo run -p xiom -- [flags] <source.xi>
+<h3>Scripting Mode</h3>
+<pre><code>
+xiom run <file.xi>          Execute script
+xiom run -e <span class='str'>code</span>           Inline expression
+xiom run -                   stdin script
+xiom run --watch <file>      Watch + re-run
+xiom run --jit <file>        In-process DLL JIT
+xiom run --jit --lazy <file> JIT with incremental cache
+xiom run --cache <file>      Binary cache <span class='kw'>for</span> instant re-run
+xiom run --no-cache          Disable caching
+</code></pre>
+<h3>Other Commands</h3>
+<pre><code>
+xiom build-runtime            Build libxiom_runtime.dll/.so
+xiom repl                     Interactive shell
+xiom doctor                   Check toolchain
+xiom clean                    Remove build artifacts
+xiom clean --cache            Clear JIT cache
 </code></pre>
 <h2>Targets</h2>
 <table>
@@ -163,147 +330,66 @@ cargo run -p xiom -- [flags] <source.xi>
 </tr>
 <tr>
 <td><code>x86_64-pc-windows-msvc</code></td>
-<td>Verified</td>
-</tr>
-<tr>
-<td><code>wasm32-unknown-unknown</code></td>
-<td>Verified</td>
+<td>[OK] Verified</td>
 </tr>
 <tr>
 <td><code>x86_64-unknown-linux-gnu</code></td>
-<td>Planned</td>
+<td>[OK] Verified (WSL build + compile + run)</td>
+</tr>
+<tr>
+<td><code>wasm32-unknown-unknown</code></td>
+<td>[OK] Verified</td>
 </tr>
 <tr>
 <td><code>aarch64-apple-darwin</code></td>
 <td>Planned</td>
 </tr>
 </table>
-<h2>Crate Structure</h2>
+<h2>Language Features (v0.56)</h2>
 <table>
 <tr>
-<th>Crate</th>
-<th>Purpose</th>
-<th>LOC</th>
+<th>Feature</th>
+<th>Status</th>
+<th>Since</th>
 </tr>
 <tr>
-<td><code>xiom-ast</code></td>
-<td>AST node definitions (full EBNF coverage)</td>
-<td>~480</td>
+<td><code>move</code> keyword (spawn captures)</td>
+<td><code>spawn move { ... }</code></td>
+<td>v0.56</td>
 </tr>
 <tr>
-<td><code>xiom-lexer</code></td>
-<td>Tokenizer (40+ token kinds)</td>
-<td>~500</td>
+<td>Overflow checks ON by default</td>
+<td><code>--overflow-checks</code> default true</td>
+<td>v0.56</td>
 </tr>
 <tr>
-<td><code>xiom-parser</code></td>
-<td>Recursive descent LL(1) parser</td>
-<td>~1,450</td>
+<td>Parallel codegen</td>
+<td><code>--parallel-codegen</code></td>
+<td>v0.56</td>
 </tr>
 <tr>
-<td><code>xiom-check</code></td>
-<td>Type checker + Borrow checker + Module resolver</td>
-<td>~1,415</td>
+<td>DWARF debug info</td>
+<td><code>--debug</code> / <code>-g</code></td>
+<td>v0.56</td>
 </tr>
 <tr>
-<td><code>xiom-codegen</code></td>
-<td>LLVM IR emitter + Contracts + Derive + Generics</td>
-<td>~1,405</td>
+<td>Thread-local recursion counter</td>
+<td><code>@xiom_recursion_counter thread_local</code></td>
+<td>v0.56</td>
 </tr>
 <tr>
-<td><code>xiom</code></td>
-<td>CLI binary</td>
-<td>~220</td>
+<td>Send/Sync enforcement</td>
+<td>Auto-derived, spawn capture check</td>
+<td>v0.56</td>
+</tr>
+<tr>
+<td>Spawn move semantics</td>
+<td>Capture analysis + env forwarding</td>
+<td>v0.56</td>
 </tr>
 </table>
-<h2>Self-Hosted Compiler</h2>
-<p>The XIOM compiler itself is written in XIOM (<code>selfhost/</code> directory). It is compiled by the Rust bootstrap compiler. Once Phase 2C bootstrapping is complete, the XIOM compiler compiles itself.</p>
-<table>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-</tr>
-<tr>
-<td><code>selfhost/xiom-lexer.xi</code></td>
-<td>Tokenizer in XIOM</td>
-</tr>
-<tr>
-<td><code>selfhost/xiom-parser.xi</code></td>
-<td>Recursive descent parser in XIOM</td>
-</tr>
-<tr>
-<td><code>selfhost/xiom-check.xi</code></td>
-<td>Type checker in XIOM</td>
-</tr>
-<tr>
-<td><code>selfhost/xiom-codegen.xi</code></td>
-<td>LLVM IR emitter in XIOM</td>
-</tr>
-<tr>
-<td><code>selfhost/xiom.xi</code></td>
-<td>CLI driver in XIOM</td>
-</tr>
-</table>
-<h2>Version History</h2>
-<table>
-<tr>
-<th>Version</th>
-<th>Codename</th>
-<th>Phase</th>
-<th>Tests</th>
-<th>LOC</th>
-</tr>
-<tr>
-<td><strong>v0.49.8</strong></td>
-<td>Production</td>
-<td>2C+</td>
-<td>234</td>
-<td>~10,000</td>
-</tr>
-<tr>
-<td><strong>v0.11.0</strong></td>
-<td>Self-Hosted</td>
-<td>Eco</td>
-<td>213</td>
-<td>~10,000</td>
-</tr>
-<tr>
-<td>v0.10.0</td>
-<td>Sovereign</td>
-<td>3</td>
-<td>208</td>
-<td>~9,600</td>
-</tr>
-<tr>
-<td>v0.4.0</td>
-<td>Mirror</td>
-<td>2B</td>
-<td>124</td>
-<td>~7,020</td>
-</tr>
-<tr>
-<td>v0.2.5</td>
-<td>Hardened</td>
-<td>1.5</td>
-<td>109</td>
-<td>~6,924</td>
-</tr>
-<tr>
-<td>v0.2.0</td>
-<td>Guardian</td>
-<td>1</td>
-<td>87</td>
-<td>~5,200</td>
-</tr>
-<tr>
-<td>v0.1.0</td>
-<td>Pipeline</td>
-<td>0</td>
-<td>36</td>
-<td>~3,800</td>
-</tr>
-</table>
-<p>See the <a href="https://xiom-lang.org/versions">full version history</a> for all releases.</p>
+<h2>Selfhost Gate Status</h2>
+<p>19/19 gates cleared. See <code>docs/PRE_SELFHOST_GAPS.md</code> for remaining work.</p>
 <h2>Architecture Decisions</h2>
 <table>
 <tr>
@@ -311,8 +397,8 @@ cargo run -p xiom -- [flags] <source.xi>
 <th>Status</th>
 </tr>
 <tr>
-<td>Phase 0 compiler language</td>
-<td><strong>Rust</strong></td>
+<td>Bootstrap compiler</td>
+<td><strong>Rust</strong> (permanent)</td>
 </tr>
 <tr>
 <td>LLVM backend</td>
@@ -328,7 +414,7 @@ cargo run -p xiom -- [flags] <source.xi>
 </tr>
 <tr>
 <td>Contracts</td>
-<td><strong>Runtime guards</strong> (Phase 1), Z3 (Phase 3)</td>
+<td><strong>Runtime guards</strong> + Z3 (SMT-LIB)</td>
 </tr>
 <tr>
 <td>Type constraints</td>
@@ -339,19 +425,20 @@ cargo run -p xiom -- [flags] <source.xi>
 <td><strong>Implicit</strong> <code>self</code>, inferred</td>
 </tr>
 <tr>
-<td>Rust bootstrap</td>
-<td><strong>Permanent</strong> -- never deleted</td>
+<td>Crate structure</td>
+<td>19 crates (xiom-ast, lexer, parser, check, codegen, ctfe, jit, verify, fmt, lsp, pkg, mcp, doc, ffigen, dbg, display, graph, wasm, cli)</td>
 </tr>
 </table>
 <h2>Build from Source</h2>
 <pre class="language-bash"><code>
-git clone https:<span class='cm'>//github.com/XIOM-lang/XIOM.git </span>
+git clone https:<span class='cm'>//github.com/XIOM-lang/XIOM.git</span>
 cd xiom
-cargo build
-cargo test     # <span class='num'>213</span> tests
+cargo build -p xiom
+cargo test -p xiom-codegen --test e2e_tests
+
+# Linux <span class='func'>build</span>(WSL)
+wsl -d Ubuntu -- bash -c 'export PATH=$HOME/.cargo/bin:$PATH; cd /mnt/e/Projects/AXIOM && cargo build -p xiom'
 </code></pre>
-<h2>Download</h2>
-<p>Pre-built binaries for Windows, macOS, and Linux are available on the <a href="https://xiom-lang.org/download">download page</a>.</p>
     </main>
 
   </div>
@@ -359,12 +446,12 @@ cargo test     # <span class='num'>213</span> tests
 
 <footer>
   <div class="wrap">
-    <p>xiom v0.12.0 - <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
-      <a href="spec.html">Spec</a>
-      <a href="docs/">Docs</a>
-      <a href="ecosystem.html">Ecosystem</a>
-      <a href="download.html">Download</a>
+      <a href="https://xiom-lang.org/spec.html">Spec</a>
+      <a href="https://xiom-lang.org/docs/">Docs</a>
+      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
+      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>
