@@ -59,9 +59,9 @@ Queue:
    variable `RELEASE_BUILD_MACOS=true`), the page rows appear
    automatically; add `install.sh` macOS support (Homebrew clang check,
    `xcode-select`) at the same time.
-4. **One-line install honesty**: the installers are proven on Windows and
-   Linux (container test). Add a short "what it does" note (download,
-   checksum, PATH, clang check) and keep the pipe-to-shell warning advice.
+4. **~~One-line install honesty~~ (done 2026-09-17)**: the page describes
+   what the installer does and warns about piping scripts from the
+   internet; both installers stay short and auditable.
 5. **Version manager (`xiomup`)**: keep the planned section until an actual
    implementation exists; do not promise it early.
 6. **Point to docs in other repos**: the language guide lives here, but
@@ -82,38 +82,46 @@ is rebuilt from scratch (no orphan pages), generation is idempotent, and
 `XIOM_DOCS_VERSION` to stamp pages (default `latest`); the mike migration
 replaces that stamping with per-version builds.
 
+The versioned pipeline is in place as of 2026-09-17: `docs/build_mkdocs.py`
+stages `build/mkdocs-src/` (guides + generated API pages + meta-refresh
+stubs for every legacy `docs/html/*.html` URL), `mkdocs build --strict`
+passes with mkdocs-material 9.7.7 / mike 2.2.0, and
+`.github/workflows/docs-versioned.yml` publishes with mike to `gh-pages` on
+dispatch. Note: MkDocs needs Python 3.8+; this machine only has 3.7, so
+local verification used a portable `uv` Python 3.12.
+
 Queue:
 
 1. **~~Fix and pin the generator~~ (done 2026-09-17)**: paths, full nav
    coverage, clean rebuild, and CI drift check in place. Remaining: decide
    whether the site copy stays once mike versioning lands.
-2. **MkDocs Material + mike migration**: versioned documentation
-   (`https://docs.xiom-lang.org/vX.Y.Z/` plus a `latest` alias, frozen
-   versions per release). Sources: `docs/language/` plus generated API
-   pages. Keep old versions browsable; add redirects for the current
-   `docs/html/*.html` paths so existing links keep working.
-3. **Stdlib/compiler API pages**: `docs/build_api_docs.py` (done
-   2026-09-17) walks a stdlib checkout, runs `xiom-doc` over every source
-   and writes per-module MkDocs pages plus an index. Spike over the local
-   stdlib at v0.60.0: 44 modules, 517 files, 6,879 symbols, 0 parse
-   failures, ~8s. Remaining: run it in CI from the stdlib release tag and
-   wire the output into the MkDocs nav; the release archive ships only
-   `bin/xiom`, so CI must build `xiom-doc` from the xiom tag (a debug build
-   of the dep graph takes seconds; `--locked`).
-4. **Trigger**: the compiler release workflow fires a `repository_dispatch`
-   at this repo; the docs job builds the versioned site and deploys through
-   the VPS hook. Until that exists, the hourly pull keeps the current docs
-   fresh.
+2. **~~MkDocs Material + mike migration~~ (scaffold done 2026-09-17)**:
+   config, pinned toolchain, assembly script, strict build, legacy
+   redirects, and the publish workflow are in place. Remaining: the ops
+   session must switch the docs docroot from `docs/html/` to the mike
+   output on `gh-pages`; until then the hourly pull keeps `docs/html/`
+   live. Also decide the site copy once the switch happens.
+3. **Stdlib/compiler API pages (done 2026-09-17)**: `docs/build_api_docs.py`
+   walks a stdlib checkout, runs `xiom-doc` over every source and writes
+   per-module MkDocs pages plus an index. Spike over the local stdlib at
+   v0.60.0: 44 modules, 517 files, 6,879 symbols, 0 parse failures, ~8s.
+   Wired into `docs/build_mkdocs.py`; `docs-versioned.yml` builds
+   `xiom-doc` from the xiom ref (`--locked`) before assembling. Remaining:
+   first real dispatch run to validate the cross-repo build.
+4. **Trigger**: `docs-versioned.yml` accepts
+   `repository_dispatch: compiler-release` (payload `tag`, optional
+   `stdlib_ref`/`compiler_ref`) and manual dispatch. Remaining: the
+   compiler release workflow (compiler lane) must fire the event.
 5. **~~`versions.html` from the mirror~~ (done 2026-09-17)**: the current
    card and release table are read from
    `https://dl.xiom-lang.org/releases/index.json` (mirror retains 20 tags);
    pre-0.13 history has no artifacts and is no longer listed. Frozen docs
    links land with the mike migration.
-6. **Link checking**: add a CI step that checks internal links and the
-   documented external URLs (installers, mirror, releases). Current
-   generator output has 8 known broken links per tree from stale sources
-   (`../M10_SCRIPTING_MODE.md`, `../ecosystem/*.md` which the generator
-   does not build, `../../checklists/stdlib-implementation.*`).
+6. **~~Link checking~~ (done 2026-09-17)**: `docs/check_links.py` runs in
+   `docs.yml` over `docs/html` and `xiom-website` (0 broken); the dead
+   `M10_SCRIPTING_MODE`, `ecosystem/*`, and `checklists/*` references were
+   removed or repointed, and MkDocs strict mode validates the versioned
+   tree.
 
 ## Rules
 
@@ -136,14 +144,13 @@ from this repo to the VPS via /opt/xiom/bin/web-deploy.sh (cron minute 23);
 push to main and it publishes within the hour, or run the script on the VPS
 with the owner in PuTTY (outputs pasted back; never request credentials).
 
-Priority: (1) scaffold the MkDocs Material + mike migration and wire in the
-generated API pages (the API driver is done: `docs/build_api_docs.py`, 0
-parse failures over 517 stdlib files); note the local machine only has
-Python 3.7, so mkdocs/mike need a 3.8+ interpreter or a CI-verified setup.
-The ops web-deploy.sh must stop publishing docs/html/ to the docs docroot
-before versioned docs can go live. (2) Wire the API driver + docs build into
-CI: repository_dispatch from the compiler release, `xiom-doc` built from the
-xiom tag, mike deploy per version. (3) Ecosystem doc pointers stay deferred
-until stdlib is 100%. Keep the site static, ASCII-only, and driven by the
-mirror JSON files - never hardcode versions.
+Priority: (1) ops session switches the docs docroot from `docs/html/` to
+the mike output on `gh-pages`, then run the first `docs-versioned` publish
+(manual dispatch) and verify `https://docs.xiom-lang.org/latest/` plus a
+frozen `/vX.Y.Z/` and the legacy `.html` redirects; (2) compiler release
+workflow fires `repository_dispatch: compiler-release` with the tag so
+publishes are automatic; (3) macOS installer support once
+`RELEASE_BUILD_MACOS=true`; (4) ecosystem doc pointers stay deferred until
+stdlib is 100%. Keep the site static, ASCII-only, and driven by the mirror
+JSON files - never hardcode versions.
 ```
