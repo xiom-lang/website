@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom -- XIOM Language Documentation</title>
+<title>xiom -- <!--</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,18 +13,18 @@
 
 <nav>
   <div class="wrap">
-    <a href="" class="logo">
+    <a href="index.html" class="logo">
       <img src="" alt="xiom">
       xiom
     </a>
     <div class="navlinks">
-      <a href="spec.html">Spec</a>
-      <a href="docs/">Docs</a>
-      <a href="ecosystem.html">Ecosystem</a>
-      <a href="versions.html">Versions</a>
+      <a href="https://xiom-lang.org/spec.html">Spec</a>
+      <a href="https://xiom-lang.org/docs/">Docs</a>
+      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
+      <a href="https://xiom-lang.org/versions.html">Versions</a>
       <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
-    <a class="nav-cta" href="download.html">download</a>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">download</a>
   </div>
 </nav>
 
@@ -36,6 +36,7 @@
       <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
         <a href="index.html" style="color:var(--signal);font-weight:500;">Overview</a>
         <a href="getting-started.html" style="color:var(--muted);">Getting Started</a>
+        <a href="reference.html" style="color:var(--muted);">Language Reference</a>
         <a href="concepts.html" style="color:var(--muted);">Concepts</a>
         <a href="examples.html" style="color:var(--muted);">By Example</a>
         <a href="syntax.html" style="color:var(--muted);">Syntax</a>
@@ -45,12 +46,15 @@
         <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
         <a href="modules.html" style="color:var(--muted);">Modules</a>
         <a href="generics.html" style="color:var(--muted);">Generics</a>
+        <a href="pattern-matching.html" style="color:var(--muted);">Pattern Matching</a>
         <a href="derive.html" style="color:var(--muted);">Derive</a>
         <a href="ffi.html" style="color:var(--muted);">C FFI</a>
         <a href="compiler.html" style="color:var(--muted);">Compiler</a>
-        <a href="../AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
+        <a href="stdlib.html" style="color:var(--muted);">Stdlib Reference</a>
+        <a href="AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
         <div style="margin-top:20px;"></div>
         <a href="api.html" style="color:var(--paper);font-weight:500;;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>
+        <a href="stdlib/index.html" style="color:var(--muted);">Overview</a>
         <a href="stdlib/core.html" style="color:var(--muted);">core</a>
         <a href="stdlib/io.html" style="color:var(--muted);">io</a>
         <a href="stdlib/collections.html" style="color:var(--muted);">collections</a>
@@ -85,6 +89,7 @@
         <a href="stdlib/compress.html" style="color:var(--muted);">compress</a>
         <a href="stdlib/rand.html" style="color:var(--muted);">rand</a>
         <a href="stdlib/regex.html" style="color:var(--muted);">regex</a>
+        <a href="stdlib/simd.html" style="color:var(--muted);">simd</a>
         <a href="stdlib/bench.html" style="color:var(--muted);">bench</a>
         <a href="stdlib/log.html" style="color:var(--muted);">log</a>
         <a href="stdlib/contracts.html" style="color:var(--muted);">contracts</a>
@@ -94,9 +99,11 @@
     </nav>
 
     <main class="content-section" style="border:none;padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:12px;">**Compiler:** v0.49.8 | **Spec:** v0.3 | **Tests:** 234 passing</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">XIOM Language Documentation</h1>
-      <blockquote><p><strong>Compiler:</strong> v0.49.8 | <strong>Spec:</strong> v0.3 | <strong>Tests:</strong> 234 passing</p></blockquote>
+      <div class="eyebrow" style="margin-bottom:12px;">latest</div>
+      <h1 style="font-size:36px;margin-bottom:24px;"><!--</h1>
+      <p><!-- Copyright (c) 2026 Eleftherios Notas and XIOM Foundation SPDX-License-Identifier: MIT OR Apache-2.0 --></p>
+<h1>XIOM Language Documentation</h1>
+<blockquote><p><strong>Compiler:</strong> v0.51.0 | <strong>Tests:</strong> 1041 passing | <strong>Status:</strong> Production Hardening</p></blockquote>
 <h2>Contents</h2>
 <table>
 <tr>
@@ -106,6 +113,10 @@
 <tr>
 <td><a href="getting-started.html">Getting Started</a></td>
 <td>Installation, first program, CLI reference</td>
+</tr>
+<tr>
+<td><a href="reference.html">Language Reference</a></td>
+<td>Complete language reference -- all syntax, types, patterns in one document</td>
 </tr>
 <tr>
 <td><a href="concepts.html">Concepts</a></td>
@@ -144,12 +155,20 @@
 <td>Comptime monomorphisation, inline type constraints, interface bounds</td>
 </tr>
 <tr>
+<td><a href="pattern-matching.html">Pattern Matching</a></td>
+<td>match, if let, while let, destructuring</td>
+</tr>
+<tr>
 <td><a href="derive.html">Derive</a></td>
 <td>Compiler-generated Eq, Clone, Display, Hash, Ord</td>
 </tr>
 <tr>
 <td><a href="ffi.html">C FFI</a></td>
 <td>Zero-cost C interoperability, extern blocks, unsafe</td>
+</tr>
+<tr>
+<td><a href="../M10_SCRIPTING_MODE.html">Scripting Mode</a></td>
+<td>xiom run, shebang, standalone, REPL, JIT</td>
 </tr>
 <tr>
 <td><a href="compiler.html">Compiler</a></td>
@@ -160,7 +179,7 @@
 <td>Complete API reference for all 40 stdlib modules</td>
 </tr>
 <tr>
-<td><a href="../AI_CONTEXT.html">AI Coding Reference</a></td>
+<td><a href="AI_CONTEXT.html">AI Coding Reference</a></td>
 <td>Single-file AI prompt -- inject into any LLM to enable XIOM code generation</td>
 </tr>
 </table>
@@ -287,40 +306,35 @@
 <tr>
 <td>Phase 0</td>
 <td>v0.1.0 "Pipeline"</td>
-<td>Released -- working pipeline, 36 tests</td>
+<td>Released -- working pipeline</td>
 </tr>
 <tr>
 <td>Phase 1</td>
 <td>v0.2.0 "Guardian"</td>
-<td>Released -- full language surface, 87 tests</td>
-</tr>
-<tr>
-<td>Phase 1.5</td>
-<td>v0.2.5 "Hardened"</td>
-<td>Released -- 13 bug fixes, 109 tests</td>
+<td>Released -- full language surface</td>
 </tr>
 <tr>
 <td>Phase 2</td>
 <td>v0.4.0 "Mirror"</td>
-<td>Released -- self-host compiler, 124 tests</td>
-</tr>
-<tr>
-<td>Phase 2C</td>
-<td>v0.10.0 "Sovereign"</td>
-<td>Released -- production self-hosting, 208 tests</td>
+<td>Released -- self-host compiler</td>
 </tr>
 <tr>
 <td>Phase 2C</td>
 <td>v0.11.0 "Self-Hosted"</td>
-<td>Released -- full self-hosting, 213 tests</td>
+<td>Released -- full self-hosting</td>
 </tr>
 <tr>
 <td>Phase 2C+</td>
-<td>v0.49.8</td>
-<td><strong>Current</strong> -- 40-module stdlib, xiom doctor, if let/while let, compound assignment, tuple structs, Debug derive, parallel compilation, sanitizers, package manager</td>
+<td>v0.50.0</td>
+<td>Released -- 40-module stdlib, scripting, JIT, contracts</td>
+</tr>
+<tr>
+<td>Phase 8B</td>
+<td><strong>v0.51.0</strong></td>
+<td><strong>Current</strong> -- production hardening, 1041 tests, M1-M12 complete</td>
 </tr>
 </table>
-<p>See <a href="compiler.md#version-history">Compiler Version History</a> for the full changelog.</p>
+<p>See <a href="compiler.html#version-history">Compiler Version History</a> for the full changelog.</p>
     </main>
 
   </div>
@@ -328,12 +342,12 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom v0.12.0 - <a href="" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
     <div class="foot-links">
-      <a href="spec.html">Spec</a>
-      <a href="docs/">Docs</a>
-      <a href="ecosystem.html">Ecosystem</a>
-      <a href="download.html">Download</a>
+      <a href="https://xiom-lang.org/spec.html">Spec</a>
+      <a href="https://xiom-lang.org/docs/">Docs</a>
+      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
+      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>
