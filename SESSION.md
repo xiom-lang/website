@@ -90,28 +90,45 @@ passes with mkdocs-material 9.7.7 / mike 2.2.0, and
 dispatch. Note: MkDocs needs Python 3.8+; this machine only has 3.7, so
 local verification used a portable `uv` Python 3.12.
 
+Ops round trip (2026-09-17): the org enforces
+`sha_pinning_required=true`, so every `uses:` ref in `.github/workflows/`
+must be a full commit SHA (pinned in 5c62f4e; tag refs fail at job setup).
+The first `docs-versioned` dispatch succeeded (run 35286233792) and
+published `gh-pages`: `v0.60.1/` (full site plus legacy redirect stubs),
+`latest` symlink, `versions.json`. The ops switch script
+(`xiom-lang/ops`, `docs/DOCS_MIKE_SWITCH.md`) copies the default version's
+stubs to the docroot root and symlinks its top-level dirs, so old `*.html`
+URLs keep working with no website-side changes. `SUMMARY.md` is excluded
+from the rendered site.
+
 Queue:
 
 1. **~~Fix and pin the generator~~ (done 2026-09-17)**: paths, full nav
    coverage, clean rebuild, and CI drift check in place. Remaining: decide
    whether the site copy stays once mike versioning lands.
-2. **~~MkDocs Material + mike migration~~ (scaffold done 2026-09-17)**:
-   config, pinned toolchain, assembly script, strict build, legacy
-   redirects, and the publish workflow are in place. Remaining: the ops
-   session must switch the docs docroot from `docs/html/` to the mike
-   output on `gh-pages`; until then the hourly pull keeps `docs/html/`
-   live. Also decide the site copy once the switch happens.
+2. **~~MkDocs Material + mike migration~~ (done 2026-09-17)**: config,
+   pinned toolchain, assembly script, strict build, legacy redirects,
+   publish workflow, and the first successful publish to `gh-pages` are in
+   place. Remaining: the ops session executes the docroot switch on the
+   VPS (script ready at `xiom-lang/ops` `docs/DOCS_MIKE_SWITCH.md`), then
+   decide whether the generated site copy under `xiom-website/docs/`
+   stays.
 3. **Stdlib/compiler API pages (done 2026-09-17)**: `docs/build_api_docs.py`
    walks a stdlib checkout, runs `xiom-doc` over every source and writes
    per-module MkDocs pages plus an index. Spike over the local stdlib at
    v0.60.0: 44 modules, 517 files, 6,879 symbols, 0 parse failures, ~8s.
    Wired into `docs/build_mkdocs.py`; `docs-versioned.yml` builds
-   `xiom-doc` from the xiom ref (`--locked`) before assembling. Remaining:
-   first real dispatch run to validate the cross-repo build.
+   `xiom-doc` from the xiom ref (`--locked`) before assembling. The first
+   CI dispatch published 45 API pages and validated the cross-repo build.
 4. **Trigger**: `docs-versioned.yml` accepts
    `repository_dispatch: compiler-release` (payload `tag`, optional
    `stdlib_ref`/`compiler_ref`) and manual dispatch. Remaining: the
    compiler release workflow (compiler lane) must fire the event.
+   Related cross-lane blocker reported by ops: the `xiom-lang/stdlib`
+   workflows still use tag refs and will fail under
+   `sha_pinning_required=true`; that is the stdlib lane's to fix (pinned
+   SHAs for checkout, upload-artifact, rust-toolchain, and cache were
+   handed over in the ops report).
 5. **~~`versions.html` from the mirror~~ (done 2026-09-17)**: the current
    card and release table are read from
    `https://dl.xiom-lang.org/releases/index.json` (mirror retains 20 tags);
@@ -133,6 +150,9 @@ Queue:
   before pushing; they are the first thing users run.
 - Nav consistency: use `https://playground.xiom-lang.org` (absolute) or a
   deliberate relative path in every page, not a mix.
+- All GitHub Actions refs must be pinned to full commit SHAs; the
+  xiom-lang org enforces `sha_pinning_required=true` and tag refs fail at
+  job setup.
 - `docs/html/` and `xiom-website/docs/` are generated; do not hand-edit.
 
 ## Paste-ready prompt for the next session
@@ -144,13 +164,14 @@ from this repo to the VPS via /opt/xiom/bin/web-deploy.sh (cron minute 23);
 push to main and it publishes within the hour, or run the script on the VPS
 with the owner in PuTTY (outputs pasted back; never request credentials).
 
-Priority: (1) ops session switches the docs docroot from `docs/html/` to
-the mike output on `gh-pages`, then run the first `docs-versioned` publish
-(manual dispatch) and verify `https://docs.xiom-lang.org/latest/` plus a
-frozen `/vX.Y.Z/` and the legacy `.html` redirects; (2) compiler release
-workflow fires `repository_dispatch: compiler-release` with the tag so
-publishes are automatic; (3) macOS installer support once
-`RELEASE_BUILD_MACOS=true`; (4) ecosystem doc pointers stay deferred until
-stdlib is 100%. Keep the site static, ASCII-only, and driven by the mirror
-JSON files - never hardcode versions.
+Priority: (1) ops session executes the docs docroot switch on the VPS
+(script ready, `xiom-lang/ops` `docs/DOCS_MIKE_SWITCH.md`) and verifies
+`/`, `/latest/`, `/v0.60.1/`, `versions.json`, a legacy stub such as
+`/syntax.html`, and `/api/core/`; (2) compiler release workflow fires
+`repository_dispatch: compiler-release` with the tag so publishes are
+automatic; (3) stdlib lane pins its workflow action refs (blocker reported
+by ops); (4) macOS installer support once `RELEASE_BUILD_MACOS=true`;
+(5) ecosystem doc pointers stay deferred until stdlib is 100%. Keep the
+site static, ASCII-only, and driven by the mirror JSON files - never
+hardcode versions.
 ```

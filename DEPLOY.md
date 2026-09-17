@@ -72,10 +72,17 @@ python docs/build_mkdocs.py --stdlib <stdlib-checkout> \
 mkdocs build --strict
 ```
 
-Ops dependency: `web-deploy.sh` currently publishes `docs/html/` to the docs
-docroot. Once the mike output is verified on `gh-pages`, the ops session
-switches the docs docroot to that branch; `docs/html/` stays as the
-standalone bundle used in compiler release packaging.
+Published state (2026-09-17): `gh-pages` carries `v0.60.1/` (full site
+plus legacy redirect stubs), the `latest` alias (symlink) and
+`versions.json`; `SUMMARY.md` is excluded from the rendered site. The ops
+deploy script (`xiom-lang/ops`, `docs/DOCS_MIKE_SWITCH.md`) copies the
+default version's stubs to the docroot root and symlinks its top-level
+directories, so the switch needs no website-side changes. `docs/html/`
+stays as the standalone bundle used in compiler release packaging.
+
+CI: every `uses:` ref in `.github/workflows/` must be pinned to a full
+commit SHA; the org enforces `sha_pinning_required=true` and tag refs fail
+at job setup.
 
 ## Verification after a deploy
 
