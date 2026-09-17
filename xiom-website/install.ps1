@@ -8,15 +8,18 @@
 #
 # Usage:  irm https://xiom-lang.org/install.ps1 | iex
 #         .\install.ps1 -InstallDir C:\tools\xiom -NoPath
+#         .\install.ps1 -Version v0.60.1
 
 [CmdletBinding()]
 param(
   [string]$InstallDir = (Join-Path $env:LOCALAPPDATA 'xiom'),
+  [string]$Version = '',
   [switch]$NoPath
 )
 
 $ErrorActionPreference = 'Stop'
-$mirror = 'https://dl.xiom-lang.org/latest.json'
+$mirrorBase = 'https://dl.xiom-lang.org'
+$mirror = "$mirrorBase/latest.json"
 
 Write-Host 'XIOM toolchain installer' -ForegroundColor Cyan
 
@@ -25,12 +28,23 @@ if ($env:PROCESSOR_ARCHITECTURE -ne 'AMD64') {
   Write-Warning "Architecture $($env:PROCESSOR_ARCHITECTURE) detected; only x64 archives are published today."
 }
 
-Write-Host "Fetching release metadata from $mirror ..."
-$release = Invoke-RestMethod -Uri $mirror -UseBasicParsing
-$asset = $release.assets | Where-Object { $_.name -like '*-windows-x64.zip' } | Select-Object -First 1
-$sums = $release.assets | Where-Object { $_.name -eq 'SHA256SUMS' } | Select-Object -First 1
-if (-not $asset) { throw "No windows-x64 asset found in $mirror" }
-if (-not $sums) { throw "SHA256SUMS missing from $mirror" }
+if ($Version) {
+  $tag = $Version.Trim()
+  if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
+  $ver = $tag.TrimStart('v')
+  $base = "$mirrorBase/releases/$tag"
+  $assetName = "xiom-$ver-windows-x64.zip"
+  Write-Host "Pinned release: $tag"
+  $asset = [pscustomobject]@{ name = $assetName; url = "$base/$assetName"; size = 0 }
+  $sums = [pscustomobject]@{ name = 'SHA256SUMS'; url = "$base/SHA256SUMS" }
+} else {
+  Write-Host "Fetching release metadata from $mirror ..."
+  $release = Invoke-RestMethod -Uri $mirror -UseBasicParsing
+  $asset = $release.assets | Where-Object { $_.name -like '*-windows-x64.zip' } | Select-Object -First 1
+  $sums = $release.assets | Where-Object { $_.name -eq 'SHA256SUMS' } | Select-Object -First 1
+  if (-not $asset) { throw "No windows-x64 asset found in $mirror" }
+  if (-not $sums) { throw "SHA256SUMS missing from $mirror" }
+}
 
 $tmp = Join-Path $env:TEMP ('xiom-install-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $tmp | Out-Null
@@ -38,9 +52,17 @@ try {
   $zip = Join-Path $tmp $asset.name
   $sum = Join-Path $tmp 'SHA256SUMS'
 
-  Write-Host ("Downloading {0} ({1:N2} MB) ..." -f $asset.name, ($asset.size / 1MB))
-  Invoke-WebRequest -Uri $asset.url -OutFile $zip -UseBasicParsing
-  Invoke-WebRequest -Uri $sums.url -OutFile $sum -UseBasicParsing
+  if ($asset.size) {
+    Write-Host ("Downloading {0} ({1:N2} MB) ..." -f $asset.name, ($asset.size / 1MB))
+  } else {
+    Write-Host ("Downloading {0} ..." -f $asset.name)
+  }
+  try {
+    Invoke-WebRequest -Uri $asset.url -OutFile $zip -UseBasicParsing
+    Invoke-WebRequest -Uri $sums.url -OutFile $sum -UseBasicParsing
+  } catch {
+    throw "Could not download $($asset.name). Check available versions in $mirrorBase/releases/index.json"
+  }
 
   $line = Get-Content $sum | Where-Object { $_ -match [regex]::Escape($asset.name) } | Select-Object -First 1
   if (-not $line) { throw "No checksum entry for $($asset.name)" }
