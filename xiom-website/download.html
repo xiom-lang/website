@@ -57,38 +57,42 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <div class="content-section">
     <h2>Pre-built Binaries</h2>
     <table>
-      <tr><th>Platform</th><th>Architecture</th><th>Archive</th><th>Size</th></tr>
+      <tr><th>Platform</th><th>Architecture</th><th>Archive</th><th>Size</th><th>SHA256 (expected)</th></tr>
       <tr id="row-windows-x64">
         <td><strong>Windows</strong></td>
         <td>x86_64</td>
         <td><a id="dl-windows-x64" href="https://dl.xiom-lang.org/releases/" style="color:var(--signal);">xiom-windows-x64.zip</a></td>
         <td id="size-windows-x64">see release</td>
+        <td id="sha-windows-x64" class="sha">-</td>
       </tr>
       <tr id="row-linux-x64">
         <td><strong>Linux</strong></td>
         <td>x86_64</td>
         <td><a id="dl-linux-x64" href="https://dl.xiom-lang.org/releases/" style="color:var(--signal);">xiom-linux-x64.tar.gz</a></td>
         <td id="size-linux-x64">see release</td>
+        <td id="sha-linux-x64" class="sha">-</td>
       </tr>
       <tr id="row-macos-x64" style="display:none;">
         <td><strong>macOS</strong></td>
         <td>Intel</td>
         <td><a id="dl-macos-x64" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">xiom-macos-x64.tar.gz</a></td>
         <td id="size-macos-x64">see release</td>
+        <td id="sha-macos-x64" class="sha">-</td>
       </tr>
       <tr id="row-macos-arm64" style="display:none;">
         <td><strong>macOS</strong></td>
         <td>Apple Silicon</td>
         <td><a id="dl-macos-arm64" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">xiom-macos-arm64.tar.gz</a></td>
         <td id="size-macos-arm64">see release</td>
+        <td id="sha-macos-arm64" class="sha">-</td>
       </tr>
       <tr>
-        <td colspan="2"><strong>Checksums</strong></td>
+        <td colspan="3"><strong>Checksums</strong></td>
         <td><a id="dl-checksums" href="https://dl.xiom-lang.org/releases/" style="color:var(--signal);">SHA256SUMS</a></td>
         <td>-</td>
       </tr>
     </table>
-    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. Archives unpack to <code>bin/</code> (compiler) and <code>lib/</code> (standard library and runtime).</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. The expected SHA256 column is filled from <code>SHA256SUMS</code> next to the release. Archives unpack to <code>bin/</code> (compiler) and <code>lib/</code> (standard library and runtime).</p>
   </div>
 
   <div class="content-section">
@@ -102,7 +106,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
   <div class="content-section">
     <h2>Verify your download</h2>
-    <p>Every archive is listed in <code>SHA256SUMS</code> and carries a GitHub build-provenance attestation from the release workflow.</p>
+    <p>The expected SHA256 for each published archive is shown in the table above and listed in <code>SHA256SUMS</code>; every archive also carries a GitHub build-provenance attestation from the release workflow.</p>
     <pre><code><span class="cm"># checksum (Windows PowerShell)</span>
 Get-FileHash .\xiom-*-windows-x64.zip -Algorithm SHA256
 
@@ -115,12 +119,19 @@ gh attestation verify xiom-*-windows-x64.zip --repo xiom-lang/xiom</code></pre>
 
   <div class="content-section">
     <h2>One-Line Install</h2>
-    <p>The installer downloads the latest archive from the mirror, verifies its SHA256, installs it into your user directory, and adds <code>xiom</code> to your PATH. It also checks for LLVM/Clang and tells you how to install it when missing.</p>
+    <p>The installer downloads the latest archive from the mirror, verifies its SHA256, installs it into your user directory, and adds <code>xiom</code> to your PATH. It also checks for LLVM/Clang and tells you how to install it when missing. Pass a release tag to pin a specific version.</p>
     <pre><code><span class="cm"># Windows PowerShell</span>
 irm https://xiom-lang.org/install.ps1 | iex
 
+<span class="cm"># Windows PowerShell (pinned release)</span>
+irm https://xiom-lang.org/install.ps1 -OutFile install.ps1
+.\install.ps1 -Version &lt;tag&gt;
+
 <span class="cm"># Linux</span>
-curl -fsSL https://xiom-lang.org/install.sh | sh</code></pre>
+curl -fsSL https://xiom-lang.org/install.sh | sh
+
+<span class="cm"># Linux (pinned release)</span>
+curl -fsSL https://xiom-lang.org/install.sh | sh -s -- --version &lt;tag&gt;</code></pre>
   </div>
 
   <div class="content-section">
@@ -185,6 +196,38 @@ cargo test --workspace --lib</code></pre>
     if (size) size.textContent = humanSize(asset.size);
   }
 
+  var SHA_CELLS = ["windows-x64", "linux-x64", "macos-x64", "macos-arm64"];
+
+  function loadChecksums(assets) {
+    var sums = null;
+    for (var i = 0; i < assets.length; i++) {
+      if (assets[i].name === "SHA256SUMS") { sums = assets[i]; break; }
+    }
+    if (!sums) return;
+    fetch(sums.url, { cache: "no-store" })
+      .then(function (res) { if (!res.ok) throw new Error("sums " + res.status); return res.text(); })
+      .then(function (text) {
+        var hashes = {};
+        text.split("\n").forEach(function (line) {
+          var parts = line.trim().split(/\s+/);
+          if (parts.length === 2) hashes[parts[1]] = parts[0];
+        });
+        SHA_CELLS.forEach(function (key) {
+          var cell = document.getElementById("sha-" + key);
+          if (!cell) return;
+          for (var name in hashes) {
+            if (name.indexOf(key + ".") !== -1) { cell.textContent = hashes[name]; return; }
+          }
+        });
+      })
+      .catch(function () {
+        SHA_CELLS.forEach(function (key) {
+          var cell = document.getElementById("sha-" + key);
+          if (cell && cell.textContent === "-") cell.textContent = "see SHA256SUMS";
+        });
+      });
+  }
+
   function applyRelease(rel) {
     var tag = rel.tag || "latest";
     var when = rel.published ? rel.published.slice(0, 10) : "";
@@ -206,6 +249,7 @@ cargo test --workspace --lib</code></pre>
     showAsset(assets, "dl-macos-x64", "size-macos-x64", "row-macos-x64", /macos-x64\.tar\.gz$/);
     showAsset(assets, "dl-macos-arm64", "size-macos-arm64", "row-macos-arm64", /macos-arm64\.tar\.gz$/);
     showAsset(assets, "dl-checksums", null, null, /^SHA256SUMS$/);
+    loadChecksums(assets);
   }
 
   function fromMirror(data) {
