@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 #
 # Fails when the committed generated docs do not match docs/build_docs.py
-# output. Run `python docs/build_docs.py` and commit the result to fix.
+# output, and checks relative links across the published trees.
+# Run `python docs/build_docs.py` and commit the result to fix drift.
 
 name: docs
 
@@ -10,12 +11,16 @@ on:
   push:
     paths:
       - "docs/**"
-      - "xiom-website/docs/**"
+      - "xiom-website/**"
+      - "mkdocs.yml"
+      - "requirements-docs.txt"
       - ".github/workflows/docs.yml"
   pull_request:
     paths:
       - "docs/**"
-      - "xiom-website/docs/**"
+      - "xiom-website/**"
+      - "mkdocs.yml"
+      - "requirements-docs.txt"
       - ".github/workflows/docs.yml"
 
 permissions:
@@ -40,3 +45,5 @@ jobs:
             git --no-pager diff --stat -- docs/html xiom-website/docs
             exit 1
           fi
+      - name: Check relative links
+        run: python docs/check_links.py docs/html xiom-website

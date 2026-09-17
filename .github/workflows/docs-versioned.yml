@@ -1,0 +1,117 @@
+# Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+# SPDX-License-Identifier: MIT OR Apache-2.0
+#
+# Versioned documentation site for docs.xiom-lang.org.
+#
+# Assembles the MkDocs tree (guides + generated stdlib API pages), builds it
+# in strict mode, and deploys with mike so each release keeps a frozen docs
+# snapshot plus the latest alias. The compiler release workflow is expected
+# to fire a repository_dispatch of type compiler-release with a
+# client_payload.tag; workflow_dispatch covers manual publishes and backfill.
+
+name: docs-versioned
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag to publish (e.g. v0.60.1)"
+        required: true
+        type: string
+      stdlib_ref:
+        description: "stdlib ref to document"
+        required: false
+        default: "main"
+        type: string
+      compiler_ref:
+        description: "xiom ref that provides xiom-doc"
+        required: false
+        default: "main"
+        type: string
+  repository_dispatch:
+    types: [compiler-release]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: docs-versioned
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: build and publish versioned docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve inputs
+        env:
+          IN_VERSION: ${{ github.event.inputs.version || github.event.client_payload.tag }}
+          IN_STDLIB: ${{ github.event.inputs.stdlib_ref || github.event.client_payload.stdlib_ref || 'main' }}
+          IN_COMPILER: ${{ github.event.inputs.compiler_ref || github.event.client_payload.compiler_ref || 'main' }}
+        run: |
+          if [ -z "${IN_VERSION}" ]; then
+            echo "::error::No version tag provided (workflow input or client_payload.tag)"
+            exit 1
+          fi
+          case "${IN_VERSION}" in
+            *[!A-Za-z0-9._-]*) echo "::error::Invalid tag: ${IN_VERSION}"; exit 1 ;;
+            v*) TAG="${IN_VERSION}" ;;
+            *) TAG="v${IN_VERSION}" ;;
+          esac
+          echo "VERSION_TAG=${TAG}" >> "$GITHUB_ENV"
+          echo "STDLIB_REF=${IN_STDLIB}" >> "$GITHUB_ENV"
+          echo "COMPILER_REF=${IN_COMPILER}" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-docs.txt
+
+      - name: Install documentation toolchain
+        run: pip install -r requirements-docs.txt
+
+      - name: Checkout compiler sources
+        uses: actions/checkout@v4
+        with:
+          repository: xiom-lang/xiom
+          ref: ${{ env.COMPILER_REF }}
+          path: .deps/xiom
+
+      - name: Checkout stdlib sources
+        uses: actions/checkout@v4
+        with:
+          repository: xiom-lang/stdlib
+          ref: ${{ env.STDLIB_REF }}
+          path: .deps/stdlib
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .deps/xiom -> target
+
+      - name: Build xiom-doc
+        working-directory: .deps/xiom
+        run: cargo build -p xiom-doc --release --locked
+
+      - name: Assemble MkDocs tree
+        run: >-
+          python docs/build_mkdocs.py
+          --stdlib .deps/stdlib
+          --xiom-doc .deps/xiom/target/release/xiom-doc
+          --tag "$VERSION_TAG"
+
+      - name: Build site (strict)
+        run: mkdocs build --strict
+
+      - name: Publish with mike
+        run: |
+          git config user.name "xiom-ci"
+          git config user.email "ci@xiom-lang.org"
+          mike deploy --push --update-aliases "$VERSION_TAG" latest
+          mike set-default --push latest
