@@ -44,11 +44,13 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
   <div class="content-section">
     <h2>Latest Release</h2>
-    <p id="release-meta">Fetching release information from GitHub...</p>
+    <p id="release-meta">Fetching release information...</p>
     <p>
       <a id="release-notes" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">Release notes on GitHub</a>
       &nbsp;&middot;&nbsp;
       <a id="release-all" href="https://github.com/xiom-lang/xiom/releases" style="color:var(--signal);">All releases</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://dl.xiom-lang.org/latest.json" style="color:var(--signal);">machine-readable index</a>
     </p>
   </div>
 
@@ -59,13 +61,13 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       <tr id="row-windows-x64">
         <td><strong>Windows</strong></td>
         <td>x86_64</td>
-        <td><a id="dl-windows-x64" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">xiom-windows-x64.zip</a></td>
+        <td><a id="dl-windows-x64" href="https://dl.xiom-lang.org/releases/" style="color:var(--signal);">xiom-windows-x64.zip</a></td>
         <td id="size-windows-x64">see release</td>
       </tr>
       <tr id="row-linux-x64">
         <td><strong>Linux</strong></td>
         <td>x86_64</td>
-        <td><a id="dl-linux-x64" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">xiom-linux-x64.tar.gz</a></td>
+        <td><a id="dl-linux-x64" href="https://dl.xiom-lang.org/releases/" style="color:var(--signal);">xiom-linux-x64.tar.gz</a></td>
         <td id="size-linux-x64">see release</td>
       </tr>
       <tr id="row-macos-x64" style="display:none;">
@@ -82,18 +84,18 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       </tr>
       <tr>
         <td colspan="2"><strong>Checksums</strong></td>
-        <td><a id="dl-checksums" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">SHA256SUMS</a></td>
+        <td><a id="dl-checksums" href="https://dl.xiom-lang.org/releases/" style="color:var(--signal);">SHA256SUMS</a></td>
         <td>-</td>
       </tr>
     </table>
-    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Archives unpack to <code>bin/</code> (compiler) and <code>lib/</code> (standard library and runtime). No installation is required to try the compiler.</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. Archives unpack to <code>bin/</code> (compiler) and <code>lib/</code> (standard library and runtime).</p>
   </div>
 
   <div class="content-section">
     <h2>Requirements</h2>
     <ul>
       <li><strong>LLVM/Clang 18 or newer is required.</strong> The compiler uses <code>clang</code> to assemble and link every program. Install it first: <code>winget install LLVM.LLVM</code> (Windows), <code>apt install clang</code> (Debian/Ubuntu), <code>xcode-select --install</code> (macOS).</li>
-      <li><strong>Z3 is optional.</strong> It is only needed for the contract-verification tool, which is not part of this release. Contracts themselves are checked at runtime.</li>
+      <li><strong>Z3 is optional.</strong> It is only needed for the contract-verification tool. Contracts themselves are checked at runtime.</li>
       <li><strong>NASM is not required</strong> for the standard toolchain.</li>
     </ul>
   </div>
@@ -113,9 +115,11 @@ gh attestation verify xiom-*-windows-x64.zip --repo xiom-lang/xiom</code></pre>
 
   <div class="content-section">
     <h2>One-Line Install</h2>
-    <p>Coming with the next release: the installer scripts download the latest archive, verify the checksum, and add <code>xiom</code> to your PATH. Until then, use the archives above.</p>
-    <pre><code><span class="cm"># planned, not yet active</span>
+    <p>The installer downloads the latest archive from the mirror, verifies its SHA256, installs it into your user directory, and adds <code>xiom</code> to your PATH. It also checks for LLVM/Clang and tells you how to install it when missing.</p>
+    <pre><code><span class="cm"># Windows PowerShell</span>
 irm https://xiom-lang.org/install.ps1 | iex
+
+<span class="cm"># Linux</span>
 curl -fsSL https://xiom-lang.org/install.sh | sh</code></pre>
   </div>
 
@@ -154,6 +158,7 @@ cargo test --workspace --lib</code></pre>
 <script>
 (function () {
   "use strict";
+  var MIRROR = "https://dl.xiom-lang.org/latest.json";
   var API = "https://api.github.com/repos/xiom-lang/xiom/releases/latest";
   var FALLBACK = "https://github.com/xiom-lang/xiom/releases/latest";
 
@@ -163,7 +168,7 @@ cargo test --workspace --lib</code></pre>
     return Math.max(1, Math.round(bytes / 1024)) + " KB";
   }
 
-  function showAsset(assets, id, sizeId, rowId, pattern, label) {
+  function showAsset(assets, id, sizeId, rowId, pattern) {
     var asset = null;
     for (var i = 0; i < assets.length; i++) {
       if (pattern.test(assets[i].name)) { asset = assets[i]; break; }
@@ -173,46 +178,67 @@ cargo test --workspace --lib</code></pre>
     if (row) row.style.display = "";
     var link = document.getElementById(id);
     if (link) {
-      link.href = asset.browser_download_url;
+      link.href = asset.url;
       link.textContent = asset.name;
     }
     var size = document.getElementById(sizeId);
     if (size) size.textContent = humanSize(asset.size);
   }
 
-  fetch(API, { headers: { "Accept": "application/vnd.github+json" } })
-    .then(function (res) {
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return res.json();
-    })
-    .then(function (release) {
-      var tag = release.tag_name || "latest";
-      var when = release.published_at ? release.published_at.slice(0, 10) : "";
-      var line = document.getElementById("release-line");
-      if (line) line.textContent = tag + (when ? " - released " + when : "");
-      var meta = document.getElementById("release-meta");
-      if (meta) {
-        meta.textContent = "Latest stable release: " + tag + (when ? " (" + when + ")" : "") +
-          ". Toolchain archives below include the compiler, standard library, and runtime.";
-      }
-      var notes = document.getElementById("release-notes");
-      if (notes) notes.href = release.html_url || FALLBACK;
-      var footer = document.getElementById("footer-version");
-      if (footer) footer.textContent = "XIOM " + tag;
+  function applyRelease(rel) {
+    var tag = rel.tag || "latest";
+    var when = rel.published ? rel.published.slice(0, 10) : "";
+    var line = document.getElementById("release-line");
+    if (line) line.textContent = tag + (when ? " - released " + when : "");
+    var meta = document.getElementById("release-meta");
+    if (meta) {
+      meta.textContent = "Latest stable release: " + tag + (when ? " (" + when + ")" : "") +
+        ". Toolchain archives below include the compiler, standard library, and runtime.";
+    }
+    var notes = document.getElementById("release-notes");
+    if (notes) notes.href = rel.pageUrl || FALLBACK;
+    var footer = document.getElementById("footer-version");
+    if (footer) footer.textContent = "XIOM " + tag;
 
-      var assets = release.assets || [];
-      showAsset(assets, "dl-windows-x64", "size-windows-x64", "row-windows-x64", /windows-x64\.zip$/, "windows");
-      showAsset(assets, "dl-linux-x64", "size-linux-x64", "row-linux-x64", /linux-x64\.tar\.gz$/, "linux");
-      showAsset(assets, "dl-macos-x64", "size-macos-x64", "row-macos-x64", /macos-x64\.tar\.gz$/, "macos-x64");
-      showAsset(assets, "dl-macos-arm64", "size-macos-arm64", "row-macos-arm64", /macos-arm64\.tar\.gz$/, "macos-arm64");
-      showAsset(assets, "dl-checksums", null, null, /^SHA256SUMS$/, "checksums");
-    })
+    var assets = rel.assets || [];
+    showAsset(assets, "dl-windows-x64", "size-windows-x64", "row-windows-x64", /windows-x64\.zip$/);
+    showAsset(assets, "dl-linux-x64", "size-linux-x64", "row-linux-x64", /linux-x64\.tar\.gz$/);
+    showAsset(assets, "dl-macos-x64", "size-macos-x64", "row-macos-x64", /macos-x64\.tar\.gz$/);
+    showAsset(assets, "dl-macos-arm64", "size-macos-arm64", "row-macos-arm64", /macos-arm64\.tar\.gz$/);
+    showAsset(assets, "dl-checksums", null, null, /^SHA256SUMS$/);
+  }
+
+  function fromMirror(data) {
+    return { tag: data.tag, published: data.published, pageUrl: FALLBACK, assets: data.assets || [] };
+  }
+
+  function fromGitHub(rel) {
+    return {
+      tag: rel.tag_name,
+      published: rel.published_at,
+      pageUrl: rel.html_url || FALLBACK,
+      assets: (rel.assets || []).map(function (a) {
+        return { name: a.name, size: a.size, url: a.browser_download_url };
+      })
+    };
+  }
+
+  function fail() {
+    var line = document.getElementById("release-line");
+    if (line) line.textContent = "latest release - see GitHub";
+    var meta = document.getElementById("release-meta");
+    if (meta) meta.textContent = "Could not load release data (offline or API rate limit). Use the links below - they always point to the latest release.";
+  }
+
+  fetch(MIRROR, { cache: "no-store" })
+    .then(function (res) { if (!res.ok) throw new Error("mirror " + res.status); return res.json(); })
+    .then(function (data) { applyRelease(fromMirror(data)); })
     .catch(function () {
-      var line = document.getElementById("release-line");
-      if (line) line.textContent = "latest release - see GitHub";
-      var meta = document.getElementById("release-meta");
-      if (meta) meta.textContent = "Could not load release data (offline or API rate limit). Use the links below - they always point to the latest release page.";
-    });
+      return fetch(API, { headers: { "Accept": "application/vnd.github+json" } })
+        .then(function (res) { if (!res.ok) throw new Error("api " + res.status); return res.json(); })
+        .then(function (rel) { applyRelease(fromGitHub(rel)); });
+    })
+    .catch(function () { fail(); });
 })();
 </script>
 
