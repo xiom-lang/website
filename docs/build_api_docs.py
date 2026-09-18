@@ -94,13 +94,56 @@ def parse_doc_comments(source_path):
 
 
 def heading_symbol(line):
-    """Return (name, base name) for a declaration heading, or None."""
+    """Return (kind, name, base, text) for a declaration heading, or None."""
     text = line.strip().lstrip("#").strip().strip("`")
     match = HEADING_SYMBOL_RE.match(text)
     if not match:
         return None
     name = match.group(2)
-    return name, name.split(".")[-1]
+    return match.group(1), name, name.split(".")[-1], text
+
+
+SIGNATURE_RE = re.compile(r'^fn\s+[A-Za-z0-9_.]+(?:\[[^\]]*\])?\((.*)\)\s*(?:->\s*(.+))?$')
+
+
+def split_top_level(text):
+    parts, depth, current = [], 0, ""
+    for ch in text:
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}":
+            depth = max(0, depth - 1)
+        if ch == "," and depth == 0:
+            parts.append(current.strip())
+            current = ""
+        else:
+            current += ch
+    if current.strip():
+        parts.append(current.strip())
+    return parts
+
+
+def generated_summary(heading_text):
+    """Fallback synopsis for functions without a source comment."""
+    match = SIGNATURE_RE.match(heading_text)
+    if not match:
+        return "*Generated summary:* No source comment yet."
+    params = split_top_level(match.group(1))
+    returns = (match.group(2) or "").strip()
+    is_method = any(part.startswith("self") for part in params)
+    others = [part for part in params if not part.startswith("self")]
+    bits = []
+    if is_method:
+        bits.append("Method")
+    if others:
+        shown = ", ".join("`{0}`".format(part) for part in others[:4])
+        if len(others) > 4:
+            shown += ", ..."
+        bits.append("takes " + shown)
+    else:
+        bits.append("Takes no arguments")
+    bits.append("returns `{0}`".format(returns) if returns else "returns nothing")
+    return "*Generated summary:* " + "; ".join(bits) + ". No source comment yet."
 
 
 def clean_file_output(text, source=None):
@@ -133,7 +176,7 @@ def clean_file_output(text, source=None):
         if line.startswith("###"):
             symbol = heading_symbol(line)
             if symbol:
-                name, base = symbol
+                kind, name, base, heading_text = symbol
                 for index in range(doc_index, len(docs)):
                     entry = docs[index]
                     if entry["full"] == name or entry["base"] == name or entry["base"] == base:
@@ -141,6 +184,8 @@ def clean_file_output(text, source=None):
                             doc_line = "> " + entry["doc"]
                         doc_index = index + 1
                         break
+                if not doc_line and kind == "fn":
+                    doc_line = generated_summary(heading_text)
         if not line.strip() and body and not body[-1].strip():
             continue
         body.append(line)
@@ -192,6 +237,10 @@ def build(stdlib_root, binary, out_dir, tag, strict):
         "",
         "> **Beta:** the standard library is still being completed; see the",
         f"> [known limitations]({LIMITATIONS_URL}) for current gaps.",
+        "",
+        "> Each entry shows its source `///` comment when present (otherwise a",
+        "> generated summary), followed by its contracts: the contract is the",
+        "> specification.",
         "",
         "| Module | Files | Symbols |",
         "|---|---|---|",
