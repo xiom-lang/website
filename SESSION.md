@@ -180,7 +180,10 @@ to `specs/xiom-landing-mockup.html` (unpublished); docs search enabled
 (the explicit plugins block had overridden the default search plugin);
 stdlib `///` doc comments merged into the generated API pages; mobile
 pass on the site (scrollable nav links row, stacked split sections,
-scrollable tables) and Material verified at 390px.
+scrollable tables) and Material verified at 390px; docs header carries the
+site logo, favicon and a xiom-lang.org back-link; API pages fall back to
+generated signature summaries where the stdlib has no `///` comment
+(coverage ~50%); the compiler guide gained Architecture and Modes sections.
 
 Remaining:
 1. Compiler lane: `docs/AI_CONTEXT.md` still carries v0.58-era metadata
@@ -198,6 +201,11 @@ Remaining:
    links; `docs.html` now redirects to the canonical
    `https://docs.xiom-lang.org/`. Retire the copy once old links stop
    mattering.
+6. Compiler lane: review the new Architecture/Modes sections in
+   `docs/language/compiler.md`. The flag list was consolidated from
+   `compiler.md` and `docs/AI_CONTEXT.md`; confirm `--runtime-contracts`,
+   `--keep-debug-checks`, `--enable-unsafe-direct`, the 20-crate list, and
+   the v0.57/v0.58 feature rows.
 
 ## Rules
 
