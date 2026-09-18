@@ -175,7 +175,9 @@ def main():
 
     brand = ROOT / "docs" / "mkdocs-brand.css"
     if brand.is_file():
-        shutil.copy2(str(brand), str(stage / "brand.css"))
+        assets = stage / "assets"
+        assets.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(brand), str(assets / "brand.css"))
 
     if not copy_api(args, stage):
         return 1
