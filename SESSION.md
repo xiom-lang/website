@@ -168,25 +168,26 @@ Owner decisions:
   `--version` string is known to lag and is not used on the site.
 - Author/byline link: https://github.com/Lefteris-Notas.
 
-Done: site honesty pass (index lede/phase cards, ecosystem
-shipped-vs-planned, versions tables, stdlib beta status, license files
-served, footer legal block), docs footer and MkDocs copyright.
+Done (2026-09-18): site honesty pass; license files served and legal
+footer block on every page; docs footer and MkDocs copyright; UI rebrand to
+the playground palette (indigo `#5C6BFF` on `#08090B`, radii 8/10/16, glow
+accents, refreshed syntax palette, system fonts with Google Fonts removed);
+accessibility (skip link, `:focus-visible`, reduced motion); Material
+themed through `docs/mkdocs-brand.css` with `font: false`; Why and Roadmap
+pages built from the specs and added to every nav plus the sitemap; beta
+banner injected on the hand-written stdlib pages; landing mockup archived
+to `specs/xiom-landing-mockup.html` (unpublished).
 
 Remaining:
-1. UI rebrand to the playground palette (indigo `#5C6BFF` on near-black
-   `#08090B`, radii 8/10/16, glow accents); theme Material to match; one
-   typography decision; consider self-hosting fonts.
-2. Accessibility: skip link, `:focus-visible`, `prefers-reduced-motion`
-   (currently zero focus rules and no skip link).
-3. IA: `/why` and `/roadmap` from `specs/XIOM_Purpose.md` and
-   `specs/XIOM_Build_Strategy.md`; `/install` naming.
-4. The 39 hand-written stdlib module pages in `docs/html` still carry
-   per-module claims; decide whether the standalone bundle keeps them or
-   points at the generated API.
-5. Header sweep: source headers still read "Eleftherios Notas and XIOM
-   Foundation" while LICENSE and footers now say "XIOM Foundation".
-6. `xiom-landing.html` is the design mockup from the content spec; decide
-   keep as design source or remove from the published tree.
+1. `/install` naming: the content spec wants `/install`; the site uses
+   `download.html`. Decide whether to add a redirect alias.
+2. Header sweep: source headers still read "Eleftherios Notas and XIOM
+   Foundation" while LICENSE and footers say "XIOM Foundation".
+3. Optional: self-host a display font (Inter is in the stack but only used
+   when installed locally); current stack is system-native by design.
+4. Per-module stdlib prose inside the hand-written pages is now prefixed by
+   the beta banner; replacing those pages with the generated API in the
+   standalone bundle remains an option once the docs pipeline owns them.
 
 ## Rules
 
