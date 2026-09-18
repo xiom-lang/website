@@ -149,6 +149,13 @@ code {
   border-top: 1px solid var(--line);
 }
 
+/* Label + content split used on the landing page; stacks on small screens */
+.split-label {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+}
+
 /* ============================================================
    Blueprint Grid Background
    ============================================================ */
@@ -746,9 +753,27 @@ footer p {
   h2 { font-size: 26px; }
 
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .split-label { grid-template-columns: 1fr; gap: 16px; }
   .timeline { flex-direction: column; }
   .phase { border-right: none; border-bottom: 1px solid var(--line); }
-  .navlinks { display: none; }
+  nav .wrap {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--nav-height);
+    padding: 10px 20px;
+    row-gap: 8px;
+  }
+  .navlinks {
+    display: flex;
+    order: 3;
+    width: 100%;
+    gap: 18px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 2px;
+  }
+  .navlinks a { padding: 4px 0; }
+  .content-section table { display: block; overflow-x: auto; }
   .wrap { padding: 0 20px; }
 
   .playground-container { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; height: auto; min-height: 600px; }
