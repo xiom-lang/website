@@ -4,8 +4,6 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 # XIOM Language Documentation
 
-> **Compiler:** v0.51.0 | **Tests:** 1041 passing | **Status:** Production Hardening
-
 ## Contents
 
 | Section | Description |
@@ -103,7 +101,7 @@ XIOM's ecosystem is organized across three tiers: first-party, first-party FFI b
 
 For the planned package ecosystem, see [Ecosystem & Packages](https://xiom-lang.org/ecosystem.html).
 
-## Current Status
+## Milestones
 
 | Phase | Version | Status |
 |-------|---------|--------|
@@ -112,6 +110,6 @@ For the planned package ecosystem, see [Ecosystem & Packages](https://xiom-lang.
 | Phase 2 | v0.4.0 "Mirror" | Released -- self-host compiler |
 | Phase 2C | v0.11.0 "Self-Hosted" | Released -- full self-hosting |
 | Phase 2C+ | v0.50.0 | Released -- 40-module stdlib, scripting, JIT, contracts |
-| Phase 8B | **v0.51.0** | **Current** -- production hardening, 1041 tests, M1-M12 complete |
+| Phase 8B | v0.51.0 | Released -- production hardening, M1-M12 complete |
 
-See the [release history](https://xiom-lang.org/versions.html) for the full changelog.
+The current release is tracked on the [versions page](https://xiom-lang.org/versions.html); this table lists earlier milestones.

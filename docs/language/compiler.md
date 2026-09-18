@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   -> clang           (native .exe, .out, .wasm)
 ```
 
-## CLI Reference (v0.56.0-pre)
+## CLI Reference
 
 ```
 xiom [flags] <source.xi>
@@ -108,7 +108,7 @@ xiom clean --cache            Clear JIT cache
 | `wasm32-unknown-unknown` | [OK] Verified |
 | `aarch64-apple-darwin` | Planned |
 
-## Language Features (v0.56)
+## Language Features
 
 | Feature | Status | Since |
 |---------|--------|-------|

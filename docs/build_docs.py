@@ -455,7 +455,16 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str,
 
     for fname, src in files:
         text = src.read_text(encoding='utf-8')
-        title = text.split('\n')[0].lstrip('#').strip()
+        # Drop a leading license comment block so it cannot become the title.
+        text = re.sub(r'\A\s*<!--.*?-->\s*', '', text, count=1, flags=re.S)
+
+        title = ""
+        for line in text.split('\n'):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            title = stripped[2:].strip() if stripped.startswith('# ') else stripped.lstrip('#').strip()
+            break
 
         # Strip leading # Title from body -- template already renders <h1>{title}</h1>
         body_text = text
