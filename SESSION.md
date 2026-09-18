@@ -92,7 +92,7 @@ local verification used a portable `uv` Python 3.12.
 
 Ops round trip (2026-09-17): the org enforces
 `sha_pinning_required=true`, so every `uses:` ref in `.github/workflows/`
-must be a full commit SHA (pinned in 5c62f4e; tag refs fail at job setup).
+must be a full commit SHA (pinned in 6ff5554; tag refs fail at job setup).
 The first `docs-versioned` dispatch succeeded (run 35286233792) and
 published `gh-pages`: `v0.60.1/` (full site plus legacy redirect stubs),
 `latest` symlink, `versions.json`. The ops switch script
@@ -170,8 +170,10 @@ Queue:
   `Lefteris Notas <lefterisnotas@gmail.com>` before the first commit and
   verify with `git log -1 --format='%an <%ae>'` before every push; never
   use the global work identity or `--author`. Rewriting pushed history
-  happens only on the owner's explicit request. Note: commits before
-  2026-09-18 were authored with the work email and await that decision.
+  happens only on the owner's explicit request. The owner-authorized
+  rewrite completed on 2026-09-18 (main and tags rewritten; the gh-pages
+  bot commits were preserved) - existing clones must be re-cloned, not
+  pulled.
 - `docs/html/` and `xiom-website/docs/` are generated; do not hand-edit.
 
 ## Paste-ready prompt for the next session

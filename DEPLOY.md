@@ -28,6 +28,10 @@ On the VPS (Contabo, HestiaCP, user `lefteris`):
 - Docroots: `/home/lefteris/web/xiom-lang.org/public_html` and
   `/home/lefteris/web/docs.xiom-lang.org/public_html`, owned by
   `lefteris:lefteris`.
+- After the 2026-09-18 history rewrite (author/committer emails), the
+  `/opt/xiom/website` clone must be re-cloned; `git pull` there will fail
+  against the rewritten history. Any other clone of this repository must
+  be re-cloned too.
 
 ## Adding or changing a page
 
