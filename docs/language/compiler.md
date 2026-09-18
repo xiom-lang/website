@@ -122,7 +122,9 @@ xiom clean --cache            Clear JIT cache
 
 ## Selfhost Gate Status
 
-19/19 gates cleared. See `docs/PRE_SELFHOST_GAPS.md` for remaining work.
+All self-hosting gates are cleared, but no self-hosted release has shipped
+yet; the released compiler remains the bootstrap toolchain. Remaining work
+is tracked in the compiler repository (`docs/PRE_SELFHOST_GAPS.md`).
 
 ## Architecture Decisions
 

@@ -27,6 +27,8 @@ from pathlib import Path
 HEADING_RE = re.compile(r'^(#{1,6})\s')
 MODULE_HEADING_RE = re.compile(r'^#+\s+Module\s+`?([A-Za-z0-9_.]+)`?\s*$')
 
+LIMITATIONS_URL = "https://github.com/xiom-lang/stdlib/blob/main/docs/STDLIB_BETA_LIMITATIONS.md"
+
 
 def find_xiom_doc(explicit):
     if explicit:
@@ -126,6 +128,9 @@ def build(stdlib_root, binary, out_dir, tag, strict):
         "",
         f"> Generated from the stdlib sources at `{stamp}` by `docs/build_api_docs.py`.",
         f"> {len(files)} source files, {len(modules)} modules, {symbols} documented symbols.",
+        "",
+        "> **Beta:** the standard library is still being completed; see the",
+        f"> [known limitations]({LIMITATIONS_URL}) for current gaps.",
         "",
         "| Module | Files | Symbols |",
         "|---|---|---|",
