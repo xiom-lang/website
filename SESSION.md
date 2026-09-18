@@ -176,7 +176,11 @@ accessibility (skip link, `:focus-visible`, reduced motion); Material
 themed through `docs/mkdocs-brand.css` with `font: false`; Why and Roadmap
 pages built from the specs and added to every nav plus the sitemap; beta
 banner injected on the hand-written stdlib pages; landing mockup archived
-to `specs/xiom-landing-mockup.html` (unpublished).
+to `specs/xiom-landing-mockup.html` (unpublished); docs search enabled
+(the explicit plugins block had overridden the default search plugin);
+stdlib `///` doc comments merged into the generated API pages; mobile
+pass on the site (scrollable nav links row, stacked split sections,
+scrollable tables) and Material verified at 390px.
 
 Remaining:
 1. Compiler lane: `docs/AI_CONTEXT.md` still carries v0.58-era metadata
