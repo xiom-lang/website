@@ -65,6 +65,32 @@ DECL_RE = re.compile(r'^\s*pub\s+(fn|type|enum|const|interface|struct|trait)\s+(
 HEADING_SYMBOL_RE = re.compile(r'^(fn|type|enum|const|interface|struct|trait)\s+([A-Za-z0-9_.]+)')
 
 
+LIST_ITEM_RE = re.compile(r'^([-*]|\d+\.)\s')
+
+
+def format_doc_block(lines):
+    """Render `///` lines as a Markdown blockquote, keeping paragraphs and lists."""
+    paragraphs = []
+    current = []
+    for part in lines:
+        if part == "":
+            if current:
+                paragraphs.append(current)
+                current = []
+            continue
+        current.append(part)
+    if current:
+        paragraphs.append(current)
+
+    blocks = []
+    for paragraph in paragraphs:
+        if LIST_ITEM_RE.match(paragraph[0]):
+            blocks.append("\n".join("> " + line for line in paragraph))
+        else:
+            blocks.append("> " + " ".join(paragraph))
+    return "\n>\n".join(blocks)
+
+
 def parse_doc_comments(source_path):
     """Collect `///` documentation blocks keyed to the declaration they precede."""
     entries = []
@@ -81,7 +107,7 @@ def parse_doc_comments(source_path):
                 "kind": match.group(1),
                 "full": name,
                 "base": name.split(".")[-1],
-                "doc": " ".join(part for part in buffer if part),
+                "doc": format_doc_block(buffer),
             })
             buffer = []
         elif stripped.startswith("#["):
@@ -181,7 +207,7 @@ def clean_file_output(text, source=None):
                     entry = docs[index]
                     if entry["full"] == name or entry["base"] == name or entry["base"] == base:
                         if entry["doc"]:
-                            doc_line = "> " + entry["doc"]
+                            doc_line = entry["doc"]
                         doc_index = index + 1
                         break
                 if not doc_line and kind == "fn":

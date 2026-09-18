@@ -181,9 +181,10 @@ to `specs/xiom-landing-mockup.html` (unpublished); docs search enabled
 stdlib `///` doc comments merged into the generated API pages; mobile
 pass on the site (scrollable nav links row, stacked split sections,
 scrollable tables) and Material verified at 390px; docs header carries the
-site logo, favicon and a xiom-lang.org back-link; API pages fall back to
-generated signature summaries where the stdlib has no `///` comment
-(coverage ~50%); the compiler guide gained Architecture and Modes sections.
+site logo, favicon and a xiom-lang.org back-link; API pages render stdlib
+`///` prose where present (coverage 83.2% after the stdlib prose pass,
+paragraphs and lists preserved) and generated signature summaries
+otherwise; the compiler guide gained Architecture and Modes sections.
 
 Remaining:
 1. **~~AI_CONTEXT metadata~~ (done 2026-09-18)**: refreshed to the compiler
