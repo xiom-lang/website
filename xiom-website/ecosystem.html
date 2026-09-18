@@ -45,7 +45,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <div class="wrap">
     <div class="eyebrow">Packages &amp; Projects</div>
     <h1>XIOM Ecosystem</h1>
-    <p class="lede">All official packages live under the <code>xiom-lang</code> organization. Every package is versioned independently, linked from a single registry file.</p>
+    <p class="lede">The standard library ships with the toolchain today. Packages beyond it are still being built -- everything below is marked shipped or planned.</p>
   </div>
 </header>
 
@@ -53,10 +53,11 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
   <!-- Organization -->
   <div class="content-section">
-    <h2>Organization Structure</h2>
+    <h2>Planned Organization</h2>
+    <p>The layout below is the intended structure; packages open as they stabilize.</p>
     <pre><code>xiom-lang/
 |-- <span class="fn">xiom</span>              <span class="cm"><- compiler (this repo)</span>
-|-- <span class="fn">registry</span>          <span class="cm"><- packages.json index</span>
+|-- <span class="fn">registry</span>          <span class="cm"><- package index service</span>
 |
 |-- <span class="kw">core/</span>              <span class="cm"><- XIOM-native core packages</span>
 |   |-- std            <span class="cm"><- standard library</span>
@@ -94,7 +95,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <!-- Core Packages -->
   <div class="content-section">
     <h2>Core Packages</h2>
-    <p>These packages ship with the compiler or are critical infrastructure. Built in XIOM unless marked FFI.</p>
+    <p>Standard library modules ship with the toolchain today; the rest are planned. Built in XIOM unless marked FFI.</p>
 
     <div class="eco-grid" style="margin-top:24px;">
       <div class="eco-card">
@@ -115,12 +116,12 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       <div class="eco-card">
         <h4>http</h4>
         <p>HTTP client/server. Client wraps libcurl via FFI. Server is an XIOM-native event loop.</p>
-        <span class="eco-tag ffi">ffi</span>
+        <span class="eco-tag planned">planned</span>
       </div>
       <div class="eco-card">
         <h4>json</h4>
         <p>JSON parser and serializer. Contract-verified schema validation.</p>
-        <span class="eco-tag native">native</span>
+        <span class="eco-tag planned">planned</span>
       </div>
       <div class="eco-card">
         <h4>crypto</h4>
@@ -179,8 +180,8 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       </div>
       <div class="eco-card">
         <h4>xiom doc</h4>
-        <p>Documentation generator. Extracts contracts and type signatures into structured docs. <code>--contracts-json</code> mode for AI tooling.</p>
-        <span class="eco-tag planned">planned -- Phase 3</span>
+        <p>Documentation generator. Extracts contracts and type signatures into structured docs; ships as the <code>xiom-doc</code> tool binary.</p>
+        <span class="eco-tag native">available</span>
       </div>
       <div class="eco-card">
         <h4>vscode-xiom</h4>
@@ -198,43 +199,38 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       <div class="eco-card">
         <h4>tensor</h4>
         <p>N-dimensional arrays. <code>invariant: shape.product() == data.len()</code>. Contract-verified dimensions at compile time.</p>
-        <span class="eco-tag native">native</span>
+        <span class="eco-tag planned">planned</span>
       </div>
       <div class="eco-card">
         <h4>blas</h4>
         <p>BLAS/LAPACK bindings. <code>requires: a.cols == b.rows</code> -- verified before calling into C.</p>
-        <span class="eco-tag ffi">ffi</span>
+        <span class="eco-tag planned">planned</span>
       </div>
       <div class="eco-card">
         <h4>nn</h4>
         <p>Neural network primitives. Built on tensor + blas. Contract-verified layer shapes.</p>
-        <span class="eco-tag native">native</span>
+        <span class="eco-tag planned">planned</span>
       </div>
       <div class="eco-card">
         <h4>tokenizers</h4>
         <p>BPE, WordPiece. WASM-deployable for edge inference.</p>
-        <span class="eco-tag native">native</span>
+        <span class="eco-tag planned">planned</span>
       </div>
     </div>
   </div>
 
-  <!-- How to Contribute -->
+  <!-- Publishing -->
   <div class="content-section">
-    <h2>How to Publish a Package</h2>
-    <ol>
-      <li>Create a repository under <code>xiom-lang/</code> on Gitea</li>
-      <li>Add a <code>package.xi</code> manifest at the project root</li>
-      <li>Open a PR against <a href="#"><code>xiom-lang/registry</code></a> adding your package to <code>packages.json</code></li>
-      <li>Once merged, <code>xiom get your-package</code> resolves it</li>
-    </ol>
-    <p style="margin-top:16px;">The registry is intentionally simple -- one JSON file. No database. No website. No authentication beyond Gitea PRs. Upgrade to a proper registry when the ecosystem reaches 50+ packages.</p>
+    <h2>Publishing</h2>
+    <p>Package publishing is not open yet. The standard library and toolchain come first; the registry will open once they stabilize.</p>
+    <p>The organization lives on GitHub: <a href="https://github.com/xiom-lang" style="color:var(--signal);">github.com/xiom-lang</a>.</p>
   </div>
 
 </main>
 
 <footer>
   <div class="wrap">
-    <p>XIOM Ecosystem -- Most packages planned, pending Phase 2 self-hosting.</p>
+    <p>XIOM is dual-licensed under <a href="LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option. Copyright (c) 2026 XIOM Foundation. An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
     <div class="foot-links">
       <a href="index.html">Home</a>
       <a href="spec.html">Spec</a>
