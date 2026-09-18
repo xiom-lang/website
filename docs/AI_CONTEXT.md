@@ -4,10 +4,14 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 # XIOM -- AI Coding Reference (Language + Standard Library)
 
-> **Version:** v0.58.0 | **Status:** Production. Compiler + stdlib (512 modules, 6,379 pub fns). 27/27 E2E core (100%), 19/19 selfhost gates cleared.
+> **Version:** v0.61.0 | **Status:** Production. Compiler + stdlib (517 source
+> files under xiom/, 509 check_modules probes, 6,532 pub fns).
+> Compiler gates: e2e 2338/2338, checker 195/195, feature-reg 510,
+> robustness 63, fuzz 24, perf/determinism 2/2, fmt 86, lsp 45.
 > **New in v0.56:** `move` keyword for spawn captures, overflow checks ON by default, parallel codegen (`--parallel-codegen`), DWARF debug metadata (`--debug`), Send/Sync enforcement, Z3 verifier deterministic.
 > **New in v0.57 (Unsafe Confinement):** every `unsafe` block is a confined transaction -- guard-heap arena isolation (req d), stack guard pages (req e), SEH/sigsetjmp fault trapping (req f), once-only transient-fault retry (req h), Copy-Out of Str tails (req i), zero-escape gates (T002/T003/T005/T006/T007), `#[unsafe_no_retry]`, and `#[unsafe_direct]` (trusted escape hatch, `--enable-unsafe-direct`).
 > **New in v0.58 (Debug & Numeric Policy):** secure numeric policy (Int<->Float mixing requires explicit `as`; int literals may adopt float; same-family widening stays auto), labeled loops (`@label: while` / `break @label;`), debug intrinsics (`assert(cond[, msg])`, `dbg!()`, `todo!()`, `unimplemented!()`, `debugger;`) with release stripping (`--keep-debug-checks` to retain), `else if` accepted as a desugared `elif`, sublib-prefix resolution (`use xiom.os; os.platform.<fn>`), and release-stripped contracts (`--runtime-contracts` to force).
+> **New in v0.59-v0.61:** compiler/stdlib repo split with pinned stdlib (`STDLIB_VERSION`), single-source workspace version 0.61.0 (every banner from CARGO_PKG_VERSION; tag==version release guard), cargo-vet supply-chain gate, `xiom-pkg` shipped in release archives, same-leaf type qualification (R39/R44/R46/R46b), ed25519 registry supply chain (fail-closed installs, transitive closure).
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **[WARN] IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug -- file it, do NOT alter the spec. Only the XIOM language team may update this file.

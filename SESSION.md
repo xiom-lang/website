@@ -186,10 +186,11 @@ generated signature summaries where the stdlib has no `///` comment
 (coverage ~50%); the compiler guide gained Architecture and Modes sections.
 
 Remaining:
-1. Compiler lane: `docs/AI_CONTEXT.md` still carries v0.58-era metadata
-   ("Version: v0.58.0 | Status: Production", 512-module counts). The file
-   declares itself immutable and owned by the language team, so it was not
-   edited here; ask the compiler session to refresh the metadata block.
+1. **~~AI_CONTEXT metadata~~ (done 2026-09-18)**: refreshed to the compiler
+   lane's verified block (v0.61.0, 517 source files, 6,532 pub fns, gate
+   counts, and the new v0.59-v0.61 line). Note: the file is stamped
+   v0.61.0, so it reads ahead of the released v0.60.1 docs until the next
+   release publish.
 2. Header sweep (optional): source headers still read "Eleftherios Notas
    and XIOM Foundation" while LICENSE and footers say "XIOM Foundation";
    both name the Foundation, so this is cosmetic.
@@ -201,11 +202,11 @@ Remaining:
    links; `docs.html` now redirects to the canonical
    `https://docs.xiom-lang.org/`. Retire the copy once old links stop
    mattering.
-6. Compiler lane: review the new Architecture/Modes sections in
-   `docs/language/compiler.md`. The flag list was consolidated from
-   `compiler.md` and `docs/AI_CONTEXT.md`; confirm `--runtime-contracts`,
-   `--keep-debug-checks`, `--enable-unsafe-direct`, the 20-crate list, and
-   the v0.57/v0.58 feature rows.
+6. **~~Compiler review~~ (done 2026-09-18)**: the compiler lane verified the
+   new Modes/Architecture content against source (main v0.61.0) -- all
+   three flags are real, the 20-crate list is confirmed, and the
+   v0.57/v0.58 feature rows are accurate. The compiler now prints
+   `--keep-debug-checks` in `xiom --help` (003e1fde).
 
 ## Rules
 

@@ -101,12 +101,16 @@
     </nav>
 
     <main class="content-section" id="main" style="border:none;padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:12px;">**Version:** v0.58.0 | **Status:** Production. Compiler + stdlib (512 modules, 6,379 pub fns). 27/27 E2E core (100%), 19/19 selfhost gates cleared.</div>
+      <div class="eyebrow" style="margin-bottom:12px;">**Version:** v0.61.0 | **Status:** Production. Compiler + stdlib (517 source</div>
       <h1 style="font-size:36px;margin-bottom:24px;">XIOM -- AI Coding Reference (Language + Standard Library)</h1>
-      <blockquote><p><strong>Version:</strong> v0.58.0 | <strong>Status:</strong> Production. Compiler + stdlib (512 modules, 6,379 pub fns). 27/27 E2E core (100%), 19/19 selfhost gates cleared.</p></blockquote>
+      <blockquote><p><strong>Version:</strong> v0.61.0 | <strong>Status:</strong> Production. Compiler + stdlib (517 source</p></blockquote>
+<blockquote><p>files under xiom/, 509 check_modules probes, 6,532 pub fns).</p></blockquote>
+<blockquote><p>Compiler gates: e2e 2338/2338, checker 195/195, feature-reg 510,</p></blockquote>
+<blockquote><p>robustness 63, fuzz 24, perf/determinism 2/2, fmt 86, lsp 45.</p></blockquote>
 <blockquote><p><strong>New in v0.56:</strong> <code>move</code> keyword for spawn captures, overflow checks ON by default, parallel codegen (<code>--parallel-codegen</code>), DWARF debug metadata (<code>--debug</code>), Send/Sync enforcement, Z3 verifier deterministic.</p></blockquote>
 <blockquote><p><strong>New in v0.57 (Unsafe Confinement):</strong> every <code>unsafe</code> block is a confined transaction -- guard-heap arena isolation (req d), stack guard pages (req e), SEH/sigsetjmp fault trapping (req f), once-only transient-fault retry (req h), Copy-Out of Str tails (req i), zero-escape gates (T002/T003/T005/T006/T007), <code>#[unsafe_no_retry]</code>, and <code>#[unsafe_direct]</code> (trusted escape hatch, <code>--enable-unsafe-direct</code>).</p></blockquote>
 <blockquote><p><strong>New in v0.58 (Debug & Numeric Policy):</strong> secure numeric policy (Int<->Float mixing requires explicit <code>as</code>; int literals may adopt float; same-family widening stays auto), labeled loops (<code>@label: while</code> / <code>break @label;</code>), debug intrinsics (<code>assert(cond[, msg])</code>, <code>dbg!()</code>, <code>todo!()</code>, <code>unimplemented!()</code>, <code>debugger;</code>) with release stripping (<code>--keep-debug-checks</code> to retain), <code>else if</code> accepted as a desugared <code>elif</code>, sublib-prefix resolution (<code>use xiom.os; os.platform.<fn></code>), and release-stripped contracts (<code>--runtime-contracts</code> to force).</p></blockquote>
+<blockquote><p><strong>New in v0.59-v0.61:</strong> compiler/stdlib repo split with pinned stdlib (<code>STDLIB_VERSION</code>), single-source workspace version 0.61.0 (every banner from CARGO_PKG_VERSION; tag==version release guard), cargo-vet supply-chain gate, <code>xiom-pkg</code> shipped in release archives, same-leaf type qualification (R39/R44/R46/R46b), ed25519 registry supply chain (fail-closed installs, transitive closure).</p></blockquote>
 <blockquote><p>This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.</p></blockquote>
 <blockquote><p><strong>[WARN] IMMUTABLE DOCUMENT.</strong> This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in <code>docs/ROADMAP.md</code> Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug -- file it, do NOT alter the spec. Only the XIOM language team may update this file.</p></blockquote>
 <blockquote><p><strong>[WARN] KNOWN DEVIATIONS.</strong> When the compiler rejects spec-conformant code, the</p></blockquote>
@@ -3632,7 +3636,7 @@ src/main.xi      -> <span class='kw'>module</span> <span class='func'>myproject<
 
 <footer>
   <div class="wrap">
-    <p>xiom v0.58.0 - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
+    <p>xiom v0.61.0 - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
     <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>. Copyright (c) 2026 XIOM Foundation.</p>
     <div class="foot-links">
       <a href="https://xiom-lang.org/spec.html">Spec</a>
