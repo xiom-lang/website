@@ -16903,8 +16903,17 @@
 </tbody>
 </table>
 <h4 id="fn-lru_newcapacity-int-lrucache"><code>fn lru_new(capacity: Int) -&gt; LruCache</code><a class="headerlink" href="#fn-lru_newcapacity-int-lrucache" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
+</ul>
 <h4 id="fn-lru_getc-mut-lrucache-key-int-optionint"><code>fn lru_get(c: &amp;mut LruCache, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lru_getc-mut-lrucache-key-int-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == lru_contains(c, key)</code></li>
+</ul>
 <h4 id="fn-lru_putc-mut-lrucache-key-int-value-int"><code>fn lru_put(c: &amp;mut LruCache, key: Int, value: Int)</code><a class="headerlink" href="#fn-lru_putc-mut-lrucache-key-int-value-int" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>lru_contains(c, key) == true</code></li>
+</ul>
 <h4 id="fn-lru_containsc-lrucache-key-int-bool"><code>fn lru_contains(c: &amp;LruCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lru_containsc-lrucache-key-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-lru_sizec-lrucache-int"><code>fn lru_size(c: &amp;LruCache) -&gt; Int</code><a class="headerlink" href="#fn-lru_sizec-lrucache-int" title="Permanent link">&para;</a></h4>
 <ul>
@@ -16950,8 +16959,17 @@
 </tbody>
 </table>
 <h4 id="fn-lfu_newcapacity-int-lfucache"><code>fn lfu_new(capacity: Int) -&gt; LfuCache</code><a class="headerlink" href="#fn-lfu_newcapacity-int-lfucache" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
+</ul>
 <h4 id="fn-lfu_getc-mut-lfucache-key-int-optionint"><code>fn lfu_get(c: &amp;mut LfuCache, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lfu_getc-mut-lfucache-key-int-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == lfu_contains(c, key)</code></li>
+</ul>
 <h4 id="fn-lfu_putc-mut-lfucache-key-int-value-int"><code>fn lfu_put(c: &amp;mut LfuCache, key: Int, value: Int)</code><a class="headerlink" href="#fn-lfu_putc-mut-lfucache-key-int-value-int" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>lfu_contains(c, key) == true</code></li>
+</ul>
 <h4 id="fn-lfu_containsc-lfucache-key-int-bool"><code>fn lfu_contains(c: &amp;LfuCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lfu_containsc-lfucache-key-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-lfu_sizec-lfucache-int"><code>fn lfu_size(c: &amp;LfuCache) -&gt; Int</code><a class="headerlink" href="#fn-lfu_sizec-lfucache-int" title="Permanent link">&para;</a></h4>
 <ul>
@@ -17001,7 +17019,13 @@
 </tbody>
 </table>
 <h4 id="fn-arc_newcapacity-int-arccache_1"><code>fn arc_new(capacity: Int) -&gt; ArcCache</code><a class="headerlink" href="#fn-arc_newcapacity-int-arccache_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.p == 0</code></li>
+</ul>
 <h4 id="fn-arc_getc-mut-arccache-key-int-optionint_1"><code>fn arc_get(c: &amp;mut ArcCache, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-arc_getc-mut-arccache-key-int-optionint_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == arc_contains(c, key)</code></li>
+</ul>
 <h4 id="fn-arc_containsc-arccache-key-int-bool"><code>fn arc_contains(c: &amp;ArcCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-arc_containsc-arccache-key-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-arc_sizec-arccache-int"><code>fn arc_size(c: &amp;ArcCache) -&gt; Int</code><a class="headerlink" href="#fn-arc_sizec-arccache-int" title="Permanent link">&para;</a></h4>
 <ul>
@@ -17012,6 +17036,9 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="fn-arc_putc-mut-arccache-key-int-value-int_1"><code>fn arc_put(c: &amp;mut ArcCache, key: Int, value: Int)</code><a class="headerlink" href="#fn-arc_putc-mut-arccache-key-int-value-int_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>arc_contains(c, key) == true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -17048,12 +17075,21 @@
 </tbody>
 </table>
 <h4 id="fn-mpmc_queue_newcapacity-int-concurrentqueue"><code>fn mpmc_queue_new(capacity: Int) -&gt; ConcurrentQueue</code><a class="headerlink" href="#fn-mpmc_queue_newcapacity-int-concurrentqueue" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap &gt;= 1</code></li>
+</ul>
 <h4 id="fn-mpmc_pushq-mut-concurrentqueue-item-int-bool"><code>fn mpmc_push(q: &amp;mut ConcurrentQueue, item: Int) -&gt; Bool</code><a class="headerlink" href="#fn-mpmc_pushq-mut-concurrentqueue-item-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-mpmc_popq-mut-concurrentqueue-optionint"><code>fn mpmc_pop(q: &amp;mut ConcurrentQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-mpmc_popq-mut-concurrentqueue-optionint" title="Permanent link">&para;</a></h4>
 <h4 id="fn-mpsc_queue_newcapacity-int-concurrentqueue"><code>fn mpsc_queue_new(capacity: Int) -&gt; ConcurrentQueue</code><a class="headerlink" href="#fn-mpsc_queue_newcapacity-int-concurrentqueue" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap &gt;= 1</code></li>
+</ul>
 <h4 id="fn-mpsc_pushq-mut-concurrentqueue-item-int-bool"><code>fn mpsc_push(q: &amp;mut ConcurrentQueue, item: Int) -&gt; Bool</code><a class="headerlink" href="#fn-mpsc_pushq-mut-concurrentqueue-item-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-mpsc_popq-mut-concurrentqueue-optionint"><code>fn mpsc_pop(q: &amp;mut ConcurrentQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-mpsc_popq-mut-concurrentqueue-optionint" title="Permanent link">&para;</a></h4>
 <h4 id="fn-spmc_queue_newcapacity-int-concurrentqueue"><code>fn spmc_queue_new(capacity: Int) -&gt; ConcurrentQueue</code><a class="headerlink" href="#fn-spmc_queue_newcapacity-int-concurrentqueue" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap &gt;= 1</code></li>
+</ul>
 <h4 id="fn-spmc_pushq-mut-concurrentqueue-item-int-bool"><code>fn spmc_push(q: &amp;mut ConcurrentQueue, item: Int) -&gt; Bool</code><a class="headerlink" href="#fn-spmc_pushq-mut-concurrentqueue-item-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-spmc_popq-mut-concurrentqueue-optionint"><code>fn spmc_pop(q: &amp;mut ConcurrentQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-spmc_popq-mut-concurrentqueue-optionint" title="Permanent link">&para;</a></h4>
 <h4 id="type-concurrentstack"><code>type ConcurrentStack</code><a class="headerlink" href="#type-concurrentstack" title="Permanent link">&para;</a></h4>
@@ -17076,6 +17112,9 @@
 </tbody>
 </table>
 <h4 id="fn-concurrent_stack_new-concurrentstack"><code>fn concurrent_stack_new() -&gt; ConcurrentStack</code><a class="headerlink" href="#fn-concurrent_stack_new-concurrentstack" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.items.len() == 0</code></li>
+</ul>
 <h4 id="fn-cstack_pushs-mut-concurrentstack-item-int-bool"><code>fn cstack_push(s: &amp;mut ConcurrentStack, item: Int) -&gt; Bool</code><a class="headerlink" href="#fn-cstack_pushs-mut-concurrentstack-item-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-cstack_pops-mut-concurrentstack-optionint"><code>fn cstack_pop(s: &amp;mut ConcurrentStack) -&gt; Option[Int]</code><a class="headerlink" href="#fn-cstack_pops-mut-concurrentstack-optionint" title="Permanent link">&para;</a></h4>
 <h4 id="type-concurrentcounter"><code>type ConcurrentCounter</code><a class="headerlink" href="#type-concurrentcounter" title="Permanent link">&para;</a></h4>
@@ -17515,15 +17554,29 @@
 </tbody>
 </table>
 <h4 id="fn-lhmap_new-lhmap"><code>fn lhmap_new() -&gt; LhMap</code><a class="headerlink" href="#fn-lhmap_new-lhmap" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
+</ul>
 <h4 id="fn-lhmap_putm-mut-lhmap-key-int-value-int"><code>fn lhmap_put(m: &amp;mut LhMap, key: Int, value: Int)</code><a class="headerlink" href="#fn-lhmap_putm-mut-lhmap-key-int-value-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-lhmap_getm-lhmap-key-int-optionint"><code>fn lhmap_get(m: &amp;LhMap, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_getm-lhmap-key-int-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == lhmap_contains(m, key)</code></li>
+</ul>
 <h4 id="fn-lhmap_containsm-lhmap-key-int-bool"><code>fn lhmap_contains(m: &amp;LhMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lhmap_containsm-lhmap-key-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-lhmap_removem-mut-lhmap-key-int-bool"><code>fn lhmap_remove(m: &amp;mut LhMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lhmap_removem-mut-lhmap-key-int-bool" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>lhmap_contains(m, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; lhmap_size(m) == lhmap_size(m)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; lhmap_size(m) == lhmap_size(m)@pre</code></li>
+</ul>
 <h4 id="fn-lhmap_sizem-lhmap-int"><code>fn lhmap_size(m: &amp;LhMap) -&gt; Int</code><a class="headerlink" href="#fn-lhmap_sizem-lhmap-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="fn-lhmap_keys_in_orderm-lhmap-vecint"><code>fn lhmap_keys_in_order(m: &amp;LhMap) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-lhmap_keys_in_orderm-lhmap-vecint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == lhmap_size(m)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -17647,8 +17700,14 @@
 </tbody>
 </table>
 <h4 id="fn-pheap_new-pheap"><code>fn pheap_new() -&gt; PHeap</code><a class="headerlink" href="#fn-pheap_new-pheap" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.root == -1</code></li>
+</ul>
 <h4 id="fn-pheap_inserth-mut-pheap-key-int"><code>fn pheap_insert(h: &amp;mut PHeap, key: Int)</code><a class="headerlink" href="#fn-pheap_inserth-mut-pheap-key-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-pheap_find_minh-pheap-optionint"><code>fn pheap_find_min(h: &amp;PHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pheap_find_minh-pheap-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (pheap_size(h) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-pheap_extract_minh-mut-pheap-optionint"><code>fn pheap_extract_min(h: &amp;mut PHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pheap_extract_minh-mut-pheap-optionint" title="Permanent link">&para;</a></h4>
 <h4 id="fn-pheap_sizeh-pheap-int"><code>fn pheap_size(h: &amp;PHeap) -&gt; Int</code><a class="headerlink" href="#fn-pheap_sizeh-pheap-int" title="Permanent link">&para;</a></h4>
 <ul>
@@ -17706,8 +17765,14 @@
 </tbody>
 </table>
 <h4 id="fn-fib_heap_new-fibheap"><code>fn fib_heap_new() -&gt; FibHeap</code><a class="headerlink" href="#fn-fib_heap_new-fibheap" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.n == 0</code></li>
+</ul>
 <h4 id="fn-fib_heap_inserth-mut-fibheap-key-int"><code>fn fib_heap_insert(h: &amp;mut FibHeap, key: Int)</code><a class="headerlink" href="#fn-fib_heap_inserth-mut-fibheap-key-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-fib_heap_find_minh-fibheap-optionint"><code>fn fib_heap_find_min(h: &amp;FibHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-fib_heap_find_minh-fibheap-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (fib_heap_size(h) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-fib_heap_extract_minh-mut-fibheap-optionint"><code>fn fib_heap_extract_min(h: &amp;mut FibHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-fib_heap_extract_minh-mut-fibheap-optionint" title="Permanent link">&para;</a></h4>
 <h4 id="fn-fib_heap_sizeh-fibheap-int"><code>fn fib_heap_size(h: &amp;FibHeap) -&gt; Int</code><a class="headerlink" href="#fn-fib_heap_sizeh-fibheap-int" title="Permanent link">&para;</a></h4>
 <ul>
@@ -17873,15 +17938,29 @@
 </tbody>
 </table>
 <h4 id="fn-int_map_newcapacity-int-intmap"><code>fn int_map_new(capacity: Int) -&gt; IntMap</code><a class="headerlink" href="#fn-int_map_newcapacity-int-intmap" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+</ul>
 <h4 id="fn-int_map_putm-mut-intmap-key-int-value-int"><code>fn int_map_put(m: &amp;mut IntMap, key: Int, value: Int)</code><a class="headerlink" href="#fn-int_map_putm-mut-intmap-key-int-value-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-int_map_getm-intmap-key-int-optionint"><code>fn int_map_get(m: &amp;IntMap, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-int_map_getm-intmap-key-int-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == int_map_contains(m, key)</code></li>
+</ul>
 <h4 id="fn-int_map_containsm-intmap-key-int-bool"><code>fn int_map_contains(m: &amp;IntMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-int_map_containsm-intmap-key-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-int_map_removem-mut-intmap-key-int-bool"><code>fn int_map_remove(m: &amp;mut IntMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-int_map_removem-mut-intmap-key-int-bool" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>int_map_contains(m, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; int_map_size(m) == int_map_size(m)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; int_map_size(m) == int_map_size(m)@pre</code></li>
+</ul>
 <h4 id="fn-int_map_sizem-intmap-int"><code>fn int_map_size(m: &amp;IntMap) -&gt; Int</code><a class="headerlink" href="#fn-int_map_sizem-intmap-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="fn-int_map_iterm-intmap-vecint"><code>fn int_map_iter(m: &amp;IntMap) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-int_map_iterm-intmap-vecint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == int_map_size(m)</code></li>
+</ul>
 <h4 id="type-stringmap"><code>type StringMap</code><a class="headerlink" href="#type-stringmap" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
@@ -17902,10 +17981,21 @@
 </tbody>
 </table>
 <h4 id="fn-string_map_new-stringmap"><code>fn string_map_new() -&gt; StringMap</code><a class="headerlink" href="#fn-string_map_new-stringmap" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
+</ul>
 <h4 id="fn-string_map_putm-mut-stringmap-key-str-value-int"><code>fn string_map_put(m: &amp;mut StringMap, key: Str, value: Int)</code><a class="headerlink" href="#fn-string_map_putm-mut-stringmap-key-str-value-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-string_map_getm-stringmap-key-str-optionint"><code>fn string_map_get(m: &amp;StringMap, key: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-string_map_getm-stringmap-key-str-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == string_map_contains(m, key)</code></li>
+</ul>
 <h4 id="fn-string_map_containsm-stringmap-key-str-bool"><code>fn string_map_contains(m: &amp;StringMap, key: Str) -&gt; Bool</code><a class="headerlink" href="#fn-string_map_containsm-stringmap-key-str-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-string_map_removem-mut-stringmap-key-str-bool"><code>fn string_map_remove(m: &amp;mut StringMap, key: Str) -&gt; Bool</code><a class="headerlink" href="#fn-string_map_removem-mut-stringmap-key-str-bool" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>string_map_contains(m, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; string_map_size(m) == string_map_size(m)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; string_map_size(m) == string_map_size(m)@pre</code></li>
+</ul>
 <h4 id="fn-string_map_sizem-stringmap-int"><code>fn string_map_size(m: &amp;StringMap) -&gt; Int</code><a class="headerlink" href="#fn-string_map_sizem-stringmap-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
@@ -18092,12 +18182,29 @@
 </tbody>
 </table>
 <h4 id="fn-linked_list_new-linkedlist"><code>fn linked_list_new() -&gt; LinkedList</code><a class="headerlink" href="#fn-linked_list_new-linkedlist" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+</ul>
 <h4 id="fn-ll_push_frontl-mut-linkedlist-value-int"><code>fn ll_push_front(l: &amp;mut LinkedList, value: Int)</code><a class="headerlink" href="#fn-ll_push_frontl-mut-linkedlist-value-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-ll_push_backl-mut-linkedlist-value-int"><code>fn ll_push_back(l: &amp;mut LinkedList, value: Int)</code><a class="headerlink" href="#fn-ll_push_backl-mut-linkedlist-value-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-ll_pop_frontl-mut-linkedlist-optionint"><code>fn ll_pop_front(l: &amp;mut LinkedList) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ll_pop_frontl-mut-linkedlist-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; ll_len(l) == ll_len(l)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; ll_len(l) == ll_len(l)@pre</code></li>
+</ul>
 <h4 id="fn-ll_pop_backl-mut-linkedlist-optionint"><code>fn ll_pop_back(l: &amp;mut LinkedList) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ll_pop_backl-mut-linkedlist-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; ll_len(l) == ll_len(l)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; ll_len(l) == ll_len(l)@pre</code></li>
+</ul>
 <h4 id="fn-ll_frontl-linkedlist-optionint"><code>fn ll_front(l: &amp;LinkedList) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ll_frontl-linkedlist-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (ll_len(l) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-ll_backl-linkedlist-optionint"><code>fn ll_back(l: &amp;LinkedList) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ll_backl-linkedlist-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (ll_len(l) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-ll_lenl-linkedlist-int"><code>fn ll_len(l: &amp;LinkedList) -&gt; Int</code><a class="headerlink" href="#fn-ll_lenl-linkedlist-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
@@ -18107,6 +18214,9 @@
 <li><strong>Postcondition:</strong> <code>result == (ll_len(l) == 0)</code></li>
 </ul>
 <h4 id="fn-ll_getl-linkedlist-idx-int-optionint"><code>fn ll_get(l: &amp;LinkedList, idx: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ll_getl-linkedlist-idx-int-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (idx &gt;= 0 &amp;&amp; idx &lt; ll_len(l))</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -18659,9 +18769,19 @@
 </tbody>
 </table>
 <h4 id="fn-workqueue_new-workqueue"><code>fn workqueue_new() -&gt; WorkQueue</code><a class="headerlink" href="#fn-workqueue_new-workqueue" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.head == 0</code></li>
+</ul>
 <h4 id="fn-workqueue_pushq-mut-workqueue-item-int"><code>fn workqueue_push(q: &amp;mut WorkQueue, item: Int)</code><a class="headerlink" href="#fn-workqueue_pushq-mut-workqueue-item-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-workqueue_popq-mut-workqueue-optionint"><code>fn workqueue_pop(q: &amp;mut WorkQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-workqueue_popq-mut-workqueue-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; workqueue_len(q) == workqueue_len(q)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; workqueue_len(q) == workqueue_len(q)@pre</code></li>
+</ul>
 <h4 id="fn-workqueue_peekq-workqueue-optionint"><code>fn workqueue_peek(q: &amp;WorkQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-workqueue_peekq-workqueue-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (workqueue_len(q) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-workqueue_lenq-workqueue-int"><code>fn workqueue_len(q: &amp;WorkQueue) -&gt; Int</code><a class="headerlink" href="#fn-workqueue_lenq-workqueue-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
@@ -18694,10 +18814,21 @@
 </tbody>
 </table>
 <h4 id="fn-deque_new-deque_1"><code>fn deque_new() -&gt; Deque</code><a class="headerlink" href="#fn-deque_new-deque_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.head == 0 &amp;&amp; result.tail == 0</code></li>
+</ul>
 <h4 id="fn-deque_push_backd-mut-deque-item-int"><code>fn deque_push_back(d: &amp;mut Deque, item: Int)</code><a class="headerlink" href="#fn-deque_push_backd-mut-deque-item-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-deque_push_frontd-mut-deque-item-int"><code>fn deque_push_front(d: &amp;mut Deque, item: Int)</code><a class="headerlink" href="#fn-deque_push_frontd-mut-deque-item-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-deque_pop_frontd-mut-deque-optionint_1"><code>fn deque_pop_front(d: &amp;mut Deque) -&gt; Option[Int]</code><a class="headerlink" href="#fn-deque_pop_frontd-mut-deque-optionint_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; deque_len(d) == deque_len(d)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; deque_len(d) == deque_len(d)@pre</code></li>
+</ul>
 <h4 id="fn-deque_pop_backd-mut-deque-optionint_1"><code>fn deque_pop_back(d: &amp;mut Deque) -&gt; Option[Int]</code><a class="headerlink" href="#fn-deque_pop_backd-mut-deque-optionint_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; deque_len(d) == deque_len(d)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; deque_len(d) == deque_len(d)@pre</code></li>
+</ul>
 <h4 id="fn-deque_lend-deque-int_1"><code>fn deque_len(d: &amp;Deque) -&gt; Int</code><a class="headerlink" href="#fn-deque_lend-deque-int_1" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
@@ -18734,6 +18865,9 @@
 </tbody>
 </table>
 <h4 id="fn-spsc_ring_newcap-int-spscring"><code>fn spsc_ring_new(cap: Int) -&gt; SpscRing</code><a class="headerlink" href="#fn-spsc_ring_newcap-int-spscring" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap == cap</code></li>
+</ul>
 <h4 id="fn-spsc_ring_pushr-mut-spscring-item-int-bool"><code>fn spsc_ring_push(r: &amp;mut SpscRing, item: Int) -&gt; Bool</code><a class="headerlink" href="#fn-spsc_ring_pushr-mut-spscring-item-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-spsc_ring_popr-mut-spscring-optionint"><code>fn spsc_ring_pop(r: &amp;mut SpscRing) -&gt; Option[Int]</code><a class="headerlink" href="#fn-spsc_ring_popr-mut-spscring-optionint" title="Permanent link">&para;</a></h4>
 <h4 id="fn-spsc_ring_lenr-spscring-int"><code>fn spsc_ring_len(r: &amp;SpscRing) -&gt; Int</code><a class="headerlink" href="#fn-spsc_ring_lenr-spscring-int" title="Permanent link">&para;</a></h4>
@@ -18890,19 +19024,50 @@
 </tbody>
 </table>
 <h4 id="fn-rbtree_new-rbtree"><code>fn rbtree_new() -&gt; RbTree</code><a class="headerlink" href="#fn-rbtree_new-rbtree" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+</ul>
 <h4 id="fn-rbtree_insertt-mut-rbtree-key-int-value-int-bool"><code>fn rbtree_insert(t: &amp;mut RbTree, key: Int, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-rbtree_insertt-mut-rbtree-key-int-value-int-bool" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>rbtree_contains(t, key) == true</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; rbtree_size(t) == rbtree_size(t)@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; rbtree_size(t) == rbtree_size(t)@pre</code></li>
+</ul>
 <h4 id="fn-rbtree_gett-rbtree-key-int-optionint"><code>fn rbtree_get(t: &amp;RbTree, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-rbtree_gett-rbtree-key-int-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == rbtree_contains(t, key)</code></li>
+</ul>
 <h4 id="fn-rbtree_containst-rbtree-key-int-bool"><code>fn rbtree_contains(t: &amp;RbTree, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-rbtree_containst-rbtree-key-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-rbtree_removet-mut-rbtree-key-int-bool"><code>fn rbtree_remove(t: &amp;mut RbTree, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-rbtree_removet-mut-rbtree-key-int-bool" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>rbtree_contains(t, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; rbtree_size(t) == rbtree_size(t)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; rbtree_size(t) == rbtree_size(t)@pre</code></li>
+</ul>
 <h4 id="fn-rbtree_sizet-rbtree-int"><code>fn rbtree_size(t: &amp;RbTree) -&gt; Int</code><a class="headerlink" href="#fn-rbtree_sizet-rbtree-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="fn-rbtree_mint-rbtree-optionint"><code>fn rbtree_min(t: &amp;RbTree) -&gt; Option[Int]</code><a class="headerlink" href="#fn-rbtree_mint-rbtree-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (rbtree_size(t) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-rbtree_maxt-rbtree-optionint"><code>fn rbtree_max(t: &amp;RbTree) -&gt; Option[Int]</code><a class="headerlink" href="#fn-rbtree_maxt-rbtree-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (rbtree_size(t) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-rbtree_inordert-rbtree-vecint"><code>fn rbtree_inorder(t: &amp;RbTree) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-rbtree_inordert-rbtree-vecint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == rbtree_size(t)</code></li>
+</ul>
 <h4 id="fn-rbtree_preordert-rbtree-vecint"><code>fn rbtree_preorder(t: &amp;RbTree) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-rbtree_preordert-rbtree-vecint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == rbtree_size(t)</code></li>
+</ul>
 <h4 id="fn-rbtree_postordert-rbtree-vecint"><code>fn rbtree_postorder(t: &amp;RbTree) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-rbtree_postordert-rbtree-vecint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == rbtree_size(t)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -19544,16 +19709,33 @@
 </tbody>
 </table>
 <h4 id="fn-bst_new-bst"><code>fn bst_new() -&gt; Bst</code><a class="headerlink" href="#fn-bst_new-bst" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.root == -1</code></li>
+</ul>
 <h4 id="fn-bst_insertb-mut-bst-key-int"><code>fn bst_insert(b: &amp;mut Bst, key: Int)</code><a class="headerlink" href="#fn-bst_insertb-mut-bst-key-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-bst_containsb-bst-key-int-bool"><code>fn bst_contains(b: &amp;Bst, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-bst_containsb-bst-key-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-bst_removeb-mut-bst-key-int-bool"><code>fn bst_remove(b: &amp;mut Bst, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-bst_removeb-mut-bst-key-int-bool" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>bst_contains(b, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; bst_size(b) == bst_size(b)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; bst_size(b) == bst_size(b)@pre</code></li>
+</ul>
 <h4 id="fn-bst_sizeb-bst-int"><code>fn bst_size(b: &amp;Bst) -&gt; Int</code><a class="headerlink" href="#fn-bst_sizeb-bst-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="fn-bst_minb-bst-optionint"><code>fn bst_min(b: &amp;Bst) -&gt; Option[Int]</code><a class="headerlink" href="#fn-bst_minb-bst-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (bst_size(b) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-bst_maxb-bst-optionint"><code>fn bst_max(b: &amp;Bst) -&gt; Option[Int]</code><a class="headerlink" href="#fn-bst_maxb-bst-optionint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (bst_size(b) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-bst_inorderb-bst-vecint"><code>fn bst_inorder(b: &amp;Bst) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-bst_inorderb-bst-vecint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == bst_size(b)</code></li>
+</ul>
 <h4 id="fn-bst_heightb-bst-int"><code>fn bst_height(b: &amp;Bst) -&gt; Int</code><a class="headerlink" href="#fn-bst_heightb-bst-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
@@ -19591,6 +19773,9 @@
 </tbody>
 </table>
 <h4 id="fn-avl_new-avl_1"><code>fn avl_new() -&gt; Avl</code><a class="headerlink" href="#fn-avl_new-avl_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.root == -1</code></li>
+</ul>
 <h4 id="fn-avl_inserta-mut-avl-key-int"><code>fn avl_insert(a: &amp;mut Avl, key: Int)</code><a class="headerlink" href="#fn-avl_inserta-mut-avl-key-int" title="Permanent link">&para;</a></h4>
 <h4 id="fn-avl_containsa-avl-key-int-bool"><code>fn avl_contains(a: &amp;Avl, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-avl_containsa-avl-key-int-bool" title="Permanent link">&para;</a></h4>
 <h4 id="fn-avl_sizea-avl-int"><code>fn avl_size(a: &amp;Avl) -&gt; Int</code><a class="headerlink" href="#fn-avl_sizea-avl-int" title="Permanent link">&para;</a></h4>
@@ -19598,6 +19783,9 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="fn-avl_inordera-avl-vecint"><code>fn avl_inorder(a: &amp;Avl) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-avl_inordera-avl-vecint" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == avl_size(a)</code></li>
+</ul>
 <h4 id="fn-avl_heighta-avl-int"><code>fn avl_height(a: &amp;Avl) -&gt; Int</code><a class="headerlink" href="#fn-avl_heighta-avl-int" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>

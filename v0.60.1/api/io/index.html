@@ -4985,6 +4985,9 @@
 <p><strong>Invariants:</strong>
 - <code>inner &gt;= 0</code></p>
 <h3 id="fn-newreader-int-bufreader"><code>fn new(reader: Int) -&gt; BufReader</code><a class="headerlink" href="#fn-newreader-int-bufreader" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == reader</code></li>
+</ul>
 <h3 id="fn-read_lineself-self-buf-mut-str-resultint-ioerror"><code>fn read_line(self: Self, buf: &amp;mut Str) -&gt; Result[Int, IOError]</code><a class="headerlink" href="#fn-read_lineself-self-buf-mut-str-resultint-ioerror" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Precondition:</strong> <code>inner &gt;= 0</code></li>
@@ -5014,6 +5017,9 @@
 </tbody>
 </table>
 <h3 id="fn-newwriter-int-bufwriter"><code>fn new(writer: Int) -&gt; BufWriter</code><a class="headerlink" href="#fn-newwriter-int-bufwriter" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == writer</code></li>
+</ul>
 <h3 id="type-metadata"><code>type Metadata</code><a class="headerlink" href="#type-metadata" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -5121,6 +5127,9 @@
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= base.len()</code></li>
 </ul>
 <h3 id="fn-parent_pathpath-str-optionstr"><code>fn parent_path(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-parent_pathpath-str-optionstr" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h3 id="fn-file_namepath-str-optionstr"><code>fn file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_namepath-str-optionstr" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &gt; 0</code></li>
@@ -5145,6 +5154,9 @@
 <h3 id="fn-flush_stdout"><code>fn flush_stdout()</code><a class="headerlink" href="#fn-flush_stdout" title="Permanent link">&para;</a></h3>
 <h3 id="fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror"><code>fn write_file_bytes(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror" title="Permanent link">&para;</a></h3>
 <h3 id="fn-read_file_bytespath-str-resultvecuint8-ioerror"><code>fn read_file_bytes(path: Str) -&gt; Result[Vec[UInt8], IOError]</code><a class="headerlink" href="#fn-read_file_bytespath-str-resultvecuint8-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
 <h3 id="fn-file_sizepath-str-optionint"><code>fn file_size(path: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-file_sizepath-str-optionint" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0</code></li>
@@ -5154,7 +5166,13 @@
 <h3 id="fn-dir_existspath-str-bool"><code>fn dir_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_existspath-str-bool" title="Permanent link">&para;</a></h3>
 <h3 id="fn-create_dir_allpath-str-resultunit-ioerror"><code>fn create_dir_all(path: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-create_dir_allpath-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
 <h3 id="fn-list_dir_recursivepath-str-resultvecstr-ioerror"><code>fn list_dir_recursive(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-list_dir_recursivepath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
 <h3 id="fn-read_file_linespath-str-resultvecstr-ioerror"><code>fn read_file_lines(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-read_file_linespath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
 <h3 id="fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror"><code>fn write_file_lines(path: Str, lines: &amp;Vec[Str]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror" title="Permanent link">&para;</a></h3>
 <h3 id="fn-append_linepath-str-line-str-resultunit-ioerror"><code>fn append_line(path: Str, line: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-append_linepath-str-line-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
 <hr />
