@@ -119,6 +119,87 @@
      `- Parallel    (rayon per-function IR emission -- --parallel-codegen)
   -> <span class='func'>clang</span>(native .exe, .out, .wasm)
 </code></pre>
+<h2>Architecture</h2>
+<p>XIOM is a Rust toolchain of 20 crates. It emits LLVM IR as text and hands it to clang for the final binary, so there is no LLVM library dependency and the generated IR is readable by humans. The bootstrap compiler is Rust by design and permanent; self-hosting gates are cleared, but no self-hosted release has shipped yet.</p>
+<p>Design decisions that shape everything else:</p>
+<ul>
+<li><strong>Lexical scope borrowing</strong> instead of lifetime annotations: a borrow</li>
+</ul>
+<p>expires where it is visible in the source, so checking needs no lifetime   calculus.</p>
+<ul>
+<li><strong>Contracts compile to runtime guards</strong>, with an SMT-LIB path for Z3</li>
+</ul>
+<p>verification. Static proof is an additional mode, not a prerequisite for   running code.</p>
+<ul>
+<li><strong>Text IR emission</strong> keeps the backend debuggable and portable; clang is</li>
+</ul>
+<p>the only external tool used for codegen.</p>
+<ul>
+<li><strong>Implicit <code>self</code></strong> and inline type constraints (<code>[T: Ord]</code>) keep</li>
+</ul>
+<p>signatures short; <code>derive</code> generates the repetitive interfaces.</p>
+<h2>Modes</h2>
+<p>The compiler behaves differently depending on how it is invoked and which flags are set. This section explains the modes; the reference tables below list every flag.</p>
+<h3>Build modes</h3>
+<ul>
+<li>Default (<code>xiom file.xi</code>): native binary with debug-friendly codegen.</li>
+<li><code>--release</code>: clang <code>-O3</code>. Contract guards and debug checks are stripped</li>
+</ul>
+<p>unless <code>--runtime-contracts</code> / <code>--keep-debug-checks</code> are passed.</p>
+<ul>
+<li><code>--lto</code>: ThinLTO whole-program optimization.</li>
+<li><code>--target wasm|arm</code>, <code>--shared</code>: cross-compilation and library output.</li>
+</ul>
+<h3>Execution modes</h3>
+<ul>
+<li><code>xiom build</code>: compile a package (directory containing <code>package.xi</code>).</li>
+<li><code>xiom run <file></code>: scripting mode. Shebang scripts, inline <code>-e</code>, stdin</li>
+</ul>
+<p><code>-</code>, and <code>--watch</code> are supported, and top-level code is wrapped   automatically, so <code>fn main()</code> is optional.</p>
+<ul>
+<li><code>xiom repl</code>: interactive shell.</li>
+<li><code>--jit</code> and <code>--jit --lazy</code>: in-process JIT with an optional incremental</li>
+</ul>
+<p>cache; <code>--cache</code> caches binaries by source hash.</p>
+<ul>
+<li><code>--standalone script.xi -o app</code>: turn a script into a binary.</li>
+</ul>
+<h3>Contract modes</h3>
+<p>Contracts (<code>requires:</code> / <code>ensures:</code> / <code>invariant:</code>) are part of the language, not annotations. By default they compile to runtime guards that trap on violation. <code>--no-contracts</code> removes the guards. <code>--release</code> strips them unless <code>--runtime-contracts</code> forces them. Static proof is a separate path: <code>--dump-contracts</code> emits SMT-LIB and <code>--verify</code> runs Z3 over that output.</p>
+<h3>Debug and diagnostics</h3>
+<ul>
+<li><code>--debug</code> / <code>-g</code>: DWARF/PDB metadata for debuggers.</li>
+<li>Debug intrinsics: <code>assert(cond[, msg])</code>, <code>dbg!()</code>, <code>todo!()</code>,</li>
+</ul>
+<p><code>unimplemented!()</code>, and <code>debugger;</code>. These are stripped in release builds   unless <code>--keep-debug-checks</code> is passed.</p>
+<ul>
+<li><code>--diagnostics=json</code>: structured output for tooling.</li>
+<li><code>--explain T001</code>: explain an error code.</li>
+<li><code>--emit-tokens</code>, <code>--emit-ir</code>, <code>--check</code>: inspect a single compilation</li>
+</ul>
+<p>stage.</p>
+<h3>Safety modes</h3>
+<ul>
+<li>Integer overflow checks are ON by default; <code>--no-overflow-checks</code></li>
+</ul>
+<p>disables them.</p>
+<ul>
+<li><code>--strict-mode</code> turns borrow-checker warnings (E001) into hard errors;</li>
+</ul>
+<p><code>--strict-exhaustive</code> makes non-exhaustive matches a hard error.</p>
+<ul>
+<li><code>--sanitize=address|undefined|thread</code>: sanitizer instrumentation.</li>
+<li>Unsafe confinement: every <code>unsafe</code> block is a confined transaction.</li>
+</ul>
+<p><code>#[unsafe_no_retry]</code> and <code>#[unsafe_direct]</code> (with   <code>--enable-unsafe-direct</code>) are the explicit escape hatches.</p>
+<h3>Concurrency, caching, and limits</h3>
+<ul>
+<li><code>--parallel</code>: parallel parsing; <code>--parallel-codegen</code>: per-function IR</li>
+</ul>
+<p>emission.</p>
+<ul>
+<li><code>--max-depth <N></code>: recursion limit (default: 500).</li>
+</ul>
 <h2>CLI Reference</h2>
 <pre><code>
 xiom [flags] <source.xi>
@@ -263,6 +344,21 @@ xiom [flags] <source.xi>
 <td>Borrow errors (E001) become hard errors</td>
 <td>off</td>
 </tr>
+<tr>
+<td><code>--runtime-contracts</code></td>
+<td>Force contract guards in release builds</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--keep-debug-checks</code></td>
+<td>Keep debug intrinsics in release builds</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>--enable-unsafe-direct</code></td>
+<td>Allow <code>#[unsafe_direct]</code> trusted escapes</td>
+<td>off</td>
+</tr>
 </table>
 <h3>Utility Flags</h3>
 <table>
@@ -387,6 +483,31 @@ xiom clean --cache            Clear JIT cache
 <td>Capture analysis + env forwarding</td>
 <td>v0.56</td>
 </tr>
+<tr>
+<td>Unsafe confinement</td>
+<td>Confined <code>unsafe</code> transactions, guard heap, fault trapping</td>
+<td>v0.57</td>
+</tr>
+<tr>
+<td>Debug intrinsics</td>
+<td><code>assert</code>, <code>dbg!</code>, <code>todo!</code>, <code>unimplemented!</code>, <code>debugger;</code></td>
+<td>v0.58</td>
+</tr>
+<tr>
+<td>Secure numeric policy</td>
+<td><code>Int</code> / <code>Float64</code> mixing requires explicit <code>as</code></td>
+<td>v0.58</td>
+</tr>
+<tr>
+<td>Labeled loops</td>
+<td><code>@label: while</code> / <code>break @label;</code></td>
+<td>v0.58</td>
+</tr>
+<tr>
+<td>Release-stripped contracts</td>
+<td><code>--runtime-contracts</code> retains them</td>
+<td>v0.58</td>
+</tr>
 </table>
 <h2>Selfhost Gate Status</h2>
 <p>All self-hosting gates are cleared, but no self-hosted release has shipped yet; the released compiler remains the bootstrap toolchain. Remaining work is tracked in the compiler repository (<code>docs/PRE_SELFHOST_GAPS.md</code>).</p>
@@ -426,18 +547,15 @@ xiom clean --cache            Clear JIT cache
 </tr>
 <tr>
 <td>Crate structure</td>
-<td>19 crates (xiom-ast, lexer, parser, check, codegen, ctfe, jit, verify, fmt, lsp, pkg, mcp, doc, ffigen, dbg, display, graph, wasm, cli)</td>
+<td>20 crates (xiom, xiom-ast, xiom-lowering, xiom-check, xiom-lexer, xiom-parser, xiom-codegen, xiom-ctfe, xiom-jit, xiom-verify, xiom-fmt, xiom-lsp, xiom-pkg, xiom-mcp, xiom-doc, xiom-ffigen, xiom-dbg, xiom-display, xiom-graph, xiom-wasm)</td>
 </tr>
 </table>
 <h2>Build from Source</h2>
 <pre class="language-bash"><code>
-git clone https:<span class='cm'>//github.com/XIOM-lang/XIOM.git</span>
+git clone https:<span class='cm'>//github.com/xiom-lang/xiom.git</span>
 cd xiom
 cargo build -p xiom
 cargo test -p xiom-codegen --test e2e_tests
-
-# Linux <span class='func'>build</span>(WSL)
-wsl -d Ubuntu -- bash -c 'export PATH=$HOME/.cargo/bin:$PATH; cd /mnt/e/Projects/AXIOM && cargo build -p xiom'
 </code></pre>
     </main>
 
