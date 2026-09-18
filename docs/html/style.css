@@ -8,31 +8,38 @@ SPDX-License-Identifier: MIT OR Apache-2.0
    ============================================================ */
 
 :root {
-  /* Surfaces */
-  --ink: #11161D;
-  --panel: #161E29;
-  --panel-raised: #1B2430;
-  --line: #2A3A4D;
-  --line-soft: #212B38;
+  /* Surfaces -- XIOM brand palette (shared with the playground) */
+  --ink: #08090B;
+  --panel: #111217;
+  --panel-raised: #16181D;
+  --line: #25272E;
+  --line-soft: #1A1C22;
 
   /* Text */
-  --paper: #ECE8DE;
-  --paper-dim: #C9C5B8;
-  --muted: #7E8896;
+  --paper: #F2F3F6;
+  --paper-dim: #C2C5CF;
+  --muted: #9497A3;
 
   /* Signals */
-  --signal: #FF8A3D;
-  --signal-dim: #A65B26;
-  --signal-glow: rgba(255, 138, 61, 0.12);
-  --verified: #6FCF97;
-  --verified-dim: #3E7A57;
-  --verified-glow: rgba(111, 207, 151, 0.10);
-  --error: #E0556A;
+  --signal: #5C6BFF;
+  --signal-dim: #3F4BD1;
+  --signal-glow: rgba(92, 107, 255, 0.14);
+  --verified: #34D399;
+  --verified-dim: #1F8A63;
+  --verified-glow: rgba(52, 211, 153, 0.12);
+  --error: #FF5C7A;
 
-  /* Typography */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'IBM Plex Sans', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Typography -- system stack, no webfont dependency */
+  --font-display: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
+
+  /* Shape and motion */
+  --radius-sm: 8px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --glow: 0 0 24px rgba(92, 107, 255, 0.35);
+  --transition: 200ms ease-out;
 
   /* Spacing */
   --space-xs: 4px;
@@ -161,7 +168,7 @@ nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(17, 22, 29, 0.92);
+  background: rgba(8, 9, 11, 0.92);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--line);
@@ -229,7 +236,7 @@ nav .wrap {
   transition: background 0.2s ease;
 }
 
-.btn-primary:hover { background: #ffa15e; }
+.btn-primary:hover { background: #7C88FF; }
 
 .btn-secondary {
   display: inline-block;
@@ -347,14 +354,14 @@ nav .wrap {
 }
 
 /* Syntax highlighting */
-.kw  { color: #8FB8E8; }  /* keywords */
-.fn  { color: #E8C589; }  /* functions */
-.ty  { color: #C98A6E; }  /* types */
-.str { color: #9FBF8C; }  /* strings */
-.num { color: #D4A8CF; }  /* numbers */
-.cm  { color: #5C6E7F; }  /* comments */
-.op  { color: #A8B8C8; }  /* operators */
-.attr{ color: #D4A8CF; }  /* attributes */
+.kw  { color: #8A93FF; }  /* keywords */
+.fn  { color: #4FD1C5; }  /* functions */
+.ty  { color: #F0B445; }  /* types */
+.str { color: #34D399; }  /* strings */
+.num { color: #C4B5FD; }  /* numbers */
+.cm  { color: #7A7F8C; }  /* comments */
+.op  { color: #9CA3AF; }  /* operators */
+.attr{ color: #C4B5FD; }  /* attributes */
 .id  { color: var(--paper-dim); } /* identifiers */
 
 /* ============================================================
@@ -547,12 +554,12 @@ nav .wrap {
 
 .clause.checking {
   background: var(--signal-glow);
-  box-shadow: inset 0 0 0 1px rgba(255, 138, 61, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(92, 107, 255, 0.45);
 }
 
 .clause.pass {
   background: var(--verified-glow);
-  box-shadow: inset 0 0 0 1px rgba(111, 207, 151, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(52, 211, 153, 0.45);
 }
 
 .clause-tick {
@@ -748,4 +755,91 @@ footer p {
 
   footer .wrap { flex-direction: column; gap: var(--space-md); text-align: center; }
   .foot-links { gap: 18px; flex-wrap: wrap; justify-content: center; }
+}
+
+/* ============================================================
+   Modern skin -- brand refresh 2026-09 (shared with the playground)
+   ============================================================ */
+
+.nav-cta,
+.btn-primary,
+.btn-secondary {
+  border-radius: var(--radius);
+  transition: background var(--transition), border-color var(--transition),
+    box-shadow var(--transition), color var(--transition);
+}
+
+.btn-primary:hover {
+  box-shadow: var(--glow);
+}
+
+.card,
+.code-panel,
+.eco-card,
+.phase,
+.content-section pre {
+  border-radius: var(--radius-lg);
+}
+
+.card,
+.eco-card,
+.phase {
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.card:hover,
+.eco-card:hover {
+  border-color: var(--signal-dim);
+  box-shadow: 0 0 0 1px var(--signal-glow), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.code-panel {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.status,
+.eco-tag {
+  border-radius: 999px;
+}
+
+code {
+  border-radius: 6px;
+}
+
+/* Accessible focus and skip link */
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--signal);
+  color: var(--ink);
+  padding: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  left: 16px;
+  top: 12px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

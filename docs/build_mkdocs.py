@@ -173,6 +173,10 @@ def main():
     if AI_CONTEXT.is_file():
         write_text(stage / "AI_CONTEXT.md", rewrite_links(AI_CONTEXT.read_text(encoding="utf-8")))
 
+    brand = ROOT / "docs" / "mkdocs-brand.css"
+    if brand.is_file():
+        shutil.copy2(str(brand), str(stage / "brand.css"))
+
     if not copy_api(args, stage):
         return 1
 

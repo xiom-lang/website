@@ -253,11 +253,11 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <title>xiom -- {title}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="{icon_path}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{css_path}">
 </head>
 <body>
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 <nav>
   <div class="wrap">
@@ -286,7 +286,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       </div>
     </nav>
 
-    <main class="content-section" style="border:none;padding-top:0;">
+    <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">{version}</div>
       <h1 style="font-size:36px;margin-bottom:24px;">{title}</h1>
       {body}
@@ -475,6 +475,16 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str,
             body_text = body_text  # keep it -- it's a subsection header
 
         body = md_to_html(body_text)
+
+        # Beta banner on the hand-written stdlib module pages.
+        if fname.startswith('stdlib/') and fname != 'stdlib/index.md':
+            body = (
+                '<p style="border:1px solid var(--line);border-radius:var(--radius);'
+                'padding:10px 14px;color:var(--muted);font-size:13px;">Beta: the standard '
+                'library is still being completed -- see the '
+                '<a href="https://github.com/xiom-lang/stdlib/blob/main/docs/STDLIB_BETA_LIMITATIONS.md" '
+                'style="color:var(--signal);">known limitations</a>.</p>\n' + body
+            )
 
         # Detect version from first line
         version_line = ""
