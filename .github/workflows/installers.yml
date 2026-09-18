@@ -1,0 +1,68 @@
+# Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+# SPDX-License-Identifier: MIT OR Apache-2.0
+#
+# Integration test for the public installers. Resolves the current release
+# from the mirror (no hardcoded version), runs the pinned install path on
+# Windows and Linux, and checks that the extracted compiler executes.
+#
+# Keep every action ref pinned to a full commit SHA: the xiom-lang org
+# enforces sha_pinning_required=true and tag refs fail at job setup.
+
+name: installers
+
+on:
+  pull_request:
+    paths:
+      - "xiom-website/install.ps1"
+      - "xiom-website/install.sh"
+      - ".github/workflows/installers.yml"
+  push:
+    branches: [main]
+    paths:
+      - "xiom-website/install.ps1"
+      - "xiom-website/install.sh"
+      - ".github/workflows/installers.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: install.ps1 (pinned)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install the current release and run it
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $meta = Invoke-RestMethod -Uri "https://dl.xiom-lang.org/latest.json" -UseBasicParsing
+          $tag = $meta.tag
+          Write-Host "mirror tag: $tag"
+          $dir = Join-Path $env:RUNNER_TEMP "xiom-ci"
+          & "$PWD/xiom-website/install.ps1" -Version $tag -InstallDir $dir -NoPath
+          $exe = Join-Path $dir "bin/xiom.exe"
+          if (-not (Test-Path $exe)) { throw "compiler binary missing at $exe" }
+          $out = & $exe --version
+          if ($LASTEXITCODE -ne 0) { throw "xiom --version exited $LASTEXITCODE" }
+          Write-Host "installed: $($out | Select-Object -First 1)"
+
+  linux:
+    name: install.sh (pinned)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install the current release and run it
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag=$(curl -fsSL https://dl.xiom-lang.org/latest.json \
+            | grep -o '"tag": *"[^"]*"' | head -n 1 | cut -d'"' -f4)
+          echo "mirror tag: $tag"
+          export HOME="$RUNNER_TEMP/home"
+          mkdir -p "$HOME"
+          sh xiom-website/install.sh --version "$tag"
+          exe="$HOME/.local/share/xiom/bin/xiom"
+          test -x "$exe"
+          "$exe" --version
