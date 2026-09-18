@@ -139,6 +139,19 @@ Queue:
    `M10_SCRIPTING_MODE`, `ecosystem/*`, and `checklists/*` references were
    removed or repointed, and MkDocs strict mode validates the versioned
    tree.
+7. **Docs dev channel (rejected 2026-09-18)**: ops asked to keep
+   publishing on release dispatch only, so a draft `docs-dev.yml` was
+   removed before commit. Guide changes go live with the next release;
+   do not re-propose the channel without an owner decision.
+8. **Guide content refresh**: version-specific claims were removed from
+   `index.md` and `compiler.md` (2026-09-18). A full refresh of compiler
+   details (flags, gates, test counts) needs canonical numbers from the
+   compiler lane; do not invent numbers.
+9. **Site polish (done 2026-09-18)**: canonical, Open Graph and Twitter
+   metadata on the five main pages, plus `robots.txt` and `sitemap.xml`.
+   Cleanup candidates awaiting an owner decision: `xiom-landing.html` is
+   unreferenced, `docs/ecosystem/*.md` are orphaned sources, and
+   `docs/error_codes/*.md` are still unbuilt.
 
 ## Rules
 
