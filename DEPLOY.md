@@ -8,7 +8,7 @@ repository; there is no build step for the marketing pages.
 | Path | Published to |
 |---|---|
 | `xiom-website/` | `https://xiom-lang.org` (site root, includes `img/` and `docs/`) |
-| `docs/html/` | `https://docs.xiom-lang.org` today (generated docs); also shipped as the standalone bundle |
+| `docs/html/` | standalone bundle shipped with releases; `docs.xiom-lang.org` now serves the mike output on `gh-pages` |
 | `docs/language/`, `docs/ecosystem/`, `docs/error_codes/`, `docs/build_docs.py` | sources for the generated docs |
 | `docs/build_api_docs.py`, `docs/build_mkdocs.py`, `mkdocs.yml`, `requirements-docs.txt` | versioned MkDocs pipeline (mike) |
 | `docs/check_links.py` | relative-link check used by CI |
@@ -76,13 +76,14 @@ python docs/build_mkdocs.py --stdlib <stdlib-checkout> \
 mkdocs build --strict
 ```
 
-Published state (2026-09-17): `gh-pages` carries `v0.60.1/` (full site
-plus legacy redirect stubs), the `latest` alias (symlink) and
-`versions.json`; `SUMMARY.md` is excluded from the rendered site. The ops
-deploy script (`xiom-lang/ops`, `docs/DOCS_MIKE_SWITCH.md`) copies the
-default version's stubs to the docroot root and symlinks its top-level
-directories, so the switch needs no website-side changes. `docs/html/`
-stays as the standalone bundle used in compiler release packaging.
+Published state (2026-09-18): the ops switch is live -- `docs.xiom-lang.org`
+serves the mike output (`versions.json` responds, `/latest/` and
+`/v0.60.1/` are up, legacy `.html` paths redirect through the stubs copied
+by the ops deploy script). `gh-pages` carries `v0.60.1/` plus the `latest`
+alias and `versions.json`; `SUMMARY.md` is excluded. `docs/html/` stays as
+the standalone bundle used in compiler release packaging, and
+`xiom-website/docs/` remains for deep links while `docs.html` redirects to
+the canonical subdomain.
 
 CI: every `uses:` ref in `.github/workflows/` must be pinned to a full
 commit SHA; the org enforces `sha_pinning_required=true` and tag refs fail

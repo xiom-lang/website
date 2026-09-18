@@ -149,9 +149,9 @@ Queue:
    compiler lane; do not invent numbers.
 9. **Site polish (done 2026-09-18)**: canonical, Open Graph and Twitter
    metadata on the five main pages, plus `robots.txt` and `sitemap.xml`.
-   Cleanup candidates awaiting an owner decision: `xiom-landing.html` is
-   unreferenced, `docs/ecosystem/*.md` are orphaned sources, and
-   `docs/error_codes/*.md` are still unbuilt.
+   `xiom-landing.html` was archived to `specs/xiom-landing-mockup.html`;
+   `docs/ecosystem/*.md` stay as drafts; `docs/error_codes/*.md` stay
+   unpublished (see the audit follow-ups below).
 
 ## Website audit follow-ups (2026-09-18)
 
@@ -179,15 +179,21 @@ banner injected on the hand-written stdlib pages; landing mockup archived
 to `specs/xiom-landing-mockup.html` (unpublished).
 
 Remaining:
-1. `/install` naming: the content spec wants `/install`; the site uses
-   `download.html`. Decide whether to add a redirect alias.
-2. Header sweep: source headers still read "Eleftherios Notas and XIOM
-   Foundation" while LICENSE and footers say "XIOM Foundation".
-3. Optional: self-host a display font (Inter is in the stack but only used
-   when installed locally); current stack is system-native by design.
-4. Per-module stdlib prose inside the hand-written pages is now prefixed by
-   the beta banner; replacing those pages with the generated API in the
-   standalone bundle remains an option once the docs pipeline owns them.
+1. Compiler lane: `docs/AI_CONTEXT.md` still carries v0.58-era metadata
+   ("Version: v0.58.0 | Status: Production", 512-module counts). The file
+   declares itself immutable and owned by the language team, so it was not
+   edited here; ask the compiler session to refresh the metadata block.
+2. Header sweep (optional): source headers still read "Eleftherios Notas
+   and XIOM Foundation" while LICENSE and footers say "XIOM Foundation";
+   both name the Foundation, so this is cosmetic.
+3. Optional: self-host Inter (current stack is system-native by design).
+4. `docs/error_codes/*` stays unpublished for now -- the index is
+   incomplete (one README plus X0010/X0011/X0100). Revisit when the
+   compiler lane owns error-code docs.
+5. `xiom-website/docs/` (the generated site copy) still exists for deep
+   links; `docs.html` now redirects to the canonical
+   `https://docs.xiom-lang.org/`. Retire the copy once old links stop
+   mattering.
 
 ## Rules
 
