@@ -268,7 +268,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <div class="navlinks">
       <a href="{site_base}spec.html">Spec</a>
       <a href="{site_base}docs/">Docs</a>
+      <a href="{site_base}why.html">Why</a>
       <a href="{site_base}ecosystem.html">Ecosystem</a>
+      <a href="{site_base}roadmap.html">Roadmap</a>
       <a href="{site_base}versions.html">Versions</a>
       <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
