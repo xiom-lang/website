@@ -153,6 +153,12 @@ Queue:
 - All GitHub Actions refs must be pinned to full commit SHAs; the
   xiom-lang org enforces `sha_pinning_required=true` and tag refs fail at
   job setup.
+- Commit identity: set the repo-local `user.name` / `user.email` to
+  `Lefteris Notas <lefterisnotas@gmail.com>` before the first commit and
+  verify with `git log -1 --format='%an <%ae>'` before every push; never
+  use the global work identity or `--author`. Rewriting pushed history
+  happens only on the owner's explicit request. Note: commits before
+  2026-09-18 were authored with the work email and await that decision.
 - `docs/html/` and `xiom-website/docs/` are generated; do not hand-edit.
 
 ## Paste-ready prompt for the next session
