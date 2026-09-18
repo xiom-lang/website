@@ -179,11 +179,20 @@ def main():
         assets.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(brand), str(assets / "brand.css"))
 
+    img_src = ROOT / "xiom-website" / "img"
+    if img_src.is_dir():
+        img_dst = stage / "img"
+        img_dst.mkdir(parents=True, exist_ok=True)
+        for name in ("xiom-logo.png", "xiom-icon.png"):
+            source = img_src / name
+            if source.is_file():
+                shutil.copy2(str(source), str(img_dst / name))
+
     if not copy_api(args, stage):
         return 1
 
     # SUMMARY.md drives the navigation via mkdocs-literate-nav.
-    nav_lines = []
+    nav_lines = ["* [xiom-lang.org](https://xiom-lang.org/)"]
     for name, title in NAV:
         if (stage / name).is_file():
             nav_lines.append("* [{0}]({1})".format(title, name))
