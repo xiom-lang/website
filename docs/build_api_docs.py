@@ -61,13 +61,59 @@ def run_xiom_doc(binary, source_file):
     return proc.stdout.decode("utf-8", errors="replace"), None
 
 
-def clean_file_output(text):
+DECL_RE = re.compile(r'^\s*pub\s+(fn|type|enum|const|interface|struct|trait)\s+([A-Za-z0-9_.]+)')
+HEADING_SYMBOL_RE = re.compile(r'^(fn|type|enum|const|interface|struct|trait)\s+([A-Za-z0-9_.]+)')
+
+
+def parse_doc_comments(source_path):
+    """Collect `///` documentation blocks keyed to the declaration they precede."""
+    entries = []
+    buffer = []
+    for line in source_path.read_text(encoding="utf-8", errors="replace").split("\n"):
+        stripped = line.strip()
+        if stripped.startswith("///"):
+            buffer.append(stripped[3:].strip())
+            continue
+        match = DECL_RE.match(stripped)
+        if match and buffer:
+            name = match.group(2)
+            entries.append({
+                "kind": match.group(1),
+                "full": name,
+                "base": name.split(".")[-1],
+                "doc": " ".join(part for part in buffer if part),
+            })
+            buffer = []
+        elif stripped.startswith("#["):
+            continue  # attributes sit between the doc block and its declaration
+        elif stripped:
+            buffer = []
+        else:
+            buffer = []
+    return entries
+
+
+def heading_symbol(line):
+    """Return (name, base name) for a declaration heading, or None."""
+    text = line.strip().lstrip("#").strip().strip("`")
+    match = HEADING_SYMBOL_RE.match(text)
+    if not match:
+        return None
+    name = match.group(2)
+    return name, name.split(".")[-1]
+
+
+def clean_file_output(text, source=None):
     """Normalize one file's xiom-doc output for embedding under an H2.
 
     Removes the per-file preamble and module wrapper headings, then demotes
     the remaining declaration headings by one level so they sit at H3 under
-    the file section. Returns (body_lines, symbol_count).
+    the file section. When the source path is given, `///` doc comments are
+    merged in above their declarations. Returns (body_lines, symbol_count).
     """
+    docs = parse_doc_comments(source) if source is not None else []
+    doc_index = 0
+
     cleaned = []
     for line in text.replace("\r\n", "\n").split("\n"):
         if line.startswith("# XIOM API Documentation"):
@@ -83,9 +129,24 @@ def clean_file_output(text):
         match = HEADING_RE.match(line)
         if match and len(match.group(1)) > 3:
             line = line[1:]
+        doc_line = None
+        if line.startswith("###"):
+            symbol = heading_symbol(line)
+            if symbol:
+                name, base = symbol
+                for index in range(doc_index, len(docs)):
+                    entry = docs[index]
+                    if entry["full"] == name or entry["base"] == name or entry["base"] == base:
+                        if entry["doc"]:
+                            doc_line = "> " + entry["doc"]
+                        doc_index = index + 1
+                        break
         if not line.strip() and body and not body[-1].strip():
             continue
         body.append(line)
+        if doc_line:
+            body.append("")
+            body.append(doc_line)
     while body and not body[0].strip():
         body.pop(0)
     symbols = sum(1 for line in body if line.startswith("###"))
@@ -114,7 +175,7 @@ def build(stdlib_root, binary, out_dir, tag, strict):
         if error is not None:
             failures.append((source.relative_to(stdlib_root).as_posix(), error.splitlines()[0]))
             continue
-        body, count = clean_file_output(text)
+        body, count = clean_file_output(text, source)
         if count == 0 and not any(line.strip() for line in body):
             empties += 1
             continue
