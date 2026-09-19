@@ -275,7 +275,10 @@ Remaining:
    labelled Revision 0.3 for the core language with implementation docs
    separate and the comparison table removed). Still open: publish a
    current specification revision (compiler lane); publish benchmark
-   results with the harness (compiler lane); a prior-art and trade-offs
+   results with the harness -- the benchmark lives in its own repository and
+   includes a research paper, both private for now; the owner will say when
+   to link and showcase them; verify-tooling semantics (bundled z3 vs
+   export-only) is with the compiler lane; a prior-art and trade-offs
    page; a "XIOM for game developers" page; C# on the concepts page;
    playground copy fixes ("Never Crash", stats bar); the legal-entity
    wording is an owner decision.
