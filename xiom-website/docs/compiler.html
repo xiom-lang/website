@@ -223,7 +223,7 @@ xiom --ai source.xi
 <td>Refuse binary output on contract violations</td>
 </tr>
 <tr>
-<td><code>--ai-batch</code></td>
+<td><code>--ai-batch</code> (alias <code>--batch</code>)</td>
 <td>Batch mode: analyze all sources into one <code>.xiom_ai.json</code></td>
 </tr>
 <tr>
@@ -245,8 +245,8 @@ xiom --ai source.xi
   }
 }
 </code></pre>
-<p>Build it from source with <code>cargo build --release -p xiom-mcp</code>.</p>
-<p>The toolchain also includes <code>xiom-fmt</code>, <code>xiom-doc</code>, <code>xiom-ffigen</code>, <code>xiom-pkg</code>, <code>xiom-lsp</code>, <code>xiom-mcp</code>, <code>xiom-dbg</code> and <code>xiom-verify</code>. Release archives ship <code>bin/xiom</code> today and will add <code>bin/xiom-pkg</code>; the remaining tools are built from source with <code>cargo build --release -p <crate></code>.</p>
+<p>Build it from source with <code>cargo build --release -p xiom-mcp</code> if you prefer; the release archives already ship it as <code>bin/xiom-mcp</code>.</p>
+<p>Release archives ship the full toolchain in <code>bin/</code>: <code>xiom</code>, <code>xiom-pkg</code>, <code>xiom-fmt</code>, <code>xiom-doc</code>, <code>xiom-ffigen</code>, <code>xiom-lsp</code>, <code>xiom-mcp</code>, <code>xiom-dbg</code> and <code>xiom-verify</code>, plus a pinned <code>z3</code> for the verifier. The installer links every <code>xiom*</code> tool into your PATH and leaves <code>z3</code> beside the tools.</p>
 <h3>Safety modes</h3>
 <ul>
 <li>Integer overflow checks are ON by default; <code>--no-overflow-checks</code></li>
@@ -257,9 +257,9 @@ xiom --ai source.xi
 </ul>
 <p><code>--stack-protector</code> adds stack canaries.</p>
 <ul>
-<li><code>--strict-mode</code> turns borrow-checker warnings (E001) into hard errors;</li>
+<li><code>--strict</code> (alias <code>--strict-mode</code>) turns borrow-checker warnings (E001)</li>
 </ul>
-<p><code>--strict-exhaustive</code> makes non-exhaustive matches a hard error.</p>
+<p>into hard errors; <code>--strict-exhaustive</code> makes non-exhaustive matches a   hard error.</p>
 <ul>
 <li>Unsafe confinement: every <code>unsafe</code> block is a confined transaction.</li>
 </ul>
@@ -332,8 +332,16 @@ xiom [flags] <source.xi>
 <td>Generate documentation (Markdown/HTML)</td>
 </tr>
 <tr>
+<td><code>xiom build-runtime</code></td>
+<td>Pre-compile the C runtime shared library (OrcJIT)</td>
+</tr>
+<tr>
 <td><code>xiom doctor</code></td>
 <td>Check toolchain dependencies</td>
+</tr>
+<tr>
+<td><code>xiom fmt</code> / <code>lsp</code> / <code>mcp</code> / <code>pkg</code> / <code>dbg</code> / <code>verify</code> / <code>ffigen</code> / <code>ai</code> / <code>graph</code> / <code>test</code></td>
+<td>Tool dispatchers for the companion binaries</td>
 </tr>
 </table>
 <h3>Output, targets and debug builds</h3>
@@ -373,6 +381,14 @@ xiom [flags] <source.xi>
 <tr>
 <td><code>--shared</code></td>
 <td>Compile as a shared library (.dll/.so)</td>
+</tr>
+<tr>
+<td><code>--static</code></td>
+<td>Compile as a static library</td>
+</tr>
+<tr>
+<td><code>--opt-level <0..3></code></td>
+<td>Explicit optimization level</td>
 </tr>
 <tr>
 <td><code>--standalone <file> -o <exe></code></td>
@@ -469,7 +485,7 @@ xiom [flags] <source.xi>
 <td>Allow <code>#[unsafe_direct]</code> in user code</td>
 </tr>
 <tr>
-<td><code>--strict-mode</code></td>
+<td><code>--strict</code> (alias <code>--strict-mode</code>)</td>
 <td>Borrow-checker warnings (E001) become hard errors</td>
 </tr>
 <tr>
@@ -564,6 +580,56 @@ xiom [flags] <source.xi>
 <tr>
 <td><code>--c-source <file></code></td>
 <td>Link an extra C/object file (repeatable)</td>
+</tr>
+</table>
+<h3>Testing and benchmarks</h3>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>--test</code></td>
+<td>Run the example test suite</td>
+</tr>
+<tr>
+<td><code>--test-dir <dir></code></td>
+<td>Test directory for <code>--test</code> (default: examples)</td>
+</tr>
+<tr>
+<td><code>--bench-file <file></code></td>
+<td>Benchmark a single file</td>
+</tr>
+<tr>
+<td><code>--count <N></code></td>
+<td>Benchmark iteration count</td>
+</tr>
+</table>
+<h3>Project and packages</h3>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>--scaffold</code></td>
+<td>Scaffold a project in the current directory</td>
+</tr>
+<tr>
+<td><code>--clean</code></td>
+<td>Remove build artifacts</td>
+</tr>
+<tr>
+<td><code>--registry <url></code></td>
+<td>Package registry URL (<code>xiom pkg</code>)</td>
+</tr>
+<tr>
+<td><code>--locked</code></td>
+<td>Use the lockfile exactly (<code>xiom pkg</code>)</td>
+</tr>
+<tr>
+<td><code>--frozen</code></td>
+<td>Offline lockfile-only mode (<code>xiom pkg</code>)</td>
 </tr>
 </table>
 <h3>Utility</h3>

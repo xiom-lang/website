@@ -118,7 +118,7 @@ xiom --ai source.xi
 | `--ai-dry-run` | Print the prompt without calling the model |
 | `--ai-silent` | Suppress stdout; write only `.xiom_ai.json` |
 | `--ai-strict` | Refuse binary output on contract violations |
-| `--ai-batch` | Batch mode: analyze all sources into one `.xiom_ai.json` |
+| `--ai-batch` (alias `--batch`) | Batch mode: analyze all sources into one `.xiom_ai.json` |
 | `--ai-model=<name>` | Override the model |
 | `--ai-timeout=<sec>` | Model timeout in seconds (default: 10) |
 
@@ -141,12 +141,13 @@ any MCP-capable client:
 }
 ```
 
-Build it from source with `cargo build --release -p xiom-mcp`.
+Build it from source with `cargo build --release -p xiom-mcp` if you
+prefer; the release archives already ship it as `bin/xiom-mcp`.
 
-The toolchain also includes `xiom-fmt`, `xiom-doc`, `xiom-ffigen`,
-`xiom-pkg`, `xiom-lsp`, `xiom-mcp`, `xiom-dbg` and `xiom-verify`. Release
-archives ship `bin/xiom` today and will add `bin/xiom-pkg`; the remaining
-tools are built from source with `cargo build --release -p <crate>`.
+Release archives ship the full toolchain in `bin/`: `xiom`, `xiom-pkg`,
+`xiom-fmt`, `xiom-doc`, `xiom-ffigen`, `xiom-lsp`, `xiom-mcp`, `xiom-dbg`
+and `xiom-verify`, plus a pinned `z3` for the verifier. The installer links
+every `xiom*` tool into your PATH and leaves `z3` beside the tools.
 
 ### Safety modes
 
@@ -154,8 +155,9 @@ tools are built from source with `cargo build --release -p <crate>`.
   disables them.
 - `--sanitize=address|undefined|leak|thread`: sanitizer instrumentation;
   `--stack-protector` adds stack canaries.
-- `--strict-mode` turns borrow-checker warnings (E001) into hard errors;
-  `--strict-exhaustive` makes non-exhaustive matches a hard error.
+- `--strict` (alias `--strict-mode`) turns borrow-checker warnings (E001)
+  into hard errors; `--strict-exhaustive` makes non-exhaustive matches a
+  hard error.
 - Unsafe confinement: every `unsafe` block is a confined transaction.
   `#[unsafe_no_retry]` and `#[unsafe_direct]` (with
   `--enable-unsafe-direct`) are the explicit escape hatches.
@@ -195,7 +197,9 @@ xiom [flags] <source.xi>
 | `xiom build --watch` | Build daemon: watch and rebuild |
 | `xiom repl` | Interactive shell |
 | `xiom doc <file.xi>` | Generate documentation (Markdown/HTML) |
+| `xiom build-runtime` | Pre-compile the C runtime shared library (OrcJIT) |
 | `xiom doctor` | Check toolchain dependencies |
+| `xiom fmt` / `lsp` / `mcp` / `pkg` / `dbg` / `verify` / `ffigen` / `ai` / `graph` / `test` | Tool dispatchers for the companion binaries |
 
 ### Output, targets and debug builds
 
@@ -209,6 +213,8 @@ xiom [flags] <source.xi>
 | `--debug` / `-g` | DWARF/PDB debug metadata |
 | `--lto` | ThinLTO link-time optimization |
 | `--shared` | Compile as a shared library (.dll/.so) |
+| `--static` | Compile as a static library |
+| `--opt-level <0..3>` | Explicit optimization level |
 | `--standalone <file> -o <exe>` | Turn a script into a binary |
 | `--target <target>` | `native` (default), `wasm`, `arm`, `riscv` |
 | `--jit` / `--jit --lazy` | In-process JIT; `--lazy` adds the incremental cache |
@@ -239,7 +245,7 @@ xiom [flags] <source.xi>
 | `--stack-protector` | Stack canaries (`-fstack-protector`) |
 | `--overflow-checks` / `--no-overflow-checks` | Integer overflow traps (ON by default) |
 | `--enable-unsafe-direct` | Allow `#[unsafe_direct]` in user code |
-| `--strict-mode` | Borrow-checker warnings (E001) become hard errors |
+| `--strict` (alias `--strict-mode`) | Borrow-checker warnings (E001) become hard errors |
 | `--strict-exhaustive` | Non-exhaustive matches become hard errors |
 
 ### Iteration and performance
@@ -273,6 +279,25 @@ xiom [flags] <source.xi>
 | `--link <name>` | Link a native library (repeatable, e.g. `vulkan-1`) |
 | `--link-path <dir>` | Add a library search path (repeatable) |
 | `--c-source <file>` | Link an extra C/object file (repeatable) |
+
+### Testing and benchmarks
+
+| Flag | Description |
+|------|-------------|
+| `--test` | Run the example test suite |
+| `--test-dir <dir>` | Test directory for `--test` (default: examples) |
+| `--bench-file <file>` | Benchmark a single file |
+| `--count <N>` | Benchmark iteration count |
+
+### Project and packages
+
+| Flag | Description |
+|------|-------------|
+| `--scaffold` | Scaffold a project in the current directory |
+| `--clean` | Remove build artifacts |
+| `--registry <url>` | Package registry URL (`xiom pkg`) |
+| `--locked` | Use the lockfile exactly (`xiom pkg`) |
+| `--frozen` | Offline lockfile-only mode (`xiom pkg`) |
 
 ### Utility
 
