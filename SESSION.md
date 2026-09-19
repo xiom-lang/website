@@ -226,7 +226,11 @@ X/Facebook/Instagram/Discord/Reddit links land), and API module pages got
 their own styling (file-section dividers, readable declaration rows, flat
 doc prose, anchor scroll margins). Terms of Use and Privacy Policy pages
 were added (terms.html, privacy.html) and linked from every footer,
-including the generated docs chrome.
+including the generated docs chrome. Docs reading comfort pass: lifted dark
+surfaces (#0E1014 background, #DDE1E8 text) and softened light mode
+(#F7F8FA / #2A2E37), all AA; API declarations separated by hairline rows
+with calmer signature sizing; on large screens the grid widens to 64rem
+and the rails slim to 11rem so the content column gains ~15%.
 
 Remaining:
 1. **~~AI_CONTEXT metadata~~ (done 2026-09-18)**: refreshed to the compiler

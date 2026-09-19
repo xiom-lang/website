@@ -14,23 +14,29 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 }
 
 [data-md-color-scheme="slate"] {
-  --md-default-bg-color: #08090B;
-  --md-default-bg-color--light: #111217;
-  --md-default-fg-color: #F2F3F6;
-  --md-default-fg-color--light: #C2C5CF;
-  --md-default-fg-color--lighter: #9497A3;
-  --md-code-bg-color: #111217;
-  --md-code-fg-color: #F2F3F6;
+  /* Lifted from pure near-black: less halation against white text */
+  --md-default-bg-color: #0E1014;
+  --md-default-bg-color--light: #14171C;
+  --md-default-fg-color: #DDE1E8;
+  --md-default-fg-color--light: #C3C8D1;
+  --md-default-fg-color--lighter: #99A0AD;
+  --md-code-bg-color: #15181E;
+  --md-code-fg-color: #DDE1E8;
   --md-typeset-a-color: #8A93FF;
 }
 
 [data-md-color-scheme="default"] {
+  /* Softened off-white and ink, instead of pure white on pure black */
+  --md-default-bg-color: #F7F8FA;
+  --md-default-fg-color: #2A2E37;
+  --md-default-fg-color--light: #4A505C;
+  --md-default-fg-color--lighter: #667085;
   --md-typeset-a-color: #3F4BD1;
   --md-primary-fg-color: #3F4BD1;
   --md-primary-fg-color--light: #5C6BFF;
   --md-primary-fg-color--dark: #3139A8;
-  --md-code-bg-color: #F4F5F8;
-  --md-code-fg-color: #1C1E24;
+  --md-code-bg-color: #EDEFF3;
+  --md-code-fg-color: #23262E;
 }
 
 .md-header,
@@ -116,13 +122,15 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 /* API module pages: declarations are H4, so pages containing them (guides
    have no H4) get file-section dividers and readable declaration rows. */
 .md-typeset h4 {
-  margin: 1.6em 0 0.35em;
+  margin: 1.9em 0 0.4em;
+  padding-top: 1.1em;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
   font-weight: 600;
   color: var(--md-default-fg-color);
 }
 
 .md-typeset h4 code {
-  font-size: 0.9em;
+  font-size: 0.84em;
 }
 
 /* Doc prose directly under a declaration reads as text, not a quote */
@@ -131,7 +139,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   padding: 0;
   border: 0;
   color: var(--md-default-fg-color--light);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   line-height: 1.65;
 }
 
@@ -146,13 +154,25 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 }
 
 .md-typeset:has(h4) ul li {
-  font-size: 0.78rem;
-  line-height: 1.6;
+  font-size: 0.8rem;
+  line-height: 1.65;
 }
 
 /* Anchor targets clear the sticky header */
 .md-typeset :target {
   scroll-margin-top: 4.5rem;
+}
+
+/* Three-column reading layout: slimmer rails and a slightly wider grid on
+   large screens, so API signatures get room without stretching prose. */
+@media screen and (min-width: 76.25em) {
+  .md-grid {
+    max-width: 64rem;
+  }
+
+  .md-sidebar {
+    width: 11rem;
+  }
 }
 
 .md-typeset code {
