@@ -299,7 +299,11 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <footer>
   <div class="wrap">
     <p>xiom {version_short} - <a href="{site_base}" style="color:var(--signal);">xiom-lang.org</a></p>
-    <p>Dual-licensed <a href="{site_base}LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="{site_base}LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>. Copyright (c) 2026 XIOM Foundation.</p>
+    <div class="legal">
+      <p>Dual-licensed <a href="{site_base}LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="{site_base}LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+      <p>Copyright (c) 2026 XIOM Foundation.</p>
+      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+    </div>
     <div class="foot-links">
       <a href="{site_base}spec.html">Spec</a>
       <a href="{site_base}docs/">Docs</a>
