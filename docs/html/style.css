@@ -92,9 +92,9 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
-h1 { font-size: 46px; }
-h2 { font-size: 32px; }
-h3 { font-size: 22px; }
+h1 { font-size: 40px; }
+h2 { font-size: 28px; }
+h3 { font-size: 20px; }
 h4 { font-size: 18px; }
 
 p { margin-bottom: var(--space-md); }
@@ -162,9 +162,7 @@ code {
 
 .blueprint-bg {
   background-image:
-    linear-gradient(var(--line-soft) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
-  background-size: 48px 48px;
+    radial-gradient(1100px 420px at 50% -120px, rgba(92, 107, 255, 0.12), transparent 70%);
 }
 
 /* ============================================================
@@ -217,7 +215,8 @@ nav .wrap {
   border: 1px solid var(--line);
   padding: 8px 18px;
   font-size: 13px;
-  font-family: var(--font-mono);
+  font-weight: 600;
+  font-family: var(--font-body);
   color: var(--paper-dim);
 }
 
@@ -237,7 +236,7 @@ nav .wrap {
   padding: 13px 24px;
   font-size: 14px;
   font-weight: 600;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   border: none;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -251,7 +250,8 @@ nav .wrap {
   color: var(--paper);
   padding: 13px 24px;
   font-size: 14px;
-  font-family: var(--font-mono);
+  font-weight: 500;
+  font-family: var(--font-body);
   cursor: pointer;
   transition: border-color 0.2s ease;
 }
@@ -274,12 +274,12 @@ nav .wrap {
 }
 
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--signal);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -287,9 +287,9 @@ nav .wrap {
 
 .eyebrow::before {
   content: '';
-  width: 24px;
+  width: 16px;
   height: 1px;
-  background: var(--signal);
+  background: var(--signal-dim);
 }
 
 .hero h1 {
@@ -749,8 +749,8 @@ footer p {
    ============================================================ */
 
 @media (max-width: 860px) {
-  h1 { font-size: 34px; }
-  h2 { font-size: 26px; }
+  h1 { font-size: 30px; }
+  h2 { font-size: 24px; }
 
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .split-label { grid-template-columns: 1fr; gap: 16px; }
@@ -796,6 +796,21 @@ footer p {
 
 .btn-primary:hover {
   box-shadow: var(--glow);
+}
+
+.navlinks a {
+  position: relative;
+}
+
+.navlinks a.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--signal);
 }
 
 .card,
