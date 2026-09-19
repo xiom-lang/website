@@ -233,8 +233,9 @@ Remaining:
    incomplete (one README plus X0010/X0011/X0100). Revisit when the
    compiler lane owns error-code docs.
 5. ~~`xiom-website/docs/` site copy~~ (retired 2026-09-19): `docs.html`
-   redirects to the canonical `https://docs.xiom-lang.org/`, and the
-   generator no longer produces the site copy.
+   redirects to the canonical `https://docs.xiom-lang.org/`, the generator
+   no longer produces the site copy, and a single redirect stub at
+   `xiom-website/docs/index.html` keeps `/docs/` working.
 6. **~~Compiler review~~ (done 2026-09-18)**: the compiler lane verified the
    new Modes/Architecture content against source (main v0.61.0) -- all
    three flags are real, the 20-crate list is confirmed, and the

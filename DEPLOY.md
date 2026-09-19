@@ -83,7 +83,8 @@ by the ops deploy script). `gh-pages` carries `v0.60.1/` plus the `latest`
 alias and `versions.json`; `SUMMARY.md` is excluded. `docs/html/` stays as
 the standalone bundle used in compiler release packaging, and `docs.html`
 redirects visitors to the canonical subdomain (the generated site copy
-under `xiom-website/docs/` was retired 2026-09-19).
+under `xiom-website/docs/` was retired 2026-09-19; a single redirect stub
+keeps `/docs/` working).
 
 CI: every `uses:` ref in `.github/workflows/` must be pinned to a full
 commit SHA; the org enforces `sha_pinning_required=true` and tag refs fail

@@ -11,6 +11,7 @@ toolchain.
 | `xiom-website/` | marketing site pages, `style.css`, `img/`, public installers |
 | `docs/language/` | hand-written guide sources (Markdown) |
 | `docs/html/` | generated standalone documentation bundle (release packaging) |
+| `xiom-website/docs/` | single redirect stub keeping `xiom-lang.org/docs/` alive |
 | `docs/build_docs.py` | static generator for the two trees above |
 | `docs/build_api_docs.py` | stdlib API pages via `xiom-doc` |
 | `docs/build_mkdocs.py` | assembles `build/mkdocs-src/` for the versioned site |
