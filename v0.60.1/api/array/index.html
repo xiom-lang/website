@@ -3235,21 +3235,31 @@
 </blockquote>
 <h2 id="arrayxi"><code>array.xi</code><a class="headerlink" href="#arrayxi" title="Permanent link">&para;</a></h2>
 <h3 id="fn-lent-narr-nt-int"><code>fn len[T, N](arr: &amp;[N]T) -&gt; Int</code><a class="headerlink" href="#fn-lent-narr-nt-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Number of elements in the fixed-size array.</p>
+</blockquote>
 <h3 id="fn-is_emptyt-narr-nt-bool"><code>fn is_empty[T, N](arr: &amp;[N]T) -&gt; Bool</code><a class="headerlink" href="#fn-is_emptyt-narr-nt-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the array has zero length.</p>
+</blockquote>
 <h3 id="fn-firstt-narr-nt-optiont"><code>fn first[T, N](arr: &amp;[N]T) -&gt; Option[T]</code><a class="headerlink" href="#fn-firstt-narr-nt-optiont" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>First element, or None for an empty array.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>N == 0 =&gt; result is None</code></li>
 </ul>
 <h3 id="fn-lastt-narr-nt-optiont"><code>fn last[T, N](arr: &amp;[N]T) -&gt; Option[T]</code><a class="headerlink" href="#fn-lastt-narr-nt-optiont" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Last element, or None for an empty array.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>N == 0 =&gt; result is None</code></li>
 </ul>
 <h3 id="fn-gett-narr-nt-index-int-optiont"><code>fn get[T, N](arr: &amp;[N]T, index: Int) -&gt; Option[T]</code><a class="headerlink" href="#fn-gett-narr-nt-index-int-optiont" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>, <code>index: Int</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Element at <code>index</code>, or None when out of bounds.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>index &lt; 0 || index &gt;= N =&gt; result is None</code></li>
 </ul>
@@ -3261,72 +3271,104 @@
 <li><strong>Postcondition:</strong> <code>index &lt; 0 || index &gt;= N =&gt; result is None</code></li>
 </ul>
 <h3 id="fn-mapt-u-narr-nt-f-fnt-u-nu"><code>fn map[T, U, N](arr: [N]T, f: fn(T) -&gt; U) -&gt; [N]U</code><a class="headerlink" href="#fn-mapt-u-narr-nt-f-fnt-u-nu" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: [N]T</code>, <code>f: fn(T) -&gt; U</code>; returns <code>[N]U</code>. No source comment yet.</p>
+<blockquote>
+<p>Apply <code>f</code> to every element, returning a new array.</p>
+</blockquote>
 <h3 id="fn-zipt-u-na-nt-b-nu-nt-u"><code>fn zip[T, U, N](a: [N]T, b: [N]U) -&gt; [N](T, U)</code><a class="headerlink" href="#fn-zipt-u-na-nt-b-nu-nt-u" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: [N]T</code>, <code>b: [N]U) -&gt; [N](T, U</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Pair the elements of two arrays positionally.</p>
+</blockquote>
 <h3 id="fn-foldt-b-narr-nt-init-b-f-fnb-t-b-b"><code>fn fold[T, B, N](arr: [N]T, init: B, f: fn(B, T) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldt-b-narr-nt-init-b-f-fnb-t-b-b" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: [N]T</code>, <code>init: B</code>, <code>f: fn(B, T) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
+<blockquote>
+<p>Fold the elements with <code>f</code>, starting from <code>init</code>.</p>
+</blockquote>
 <h3 id="fn-as_slicet-narr-nt-slicet"><code>fn as_slice[T, N](arr: &amp;[N]T) -&gt; Slice[T]</code><a class="headerlink" href="#fn-as_slicet-narr-nt-slicet" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>; returns <code>Slice[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Borrow the array as a Slice.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>N &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result.len == N</code></li>
 </ul>
 <h3 id="fn-as_mut_slicet-narr-mut-nt-slicet"><code>fn as_mut_slice[T, N](arr: &amp;mut [N]T) -&gt; Slice[T]</code><a class="headerlink" href="#fn-as_mut_slicet-narr-mut-nt-slicet" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>; returns <code>Slice[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Mutably borrow the array as a Slice.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>N &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result.len == N</code></li>
 </ul>
 <h3 id="fn-each_reft-narr-nt-nt"><code>fn each_ref[T, N](arr: &amp;[N]T) -&gt; [N]&amp;T</code><a class="headerlink" href="#fn-each_reft-narr-nt-nt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>; returns <code>[N]&amp;T</code>. No source comment yet.</p>
+<blockquote>
+<p>Array of shared references to each element.</p>
+</blockquote>
 <h3 id="fn-each_mutt-narr-mut-nt-nmut-t"><code>fn each_mut[T, N](arr: &amp;mut [N]T) -&gt; [N]&amp;mut T</code><a class="headerlink" href="#fn-each_mutt-narr-mut-nt-nmut-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>; returns <code>[N]&amp;mut T</code>. No source comment yet.</p>
+<blockquote>
+<p>Array of mutable references to each element.</p>
+</blockquote>
 <h3 id="fn-fillt-narr-mut-nt-value-t"><code>fn fill[T, N](arr: &amp;mut [N]T, value: T)</code><a class="headerlink" href="#fn-fillt-narr-mut-nt-value-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>, <code>value: T</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Set every element to a clone of <code>value</code>.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-swapt-narr-mut-nt-a-int-b-int"><code>fn swap[T, N](arr: &amp;mut [N]T, a: Int, b: Int)</code><a class="headerlink" href="#fn-swapt-narr-mut-nt-a-int-b-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>, <code>a: Int</code>, <code>b: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Swap the elements at <code>a</code> and <code>b</code>.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>a &gt;= 0 &amp;&amp; a &lt; N</code></li>
 <li><strong>Precondition:</strong> <code>b &gt;= 0 &amp;&amp; b &lt; N</code></li>
 </ul>
 <h3 id="fn-reverset-narr-mut-nt"><code>fn reverse[T, N](arr: &amp;mut [N]T)</code><a class="headerlink" href="#fn-reverset-narr-mut-nt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Reverse the elements in place.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-rotate_leftt-narr-mut-nt-mid-int"><code>fn rotate_left[T, N](arr: &amp;mut [N]T, mid: Int)</code><a class="headerlink" href="#fn-rotate_leftt-narr-mut-nt-mid-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>, <code>mid: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Rotate the elements left by <code>mid</code> positions.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>mid &gt;= 0</code></li>
 <li><strong>Precondition:</strong> <code>mid &lt;= N</code></li>
 </ul>
 <h3 id="fn-rotate_rightt-narr-mut-nt-k-int"><code>fn rotate_right[T, N](arr: &amp;mut [N]T, k: Int)</code><a class="headerlink" href="#fn-rotate_rightt-narr-mut-nt-k-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>, <code>k: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Rotate the elements right by <code>k</code> positions.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>k &gt;= 0</code></li>
 </ul>
 <h3 id="fn-sortt-narr-mut-nt"><code>fn sort[T, N](arr: &amp;mut [N]T)</code><a class="headerlink" href="#fn-sortt-narr-mut-nt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Sort the elements in place (ascending).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>arr.is_sorted()</code></li>
 </ul>
 <h3 id="fn-sort_byt-narr-mut-nt-compare-fnt-t-ordering"><code>fn sort_by[T, N](arr: &amp;mut [N]T, compare: fn(&amp;T, &amp;T) -&gt; Ordering)</code><a class="headerlink" href="#fn-sort_byt-narr-mut-nt-compare-fnt-t-ordering" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;mut [N]T</code>, <code>compare: fn(&amp;T, &amp;T) -&gt; Ordering</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Sort with a comparator returning an Ordering.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>arr.is_sorted_by(compare)</code></li>
 </ul>
 <h3 id="fn-binary_searcht-narr-nt-x-t-resultint-int"><code>fn binary_search[T, N](arr: &amp;[N]T, x: &amp;T) -&gt; Result[Int, Int]</code><a class="headerlink" href="#fn-binary_searcht-narr-nt-x-t-resultint-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>, <code>x: &amp;T</code>; returns <code>Result[Int, Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Binary search in a sorted array: Ok(index) or Err(insertion point).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>N &gt;= 0</code></li>
 <li><strong>Precondition:</strong> <code>arr.is_sorted()</code></li>
 </ul>
 <h3 id="fn-containst-narr-nt-x-t-bool"><code>fn contains[T, N](arr: &amp;[N]T, x: &amp;T) -&gt; Bool</code><a class="headerlink" href="#fn-containst-narr-nt-x-t-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>arr: &amp;[N]T</code>, <code>x: &amp;T</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the array contains <code>x</code>.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == true =&gt; arr.contains(x)</code></li>
 </ul>

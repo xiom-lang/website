@@ -7585,22 +7585,32 @@
 <hr />
 <h2 id="cryptoxi"><code>crypto.xi</code><a class="headerlink" href="#cryptoxi" title="Permanent link">&para;</a></h2>
 <h3 id="fn-sha256data-vecuint8-vecuint8"><code>fn sha256(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha256data-vecuint8-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>SHA-256 digest (32 bytes).</p>
+</blockquote>
 <h3 id="fn-sha256_accelerateddata-vecuint8-vecuint8"><code>fn sha256_accelerated(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha256_accelerateddata-vecuint8-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>SHA-256 using the hardware-accelerated path when available.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>data.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
 </ul>
 <h3 id="fn-sha256_hexdata-vecuint8-str"><code>fn sha256_hex(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-sha256_hexdata-vecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Lowercase hex SHA-256 digest.</p>
+</blockquote>
 <h3 id="fn-sha512data-vecuint8-vecuint8"><code>fn sha512(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha512data-vecuint8-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>SHA-512 digest (64 bytes).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
 </ul>
 <h3 id="fn-md5data-vecuint8-vecuint8"><code>fn md5(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-md5data-vecuint8-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>MD5 digest (legacy; not for security use).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 16</code></li>
 </ul>
@@ -7618,18 +7628,28 @@
 <p>Single-chunk inputs (&lt;= 1024 bytes) compress the chunk directly with CHUNK_START|CHUNK_END|ROOT. Larger inputs are hashed through the binary tree: each 1024-byte chunk produces a leaf CV (chunk counter = chunk index), leaves are merged pairwise via parent nodes, and the root node carries the ROOT flag. The 32-byte digest is the root output words 7,6,5,4,3,2,1,0 serialized little-endian (reversed word order).</p>
 </blockquote>
 <h3 id="fn-hmac_sha256key-vecuint8-data-vecuint8-vecuint8"><code>fn hmac_sha256(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hmac_sha256key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>key: &amp;Vec[UInt8]</code>, <code>data: &amp;Vec[UInt8]</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>HMAC-SHA-256 of <code>data</code> with <code>key</code>.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
 </ul>
 <h3 id="fn-aes_encryptkey-vecuint8-plaintext-vecuint8-resultvecuint8-str"><code>fn aes_encrypt(key: &amp;Vec[UInt8], plaintext: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_encryptkey-vecuint8-plaintext-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>key: &amp;Vec[UInt8]</code>, <code>plaintext: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>AES encrypt with the given key; Err on bad key/data lengths.</p>
+</blockquote>
 <h3 id="fn-aes_decryptkey-vecuint8-ciphertext-vecuint8-resultvecuint8-str"><code>fn aes_decrypt(key: &amp;Vec[UInt8], ciphertext: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_decryptkey-vecuint8-ciphertext-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>key: &amp;Vec[UInt8]</code>, <code>ciphertext: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>AES decrypt with the given key; Err on bad key/data or padding.</p>
+</blockquote>
 <h3 id="fn-aes_encrypt_gcmkey-vecuint8-nonce-vecuint8-plaintext-vecuint8-aad-vecuint8-resultvecuint8-vecuint8-str"><code>fn aes_encrypt_gcm(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], plaintext: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Result[(Vec[UInt8], Vec[UInt8]), Str]</code><a class="headerlink" href="#fn-aes_encrypt_gcmkey-vecuint8-nonce-vecuint8-plaintext-vecuint8-aad-vecuint8-resultvecuint8-vecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>key: &amp;Vec[UInt8]</code>, <code>nonce: &amp;Vec[UInt8]</code>, <code>plaintext: &amp;Vec[UInt8]</code>, <code>aad: &amp;Vec[UInt8]</code>; returns <code>Result[(Vec[UInt8], Vec[UInt8]), Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>AES-GCM encrypt: Ok((ciphertext, tag)); Err on bad lengths.</p>
+</blockquote>
 <h3 id="fn-aes_decrypt_gcmkey-vecuint8-nonce-vecuint8-ciphertext-vecuint8-tag-vecuint8-aad-vecuint8-resultvecuint8-str"><code>fn aes_decrypt_gcm(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], ciphertext: &amp;Vec[UInt8], tag: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_decrypt_gcmkey-vecuint8-nonce-vecuint8-ciphertext-vecuint8-tag-vecuint8-aad-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>key: &amp;Vec[UInt8]</code>, <code>nonce: &amp;Vec[UInt8]</code>, <code>ciphertext: &amp;Vec[UInt8]</code>, <code>tag: &amp;Vec[UInt8]</code>, ...; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>AES-GCM decrypt and verify the tag; Err on failure.</p>
+</blockquote>
 <h3 id="type-keypair"><code>type KeyPair</code><a class="headerlink" href="#type-keypair" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Asymmetric (RSA)</p>
@@ -7653,15 +7673,25 @@
 </tbody>
 </table>
 <h3 id="fn-generate_rsa_keypairbits-int-resultkeypair-str"><code>fn generate_rsa_keypair(bits: Int) -&gt; Result[KeyPair, Str]</code><a class="headerlink" href="#fn-generate_rsa_keypairbits-int-resultkeypair-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>bits: Int</code>; returns <code>Result[KeyPair, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Generate an RSA key pair of <code>bits</code> bits; Err on failure.</p>
+</blockquote>
 <h3 id="fn-rsa_encryptpublic_key-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn rsa_encrypt(public_key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-rsa_encryptpublic_key-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>public_key: &amp;Vec[UInt8]</code>, <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>RSA encrypt with a public key; Err on failure.</p>
+</blockquote>
 <h3 id="fn-rsa_decryptprivate_key-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn rsa_decrypt(private_key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-rsa_decryptprivate_key-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>private_key: &amp;Vec[UInt8]</code>, <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>RSA decrypt with a private key; Err on failure.</p>
+</blockquote>
 <h3 id="fn-rsa_signprivate_key-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn rsa_sign(private_key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-rsa_signprivate_key-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>private_key: &amp;Vec[UInt8]</code>, <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>RSA signature over <code>data</code>; Err on failure.</p>
+</blockquote>
 <h3 id="fn-rsa_verifypublic_key-vecuint8-data-vecuint8-signature-vecuint8-resultbool-str"><code>fn rsa_verify(public_key: &amp;Vec[UInt8], data: &amp;Vec[UInt8], signature: &amp;Vec[UInt8]) -&gt; Result[Bool, Str]</code><a class="headerlink" href="#fn-rsa_verifypublic_key-vecuint8-data-vecuint8-signature-vecuint8-resultbool-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>public_key: &amp;Vec[UInt8]</code>, <code>data: &amp;Vec[UInt8]</code>, <code>signature: &amp;Vec[UInt8]</code>; returns <code>Result[Bool, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Verify an RSA signature; Ok(true/false) or Err.</p>
+</blockquote>
 <h3 id="fn-pbkdf2password-str-salt-vecuint8-iterations-int-key_len-int-vecuint8"><code>fn pbkdf2(password: &amp;Str, salt: &amp;Vec[UInt8], iterations: Int, key_len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-pbkdf2password-str-salt-vecuint8-iterations-int-key_len-int-vecuint8" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Key Derivation</p>
@@ -7672,15 +7702,21 @@
 <li><strong>Postcondition:</strong> <code>result.len() == key_len</code></li>
 </ul>
 <h3 id="fn-argon2password-str-salt-vecuint8-memory-int-iterations-int-parallelism-int-vecuint8"><code>fn argon2(password: &amp;Str, salt: &amp;Vec[UInt8], memory: Int, iterations: Int, parallelism: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-argon2password-str-salt-vecuint8-memory-int-iterations-int-parallelism-int-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>password: &amp;Str</code>, <code>salt: &amp;Vec[UInt8]</code>, <code>memory: Int</code>, <code>iterations: Int</code>, ...; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>Argon2 key derivation with the given memory/iteration/parallelism costs.</p>
+</blockquote>
 <h3 id="fn-os_secure_random_bytescount-int-vecuint8"><code>fn os_secure_random_bytes(count: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-os_secure_random_bytescount-int-vecuint8" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>OS-entropy CSPRNG draw (ProcessPrng/RtlGenRandom on Windows, /dev/urandom on Unix), degrading to the legacy PRNG only when no OS source answers (degraded mode documented -- do not treat as secure). Backs secure_random_bytes since the confined-block growth fix (COMPILER_BUGS.md R4, 041e8bb3) removed the multi-draw AV; also used for the legacy fallback's one-time process seed.</p>
 </blockquote>
 <h3 id="fn-secure_random_bytescount-int-vecuint8"><code>fn secure_random_bytes(count: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-secure_random_bytescount-int-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>count: Int</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>OS-entropy random bytes (the CSPRNG source for the crypto modules).</p>
+</blockquote>
 <h3 id="fn-constant_time_comparea-vecuint8-b-vecuint8-bool"><code>fn constant_time_compare(a: &amp;Vec[UInt8], b: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-constant_time_comparea-vecuint8-b-vecuint8-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: &amp;Vec[UInt8]</code>, <code>b: &amp;Vec[UInt8]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the byte strings are equal, in constant time.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == true =&gt; a.len() == b.len()</code></li>
 </ul>
@@ -7715,7 +7751,9 @@
 <li><strong>Postcondition:</strong> <code>result.len() == 28</code></li>
 </ul>
 <h3 id="fn-sha384data-vecuint8-vecuint8"><code>fn sha384(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha384data-vecuint8-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>SHA-384 digest (48 bytes).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 48</code></li>
 </ul>

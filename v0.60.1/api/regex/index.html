@@ -3689,6 +3689,9 @@
 <hr />
 <h2 id="regexxi"><code>regex.xi</code><a class="headerlink" href="#regexxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-regex_1"><code>type Regex</code><a class="headerlink" href="#type-regex_1" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Compiled regular expression (wraps the pattern string).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3709,6 +3712,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="type-match_1"><code>type Match</code><a class="headerlink" href="#type-match_1" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>A matched span of the input.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3733,6 +3739,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Eq, Clone</code></p>
 <h3 id="type-captures"><code>type Captures</code><a class="headerlink" href="#type-captures" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Capture groups of the first match; None for unmatched groups.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3749,36 +3758,64 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="fn-newpattern-str-resultregex-str"><code>fn new(pattern: Str) -&gt; Result[Regex, Str]</code><a class="headerlink" href="#fn-newpattern-str-resultregex-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>pattern: Str</code>; returns <code>Result[Regex, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Compile a pattern; Err with a message on syntax errors.</p>
+</blockquote>
 <h3 id="fn-is_matchself-self-text-str-bool"><code>fn is_match(self: Self, text: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_matchself-self-text-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>text: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the pattern matches anywhere in <code>text</code>.</p>
+</blockquote>
 <h3 id="fn-findself-self-text-str-optionmatch"><code>fn find(self: Self, text: Str) -&gt; Option[Match]</code><a class="headerlink" href="#fn-findself-self-text-str-optionmatch" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>text: Str</code>; returns <code>Option[Match]</code>. No source comment yet.</p>
+<blockquote>
+<p>First match in <code>text</code>, or None.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.is_some =&gt; result.value.start &gt;= 0 &amp;&amp; result.value.end &gt;= result.value.start</code></li>
 </ul>
 <h3 id="fn-find_allself-self-text-str-vecmatch"><code>fn find_all(self: Self, text: Str) -&gt; Vec[Match]</code><a class="headerlink" href="#fn-find_allself-self-text-str-vecmatch" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>text: Str</code>; returns <code>Vec[Match]</code>. No source comment yet.</p>
+<blockquote>
+<p>All non-overlapping matches in <code>text</code>.</p>
+</blockquote>
 <h3 id="fn-capturesself-self-text-str-optioncaptures"><code>fn captures(self: Self, text: Str) -&gt; Option[Captures]</code><a class="headerlink" href="#fn-capturesself-self-text-str-optioncaptures" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>text: Str</code>; returns <code>Option[Captures]</code>. No source comment yet.</p>
+<blockquote>
+<p>Capture groups of the first match, or None.</p>
+</blockquote>
 <h3 id="fn-replaceself-self-text-str-replacement-str-str"><code>fn replace(self: Self, text: Str, replacement: Str) -&gt; Str</code><a class="headerlink" href="#fn-replaceself-self-text-str-replacement-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>text: Str</code>, <code>replacement: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Replace the first match with <code>replacement</code>.</p>
+</blockquote>
 <h3 id="fn-replace_allself-self-text-str-replacement-str-str"><code>fn replace_all(self: Self, text: Str, replacement: Str) -&gt; Str</code><a class="headerlink" href="#fn-replace_allself-self-text-str-replacement-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>text: Str</code>, <code>replacement: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Replace all non-overlapping matches.</p>
+</blockquote>
 <h3 id="fn-splitself-self-text-str-vecstr"><code>fn split(self: Self, text: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-splitself-self-text-str-vecstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>text: Str</code>; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Split <code>text</code> on matches of the pattern.</p>
+</blockquote>
 <h3 id="fn-match_countself-self-text-str-int"><code>fn match_count(self: Self, text: Str) -&gt; Int</code><a class="headerlink" href="#fn-match_countself-self-text-str-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>text: Str</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Number of non-overlapping matches.</p>
+</blockquote>
 <h3 id="fn-getself-self-index-int-optionmatch"><code>fn get(self: Self, index: Int) -&gt; Option[Match]</code><a class="headerlink" href="#fn-getself-self-index-int-optionmatch" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>index: Int</code>; returns <code>Option[Match]</code>. No source comment yet.</p>
+<blockquote>
+<p>Group at <code>index</code> (0 = whole match), or None when absent.</p>
+</blockquote>
 <h3 id="fn-get_namedself-self-name-str-optionmatch"><code>fn get_named(self: Self, name: Str) -&gt; Option[Match]</code><a class="headerlink" href="#fn-get_namedself-self-name-str-optionmatch" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>name: Str</code>; returns <code>Option[Match]</code>. No source comment yet.</p>
+<blockquote>
+<p>Named group by name, or None when absent.</p>
+</blockquote>
 <h3 id="fn-lenself-self-int"><code>fn len(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-lenself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Number of capture groups including the whole match.</p>
+</blockquote>
 <h3 id="fn-regex_escapepattern-str-str"><code>fn regex_escape(pattern: Str) -&gt; Str</code><a class="headerlink" href="#fn-regex_escapepattern-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>pattern: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Escape regex metacharacters so the result matches literally.</p>
+</blockquote>
 <h3 id="fn-is_valid_regexpattern-str-bool"><code>fn is_valid_regex(pattern: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_regexpattern-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>pattern: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the pattern compiles.</p>
+</blockquote>
 <h3 id="fn-regex_replace_allre-regex-text-str-replacement-str-str"><code>fn regex_replace_all(re: Regex, text: Str, replacement: Str) -&gt; Str</code><a class="headerlink" href="#fn-regex_replace_allre-regex-text-str-replacement-str-str" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Replaces all non-overlapping matches of <code>re</code> in <code>text</code> with <code>replacement</code>. Uses literal replacement (no $1 group references).</p>

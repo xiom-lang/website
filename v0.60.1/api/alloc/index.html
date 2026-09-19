@@ -2595,6 +2595,9 @@
 </blockquote>
 <h2 id="allocxi"><code>alloc.xi</code><a class="headerlink" href="#allocxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-layout"><code>type Layout</code><a class="headerlink" href="#type-layout" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Memory layout: byte size and alignment.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2615,12 +2618,21 @@
 </table>
 <p><strong>Derives:</strong> <code>Eq, Clone</code></p>
 <h3 id="fn-newsize-int-layout"><code>fn new(size: Int) -&gt; Layout</code><a class="headerlink" href="#fn-newsize-int-layout" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>size: Int</code>; returns <code>Layout</code>. No source comment yet.</p>
+<blockquote>
+<p>Layout with the given size and natural (8-byte) alignment.</p>
+</blockquote>
 <h3 id="fn-with_alignself-self-align-int-layout"><code>fn with_align(self: Self, align: Int) -&gt; Layout</code><a class="headerlink" href="#fn-with_alignself-self-align-int-layout" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>align: Int</code>; returns <code>Layout</code>. No source comment yet.</p>
+<blockquote>
+<p>Same size with the given alignment.</p>
+</blockquote>
 <h3 id="fn-padded_sizeself-self-int"><code>fn padded_size(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-padded_sizeself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Size rounded up to a multiple of the alignment.</p>
+</blockquote>
 <h3 id="type-allocerror"><code>type AllocError</code><a class="headerlink" href="#type-allocerror" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Allocation failure with a human-readable message.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2637,6 +2649,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="type-globalalloc"><code>type GlobalAlloc</code><a class="headerlink" href="#type-globalalloc" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>The process-global allocator (stateless handle).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2656,30 +2671,40 @@
 <p>Returns the concrete GlobalAlloc (the Allocator interface is a bound for generic code, not a value type the checker can return).</p>
 </blockquote>
 <h3 id="fn-allocateself-self-layout-layout-resultuint8-allocerror"><code>fn allocate(self: Self, layout: Layout) -&gt; Result[*UInt8, AllocError]</code><a class="headerlink" href="#fn-allocateself-self-layout-layout-resultuint8-allocerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>layout: Layout</code>; returns <code>Result[*UInt8, AllocError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Allocate <code>layout.size</code> bytes; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>layout.size &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result != null</code></li>
 </ul>
 <h3 id="fn-deallocateself-self-ptr-uint8-layout-layout"><code>fn deallocate(self: Self, ptr: *UInt8, layout: Layout)</code><a class="headerlink" href="#fn-deallocateself-self-ptr-uint8-layout-layout" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>ptr: *UInt8</code>, <code>layout: Layout</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Free a block previously returned by <code>allocate</code>.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-allocate_zeroedself-self-layout-layout-resultuint8-allocerror"><code>fn allocate_zeroed(self: Self, layout: Layout) -&gt; Result[*UInt8, AllocError]</code><a class="headerlink" href="#fn-allocate_zeroedself-self-layout-layout-resultuint8-allocerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>layout: Layout</code>; returns <code>Result[*UInt8, AllocError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Allocate zeroed memory for <code>layout</code>; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>layout.size &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result != null</code></li>
 </ul>
 <h3 id="fn-growself-self-ptr-uint8-old-layout-new-layout-resultuint8-allocerror"><code>fn grow(self: Self, ptr: *UInt8, old: Layout, new: Layout) -&gt; Result[*UInt8, AllocError]</code><a class="headerlink" href="#fn-growself-self-ptr-uint8-old-layout-new-layout-resultuint8-allocerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>ptr: *UInt8</code>, <code>old: Layout</code>, <code>new: Layout</code>; returns <code>Result[*UInt8, AllocError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Grow an allocation in place or by copy; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 <li><strong>Precondition:</strong> <code>new.size &gt; old.size</code></li>
 </ul>
 <h3 id="fn-shrinkself-self-ptr-uint8-old-layout-new-layout-resultuint8-allocerror"><code>fn shrink(self: Self, ptr: *UInt8, old: Layout, new: Layout) -&gt; Result[*UInt8, AllocError]</code><a class="headerlink" href="#fn-shrinkself-self-ptr-uint8-old-layout-new-layout-resultuint8-allocerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>ptr: *UInt8</code>, <code>old: Layout</code>, <code>new: Layout</code>; returns <code>Result[*UInt8, AllocError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Shrink an allocation in place or by copy; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 <li><strong>Precondition:</strong> <code>new.size &lt; old.size</code></li>
@@ -2694,7 +2719,9 @@
 <li><strong>Postcondition:</strong> <code>result != null</code></li>
 </ul>
 <h3 id="fn-alloc_zeroedsize-int-uint8"><code>fn alloc_zeroed(size: Int) -&gt; *UInt8</code><a class="headerlink" href="#fn-alloc_zeroedsize-int-uint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>size: Int</code>; returns <code>*UInt8</code>. No source comment yet.</p>
+<blockquote>
+<p>Allocate <code>size</code> zeroed bytes (8-byte aligned); null on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>size &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result != null</code></li>
@@ -2709,7 +2736,9 @@
 <li><strong>Postcondition:</strong> <code>result != null</code></li>
 </ul>
 <h3 id="fn-deallocptr-uint8-size-int"><code>fn dealloc(ptr: *UInt8, size: Int)</code><a class="headerlink" href="#fn-deallocptr-uint8-size-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *UInt8</code>, <code>size: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Free a block of <code>size</code> bytes.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
@@ -2722,7 +2751,9 @@
 <li><strong>Postcondition:</strong> <code>result != null</code></li>
 </ul>
 <h3 id="fn-dealloc_layoutptr-uint8-layout-layout"><code>fn dealloc_layout(ptr: *UInt8, layout: Layout)</code><a class="headerlink" href="#fn-dealloc_layoutptr-uint8-layout-layout" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *UInt8</code>, <code>layout: Layout</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Free a block allocated with <code>layout</code>.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>

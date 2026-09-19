@@ -5898,21 +5898,32 @@
 </tbody>
 </table>
 <h3 id="fn-newtvalue-t-mutext"><code>fn new[T](value: T) -&gt; Mutex[T]</code><a class="headerlink" href="#fn-newtvalue-t-mutext" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: T</code>; returns <code>Mutex[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Create an unlocked mutex holding <code>value</code>.</p>
+</blockquote>
 <h3 id="fn-locktself-self-mutexguardt"><code>fn lock[T](self: Self) -&gt; MutexGuard[T]</code><a class="headerlink" href="#fn-locktself-self-mutexguardt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>MutexGuard[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Block until the lock is acquired; returns the guard.</p>
+</blockquote>
 <h3 id="fn-try_locktself-self-optionmutexguardt"><code>fn try_lock[T](self: Self) -&gt; Option[MutexGuard[T]]</code><a class="headerlink" href="#fn-try_locktself-self-optionmutexguardt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[MutexGuard[T]]</code>. No source comment yet.</p>
+<blockquote>
+<p>Non-blocking lock attempt; None when already locked.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>inner != null</code></li>
 </ul>
 <h3 id="fn-into_innertself-self-t"><code>fn into_inner[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-into_innertself-self-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Consume the mutex and return the value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>inner != null</code></li>
 <li><strong>Precondition:</strong> <code>data != null</code></li>
 </ul>
 <h3 id="type-mutexguard"><code>type MutexGuard</code><a class="headerlink" href="#type-mutexguard" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>RAII guard holding the mutex lock.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5928,17 +5939,23 @@
 </tbody>
 </table>
 <h3 id="fn-gettself-self-t"><code>fn get[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-gettself-self-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Read the guarded value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>mutex.data != null</code></li>
 </ul>
 <h3 id="fn-get_muttself-self-t"><code>fn get_mut[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-get_muttself-self-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Mutable access to the guarded value (returns it by value).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>mutex.data != null</code></li>
 </ul>
 <h3 id="fn-droptself-self"><code>fn drop[T](self: Self)</code><a class="headerlink" href="#fn-droptself-self" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Release the lock.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>mutex.inner != null</code></li>
 </ul>
@@ -5977,16 +5994,29 @@
 </tbody>
 </table>
 <h3 id="fn-newtdata-t-rwlockt"><code>fn new[T](data: T) -&gt; RwLock[T]</code><a class="headerlink" href="#fn-newtdata-t-rwlockt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: T</code>; returns <code>RwLock[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Create an unlocked read-write lock holding <code>data</code>.</p>
+</blockquote>
 <h3 id="fn-readtself-self-readguardt"><code>fn read[T](self: Self) -&gt; ReadGuard[T]</code><a class="headerlink" href="#fn-readtself-self-readguardt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>ReadGuard[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Acquire a shared read guard (blocks while a writer holds the lock).</p>
+</blockquote>
 <h3 id="fn-writetself-self-writeguardt"><code>fn write[T](self: Self) -&gt; WriteGuard[T]</code><a class="headerlink" href="#fn-writetself-self-writeguardt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>WriteGuard[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Acquire an exclusive write guard.</p>
+</blockquote>
 <h3 id="fn-try_readtself-self-optionreadguardt"><code>fn try_read[T](self: Self) -&gt; Option[ReadGuard[T]]</code><a class="headerlink" href="#fn-try_readtself-self-optionreadguardt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[ReadGuard[T]]</code>. No source comment yet.</p>
+<blockquote>
+<p>Non-blocking shared read; None when a writer holds the lock.</p>
+</blockquote>
 <h3 id="fn-try_writetself-self-optionwriteguardt"><code>fn try_write[T](self: Self) -&gt; Option[WriteGuard[T]]</code><a class="headerlink" href="#fn-try_writetself-self-optionwriteguardt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[WriteGuard[T]]</code>. No source comment yet.</p>
+<blockquote>
+<p>Non-blocking exclusive write; None when the lock is held.</p>
+</blockquote>
 <h3 id="type-readguard"><code>type ReadGuard</code><a class="headerlink" href="#type-readguard" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>RAII guard for shared read access.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -6002,13 +6032,20 @@
 </tbody>
 </table>
 <h3 id="fn-gettself-self-t_1"><code>fn get[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-gettself-self-t_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Read the guarded value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>lock.data != null</code></li>
 </ul>
 <h3 id="fn-droptself-self_1"><code>fn drop[T](self: Self)</code><a class="headerlink" href="#fn-droptself-self_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Release the shared read lock.</p>
+</blockquote>
 <h3 id="type-writeguard"><code>type WriteGuard</code><a class="headerlink" href="#type-writeguard" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>RAII guard for exclusive write access.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -6024,17 +6061,23 @@
 </tbody>
 </table>
 <h3 id="fn-gettself-self-t_2"><code>fn get[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-gettself-self-t_2" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Read the guarded value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>lock.data != null</code></li>
 </ul>
 <h3 id="fn-get_muttself-self-t_1"><code>fn get_mut[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-get_muttself-self-t_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Mutable access to the guarded value (returns it by value).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>lock.data != null</code></li>
 </ul>
 <h3 id="fn-droptself-self_2"><code>fn drop[T](self: Self)</code><a class="headerlink" href="#fn-droptself-self_2" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Release the exclusive lock.</p>
+</blockquote>
 <h3 id="type-condvar"><code>type Condvar</code><a class="headerlink" href="#type-condvar" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>=== Condvar ===</p>
@@ -6054,16 +6097,24 @@
 </tbody>
 </table>
 <h3 id="fn-new-condvar"><code>fn new() -&gt; Condvar</code><a class="headerlink" href="#fn-new-condvar" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Condvar</code>. No source comment yet.</p>
+<blockquote>
+<p>Create a condition variable.</p>
+</blockquote>
 <h3 id="fn-waittself-self-guard-mutexguardt-mutexguardt"><code>fn wait[T](self: Self, guard: MutexGuard[T]) -&gt; MutexGuard[T]</code><a class="headerlink" href="#fn-waittself-self-guard-mutexguardt-mutexguardt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>guard: MutexGuard[T]</code>; returns <code>MutexGuard[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Wait for a notification, releasing and re-acquiring the mutex.</p>
+</blockquote>
 <h3 id="fn-notify_oneself-self"><code>fn notify_one(self: Self)</code><a class="headerlink" href="#fn-notify_oneself-self" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Wake one waiting thread.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>inner != null</code></li>
 </ul>
 <h3 id="fn-notify_allself-self"><code>fn notify_all(self: Self)</code><a class="headerlink" href="#fn-notify_allself-self" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Wake all waiting threads.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>inner != null</code></li>
 </ul>
@@ -6090,15 +6141,21 @@
 </tbody>
 </table>
 <h3 id="fn-new-once"><code>fn new() -&gt; Once</code><a class="headerlink" href="#fn-new-once" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Once</code>. No source comment yet.</p>
+<blockquote>
+<p>Create a one-shot initializer.</p>
+</blockquote>
 <h3 id="fn-call_onceself-self-f-fn-unit"><code>fn call_once(self: Self, f: fn() -&gt; Unit)</code><a class="headerlink" href="#fn-call_onceself-self-f-fn-unit" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>f: fn() -&gt; Unit</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Run <code>f</code> exactly once; later calls return immediately.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>inner != null</code></li>
 <li><strong>Precondition:</strong> <code>state != null</code></li>
 </ul>
 <h3 id="fn-is_completedself-self-bool"><code>fn is_completed(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_completedself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the initializer already ran.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>state != null</code></li>
 </ul>
@@ -6139,12 +6196,16 @@
 <p><strong>Invariants:</strong>
 - <code>count &gt; 0</code></p>
 <h3 id="fn-newn-int-barrier"><code>fn new(n: Int) -&gt; Barrier</code><a class="headerlink" href="#fn-newn-int-barrier" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>Barrier</code>. No source comment yet.</p>
+<blockquote>
+<p>Create a barrier for <code>n</code> threads (n is clamped to at least 1).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>n &gt; 0</code></li>
 </ul>
 <h3 id="fn-waitself-self"><code>fn wait(self: Self)</code><a class="headerlink" href="#fn-waitself-self" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Block until <code>n</code> threads arrive, then release them together.</p>
+</blockquote>
 <h3 id="type-arc"><code>type Arc</code><a class="headerlink" href="#type-arc" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>=== Arc (Atomic Reference Counted) ===</p>
@@ -6166,6 +6227,9 @@
 <p><strong>Invariants:</strong>
 - <code>ptr != null =&gt; (*ptr).count &gt;= 1</code></p>
 <h3 id="type-arcinner"><code>type ArcInner</code><a class="headerlink" href="#type-arcinner" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Control block behind <code>Arc</code>: atomic strong count plus the value.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -6185,34 +6249,46 @@
 </tbody>
 </table>
 <h3 id="fn-newtvalue-t-arct"><code>fn new[T](value: T) -&gt; Arc[T]</code><a class="headerlink" href="#fn-newtvalue-t-arct" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: T</code>; returns <code>Arc[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Allocate a shared-ownership pointer with strong count 1.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>strong_count == 1</code></li>
 </ul>
 <h3 id="fn-clonetself-self-arct"><code>fn clone[T](self: Self) -&gt; Arc[T]</code><a class="headerlink" href="#fn-clonetself-self-arct" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Arc[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Increment the strong count and return a second handle.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 <li><strong>Postcondition:</strong> <code>strong_count() &gt;= 1</code></li>
 </ul>
 <h3 id="fn-gettself-self-t_3"><code>fn get[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-gettself-self-t_3" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Read the shared value (by value).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-strong_counttself-self-int"><code>fn strong_count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-strong_counttself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Current strong count (atomic).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 <li><strong>Postcondition:</strong> <code>result &gt;= 1</code></li>
 </ul>
 <h3 id="fn-ptr_eqt-uself-self-other-arcu-bool"><code>fn ptr_eq[T, U](self: Self, other: &amp;Arc[U]) -&gt; Bool</code><a class="headerlink" href="#fn-ptr_eqt-uself-self-other-arcu-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>other: &amp;Arc[U]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when both handles point at the same control block.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-droptself-self_3"><code>fn drop[T](self: Self)</code><a class="headerlink" href="#fn-droptself-self_3" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Decrement the strong count; free when it reaches zero.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
@@ -6246,18 +6322,28 @@
 </tbody>
 </table>
 <h3 id="fn-newval-bool-atomicbool"><code>fn new(val: Bool) -&gt; AtomicBool</code><a class="headerlink" href="#fn-newval-bool-atomicbool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>val: Bool</code>; returns <code>AtomicBool</code>. No source comment yet.</p>
+<blockquote>
+<p>Create an atomic bool.</p>
+</blockquote>
 <h3 id="fn-loadself-self-bool"><code>fn load(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-loadself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Current value with acquire ordering.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-storeself-self-val-bool"><code>fn store(self: Self, val: Bool)</code><a class="headerlink" href="#fn-storeself-self-val-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>val: Bool</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Store with release ordering.</p>
+</blockquote>
 <h3 id="fn-swapself-self-val-bool-bool"><code>fn swap(self: Self, val: Bool) -&gt; Bool</code><a class="headerlink" href="#fn-swapself-self-val-bool-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>val: Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Atomically replace the value, returning the previous one.</p>
+</blockquote>
 <h3 id="fn-compare_exchangeself-self-current-bool-new-bool-bool"><code>fn compare_exchange(self: Self, current: Bool, new: Bool) -&gt; Bool</code><a class="headerlink" href="#fn-compare_exchangeself-self-current-bool-new-bool-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>current: Bool</code>, <code>new: Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Set to <code>new</code> when the value equals <code>current</code>; true on success.</p>
+</blockquote>
 <h3 id="type-atomicint_1"><code>type AtomicInt</code><a class="headerlink" href="#type-atomicint_1" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>=== AtomicInt -- real atomic operations ===</p>
@@ -6277,34 +6363,48 @@
 </tbody>
 </table>
 <h3 id="fn-newval-int-atomicint"><code>fn new(val: Int) -&gt; AtomicInt</code><a class="headerlink" href="#fn-newval-int-atomicint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>val: Int</code>; returns <code>AtomicInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Create an atomic Int.</p>
+</blockquote>
 <h3 id="fn-loadself-self-int"><code>fn load(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-loadself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Current value with acquire ordering.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-storeself-self-val-int-atomicint"><code>fn store(self: Self, val: Int) -&gt; AtomicInt</code><a class="headerlink" href="#fn-storeself-self-val-int-atomicint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>val: Int</code>; returns <code>AtomicInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Store with release ordering; returns the atomic.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-fetch_addself-self-val-int-int"><code>fn fetch_add(self: Self, val: Int) -&gt; Int</code><a class="headerlink" href="#fn-fetch_addself-self-val-int-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>val: Int</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Atomically add, returning the previous value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-fetch_subself-self-val-int-int"><code>fn fetch_sub(self: Self, val: Int) -&gt; Int</code><a class="headerlink" href="#fn-fetch_subself-self-val-int-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>val: Int</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Atomically subtract, returning the previous value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-swapself-self-val-int-int"><code>fn swap(self: Self, val: Int) -&gt; Int</code><a class="headerlink" href="#fn-swapself-self-val-int-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>val: Int</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Atomically replace, returning the previous value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-compare_exchangeself-self-current-int-new-int-bool"><code>fn compare_exchange(self: Self, current: Int, new: Int) -&gt; Bool</code><a class="headerlink" href="#fn-compare_exchangeself-self-current-int-new-int-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>current: Int</code>, <code>new: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Set to <code>new</code> when the value equals <code>current</code>; true on success.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>

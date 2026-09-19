@@ -3676,81 +3676,130 @@
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="fn-new-stdrng"><code>fn new() -&gt; StdRng</code><a class="headerlink" href="#fn-new-stdrng" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>Creates a new Xorshift64 generator with the given seed. Seed must be non-zero. Zero seed is replaced with 1.</p>
+<p>Seeded standard RNG (OS/time entropy when available).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-from_seedseed-int-stdrng"><code>fn from_seed(seed: Int) -&gt; StdRng</code><a class="headerlink" href="#fn-from_seedseed-int-stdrng" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>seed: Int</code>; returns <code>StdRng</code>. No source comment yet.</p>
+<blockquote>
+<p>Deterministic standard RNG from an integer seed.</p>
+</blockquote>
 <h3 id="fn-random-float64"><code>fn random() -&gt; Float64</code><a class="headerlink" href="#fn-random-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Basic random values ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 <li><strong>Postcondition:</strong> <code>result &lt; 1</code></li>
 </ul>
 <h3 id="fn-random_intmin-int-max-int-int"><code>fn random_int(min: Int, max: Int) -&gt; Int</code><a class="headerlink" href="#fn-random_intmin-int-max-int-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>min: Int</code>, <code>max: Int</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Uniform Int in [min, max] (inclusive).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>min &lt;= max</code></li>
 <li><strong>Postcondition:</strong> <code>result &gt;= min &amp;&amp; result &lt;= max</code></li>
 </ul>
 <h3 id="fn-random_floatmin-float64-max-float64-float64"><code>fn random_float(min: Float64, max: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-random_floatmin-float64-max-float64-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>min: Float64</code>, <code>max: Float64</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>Uniform Float64 in [min, max).</p>
+</blockquote>
 <h3 id="fn-random_bool-bool"><code>fn random_bool() -&gt; Bool</code><a class="headerlink" href="#fn-random_bool-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Fair coin flip.</p>
+</blockquote>
 <h3 id="fn-random_bytescount-int-vecuint8"><code>fn random_bytes(count: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-random_bytescount-int-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>count: Int</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p><code>count</code> random bytes (empty when count &lt;= 0).</p>
+</blockquote>
 <h3 id="fn-sample_uniformmin-float64-max-float64-float64"><code>fn sample_uniform(min: Float64, max: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_uniformmin-float64-max-float64-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>min: Float64</code>, <code>max: Float64</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Distributions ===</p>
+</blockquote>
 <h3 id="fn-sample_normalmean-float64-stddev-float64-float64"><code>fn sample_normal(mean: Float64, stddev: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_normalmean-float64-stddev-float64-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>mean: Float64</code>, <code>stddev: Float64</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>Normal (Gaussian) sample with the given mean and stddev.</p>
+</blockquote>
 <h3 id="fn-sample_exponentiallambda-float64-float64"><code>fn sample_exponential(lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_exponentiallambda-float64-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>lambda: Float64</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>Exponential sample with the given rate lambda.</p>
+</blockquote>
 <h3 id="fn-sample_bernoullip-float64-bool"><code>fn sample_bernoulli(p: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-sample_bernoullip-float64-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>p: Float64</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Bernoulli trial: true with probability p.</p>
+</blockquote>
 <h3 id="fn-sample_binomialn-int-p-float64-int"><code>fn sample_binomial(n: Int, p: Float64) -&gt; Int</code><a class="headerlink" href="#fn-sample_binomialn-int-p-float64-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: Int</code>, <code>p: Float64</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Binomial sample: successes in <code>n</code> independent trials with probability p.</p>
+</blockquote>
 <h3 id="fn-sample_poissonlambda-float64-int"><code>fn sample_poisson(lambda: Float64) -&gt; Int</code><a class="headerlink" href="#fn-sample_poissonlambda-float64-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>lambda: Float64</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Poisson sample with mean lambda.</p>
+</blockquote>
 <h3 id="fn-sample_gammashape-float64-scale-float64-float64"><code>fn sample_gamma(shape: Float64, scale: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_gammashape-float64-scale-float64-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>shape: Float64</code>, <code>scale: Float64</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>Gamma sample with the given shape and scale.</p>
+</blockquote>
 <h3 id="fn-sample_betaalpha-float64-beta-float64-float64"><code>fn sample_beta(alpha: Float64, beta: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_betaalpha-float64-beta-float64-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>alpha: Float64</code>, <code>beta: Float64</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>Beta sample with parameters alpha and beta.</p>
+</blockquote>
 <h3 id="fn-shuffletitems-mut-vect"><code>fn shuffle[T](items: &amp;mut Vec[T])</code><a class="headerlink" href="#fn-shuffletitems-mut-vect" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>items: &amp;mut Vec[T]</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>=== Shuffle &amp; Pick ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>items.len() == items.len()@pre</code></li>
 </ul>
 <h3 id="fn-picktitems-vect-optiont"><code>fn pick[T](items: &amp;Vec[T]) -&gt; Option[&amp;T]</code><a class="headerlink" href="#fn-picktitems-vect-optiont" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>items: &amp;Vec[T]</code>; returns <code>Option[&amp;T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Uniformly pick one element, or None for an empty vector.</p>
+</blockquote>
 <h3 id="fn-pick_ntitems-vect-n-int-vect"><code>fn pick_n[T](items: &amp;Vec[T], n: Int) -&gt; Vec[&amp;T]</code><a class="headerlink" href="#fn-pick_ntitems-vect-n-int-vect" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>items: &amp;Vec[T]</code>, <code>n: Int</code>; returns <code>Vec[&amp;T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Uniformly pick <code>n</code> distinct elements (fewer when the vector is shorter).</p>
+</blockquote>
 <h3 id="fn-weighted_picktitems-vect-weights-vecfloat64-optiont"><code>fn weighted_pick[T](items: &amp;Vec[T], weights: &amp;Vec[Float64]) -&gt; Option[&amp;T]</code><a class="headerlink" href="#fn-weighted_picktitems-vect-weights-vecfloat64-optiont" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>items: &amp;Vec[T]</code>, <code>weights: &amp;Vec[Float64]</code>; returns <code>Option[&amp;T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Pick an element with probability proportional to its weight; None when the vector is empty or all weights are &lt;= 0.</p>
+</blockquote>
 <h3 id="fn-uuid_v4-str"><code>fn uuid_v4() -&gt; Str</code><a class="headerlink" href="#fn-uuid_v4-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Random (version 4) UUID string.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 36</code></li>
 </ul>
 <h3 id="fn-uuid_v7-str"><code>fn uuid_v7() -&gt; Str</code><a class="headerlink" href="#fn-uuid_v7-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Time-ordered (version 7) UUID string.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 36</code></li>
 </ul>
 <h3 id="fn-seed_from_entropy"><code>fn seed_from_entropy()</code><a class="headerlink" href="#fn-seed_from_entropy" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>=== Seeding ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-seed_from_time"><code>fn seed_from_time()</code><a class="headerlink" href="#fn-seed_from_time" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Reseed the global RNG from the current time.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-seed_from_valueseed-int"><code>fn seed_from_value(seed: Int)</code><a class="headerlink" href="#fn-seed_from_valueseed-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>seed: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Reseed the global RNG from an explicit value.</p>
+</blockquote>
 <h3 id="type-xorshift64"><code>type Xorshift64</code><a class="headerlink" href="#type-xorshift64" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Xorshift64 PRNG (Marsaglia, 2003). State: 64-bit unsigned. Period: 2^64 - 1. Triple-xorshift: x ^= x &lt;&lt; a; x ^= x &gt;&gt; b; x ^= x &lt;&lt; c. Complexity: O(1) per call.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3767,7 +3816,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="fn-newseed-int-xorshift64"><code>fn new(seed: Int) -&gt; Xorshift64</code><a class="headerlink" href="#fn-newseed-int-xorshift64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>seed: Int</code>; returns <code>Xorshift64</code>. No source comment yet.</p>
+<blockquote>
+<p>Creates a new Xorshift64 generator with the given seed. Seed must be non-zero. Zero seed is replaced with 1.</p>
+</blockquote>
 <h3 id="fn-next_intself-self-int"><code>fn next_int(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-next_intself-self-int" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Returns the next pseudo-random integer from this Xorshift64 generator. Uses triple-xorshift: x ^= x &lt;&lt; 13; x ^= x &gt;&gt; 7; x ^= x &lt;&lt; 17.</p>

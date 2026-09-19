@@ -3567,6 +3567,9 @@
 <hr />
 <h2 id="errorxi"><code>error.xi</code><a class="headerlink" href="#errorxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-errorchain"><code>type ErrorChain</code><a class="headerlink" href="#type-errorchain" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Chain of error messages collected from an error value.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3583,19 +3586,28 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="fn-chainself-self-errorchain"><code>fn chain(self: Self) -&gt; ErrorChain</code><a class="headerlink" href="#fn-chainself-self-errorchain" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>ErrorChain</code>. No source comment yet.</p>
+<blockquote>
+<p>Collect this error's message chain (outermost first).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.errors.len() &gt;= 1</code></li>
 </ul>
 <h3 id="fn-displayself-self-str"><code>fn display(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-displayself-self-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Render the chain as a single multi-line string.</p>
+</blockquote>
 <h3 id="fn-wrap_errort-eresult-resultt-e-context-str-resultt-str"><code>fn wrap_error[T, E](result: Result[T, E], context: Str) -&gt; Result[T, Str]</code><a class="headerlink" href="#fn-wrap_errort-eresult-resultt-e-context-str-resultt-str" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Wrap the Err payload of <code>result</code> with a context message, preserving Ok values unchanged. The Err message becomes just <code>context</code> -- the richer <code>context + ": " + e.description()</code> form needs the <code>E: Error</code> bound, which the checker's builtin-interface matching does not support yet (C001: bound resolves against the OK type; interface-as-value gap). The <code>Error</code> interface with <code>Option[Error]</code> returns also defaults to i64 (unknown-type warning). Re-enrich once the checker closes those gaps.</p>
 </blockquote>
 <h3 id="fn-contextt-eresult-resultt-e-msg-str-resultt-str"><code>fn context[T, E](result: Result[T, E], msg: Str) -&gt; Result[T, Str]</code><a class="headerlink" href="#fn-contextt-eresult-resultt-e-msg-str-resultt-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>result: Result[T, E]</code>, <code>msg: Str</code>; returns <code>Result[T, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Wrap a Result error with an additional context message.</p>
+</blockquote>
 <h3 id="type-backtrace"><code>type Backtrace</code><a class="headerlink" href="#type-backtrace" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Captured call-site frames (best-effort, platform dependent).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3612,9 +3624,13 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="fn-capture_backtrace-backtrace"><code>fn capture_backtrace() -&gt; Backtrace</code><a class="headerlink" href="#fn-capture_backtrace-backtrace" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Backtrace</code>. No source comment yet.</p>
+<blockquote>
+<p>Capture the current backtrace.</p>
+</blockquote>
 <h3 id="fn-displayself-self-str_1"><code>fn display(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-displayself-self-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Render the frames as a single multi-line string.</p>
+</blockquote>
 <h3 id="fn-error_messageerr-str-str"><code>fn error_message(err: Str) -&gt; Str</code><a class="headerlink" href="#fn-error_messageerr-str-str" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Returns the error message unchanged. Identity helper for code clarity. Complexity: O(1). Pure, no side effects.</p>
@@ -3662,6 +3678,9 @@
 </tbody>
 </table>
 <h3 id="type-contractviolation"><code>type ContractViolation</code><a class="headerlink" href="#type-contractviolation" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Description of a violated contract (used by the runtime).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
