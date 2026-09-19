@@ -211,7 +211,10 @@ examples, an "Also in the box" toolchain inventory, and a "Built in the
 open" community section with source, issues and roadmap links. The live
 package registry (registry.xiom-lang.org, read-only UI plus public JSON) is
 now on the ecosystem page, and the docs gained a Package Registry guide
-covering install, locking, trust, yank and troubleshooting.
+covering install, locking, trust, yank and troubleshooting. The ecosystem
+page was reframed as a plan (status table, porting plan, direction
+categories) with no unfinished packages or product names, and Registry
+joined the top navigation on every page.
 
 Remaining:
 1. **~~AI_CONTEXT metadata~~ (done 2026-09-18)**: refreshed to the compiler

@@ -32,6 +32,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       <a href="docs.html">Docs</a>
       <a href="why.html">Why</a>
       <a href="ecosystem.html" class="active">Ecosystem</a>
+      <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="roadmap.html">Roadmap</a>
       <a href="versions.html">Versions</a>
       <a href="https://playground.xiom-lang.org">Playground</a>
@@ -42,180 +43,81 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 <header class="hero blueprint-bg" style="padding:48px 0;">
   <div class="wrap">
-    <div class="eyebrow">Packages &amp; Projects</div>
+    <div class="eyebrow">Ecosystem plan</div>
     <h1>XIOM Ecosystem</h1>
-    <p class="lede">The standard library ships with the toolchain today, the package registry is live, and packages beyond the standard library are still being built -- everything below is marked shipped or planned.</p>
+    <p class="lede">The compiler and standard library come first, then packages. The registry is live; the package catalog opens as the foundation stabilizes. This page describes the plan -- not unfinished work.</p>
   </div>
 </header>
 
 <main class="wrap" id="main">
 
-  <!-- Organization -->
+  <!-- Where it stands -->
   <div class="content-section">
-    <h2>Planned Organization</h2>
-    <p>The layout below is the intended structure; packages open as they stabilize.</p>
-    <pre><code>xiom-lang/
-|-- <span class="fn">xiom</span>              <span class="cm"><- compiler (this repo)</span>
-|-- <span class="fn">registry</span>          <span class="cm"><- package registry (live)</span>
-|
-|-- <span class="kw">core/</span>              <span class="cm"><- XIOM-native core packages</span>
-|   |-- std            <span class="cm"><- standard library</span>
-|   |-- test           <span class="cm"><- contract-aware test runner</span>
-|   |-- serialize      <span class="cm"><- JSON/binary serialization</span>
-|   |-- http           <span class="cm"><- HTTP client/server</span>
-|   |-- json           <span class="cm"><- JSON parsing</span>
-|   `-- crypto         <span class="cm"><- OpenSSL bindings (FFI)</span>
-|
-|-- <span class="kw">data/</span>              <span class="cm"><- data infrastructure</span>
-|   |-- xiomdb        <span class="cm"><- embedded typed database</span>
-|   `-- sql            <span class="cm"><- SQLite/Postgres (FFI)</span>
-|
-|-- <span class="kw">ai/</span>                <span class="cm"><- AI / ML</span>
-|   |-- tensor         <span class="cm"><- N-dimensional arrays</span>
-|   |-- blas           <span class="cm"><- BLAS/LAPACK bindings (FFI)</span>
-|   `-- nn             <span class="cm"><- neural network primitives</span>
-|
-|-- <span class="kw">sci/</span>               <span class="cm"><- scientific computing</span>
-|   |-- linalg         <span class="cm"><- linear algebra</span>
-|   |-- stats          <span class="cm"><- statistics</span>
-|   `-- plot           <span class="cm"><- plotting (FFI)</span>
-|
-|-- <span class="kw">tooling/</span>           <span class="cm"><- developer tools</span>
-|   |-- fmt            <span class="cm"><- canonical formatter</span>
-|   |-- lsp            <span class="cm"><- language server</span>
-|   `-- doc            <span class="cm"><- documentation generator</span>
-|
-`-- <span class="kw">community/</span>         <span class="cm"><- community contributions</span>
-    |-- gpu            <span class="cm"><- Vulkan bindings (FFI)</span>
-    |-- game           <span class="cm"><- game framework</span>
-    `-- vscode-xiom   <span class="cm"><- VS Code extension</span></code></pre>
+    <h2>Where the ecosystem stands</h2>
+    <table>
+      <tr><th>Layer</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Compiler</td><td>shipping</td><td>Releases on the mirror; v0.61.0 on main</td></tr>
+      <tr><td>Standard library</td><td>beta</td><td>Ships with the toolchain; 44 modules with published limitations</td></tr>
+      <tr><td>Registry</td><td>live (beta)</td><td>Browse and search today; publishing through publisher tokens</td></tr>
+      <tr><td>First-party packages</td><td>in porting</td><td>A large package corpus already exists in a monorepo; it was written against an earlier standard library and is being ported before anything is published</td></tr>
+      <tr><td>Community publishing</td><td>planned</td><td>Opens once the toolchain is stable and the registry leaves beta</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;">We deliberately do not list packages that do not build against the current toolchain. This page describes the plan.</p>
   </div>
 
-  <!-- Core Packages -->
+  <!-- The plan -->
   <div class="content-section">
-    <h2>Core Packages</h2>
-    <p>Standard library modules ship with the toolchain today; the rest are planned. Built in XIOM unless marked FFI.</p>
+    <h2>The plan</h2>
+    <ol>
+      <li><strong>Stabilize the foundation.</strong> Compiler and standard library first -- a stable release is the prerequisite for everything else.</li>
+      <li><strong>Port and publish first-party packages.</strong> The existing corpus is being ported to the current standard library; each package is published only when it builds, tests and carries contracts.</li>
+      <li><strong>Open community publishing.</strong> The registry already enforces immutable versions, sha256 integrity and ed25519 signatures; publishing opens wide once the foundation is stable.</li>
+      <li><strong>Graduate to per-package repositories.</strong> The monorepo is the working method; as packages mature they move to their own repositories under the xiom-lang organization.</li>
+    </ol>
+  </div>
 
+  <!-- Directions -->
+  <div class="content-section">
+    <h2>Directions we are building toward</h2>
+    <p>Categories, not product names -- specific packages are published when they are ready.</p>
     <div class="eco-grid" style="margin-top:24px;">
       <div class="eco-card">
-        <h4>std</h4>
-        <p>Standard library. Core types, collections, I/O, strings, math, FFI helpers. Ships with the compiler.</p>
-        <span class="eco-tag native">native</span>
-      </div>
-      <div class="eco-card">
-        <h4>test</h4>
-        <p>Contract-aware test runner. Every stdlib function's contract IS its test. <code>fn test_push_respects_capacity</code>.</p>
-        <span class="eco-tag native">native</span>
-      </div>
-      <div class="eco-card">
-        <h4>serialize</h4>
-        <p><code>derive[Serialize, Deserialize]</code> for JSON, binary, and XIOM wire format.</p>
-        <span class="eco-tag native">native</span>
-      </div>
-      <div class="eco-card">
-        <h4>http</h4>
-        <p>HTTP client/server. Client wraps libcurl via FFI. Server is an XIOM-native event loop.</p>
+        <h4>Data and storage</h4>
+        <p>Typed embedded storage, query and vector search built on XIOM types and contracts -- no SQL strings, no ORM.</p>
         <span class="eco-tag planned">planned</span>
       </div>
       <div class="eco-card">
-        <h4>json</h4>
-        <p>JSON parser and serializer. Contract-verified schema validation.</p>
+        <h4>Networking and web</h4>
+        <p>HTTP clients and servers, serialization formats and protocol libraries with contract-checked boundaries.</p>
         <span class="eco-tag planned">planned</span>
       </div>
       <div class="eco-card">
-        <h4>crypto</h4>
-        <p>Safe OpenSSL bindings. <code>requires: key.len() == 32</code> -- type-checked, not something you hope the caller got right.</p>
-        <span class="eco-tag ffi">ffi</span>
+        <h4>AI and machine learning</h4>
+        <p>Tensor and numeric libraries, inference primitives and tokenizers, with contract-verified shapes and dimensions.</p>
+        <span class="eco-tag planned">planned</span>
+      </div>
+      <div class="eco-card">
+        <h4>Scientific computing</h4>
+        <p>Linear algebra, statistics and plotting -- with FFI backends where the wider ecosystem is stronger.</p>
+        <span class="eco-tag planned">planned</span>
+      </div>
+      <div class="eco-card">
+        <h4>Graphics and games</h4>
+        <p>GPU bindings and a game framework, leaning on the WebAssembly target for the browser.</p>
+        <span class="eco-tag planned">planned</span>
+      </div>
+      <div class="eco-card">
+        <h4>Systems and tooling</h4>
+        <p>Editors, formatters, package tooling and generators that treat contracts as first-class documentation.</p>
+        <span class="eco-tag planned">planned</span>
       </div>
     </div>
   </div>
 
-  <!-- Flagship Projects -->
+  <!-- Toolchain -->
   <div class="content-section">
-    <h2>Flagship Projects</h2>
-
-    <div class="grid-2" style="margin-top:24px;align-items:start;">
-      <div class="card">
-        <h3 style="margin-bottom:12px;">XiomDB</h3>
-        <p style="color:var(--paper-dim);font-size:14px;">An embedded typed database. Schema = XIOM types with invariants. Query = XIOM functions with contracts. No SQL strings. No ORM. No migration files.</p>
-        <ul style="margin-top:12px;">
-          <li>B-tree storage engine</li>
-          <li>Write-ahead log for durability</li>
-          <li>Contract-verified constraints</li>
-          <li>WASM-deployable embedded mode</li>
-          <li>C-ABI for Rust/Python/Tauri</li>
-        </ul>
-        <span class="eco-tag planned" style="margin-top:12px;">planned -- Phase 3</span>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:12px;">XiomVDB</h3>
-        <p style="color:var(--paper-dim);font-size:14px;">An embedded vector database. Built on XiomDB's storage engine. Contract-verified dimension safety prevents the most common runtime crash in every vector DB client.</p>
-        <ul style="margin-top:12px;">
-          <li>HNSW ANN index</li>
-          <li>Cosine similarity + dot product</li>
-          <li>Dimension mismatch caught at contract layer</li>
-          <li>Built on XiomDB storage engine</li>
-          <li>C-ABI for Kyberon MNEME integration</li>
-        </ul>
-        <span class="eco-tag planned" style="margin-top:12px;">planned -- Phase 3</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tooling -->
-  <div class="content-section">
-    <h2>Developer Tools</h2>
-
-    <div class="eco-grid" style="margin-top:24px;">
-      <div class="eco-card">
-        <h4>xiom fmt</h4>
-        <p>Canonical formatter. Enforces the "one way to write each thing" principle at the tooling level.</p>
-        <span class="eco-tag planned">planned -- Phase 3</span>
-      </div>
-      <div class="eco-card">
-        <h4>xiom lsp</h4>
-        <p>Language Server Protocol implementation. Editor support for VS Code, Neovim, and any LSP-compatible editor.</p>
-        <span class="eco-tag planned">planned -- Phase 3</span>
-      </div>
-      <div class="eco-card">
-        <h4>xiom doc</h4>
-        <p>Documentation generator. Extracts contracts and type signatures into structured docs; ships as the <code>xiom-doc</code> tool binary.</p>
-        <span class="eco-tag native">available</span>
-      </div>
-      <div class="eco-card">
-        <h4>vscode-xiom</h4>
-        <p>VS Code extension with syntax highlighting, diagnostics, and playground integration.</p>
-        <span class="eco-tag planned">planned -- Phase 3</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- AI / ML -->
-  <div class="content-section">
-    <h2>AI / ML Packages</h2>
-
-    <div class="eco-grid" style="margin-top:24px;">
-      <div class="eco-card">
-        <h4>tensor</h4>
-        <p>N-dimensional arrays. <code>invariant: shape.product() == data.len()</code>. Contract-verified dimensions at compile time.</p>
-        <span class="eco-tag planned">planned</span>
-      </div>
-      <div class="eco-card">
-        <h4>blas</h4>
-        <p>BLAS/LAPACK bindings. <code>requires: a.cols == b.rows</code> -- verified before calling into C.</p>
-        <span class="eco-tag planned">planned</span>
-      </div>
-      <div class="eco-card">
-        <h4>nn</h4>
-        <p>Neural network primitives. Built on tensor + blas. Contract-verified layer shapes.</p>
-        <span class="eco-tag planned">planned</span>
-      </div>
-      <div class="eco-card">
-        <h4>tokenizers</h4>
-        <p>BPE, WordPiece. WASM-deployable for edge inference.</p>
-        <span class="eco-tag planned">planned</span>
-      </div>
-    </div>
+    <h2>Toolchain</h2>
+    <p>The companion tools ship in every release archive: formatter, language server, documentation generator, package manager, debugger, verifier, foreign-interface generator and the MCP server for AI agents. See the <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);">compiler guide</a> for the full tool surface.</p>
   </div>
 
   <!-- Registry -->
