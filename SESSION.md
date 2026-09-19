@@ -157,10 +157,11 @@ Queue:
    `M10_SCRIPTING_MODE`, `ecosystem/*`, and `checklists/*` references were
    removed or repointed, and MkDocs strict mode validates the versioned
    tree.
-7. **Docs dev channel (rejected 2026-09-18)**: ops asked to keep
-   publishing on release dispatch only, so a draft `docs-dev.yml` was
-   removed before commit. Guide changes go live with the next release;
-   do not re-propose the channel without an owner decision.
+7. **Docs dev channel (rejected 2026-09-18, pattern reserved for later)**:
+   ops asked to keep publishing on the release dispatch at beta, so a draft
+   `docs-dev.yml` was removed before commit. If byte-stable version
+   snapshots become a requirement (e.g. at 1.0), the reserved pattern is a
+   `dev` channel: push -> `dev`, release -> `vX.Y.Z` + `latest`.
 8. **Guide content refresh**: version-specific claims were removed from
    `index.md` and `compiler.md` (2026-09-18). A full refresh of compiler
    details (flags, gates, test counts) needs canonical numbers from the
