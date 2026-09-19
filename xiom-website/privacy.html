@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <main class="wrap">
   <div class="content-section">
     <h2>Summary</h2>
-    <p>The website and documentation have no accounts, no advertising and no third-party analytics. The registry stores the package metadata that makes distribution possible, and email we receive is kept so we can answer it.</p>
+    <p>The website and documentation have no accounts, no advertising and no third-party analytics. The playground sends the code you submit to our server to compile and run it in a sandboxed container, and optional sign-in stores only your lesson progress -- never your source. The registry stores the package metadata that makes distribution possible, and email we receive is kept so we can answer it.</p>
   </div>
 
   <div class="content-section">
@@ -62,7 +62,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     <ul>
       <li><strong>Server logs.</strong> Like most web servers, ours record the requested URL, timestamp, IP address and user agent for security and operations. Logs are kept for a short period and are not used to profile visitors.</li>
       <li><strong>Email.</strong> If you write to <a href="mailto:support@xiom-lang.org" style="color:var(--signal);">support@xiom-lang.org</a>, we keep the correspondence so we can respond and follow up.</li>
-      <li><strong>Browser storage.</strong> The documentation theme remembers your light/dark preference in your own browser (local storage). It is not transmitted to us.</li>
+      <li><strong>Browser storage.</strong> The documentation theme remembers your light/dark preference in your own browser (local storage). Guest playground progress and export/import files also stay in your browser. None of this is transmitted to us.</li>
     </ul>
   </div>
 
@@ -73,17 +73,22 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
   <div class="content-section">
     <h2>Playground</h2>
-    <p>The playground compiles XIOM in your browser using WebAssembly, so the code you type stays on your machine. If playground features ever require a server, they will be documented in the playground repository before use.</p>
+    <p>When you check, format, compile or run code in the playground, the source you submit is sent to our server and processed there. Programs are compiled and executed in a sandboxed container: non-root, read-only root filesystem, no network egress, capabilities dropped, and a temporary filesystem for work. Work directories are created per request and deleted immediately. The toolchain's script cache may hold a compiled binary and a source copy in the container's ephemeral temporary storage until the container restarts; nothing is written to persistent disk. The WebAssembly preview runs in your browser, but the checks and executions you request run on the server.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Playground accounts (optional)</h2>
+    <p>The playground is fully usable without an account; guest progress and export/import stay in your browser. If you sign in with GitHub, we store one JSON progress document per account on the playground server: completed lesson ids, run timestamps with pass/fail and duration, and truncated program output capped at 400 characters. No source code is stored. The document lives on a Docker volume that is included in the nightly backup, and the "Delete account data" action removes it from the live server. Signing in uses an HttpOnly session cookie with a 30-day lifetime; signing out clears it.</p>
   </div>
 
   <div class="content-section">
     <h2>Third parties</h2>
-    <p>Source code, issues and releases live on GitHub, which has its own privacy policy. The services are hosted on our own infrastructure in the EU. No analytics, advertising or social-tracking scripts are embedded in the website or documentation.</p>
+    <p>Source code, issues and releases live on GitHub, which has its own privacy policy. Signing in to the playground uses GitHub OAuth: GitHub receives the authorization grant, and the access token is discarded by the playground after fetching your public profile (id, username, avatar). The services are hosted on our own infrastructure in the EU. No analytics, advertising or social-tracking scripts are embedded in the website or documentation.</p>
   </div>
 
   <div class="content-section">
     <h2>Cookies</h2>
-    <p>The website and documentation do not set cookies. The only cookie-like storage is the documentation theme preference described above, which stays in your browser.</p>
+    <p>The website and documentation do not set cookies; the documentation theme preference is stored in your browser. The playground sets a single HttpOnly session cookie, and only if you choose to sign in for progress tracking.</p>
   </div>
 
   <div class="content-section">
