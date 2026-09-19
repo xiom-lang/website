@@ -14,13 +14,16 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 | `Int16` | 16 bits | Signed short. |
 | `Int32` | 32 bits | Signed word. |
 | `Int64` | 64 bits | Signed double word. |
+| `Int128` | 128 bits | Signed 128-bit integer. Integer literals beyond 64 bits are supported. |
 | `UInt` | Platform (64-bit) | Unsigned. Use for sizes and indices. |
 | `UInt8` | 8 bits | Byte. Alias: `Byte`. |
 | `UInt16` | 16 bits | |
 | `UInt32` | 32 bits | |
 | `UInt64` | 64 bits | |
+| `UInt128` | 128 bits | Unsigned 128-bit integer. |
 | `Float32` | IEEE 754 single | |
 | `Float64` | IEEE 754 double | Default float type. |
+| `Float128` | IEEE 754 quad | 128-bit floating point. |
 | `Char` | 32 bits | Unicode scalar value. Not a byte. |
 | `Str` | Fat pointer | Immutable UTF-8 slice. Not null-terminated. |
 
