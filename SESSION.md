@@ -14,8 +14,8 @@ private `xiom-lang/ops` repo.
 | URL | Served from | Notes |
 |---|---|---|
 | https://xiom-lang.org | `xiom-website/` | mirror-first download page, installers |
-| https://docs.xiom-lang.org | `docs/html/` | generated documentation front-end |
-| https://xiom-lang.org/docs/ | `xiom-website/docs/` | same docs inside the site (docs.html redirects here) |
+| https://docs.xiom-lang.org | `docs/html/` + `gh-pages` (mike) | generated documentation front-end |
+| https://xiom-lang.org/docs/ | `docs.html` (redirect) | forwards to the canonical docs subdomain |
 | https://dl.xiom-lang.org | release mirror | `latest.json`, `releases/index.json`, artifacts |
 
 Deploys are pull-based: `/opt/xiom/bin/web-deploy.sh` on the VPS (from
@@ -78,9 +78,9 @@ Queue:
 ## Workstream 2: documentation platform
 
 Current pipeline: `docs/build_docs.py` converts `docs/language/*.md` to
-`docs/html/` and `xiom-website/docs/` (both generated; `docs/html/` is
-canonical for the docs subdomain, the site copy is published under
-`xiom-lang.org/docs/`). Fixed 2026-09-17: paths corrected for the
+`docs/html/` (standalone bundle for releases; the site copy under
+`xiom-website/docs/` was retired 2026-09-19 and `docs.html` redirects to
+the docs subdomain). Fixed 2026-09-17: paths corrected for the
 `xiom-website/` split, every `docs/language/` source is in the nav, output
 is rebuilt from scratch (no orphan pages), generation is idempotent, and
 `.github/workflows/docs.yml` fails when committed output differs. Set
@@ -128,9 +128,8 @@ Queue:
    pinned toolchain, assembly script, strict build, legacy redirects,
    publish workflow, and the first successful publish to `gh-pages` are in
    place. Remaining: the ops session executes the docroot switch on the
-   VPS (script ready at `xiom-lang/ops` `docs/DOCS_MIKE_SWITCH.md`), then
-   decide whether the generated site copy under `xiom-website/docs/`
-   stays.
+   VPS (script ready at `xiom-lang/ops` `docs/DOCS_MIKE_SWITCH.md`); the
+   generated site copy under `xiom-website/docs/` was retired 2026-09-19.
 3. **Stdlib/compiler API pages (done 2026-09-17)**: `docs/build_api_docs.py`
    walks a stdlib checkout, runs `xiom-doc` over every source and writes
    per-module MkDocs pages plus an index. Spike over the local stdlib at
@@ -233,10 +232,9 @@ Remaining:
 4. `docs/error_codes/*` stays unpublished for now -- the index is
    incomplete (one README plus X0010/X0011/X0100). Revisit when the
    compiler lane owns error-code docs.
-5. `xiom-website/docs/` (the generated site copy) still exists for deep
-   links; `docs.html` now redirects to the canonical
-   `https://docs.xiom-lang.org/`. Retire the copy once old links stop
-   mattering.
+5. ~~`xiom-website/docs/` site copy~~ (retired 2026-09-19): `docs.html`
+   redirects to the canonical `https://docs.xiom-lang.org/`, and the
+   generator no longer produces the site copy.
 6. **~~Compiler review~~ (done 2026-09-18)**: the compiler lane verified the
    new Modes/Architecture content against source (main v0.61.0) -- all
    three flags are real, the 20-crate list is confirmed, and the
@@ -264,7 +262,7 @@ Remaining:
   rewrite completed on 2026-09-18 (main and tags rewritten; the gh-pages
   bot commits were preserved) - existing clones must be re-cloned, not
   pulled.
-- `docs/html/` and `xiom-website/docs/` are generated; do not hand-edit.
+- `docs/html/` is generated; do not hand-edit.
 
 ## Paste-ready prompt for the next session
 

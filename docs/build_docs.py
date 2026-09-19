@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+# Copyright (c) 2026 XIOM Foundation
 # SPDX-License-Identifier: MIT OR Apache-2.0
 """
 xiom Documentation Builder
-Converts docs/language/*.md -> docs/html/ and xiom-website/docs/
+Converts docs/language/*.md -> docs/html/
 Run: python docs/build_docs.py
 
 Outputs:
-  docs/html/         -- static HTML, ships with releases, works from file://
-  xiom-website/docs/ -- integrated into xiom-lang.org
+  docs/html/ -- static HTML, ships with releases, works from file://;
+                published to docs.xiom-lang.org via the mike pipeline
 
 Set XIOM_DOCS_VERSION to stamp pages with a release tag (default: latest).
 """
@@ -22,7 +22,6 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = ROOT / "docs" / "language"
 AI_CONTEXT = ROOT / "docs" / "AI_CONTEXT.md"
 OUT_HTML = ROOT / "docs" / "html"
-OUT_WEBSITE = ROOT / "xiom-website" / "docs"
 STYLE_CSS = ROOT / "xiom-website" / "style.css"
 IMAGE_DIR = ROOT / "resource" / "img"
 
@@ -265,7 +264,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     </a>
     <div class="navlinks">
       <a href="{site_base}spec.html">Spec</a>
-      <a href="{site_base}docs/">Docs</a>
+      <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="{site_base}why.html">Why</a>
       <a href="{site_base}ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
@@ -306,7 +305,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     </div>
     <div class="foot-links">
       <a href="{site_base}spec.html">Spec</a>
-      <a href="{site_base}docs/">Docs</a>
+      <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="{site_base}ecosystem.html">Ecosystem</a>
       <a href="{site_base}download.html">Download</a>
     </div>
@@ -536,8 +535,8 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str,
 if __name__ == '__main__':
     print("xiom Documentation Builder\n")
 
-    # 1. Build standalone HTML (ships with releases, works from file://)
-    print("[1/2] Building standalone HTML (docs/html/)...")
+    # Build standalone HTML (ships with releases, works from file://)
+    print("[1/1] Building standalone HTML (docs/html/)...")
     build(
         output_dir=OUT_HTML,
         home_path="index.html",
@@ -546,24 +545,13 @@ if __name__ == '__main__':
         site_base="https://xiom-lang.org/",
     )
 
-    # 2. Build website docs (integrated into xiom-lang.org)
-    print("\n[2/2] Building website docs (xiom-website/docs/)...")
-    build(
-        output_dir=OUT_WEBSITE,
-        home_path="../",
-        css_path="../style.css",
-        icon_path="../img/xiom-icon.ico",
-        site_base="../",
-    )
-
-    # 3. Copy style.css to docs/html/ so standalone works
+    # Copy style.css to docs/html/ so standalone works
     style_dest = OUT_HTML / "style.css"
     if not STYLE_CSS.exists():
         raise SystemExit(f"missing stylesheet: {STYLE_CSS}")
     shutil.copy2(STYLE_CSS, style_dest)
     print(f"\n  Copied style.css -> {style_dest.relative_to(ROOT)}")
 
-    print("\nDone. Outputs:")
-    print(f"  Standalone:  {OUT_HTML.relative_to(ROOT)}/  (ships with releases)")
-    print(f"  Website:     {OUT_WEBSITE.relative_to(ROOT)}/  (xiom-lang.org/docs/)")
+    print("\nDone. Output:")
+    print(f"  Standalone:  {OUT_HTML.relative_to(ROOT)}/  (ships with releases; docs.xiom-lang.org)")
     print(f"\nOpen: { (OUT_HTML / 'index.html').relative_to(ROOT) }")

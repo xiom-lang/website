@@ -11,7 +11,6 @@ toolchain.
 | `xiom-website/` | marketing site pages, `style.css`, `img/`, public installers |
 | `docs/language/` | hand-written guide sources (Markdown) |
 | `docs/html/` | generated standalone documentation bundle (release packaging) |
-| `xiom-website/docs/` | generated guide copy for `xiom-lang.org/docs/` |
 | `docs/build_docs.py` | static generator for the two trees above |
 | `docs/build_api_docs.py` | stdlib API pages via `xiom-doc` |
 | `docs/build_mkdocs.py` | assembles `build/mkdocs-src/` for the versioned site |
@@ -56,7 +55,7 @@ work queue and open decisions.
   `dl.xiom-lang.org`.
 - Every GitHub Actions ref is pinned to a full commit SHA
   (`sha_pinning_required=true`); tag refs fail at job setup.
-- Generated trees (`docs/html/`, `xiom-website/docs/`) are never hand-edited.
+- Generated trees (`docs/html/`) are never hand-edited.
 - Commit identity: set the repo-local identity before the first commit
   (`Lefteris Notas <lefterisnotas@gmail.com>`); never use the global work
   identity, never `--author`, and rewrite pushed history only on owner

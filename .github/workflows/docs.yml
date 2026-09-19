@@ -1,4 +1,4 @@
-# Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+# Copyright (c) 2026 XIOM Foundation
 # SPDX-License-Identifier: MIT OR Apache-2.0
 #
 # Fails when the committed generated docs do not match docs/build_docs.py
@@ -42,10 +42,10 @@ jobs:
         run: python docs/build_docs.py
       - name: Fail when committed output differs
         run: |
-          if [ -n "$(git status --porcelain -- docs/html xiom-website/docs)" ]; then
+          if [ -n "$(git status --porcelain -- docs/html)" ]; then
             echo "::error::Generated docs are out of date. Run: python docs/build_docs.py"
-            git status --porcelain -- docs/html xiom-website/docs
-            git --no-pager diff --stat -- docs/html xiom-website/docs
+            git status --porcelain -- docs/html
+            git --no-pager diff --stat -- docs/html
             exit 1
           fi
       - name: Check relative links
