@@ -214,7 +214,11 @@ now on the ecosystem page, and the docs gained a Package Registry guide
 covering install, locking, trust, yank and troubleshooting. The ecosystem
 page was reframed as a plan (status table, porting plan, direction
 categories) with no unfinished packages or product names, and Registry
-joined the top navigation on every page.
+joined the top navigation on every page. Brand illustrations are wired in:
+five story chips on the homepage, three pillar icons on the Why page, and
+`og-card.png` (1200x630) as the social preview everywhere; the footer legal
+block is split into three short lines, docs code is 13px, and the card grids
+use proper gaps and bordered panels.
 
 Remaining:
 1. **~~AI_CONTEXT metadata~~ (done 2026-09-18)**: refreshed to the compiler
