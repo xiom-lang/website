@@ -257,8 +257,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
-
 <nav>
   <div class="wrap">
     <a href="{home_path}" class="logo">
