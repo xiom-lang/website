@@ -175,10 +175,11 @@ def generated_summary(heading_text):
 def clean_file_output(text, source=None):
     """Normalize one file's xiom-doc output for embedding under an H2.
 
-    Removes the per-file preamble and module wrapper headings, then demotes
-    the remaining declaration headings by one level so they sit at H3 under
-    the file section. When the source path is given, `///` doc comments are
-    merged in above their declarations. Returns (body_lines, symbol_count).
+    Removes the per-file preamble and module wrapper headings and keeps the
+    declaration headings at H4, so the right-hand table of contents stays at
+    file level while the declarations keep their anchors. When the source
+    path is given, `///` doc comments are merged under their declarations.
+    Returns (body_lines, symbol_count).
     """
     docs = parse_doc_comments(source) if source is not None else []
     doc_index = 0
@@ -195,11 +196,8 @@ def clean_file_output(text, source=None):
 
     body = []
     for line in cleaned:
-        match = HEADING_RE.match(line)
-        if match and len(match.group(1)) > 3:
-            line = line[1:]
         doc_line = None
-        if line.startswith("###"):
+        if line.startswith("####"):
             symbol = heading_symbol(line)
             if symbol:
                 kind, name, base, heading_text = symbol
@@ -220,7 +218,7 @@ def clean_file_output(text, source=None):
             body.append(doc_line)
     while body and not body[0].strip():
         body.pop(0)
-    symbols = sum(1 for line in body if line.startswith("###"))
+    symbols = sum(1 for line in body if line.startswith("####"))
     return body, symbols
 
 

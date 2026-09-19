@@ -217,7 +217,10 @@ joined the top navigation on every page. Brand illustrations are wired in:
 five story chips on the homepage, three pillar icons on the Why page, and
 `og-card.png` (1200x630) as the social preview everywhere; the footer legal
 block is split into three short lines, docs code is 13px, and the card grids
-use proper gaps and bordered panels.
+use proper gaps and bordered panels. The docs table of contents was tamed:
+API declarations are H4 (anchors kept) with `toc_depth: 3`, so the TOC lists
+file sections only while guides keep their subsections, and the sidebar got
+compact styling.
 
 Remaining:
 1. **~~AI_CONTEXT metadata~~ (done 2026-09-18)**: refreshed to the compiler
