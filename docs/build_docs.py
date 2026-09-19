@@ -331,6 +331,7 @@ NAV_ORDER = [
     ("derive.md", "Derive"),
     ("ffi.md", "C FFI"),
     ("compiler.md", "Compiler"),
+    ("registry.md", "Package Registry"),
     ("stdlib.md", "Stdlib Reference"),
     ("api.md", "_api"),           # built but shown as sidebar section header
     ("../AI_CONTEXT.md", "AI Coding Ref"),

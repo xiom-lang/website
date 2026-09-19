@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom -- Derive</title>
+<title>xiom -- Package Registry</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="stylesheet" href="style.css">
@@ -47,10 +47,10 @@
         <a href="modules.html" style="color:var(--muted);">Modules</a>
         <a href="generics.html" style="color:var(--muted);">Generics</a>
         <a href="pattern-matching.html" style="color:var(--muted);">Pattern Matching</a>
-        <a href="derive.html" style="color:var(--signal);font-weight:500;">Derive</a>
+        <a href="derive.html" style="color:var(--muted);">Derive</a>
         <a href="ffi.html" style="color:var(--muted);">C FFI</a>
         <a href="compiler.html" style="color:var(--muted);">Compiler</a>
-        <a href="registry.html" style="color:var(--muted);">Package Registry</a>
+        <a href="registry.html" style="color:var(--signal);font-weight:500;">Package Registry</a>
         <a href="stdlib.html" style="color:var(--muted);">Stdlib Reference</a>
         <a href="AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
         <div style="margin-top:20px;"></div>
@@ -101,115 +101,98 @@
 
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">Derive</h1>
-      <p>The <code>derive</code> clause instructs the compiler to generate correct-by-construction implementations of common interfaces. Every hand-written <code>eq</code> or <code>clone</code> method is a chance for error. The compiler never misses.</p>
-<h2>Supported Derivations</h2>
+      <h1 style="font-size:36px;margin-bottom:24px;">Package Registry</h1>
+      <p>The XIOM package registry is live at <a href="https://registry.xiom-lang.org">registry.xiom-lang.org</a> and is the package source your <code>xiom pkg</code> commands already use. It is in beta: the service, protocol and verification pipeline are operational, and the public package list is just beginning.</p>
+<h2>Browse</h2>
+<ul>
+<li>The web UI lists every package with its latest version, with search.</li>
+<li>A package page shows every version with published date, size, sha256</li>
+</ul>
+<p>digest, signature fingerprint and yank state, plus copy-ready install and   trust commands.</p>
+<ul>
+<li>The JSON API behind the UI is public: <code>https://registry.xiom-lang.org/index.json</code>.</li>
+</ul>
+<h2>Install a package</h2>
+<pre><code>
+xiom pkg install my-lib              # latest installable version
+xiom pkg install my-lib@<span class='num'>1.2</span>.<span class='num'>0</span>        # exact version
+</code></pre>
+<p>The client verifies the tarball's sha256 against the index before unpacking; a mismatch aborts the install. When the registry key is pinned, the ed25519 signature is verified as well and unsigned or mis-signed artifacts are refused. Installs land in <code>XIOM_HOME/packages/</code> and become importable by name.</p>
+<h2>Lock dependencies</h2>
+<p><code>xiom pkg lock</code> reads <code>package.xi</code> and writes <code>xiom.lock</code>, recording the exact version and digest of every dependency. Commit the lockfile: builds become reproducible and the bytes you reviewed stay pinned. Updating is deliberate - change the version and re-run <code>xiom pkg lock</code>.</p>
+<h2>Signatures and trust</h2>
+<p>First-party artifacts are signed; community publishers can sign too, and the package page shows a <code>signed</code> badge with the key fingerprint.</p>
+<pre><code>
+xiom pkg trust --registry https:<span class='cm'>//registry.xiom-lang.org --key <public key hex></span>
+xiom pkg trusted     # list pinned keys
+</code></pre>
+<p>A pinned key applies to every package from that registry. At beta, community packages may be published unsigned, so pinning the key means those installs will be refused - pin it when you consume first-party signed packages and want the strictest guarantee.</p>
+<p>Manual verification of a downloaded artifact:</p>
+<pre><code>
+xiom pkg verify <tarball> <signature-file> [--key <public key hex>]
+</code></pre>
+<h2>Search from the CLI</h2>
+<pre><code>
+xiom pkg search http        # downloads the index and filters locally
+</code></pre>
+<p>The web UI searches server-side and is easier for browsing.</p>
+<h2>Yanked versions</h2>
+<p>A yanked version is withdrawn: it disappears from <code>latest</code> and fresh resolution, but existing lockfiles keep working and the artifact stays downloadable. The package page marks it <code>yanked</code>.</p>
+<h2>Trust model</h2>
 <table>
 <tr>
-<th>Derive</th>
-<th>Generated Behavior</th>
+<th>Signal</th>
+<th>What it means</th>
 </tr>
 <tr>
-<td><code>Eq</code></td>
-<td>Structural equality -- every field compared. Two values are equal if all fields are equal.</td>
+<td>sha256 in the index</td>
+<td>the bytes you get are the bytes that were published</td>
 </tr>
 <tr>
-<td><code>Clone</code></td>
-<td>Deep copy -- every field cloned recursively.</td>
+<td>immutable versions</td>
+<td>a published version can never change under you</td>
 </tr>
 <tr>
-<td><code>Display</code></td>
-<td>Canonical string representation. Structs format as <code>TypeName{ field: value, ... }</code>.</td>
+<td>ed25519 signature</td>
+<td>the artifact was signed by the key with that fingerprint</td>
 </tr>
 <tr>
-<td><code>Hash</code></td>
-<td>Structural hash -- every field hashed and combined. Compatible with <code>Eq</code>.</td>
+<td>pinned key</td>
+<td>you refuse anything not signed by that key</td>
 </tr>
 <tr>
-<td><code>Ord</code></td>
-<td>Lexicographic ordering -- fields compared in declaration order.</td>
-</tr>
-<tr>
-<td><code>Debug</code></td>
-<td>Debug representation via <code>.fmt()</code>. Defaults to Display output unless overridden.</td>
+<td>yank</td>
+<td>a version is withdrawn without breaking pinned installs</td>
 </tr>
 </table>
-<h2>Usage</h2>
-<pre class="language-xiom"><code>
-<span class='kw'>type</span> <span class='ty'>Point</span> = {
-  x: <span class='ty'>Float64</span>;
-  y: <span class='ty'>Float64</span>;
-} <span class='kw'>derive</span>[<span class='ty'>Eq</span>, <span class='ty'>Clone</span>, <span class='ty'>Display</span>]
-
-<span class='cm'>// Compiler generates:</span>
-<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>eq</span>(other: &<span class='ty'>Point</span>) -> <span class='ty'>Bool</span>     -- x == x && y == y</span>
-<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>clone</span>() -> <span class='ty'>Point</span>              -- deep copy of both fields</span>
-<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>to_str</span>() -> <span class='ty'>Str</span>               -- <span class='str'><span class='ty'>Point</span>{ x: <span class='num'>1.0</span>, y: <span class='num'>2.0</span> }</span></span>
-</code></pre>
-<h2>Invariant Restriction</h2>
-<p>Types with <code>invariant</code> clauses cannot derive <code>Eq</code>, <code>Hash</code>, or <code>Ord</code>. Invariants make structural equality semantically ambiguous -- two values with different internal state may both satisfy the same invariant. <code>Clone</code> and <code>Display</code> remain available.</p>
-<pre class="language-xiom"><code>
-<span class='kw'>type</span> <span class='ty'>Health</span> = {
-  current: <span class='ty'>Int</span>;
-  maximum: <span class='ty'>Int</span>;
-  <span class='kw'>invariant</span>: current >= <span class='num'>0</span>;
-  <span class='kw'>invariant</span>: current <= maximum;
-} <span class='kw'>derive</span>[<span class='ty'>Clone</span>, <span class='ty'>Display</span>]
-<span class='cm'>// <span class='ty'>Eq</span>, <span class='ty'>Hash</span>, <span class='ty'>Ord</span> are rejected -- invariants make equality/hashing ambiguous</span>
-</code></pre>
-<h2>Enums</h2>
-<p>Enums support derive too:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>enum</span> <span class='ty'>Option</span>[T] {
-  <span class='kw'>Some</span>(value: T),
-  <span class='kw'>None</span>,
-} <span class='kw'>derive</span>[<span class='ty'>Eq</span>, <span class='ty'>Clone</span>]
-
-<span class='cm'>// Enums with variant data can <span class='kw'>derive</span> <span class='ty'>Clone</span>, <span class='ty'>Display</span>, Debug</span>
-<span class='cm'>// Enums with only unit variants can also <span class='kw'>derive</span> <span class='ty'>Eq</span>, <span class='ty'>Hash</span>, <span class='ty'>Ord</span></span>
-</code></pre>
-<h2>Codegen Details</h2>
-<h3>Eq</h3>
-<pre class="language-llvm"><code>
-; Structural comparison over all fields
-%eq_x = fcmp oeq double %<span class='kw'>self</span>.x, %other.x
-%eq_y = fcmp oeq double %<span class='kw'>self</span>.y, %other.y
-%<span class='kw'>result</span> = and i1 %eq_x, %eq_y
-</code></pre>
-<h3>Clone</h3>
-<pre class="language-llvm"><code>
-; Deep copy via alloca + GEP per field
-%clone = alloca %struct.<span class='ty'>Point</span>
-%x_ptr = getelementptr %struct.<span class='ty'>Point</span>, %struct.<span class='ty'>Point</span>* %clone, i32 <span class='num'>0</span>, i32 <span class='num'>0</span>
-store double %<span class='kw'>self</span>.x, double* %x_ptr
-; ... repeat <span class='kw'>for</span> each field
-</code></pre>
-<h3>Display</h3>
-<pre class="language-llvm"><code>
-; Canonical string via printf format concatenation
-; <span class='str'><span class='ty'>Point</span>{ x: <span class='num'>1.0</span>, y: <span class='num'>2.0</span> }</span>
-</code></pre>
-<h3>Hash</h3>
-<pre class="language-llvm"><code>
-; Multiplicative <span class='func'>hash</span>(DJB2 variant) combining all fields
-%hash = mul i64 %hash, <span class='num'>33</span>
-%hash = add i64 %hash, %field_hash
-</code></pre>
-<h3>Ord</h3>
-<pre class="language-llvm"><code>
-; Lexicographic field-by-field comparison with branch dispatch
-; Compare field <span class='num'>0</span> -> <span class='kw'>if</span> not equal, <span class='kw'>return</span>; <span class='kw'>else</span> compare field <span class='num'>1</span>...
-</code></pre>
-<h2>Custom Implementations</h2>
-<p>You can always write a manual implementation instead of using <code>derive</code>:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>type</span> <span class='ty'>Point</span> = { x: <span class='ty'>Float64</span>; y: <span class='ty'>Float64</span> }
-
-<span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>eq</span>(other: &<span class='ty'>Point</span>) -> <span class='ty'>Bool</span> {
-  <span class='kw'>return</span> x == other.x && y == other.y;
-}
-</code></pre>
-<p>Manual implementations take precedence over derived ones. This is useful when the structural definition doesn't match the semantic definition (e.g., a type that should compare only a subset of fields).</p>
+<h2>Troubleshooting</h2>
+<table>
+<tr>
+<th>Symptom</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td><code>404</code></td>
+<td>unknown package or version - check the package page</td>
+</tr>
+<tr>
+<td><code>CHECKSUM MISMATCH</code></td>
+<td>served bytes do not match the index; the install is aborted</td>
+</tr>
+<tr>
+<td><code>no signature</code></td>
+<td>the registry key is pinned and the artifact is unsigned or signed by another key</td>
+</tr>
+<tr>
+<td>install falls back to local resolution</td>
+<td>the registry was unreachable; integrity failures never fall back</td>
+</tr>
+<tr>
+<td>stale index</td>
+<td>the client caches the index in-process for 5 minutes</td>
+</tr>
+</table>
+<p>Publishing your own packages is covered in the registry repository's <code>PUBLISHING.md</code>; registry issues go to <a href="https://github.com/xiom-lang/registry/issues">github.com/xiom-lang/registry/issues</a>.</p>
     </main>
 
   </div>

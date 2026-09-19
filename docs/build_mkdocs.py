@@ -54,6 +54,7 @@ NAV = [
     ("derive.md", "Derive"),
     ("ffi.md", "C FFI"),
     ("compiler.md", "Compiler"),
+    ("registry.md", "Package Registry"),
 ]
 
 STUB = """<!DOCTYPE html>

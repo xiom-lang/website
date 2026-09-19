@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom -- Memory Model</title>
+<title>xiom -- Package Registry</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
 <link rel="stylesheet" href="../style.css">
@@ -41,7 +41,7 @@
         <a href="examples.html" style="color:var(--muted);">By Example</a>
         <a href="syntax.html" style="color:var(--muted);">Syntax</a>
         <a href="types.html" style="color:var(--muted);">Type System</a>
-        <a href="memory-model.html" style="color:var(--signal);font-weight:500;">Memory Model</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
         <a href="contracts.html" style="color:var(--muted);">Contracts</a>
         <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
         <a href="modules.html" style="color:var(--muted);">Modules</a>
@@ -50,7 +50,7 @@
         <a href="derive.html" style="color:var(--muted);">Derive</a>
         <a href="ffi.html" style="color:var(--muted);">C FFI</a>
         <a href="compiler.html" style="color:var(--muted);">Compiler</a>
-        <a href="registry.html" style="color:var(--muted);">Package Registry</a>
+        <a href="registry.html" style="color:var(--signal);font-weight:500;">Package Registry</a>
         <a href="stdlib.html" style="color:var(--muted);">Stdlib Reference</a>
         <a href="AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
         <div style="margin-top:20px;"></div>
@@ -101,132 +101,98 @@
 
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">Memory Model</h1>
-      <p>XIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
-<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.</p>
-<h2>Ownership Rules</h2>
+      <h1 style="font-size:36px;margin-bottom:24px;">Package Registry</h1>
+      <p>The XIOM package registry is live at <a href="https://registry.xiom-lang.org">registry.xiom-lang.org</a> and is the package source your <code>xiom pkg</code> commands already use. It is in beta: the service, protocol and verification pipeline are operational, and the public package list is just beginning.</p>
+<h2>Browse</h2>
+<ul>
+<li>The web UI lists every package with its latest version, with search.</li>
+<li>A package page shows every version with published date, size, sha256</li>
+</ul>
+<p>digest, signature fingerprint and yank state, plus copy-ready install and   trust commands.</p>
+<ul>
+<li>The JSON API behind the UI is public: <code>https://registry.xiom-lang.org/index.json</code>.</li>
+</ul>
+<h2>Install a package</h2>
+<pre><code>
+xiom pkg install my-lib              # latest installable version
+xiom pkg install my-lib@<span class='num'>1.2</span>.<span class='num'>0</span>        # exact version
+</code></pre>
+<p>The client verifies the tarball's sha256 against the index before unpacking; a mismatch aborts the install. When the registry key is pinned, the ed25519 signature is verified as well and unsigned or mis-signed artifacts are refused. Installs land in <code>XIOM_HOME/packages/</code> and become importable by name.</p>
+<h2>Lock dependencies</h2>
+<p><code>xiom pkg lock</code> reads <code>package.xi</code> and writes <code>xiom.lock</code>, recording the exact version and digest of every dependency. Commit the lockfile: builds become reproducible and the bytes you reviewed stay pinned. Updating is deliberate - change the version and re-run <code>xiom pkg lock</code>.</p>
+<h2>Signatures and trust</h2>
+<p>First-party artifacts are signed; community publishers can sign too, and the package page shows a <code>signed</code> badge with the key fingerprint.</p>
+<pre><code>
+xiom pkg trust --registry https:<span class='cm'>//registry.xiom-lang.org --key <public key hex></span>
+xiom pkg trusted     # list pinned keys
+</code></pre>
+<p>A pinned key applies to every package from that registry. At beta, community packages may be published unsigned, so pinning the key means those installs will be refused - pin it when you consume first-party signed packages and want the strictest guarantee.</p>
+<p>Manual verification of a downloaded artifact:</p>
+<pre><code>
+xiom pkg verify <tarball> <signature-file> [--key <public key hex>]
+</code></pre>
+<h2>Search from the CLI</h2>
+<pre><code>
+xiom pkg search http        # downloads the index and filters locally
+</code></pre>
+<p>The web UI searches server-side and is easier for browsing.</p>
+<h2>Yanked versions</h2>
+<p>A yanked version is withdrawn: it disappears from <code>latest</code> and fresh resolution, but existing lockfiles keep working and the artifact stays downloadable. The package page marks it <code>yanked</code>.</p>
+<h2>Trust model</h2>
 <table>
 <tr>
-<th>Rule</th>
-<th>Description</th>
+<th>Signal</th>
+<th>What it means</th>
 </tr>
 <tr>
-<td><strong>Single Owner</strong></td>
-<td>Every value has exactly one owner at any time. Assignment moves ownership.</td>
+<td>sha256 in the index</td>
+<td>the bytes you get are the bytes that were published</td>
 </tr>
 <tr>
-<td><strong>Scope Lifetime</strong></td>
-<td>A value is freed when its owning binding leaves scope. No GC, no manual free.</td>
+<td>immutable versions</td>
+<td>a published version can never change under you</td>
 </tr>
 <tr>
-<td><strong>Read Borrow (<code>&T</code>)</strong></td>
-<td>Multiple simultaneous read borrows allowed. No mutation during active read borrows.</td>
+<td>ed25519 signature</td>
+<td>the artifact was signed by the key with that fingerprint</td>
 </tr>
 <tr>
-<td><strong>Write Borrow (<code>&mut T</code>)</strong></td>
-<td>Exactly one write borrow at a time. No other borrows active simultaneously.</td>
+<td>pinned key</td>
+<td>you refuse anything not signed by that key</td>
 </tr>
 <tr>
-<td><strong>Explicit Clone</strong></td>
-<td>Duplicating a value requires <code>.clone()</code>. No implicit deep copy.</td>
-</tr>
-<tr>
-<td><strong>Move On Call</strong></td>
-<td>Passing a value to a function moves ownership unless the parameter is a borrow.</td>
+<td>yank</td>
+<td>a version is withdrawn without breaking pinned installs</td>
 </tr>
 </table>
-<h2>Borrowing</h2>
-<p>Borrows expire at the end of the block or statement they are created in. You can see when a borrow ends by looking at the braces.</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>consume</span>(data: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }          <span class='cm'>// takes ownership</span>
-<span class='kw'>fn</span> <span class='func'>read_only</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }       <span class='cm'>// read borrow</span>
-<span class='kw'>fn</span> <span class='func'>mutate</span>(data: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }      <span class='cm'>// write borrow</span>
-
-<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>read_only</span>(&v);        <span class='cm'>// borrow, v still valid</span>
-<span class='func'>mutate</span>(&mut v);       <span class='cm'>// write borrow, v still valid  </span>
-<span class='func'>consume</span>(v);           <span class='cm'>// move -- v no longer usable here</span>
-<span class='cm'>// <span class='func'>read_only</span>(&v)     // COMPILE ERROR: v was moved</span>
-</code></pre>
-<h2>What the Model Cannot Handle</h2>
-<p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
-<p>This is a constraint, not a bug -- it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
-<h2>Clone</h2>
-<p>Use <code>.clone()</code> to explicitly duplicate a value:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>let</span> a = <span class='ty'>Vec</span>.<span class='func'>new</span>();
-a.<span class='func'>push</span>(<span class='num'>1</span>);
-
-<span class='kw'>let</span> b = a.<span class='func'>clone</span>();    <span class='cm'>// explicit deep copy</span>
-<span class='cm'>// a <span class='kw'>is</span> still valid -- ownership was not moved</span>
-
-<span class='func'>consume</span>(a);           <span class='cm'>// a <span class='kw'>is</span> moved</span>
-<span class='cm'>// b <span class='kw'>is</span> still valid  -- it was cloned, not moved</span>
-</code></pre>
-<p>Types with <code>derive[Clone]</code> get automatic clone implementations. Manual <code>clone()</code> methods can be written for types that need custom duplication logic.</p>
-<h2>Move Semantics</h2>
-<p>Passing a value to a function moves ownership:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>take</span>(v: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
-  <span class='cm'>// v <span class='kw'>is</span> owned here -- freed at end of scope</span>
-}
-
-<span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>take</span>(data);           <span class='cm'>// ownership moves to <span class='func'>take</span>()</span>
-<span class='cm'>// data <span class='kw'>is</span> no longer valid here</span>
-</code></pre>
-<p>Use borrows when you don't need ownership:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>inspect</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
-  <span class='cm'>// read-only access -- caller retains ownership</span>
-}
-
-<span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>inspect</span>(&data);       <span class='cm'>// borrow -- data still valid</span>
-<span class='func'>inspect</span>(&data);       <span class='cm'>// can borrow again</span>
-</code></pre>
-<h2>Unsafe Blocks</h2>
-<p>Raw pointer arithmetic and C interop that cannot be verified by the compiler are permitted only inside explicit <code>unsafe { }</code> blocks.</p>
-<pre class="language-xiom"><code>
-<span class='kw'>unsafe</span> {
-  <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>some_c_function</span>();
-  <span class='kw'>let</span> value = *raw;   <span class='cm'>// dereference -- programmer guarantees validity</span>
-}
-</code></pre>
-<p>The <code>unsafe</code> keyword is a declaration that the programmer takes responsibility for memory safety inside that scope. Unsafe blocks are visible in code review and audits. They cannot be hidden.</p>
-<h2>Differences from Rust</h2>
+<h2>Troubleshooting</h2>
 <table>
 <tr>
-<th></th>
-<th>XIOM</th>
-<th>Rust</th>
+<th>Symptom</th>
+<th>Meaning</th>
 </tr>
 <tr>
-<td>Lifetime annotations</td>
-<td>None</td>
-<td>Required for non-trivial cases</td>
+<td><code>404</code></td>
+<td>unknown package or version - check the package page</td>
 </tr>
 <tr>
-<td>Borrow scope</td>
-<td>Lexical (visible by braces)</td>
-<td>NLL (non-lexical lifetimes)</td>
+<td><code>CHECKSUM MISMATCH</code></td>
+<td>served bytes do not match the index; the install is aborted</td>
 </tr>
 <tr>
-<td>Borrow in structs</td>
-<td>Not allowed</td>
-<td>Allowed with lifetime parameters</td>
+<td><code>no signature</code></td>
+<td>the registry key is pinned and the artifact is unsigned or signed by another key</td>
 </tr>
 <tr>
-<td>Return borrows</td>
-<td>Not allowed</td>
-<td>Allowed with lifetime parameters</td>
+<td>install falls back to local resolution</td>
+<td>the registry was unreachable; integrity failures never fall back</td>
 </tr>
 <tr>
-<td>Learning curve</td>
-<td>Moderate</td>
-<td>Steep</td>
+<td>stale index</td>
+<td>the client caches the index in-process for 5 minutes</td>
 </tr>
 </table>
+<p>Publishing your own packages is covered in the registry repository's <code>PUBLISHING.md</code>; registry issues go to <a href="https://github.com/xiom-lang/registry/issues">github.com/xiom-lang/registry/issues</a>.</p>
     </main>
 
   </div>
