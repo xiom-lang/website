@@ -88,6 +88,61 @@ output.
 - `--emit-tokens`, `--emit-ir`, `--check`: inspect a single compilation
   stage.
 
+### AI-assisted diagnostics (`--ai`)
+
+The compiler can send compilation errors to an LLM and get actionable hints
+back. Results are written to `.xiom_ai.json`; source files are **never
+modified**. Providers: Ollama (local, free), DeepSeek, OpenAI, OpenRouter,
+Groq, and any OpenAI-compatible endpoint.
+
+```bash
+# local: nothing leaves the machine
+ollama pull codellama
+xiom --ai --ai-local source.xi
+
+# any OpenAI-compatible provider
+export XIOM_AI_ENDPOINT=https://api.deepseek.com
+export XIOM_AI_KEY=sk-...
+export XIOM_AI_MODEL=deepseek-chat
+xiom --ai source.xi
+```
+
+| Flag | Description |
+|------|-------------|
+| `--ai` | Enable AI diagnostics (Ollama or an API key required) |
+| `--ai-local` | Local-only: never sends code to the cloud |
+| `--ai-dry-run` | Print the prompt without calling the model |
+| `--ai-silent` | Suppress stdout; write only `.xiom_ai.json` |
+| `--ai-strict` | Refuse binary output on contract violations |
+| `--ai-model=<name>` | Override the model |
+| `--ai-timeout=<sec>` | Model timeout in seconds (default: 30) |
+
+Configuration can also live in `.xiom_ai_config.json`, or in the
+`XIOM_AI_KEY`, `XIOM_AI_ENDPOINT`, `XIOM_AI_MODEL` and `XIOM_AI_PROVIDER`
+environment variables. `xiom --help-ai` prints the full guide.
+
+### MCP server and companion tools
+
+`xiom-mcp` is a Model Context Protocol server (stdio, JSON-RPC 2.0) that
+lets AI agents compile-check XIOM code, read the language and workflow
+guides, and query the standard library reference as tools. Register it in
+any MCP-capable client:
+
+```json
+{
+  "mcpServers": {
+    "xiom": { "command": "C:\\path\\to\\xiom-mcp.exe" }
+  }
+}
+```
+
+Build it from source with `cargo build --release -p xiom-mcp`.
+
+The toolchain also includes `xiom-fmt`, `xiom-doc`, `xiom-ffigen`,
+`xiom-pkg`, `xiom-lsp`, `xiom-mcp`, `xiom-dbg` and `xiom-verify`. Release
+archives ship `bin/xiom` today and will add `bin/xiom-pkg`; the remaining
+tools are built from source with `cargo build --release -p <crate>`.
+
 ### Safety modes
 
 - Integer overflow checks are ON by default; `--no-overflow-checks`

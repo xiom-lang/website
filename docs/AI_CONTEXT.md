@@ -3585,6 +3585,23 @@ src/main.xi      -> module myproject (use logic, entry point)
 4. **If the catalog path is used**, ensure files are in the same directory or under `examples/`
 5. **Use `pub` on everything that crosses file boundaries**
 
+## AI and MCP tooling
+
+The compiler ships AI-facing surfaces that agents can use directly:
+
+- **AI-assisted diagnostics** (`--ai`): compilation errors are sent to an
+  LLM for actionable hints; results land in `.xiom_ai.json` and source
+  files are never modified. `--ai-local` keeps everything on the machine
+  (Ollama); DeepSeek, OpenAI, OpenRouter, Groq, and OpenAI-compatible
+  endpoints are supported through `XIOM_AI_ENDPOINT`, `XIOM_AI_KEY` and
+  `XIOM_AI_MODEL`, or a `.xiom_ai_config.json` file. `xiom --help-ai`
+  prints the full flag list.
+- **MCP server** (`xiom-mcp`): a Model Context Protocol server over stdio
+  (JSON-RPC 2.0) exposing compile checks (`check_xiom_syntax`), the
+  language and workflow guides, and the standard library reference as
+  tools. Build with `cargo build --release -p xiom-mcp` and register the
+  binary in the client's `mcpServers` configuration.
+
 ---
 
 **This document is the AI's complete reference for XIOM code generation.**

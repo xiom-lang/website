@@ -178,6 +178,65 @@
 <li><code>--emit-tokens</code>, <code>--emit-ir</code>, <code>--check</code>: inspect a single compilation</li>
 </ul>
 <p>stage.</p>
+<h3>AI-assisted diagnostics (<code>--ai</code>)</h3>
+<p>The compiler can send compilation errors to an LLM and get actionable hints back. Results are written to <code>.xiom_ai.json</code>; source files are <strong>never modified</strong>. Providers: Ollama (local, free), DeepSeek, OpenAI, OpenRouter, Groq, and any OpenAI-compatible endpoint.</p>
+<pre class="language-bash"><code>
+# local: nothing leaves the machine
+ollama pull codellama
+xiom --ai --ai-local source.xi
+
+# any OpenAI-compatible provider
+export XIOM_AI_ENDPOINT=https:<span class='cm'>//api.deepseek.com</span>
+export XIOM_AI_KEY=sk-...
+export XIOM_AI_MODEL=deepseek-chat
+xiom --ai source.xi
+</code></pre>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>--ai</code></td>
+<td>Enable AI diagnostics (Ollama or an API key required)</td>
+</tr>
+<tr>
+<td><code>--ai-local</code></td>
+<td>Local-only: never sends code to the cloud</td>
+</tr>
+<tr>
+<td><code>--ai-dry-run</code></td>
+<td>Print the prompt without calling the model</td>
+</tr>
+<tr>
+<td><code>--ai-silent</code></td>
+<td>Suppress stdout; write only <code>.xiom_ai.json</code></td>
+</tr>
+<tr>
+<td><code>--ai-strict</code></td>
+<td>Refuse binary output on contract violations</td>
+</tr>
+<tr>
+<td><code>--ai-model=<name></code></td>
+<td>Override the model</td>
+</tr>
+<tr>
+<td><code>--ai-timeout=<sec></code></td>
+<td>Model timeout in seconds (default: 30)</td>
+</tr>
+</table>
+<p>Configuration can also live in <code>.xiom_ai_config.json</code>, or in the <code>XIOM_AI_KEY</code>, <code>XIOM_AI_ENDPOINT</code>, <code>XIOM_AI_MODEL</code> and <code>XIOM_AI_PROVIDER</code> environment variables. <code>xiom --help-ai</code> prints the full guide.</p>
+<h3>MCP server and companion tools</h3>
+<p><code>xiom-mcp</code> is a Model Context Protocol server (stdio, JSON-RPC 2.0) that lets AI agents compile-check XIOM code, read the language and workflow guides, and query the standard library reference as tools. Register it in any MCP-capable client:</p>
+<pre class="language-json"><code>
+{
+  <span class='str'>mcpServers</span>: {
+    <span class='str'>xiom</span>: { <span class='str'>command</span>: <span class='str'>C:\\path\\to\\xiom-mcp.exe</span> }
+  }
+}
+</code></pre>
+<p>Build it from source with <code>cargo build --release -p xiom-mcp</code>.</p>
+<p>The toolchain also includes <code>xiom-fmt</code>, <code>xiom-doc</code>, <code>xiom-ffigen</code>, <code>xiom-pkg</code>, <code>xiom-lsp</code>, <code>xiom-mcp</code>, <code>xiom-dbg</code> and <code>xiom-verify</code>. Release archives ship <code>bin/xiom</code> today and will add <code>bin/xiom-pkg</code>; the remaining tools are built from source with <code>cargo build --release -p <crate></code>.</p>
 <h3>Safety modes</h3>
 <ul>
 <li>Integer overflow checks are ON by default; <code>--no-overflow-checks</code></li>

@@ -3627,6 +3627,16 @@ src/main.xi      -> <span class='kw'>module</span> <span class='func'>myproject<
 <li><strong>If the catalog path is used</strong>, ensure files are in the same directory or under <code>examples/</code></li>
 <li><strong>Use <code>pub</code> on everything that crosses file boundaries</strong></li>
 </ul>
+<h2>AI and MCP tooling</h2>
+<p>The compiler ships AI-facing surfaces that agents can use directly:</p>
+<ul>
+<li><strong>AI-assisted diagnostics</strong> (<code>--ai</code>): compilation errors are sent to an</li>
+</ul>
+<p>LLM for actionable hints; results land in <code>.xiom_ai.json</code> and source   files are never modified. <code>--ai-local</code> keeps everything on the machine   (Ollama); DeepSeek, OpenAI, OpenRouter, Groq, and OpenAI-compatible   endpoints are supported through <code>XIOM_AI_ENDPOINT</code>, <code>XIOM_AI_KEY</code> and   <code>XIOM_AI_MODEL</code>, or a <code>.xiom_ai_config.json</code> file. <code>xiom --help-ai</code>   prints the full flag list.</p>
+<ul>
+<li><strong>MCP server</strong> (<code>xiom-mcp</code>): a Model Context Protocol server over stdio</li>
+</ul>
+<p>(JSON-RPC 2.0) exposing compile checks (<code>check_xiom_syntax</code>), the   language and workflow guides, and the standard library reference as   tools. Build with <code>cargo build --release -p xiom-mcp</code> and register the   binary in the client's <code>mcpServers</code> configuration.</p>
 <hr>
 <p><strong>This document is the AI's complete reference for XIOM code generation.</strong> <strong>When in doubt, refer to the exact syntax and rules above. The compiler enforces everything stated here.</strong> <strong>Section 16 is the recommended system prompt for AI coding assistants generating XIOM code.</strong> <strong>Section 17 is required reading for multi-file project generation.</strong></p>
     </main>
