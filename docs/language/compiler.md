@@ -77,9 +77,17 @@ list every flag.
 Contracts (`requires:` / `ensures:` / `invariant:`) are part of the
 language, not annotations. By default they compile to runtime guards that
 trap on violation. `--no-contracts` removes the guards. `--release` strips
-them unless `--runtime-contracts` forces them. Static proof is a separate
-path: `--dump-contracts` emits SMT-LIB and `--verify` runs Z3 over that
-output.
+them unless `--runtime-contracts` forces them.
+
+Verification is a separate path with three distinct stages:
+
+- **exported** -- `--dump-contracts` exports contract metadata (JSON) and
+  `--verify` exports SMT-LIB proof obligations; no proof claim is made.
+- **checked** -- `xiom-verify --check` runs the bundled `z3` over that
+  output; the verdict is Proven, Violated or UNKNOWN.
+- **proved** -- only a verdict of `unsat` (Proven) counts as a proof.
+  Obligations the encoder cannot express faithfully are reported UNKNOWN
+  and never count as proofs.
 
 ### Debug and diagnostics
 
@@ -226,8 +234,8 @@ xiom [flags] <source.xi>
 |------|-------------|
 | `--no-contracts` | Disable all contract runtime checks |
 | `--runtime-contracts` | Force runtime contract checks, even in release |
-| `--dump-contracts` | Print the contract index as JSON |
-| `--verify` | Generate SMT-LIB contract verification output |
+| `--dump-contracts` | Export contract metadata (JSON) |
+| `--verify` | Export SMT-LIB proof obligations (no proof claim) |
 | `--verify-output <file>` | Write the SMT-LIB output to a file |
 | `--keep-debug-checks` | Keep debug intrinsics in release builds |
 
@@ -349,7 +357,7 @@ is tracked in the compiler repository (`docs/PRE_SELFHOST_GAPS.md`).
 | LLVM backend | **Text IR emission** (no library dependency) |
 | WASM target | via clang |
 | Ownership model | **Lexical scope borrowing** |
-| Contracts | **Runtime guards** + Z3 (SMT-LIB) |
+| Contracts | Runtime guards; SMT-LIB export checked with the bundled `z3` (`xiom-verify --check`) |
 | Type constraints | **Inline** `[T: Ord]` |
 | Method receiver | **Implicit** `self`, inferred |
 | Crate structure | 20 crates (xiom, xiom-ast, xiom-lowering, xiom-check, xiom-lexer, xiom-parser, xiom-codegen, xiom-ctfe, xiom-jit, xiom-verify, xiom-fmt, xiom-lsp, xiom-pkg, xiom-mcp, xiom-doc, xiom-ffigen, xiom-dbg, xiom-display, xiom-graph, xiom-wasm) |

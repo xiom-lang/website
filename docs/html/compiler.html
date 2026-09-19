@@ -173,7 +173,20 @@
 <li><code>--standalone script.xi -o app</code>: turn a script into a binary.</li>
 </ul>
 <h3>Contract modes</h3>
-<p>Contracts (<code>requires:</code> / <code>ensures:</code> / <code>invariant:</code>) are part of the language, not annotations. By default they compile to runtime guards that trap on violation. <code>--no-contracts</code> removes the guards. <code>--release</code> strips them unless <code>--runtime-contracts</code> forces them. Static proof is a separate path: <code>--dump-contracts</code> emits SMT-LIB and <code>--verify</code> runs Z3 over that output.</p>
+<p>Contracts (<code>requires:</code> / <code>ensures:</code> / <code>invariant:</code>) are part of the language, not annotations. By default they compile to runtime guards that trap on violation. <code>--no-contracts</code> removes the guards. <code>--release</code> strips them unless <code>--runtime-contracts</code> forces them.</p>
+<p>Verification is a separate path with three distinct stages:</p>
+<ul>
+<li><strong>exported</strong> -- <code>--dump-contracts</code> exports contract metadata (JSON) and</li>
+</ul>
+<p><code>--verify</code> exports SMT-LIB proof obligations; no proof claim is made.</p>
+<ul>
+<li><strong>checked</strong> -- <code>xiom-verify --check</code> runs the bundled <code>z3</code> over that</li>
+</ul>
+<p>output; the verdict is Proven, Violated or UNKNOWN.</p>
+<ul>
+<li><strong>proved</strong> -- only a verdict of <code>unsat</code> (Proven) counts as a proof.</li>
+</ul>
+<p>Obligations the encoder cannot express faithfully are reported UNKNOWN   and never count as proofs.</p>
 <h3>Debug and diagnostics</h3>
 <ul>
 <li><code>--debug</code> / <code>-g</code>: DWARF/PDB metadata for debuggers.</li>
@@ -425,11 +438,11 @@ xiom [flags] <source.xi>
 </tr>
 <tr>
 <td><code>--dump-contracts</code></td>
-<td>Print the contract index as JSON</td>
+<td>Export contract metadata (JSON)</td>
 </tr>
 <tr>
 <td><code>--verify</code></td>
-<td>Generate SMT-LIB contract verification output</td>
+<td>Export SMT-LIB proof obligations (no proof claim)</td>
 </tr>
 <tr>
 <td><code>--verify-output <file></code></td>
@@ -778,7 +791,7 @@ xiom [flags] <source.xi>
 </tr>
 <tr>
 <td>Contracts</td>
-<td><strong>Runtime guards</strong> + Z3 (SMT-LIB)</td>
+<td>Runtime guards; SMT-LIB export checked with the bundled <code>z3</code> (<code>xiom-verify --check</code>)</td>
 </tr>
 <tr>
 <td>Type constraints</td>
