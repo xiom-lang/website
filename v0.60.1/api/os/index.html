@@ -12077,7 +12077,9 @@
 <hr />
 <h2 id="osxi"><code>os.xi</code><a class="headerlink" href="#osxi" title="Permanent link">&para;</a></h2>
 <h3 id="fn-platform-str"><code>fn platform() -&gt; Str</code><a class="headerlink" href="#fn-platform-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Platform &amp; Architecture ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
 </ul>
@@ -12166,7 +12168,9 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h3 id="fn-walk_dirpath-str-callback-fnstr-metadata-unit-resultunit-str"><code>fn walk_dir(path: Str, callback: fn(Str, Metadata) -&gt; Unit) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-walk_dirpath-str-callback-fnstr-metadata-unit-resultunit-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>callback: fn(Str, Metadata) -&gt; Unit</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Filesystem Walk ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 </ul>
@@ -12176,6 +12180,9 @@
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 </ul>
 <h3 id="type-filewatcher"><code>type FileWatcher</code><a class="headerlink" href="#type-filewatcher" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== File System Watch ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -12219,7 +12226,9 @@
 <li><code>Renamed(from: Str, to: Str)</code></li>
 </ul>
 <h3 id="fn-on_signalsignal-int-handler-fnint-unit"><code>fn on_signal(signal: Int, handler: fn(Int) -&gt; Unit)</code><a class="headerlink" href="#fn-on_signalsignal-int-handler-fnint-unit" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>signal: Int</code>, <code>handler: fn(Int) -&gt; Unit</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>=== Signal Handling ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>signal &gt; 0</code></li>
 </ul>
@@ -12229,6 +12238,9 @@
 <li><strong>Precondition:</strong> <code>signal &gt; 0</code></li>
 </ul>
 <h3 id="type-pipe"><code>type Pipe</code><a class="headerlink" href="#type-pipe" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== Pipe ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -12275,7 +12287,9 @@
 <li><strong>Precondition:</strong> <code>self.write_fd &gt;= 0</code></li>
 </ul>
 <h3 id="fn-disk_freepath-str-resultint-str"><code>fn disk_free(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-disk_freepath-str-resultint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Disk Usage ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
@@ -12353,6 +12367,9 @@
 <hr />
 <h2 id="pathxi"><code>path.xi</code><a class="headerlink" href="#pathxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-path"><code>type Path</code><a class="headerlink" href="#type-path" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Borrowed path (wraps a Str); construct with <code>Path.new</code>.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -12369,6 +12386,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Eq, Clone, Hash, Ord</code></p>
 <h3 id="type-pathbuf"><code>type PathBuf</code><a class="headerlink" href="#type-pathbuf" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Owned, mutable path buffer.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -12392,12 +12412,16 @@
 <li><strong>Postcondition:</strong> <code>result.inner == s</code></li>
 </ul>
 <h3 id="fn-new-pathbuf"><code>fn new() -&gt; PathBuf</code><a class="headerlink" href="#fn-new-pathbuf" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>PathBuf</code>. No source comment yet.</p>
+<blockquote>
+<p>Create an empty PathBuf.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.inner == ""</code></li>
 </ul>
 <h3 id="fn-froms-str-pathbuf"><code>fn from(s: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-froms-str-pathbuf" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>PathBuf</code>. No source comment yet.</p>
+<blockquote>
+<p>Create a PathBuf from a string.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.inner == s</code></li>
 </ul>
@@ -12406,50 +12430,86 @@
 <p>Path operations</p>
 </blockquote>
 <h3 id="fn-file_nameself-self-optionstr"><code>fn file_name(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_nameself-self-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Final component of the path, or None when there is none.</p>
+</blockquote>
 <h3 id="fn-extensionself-self-optionstr"><code>fn extension(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-extensionself-self-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Extension after the final dot of the file name, or None.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.is_some =&gt; self.inner.len() &gt; 0</code></li>
 </ul>
 <h3 id="fn-file_stemself-self-optionstr"><code>fn file_stem(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_stemself-self-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>File name without its final extension, or None.</p>
+</blockquote>
 <h3 id="fn-is_absoluteself-self-bool"><code>fn is_absolute(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_absoluteself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path is absolute.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result =&gt; self.inner.len() &gt;= 1</code></li>
 </ul>
 <h3 id="fn-is_relativeself-self-bool"><code>fn is_relative(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_relativeself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path is relative.</p>
+</blockquote>
 <h3 id="fn-has_rootself-self-bool"><code>fn has_root(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-has_rootself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path starts at a root component.</p>
+</blockquote>
 <h3 id="fn-componentsself-self-vecstr"><code>fn components(self: Self) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-componentsself-self-vecstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Path components as strings (separators normalized).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
 </ul>
 <h3 id="fn-to_strself-self-str"><code>fn to_str(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-to_strself-self-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>The underlying string.</p>
+</blockquote>
 <h3 id="fn-joinself-self-child-str-pathbuf"><code>fn join(self: Self, child: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-joinself-self-child-str-pathbuf" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>child: Str</code>; returns <code>PathBuf</code>. No source comment yet.</p>
+<blockquote>
+<p>Append <code>child</code>, inserting a separator when needed.</p>
+</blockquote>
 <h3 id="fn-with_extensionself-self-ext-str-pathbuf"><code>fn with_extension(self: Self, ext: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-with_extensionself-self-ext-str-pathbuf" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>ext: Str</code>; returns <code>PathBuf</code>. No source comment yet.</p>
+<blockquote>
+<p>Replace the extension with <code>ext</code>; an existing extension is removed.</p>
+</blockquote>
 <h3 id="fn-with_file_nameself-self-name-str-pathbuf"><code>fn with_file_name(self: Self, name: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-with_file_nameself-self-name-str-pathbuf" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>name: Str</code>; returns <code>PathBuf</code>. No source comment yet.</p>
+<blockquote>
+<p>Replace the final component with <code>name</code>.</p>
+</blockquote>
 <h3 id="fn-existsself-self-bool"><code>fn exists(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-existsself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path exists on disk.</p>
+</blockquote>
 <h3 id="fn-is_fileself-self-bool"><code>fn is_file(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_fileself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path exists and is a regular file.</p>
+</blockquote>
 <h3 id="fn-is_dirself-self-bool"><code>fn is_dir(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_dirself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path exists and is a directory.</p>
+</blockquote>
 <h3 id="fn-metadataself-self-resultmetadata-str"><code>fn metadata(self: Self) -&gt; Result[Metadata, Str]</code><a class="headerlink" href="#fn-metadataself-self-resultmetadata-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Result[Metadata, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>File metadata, or Err carrying the OS message.</p>
+</blockquote>
 <h3 id="fn-canonicalizeself-self-resultpathbuf-str"><code>fn canonicalize(self: Self) -&gt; Result[PathBuf, Str]</code><a class="headerlink" href="#fn-canonicalizeself-self-resultpathbuf-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Result[PathBuf, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Absolute, symlink-resolved path, or Err carrying the OS message.</p>
+</blockquote>
 <h3 id="fn-starts_withself-self-base-path-bool"><code>fn starts_with(self: Self, base: Path) -&gt; Bool</code><a class="headerlink" href="#fn-starts_withself-self-base-path-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>base: Path</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when <code>base</code> is a component-prefix of this path.</p>
+</blockquote>
 <h3 id="fn-ends_withself-self-child-path-bool"><code>fn ends_with(self: Self, child: Path) -&gt; Bool</code><a class="headerlink" href="#fn-ends_withself-self-child-path-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>child: Path</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when <code>child</code> is a component-suffix of this path.</p>
+</blockquote>
 <h3 id="fn-pushself-self-component-str"><code>fn push(self: Self, component: Str)</code><a class="headerlink" href="#fn-pushself-self-component-str" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>PathBuf operations NOTE: These take &amp;mut self (the old by-value forms mutated a copy and required callers to capture the return -- the stale "&amp;mut self not supported" note predates the BUG 55 fixes; cell.xi &amp;mut self works).</p>
@@ -12458,11 +12518,17 @@
 <li><strong>Precondition:</strong> <code>component.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-popself-self-bool"><code>fn pop(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-popself-self-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Remove the final component; false when the buffer is already empty.</p>
+</blockquote>
 <h3 id="fn-as_pathself-self-path"><code>fn as_path(self: Self) -&gt; Path</code><a class="headerlink" href="#fn-as_pathself-self-path" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Path</code>. No source comment yet.</p>
+<blockquote>
+<p>Borrow as a <code>Path</code>.</p>
+</blockquote>
 <h3 id="fn-clearself-self"><code>fn clear(self: Self)</code><a class="headerlink" href="#fn-clearself-self" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Empty the buffer.</p>
+</blockquote>
 <h3 id="fn-path_separator-str_1"><code>fn path_separator() -&gt; Str</code><a class="headerlink" href="#fn-path_separator-str_1" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Utility</p>

@@ -26905,6 +26905,9 @@
 <hr />
 <h2 id="decomposexi"><code>decompose.xi</code><a class="headerlink" href="#decomposexi" title="Permanent link">&para;</a></h2>
 <h4 id="enum-floatclass"><code>enum FloatClass</code><a class="headerlink" href="#enum-floatclass" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>IEEE-754 bit decomposition and float classification (concrete Float64). frexp uses the [0.5, 1) fraction convention; ilogb/exponent use the [1, 2) mantissa convention (ilogb(8.0) == 3). NaN cannot be produced by this compiler (BUG 19); classify still detects a NaN input if one ever arrives. nextafter/nexttoward delegate to the exact arithmetic walk in math.primitives (exact for all finite normal/subnormal values). NOTE: requires/ensures clauses are runtime-enforced in this compiler and crash on violation, so all domain handling is guarded inside the bodies.</p>
+</blockquote>
 <ul>
 <li><code>NaN</code></li>
 <li><code>Infinity</code></li>

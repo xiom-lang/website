@@ -2617,97 +2617,135 @@
 </blockquote>
 <h2 id="ptrxi"><code>ptr.xi</code><a class="headerlink" href="#ptrxi" title="Permanent link">&para;</a></h2>
 <h3 id="fn-nullt-t"><code>fn null[T]() -&gt; *T</code><a class="headerlink" href="#fn-nullt-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p>Null pointer of type <code>*T</code> (escape hatch; never dereference).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-null_mutt-t"><code>fn null_mut[T]() -&gt; *T</code><a class="headerlink" href="#fn-null_mutt-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p>Null pointer of type <code>*mut T</code> (escape hatch; never dereference).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-danglingt-t"><code>fn dangling[T]() -&gt; *T</code><a class="headerlink" href="#fn-danglingt-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p>Non-null marker pointer that must never be dereferenced.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-is_nulltptr-t-bool"><code>fn is_null[T](ptr: *T) -&gt; Bool</code><a class="headerlink" href="#fn-is_nulltptr-t-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when <code>ptr</code> is a null pointer.</p>
+</blockquote>
 <h3 id="fn-readtptr-t-t"><code>fn read[T](ptr: *T) -&gt; T</code><a class="headerlink" href="#fn-readtptr-t-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Read the value at <code>ptr</code>; requires a non-null, valid pointer.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-writetptr-t-value-t"><code>fn write[T](ptr: *T, value: T)</code><a class="headerlink" href="#fn-writetptr-t-value-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>, <code>value: T</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Write <code>value</code> to <code>ptr</code>; requires a non-null, valid pointer.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-read_volatiletptr-t-t"><code>fn read_volatile[T](ptr: *T) -&gt; T</code><a class="headerlink" href="#fn-read_volatiletptr-t-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Volatile read at <code>ptr</code> (no elision/reordering by the backend).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-write_volatiletptr-t-value-t"><code>fn write_volatile[T](ptr: *T, value: T)</code><a class="headerlink" href="#fn-write_volatiletptr-t-value-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>, <code>value: T</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Volatile write of <code>value</code> to <code>ptr</code>.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-swapta-t-b-t"><code>fn swap[T](a: *T, b: *T)</code><a class="headerlink" href="#fn-swapta-t-b-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: *T</code>, <code>b: *T</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Swap the values at <code>a</code> and <code>b</code>; both must be non-null and valid.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>a != null</code></li>
 <li><strong>Precondition:</strong> <code>b != null</code></li>
 </ul>
 <h3 id="fn-replacetdest-t-src-t-t"><code>fn replace[T](dest: *T, src: T) -&gt; T</code><a class="headerlink" href="#fn-replacetdest-t-src-t-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>dest: *T</code>, <code>src: T</code>; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Replace <code>*dest</code> with <code>src</code>, returning the previous value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>dest != null</code></li>
 <li><strong>Postcondition:</strong> <code>result == old_value</code></li>
 </ul>
 <h3 id="fn-copytsrc-t-dst-t-count-int"><code>fn copy[T](src: *T, dst: *T, count: Int)</code><a class="headerlink" href="#fn-copytsrc-t-dst-t-count-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>src: *T</code>, <code>dst: *T</code>, <code>count: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Copy <code>count</code> values from <code>src</code> to <code>dst</code>; ranges may overlap.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>src != null</code></li>
 <li><strong>Precondition:</strong> <code>dst != null</code></li>
 <li><strong>Precondition:</strong> <code>count &gt; 0</code></li>
 </ul>
 <h3 id="fn-copy_nonoverlappingtsrc-t-dst-t-count-int"><code>fn copy_nonoverlapping[T](src: *T, dst: *T, count: Int)</code><a class="headerlink" href="#fn-copy_nonoverlappingtsrc-t-dst-t-count-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>src: *T</code>, <code>dst: *T</code>, <code>count: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Copy <code>count</code> values from <code>src</code> to <code>dst</code>; ranges must not overlap.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>src != null</code></li>
 <li><strong>Precondition:</strong> <code>dst != null</code></li>
 <li><strong>Precondition:</strong> <code>count &gt; 0</code></li>
 </ul>
 <h3 id="fn-eqta-t-b-t-bool"><code>fn eq[T](a: *T, b: *T) -&gt; Bool</code><a class="headerlink" href="#fn-eqta-t-b-t-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: *T</code>, <code>b: *T</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Pointer equality (address comparison).</p>
+</blockquote>
 <h3 id="fn-offsettptr-t-count-int-t"><code>fn offset[T](ptr: *T, count: Int) -&gt; *T</code><a class="headerlink" href="#fn-offsettptr-t-count-int-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>, <code>count: Int</code>; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p>Pointer arithmetic: <code>ptr + count</code> elements.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-wrapping_offsettptr-t-count-int-t"><code>fn wrapping_offset[T](ptr: *T, count: Int) -&gt; *T</code><a class="headerlink" href="#fn-wrapping_offsettptr-t-count-int-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>, <code>count: Int</code>; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p>Wrapping pointer arithmetic (no in-bounds requirement).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-addtptr-t-count-int-t"><code>fn add[T](ptr: *T, count: Int) -&gt; *T</code><a class="headerlink" href="#fn-addtptr-t-count-int-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>, <code>count: Int</code>; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p><code>ptr + count</code> elements; requires a non-null pointer.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-subtptr-t-count-int-t"><code>fn sub[T](ptr: *T, count: Int) -&gt; *T</code><a class="headerlink" href="#fn-subtptr-t-count-int-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *T</code>, <code>count: Int</code>; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p><code>ptr - count</code> elements; requires a non-null pointer.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-from_reftr-t-t"><code>fn from_ref[T](r: &amp;T) -&gt; *T</code><a class="headerlink" href="#fn-from_reftr-t-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>r: &amp;T</code>; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p>Convert a shared reference to a raw pointer (escape hatch).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-from_muttr-mut-t-t"><code>fn from_mut[T](r: &amp;mut T) -&gt; *T</code><a class="headerlink" href="#fn-from_muttr-mut-t-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>r: &amp;mut T</code>; returns <code>*T</code>. No source comment yet.</p>
+<blockquote>
+<p>Convert a mutable reference to a raw mutable pointer (escape hatch).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>

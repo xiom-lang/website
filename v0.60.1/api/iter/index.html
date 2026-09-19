@@ -6926,7 +6926,7 @@
 <h2 id="iterxi"><code>iter.xi</code><a class="headerlink" href="#iterxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-range"><code>type Range</code><a class="headerlink" href="#type-range" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>=== Range types ===</p>
+<p>=== Range types === Half-open integer range [start, end).</p>
 </blockquote>
 <table>
 <thead>
@@ -6947,6 +6947,9 @@
 </tbody>
 </table>
 <h3 id="type-rangeinclusive"><code>type RangeInclusive</code><a class="headerlink" href="#type-rangeinclusive" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Inclusive integer range [start, end] with cursor state.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -6974,62 +6977,115 @@
 </tbody>
 </table>
 <h3 id="fn-rangestart-int-end-int-range"><code>fn range(start: Int, end: Int) -&gt; Range</code><a class="headerlink" href="#fn-rangestart-int-end-int-range" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>start: Int</code>, <code>end: Int</code>; returns <code>Range</code>. No source comment yet.</p>
+<blockquote>
+<p>Create a half-open range [start, end).</p>
+</blockquote>
 <h3 id="fn-range_inclusivestart-int-end-int-rangeinclusive"><code>fn range_inclusive(start: Int, end: Int) -&gt; RangeInclusive</code><a class="headerlink" href="#fn-range_inclusivestart-int-end-int-rangeinclusive" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>start: Int</code>, <code>end: Int</code>; returns <code>RangeInclusive</code>. No source comment yet.</p>
+<blockquote>
+<p>Create an inclusive range [start, end].</p>
+</blockquote>
 <h3 id="fn-nextself-self-optionint"><code>fn next(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nextself-self-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Yield the next integer; None once <code>start &gt;= end</code>. Consumes from the front.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-lenself-self-int"><code>fn len(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-lenself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Number of integers left in the range.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h3 id="fn-containsself-self-x-int-bool"><code>fn contains(self: Self, x: Int) -&gt; Bool</code><a class="headerlink" href="#fn-containsself-self-x-int-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>x: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when <code>x</code> is inside [start, end); does not consume the range.</p>
+</blockquote>
 <h3 id="fn-sumself-self-int"><code>fn sum(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-sumself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Sum of the remaining integers (0 for an empty range).</p>
+</blockquote>
 <h3 id="fn-productself-self-int"><code>fn product(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-productself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Product of the remaining integers (1 for an empty range).</p>
+</blockquote>
 <h3 id="fn-nextself-self-optionint_1"><code>fn next(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nextself-self-optionint_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Yield the next integer; None after the inclusive end was reached.</p>
+</blockquote>
 <h3 id="fn-mapuself-self-f-fnint-u-mapiterint-u"><code>fn map[U](self: Self, f: fn(Int) -&gt; U) -&gt; MapIter[Int, U]</code><a class="headerlink" href="#fn-mapuself-self-f-fnint-u-mapiterint-u" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>f: fn(Int) -&gt; U</code>; returns <code>MapIter[Int, U]</code>. No source comment yet.</p>
+<blockquote>
+<p>Lazily apply <code>f</code> to each integer in the range.</p>
+</blockquote>
 <h3 id="fn-filterself-self-predicate-fnint-bool-filteriterint"><code>fn filter(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; FilterIter[Int]</code><a class="headerlink" href="#fn-filterself-self-predicate-fnint-bool-filteriterint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;Int) -&gt; Bool</code>; returns <code>FilterIter[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Lazily keep only integers satisfying <code>predicate</code>.</p>
+</blockquote>
 <h3 id="fn-enumerateself-self-enumerateiterint"><code>fn enumerate(self: Self) -&gt; EnumerateIter[Int]</code><a class="headerlink" href="#fn-enumerateself-self-enumerateiterint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>EnumerateIter[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Pair each integer with its 0-based position.</p>
+</blockquote>
 <h3 id="fn-takeself-self-n-int-takeiterint"><code>fn take(self: Self, n: Int) -&gt; TakeIter[Int]</code><a class="headerlink" href="#fn-takeself-self-n-int-takeiterint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Yield at most the first <code>n</code> integers.</p>
+</blockquote>
 <h3 id="fn-skipself-self-n-int-skipiterint"><code>fn skip(self: Self, n: Int) -&gt; SkipIter[Int]</code><a class="headerlink" href="#fn-skipself-self-n-int-skipiterint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>SkipIter[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Skip the first <code>n</code> integers.</p>
+</blockquote>
 <h3 id="fn-chainself-self-other-range-chainiterint-int"><code>fn chain(self: Self, other: Range) -&gt; ChainIter[Int, Int]</code><a class="headerlink" href="#fn-chainself-self-other-range-chainiterint-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>other: Range</code>; returns <code>ChainIter[Int, Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Continue with the integers of <code>other</code> after this range ends.</p>
+</blockquote>
 <h3 id="fn-zipself-self-other-range-zipiterint-int"><code>fn zip(self: Self, other: Range) -&gt; ZipIter[Int, Int]</code><a class="headerlink" href="#fn-zipself-self-other-range-zipiterint-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>other: Range</code>; returns <code>ZipIter[Int, Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Pair integers with <code>other</code> until either runs out.</p>
+</blockquote>
 <h3 id="fn-collectself-self-vecint"><code>fn collect(self: Self) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-collectself-self-vecint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Drain the remaining integers into a Vec.</p>
+</blockquote>
 <h3 id="fn-foldbself-self-init-b-f-fnb-int-b-b"><code>fn fold[B](self: Self, init: B, f: fn(B, Int) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldbself-self-init-b-f-fnb-int-b-b" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, Int) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
+<blockquote>
+<p>Fold the remaining integers with <code>f</code>, starting from <code>init</code>.</p>
+</blockquote>
 <h3 id="fn-countself-self-int"><code>fn count(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Number of remaining integers.</p>
+</blockquote>
 <h3 id="fn-maxself-self-optionint"><code>fn max(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-maxself-self-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Largest remaining integer, or None for an empty range.</p>
+</blockquote>
 <h3 id="fn-minself-self-optionint"><code>fn min(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-minself-self-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Smallest remaining integer, or None for an empty range.</p>
+</blockquote>
 <h3 id="fn-findself-self-predicate-fnint-bool-optionint"><code>fn find(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-findself-self-predicate-fnint-bool-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;Int) -&gt; Bool</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>First remaining integer satisfying <code>predicate</code>, or None.</p>
+</blockquote>
 <h3 id="fn-allself-self-predicate-fnint-bool-bool"><code>fn all(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-allself-self-predicate-fnint-bool-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;Int) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when every remaining integer satisfies <code>predicate</code>.</p>
+</blockquote>
 <h3 id="fn-anyself-self-predicate-fnint-bool-bool"><code>fn any(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anyself-self-predicate-fnint-bool-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;Int) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when at least one remaining integer satisfies <code>predicate</code>.</p>
+</blockquote>
 <h3 id="fn-nthself-self-n-int-optionint"><code>fn nth(self: Self, n: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nthself-self-n-int-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Skip to and return the <code>n</code>-th remaining integer (0-based), or None.</p>
+</blockquote>
 <h3 id="fn-lastself-self-optionint"><code>fn last(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lastself-self-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Consume and return the final integer, or None for an empty range.</p>
+</blockquote>
 <h3 id="type-mapiter"><code>type MapIter</code><a class="headerlink" href="#type-mapiter" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Lazy map iterator, produced by <code>map</code>.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -7049,6 +7105,9 @@
 </tbody>
 </table>
 <h3 id="type-filteriter"><code>type FilterIter</code><a class="headerlink" href="#type-filteriter" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Lazy filter iterator, produced by <code>filter</code>.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -7068,6 +7127,9 @@
 </tbody>
 </table>
 <h3 id="type-enumerateiter"><code>type EnumerateIter</code><a class="headerlink" href="#type-enumerateiter" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Iterator pairing elements with a 0-based index.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -7087,6 +7149,9 @@
 </tbody>
 </table>
 <h3 id="type-takeiter"><code>type TakeIter</code><a class="headerlink" href="#type-takeiter" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Iterator yielding at most a fixed number of elements.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -7106,6 +7171,9 @@
 </tbody>
 </table>
 <h3 id="type-skipiter"><code>type SkipIter</code><a class="headerlink" href="#type-skipiter" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Iterator skipping a fixed number of leading elements.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -7125,6 +7193,9 @@
 </tbody>
 </table>
 <h3 id="type-chainiter"><code>type ChainIter</code><a class="headerlink" href="#type-chainiter" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Iterator continuing with a second iterator after the first ends.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -7144,6 +7215,9 @@
 </tbody>
 </table>
 <h3 id="type-zipiter"><code>type ZipIter</code><a class="headerlink" href="#type-zipiter" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Iterator pairing elements of two iterators.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -7350,7 +7424,7 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[(T, U)]</code>. No source comment yet.</p>
 <h3 id="type-stepbyiter"><code>type StepByIter</code><a class="headerlink" href="#type-stepbyiter" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>StepBy -- yields every nth element (1-based step)</p>
+<p>StepBy -- yields every nth element (1-based step) Iterator taking every <code>step</code>-th element of an underlying iterator.</p>
 </blockquote>
 <table>
 <thead>
@@ -7386,7 +7460,7 @@
 </ul>
 <h3 id="type-takewhileiter"><code>type TakeWhileIter</code><a class="headerlink" href="#type-takewhileiter" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>TakeWhile -- yields elements while predicate is true</p>
+<p>TakeWhile -- yields elements while predicate is true Iterator yielding elements while a predicate holds.</p>
 </blockquote>
 <table>
 <thead>
@@ -7419,7 +7493,7 @@
 </ul>
 <h3 id="type-skipwhileiter"><code>type SkipWhileIter</code><a class="headerlink" href="#type-skipwhileiter" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>SkipWhile -- skips elements while predicate is true, then yields rest</p>
+<p>SkipWhile -- skips elements while predicate is true, then yields rest Iterator skipping elements while a predicate holds.</p>
 </blockquote>
 <table>
 <thead>
@@ -7449,7 +7523,7 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h3 id="type-inspectiter"><code>type InspectIter</code><a class="headerlink" href="#type-inspectiter" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>Inspect -- calls f on each element for side effects, passes element through</p>
+<p>Inspect -- calls f on each element for side effects, passes element through Iterator running a side effect on each element.</p>
 </blockquote>
 <table>
 <thead>
@@ -7475,11 +7549,11 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h3 id="fn-range_stepstart-int-end-int-step-int-vecint"><code>fn range_step(start: Int, end: Int, step: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-range_stepstart-int-end-int-step-int-vecint" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>Create a Vec[Int] containing values from start to end advancing by step. Returns empty Vec if step &lt;= 0 or start &gt;= end. O(N).</p>
+<p>Create a Vec[Int] containing values from start to end advancing by step. Returns empty Vec if step &lt;= 0 or start &gt;= end. O(N). Collect [start, end) stepping by <code>step</code> into a Vec (empty when step &lt;= 0).</p>
 </blockquote>
 <h3 id="fn-repeat_nvalue-int-n-int-vecint"><code>fn repeat_n(value: Int, n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-repeat_nvalue-int-n-int-vecint" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>Create a Vec[Int] containing <code>value</code> repeated <code>n</code> times. O(N). Returns empty Vec if n &lt;= 0.</p>
+<p>Create a Vec[Int] containing <code>value</code> repeated <code>n</code> times. O(N). Returns empty Vec if n &lt;= 0. Vec with <code>value</code> repeated <code>n</code> times (empty when n &lt;= 0).</p>
 </blockquote>
 <hr />
 <hr />

@@ -16716,6 +16716,9 @@
 <hr />
 <h2 id="avlxi"><code>avl.xi</code><a class="headerlink" href="#avlxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-avl"><code>type Avl</code><a class="headerlink" href="#type-avl" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Self-balancing AVL tree of unique Int elements. Flat-arena representation (the established collect/ pattern, shared with collect.tree): nodes live in parallel Vec[Int]s addressed by a root index; -1 is the "no node" sentinel. <code>heights[i]</code> holds the height of node i (leaf = 1, empty subtree = 0); every insert/remove rebalances via single/double rotations so |balance factor| &lt;= 1 holds on every node. Removed nodes become unreachable arena entries.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -16841,6 +16844,9 @@
 <hr />
 <h2 id="bitmapxi"><code>bitmap.xi</code><a class="headerlink" href="#bitmapxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-bitmap"><code>type Bitmap</code><a class="headerlink" href="#type-bitmap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Compact set of bits indexed 0..n-1 with O(1) test/set/clear/flip. Bits are packed into UInt8 bytes (the pattern proven in collect.hash); the padding bits of the last byte are never reported. Index arithmetic uses only small masks (0..255) so the compiler's large-Int AND bug (BUG 25 #7) cannot be hit. Out-of-range positions are ignored (documented).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -16915,6 +16921,9 @@
 <hr />
 <h2 id="blockingqueuexi"><code>blockingqueue.xi</code><a class="headerlink" href="#blockingqueuexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-blockingqueue"><code>type BlockingQueue</code><a class="headerlink" href="#type-blockingqueue" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Blocking queue (Int items) with a fixed capacity. Pure-XIOM data structure: there are no OS threads, so the blocking variants degrade to immediate returns (bq_push -&gt; false when full, bq_pop -&gt; None when empty) while keeping the same contract as a threaded implementation. bq_close wakes all waiters (a no-op here) and makes push fail while pop drains the remainder.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17010,6 +17019,9 @@
 <hr />
 <h2 id="bloomxi"><code>bloom.xi</code><a class="headerlink" href="#bloomxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-bloomfilter"><code>type BloomFilter</code><a class="headerlink" href="#type-bloomfilter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Space-efficient probabilistic set over Int values with no false negatives and a tunable false positive rate. <code>bits</code> holds <code>bit_count</code> usable bits packed into UInt8 bytes (the collect.hash pattern). Two independent multiplicative hashes (the collect.cuckoo pattern) are combined into <code>num_hashes</code> positions via h1 + i<em>h2 mod m; hashing uses shifts and multiplies only, so the large-Int AND compiler bug (BUG 25 #7) is avoided. <code>inserted</code> tracks insertions so the false positive rate can be estimated as (1 - e^(-k</em>n/m))^k.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17079,6 +17091,9 @@
 <hr />
 <h2 id="btreexi"><code>btree.xi</code><a class="headerlink" href="#btreexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-btree"><code>type BTree</code><a class="headerlink" href="#type-btree" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>B-tree ordered map of Int keys to Int values with a configurable order. <code>order</code> is the maximum number of children per node (clamped to &gt;= 2); a node holds at most order-1 keys. Flat-arena representation: every node is <code>mk = order-1</code> key/value slots and <code>mk+1</code> child slots in parallel Vec[Int]s, with a per-node key count and a leaf flag. Inserts pre-split full nodes on the way down (CLRS), so insert/update is O(log n). <code>btree_remove</code> collects the surviving entries and rebuilds the tree, keeping it perfectly balanced (no underflow; O(n), documented). Removed nodes become unreachable arena entries.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17187,6 +17202,9 @@
 <hr />
 <h2 id="btreeplusxi"><code>btreeplus.xi</code><a class="headerlink" href="#btreeplusxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-bplustree"><code>type BPlusTree</code><a class="headerlink" href="#type-bplustree" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>B+ tree ordered map of Int keys to Int values, leaves linked for fast range scans. All data lives in leaves; internal nodes hold routing keys and child pointers only. <code>order</code> is the maximum number of children per internal node (clamped to &gt;= 2); every node holds at most <code>mk = order-1</code> keys. Flat-arena representation: per-node blocks of <code>mk</code> key/value slots and <code>mk+1</code> child slots in parallel Vec[Int]s, with per-node key counts, leaf flags and a <code>nexts</code> leaf chain. Inserts pre-split full nodes on the way down (O(log n)). Removals delete lazily from the leaf (routing keys stay valid as range separators; empty leaves remain traversable), so <code>bptree_range</code> walks the leaf chain in O(log n + m). Removed nodes become unreachable arena entries.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17291,6 +17309,9 @@
 <hr />
 <h2 id="cachexi"><code>cache.xi</code><a class="headerlink" href="#cachexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-lrucache"><code>type LruCache</code><a class="headerlink" href="#type-lrucache" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>LRU Cache (Int keys, Int values) Simple bookkeeping: <code>keys</code>/<code>values</code> are parallel vectors and <code>order</code> is a vector of keys in recency order, front = most recently used. <code>lru_get</code> and <code>lru_put</code> move an accessed key to the front; when full, the key at the back of <code>order</code> (least recently used) is evicted.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17357,6 +17378,9 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="type-lfucache"><code>type LfuCache</code><a class="headerlink" href="#type-lfucache" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>LFU Cache (Int keys, Int values) Parallel <code>keys</code>/<code>values</code>/<code>counts</code> vectors plus an insertion-sequence vector <code>seq</code> used as a deterministic tie-break: when several keys share the lowest frequency, the least recently inserted one is evicted first.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17424,6 +17448,10 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="type-arccache"><code>type ArcCache</code><a class="headerlink" href="#type-arccache" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>ArcCache ? Adaptive Replacement Cache (2026-08-11) Standard ARC (Megiddo &amp; Modha): T1 (recent) / T2 (frequent) hold cached (key, value) pairs, B1/B2 are ghost lists (keys only). <code>p</code> is the target size of T1 and adapts on ghost hits. Lists are parallel Vecs with the MRU at the FRONT; lookups are O(n) linear scans (documented ? this is a correctness-focused reference implementation; the compiler's Vec lacks a map container for struct elements). Int keys/values.</p>
+<p>NOTE: all list operations are inlined on the &amp;mut ArcCache struct ? helper fns taking <code>&amp;mut Vec[Int]</code> params get a fresh-alloca COPY for non-ident args (<code>&amp;mut c.t1k</code>), so their push/pop/shift mutations would be lost (COMPILER_BUGS.md BUG 16).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17657,6 +17685,9 @@
 <hr />
 <h2 id="cuckooxi"><code>cuckoo.xi</code><a class="headerlink" href="#cuckooxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-cuckoomap"><code>type CuckooMap</code><a class="headerlink" href="#type-cuckoomap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>CuckooMap (Int keys, Int values) Two power-of-two tables with two independent multiplicative hashes. Insert displaces the victim to the other table (bounded at 16 relocations, then the tables double). O(1) expected lookups with at most 2 probes.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17740,6 +17771,10 @@
 <hr />
 <h2 id="dagxi"><code>dag.xi</code><a class="headerlink" href="#dagxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-dag"><code>type Dag</code><a class="headerlink" href="#type-dag" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Directed acyclic graph of Int node ids with topological ordering support.</p>
+<p>Flat-arena style (the same adjacency representation as collect.graph): <code>head[u]</code> is the first edge id leaving node u, <code>to[id]</code> the destination of edge id, <code>next[id]</code> the next edge id in the same list (-1 = none). Node ids are handed out by <code>dag_add_node</code> and never reused. <code>dag_add_edge</code> refuses to add an edge that would close a cycle (checked via reachability of <code>from</code> from <code>to</code>); <code>dag_has_cycle</code> runs a full topological sort. Reachability and traversal helpers are BFS based (O(V + E)). Out-of-range ids are rejected (no silent failure).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17829,6 +17864,10 @@
 <hr />
 <h2 id="densexi"><code>dense.xi</code><a class="headerlink" href="#densexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-denseset"><code>type DenseSet</code><a class="headerlink" href="#type-denseset" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Dense set of unique Int elements backed by a bitmap for compact storage.</p>
+<p>Non-negative values are stored as a single bit each; the bitmap lives in a <code>Vec[UInt8]</code> (value v occupies bit v % 8 of byte v / 8) that grows on demand to cover the largest inserted value. All core operations are O(1); iteration is O(bits) plus the set size. Negative values cannot be represented and are rejected by <code>dense_add</code> (documented, no silent failure).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17879,6 +17918,9 @@
 <hr />
 <h2 id="dequexi"><code>deque.xi</code><a class="headerlink" href="#dequexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-deque"><code>type Deque</code><a class="headerlink" href="#type-deque" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Double-ended queue of Int elements with O(1) push and pop at both ends. Backed by a single Vec[Int] with <code>head</code>/<code>tail</code> offsets defining the live window [head, tail). Pops advance the offsets (stale slots are later overwritten); <code>deque_push_front</code> rebuilds the window when there is no room at the front. All pops/peeks are bounds-checked (None on empty).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -17970,6 +18012,9 @@
 <hr />
 <h2 id="fenwickxi"><code>fenwick.xi</code><a class="headerlink" href="#fenwickxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-fenwicktree"><code>type FenwickTree</code><a class="headerlink" href="#type-fenwicktree" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>FenwickTree (1-based indices; n = number of slots) Point update + prefix-sum queries in O(log n). <code>tree[i]</code> covers the range (i - lowbit(i), i]. All index params are 1-based; 0 is invalid (returns 0).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18104,6 +18149,9 @@
 <hr />
 <h2 id="graphxi"><code>graph.xi</code><a class="headerlink" href="#graphxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-graph"><code>type Graph</code><a class="headerlink" href="#type-graph" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Graph (Int node ids) The spec struct is <code>{ n: Int; adj: Vec[Vec[Int]]; }</code>, but nested <code>Vec[Vec[Int]]</code> element access is unreliable in the current compiler (see collect/heap.xi), so the <code>adj</code> field is retained per the module spec while the adjacency is stored in a flat linked arena: head[u] = first edge id in u's neighbor list (or -1) to[id]  = destination node of edge id next[id] = next edge id in the same node's list (or -1) Appending is O(1); has_edge/degree/neighbors walk the list. <code>graph_add_edge</code> adds both directions and rejects duplicates; <code>graph_add_directed_edge</code> adds a single directed edge.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18214,6 +18262,9 @@
 <li><strong>Postcondition:</strong> <code>a == b &amp;&amp; a &gt;= 0 &amp;&amp; a &lt; g.n =&gt; result == true</code></li>
 </ul>
 <h4 id="type-graphunionfind"><code>type GraphUnionFind</code><a class="headerlink" href="#type-graphunionfind" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Union-Find / Disjoint Set (Int elements) <code>parent</code> stores each element's parent (root points at itself) and <code>rank</code> stores the tree height for union-by-rank. <code>uf_find</code> applies path compression; <code>uf_find_no_compress</code> is a read-only variant used by <code>uf_connected</code> and <code>uf_count</code> so they can take an immutable reference.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18272,6 +18323,10 @@
 <hr />
 <h2 id="hamtxi"><code>hamt.xi</code><a class="headerlink" href="#hamtxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-hamt"><code>type Hamt</code><a class="headerlink" href="#type-hamt" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Hash array mapped trie (Int keys, Int values). A space-efficient persistent map built on a trie of 32-way nodes using the hash of the key. Average O(log_32 n) operations with fast structural sharing and cache locality. Duplicate keys are rejected by insert.</p>
+<p>Flat-arena style (the established collect/ pattern -- tree.xi/graph.xi use parallel Vec[Int]s because Vec-of-struct instantiations collide at startup in combined programs). Every node owns 32 child slots in the flat <code>kids</code> vector (<code>kids[i * 32 + slot]</code>), so table nodes and leaf nodes share one uniform layout. Leaf nodes additionally carry the key, the value and the full 64-bit hash of the key; <code>is_leaf[i]</code> distinguishes the two kinds. The 5-bit window of the key hash at depth d selects the child slot, so a path is at most 13 nodes deep (64 hash bits / 5 bits). Node 0 is always a table node (the root).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18349,6 +18404,9 @@
 <hr />
 <h2 id="hashxi"><code>hash.xi</code><a class="headerlink" href="#hashxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-bloomfilter_1"><code>type BloomFilter</code><a class="headerlink" href="#type-bloomfilter_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Bloom Filter (UInt8 byte inputs) <code>bits</code> is a byte array holding <code>bit_count</code> usable bits (rounded up to a byte multiple). Two independent base hashes (FNV-1a and DJB2) are combined into <code>num_hashes</code> positions via h1 + i<em>h2 mod m. <code>inserted</code> tracks the number of insertions so the false positive rate can be estimated as (1 - e^(-k</em>n/m))^k.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18412,6 +18470,9 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="type-lhmap"><code>type LhMap</code><a class="headerlink" href="#type-lhmap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>LhMap -- insertion-ordered map (Int keys -&gt; Int values) Inserting a new key appends; updating an existing key keeps its position.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18484,6 +18545,9 @@
 <hr />
 <h2 id="hasharrayxi"><code>hasharray.xi</code><a class="headerlink" href="#hasharrayxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-hamt_1"><code>type Hamt</code><a class="headerlink" href="#type-hamt_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Hash-array mapped trie (HAMT) map of Int keys to Int values. Flat-arena style (the established collect/ pattern): every node owns 32 child slots in the flat <code>kids</code> vector (<code>kids[i * 32 + slot]</code>), so table nodes and leaf nodes share one uniform layout. Leaf nodes carry the key, the value and the full 64-bit hash; <code>is_leaf[i]</code> distinguishes the kinds. The 5-bit window of the key hash at depth d selects the child slot, so a path is at most 13 nodes deep (64 hash bits / 5 bits). Node 0 is always a table node (the root). Inserts are upserts: re-inserting a key updates its value. Average O(log_32 n) operations.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18554,6 +18618,9 @@
 <hr />
 <h2 id="hashsetxi"><code>hashset.xi</code><a class="headerlink" href="#hashsetxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-hashset"><code>type HashSet</code><a class="headerlink" href="#type-hashset" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Hash set of unique Int elements using open addressing (linear probing) with a power-of-two table. A parallel <code>used</code> flag vector allows every Int value (including INT_MIN) as an element. The table doubles at 50% load. Hashes are multiplicative and use shifts/multiplies plus a modulo index, so the compiler's large-Int AND bug (BUG 25 #7) is avoided. <code>hashset_remove</code> rebuilds the table (correct under tombstones; O(n) but simple and safe). NOTE: the API parameter type is <code>HashSet</code>: naming it <code>Set</code> collides with the <code>xiom.collections.Set[T]</code> generic and crashes the binary at startup (0xC0000005); the fn names and value signatures match the frozen spec.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18615,6 +18682,9 @@
 <hr />
 <h2 id="heapxi"><code>heap.xi</code><a class="headerlink" href="#heapxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-pheap"><code>type PHeap</code><a class="headerlink" href="#type-pheap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Pairing Heap (Int keys) Arena of nodes; node i lives at the i-th triple of the <code>keys</code> vector: keys[3i]   = key keys[3i+1] = first child keys[3i+2] = next sibling (nested <code>Vec[Vec[Int]]</code> element access is unreliable in the current compiler, so the child lists are stored as first-child/next-sibling links in the flat arena; the <code>children</code> field is retained per the module spec.) Merge works on concrete Int keys; extract uses the two-pass pairwise merge.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18674,6 +18744,9 @@
 <li><strong>Postcondition:</strong> <code>result == (pheap_size(h) == 0)</code></li>
 </ul>
 <h4 id="type-fibheap"><code>type FibHeap</code><a class="headerlink" href="#type-fibheap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Fibonacci Heap (Int keys) Arena of parallel vectors. The root list and every child list are circular doubly-linked rings through the <code>left</code>/<code>right</code> vectors; sentinel index -1 denotes "no node". Extract-min consolidates the root list with 64 degree buckets. Decrease-key performs a cut + cascading cut (CLRS).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18765,6 +18838,9 @@
 <hr />
 <h2 id="immutablexi"><code>immutable.xi</code><a class="headerlink" href="#immutablexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-pvec"><code>type PVec</code><a class="headerlink" href="#type-pvec" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Persistent (copy-on-write) vector and map retaining prior versions. Every update copies the backing arena into a fresh Vec before mutating, so any caller holding an older PVec/PMap value still observes the version it captured. Int elements; accessors return Option[Int].</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18838,6 +18914,10 @@
 <hr />
 <h2 id="intervalxi"><code>interval.xi</code><a class="headerlink" href="#intervalxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-intervaltree"><code>type IntervalTree</code><a class="headerlink" href="#type-intervaltree" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Interval tree (Int start/end, Int value). Stores [start, end] intervals and answers stabbing queries (which intervals contain a point) and range queries (which intervals overlap [start, end]) in O(log n + k) where k is the number of reported intervals. Intervals are inclusive on both ends.</p>
+<p>Flat-arena style (the established collect/ pattern). The tree is a BST keyed by <code>start</code>; each node also tracks <code>max_ends</code>, the largest <code>end</code> in its subtree, which prunes subtrees that cannot intersect a query. Equal starts are inserted to the right (multi-map semantics). Removed intervals are marked dead (<code>alive = false</code>) and skipped by every query, so removal never disturbs the tree shape. Queries skip a subtree when its max end is below the query point (stabbing) or below the query low bound (overlap).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -18924,6 +19004,10 @@
 <hr />
 <h2 id="intmapxi"><code>intmap.xi</code><a class="headerlink" href="#intmapxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-intmap"><code>type IntMap</code><a class="headerlink" href="#type-intmap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Optimized keyed maps. int_map uses a flat open-addressing table sized for the expected capacity (Int keys -&gt; Int values); string_map uses a string-keyed variant. Both reject duplicate keys and iterate over stored keys in insertion order via int_map_iter.</p>
+<p>Flat-arena style. The int_map table stores parallel <code>keys</code>/<code>vals</code>/<code>occ</code>/ <code>tomb</code> vectors of <code>cap</code> slots with linear probing and a multiplicative hash (high 32 bits of key * golden ratio, forced non-negative) so INT_MIN and other pathological keys are safe. Deleted slots become tombstones so probing chains stay intact; the table doubles when the load factor reaches 1/2. A separate <code>order</code> vector tracks the insertion order of live keys for <code>int_map_iter</code>. string_map is a simpler linear Vec[Str] map (strings are compared via bound locals, compiler BUG 8 workaround).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19006,6 +19090,9 @@
 <li><strong>Postcondition:</strong> <code>result.len() == int_map_size(m)</code></li>
 </ul>
 <h4 id="type-orderedstringmap"><code>type OrderedStringMap</code><a class="headerlink" href="#type-orderedstringmap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>OrderedStringMap (Str keys -&gt; Int values, insertion-ordered)</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19065,6 +19152,10 @@
 <hr />
 <h2 id="kdtreexi"><code>kdtree.xi</code><a class="headerlink" href="#kdtreexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-kdtree"><code>type KdTree</code><a class="headerlink" href="#type-kdtree" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>2D k-d tree of Int points with values, supporting nearest-neighbor and rectangular range queries.</p>
+<p>Flat-arena style (the established collect/ pattern -- tree.xi/graph.xi use parallel Vec[Int]s because Vec-of-struct instantiations collide at startup in combined programs). Node i lives in the parallel vectors <code>xs</code>/<code>ys</code>/<code>vals</code> plus its <code>left</code>/<code>right</code> children; the splitting axis alternates by depth (x at even depth, y at odd depth), which is re-derived during every walk so no depth field needs to be stored. Distances are squared Int distances, so no floating point is involved. <code>kdtree_insert</code> is an incremental insert (O(h) with h the tree height); the worst case is O(n) per insert for degenerate orders, expected O(log n).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19131,6 +19222,10 @@
 <hr />
 <h2 id="lfuxi"><code>lfu.xi</code><a class="headerlink" href="#lfuxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-lfucache_1"><code>type LfuCache</code><a class="headerlink" href="#type-lfucache_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Least-frequently-used cache with Int keys and values, evicting the least frequently accessed entry when full.</p>
+<p>Flat-arena style. <code>keys</code>/<code>values</code>/<code>counts</code> are parallel vectors; every access bumps the entry's frequency. <code>seq</code> is an insertion-sequence vector used as a deterministic tie-break: when several keys share the lowest frequency, the least recently inserted one is evicted first. <code>next_seq</code> hands out increasing sequence numbers. <code>lfu_get</code> / <code>lfu_put</code> increase the frequency of the touched key (a get on a hit counts as an access).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19227,6 +19322,9 @@
 <hr />
 <h2 id="linkedhashxi"><code>linkedhash.xi</code><a class="headerlink" href="#linkedhashxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-lhmap_1"><code>type LhMap</code><a class="headerlink" href="#type-lhmap_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Hash map preserving insertion order of Int keys. Keys and values live in two parallel Vec[Int]s in insertion order: putting an existing key updates its value without moving it; putting a new key appends. <code>lhmap_first</code>/ <code>lhmap_last</code>/<code>lhmap_iter</code> read that order. Lookup is a linear scan (O(n)), which keeps the API dependency-free; removal compacts the vectors.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19289,6 +19387,9 @@
 <hr />
 <h2 id="listxi"><code>list.xi</code><a class="headerlink" href="#listxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-linkedlist"><code>type LinkedList</code><a class="headerlink" href="#type-linkedlist" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Doubly linked list of Int elements with O(1) push/pop/peek at both ends. Flat-arena representation (the established collect/ pattern): nodes live in three parallel Vec[Int]s (<code>values</code>/<code>prevs</code>/<code>nexts</code>) addressed by index; -1 is the "no node" sentinel. <code>head</code>/<code>tail</code> index the two ends. Removed nodes become unreachable arena entries. Indexed access is O(n); all index arguments are bounds-checked.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19392,6 +19493,10 @@
 <hr />
 <h2 id="lruxi"><code>lru.xi</code><a class="headerlink" href="#lruxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-lrucache_1"><code>type LruCache</code><a class="headerlink" href="#type-lrucache_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Least-recently-used cache with O(1) get/put over Int keys and values.</p>
+<p>Flat-arena style. <code>keys</code>/<code>values</code> are parallel vectors and <code>order</code> is a vector of keys in recency order, front = most recently used. <code>lru_get</code> and <code>lru_put</code> move an accessed key to the front; when full, the key at the back of <code>order</code> (least recently used) is evicted. Lookups are O(n) linear scans (the compiler's Vec has no hash map for struct elements), which is acceptable for the small cache sizes this module targets.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19559,6 +19664,9 @@
 <hr />
 <h2 id="mapchxi"><code>mapch.xi</code><a class="headerlink" href="#mapchxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-hashmap"><code>type HashMap</code><a class="headerlink" href="#type-hashmap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Hash map using separate chaining over Int keys and Int values. Bucket heads live in <code>buckets</code>; entries are stored in parallel <code>keys</code> / <code>values</code> / <code>next</code> / <code>live</code> arenas (the flat-arena collect/ pattern). Removed entries are unlinked and flagged dead but stay in the arena, so chain walkers never see them. The table doubles when the load factor exceeds 0.75, re-linking only live entries. O(1) amortized lookups.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19732,6 +19840,9 @@
 <hr />
 <h2 id="objectpoolxi"><code>objectpool.xi</code><a class="headerlink" href="#objectpoolxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-objectpool"><code>type ObjectPool</code><a class="headerlink" href="#type-objectpool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>ObjectPool (Int handles 0 .. capacity-1) <code>free</code> is a LIFO stack of released handles; <code>next</code> hands out fresh handles while below capacity. O(1) acquire/release; release validates the handle (double-release is rejected).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -19925,6 +20036,9 @@
 <hr />
 <h2 id="persistentxi"><code>persistent.xi</code><a class="headerlink" href="#persistentxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-pvec_1"><code>type PVec</code><a class="headerlink" href="#type-pvec_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Persistent (copy-on-write) collections. Every update returns a new structure and leaves the original intact, enabling cheap immutability and undo/history. Int-valued elements and key/value pairs; accessors return Option[Int].</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20028,6 +20142,9 @@
 <hr />
 <h2 id="priorityxi"><code>priority.xi</code><a class="headerlink" href="#priorityxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-intmaxheap"><code>type IntMaxHeap</code><a class="headerlink" href="#type-intmaxheap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Binary max-heap based priority queue of Int elements backed by the built-in Vec[Int]. <code>pqueue_pop</code> removes the largest element in O(log n); <code>pqueue_peek</code> inspects it in O(1). None on an empty queue.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20159,6 +20276,9 @@
 <hr />
 <h2 id="queuexi"><code>queue.xi</code><a class="headerlink" href="#queuexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-workqueue"><code>type WorkQueue</code><a class="headerlink" href="#type-workqueue" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>WorkQueue (Int items) A FIFO queue backed by a Vec plus a head offset. <code>push</code> appends at the end, <code>pop</code>/<code>peek</code> read from <code>head</code>. Popped entries are left in place (no compaction) so all operations stay O(1).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20217,6 +20337,9 @@
 <li><strong>Postcondition:</strong> <code>result == (workqueue_len(q) == 0)</code></li>
 </ul>
 <h4 id="type-deque_1"><code>type Deque</code><a class="headerlink" href="#type-deque_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Deque (Int items) A double-ended queue backed by a Vec with <code>head</code>/<code>tail</code> offsets. Pushes append, pops advance the offsets. <code>deque_push_front</code> rebuilds the active range ([head, tail)) into a fresh Vec so no stale entries leak in.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20283,6 +20406,9 @@
 <li><strong>Postcondition:</strong> <code>result == (deque_len(d) == 0)</code></li>
 </ul>
 <h4 id="type-spscring"><code>type SpscRing</code><a class="headerlink" href="#type-spscring" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>SpscRing -- lock-free single-producer / single-consumer ring buffer (2026-08-11). Fixed <code>cap</code> slots (power of two not required; modulo via %). head = next slot to pop, tail = next slot to push, both AtomicInt (fetch_add based). Producer and consumer must each be used from exactly one thread. When full, push returns false without blocking; when empty, pop returns None. Slot reuse races are bounded by the documented usage contract (SPSC); a "full" or "empty" state read by the OTHER side may lag one operation, which is safe for SPSC.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20350,6 +20476,10 @@
 <hr />
 <h2 id="radixxi"><code>radix.xi</code><a class="headerlink" href="#radixxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-radixtrie"><code>type RadixTrie</code><a class="headerlink" href="#type-radixtrie" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Compressed prefix tree over decimal digit strings mapping keys to Int values.</p>
+<p>Flat-arena style. Every node carries the label of its incoming edge (<code>labels[i]</code>, the empty string at the root), a terminal flag plus the stored key/value for nodes that end a key, and a child list threaded through <code>child_head[i]</code> / <code>sibling[i]</code> (linked list of child node ids). Insertion follows the classic radix-trie algorithm: match a child whose label shares a prefix with the remaining key, split that label at the divergence point, and re-link the pieces. Removal marks a terminal node non-terminal (the node itself and its labels stay, so no recompaction is needed). All string reads go through xiom.string; Vec[Str] elements are bound to locals before comparison (compiler BUG 8 workaround).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20427,6 +20557,11 @@
 <hr />
 <h2 id="rangexi"><code>range.xi</code><a class="headerlink" href="#rangexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-intervalset"><code>type IntervalSet</code><a class="headerlink" href="#type-intervalset" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Interval tree storing Int intervals with values, supporting point queries.</p>
+<p>R44 same-leaf: the public type leaf here is <code>IntervalSet</code> (renamed from <code>IntervalTree</code>, which collided with the real tree in collect/interval.xi). Function names stay <code>interval_*</code>; both modules share the call surface, so always <code>use</code> the module you call.</p>
+<p>Flat-arena style. Intervals are stored in insertion order in parallel Vec[Int]s (<code>starts</code>/<code>ends</code>/<code>vals</code>) with a parallel liveness flag <code>alive</code>. Point queries scan the intervals and return the values of the live intervals covering the point; removal marks the first matching interval dead (lazy deletion). This keeps the API simple and insertion/removal O(1) amortized at the cost of O(n) queries, which is appropriate for the small interval sets this module targets. Intervals are inclusive on both ends; <code>start &gt; end</code> intervals are rejected by insert.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20474,6 +20609,9 @@
 <hr />
 <h2 id="rbtreexi"><code>rbtree.xi</code><a class="headerlink" href="#rbtreexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-rbtree"><code>type RbTree</code><a class="headerlink" href="#type-rbtree" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Red-black tree (Int keys, Int values). Self-balancing BST with a color bit per node (1 = red, 0 = black; null is black) that guarantees O(log n) insert, delete and lookup. Flat-arena representation (the established collect/ pattern): nodes live in parallel Vec[Int]s (<code>keys</code>/<code>values</code>/ <code>left</code>/<code>right</code>/<code>parent</code>/<code>colors</code>) addressed by a root index; -1 is the "no node" sentinel. Duplicate keys are rejected; inorder/preorder/ postorder return the keys. Removed nodes become unreachable arena entries.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20596,6 +20734,9 @@
 <hr />
 <h2 id="ringxi"><code>ring.xi</code><a class="headerlink" href="#ringxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-ringbuffer"><code>type RingBuffer</code><a class="headerlink" href="#type-ringbuffer" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Bounded single-producer single-consumer ring buffer of Int elements. Fixed <code>cap</code> slots; <code>head</code>/<code>tail</code> are monotonic counters, the slot index is (counter % cap). When full, push returns false without blocking; when empty, pop returns None. NOTE: the reference collect.queue SpscRing uses AtomicInt counters; this module keeps the "Depends on: none" contract and uses plain Int counters, which are exactly equivalent for the SPSC single-threaded contract exercised by the smoke tests.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20660,6 +20801,10 @@
 <hr />
 <h2 id="segmentxi"><code>segment.xi</code><a class="headerlink" href="#segmentxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-segtree"><code>type SegTree</code><a class="headerlink" href="#type-segtree" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Segment tree over an Int array (0-based indices). Builds in O(n), supports point updates and range queries (sum, min, max) in O(log n). Indices are inclusive; out-of-range queries return identity values (0 for sum, INT_MAX for min, INT_MIN for max).</p>
+<p>Flat-arena style. The tree is stored in three parallel Vec[Int]s of size 4n (<code>sums</code>, <code>mins</code>, <code>maxs</code>) using the classic recursive heap layout: node <code>k</code> covers [l, r] with children 2k+1 and 2k+2. Leaves hold a single slot, internal nodes pull from their children. Out-of-range update indices are rejected (no-op); out-of-range queries are clamped and return the identity value when the clamped range is empty.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20788,6 +20933,10 @@
 <hr />
 <h2 id="sparsexi"><code>sparse.xi</code><a class="headerlink" href="#sparsexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-sparseset"><code>type SparseSet</code><a class="headerlink" href="#type-sparseset" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Sparse set of unique Int elements with O(1) add, remove and membership checks over dense Int universes.</p>
+<p>Classic two-array representation: <code>sparse[value]</code> holds the index of <code>value</code> inside <code>dense</code>, and <code>dense</code> holds the set members in an arbitrary but stable order. Removal swaps the last element into the removed slot, so all three core operations are O(1). The <code>sparse</code> array grows on demand to cover the largest inserted value; negative values cannot be indexed and are therefore rejected by <code>sparse_add</code> (documented, no silent failure).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -20838,6 +20987,9 @@
 <hr />
 <h2 id="spatialxi"><code>spatial.xi</code><a class="headerlink" href="#spatialxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-kdtree_1"><code>type KdTree</code><a class="headerlink" href="#type-kdtree_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>KD-tree (2D Int points with values)</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21000,6 +21152,9 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="type-octree_1"><code>type Octree</code><a class="headerlink" href="#type-octree_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Octree (fixed bounds, 3D)</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21153,6 +21308,9 @@
 <hr />
 <h2 id="stackxi"><code>stack.xi</code><a class="headerlink" href="#stackxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-stack"><code>type Stack</code><a class="headerlink" href="#type-stack" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>LIFO stack of Int elements backed by the built-in Vec[Int]. All operations are O(1); <code>stack_pop</code>/<code>stack_peek</code> return None on an empty stack.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21284,6 +21442,10 @@
 <hr />
 <h2 id="threadpoolxi"><code>threadpool.xi</code><a class="headerlink" href="#threadpoolxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-threadpool"><code>type ThreadPool</code><a class="headerlink" href="#type-threadpool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Thread pool. Spawns a fixed number of worker threads that drain a shared job queue. pool_submit enqueues a closure; pool_join waits for all pending jobs to finish; pool_shutdown stops the workers and releases their threads.</p>
+<p>Pure-XIOM data structure (no OS threads): the pool tracks <code>workers</code> worker slots, an <code>idle</code>/<code>busy</code> split and a FIFO queue of Int job handles. Each submit hands the job to an idle worker if one is free (busy++), otherwise the handle waits in the queue; pool_join completes every pending job instantly (no real work runs) and returns all workers to idle. Submit after shutdown returns false.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21364,6 +21526,9 @@
 <hr />
 <h2 id="tinylfuxi"><code>tinylfu.xi</code><a class="headerlink" href="#tinylfuxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-countminsketch"><code>type CountMinSketch</code><a class="headerlink" href="#type-countminsketch" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>TinyLFU admission filter for caches. Uses a count-min sketch (CMS) of estimated access frequencies to decide whether an incoming key should displace an existing one. Includes the underlying CMS primitives as the building block; tinylfu_reset halves all counters to avoid saturation.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21476,6 +21641,9 @@
 <hr />
 <h2 id="treexi"><code>tree.xi</code><a class="headerlink" href="#treexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-bst"><code>type Bst</code><a class="headerlink" href="#type-bst" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Binary Search Tree (Int keys) Arena representation: nodes live in parallel Vec[Int]s, addressed by a root index. The sentinel index -1 denotes "no node". Removed nodes become unreachable arena entries; all queries traverse the reachable tree.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21564,6 +21732,9 @@
 <p>True if the in-order traversal is strictly sorted (a valid BST).</p>
 </blockquote>
 <h4 id="type-avl_1"><code>type Avl</code><a class="headerlink" href="#type-avl_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>AVL Tree (Int keys) Same arena layout as the BST plus a parallel <code>heights</code> vector. Node height: leaf = 1, empty subtree = 0. Every insert rebalances via single/double rotations so |bf| &lt;= 1 holds on every node.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21635,6 +21806,9 @@
 <hr />
 <h2 id="treemapxi"><code>treemap.xi</code><a class="headerlink" href="#treemapxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-btreemap"><code>type BTreeMap</code><a class="headerlink" href="#type-btreemap" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Balanced binary search tree map keeping Int keys in sorted order. The balance policy is AVL (the proven collect.tree pattern) so put/get/ contains/remove run in O(log n). Flat-arena representation: nodes live in parallel Vec[Int]s (<code>keys</code>/<code>values</code>/<code>left</code>/<code>right</code>/<code>heights</code>) addressed by a root index; -1 is the "no node" sentinel. <code>treemap_iter</code> returns (key, value) pairs in ascending key order. Removed nodes become unreachable arena entries.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21717,6 +21891,9 @@
 <hr />
 <h2 id="treesetxi"><code>treeset.xi</code><a class="headerlink" href="#treesetxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-btreeset"><code>type BTreeSet</code><a class="headerlink" href="#type-btreeset" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Balanced binary search tree set keeping Int elements in sorted order. The balance policy is AVL (the proven collect.tree pattern) so insert/ contains/remove run in O(log n). Flat-arena representation: nodes live in parallel Vec[Int]s (<code>keys</code>/<code>left</code>/<code>right</code>/<code>heights</code>) addressed by a root index; -1 is the "no node" sentinel. Removed nodes become unreachable arena entries.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21787,6 +21964,9 @@
 <hr />
 <h2 id="triexi"><code>trie.xi</code><a class="headerlink" href="#triexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-trie"><code>type Trie</code><a class="headerlink" href="#type-trie" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Trie (Str keys, lowercase a-z only; other chars are rejected) Flat-arena style (the established collect/ pattern -- tree.xi/graph.xi use parallel Vec[Int]s because Vec-of-struct instantiations collide at startup in combined programs, COMPILER_BUGS.md BUG 16). Node n's child for letter c is children[n * 26 + c] (-1 = none); ends[n] is 1 for a complete word. <code>trie_complete</code> returns all words with a prefix, in DFS lexicographic order. Node 0 is the root.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21845,6 +22025,10 @@
 <hr />
 <h2 id="unionfindxi"><code>unionfind.xi</code><a class="headerlink" href="#unionfindxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-unionfind"><code>type UnionFind</code><a class="headerlink" href="#type-unionfind" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Disjoint-set (union-find) over Int element ids with path compression and union by size.</p>
+<p>Flat-arena style: <code>parent[i]</code> points at the parent of element i (a root points at itself), <code>size[i]</code> is the component size valid at the roots, and <code>count</code> tracks the number of disjoint sets. <code>uf_find</code> applies path compression (both passes) and takes <code>&amp;mut</code>; the immutable read-only traversal <code>uf_find_no_compress</code> backs <code>uf_connected</code> / <code>uf_component_size</code> / <code>uf_components</code> so they accept <code>&amp;UnionFind</code>. Union by size keeps trees shallow, giving ~O(alpha n) amortized operations. Out-of-range element ids are rejected (no silent failure).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21905,6 +22089,9 @@
 <hr />
 <h2 id="vectorxi"><code>vector.xi</code><a class="headerlink" href="#vectorxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-intvec"><code>type IntVec</code><a class="headerlink" href="#type-intvec" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Growable array of Int elements with amortized O(1) push and O(1) indexed access. The backing store is the built-in Vec[Int]. NOTE: the API parameter type is <code>IntVec</code> because defining a struct named <code>Vec</code> collides with the built-in <code>Vec[T]</code> generic and silently corrupts codegen (compiler BUG 25 family); the fn names and value signatures match the frozen spec exactly. All index access is bounds-checked (Option-returning getters).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -21973,6 +22160,9 @@
 <hr />
 <h2 id="workqueuexi"><code>workqueue.xi</code><a class="headerlink" href="#workqueuexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-workqueue_1"><code>type WorkQueue</code><a class="headerlink" href="#type-workqueue_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>FIFO queue of Int jobs consumed by worker threads. Pure-XIOM data structure (no OS threads): a bounded-by-memory FIFO backed by a flat Vec plus a head offset. push appends, pop reads from <code>head</code>; popped slots are left in place (no compaction) so every operation is O(1).</p>
+</blockquote>
 <table>
 <thead>
 <tr>

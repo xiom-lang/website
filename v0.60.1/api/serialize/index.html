@@ -4789,7 +4789,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Eq, Clone, Display</code></p>
 <h3 id="fn-format_error-str"><code>fn format_error() -&gt; Str</code><a class="headerlink" href="#fn-format_error-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Error kinds: 0=Unknown, 1=InvalidFormat, 2=MissingField, 3=TypeMismatch, 4=ContractViolation, 5=UnsupportedType</p>
+</blockquote>
 <h3 id="fn-detect_formatdata-vecuint8-str"><code>fn detect_format(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_formatdata-vecuint8-str" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>=== Format detection ===</p>
@@ -4841,7 +4843,9 @@
 <li><code>Object(entries: Map[Str, JsonValue])</code></li>
 </ul>
 <h3 id="fn-to_strself-self-str"><code>fn to_str(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-to_strself-self-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>=== JsonValue methods ===</p>
+</blockquote>
 <h3 id="fn-getself-self-key-str-optionjsonvalue"><code>fn get(self: Self, key: Str) -&gt; Option[JsonValue]</code><a class="headerlink" href="#fn-getself-self-key-str-optionjsonvalue" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; takes <code>key: Str</code>; returns <code>Option[JsonValue]</code>. No source comment yet.</p>
 <h3 id="fn-indexself-self-i-int-optionjsonvalue"><code>fn index(self: Self, i: Int) -&gt; Option[JsonValue]</code><a class="headerlink" href="#fn-indexself-self-i-int-optionjsonvalue" title="Permanent link">&para;</a></h3>
@@ -4904,6 +4908,11 @@
 <hr />
 <h2 id="tomlxi"><code>toml.xi</code><a class="headerlink" href="#tomlxi" title="Permanent link">&para;</a></h2>
 <h4 id="enum-tomlvalue"><code>enum TomlValue</code><a class="headerlink" href="#enum-tomlvalue" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>TOML v1 reader (the subset a package manifest needs).</p>
+<p>Supported: comments; bare and quoted keys; <code>[table]</code> and <code>[a.b]</code> headers; basic strings with the five common escapes; literal strings; integers (decimal, optional sign, <code>_</code> separators); floats; booleans; arrays of strings/ints/floats. Keys are stored section-qualified with '.' ("package.name"), in file order.</p>
+<p>NOT in v1: dates/times, multi-line strings, inline tables, arrays-of-tables, dotted keys in assignment position. The WRITER (<code>toml_write</code>) emits the same subset: flat section-qualified keys, root keys first, <code>[section]</code> blocks in first-appearance order, the five common escapes. Errors carry the 1-based line number.</p>
+</blockquote>
 <ul>
 <li><code>TStr(_0: Str)</code></li>
 <li><code>TInt(_0: Int)</code></li>
