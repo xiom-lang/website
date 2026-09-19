@@ -55,10 +55,15 @@ Queue:
    download table shows the expected SHA256 per archive, filled from
    `SHA256SUMS` next to `latest.json`, with the attestation command in the
    verify section.
-3. **macOS**: when the compiler release enables macOS builds (`xiom` repo
-   variable `RELEASE_BUILD_MACOS=true`), the page rows appear
-   automatically; add `install.sh` macOS support (Homebrew clang check,
-   `xcode-select`) at the same time.
+3. **~~macOS installer~~ (done 2026-09-19)**: `install.sh` handles Darwin
+   x64/arm64 (asset naming, `shasum` checksum fallback, `xcode-select`
+   check) and reports a clear message until macOS assets ship with
+   `RELEASE_BUILD_MACOS`; the download-page rows still appear
+   automatically. Installer follow-ups also landed: every `bin/xiom*`
+   tool is symlinked into `~/.local/bin` (z3 stays in the install bin
+   dir), one copy-paste activation line is printed, `XIOM_ADD_PATH=1`
+   appends the PATH export to `~/.profile` idempotently, and the Windows
+   installer lists every installed tool.
 4. **~~One-line install honesty~~ (done 2026-09-17)**: the page describes
    what the installer does and warns about piping scripts from the
    internet; both installers stay short and auditable.

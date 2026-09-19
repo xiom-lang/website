@@ -3,8 +3,9 @@
 #
 # XIOM toolchain installer for Windows (x64).
 # Downloads the latest release from the dl.xiom-lang.org mirror, verifies the
-# SHA256, installs into %LOCALAPPDATA%\xiom, and adds bin to the user PATH.
-# It also checks for LLVM/Clang and prints install instructions when missing.
+# SHA256, installs into %LOCALAPPDATA%\xiom, adds bin to the user PATH and
+# reports every installed tool. It also checks for LLVM/Clang and prints
+# install instructions when missing.
 #
 # Usage:  irm https://xiom-lang.org/install.ps1 | iex
 #         .\install.ps1 -InstallDir C:\tools\xiom -NoPath
@@ -84,6 +85,21 @@ try {
     }
   }
 
+  $tools = @(Get-ChildItem -Path $bin -Filter 'xiom*.exe' -ErrorAction SilentlyContinue | Sort-Object Name)
+  if (-not $tools) { throw "No xiom tools were found in $bin" }
+  Write-Host ''
+  Write-Host 'Installed tools:'
+  foreach ($tool in $tools) {
+    $label = $tool.Name
+    if ($tool.Name -in @('xiom.exe', 'xiom-pkg.exe')) {
+      $out = & $tool.FullName --version 2>$null
+      if ($LASTEXITCODE -eq 0 -and $out) {
+        $label = "$($tool.Name) ($($out | Select-Object -First 1))"
+      }
+    }
+    Write-Host "  $label"
+  }
+
   $clang = Get-Command clang -ErrorAction SilentlyContinue
   if ($clang) {
     Write-Host "clang found: $($clang.Source)"
@@ -95,7 +111,7 @@ try {
 
   Write-Host ''
   Write-Host "XIOM installed to $InstallDir" -ForegroundColor Green
-  Write-Host 'Open a new terminal, then run:  xiom --version'
+  Write-Host 'Open a new terminal (PATH updates in new sessions), then run:  xiom --version'
   Write-Host 'Check the toolchain with:       xiom doctor'
 } finally {
   Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
