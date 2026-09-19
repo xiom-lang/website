@@ -113,6 +113,48 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   color: inherit;
 }
 
+/* API module pages: declarations are H4, so pages containing them (guides
+   have no H4) get file-section dividers and readable declaration rows. */
+.md-typeset h4 {
+  margin: 1.6em 0 0.35em;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset h4 code {
+  font-size: 0.9em;
+}
+
+/* Doc prose directly under a declaration reads as text, not a quote */
+.md-typeset h4 + blockquote {
+  margin: 0 0 0.9em;
+  padding: 0;
+  border: 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.78rem;
+  line-height: 1.65;
+}
+
+.md-typeset:has(h4) h2 {
+  margin-top: 2.2em;
+  padding-top: 1em;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.md-typeset:has(h4) h2 code {
+  font-size: 0.85em;
+}
+
+.md-typeset:has(h4) ul li {
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+/* Anchor targets clear the sticky header */
+.md-typeset :target {
+  scroll-margin-top: 4.5rem;
+}
+
 .md-typeset code {
   border-radius: 6px;
 }

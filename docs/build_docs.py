@@ -303,6 +303,10 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <p>Copyright (c) 2026 XIOM Foundation.</p>
       <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
     </div>
+    <div class="foot-links social">
+      <a href="https://github.com/xiom-lang">GitHub</a>
+      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+    </div>
     <div class="foot-links">
       <a href="{site_base}spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
