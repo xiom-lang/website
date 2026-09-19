@@ -2845,9 +2845,17 @@ list every flag.</p>
 <p>Contracts (<code>requires:</code> / <code>ensures:</code> / <code>invariant:</code>) are part of the
 language, not annotations. By default they compile to runtime guards that
 trap on violation. <code>--no-contracts</code> removes the guards. <code>--release</code> strips
-them unless <code>--runtime-contracts</code> forces them. Static proof is a separate
-path: <code>--dump-contracts</code> emits SMT-LIB and <code>--verify</code> runs Z3 over that
-output.</p>
+them unless <code>--runtime-contracts</code> forces them.</p>
+<p>Verification is a separate path with three distinct stages:</p>
+<ul>
+<li><strong>exported</strong> -- <code>--dump-contracts</code> exports contract metadata (JSON) and
+  <code>--verify</code> exports SMT-LIB proof obligations; no proof claim is made.</li>
+<li><strong>checked</strong> -- <code>xiom-verify --check</code> runs the bundled <code>z3</code> over that
+  output; the verdict is Proven, Violated or UNKNOWN.</li>
+<li><strong>proved</strong> -- only a verdict of <code>unsat</code> (Proven) counts as a proof.
+  Obligations the encoder cannot express faithfully are reported UNKNOWN
+  and never count as proofs.</li>
+</ul>
 <h3 id="debug-and-diagnostics">Debug and diagnostics<a class="headerlink" href="#debug-and-diagnostics" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>--debug</code> / <code>-g</code>: DWARF/PDB metadata for debuggers.</li>
@@ -3113,11 +3121,11 @@ every <code>xiom*</code> tool into your PATH and leaves <code>z3</code> beside t
 </tr>
 <tr>
 <td><code>--dump-contracts</code></td>
-<td>Print the contract index as JSON</td>
+<td>Export contract metadata (JSON)</td>
 </tr>
 <tr>
 <td><code>--verify</code></td>
-<td>Generate SMT-LIB contract verification output</td>
+<td>Export SMT-LIB proof obligations (no proof claim)</td>
 </tr>
 <tr>
 <td><code>--verify-output &lt;file&gt;</code></td>
@@ -3508,7 +3516,7 @@ is tracked in the compiler repository (<code>docs/PRE_SELFHOST_GAPS.md</code>).<
 </tr>
 <tr>
 <td>Contracts</td>
-<td><strong>Runtime guards</strong> + Z3 (SMT-LIB)</td>
+<td>Runtime guards; SMT-LIB export checked with the bundled <code>z3</code> (<code>xiom-verify --check</code>)</td>
 </tr>
 <tr>
 <td>Type constraints</td>
