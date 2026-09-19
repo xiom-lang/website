@@ -112,7 +112,12 @@ publishes on pushes touching `docs/**`, `mkdocs.yml`,
 from `dl.xiom-lang.org/latest.json` when no dispatch version is present.
 Guide edits republish the current version plus the `latest` alias; that
 snapshot is refreshed from main sources until a release dispatch publishes
-the next tag.
+the next tag. Ops confirmed this semantics (2026-09-19): a version directory
+is main-as-of-publish, not byte-frozen to its tag; push runs default
+`stdlib_ref`/`compiler_ref` to main, so API pages may describe unreleased
+compiler/stdlib state between releases ("latest docs track main"). If
+byte-stable snapshots are ever required (e.g. at 1.0), the pattern is a
+dedicated dev channel: push -> `dev`, release -> `vX.Y.Z` + `latest`.
 
 Queue:
 

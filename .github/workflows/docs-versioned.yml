@@ -11,6 +11,16 @@
 #   - repository_dispatch: compiler-release with client_payload.tag
 #   - workflow_dispatch for manual publishes and backfill
 #
+# Semantics: guides are checked out from website main in every run, so a
+# version directory is main-as-of-publish rather than byte-frozen to its tag.
+# Push runs refresh the current version plus the latest alias; release
+# dispatches additionally pin compiler_ref/stdlib_ref, making the generated
+# API pages as release-accurate as the pipeline allows. Push runs default
+# those refs to main, so API pages may describe unreleased compiler/stdlib
+# state between releases -- "latest docs track main". If byte-stable
+# snapshots are ever required (e.g. at 1.0), the pattern is a dedicated dev
+# channel: push -> dev, release -> vX.Y.Z + latest.
+#
 # Keep every action ref pinned to a full commit SHA: the xiom-lang org
 # enforces sha_pinning_required=true and tag refs fail at job setup.
 
