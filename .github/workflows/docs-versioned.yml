@@ -4,10 +4,12 @@
 # Versioned documentation site for docs.xiom-lang.org.
 #
 # Assembles the MkDocs tree (guides + generated stdlib API pages), builds it
-# in strict mode, and deploys with mike so each release keeps a frozen docs
-# snapshot plus the latest alias. The compiler release workflow is expected
-# to fire a repository_dispatch of type compiler-release with a
-# client_payload.tag; workflow_dispatch covers manual publishes and backfill.
+# in strict mode, and deploys with mike so each release keeps a docs snapshot
+# plus the latest alias. Publishes on:
+#   - push to main touching documentation inputs (republishes the current
+#     release version, resolved from the mirror, so the site cannot go stale)
+#   - repository_dispatch: compiler-release with client_payload.tag
+#   - workflow_dispatch for manual publishes and backfill
 #
 # Keep every action ref pinned to a full commit SHA: the xiom-lang org
 # enforces sha_pinning_required=true and tag refs fail at job setup.
@@ -15,6 +17,13 @@
 name: docs-versioned
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "requirements-docs.txt"
+      - ".github/workflows/docs-versioned.yml"
   workflow_dispatch:
     inputs:
       version:
@@ -53,7 +62,12 @@ jobs:
           IN_COMPILER: ${{ github.event.inputs.compiler_ref || github.event.client_payload.compiler_ref || 'main' }}
         run: |
           if [ -z "${IN_VERSION}" ]; then
-            echo "::error::No version tag provided (workflow input or client_payload.tag)"
+            echo "No dispatch version; resolving the current release from the mirror."
+            IN_VERSION="$(curl -fsSL https://dl.xiom-lang.org/latest.json \
+              | grep -o '"tag": *"[^"]*"' | head -n 1 | cut -d'"' -f4)"
+          fi
+          if [ -z "${IN_VERSION}" ]; then
+            echo "::error::No version tag provided and the mirror is unreachable"
             exit 1
           fi
           case "${IN_VERSION}" in

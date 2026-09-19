@@ -106,6 +106,14 @@ stubs to the docroot root and symlinks its top-level dirs, so old `*.html`
 URLs keep working with no website-side changes. `SUMMARY.md` is excluded
 from the rendered site.
 
+Docs staleness fix (2026-09-19, ops request): `docs-versioned` also
+publishes on pushes touching `docs/**`, `mkdocs.yml`,
+`requirements-docs.txt`, or the workflow itself, resolving the release tag
+from `dl.xiom-lang.org/latest.json` when no dispatch version is present.
+Guide edits republish the current version plus the `latest` alias; that
+snapshot is refreshed from main sources until a release dispatch publishes
+the next tag.
+
 Queue:
 
 1. **~~Fix and pin the generator~~ (done 2026-09-17)**: paths, full nav
