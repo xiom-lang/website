@@ -2684,15 +2684,25 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h4 id="fn-new-defaulthasher"><code>fn new() -&gt; DefaultHasher</code><a class="headerlink" href="#fn-new-defaulthasher" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>DefaultHasher</code>. No source comment yet.</p>
+<blockquote>
+<p>Create a hasher with the default seed.</p>
+</blockquote>
 <h4 id="fn-writeself-self-bytes-vecuint8"><code>fn write(self: Self, bytes: &amp;Vec[UInt8])</code><a class="headerlink" href="#fn-writeself-self-bytes-vecuint8" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>bytes: &amp;Vec[UInt8]</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Feed bytes into the hasher.</p>
+</blockquote>
 <h4 id="fn-write_intself-self-n-int"><code>fn write_int(self: Self, n: Int)</code><a class="headerlink" href="#fn-write_intself-self-n-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Feed an Int into the hasher.</p>
+</blockquote>
 <h4 id="fn-write_strself-self-s-str"><code>fn write_str(self: Self, s: Str)</code><a class="headerlink" href="#fn-write_strself-self-s-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>s: Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Feed the bytes of a string into the hasher.</p>
+</blockquote>
 <h4 id="fn-finishself-self-int"><code>fn finish(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-finishself-self-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Finalize and return the 64-bit hash.</p>
+</blockquote>
 <h4 id="fn-hashself-self-uint64"><code>fn hash(self: Self) -&gt; UInt64</code><a class="headerlink" href="#fn-hashself-self-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Hash implementations for standard types === Full DJB2 hash computation. Each type hashes its bytes directly.</p>
@@ -2701,17 +2711,25 @@
 <li><strong>Postcondition:</strong> <code>a == b =&gt; a.hash() == b.hash()</code></li>
 </ul>
 <h4 id="fn-hashself-self-uint64_1"><code>fn hash(self: Self) -&gt; UInt64</code><a class="headerlink" href="#fn-hashself-self-uint64_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>UInt64</code>. No source comment yet.</p>
+<blockquote>
+<p>Stable hash of a Bool.</p>
+</blockquote>
 <h4 id="fn-hash_valuetvalue-t-int"><code>fn hash_value[T](value: T) -&gt; Int</code><a class="headerlink" href="#fn-hash_valuetvalue-t-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Free functions === NOTE: these dispatch to the concrete 0-arg <code>.hash()</code> methods (Int/Bool) like the sibling <code>hash</code> below. The hasher-based <code>Hash</code> interface (hash(self, hasher)) is defined above but has no concrete impls yet; calling through it from a &amp;T receiver produced invalid IR (ptr-&gt;i64) -- keep by-value params until the interface path is complete.</p>
 </blockquote>
 <h4 id="fn-hash_combineseed-int-hash-int-int"><code>fn hash_combine(seed: Int, hash: Int) -&gt; Int</code><a class="headerlink" href="#fn-hash_combineseed-int-hash-int-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>seed: Int</code>, <code>hash: Int</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Combine two hashes into one (order-dependent).</p>
+</blockquote>
 <h4 id="fn-hashtvalue-t-uint64"><code>fn hash[T](value: T) -&gt; UInt64</code><a class="headerlink" href="#fn-hashtvalue-t-uint64" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>value: T</code>; returns <code>UInt64</code>. No source comment yet.</p>
+<blockquote>
+<p>Hash any <code>Hash</code>-implementing value.</p>
+</blockquote>
 <h4 id="fn-sip_hashdata-vecuint8-uint64"><code>fn sip_hash(data: &amp;Vec[UInt8]) -&gt; UInt64</code><a class="headerlink" href="#fn-sip_hashdata-vecuint8-uint64" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>UInt64</code>. No source comment yet.</p>
+<blockquote>
+<p>SipHash-2-4 of the bytes (64-bit).</p>
+</blockquote>
 <h4 id="fn-fnv1a32data-vecuint8-int"><code>fn fnv1a32(data: &amp;Vec[UInt8]) -&gt; Int</code><a class="headerlink" href="#fn-fnv1a32data-vecuint8-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>FNV-1a 32-bit hash. Algorithm: hash = (hash XOR byte) * FNV Prime, with 32-bit wrapping. Offset basis: 0x811C9DC5, prime: 0x01000193. Complexity: O(n), n = data length. Security: Non-cryptographic. Excellent distribution for hash tables.</p>

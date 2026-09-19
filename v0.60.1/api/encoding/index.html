@@ -2440,18 +2440,24 @@
 <li><strong>Postcondition:</strong> <code>result.len() == ((data.len() + 2) / 3) * 4</code></li>
 </ul>
 <h4 id="fn-base64_decodeencoded-str-resultvecuint8-str"><code>fn base64_decode(encoded: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-base64_decodeencoded-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>encoded: Str</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decode standard base64; Err on invalid input.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>encoded.len() % 4 == 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= (encoded.len() / 4) * 3</code></li>
 </ul>
 <h4 id="fn-base64url_encodedata-vecuint8-str_1"><code>fn base64url_encode(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-base64url_encodedata-vecuint8-str_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>URL-safe base64 encoding (no padding).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-base64url_decodeencoded-str-resultvecuint8-str"><code>fn base64url_decode(encoded: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-base64url_decodeencoded-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>encoded: Str</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decode URL-safe base64; Err on invalid input.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= (encoded.len() * 3) / 4</code></li>
 </ul>
@@ -2463,13 +2469,17 @@
 <li><strong>Postcondition:</strong> <code>result.len() == data.len() * 2</code></li>
 </ul>
 <h4 id="fn-hex_decodeencoded-str-resultvecuint8-str"><code>fn hex_decode(encoded: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-hex_decodeencoded-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>encoded: Str</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decode hex (either case); Err on bad input.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>encoded.len() % 2 == 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() == encoded.len() / 2</code></li>
 </ul>
 <h4 id="fn-hex_encode_upperdata-vecuint8-str"><code>fn hex_encode_upper(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-hex_encode_upperdata-vecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Uppercase hex encoding.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == data.len() * 2</code></li>
 </ul>
@@ -2481,7 +2491,9 @@
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= data.len()</code></li>
 </ul>
 <h4 id="fn-url_decodeencoded-str-resultstr-str"><code>fn url_decode(encoded: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-url_decodeencoded-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>encoded: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Percent-decode a URL component; Err on malformed escapes.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= encoded.len()</code></li>
 </ul>
@@ -2493,7 +2505,9 @@
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= data.len()</code></li>
 </ul>
 <h4 id="fn-percent_decodeencoded-str-resultstr-str"><code>fn percent_decode(encoded: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-percent_decodeencoded-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>encoded: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Alias of url_decode (percent-decoding).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= encoded.len()</code></li>
 </ul>
@@ -2505,18 +2519,24 @@
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
 </ul>
 <h4 id="fn-utf8_decodedata-vecuint8-resultstr-str"><code>fn utf8_decode(data: &amp;Vec[UInt8]) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-utf8_decodedata-vecuint8-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decode UTF-8 bytes to a Str; Err on invalid sequences.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>data.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= data.len()</code></li>
 </ul>
 <h4 id="fn-utf8_validdata-vecuint8-bool"><code>fn utf8_valid(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-utf8_validdata-vecuint8-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the bytes are valid UTF-8.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == true =&gt; utf8_decode(data) is Ok(_)</code></li>
 </ul>
 <h4 id="fn-utf8_char_lenfirst_byte-uint8-int"><code>fn utf8_char_len(first_byte: UInt8) -&gt; Int</code><a class="headerlink" href="#fn-utf8_char_lenfirst_byte-uint8-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>first_byte: UInt8</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>UTF-8 sequence length implied by the first byte (0 when invalid).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 1 &amp;&amp; result &lt;= 4</code></li>
 </ul>
@@ -2531,7 +2551,9 @@
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-text_to_binarytext-str-format-int-resultvecuint8-str"><code>fn text_to_binary(text: Str, format: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-text_to_binarytext-str-format-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>text: Str</code>, <code>format: Int</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Encode text into bytes using the given format code; Err on unknown format.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>format &gt;= 0 &amp;&amp; format &lt;= 2</code></li>
 <li><strong>Postcondition:</strong> <code>format == 0 =&gt; (result is Ok(_) =&gt; result.len() &lt;= (text.len() / 4) * 3)</code></li>

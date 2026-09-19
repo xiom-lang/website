@@ -2628,6 +2628,9 @@
 <hr />
 <h2 id="fmtxi"><code>fmt.xi</code><a class="headerlink" href="#fmtxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-formatter"><code>type Formatter</code><a class="headerlink" href="#type-formatter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Accumulates formatted output with width/precision/align options.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2656,6 +2659,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h4 id="type-fmterror"><code>type FmtError</code><a class="headerlink" href="#type-fmterror" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Formatting failure with a message.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2672,34 +2678,46 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h4 id="fn-new-formatter"><code>fn new() -&gt; Formatter</code><a class="headerlink" href="#fn-new-formatter" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Formatter</code>. No source comment yet.</p>
+<blockquote>
+<p>Create an empty formatter.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.buf == ""</code></li>
 <li><strong>Postcondition:</strong> <code>result.width == 0</code></li>
 <li><strong>Postcondition:</strong> <code>result.precision == 6</code></li>
 </ul>
 <h4 id="fn-write_strself-self-s-str-resultunit-fmterror"><code>fn write_str(self: Self, s: Str) -&gt; Result[Unit, FmtError]</code><a class="headerlink" href="#fn-write_strself-self-s-str-resultunit-fmterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>s: Str</code>; returns <code>Result[Unit, FmtError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Append a string rendering.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-write_intself-self-n-int-resultunit-fmterror"><code>fn write_int(self: Self, n: Int) -&gt; Result[Unit, FmtError]</code><a class="headerlink" href="#fn-write_intself-self-n-int-resultunit-fmterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Result[Unit, FmtError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Append an integer rendering.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.is_ok</code></li>
 </ul>
 <h4 id="fn-write_floatself-self-f-float64-resultunit-fmterror"><code>fn write_float(self: Self, f: Float64) -&gt; Result[Unit, FmtError]</code><a class="headerlink" href="#fn-write_floatself-self-f-float64-resultunit-fmterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>f: Float64</code>; returns <code>Result[Unit, FmtError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Append a float rendering.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.is_ok</code></li>
 </ul>
 <h4 id="fn-write_boolself-self-b-bool-resultunit-fmterror"><code>fn write_bool(self: Self, b: Bool) -&gt; Result[Unit, FmtError]</code><a class="headerlink" href="#fn-write_boolself-self-b-bool-resultunit-fmterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>b: Bool</code>; returns <code>Result[Unit, FmtError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Append a bool rendering.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.is_ok</code></li>
 </ul>
 <h4 id="fn-finishself-self-str"><code>fn finish(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-finishself-self-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Consume the formatter and return the accumulated text.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == self.buf@pre</code></li>
 </ul>
@@ -2708,25 +2726,37 @@
 <p>=== Display implementations for built-in types ===</p>
 </blockquote>
 <h4 id="fn-to_str-str_1"><code>fn to_str() -&gt; Str</code><a class="headerlink" href="#fn-to_str-str_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>String rendering of the Float64.</p>
+</blockquote>
 <h4 id="fn-to_str-str_2"><code>fn to_str() -&gt; Str</code><a class="headerlink" href="#fn-to_str-str_2" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>String rendering of the Bool.</p>
+</blockquote>
 <h4 id="fn-to_str-str_3"><code>fn to_str() -&gt; Str</code><a class="headerlink" href="#fn-to_str-str_3" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>String rendering of the Str (identity).</p>
+</blockquote>
 <h4 id="fn-format1tfmt-str-arg-t-str"><code>fn format1[T](fmt: Str, arg: T) -&gt; Str</code><a class="headerlink" href="#fn-format1tfmt-str-arg-t-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Format functions ===</p>
 </blockquote>
 <h4 id="fn-format2t-ufmt-str-arg1-t-arg2-u-str"><code>fn format2[T, U](fmt: Str, arg1: T, arg2: U) -&gt; Str</code><a class="headerlink" href="#fn-format2t-ufmt-str-arg1-t-arg2-u-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fmt: Str</code>, <code>arg1: T</code>, <code>arg2: U</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Format with two generic arguments substituted into <code>{}</code> placeholders.</p>
+</blockquote>
 <h4 id="fn-format3t-u-vfmt-str-arg1-t-arg2-u-arg3-v-str"><code>fn format3[T, U, V](fmt: Str, arg1: T, arg2: U, arg3: V) -&gt; Str</code><a class="headerlink" href="#fn-format3t-u-vfmt-str-arg1-t-arg2-u-arg3-v-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fmt: Str</code>, <code>arg1: T</code>, <code>arg2: U</code>, <code>arg3: V</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Format with three generic arguments substituted into <code>{}</code> placeholders.</p>
+</blockquote>
 <h4 id="fn-prints-str"><code>fn print(s: Str)</code><a class="headerlink" href="#fn-prints-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Print functions ===</p>
 </blockquote>
 <h4 id="fn-printlns-str"><code>fn println(s: Str)</code><a class="headerlink" href="#fn-printlns-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Write a line to standard output.</p>
+</blockquote>
 <h4 id="fn-format_tableheaders-vecstr-cells-vecstr-col_count-int-str"><code>fn format_table(headers: &amp;Vec[Str], cells: &amp;Vec[Str], col_count: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_tableheaders-vecstr-cells-vecstr-col_count-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Formats a simple aligned-column table with <code>|</code> separators. O(r * c). No padding -- cells are left-aligned as-is.</p>

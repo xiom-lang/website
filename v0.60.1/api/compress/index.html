@@ -2405,9 +2405,13 @@
 </tbody>
 </table>
 <h4 id="fn-new-gzipcompressor"><code>fn new() -&gt; GzipCompressor</code><a class="headerlink" href="#fn-new-gzipcompressor" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>GzipCompressor</code>. No source comment yet.</p>
+<blockquote>
+<p>Streaming gzip compressor with the default level.</p>
+</blockquote>
 <h4 id="fn-with_levellevel-int-gzipcompressor"><code>fn with_level(level: Int) -&gt; GzipCompressor</code><a class="headerlink" href="#fn-with_levellevel-int-gzipcompressor" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>level: Int</code>; returns <code>GzipCompressor</code>. No source comment yet.</p>
+<blockquote>
+<p>Streaming gzip compressor with a level 0..9.</p>
+</blockquote>
 <h4 id="fn-gzip_compressdata-vecuint8-resultvecuint8-str"><code>fn gzip_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Gzip functions === Aggregate facade: delegate to the real sublib implementations (xiom.compress.gzip). The earlier RLE-based duplicates trapped on empty input (requires: data.len() &gt; 0) and were not gzip-compatible.</p>
@@ -2416,7 +2420,9 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 18</code></li>
 </ul>
 <h4 id="fn-gzip_compress_leveldata-vecuint8-level-int-resultvecuint8-str"><code>fn gzip_compress_level(data: &amp;Vec[UInt8], level: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_compress_leveldata-vecuint8-level-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>, <code>level: Int</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Gzip-compress with a level 0..9; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 18</code></li>
 </ul>
@@ -2429,7 +2435,9 @@
 <p>Capped variant: hard ceiling on decompressed size (bomb guard).</p>
 </blockquote>
 <h4 id="fn-gzip_decompressdata-vecuint8-resultvecuint8-str"><code>fn gzip_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress gzip data; Err on malformed input.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
@@ -2441,12 +2449,16 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-deflate_compress_leveldata-vecuint8-level-int-resultvecuint8-str"><code>fn deflate_compress_level(data: &amp;Vec[UInt8], level: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_compress_leveldata-vecuint8-level-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>, <code>level: Int</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Deflate-compress with a level 0..9; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-deflate_decompressdata-vecuint8-resultvecuint8-str"><code>fn deflate_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress raw deflate data; Err on malformed input.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
@@ -2458,12 +2470,16 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 6</code></li>
 </ul>
 <h4 id="fn-zlib_compress_leveldata-vecuint8-level-int-resultvecuint8-str"><code>fn zlib_compress_level(data: &amp;Vec[UInt8], level: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-zlib_compress_leveldata-vecuint8-level-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>, <code>level: Int</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Zlib-compress with a level 0..9; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 6</code></li>
 </ul>
 <h4 id="fn-zlib_decompressdata-vecuint8-resultvecuint8-str"><code>fn zlib_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-zlib_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress zlib data; Err on malformed input.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
@@ -2475,12 +2491,16 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 8</code></li>
 </ul>
 <h4 id="fn-brotli_compress_leveldata-vecuint8-quality-int-resultvecuint8-str"><code>fn brotli_compress_level(data: &amp;Vec[UInt8], quality: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-brotli_compress_leveldata-vecuint8-quality-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>, <code>quality: Int</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Brotli-compress with a quality 0..11; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 8</code></li>
 </ul>
 <h4 id="fn-brotli_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn brotli_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-brotli_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress Brotli data; Err on malformed input.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
@@ -2492,7 +2512,9 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 1</code></li>
 </ul>
 <h4 id="fn-lz4_decompressdata-vecuint8-resultvecuint8-str"><code>fn lz4_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress an LZ4 block; Err on malformed input.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
@@ -2504,24 +2526,32 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 1</code></li>
 </ul>
 <h4 id="fn-snappy_decompressdata-vecuint8-resultvecuint8-str"><code>fn snappy_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-snappy_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress Snappy data; Err on malformed input.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-compression_ratiooriginal-int-compressed-int-float64"><code>fn compression_ratio(original: Int, compressed: Int) -&gt; Float64</code><a class="headerlink" href="#fn-compression_ratiooriginal-int-compressed-int-float64" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>original: Int</code>, <code>compressed: Int</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>compressed/original ratio (0 when original is 0).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>original &gt;= 0</code></li>
 <li><strong>Precondition:</strong> <code>compressed &gt;= 0</code></li>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h4 id="fn-is_compresseddata-vecuint8-bool"><code>fn is_compressed(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_compresseddata-vecuint8-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the bytes start with a recognized compression header.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>data.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-detect_formatdata-vecuint8-str"><code>fn detect_format(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_formatdata-vecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Name of the detected compression format, or "" when unrecognized.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>data.len() &gt;= 0</code></li>
 </ul>
@@ -2565,7 +2595,9 @@
 <p>level 0 =&gt; STORED blocks (real, uncompressed); levels 1-9 =&gt; FIXED Huffman blocks.</p>
 </blockquote>
 <h5 id="fn-deflate_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn deflate_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress raw deflate data; Err on malformed input.</p>
+</blockquote>
 <h5 id="fn-deflate_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str_1"><code>fn deflate_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress a real RFC 1951 stream with a hard output ceiling.</p>
@@ -2677,7 +2709,9 @@
 <p>One-shot Huffman compression: builds the frequency table and tree, packs the bits, and emits the self-describing container (header documented at the top of this module). Empty input yields a valid empty container.</p>
 </blockquote>
 <h5 id="fn-huffman_decompressdata-vecuint8-resultvecuint8-str"><code>fn huffman_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-huffman_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress Huffman-coded data; Err on malformed input.</p>
+</blockquote>
 <h5 id="fn-huffman_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn huffman_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-huffman_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on output size. The container's declared length is rejected up-front when it exceeds the cap; the decode loop re-checks per symbol, so a lying header cannot allocate past the cap.</p>
@@ -2711,7 +2745,9 @@
 <p>Worst-case compressed size for <code>len</code> input bytes (literals expand by at most 1 byte per 255 input bytes plus token/header overhead). O(1).</p>
 </blockquote>
 <h5 id="fn-lz4_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn lz4_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress an LZ4 block; Err on malformed input.</p>
+</blockquote>
 <h5 id="fn-lz4_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn lz4_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on total output size (bomb guard). Checked after each block's expansion.</p>
@@ -2741,7 +2777,9 @@
 <p>Compress <code>data</code> with a greedy 32KiB sliding-window search into the control-byte token stream documented above. O(n * 32768).</p>
 </blockquote>
 <h5 id="fn-lz77_decompressdata-vecuint8-resultvecuint8-str"><code>fn lz77_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz77_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress LZ77 data; Err on malformed input.</p>
+</blockquote>
 <h5 id="fn-lz77_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn lz77_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz77_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on output size. Every expansion step is checked BEFORE writing, so a hostile token stream cannot allocate beyond the cap even momentarily. Returns Err("lz77: output exceeds cap") when exceeded.</p>
@@ -2779,7 +2817,9 @@
 <p>Compress <code>data</code> into a raw snappy stream (varint length + elements). Greedy matches with a 4KiB window; literals batch until a match is found. Complexity: O(n * 4096).</p>
 </blockquote>
 <h5 id="fn-snappy_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn snappy_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-snappy_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Decompress Snappy data; Err on malformed input.</p>
+</blockquote>
 <h5 id="fn-snappy_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn snappy_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-snappy_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on output size (bomb guard). The varint-declared length is rejected up-front when it exceeds the cap; every literal/copy element re-checks before writing.</p>

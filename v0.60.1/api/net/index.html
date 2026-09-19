@@ -3682,6 +3682,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h4 id="type-tcplistener"><code>type TcpListener</code><a class="headerlink" href="#type-tcplistener" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Listening TCP socket handle.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3698,6 +3701,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h4 id="type-neterror"><code>type NetError</code><a class="headerlink" href="#type-neterror" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Network error with a message and an OS error code.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3717,31 +3723,43 @@
 </tbody>
 </table>
 <h4 id="fn-tcp_connecthost-str-port-int-resulttcpstream-neterror"><code>fn tcp_connect(host: Str, port: Int) -&gt; Result[TcpStream, NetError]</code><a class="headerlink" href="#fn-tcp_connecthost-str-port-int-resulttcpstream-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>host: Str</code>, <code>port: Int</code>; returns <code>Result[TcpStream, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Connect to host:port; Err with the OS message.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>host.len() &gt; 0</code></li>
 <li><strong>Precondition:</strong> <code>port &gt; 0 &amp;&amp; port &lt;= 65535</code></li>
 </ul>
 <h4 id="fn-tcp_listenhost-str-port-int-resulttcplistener-neterror"><code>fn tcp_listen(host: Str, port: Int) -&gt; Result[TcpListener, NetError]</code><a class="headerlink" href="#fn-tcp_listenhost-str-port-int-resulttcplistener-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>host: Str</code>, <code>port: Int</code>; returns <code>Result[TcpListener, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Bind and listen on host:port; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>host.len() &gt; 0</code></li>
 <li><strong>Precondition:</strong> <code>port &gt; 0 &amp;&amp; port &lt;= 65535</code></li>
 </ul>
 <h4 id="fn-readself-self-buf-mut-vecuint8-resultint-neterror"><code>fn read(self: Self, buf: &amp;mut Vec[UInt8]) -&gt; Result[Int, NetError]</code><a class="headerlink" href="#fn-readself-self-buf-mut-vecuint8-resultint-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>buf: &amp;mut Vec[UInt8]</code>; returns <code>Result[Int, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Read up to buffer capacity; Ok(bytes, 0 at EOF) or Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-writeself-self-data-vecuint8-resultint-neterror"><code>fn write(self: Self, data: &amp;Vec[UInt8]) -&gt; Result[Int, NetError]</code><a class="headerlink" href="#fn-writeself-self-data-vecuint8-resultint-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Int, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Write bytes; Ok(bytes written) or Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-closeself-self-resultunit-neterror"><code>fn close(self: Self) -&gt; Result[Unit, NetError]</code><a class="headerlink" href="#fn-closeself-self-resultunit-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Result[Unit, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Close the stream; Err on failure.</p>
+</blockquote>
 <h4 id="fn-acceptself-self-resulttcpstream-str-neterror"><code>fn accept(self: Self) -&gt; Result[(TcpStream, Str), NetError]</code><a class="headerlink" href="#fn-acceptself-self-resulttcpstream-str-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Result[(TcpStream, Str), NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Accept a connection; Ok((stream, peer address)) or Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
@@ -3769,12 +3787,16 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h4 id="fn-http_geturl-str-resultnethttpresponse-neterror"><code>fn http_get(url: Str) -&gt; Result[NetHttpResponse, NetError]</code><a class="headerlink" href="#fn-http_geturl-str-resultnethttpresponse-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[NetHttpResponse, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>HTTP GET; Ok parsed response or Err (transport or parse).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>url.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-http_posturl-str-body-str-resultnethttpresponse-neterror"><code>fn http_post(url: Str, body: Str) -&gt; Result[NetHttpResponse, NetError]</code><a class="headerlink" href="#fn-http_posturl-str-body-str-resultnethttpresponse-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>, <code>body: Str</code>; returns <code>Result[NetHttpResponse, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>HTTP POST with a body; Ok parsed response or Err.</p>
+</blockquote>
 <h4 id="type-udpsocket"><code>type UdpSocket</code><a class="headerlink" href="#type-udpsocket" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== UDP ===</p>
@@ -3794,19 +3816,27 @@
 </tbody>
 </table>
 <h4 id="fn-udp_bindhost-str-port-int-resultudpsocket-neterror"><code>fn udp_bind(host: Str, port: Int) -&gt; Result[UdpSocket, NetError]</code><a class="headerlink" href="#fn-udp_bindhost-str-port-int-resultudpsocket-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>host: Str</code>, <code>port: Int</code>; returns <code>Result[UdpSocket, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Bind a UDP socket to host:port; Err on failure.</p>
+</blockquote>
 <h4 id="fn-send_toself-self-data-vecuint8-addr-str-port-int-resultint-neterror"><code>fn send_to(self: Self, data: &amp;Vec[UInt8], addr: Str, port: Int) -&gt; Result[Int, NetError]</code><a class="headerlink" href="#fn-send_toself-self-data-vecuint8-addr-str-port-int-resultint-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>data: &amp;Vec[UInt8]</code>, <code>addr: Str</code>, <code>port: Int</code>; returns <code>Result[Int, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Send a datagram to addr:port; Ok(bytes) or Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-recv_fromself-self-buf-mut-vecuint8-resultint-str-int-neterror"><code>fn recv_from(self: Self, buf: &amp;mut Vec[UInt8]) -&gt; Result[(Int, Str, Int), NetError]</code><a class="headerlink" href="#fn-recv_fromself-self-buf-mut-vecuint8-resultint-str-int-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>buf: &amp;mut Vec[UInt8]</code>; returns <code>Result[(Int, Str, Int), NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Receive a datagram; Ok((bytes, peer address, port)) or Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-closeself-self-resultunit-neterror_1"><code>fn close(self: Self) -&gt; Result[Unit, NetError]</code><a class="headerlink" href="#fn-closeself-self-resultunit-neterror_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Result[Unit, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Close the socket; Err on failure.</p>
+</blockquote>
 <h4 id="fn-resolve_hosthostname-str-resultvecstr-neterror"><code>fn resolve_host(hostname: Str) -&gt; Result[Vec[Str], NetError]</code><a class="headerlink" href="#fn-resolve_hosthostname-str-resultvecstr-neterror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== DNS ===</p>
@@ -3815,7 +3845,9 @@
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-local_addrport-int-resultstr-neterror"><code>fn local_addr(port: Int) -&gt; Result[Str, NetError]</code><a class="headerlink" href="#fn-local_addrport-int-resultstr-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>port: Int</code>; returns <code>Result[Str, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Local address for binding to <code>port</code>; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
@@ -3858,7 +3890,9 @@
 </tbody>
 </table>
 <h4 id="fn-parse_urlurl-str-resulturlparts-neterror"><code>fn parse_url(url: Str) -&gt; Result[UrlParts, NetError]</code><a class="headerlink" href="#fn-parse_urlurl-str-resulturlparts-neterror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[UrlParts, NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Split a URL into scheme/host/port/path; Err on malformed input.</p>
+</blockquote>
 <h4 id="enum-httpmethod"><code>enum HttpMethod</code><a class="headerlink" href="#enum-httpmethod" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== HTTP methods ===</p>

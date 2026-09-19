@@ -2459,12 +2459,16 @@
 <li><strong>Postcondition:</strong> <code>result != null</code></li>
 </ul>
 <h4 id="fn-freeptr-uint8"><code>fn free(ptr: *UInt8)</code><a class="headerlink" href="#fn-freeptr-uint8" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>ptr: *UInt8</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Free a C-allocated pointer.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h4 id="fn-memcpydest-uint8-src-uint8-size-int"><code>fn memcpy(dest: *UInt8, src: *UInt8, size: Int)</code><a class="headerlink" href="#fn-memcpydest-uint8-src-uint8-size-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>dest: *UInt8</code>, <code>src: *UInt8</code>, <code>size: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>C memcpy over raw pointers.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>dest != null</code></li>
 <li><strong>Precondition:</strong> <code>src != null</code></li>
@@ -2698,27 +2702,39 @@
 </tbody>
 </table>
 <h4 id="fn-buffer_newcapacity-int-resultffibuffer-str"><code>fn buffer_new(capacity: Int) -&gt; Result[FFIBuffer, Str]</code><a class="headerlink" href="#fn-buffer_newcapacity-int-resultffibuffer-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>capacity: Int</code>; returns <code>Result[FFIBuffer, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Allocate an FFI byte buffer; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>capacity &gt; 0</code></li>
 </ul>
 <h4 id="fn-buffer_writebuf-mut-ffibuffer-data-vecint-resultint-str"><code>fn buffer_write(buf: &amp;mut FFIBuffer, data: &amp;Vec[Int]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-buffer_writebuf-mut-ffibuffer-data-vecint-resultint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>buf: &amp;mut FFIBuffer</code>, <code>data: &amp;Vec[Int]</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Append Int byte values; Ok(bytes written) or Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>data.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-buffer_readbuf-ffibuffer-offset-int-len-int-resultvecint-str"><code>fn buffer_read(buf: &amp;FFIBuffer, offset: Int, len: Int) -&gt; Result[Vec[Int], Str]</code><a class="headerlink" href="#fn-buffer_readbuf-ffibuffer-offset-int-len-int-resultvecint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>buf: &amp;FFIBuffer</code>, <code>offset: Int</code>, <code>len: Int</code>; returns <code>Result[Vec[Int], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Read <code>len</code> bytes at <code>offset</code>; Ok(values) or Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>offset &gt;= 0</code></li>
 <li><strong>Precondition:</strong> <code>len &gt; 0</code></li>
 </ul>
 <h4 id="fn-buffer_clearbuf-mut-ffibuffer"><code>fn buffer_clear(buf: &amp;mut FFIBuffer)</code><a class="headerlink" href="#fn-buffer_clearbuf-mut-ffibuffer" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>buf: &amp;mut FFIBuffer</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Reset the buffer length to zero.</p>
+</blockquote>
 <h4 id="fn-buffer_lenbuf-ffibuffer-int"><code>fn buffer_len(buf: &amp;FFIBuffer) -&gt; Int</code><a class="headerlink" href="#fn-buffer_lenbuf-ffibuffer-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>buf: &amp;FFIBuffer</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Current buffer length in bytes.</p>
+</blockquote>
 <h4 id="fn-buffer_is_emptybuf-ffibuffer-bool"><code>fn buffer_is_empty(buf: &amp;FFIBuffer) -&gt; Bool</code><a class="headerlink" href="#fn-buffer_is_emptybuf-ffibuffer-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>buf: &amp;FFIBuffer</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the buffer is empty.</p>
+</blockquote>
 <h4 id="type-ffierror"><code>type FFIError</code><a class="headerlink" href="#type-ffierror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>---- FFIError -- C error code translation ------------------------------------------------------------------------</p>
@@ -2757,9 +2773,13 @@
 <p>C convention: non-zero return = error.</p>
 </blockquote>
 <h4 id="fn-ffi_ok-int"><code>fn ffi_ok() -&gt; Int</code><a class="headerlink" href="#fn-ffi_ok-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>FFI success code (0).</p>
+</blockquote>
 <h4 id="fn-ffi_errorcode-int-msg-str-ffierror"><code>fn ffi_error(code: Int, msg: Str) -&gt; FFIError</code><a class="headerlink" href="#fn-ffi_errorcode-int-msg-str-ffierror" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>, <code>msg: Str</code>; returns <code>FFIError</code>. No source comment yet.</p>
+<blockquote>
+<p>FFI error value from a code and message.</p>
+</blockquote>
 <h4 id="fn-write_u32_atdest-int-offset-int-value-int"><code>fn write_u32_at(dest: Int, offset: Int, value: Int)</code><a class="headerlink" href="#fn-write_u32_atdest-int-offset-int-value-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Write a UInt32 at a byte offset into a raw pointer (C struct field).</p>
@@ -2797,9 +2817,13 @@
 <p>---- Utility --------------------------------------------------------------------------------------------------------------------------------</p>
 </blockquote>
 <h4 id="fn-align_oft-int"><code>fn align_of[T]() -&gt; Int</code><a class="headerlink" href="#fn-align_oft-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Alignment of T in bytes (0 when unknown).</p>
+</blockquote>
 <h4 id="fn-extern_cname-str-int"><code>fn extern_c(name: Str) -&gt; Int</code><a class="headerlink" href="#fn-extern_cname-str-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>name: Str</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>FFI extern-C symbol handle by name.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
 </ul>
