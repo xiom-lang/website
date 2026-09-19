@@ -5143,19 +5143,27 @@
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-printlnmsg-str"><code>fn println(msg: Str)</code><a class="headerlink" href="#fn-printlnmsg-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>msg: Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Write a line to standard output.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-read_line-str"><code>fn read_line() -&gt; Str</code><a class="headerlink" href="#fn-read_line-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Read one line from standard input (newline stripped).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-read_int-resultint-str"><code>fn read_int() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-read_int-resultint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Read and parse an Int from standard input; Err on bad input.</p>
+</blockquote>
 <h3 id="fn-read_float-resultfloat64-str"><code>fn read_float() -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-read_float-resultfloat64-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Result[Float64, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Read and parse a Float64 from standard input; Err on bad input.</p>
+</blockquote>
 <h3 id="fn-parse_ints-str-resultint-str"><code>fn parse_int(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-parse_ints-str-resultint-str" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Parse a decimal integer (optional leading +/- sign, ASCII digits only). Deterministic core of read_int, exposed for parsing without stdin.</p>
@@ -5173,43 +5181,59 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-write_filepath-str-content-str-resultunit-ioerror"><code>fn write_file(path: Str, content: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_filepath-str-content-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>content: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Write (create/truncate) a file; Err with the OS message.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(path)</code></li>
 </ul>
 <h3 id="fn-append_filepath-str-content-str-resultunit-ioerror"><code>fn append_file(path: Str, content: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-append_filepath-str-content-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>content: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Append to a file, creating it when missing; Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(path)</code></li>
 </ul>
 <h3 id="fn-file_existspath-str-bool"><code>fn file_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-file_existspath-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path exists (file or directory).</p>
+</blockquote>
 <h3 id="fn-is_dirpath-str-bool"><code>fn is_dir(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_dirpath-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path exists and is a directory.</p>
+</blockquote>
 <h3 id="fn-create_dirpath-str-resultunit-ioerror"><code>fn create_dir(path: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-create_dirpath-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Create a directory (with missing parents); Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Precondition:</strong> <code>!file_exists(path)</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; is_dir(path)</code></li>
 </ul>
 <h3 id="fn-list_dirpath-str-resultvecstr-ioerror"><code>fn list_dir(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-list_dirpath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Vec[Str], IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Directory entry names, or Err with the OS message.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Precondition:</strong> <code>is_dir(path)</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-remove_filepath-str-resultunit-ioerror"><code>fn remove_file(path: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-remove_filepath-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Delete a file; Err with the OS message.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; !file_exists(path)</code></li>
 </ul>
 <h3 id="fn-copy_filesrc-str-dst-str-resultunit-ioerror"><code>fn copy_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-copy_filesrc-str-dst-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>src: Str</code>, <code>dst: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Copy a file's contents to a new path; Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>src.len() &gt; 0</code></li>
 <li><strong>Precondition:</strong> <code>dst.len() &gt; 0</code></li>
@@ -5218,7 +5242,9 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(dst)</code></li>
 </ul>
 <h3 id="fn-renamesrc-str-dst-str-resultunit-ioerror"><code>fn rename(src: Str, dst: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-renamesrc-str-dst-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>src: Str</code>, <code>dst: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Rename or move a path; Err with the OS message.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>src.len() &gt; 0</code></li>
 <li><strong>Precondition:</strong> <code>dst.len() &gt; 0</code></li>
@@ -5232,12 +5258,16 @@
 <li><strong>Precondition:</strong> <code>code &gt;= 0</code></li>
 </ul>
 <h3 id="fn-args-vecstr"><code>fn args() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-args-vecstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Process arguments.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-env_varname-str-optionstr"><code>fn env_var(name: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-env_varname-str-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>name: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Environment variable value, or None when unset.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
 </ul>
@@ -5249,7 +5279,9 @@
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-sleepms-int"><code>fn sleep(ms: Int)</code><a class="headerlink" href="#fn-sleepms-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ms: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Sleep for <code>ms</code> milliseconds.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ms &gt;= 0</code></li>
 </ul>
@@ -5293,22 +5325,31 @@
 <p><strong>Invariants:</strong>
 - <code>inner &gt;= 0</code></p>
 <h3 id="fn-newreader-int-bufreader"><code>fn new(reader: Int) -&gt; BufReader</code><a class="headerlink" href="#fn-newreader-int-bufreader" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>reader: Int</code>; returns <code>BufReader</code>. No source comment yet.</p>
+<blockquote>
+<p>Wrap a file descriptor in a buffered reader.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.inner == reader</code></li>
 </ul>
 <h3 id="fn-read_lineself-self-buf-mut-str-resultint-ioerror"><code>fn read_line(self: Self, buf: &amp;mut Str) -&gt; Result[Int, IOError]</code><a class="headerlink" href="#fn-read_lineself-self-buf-mut-str-resultint-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>buf: &amp;mut Str</code>; returns <code>Result[Int, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Read one line into <code>buf</code>; Ok(bytes) including the newline, 0 at EOF.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>inner &gt;= 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
 </ul>
 <h3 id="fn-linesself-self-vecstr"><code>fn lines(self: Self) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-linesself-self-vecstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>All remaining lines (newlines stripped).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="type-bufwriter"><code>type BufWriter</code><a class="headerlink" href="#type-bufwriter" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Buffered writer over a file descriptor.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5328,7 +5369,9 @@
 </tbody>
 </table>
 <h3 id="fn-newwriter-int-bufwriter"><code>fn new(writer: Int) -&gt; BufWriter</code><a class="headerlink" href="#fn-newwriter-int-bufwriter" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>writer: Int</code>; returns <code>BufWriter</code>. No source comment yet.</p>
+<blockquote>
+<p>Wrap a file descriptor in a buffered writer.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.inner == writer</code></li>
 </ul>
@@ -5371,13 +5414,17 @@
 </tbody>
 </table>
 <h3 id="fn-metadatapath-str-resultmetadata-ioerror"><code>fn metadata(path: Str) -&gt; Result[Metadata, IOError]</code><a class="headerlink" href="#fn-metadatapath-str-resultmetadata-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Metadata, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>File metadata (size, timestamps, permissions), or Err.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.size &gt;= 0</code></li>
 </ul>
 <h3 id="fn-set_permissionspath-str-perm-int-resultunit-ioerror"><code>fn set_permissions(path: Str, perm: Int) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-set_permissionspath-str-perm-int-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>perm: Int</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>Set POSIX permission bits; Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Precondition:</strong> <code>perm &gt;= 0</code></li>
@@ -5390,12 +5437,16 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h3 id="fn-stdout-int"><code>fn stdout() -&gt; Int</code><a class="headerlink" href="#fn-stdout-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>File descriptor for standard output.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h3 id="fn-stderr-int"><code>fn stderr() -&gt; Int</code><a class="headerlink" href="#fn-stderr-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>File descriptor for standard error.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
@@ -5449,12 +5500,16 @@
 - <code>pos &gt;= 0</code>
 - <code>pos &lt;= data.len()</code></p>
 <h3 id="fn-newdata-vecuint8-cursor"><code>fn new(data: Vec[UInt8]) -&gt; Cursor</code><a class="headerlink" href="#fn-newdata-vecuint8-cursor" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: Vec[UInt8]</code>; returns <code>Cursor</code>. No source comment yet.</p>
+<blockquote>
+<p>In-memory cursor over a byte vector.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>self.pos == 0</code></li>
 </ul>
 <h3 id="fn-into_innerself-self-vecuint8"><code>fn into_inner(self: Self) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-into_innerself-self-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>Consume the cursor and return its bytes.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == self.data.len()</code></li>
 </ul>
@@ -5466,22 +5521,30 @@
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= base.len()</code></li>
 </ul>
 <h3 id="fn-parent_pathpath-str-optionstr"><code>fn parent_path(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-parent_pathpath-str-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Parent directory of the path, or None.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &gt; 0</code></li>
 </ul>
 <h3 id="fn-file_namepath-str-optionstr"><code>fn file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_namepath-str-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Final component of the path, or None.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &gt; 0</code></li>
 </ul>
 <h3 id="fn-extensionpath-str-optionstr"><code>fn extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-extensionpath-str-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Extension after the final dot of the file name, or None.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &gt; 0</code></li>
 </ul>
 <h3 id="fn-is_absolutepath-str-bool"><code>fn is_absolute(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_absolutepath-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when the path is absolute.</p>
+</blockquote>
 <h3 id="fn-read_line_trim-str"><code>fn read_line_trim() -&gt; Str</code><a class="headerlink" href="#fn-read_line_trim-str" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>read_line_trim reads a line from stdin and trims trailing whitespace (including \r, \n).  Delegates to read_line + trim. Complexity: O(n) where n is line length.</p>
