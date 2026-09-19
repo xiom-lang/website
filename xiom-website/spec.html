@@ -45,9 +45,9 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 <header class="hero blueprint-bg" style="padding:48px 0;">
   <div class="wrap">
-    <div class="eyebrow">Language Reference - Version 0.3</div>
+    <div class="eyebrow">Language Reference - Revision 0.3</div>
     <h1>XIOM Language Specification</h1>
-    <p class="lede">The normative definition of the XIOM language. This is the single source of truth for syntax, types, memory model, contracts, and compiler behavior.</p>
+    <p class="lede">The normative definition of the core XIOM language for this revision: syntax, types, memory model, contracts and execution semantics. The reference compiler is expected to conform to these rules; implementation-specific behavior, experimental features, compiler flags and toolchain features are documented separately in the language documentation.</p>
   </div>
 </header>
 
@@ -56,11 +56,12 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <!-- Overview -->
   <div class="content-section">
     <h2>1. Overview &amp; Core Goals</h2>
+    <p style="border-left:2px solid var(--signal);padding-left:16px;color:var(--muted);font-size:13.5px;">A language specification describes what the language means. It does not imply that every property of every program is formally proven.</p>
     <p>XIOM is a compiled, statically typed, memory-safe systems programming language. It is designed around three properties that no existing mainstream language provides simultaneously:</p>
     <table>
-      <tr><th style="width:120px;">SAFE</th><td>Ownership-based memory safety with no garbage collector and no runtime. Memory is freed deterministically when the owner leaves scope.</td></tr>
-      <tr><th>VERIFIED</th><td>Pre-conditions, post-conditions, and type invariants are first-class language constructs enforced by the compiler, not documentation conventions.</td></tr>
-      <tr><th>PRECISE</th><td>The grammar is unambiguous. Every construct has exactly one canonical form. No implicit coercions, no hidden allocations, no surprising control flow.</td></tr>
+      <tr><th style="width:120px;">SAFE</th><td>Ownership-based memory safety with no garbage collector and no mandatory managed runtime. Memory is freed deterministically when the owner leaves scope.</td></tr>
+      <tr><th>VERIFIED</th><td>Pre-conditions, post-conditions, and type invariants are first-class language constructs: enforced at runtime today, and available to verification tooling for supported properties. Runtime checking and formal verification are distinct mechanisms.</td></tr>
+      <tr><th>PRECISE</th><td>The grammar is unambiguous. Every construct has exactly one canonical form. No implicit coercions; allocation is explicit in the language model, and library operations document when they allocate.</td></tr>
     </table>
     <p>XIOM compiles to native machine code via LLVM and to WebAssembly as a co-equal target. A self-hosted compiler is planned; no self-hosted release has shipped yet.</p>
   </div>
@@ -69,7 +70,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <div class="content-section">
     <h2>2. Design Principles</h2>
 
-    <h3>2.1 One Way To Write Each Thing</h3>
+    <h3>2.1 Canonical Syntax and Explicit Semantics</h3>
     <p>Every construct has exactly one canonical syntax. Formatting is part of the language specification. The canonical formatter (<code>xiom fmt</code>) is part of the compiler toolchain.</p>
 
     <h3>2.2 Explicit Over Implicit</h3>
@@ -199,7 +200,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <!-- Memory Model -->
   <div class="content-section">
     <h2>5. Memory Model</h2>
-    <p>XIOM uses ownership semantics for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope. The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system while providing the same core safety guarantee.</p>
+    <p>XIOM uses ownership semantics for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope. The model uses <strong>lexical scope borrowing</strong>: borrows are validated from scope nesting alone, without Rust-style lifetime annotations. This is a design choice, not a claim that the two languages have identical semantics.</p>
 
     <h3>Ownership Rules</h3>
     <table>
@@ -273,27 +274,15 @@ consume(v)           <span class="cm">// move -- v no longer usable</span></code
 
   <!-- Comparison -->
   <div class="content-section">
-    <h2>8. XIOM vs Existing Languages</h2>
-    <table>
-      <tr><th>Feature</th><th>XIOM</th><th>Rust</th><th>Go</th><th>Zig</th></tr>
-      <tr><td>Memory model</td><td>Ownership, lexical borrows</td><td>Full borrow checker + lifetimes</td><td>GC</td><td>Manual</td></tr>
-      <tr><td>Contracts</td><td>First-class, compiler-enforced</td><td>Assertions only</td><td>None</td><td>None</td></tr>
-      <tr><td>Null safety</td><td><code>Option[T]</code></td><td><code>Option&lt;T&gt;</code></td><td>Null exists</td><td>Null exists</td></tr>
-      <tr><td>Error handling</td><td><code>Result[T, E]</code> + <code>?</code></td><td><code>Result&lt;T, E&gt;</code> + <code>?</code></td><td>Multi-return</td><td>Error unions</td></tr>
-      <tr><td>Generics</td><td>Comptime, inline constraints</td><td>Trait bounds</td><td>Limited</td><td>comptime</td></tr>
-      <tr><td>Interfaces</td><td>Structural</td><td>Nominal</td><td>Structural</td><td>--</td></tr>
-      <tr><td>Derive</td><td>Compiler-generated</td><td><code>#[derive(...)]</code></td><td>None (manual)</td><td>None</td></tr>
-      <tr><td>WASM target</td><td>First-class, co-equal</td><td>Supported</td><td>Limited</td><td>Supported</td></tr>
-      <tr><td>C FFI</td><td>Zero-cost</td><td>Zero-cost</td><td>Cgo (overhead)</td><td>First-class</td></tr>
-      <tr><td>Method receiver</td><td>Implicit <code>self</code>, inferred</td><td>Explicit <code>&amp;self</code></td><td>Explicit</td><td>Explicit</td></tr>
-    </table>
+    <h2>8. Non-Normative Material</h2>
+    <p>Language comparisons, benchmark methodology and trade-off discussions are documentation, not specification. They live in the language documentation and on the <a href="why.html" style="color:var(--signal);">Why XIOM</a> page, and do not define the language.</p>
   </div>
 
 </main>
 
 <footer>
   <div class="wrap">
-    <p>XIOM Language Specification v0.3 -- Living document. All syntax subject to revision until v1.0.</p>
+    <p>XIOM Language Specification, Revision 0.3 -- living specification for the core language. Implementation extensions are documented separately, and historical revisions remain available for reproducibility.</p>
     <div class="legal">
       <p>XIOM is dual-licensed under <a href="LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
       <p>Copyright (c) 2026 XIOM Foundation.</p>

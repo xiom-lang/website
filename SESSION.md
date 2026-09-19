@@ -265,12 +265,20 @@ Remaining:
    its `DEPLOY.md` and will flag changes to sandbox flags, retention,
    cookie lifetime or backups.
 8. **External review follow-ups (2026-09-19)**: applied the honesty and UX
-   fixes (hero example, badge wording, prior art, Rust trade-off, ordering,
-   alt text, CTAs, module counts). Still open: publish benchmarks with a
-   reproducible harness (needs compiler-lane numbers); a prior-art and
-   trade-offs page; a "XIOM for game developers" page; C# on the concepts
-   page; playground copy fixes ("Never Crash", stats bar) belong to the
-   playground lane; the legal-entity wording is an owner decision.
+   fixes from review round one (hero example, badge wording, prior art, Rust
+   trade-off, ordering, alt text, CTAs, module counts) and round two
+   (removed "specification and implementation are the same artifact", the
+   1972 claim, "no runtime", "compiler is the verifier", "same safety
+   guarantee as Rust", "not a scripting replacement", absolute
+   "one way to write each thing" and "no hidden allocations"; repositioned
+   the Why page around intent -> enforcement -> AI; the spec page is now
+   labelled Revision 0.3 for the core language with implementation docs
+   separate and the comparison table removed). Still open: publish a
+   current specification revision (compiler lane); publish benchmark
+   results with the harness (compiler lane); a prior-art and trade-offs
+   page; a "XIOM for game developers" page; C# on the concepts page;
+   playground copy fixes ("Never Crash", stats bar); the legal-entity
+   wording is an owner decision.
 
 ## Rules
 
