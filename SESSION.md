@@ -277,8 +277,10 @@ Remaining:
    current specification revision (compiler lane); publish benchmark
    results with the harness -- the benchmark lives in its own repository and
    includes a research paper, both private for now; the owner will say when
-   to link and showcase them; verify-tooling semantics (bundled z3 vs
-   export-only) is with the compiler lane; a prior-art and trade-offs
+   to link and showcase them; verification wording is settled (compiler
+   lane, 2026-09-19): checked/exported/proved documented in `compiler.md`,
+   `--verify` exports, `xiom-verify --check` runs the bundled z3, unsat is
+   the only proof verdict; a prior-art and trade-offs
    page; a "XIOM for game developers" page; C# on the concepts page;
    playground copy fixes ("Never Crash", stats bar); the legal-entity
    wording is an owner decision.
