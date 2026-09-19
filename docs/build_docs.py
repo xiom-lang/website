@@ -302,6 +302,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <p>Dual-licensed <a href="{site_base}LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="{site_base}LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
       <p>Copyright (c) 2026 XIOM Foundation.</p>
       <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      <p><a href="{site_base}terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="{site_base}privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
     </div>
     <div class="foot-links social">
       <a href="https://github.com/xiom-lang">GitHub</a>

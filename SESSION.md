@@ -224,7 +224,9 @@ compact styling. The social card is now also visible in the homepage CTA,
 the footer carries a social row (GitHub plus support@xiom-lang.org until the
 X/Facebook/Instagram/Discord/Reddit links land), and API module pages got
 their own styling (file-section dividers, readable declaration rows, flat
-doc prose, anchor scroll margins).
+doc prose, anchor scroll margins). Terms of Use and Privacy Policy pages
+were added (terms.html, privacy.html) and linked from every footer,
+including the generated docs chrome.
 
 Remaining:
 1. **~~AI_CONTEXT metadata~~ (done 2026-09-18)**: refreshed to the compiler
