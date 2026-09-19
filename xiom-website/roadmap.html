@@ -21,8 +21,6 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
-
 <nav>
   <div class="wrap">
     <a href="index.html" class="logo">
@@ -52,24 +50,47 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 <main class="wrap">
   <div class="content-section">
-    <h2>Phases</h2>
+    <h2>Current state</h2>
     <table>
-      <tr><th>Phase</th><th>Focus</th><th>Status</th></tr>
-      <tr><td>Phase 0</td><td>Working pipeline: lexer, parser, type checker, LLVM IR, native and WASM targets</td><td>shipped</td></tr>
-      <tr><td>Phase 1</td><td>Full language surface: ownership, generics, contracts, derive, standard library</td><td>shipped</td></tr>
-      <tr><td>Phase 2</td><td>Production hardening: contracts, diagnostics, reliability, standard library coverage</td><td>in progress</td></tr>
-      <tr><td>Phase 3</td><td>Ecosystem and static contracts: package registry, formatter, editor tooling, static proof</td><td>planned</td></tr>
+      <tr><th>Workstream</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Compiler releases</td><td>shipping</td><td>Latest release on the mirror is v0.60.1; v0.61.0 is on main</td></tr>
+      <tr><td>Language surface</td><td>shipped</td><td>Ownership, generics, contracts, pattern matching, derive, C FFI, scripting mode</td></tr>
+      <tr><td>Production hardening</td><td>shipped</td><td>Contracts, diagnostics, scripting and JIT, AI-assisted diagnostics, sandbox audit, sanitizers</td></tr>
+      <tr><td>Standard library</td><td>beta</td><td>517 source files and 6,532 public functions; limitations are published</td></tr>
+      <tr><td>Self-hosting</td><td>gates cleared</td><td>No self-hosted release has shipped; the bootstrap toolchain is the release compiler</td></tr>
+      <tr><td>Ecosystem</td><td>in progress</td><td>Package registry application, publishing, and editor tooling</td></tr>
+    </table>
+  </div>
+
+  <div class="content-section">
+    <h2>Verification gates</h2>
+    <p>Every release runs the full gate set before publication. Numbers below are as of v0.61.0 on compiler main:</p>
+    <table>
+      <tr><th>Gate</th><th>Tests</th></tr>
+      <tr><td>End-to-end</td><td>2338 / 2338</td></tr>
+      <tr><td>Checker</td><td>195 / 195</td></tr>
+      <tr><td>Feature regression</td><td>510</td></tr>
+      <tr><td>Robustness</td><td>63</td></tr>
+      <tr><td>Fuzz</td><td>24</td></tr>
+      <tr><td>Performance and determinism</td><td>2 / 2</td></tr>
+      <tr><td>Formatter</td><td>86</td></tr>
+      <tr><td>Language server</td><td>45</td></tr>
     </table>
   </div>
 
   <div class="content-section">
     <h2>Self-hosting</h2>
-    <p>Self-hosting gates are cleared, but no self-hosted release has shipped yet; the bootstrap compiler remains the released toolchain.</p>
+    <p>Self-hosting gates are cleared, but no self-hosted release has shipped yet; the bootstrap compiler remains the released toolchain. The remaining work is tracked in the compiler repository.</p>
   </div>
 
   <div class="content-section">
-    <h2>Testing</h2>
-    <p>Every release runs the compiler, standard library, and end-to-end suites before publication. Counts change with each release.</p>
+    <h2>Next</h2>
+    <ul>
+      <li>First self-hosted release once the remaining gaps close.</li>
+      <li>Package registry application and public publishing.</li>
+      <li>Static contract proof integration -- SMT-LIB output is available today through <code>--verify</code>.</li>
+      <li>macOS builds: Windows, Linux and WebAssembly are verified; macOS and the ARM/RISC-V targets are in progress.</li>
+    </ul>
   </div>
 
   <div class="content-section">
