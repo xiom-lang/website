@@ -53,6 +53,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
           <a class="btn-secondary" href="download.html">download</a>
           <a class="btn-secondary" href="docs.html">read the docs</a>
         </div>
+        <p style="color:var(--muted);font-size:13px;margin-top:18px;">New here? <a href="https://docs.xiom-lang.org/getting-started/" style="color:var(--signal);">Getting started</a> &middot; <a href="https://playground.xiom-lang.org" style="color:var(--signal);">Playground</a> &middot; <a href="spec.html" style="color:var(--signal);">Spec</a> &middot; <a href="https://docs.xiom-lang.org/contracts/" style="color:var(--signal);">Contracts</a> &middot; <a href="https://github.com/xiom-lang" style="color:var(--signal);">GitHub</a></p>
       </div>
 
       <div class="code-panel" id="proofPanel">
@@ -96,63 +97,155 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   </div>
 </section>
 
-<section class="section section-border" id="features">
+<section class="section section-border" id="scripting">
   <div class="wrap">
-    <h2 style="margin-bottom:40px;">What you get today.</h2>
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">01 / Scripting</div>
+        <h2 style="margin-bottom:16px;">Try it like a script, ship it like a binary.</h2>
+        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">Run a <code>.xi</code> file directly -- shebang lines, inline snippets, piped input and an interactive shell all work. When the experiment is worth keeping, compile the same file to a native binary with no rewrites.</p>
+        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <span>hello.xi</span>
+          <div class="code-panel-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-panel-body">
+<span class="cm"># top-level code runs as-is -- no fn main required</span><br>
+println("hello, xiom");<br>
+<br>
+<span class="cm"># script, snippet, shell, or a compiled binary</span><br>
+xiom run hello.xi<br>
+xiom run -e "1 + 2"<br>
+xiom repl<br>
+xiom build
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-border" id="ai">
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">02 / AI</div>
+        <h2 style="margin-bottom:16px;">An AI-native toolchain.</h2>
+        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">When a build fails, <code>--ai</code> asks a model to explain the error with concrete fixes -- run it locally so nothing leaves your machine, or point it at your provider. <code>xiom-mcp</code> takes the next step: agents can compile-check code, read the language guides and query the standard library as tools.</p>
+        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <span>ai.xi</span>
+          <div class="code-panel-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-panel-body">
+<span class="cm"># explain errors -- locally or in the cloud</span><br>
+xiom --ai --ai-local source.xi<br>
+<br>
+<span class="cm"># give an agent the whole toolchain</span><br>
+"mcpServers": { "xiom": { "command": "xiom-mcp" } }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-border" id="proof">
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">03 / Proof</div>
+        <h2 style="margin-bottom:16px;">Proof for the parts that matter.</h2>
+        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">Contracts become runtime guards by default, and <code>--verify</code> emits SMT-LIB for external provers when you want stronger guarantees. For the low-level parts -- raw pointers, inline assembly, manual memory -- you mark the code <code>unsafe</code>, and the compiler audits every one of those blocks.</p>
+        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <span>verify.sh</span>
+          <div class="code-panel-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-panel-body">
+xiom --verify --verify-output contracts.smt2 source.xi<br>
+<br>
+<span class="cm"># audit unsafe blocks, optionally blocking the build</span><br>
+xiom --sandbox source.xi<br>
+xiom --sandbox=strict source.xi
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-border" id="safety">
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">04 / Safety</div>
+        <h2 style="margin-bottom:16px;">Safe where it counts.</h2>
+        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">No garbage collector, no null, no hidden allocations -- ownership with lexical scope borrowing keeps memory predictable, as shown <a href="#ownership" style="color:var(--signal);">above</a>. The toolchain adds the safety net: integer overflow checks are on by default, and sanitizers, leak detection and stack canaries are one flag away.</p>
+        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <span>hardened.sh</span>
+          <div class="code-panel-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-panel-body">
+xiom --sanitize=address source.xi<br>
+xiom --sanitize=undefined --stack-protector source.xi<br>
+<br>
+<span class="cm"># opt out only when you know you need to</span><br>
+xiom --no-overflow-checks source.xi
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-border" id="targets">
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">05 / Targets</div>
+        <h2 style="margin-bottom:16px;">One codebase, every target.</h2>
+        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">XIOM emits LLVM IR and hands it to clang, so the same source compiles to native binaries, WebAssembly, ARM or RISC-V. The playground runs the compiler itself in the browser through WebAssembly -- no install, no account.</p>
+        <a href="https://playground.xiom-lang.org" style="color:var(--signal);font-size:13px;">open the playground</a>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <span>targets.sh</span>
+          <div class="code-panel-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-panel-body">
+xiom -o app source.xi<br>
+xiom --target wasm -o app.wasm source.xi<br>
+xiom --target arm source.xi<br>
+xiom --target riscv source.xi
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-border" id="toolbox">
+  <div class="wrap">
+    <h2 style="margin-bottom:40px;">Also in the box.</h2>
     <div class="eco-grid" style="margin-top:24px;">
       <div class="eco-card">
-        <h4>Contracts the compiler enforces</h4>
-        <p><code>requires:</code>, <code>ensures:</code> and <code>invariant:</code> live in the signature. Runtime guards catch violations; an SMT-LIB path feeds Z3 for static proof.</p>
-        <a href="https://docs.xiom-lang.org/contracts/" style="color:var(--signal);font-size:13px;">docs / contracts</a>
-      </div>
-      <div class="eco-card">
-        <h4>Scripting mode</h4>
-        <p><code>xiom run</code> executes scripts with shebang support, <code>-e</code>, stdin and <code>--watch</code>. A REPL and a JIT with incremental cache are built in.</p>
+        <h4>Companion tools</h4>
+        <p>Doctor, formatter, language server, documentation generator, package manager, foreign-interface generator, debugger and verifier ship with every release archive.</p>
         <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
-      </div>
-      <div class="eco-card">
-        <h4>AI-assisted diagnostics</h4>
-        <p><code>--ai</code> explains compilation errors with actionable hints -- locally through Ollama or through your provider of choice. Batch mode covers a whole project in one run.</p>
-        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
-      </div>
-      <div class="eco-card">
-        <h4>MCP for agents</h4>
-        <p><code>xiom-mcp</code> exposes compile checks, language guides and the standard library reference as Model Context Protocol tools for AI agents.</p>
-        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
-      </div>
-      <div class="eco-card">
-        <h4>Four targets</h4>
-        <p>LLVM IR through clang to native binaries, WebAssembly, ARM, or RISC-V -- the in-browser playground runs the compiler client-side.</p>
-        <a href="https://playground.xiom-lang.org" style="color:var(--signal);font-size:13px;">playground</a>
       </div>
       <div class="eco-card">
         <h4>Standard library</h4>
-        <p>44 modules of containers, strings, math, crypto, networking and SIMD, documented with generated API pages. Beta, with published limitations.</p>
+        <p>44 modules -- containers, strings, math, crypto, networking, SIMD -- with generated API pages. Beta, with the current limitations published.</p>
         <a href="https://docs.xiom-lang.org/api/" style="color:var(--signal);font-size:13px;">docs / api</a>
       </div>
       <div class="eco-card">
-        <h4>Sandbox audit</h4>
-        <p><code>--sandbox</code> audits every <code>unsafe</code> block and reports findings; <code>--sandbox=strict</code> blocks compilation on HIGH severity issues, with JSON reports for CI.</p>
-        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
-      </div>
-      <div class="eco-card">
-        <h4>Hardened builds</h4>
-        <p>Address, undefined, leak and thread sanitizers, stack protector canaries, and integer overflow checks that are on by default.</p>
-        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
-      </div>
-      <div class="eco-card">
-        <h4>Fast iteration</h4>
-        <p><code>--watch</code> recompiles on change, <code>--hot-reload</code> swaps shared libraries after contract checks, and <code>--incremental</code> with <code>--jobs</code> keeps rebuilds quick.</p>
-        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
-      </div>
-      <div class="eco-card">
-        <h4>Dependency graphs</h4>
-        <p><code>--graph</code> emits the project's dependency graph as DOT or Mermaid, alongside <code>--diagnostics=json</code> output for tooling.</p>
-        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
-      </div>
-      <div class="eco-card">
-        <h4>Static contract verification</h4>
-        <p><code>--verify</code> and <code>--verify-output</code> emit SMT-LIB for external provers; <code>--dump-contracts</code> exports the full contract index as JSON.</p>
+        <h4>Tooling-friendly</h4>
+        <p>Structured JSON diagnostics, dependency graphs as DOT or Mermaid, incremental and parallel builds with a watch mode.</p>
         <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
       </div>
     </div>
@@ -266,6 +359,29 @@ xiom run hello.xi
     <div class="btn-group" style="justify-content:center;">
       <a class="btn-primary" href="https://playground.xiom-lang.org">launch playground</a>
       <a class="btn-secondary" href="download.html">download compiler</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-border" id="community">
+  <div class="wrap">
+    <h2 style="margin-bottom:40px;">Built in the open.</h2>
+    <div class="eco-grid" style="margin-top:24px;">
+      <div class="eco-card">
+        <h4>Source</h4>
+        <p>The compiler, standard library, tooling and this website live under the xiom-lang organization on GitHub.</p>
+        <a href="https://github.com/xiom-lang" style="color:var(--signal);font-size:13px;">github.com/xiom-lang</a>
+      </div>
+      <div class="eco-card">
+        <h4>Report or request</h4>
+        <p>Found a bug, hit a rough edge, or want a feature? Open an issue on the compiler repository.</p>
+        <a href="https://github.com/xiom-lang/xiom/issues" style="color:var(--signal);font-size:13px;">open an issue</a>
+      </div>
+      <div class="eco-card">
+        <h4>Start contributing</h4>
+        <p>Documentation, standard library and tooling contributions are welcome; the roadmap shows what is next.</p>
+        <a href="roadmap.html" style="color:var(--signal);font-size:13px;">roadmap</a>
+      </div>
     </div>
   </div>
 </section>

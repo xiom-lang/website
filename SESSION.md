@@ -189,7 +189,12 @@ scrollable tables) and Material verified at 390px; docs header carries the
 site logo, favicon and a xiom-lang.org back-link; API pages render stdlib
 `///` prose where present (coverage 83.2% after the stdlib prose pass,
 paragraphs and lists preserved) and generated signature summaries
-otherwise; the compiler guide gained Architecture and Modes sections.
+otherwise; the compiler guide gained Architecture and Modes sections; the
+homepage was restructured for every audience -- a hero strip (getting
+started / playground / spec / contracts / GitHub), five plain-language
+feature stories (scripting, AI, proof, safety, targets) with runnable
+examples, an "Also in the box" toolchain inventory, and a "Built in the
+open" community section with source, issues and roadmap links.
 
 Remaining:
 1. **~~AI_CONTEXT metadata~~ (done 2026-09-18)**: refreshed to the compiler
