@@ -254,6 +254,16 @@ Remaining:
    three flags are real, the 20-crate list is confirmed, and the
    v0.57/v0.58 feature rows are accurate. The compiler now prints
    `--keep-debug-checks` in `xiom --help` (003e1fde).
+7. **Playground backup disclosure (pending ops, 2026-09-19)**: the
+   playground-data volume is not yet in the restic set, so `privacy.html`
+   currently says the progress document "is not currently part of the
+   off-site backup set". When ops adds it
+   (`/var/lib/docker/volumes/playground_playground-data/_data` in
+   `scripts/restic-backup.sh`) and the playground session confirms,
+   replace that clause with: "nightly backups age out after 30 days, with
+   12 monthly snapshots kept." The playground session keeps a facts list in
+   its `DEPLOY.md` and will flag changes to sandbox flags, retention,
+   cookie lifetime or backups.
 
 ## Rules
 
