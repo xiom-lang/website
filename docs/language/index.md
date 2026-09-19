@@ -109,7 +109,8 @@ For the planned package ecosystem, see [Ecosystem & Packages](https://xiom-lang.
 | Phase 1 | v0.2.0 "Guardian" | Released -- full language surface |
 | Phase 2 | v0.4.0 | Released -- differential IR correctness |
 | Phase 2C | v0.11.0 | Released -- toolchain and library milestones |
-| Phase 2C+ | v0.50.0 | Released -- 40-module stdlib, scripting, JIT, contracts |
+| Phase 2C+ | v0.50.0 | Released -- expanded stdlib, scripting, JIT, contracts |
 | Phase 8B | v0.51.0 | Released -- production hardening, M1-M12 complete |
+| Releases | v0.52 and later | Shipped -- scripting, JIT, AI diagnostics, sandbox audit, compiler/stdlib split |
 
 The current release is tracked on the [versions page](https://xiom-lang.org/versions.html); this table lists earlier milestones. Self-hosting gates are cleared, but no self-hosted release has shipped yet.

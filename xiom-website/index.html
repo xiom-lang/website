@@ -52,11 +52,10 @@ SPDX-License-Identifier: MIT OR Apache-2.0
         <h1>Specification and implementation are <em>the same artifact.</em></h1>
         <p class="lede">XIOM puts what a function promises directly in its signature -- not in a comment, not in a test, not in someone's head. The compiler reads it. The compiler enforces it.</p>
         <div class="btn-group">
-          <a class="btn-primary" href="https://playground.xiom-lang.org">try in browser</a>
+          <a class="btn-primary" href="https://playground.xiom-lang.org">try it in the playground</a>
           <a class="btn-secondary" href="download.html">download</a>
-          <a class="btn-secondary" href="docs.html">read the docs</a>
         </div>
-        <p style="color:var(--muted);font-size:13px;margin-top:18px;">New here? <a href="https://docs.xiom-lang.org/getting-started/" style="color:var(--signal);">Getting started</a> &middot; <a href="https://playground.xiom-lang.org" style="color:var(--signal);">Playground</a> &middot; <a href="spec.html" style="color:var(--signal);">Spec</a> &middot; <a href="https://docs.xiom-lang.org/contracts/" style="color:var(--signal);">Contracts</a> &middot; <a href="https://github.com/xiom-lang" style="color:var(--signal);">GitHub</a></p>
+        <p style="color:var(--muted);font-size:13px;margin-top:18px;">New here? <a href="https://docs.xiom-lang.org/getting-started/" style="color:var(--signal);">Getting started</a> &middot; <a href="https://docs.xiom-lang.org/contracts/" style="color:var(--signal);">Contracts</a> &middot; <a href="https://github.com/xiom-lang" style="color:var(--signal);">GitHub</a></p>
       </div>
 
       <div class="code-panel" id="proofPanel">
@@ -65,14 +64,14 @@ SPDX-License-Identifier: MIT OR Apache-2.0
           <div class="code-panel-dots"><span></span><span></span><span></span></div>
         </div>
         <div class="code-panel-body">
-<span class="ln">1</span><span class="kw">fn</span> <span class="fn">divide</span>(a: <span class="ty">Float64</span>, b: <span class="ty">Float64</span>) -&gt; <span class="ty">Float64</span>
-<span class="ln">2</span>  <span class="clause" id="c1"><span class="clause-tick">&#10003;</span><span class="kw">requires:</span> b != 0.0</span>
+<span class="ln">1</span><span class="kw">fn</span> <span class="fn">div_exact</span>(a: <span class="ty">Int</span>, b: <span class="ty">Int</span>) -&gt; <span class="ty">Int</span>
+<span class="ln">2</span>  <span class="clause" id="c1"><span class="clause-tick">&#10003;</span><span class="kw">requires:</span> b != 0 &amp;&amp; a % b == 0</span>
 <span class="ln">3</span>  <span class="clause" id="c2"><span class="clause-tick">&#10003;</span><span class="kw">ensures:</span>  result * b == a</span>
 <span class="ln">4</span>{
-<span class="ln">5</span>  <span class="kw">return</span> a / b
+<span class="ln">5</span>  <span class="kw">return</span> a / b;
 <span class="ln">6</span>}
         </div>
-        <div class="stamp" id="stamp">VERIFIED</div>
+        <div class="stamp" id="stamp">RUNTIME-CHECKED</div>
       </div>
     </div>
   </div>
@@ -82,52 +81,19 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <div class="wrap">
     <div class="grid-3">
       <div class="pillar">
-        <div class="pillar-tag">01 / SAFE</div>
+        <div class="pillar-tag">SAFE</div>
         <h3>No GC. No null. No surprises.</h3>
-        <p>Memory behaviour is explicit and deterministic. Ownership through lexical scope borrowing -- same guarantee as Rust, without lifetime annotations.</p>
+        <p>Deterministic memory: ownership with lexical scope borrowing. The same memory safety as Rust, and the trade-off is stated plainly -- references are second-class, so a function cannot return or store a borrow; handles and arenas cover what lifetimes would. Data races are prevented at compile time by Send/Sync enforcement.</p>
       </div>
       <div class="pillar">
-        <div class="pillar-tag">02 / VERIFIED</div>
+        <div class="pillar-tag">VERIFIED</div>
         <h3>Contracts the compiler enforces.</h3>
-        <p>Runtime guards protect every function. Structured diagnostics for AI tooling. Static proof via Z3 planned for Phase 3. When a contract passes, you trust the output.</p>
+        <p>Contracts compile to runtime guards today: violate one and the program aborts with a structured diagnostic. <code>--verify</code> exports SMT-LIB proof obligations for checking with the bundled z3; full static proof is still maturing.</p>
       </div>
       <div class="pillar">
-        <div class="pillar-tag">03 / PRECISE</div>
+        <div class="pillar-tag">PRECISE</div>
         <h3>One way to write each thing.</h3>
-        <p>No implicit behaviour. No hidden control flow. <code>derive</code> handles the boilerplate.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section section-border" id="scripting">
-  <div class="wrap">
-    <div class="grid-2">
-      <div>
-        <picture>
-          <source srcset="img/story-scripting.webp" type="image/webp">
-          <img class="story-icon" src="img/story-scripting.png" width="385" height="310" alt="" loading="lazy" decoding="async">
-        </picture>
-        <div class="eyebrow">01 / Scripting</div>
-        <h2 style="margin-bottom:16px;">Try it like a script, ship it like a binary.</h2>
-        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">Run a <code>.xi</code> file directly -- shebang lines, inline snippets, piped input and an interactive shell all work. When the experiment is worth keeping, compile the same file to a native binary with no rewrites.</p>
-        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
-      </div>
-      <div class="code-panel">
-        <div class="code-panel-header">
-          <span>hello.xi</span>
-          <div class="code-panel-dots"><span></span><span></span><span></span></div>
-        </div>
-        <div class="code-panel-body">
-<span class="cm"># top-level code runs as-is -- no fn main required</span><br>
-println("hello, xiom");<br>
-<br>
-<span class="cm"># script, snippet, shell, or a compiled binary</span><br>
-xiom run hello.xi<br>
-xiom run -e "1 + 2"<br>
-xiom repl<br>
-xiom build
-        </div>
+        <p>No implicit behaviour. No hidden control flow. <code>derive</code> handles the boilerplate, and the formatter enforces the single style.</p>
       </div>
     </div>
   </div>
@@ -139,9 +105,9 @@ xiom build
       <div>
         <picture>
           <source srcset="img/story-ai.webp" type="image/webp">
-          <img class="story-icon" src="img/story-ai.png" width="356" height="310" alt="" loading="lazy" decoding="async">
+          <img class="story-icon" src="img/story-ai.png" width="356" height="310" alt="Illustration: glowing nodes explaining a build error above a terminal" loading="lazy" decoding="async">
         </picture>
-        <div class="eyebrow">02 / AI</div>
+        <div class="eyebrow">01 / AI</div>
         <h2 style="margin-bottom:16px;">An AI-native toolchain.</h2>
         <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">When a build fails, <code>--ai</code> asks a model to explain the error with concrete fixes -- run it locally so nothing leaves your machine, or point it at your provider. <code>xiom-mcp</code> takes the next step: agents can compile-check code, read the language guides and query the standard library as tools.</p>
         <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
@@ -169,9 +135,9 @@ xiom --ai --ai-local source.xi<br>
       <div>
         <picture>
           <source srcset="img/story-proof.webp" type="image/webp">
-          <img class="story-icon" src="img/story-proof.png" width="357" height="313" alt="" loading="lazy" decoding="async">
+          <img class="story-icon" src="img/story-proof.png" width="357" height="313" alt="Illustration: a glass shield over contract nodes being audited" loading="lazy" decoding="async">
         </picture>
-        <div class="eyebrow">03 / Proof</div>
+        <div class="eyebrow">02 / Proof</div>
         <h2 style="margin-bottom:16px;">Proof for the parts that matter.</h2>
         <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">Contracts become runtime guards by default, and <code>--verify</code> emits SMT-LIB for external provers when you want stronger guarantees. For the low-level parts -- raw pointers, inline assembly, manual memory -- you mark the code <code>unsafe</code>, and the compiler audits every one of those blocks.</p>
         <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
@@ -199,11 +165,11 @@ xiom --sandbox=strict source.xi
       <div>
         <picture>
           <source srcset="img/story-safety.webp" type="image/webp">
-          <img class="story-icon" src="img/story-safety.png" width="395" height="311" alt="" loading="lazy" decoding="async">
+          <img class="story-icon" src="img/story-safety.png" width="395" height="311" alt="Illustration: layered safety glass over a memory chip with canary lines" loading="lazy" decoding="async">
         </picture>
-        <div class="eyebrow">04 / Safety</div>
+        <div class="eyebrow">03 / Safety</div>
         <h2 style="margin-bottom:16px;">Safe where it counts.</h2>
-        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">No garbage collector, no null, no hidden allocations -- ownership with lexical scope borrowing keeps memory predictable, as shown <a href="#ownership" style="color:var(--signal);">above</a>. The toolchain adds the safety net: integer overflow checks are on by default, and sanitizers, leak detection and stack canaries are one flag away.</p>
+        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">No garbage collector, no null, no hidden allocations -- ownership with lexical scope borrowing keeps memory predictable, as shown <a href="#ownership" style="color:var(--signal);">further down</a>. The toolchain adds the safety net: integer overflow checks are on by default, and sanitizers, leak detection and stack canaries are one flag away.</p>
         <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
       </div>
       <div class="code-panel">
@@ -229,9 +195,9 @@ xiom --no-overflow-checks source.xi
       <div>
         <picture>
           <source srcset="img/story-targets.webp" type="image/webp">
-          <img class="story-icon" src="img/story-targets.png" width="395" height="357" alt="" loading="lazy" decoding="async">
+          <img class="story-icon" src="img/story-targets.png" width="395" height="357" alt="Illustration: one cube projecting desktop, browser, phone and chip targets" loading="lazy" decoding="async">
         </picture>
-        <div class="eyebrow">05 / Targets</div>
+        <div class="eyebrow">04 / Targets</div>
         <h2 style="margin-bottom:16px;">One codebase, every target.</h2>
         <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">XIOM emits LLVM IR and hands it to clang, so the same source compiles to native binaries, WebAssembly, ARM or RISC-V. The playground runs the compiler itself in the browser through WebAssembly -- no install, no account.</p>
         <a href="https://playground.xiom-lang.org" style="color:var(--signal);font-size:13px;">open the playground</a>
@@ -246,6 +212,39 @@ xiom -o app source.xi<br>
 xiom --target wasm -o app.wasm source.xi<br>
 xiom --target arm source.xi<br>
 xiom --target riscv source.xi
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-border" id="scripting">
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <picture>
+          <source srcset="img/story-scripting.webp" type="image/webp">
+          <img class="story-icon" src="img/story-scripting.png" width="385" height="310" alt="Illustration: a script flowing into a compiled binary" loading="lazy" decoding="async">
+        </picture>
+        <div class="eyebrow">05 / Scripting</div>
+        <h2 style="margin-bottom:16px;">Try it like a script, ship it like a binary.</h2>
+        <p style="color:var(--paper-dim);font-size:15.5px;margin-bottom:16px;">Run a <code>.xi</code> file directly -- shebang lines, inline snippets, piped input and an interactive shell all work. When the experiment is worth keeping, compile the same file to a native binary with no rewrites.</p>
+        <a href="https://docs.xiom-lang.org/compiler/" style="color:var(--signal);font-size:13px;">docs / compiler</a>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <span>hello.xi</span>
+          <div class="code-panel-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-panel-body">
+<span class="cm"># top-level code runs as-is -- no fn main required</span><br>
+println("hello, xiom");<br>
+<br>
+<span class="cm"># script, snippet, shell, or a compiled binary</span><br>
+xiom run hello.xi<br>
+xiom run -e "1 + 2"<br>
+xiom repl<br>
+xiom build
         </div>
       </div>
     </div>
@@ -282,6 +281,7 @@ xiom --target riscv source.xi
       <div>
         <h2 style="margin-bottom:20px;max-width:640px;">The contract between programmer and compiler hasn't changed since 1972. We think it should.</h2>
         <p style="color:var(--paper-dim);font-size:15.5px;max-width:620px;margin-bottom:16px;">Most code today isn't written by one engineer who holds the whole system in their head. It's written by teams, maintained by people who didn't write it, and increasingly generated by AI tools. XIOM puts the specification inside the function signature, where the compiler can reason about it.</p>
+        <p style="color:var(--paper-dim);font-size:15.5px;max-width:620px;margin-bottom:16px;">Design by Contract is not new: Eiffel had it in 1986, Ada 2012 and SPARK, Dafny and Frama-C push it further. What is new is the context -- contracts as a first-class input to an LLVM compiler, in a language built for AI-generated code.</p>
         <div style="font-family:var(--font-display);font-size:19px;color:var(--paper);border-left:2px solid var(--signal);padding-left:20px;margin:28px 0;max-width:580px;">When AI generates a function, or a junior engineer modifies one, the contract layer catches what code review misses -- not because the reviewer is negligent, but because the compiler never gets tired.</div>
         <p style="color:var(--paper-dim);font-size:15.5px;max-width:620px;">Code review can't be the only safety layer when the volume of generated code exceeds what humans can read. So the safety moves into the language itself.</p>
       </div>
@@ -294,16 +294,16 @@ xiom --target riscv source.xi
     <div class="grid-2">
       <div>
         <h2 style="margin-bottom:16px;">Borrows expire where you can see them.</h2>
-        <p style="color:var(--paper-dim);font-size:15px;margin-bottom:14px;">No lifetime parameters. No annotations. The compiler infers borrow validity from scope nesting alone -- readable by looking at the braces, not by chasing references across the file.</p>
+        <p style="color:var(--paper-dim);font-size:15px;margin-bottom:14px;">No lifetime parameters. No annotations. The compiler infers borrow validity from scope nesting alone -- readable by looking at the braces, not by chasing references across the file. References are second-class: a function cannot return a borrow or store one in a struct; handles and arenas cover the cases lifetimes would.</p>
         <p style="color:var(--signal);font-family:var(--font-mono);font-size:13px;">-- lexical scope borrowing, decided Phase 0</p>
       </div>
       <div class="code-panel">
         <div class="code-panel-body">
 <span class="kw">fn</span> <span class="fn">example</span>() {<br>
-&nbsp;&nbsp;<span class="kw">let</span> v = Vec.new()<br>
-&nbsp;&nbsp;read_only(&amp;v)&nbsp;&nbsp;<span class="cm">// borrow ends here</span><br>
-&nbsp;&nbsp;mutate(&amp;<span class="kw">mut</span> v)&nbsp;&nbsp;<span class="cm">// exclusive, scoped</span><br>
-&nbsp;&nbsp;consume(v)&nbsp;&nbsp;<span class="cm">// v moves, no longer usable</span><br>
+&nbsp;&nbsp;<span class="kw">let</span> v = Vec.new();<br>
+&nbsp;&nbsp;read_only(&amp;v);&nbsp;&nbsp;<span class="cm">// borrow ends here</span><br>
+&nbsp;&nbsp;mutate(&amp;<span class="kw">mut</span> v);&nbsp;&nbsp;<span class="cm">// exclusive, scoped</span><br>
+&nbsp;&nbsp;consume(v);&nbsp;&nbsp;<span class="cm">// v moves, no longer usable</span><br>
 }
         </div>
       </div>

@@ -424,5 +424,5 @@ The `ensures: items.is_sorted()` contract is verified after `sort()` returns. If
 ## Next Steps
 
 - **21 example programs** ship in `examples/` -- compile any with `xiom --run examples/phase1_full.xi`
-- **Full stdlib reference** -- [40 modules with API documentation](api.md)
+- **Full stdlib reference** -- [44 modules with API documentation](api.md)
 - **AI coding guide** -- [AI_CONTEXT.md](../AI_CONTEXT.md) for LLM-powered XIOM code generation

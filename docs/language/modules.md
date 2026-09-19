@@ -111,7 +111,7 @@ myproject/
 
 ## Standard Library
 
-The standard library ships with the compiler in `stdlib/xiom/`. 40 modules covering core types, I/O, collections, text, math, concurrency, networking, memory, system, utilities, crypto, and testing.
+The standard library ships with the compiler in `stdlib/xiom/`. 44 modules covering core types, I/O, collections, text, math, concurrency, networking, memory, system, utilities, crypto, and testing.
 
 For the full stdlib reference with every type, function, and signature, see the [Standard Library Reference](stdlib.md).
 
