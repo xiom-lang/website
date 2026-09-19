@@ -13600,18 +13600,30 @@
 <blockquote>
 <p>Left-aligns <code>s</code> in a field of <code>width</code> bytes, padding on the right with spaces. A string already at or over the width is returned unchanged; a negative width is rejected (returns <code>s</code>). Params: s the source string; width the field width in bytes. Returns: the left-aligned string. Error case: none; width &lt; 0 is a no-op. Complexity: O(width).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt; 0 =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_align_rights-str-width-int-str"><code>fn str_align_right(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_align_rights-str-width-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Right-aligns <code>s</code> in a field of <code>width</code> bytes, padding on the left with spaces. A string already at or over the width is returned unchanged; a negative width is rejected (returns <code>s</code>). Params: s the source string; width the field width in bytes. Returns: the right-aligned string. Error case: none; width &lt; 0 is a no-op. Complexity: O(width).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt; 0 =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_align_centers-str-width-int-str"><code>fn str_align_center(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_align_centers-str-width-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Centers <code>s</code> in a field of <code>width</code> bytes, padding both sides with spaces; when the padding does not split evenly the extra space goes on the right. A string already at or over the width is returned unchanged; a negative width is rejected (returns <code>s</code>). Params: s the source string; width the field width in bytes. Returns: the centered string. Error case: none; width &lt; 0 is a no-op. Complexity: O(width).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt; 0 =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_align_justifys-str-width-int-str"><code>fn str_align_justify(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_align_justifys-str-width-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Justifies <code>s</code> to <code>width</code> bytes by distributing the extra space between the words: gaps are padded from left to right, so earlier gaps may receive one extra space. When there is only one word, or the words already fill the width, or <code>width</code> is negative, <code>s</code> is returned unchanged. Params: s the source string; width the target width in bytes. Returns: the justified string. Error case: none; width &lt; 0 is a no-op. Complexity: O(|s| + width).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt; 0 =&gt; result == s</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -13651,68 +13663,118 @@
 <blockquote>
 <p>New empty builder. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h4 id="fn-sb_push_bytesb-mut-vecuint8-b-uint8"><code>fn sb_push_byte(sb: &amp;mut Vec[UInt8], b: UInt8)</code><a class="headerlink" href="#fn-sb_push_bytesb-mut-vecuint8-b-uint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Append one byte. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sb.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-sb_push_strsb-mut-vecuint8-s-str"><code>fn sb_push_str(sb: &amp;mut Vec[UInt8], s: Str)</code><a class="headerlink" href="#fn-sb_push_strsb-mut-vecuint8-s-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Append a whole string (byte copy; UTF-8 safe -- bytes are opaque here). Complexity: O(s.len()) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() &gt; 0 =&gt; sb.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-sb_push_intsb-mut-vecuint8-v-int"><code>fn sb_push_int(sb: &amp;mut Vec[UInt8], v: Int)</code><a class="headerlink" href="#fn-sb_push_intsb-mut-vecuint8-v-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Append the decimal representation of <code>v</code> (sign-aware, zero-safe). Emits digits without any temporary Str allocation. Complexity: O(digits).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sb.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-sb_to_strsb-vecuint8-str"><code>fn sb_to_str(sb: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-sb_to_strsb-vecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Materialize the built string: single allocation, ownership of the fresh NUL-terminated buffer moves into the result Str ([XFER]). The builder vector is untouched and remains usable. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == sb.len()</code></li>
+</ul>
 <h4 id="fn-sb_clearsb-mut-vecuint8"><code>fn sb_clear(sb: &amp;mut Vec[UInt8])</code><a class="headerlink" href="#fn-sb_clearsb-mut-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Reset to empty. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sb.len() == 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
 <h2 id="casexi"><code>case.xi</code><a class="headerlink" href="#casexi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_uppers-str-str"><code>fn str_upper(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_uppers-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts all characters of <code>s</code> to uppercase. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_lowers-str-str"><code>fn str_lower(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_lowers-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts all characters of <code>s</code> to lowercase. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_titles-str-str"><code>fn str_title(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_titles-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Capitalizes the first letter of every word of <code>s</code>; remaining characters of each word are lowercased. Whitespace and separators are preserved. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_swap_cases-str-str"><code>fn str_swap_case(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_swap_cases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Swaps the case of every letter in <code>s</code>; characters that are neither uppercase nor lowercase are left unchanged. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_capitalizes-str-str"><code>fn str_capitalize(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_capitalizes-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Uppercases the first character of <code>s</code> and lowercases the rest. Returns <code>s</code> unchanged when <code>s</code> is empty. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_sentence_cases-str-str"><code>fn str_sentence_case(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_sentence_cases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Capitalizes the first letter of each sentence of <code>s</code>. A sentence boundary is a '.', '!' or '?' character; the next alphabetic character is uppercased. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_to_camel_cases-str-str"><code>fn str_to_camel_case(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_to_camel_cases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts <code>s</code> to lowerCamelCase: the first word is lowercased and each following word is capitalized; separators are dropped. Complexity: O(|s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_to_snake_cases-str-str"><code>fn str_to_snake_case(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_to_snake_cases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts <code>s</code> to snake_case: words are lowercased and joined with '_'. Complexity: O(|s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_to_kebab_cases-str-str"><code>fn str_to_kebab_case(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_to_kebab_cases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts <code>s</code> to kebab-case: words are lowercased and joined with '-'. Complexity: O(|s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_to_pascal_cases-str-str"><code>fn str_to_pascal_case(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_to_pascal_cases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts <code>s</code> to PascalCase: every word is capitalized and joined without a separator. Complexity: O(|s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -13839,123 +13901,175 @@
 <h3 id="fn-encode_utf8c-char-buf-mut-vecuint8"><code>fn encode_utf8(c: Char, buf: &amp;mut Vec[UInt8])</code><a class="headerlink" href="#fn-encode_utf8c-char-buf-mut-vecuint8" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>c: Char</code>, <code>buf: &amp;mut Vec[UInt8]</code>; returns nothing. No source comment yet.</p>
 <h3 id="fn-is_letterc-char-bool"><code>fn is_letter(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_letterc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Alias for is_alphabetic. Returns true if <code>c</code> is an ASCII letter (a-z, A-Z).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_alphabetic(c)</code></li>
 </ul>
 <h3 id="fn-is_control_charc-char-bool"><code>fn is_control_char(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_control_charc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Alias for is_control. Returns true if <code>c</code> is a C0 control character or DEL.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_control(c)</code></li>
 </ul>
 <h3 id="fn-is_hex_digitc-char-bool"><code>fn is_hex_digit(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_hex_digitc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is a hexadecimal digit (0-9, a-f, A-F).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == ((to_int_from_char(c) &gt;= 48 &amp;&amp; to_int_from_char(c) &lt;= 57) || (to_int_from_char(c) &gt;= 65 &amp;&amp; to_int_from_char(c) &lt;= 70) || (to_int_from_char(c) &gt;= 97 &amp;&amp; to_int_from_char(c) &lt;= 102))</code></li>
 </ul>
 <h3 id="fn-is_binary_digitc-char-bool"><code>fn is_binary_digit(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_binary_digitc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is a binary digit ('0' or '1').</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (c == '0' || c == '1')</code></li>
 </ul>
 <h3 id="fn-is_octal_digitc-char-bool"><code>fn is_octal_digit(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_octal_digitc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is an octal digit ('0' through '7').</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (c &gt;= '0' &amp;&amp; c &lt;= '7')</code></li>
 </ul>
 <h3 id="fn-is_symbolc-char-bool"><code>fn is_symbol(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_symbolc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is a symbol character (punctuation, currency, math, or modifier). Covers ASCII punctuation + common Unicode symbol ranges.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (is_currency(c) || is_math_symbol(c) || is_punctuation(c) || (to_int_from_char(c) &gt;= 160 &amp;&amp; to_int_from_char(c) &lt;= 191) || (to_int_from_char(c) &gt;= 215 &amp;&amp; to_int_from_char(c) &lt;= 247) || (to_int_from_char(c) &gt;= 8208 &amp;&amp; to_int_from_char(c) &lt;= 8231) || (to_int_from_char(c) &gt;= 8240 &amp;&amp; to_int_from_char(c) &lt;= 8286) || (to_int_from_char(c) &gt;= 8592 &amp;&amp; to_int_from_char(c) &lt;= 8703) || (to_int_from_char(c) &gt;= 8960 &amp;&amp; to_int_from_char(c) &lt;= 9215) || (to_int_from_char(c) &gt;= 9472 &amp;&amp; to_int_from_char(c) &lt;= 9599) || (to_int_from_char(c) &gt;= 9600 &amp;&amp; to_int_from_char(c) &lt;= 9631) || (to_int_from_char(c) &gt;= 9632 &amp;&amp; to_int_from_char(c) &lt;= 9727) || (to_int_from_char(c) &gt;= 9728 &amp;&amp; to_int_from_char(c) &lt;= 9983) || (to_int_from_char(c) &gt;= 9984 &amp;&amp; to_int_from_char(c) &lt;= 10175))</code></li>
 </ul>
 <h3 id="fn-is_currencyc-char-bool"><code>fn is_currency(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_currencyc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is a currency symbol. Covers $, cent, pound, yen, and the currency symbols block U+20A0..U+20CF.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (to_int_from_char(c) == 36 || to_int_from_char(c) == 162 || to_int_from_char(c) == 163 || to_int_from_char(c) == 165 || (to_int_from_char(c) &gt;= 8352 &amp;&amp; to_int_from_char(c) &lt;= 8399))</code></li>
 </ul>
 <h3 id="fn-is_math_symbolc-char-bool"><code>fn is_math_symbol(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_math_symbolc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is a mathematical symbol. Covers +, -, *, /, =, &lt;, &gt;, the plus-minus sign, and the mathematical operators block U+2200..U+22FF.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (c == '+' || c == '-' || c == '*' || c == '/' || c == '=' || c == '&lt;' || c == '&gt;' || to_int_from_char(c) == 177 || c == 'x' || (to_int_from_char(c) &gt;= 8704 &amp;&amp; to_int_from_char(c) &lt;= 8959))</code></li>
 </ul>
 <h3 id="fn-is_emojic-char-bool"><code>fn is_emoji(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_emojic-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> falls within basic emoji code point ranges. Covers emoticons, miscellaneous symbols, transport, supplemental symbols.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == ((to_int_from_char(c) &gt;= 128512 &amp;&amp; to_int_from_char(c) &lt;= 128591) || (to_int_from_char(c) &gt;= 127744 &amp;&amp; to_int_from_char(c) &lt;= 128511) || (to_int_from_char(c) &gt;= 128640 &amp;&amp; to_int_from_char(c) &lt;= 128767) || (to_int_from_char(c) &gt;= 129280 &amp;&amp; to_int_from_char(c) &lt;= 129535))</code></li>
 </ul>
 <h3 id="fn-is_combining_markc-char-bool"><code>fn is_combining_mark(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_combining_markc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is a combining diacritical mark (U+0300..U+036F).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (to_int_from_char(c) &gt;= 768 &amp;&amp; to_int_from_char(c) &lt;= 879)</code></li>
 </ul>
 <h3 id="fn-to_title_casec-char-char"><code>fn to_title_case(c: Char) -&gt; Char</code><a class="headerlink" href="#fn-to_title_casec-char-char" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Char</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the title-case version of <code>c</code>. For a single character this is equivalent to to_uppercase.</p>
+</blockquote>
 <h3 id="fn-is_ascii_letterc-char-bool"><code>fn is_ascii_letter(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_ascii_letterc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is an ASCII letter (a-z, A-Z).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_alphabetic(c)</code></li>
 </ul>
 <h3 id="fn-is_ascii_digitc-char-bool"><code>fn is_ascii_digit(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_ascii_digitc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is an ASCII digit (0-9). Alias for is_digit.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_digit(c)</code></li>
 </ul>
 <h3 id="fn-is_ascii_hex_digitc-char-bool"><code>fn is_ascii_hex_digit(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_ascii_hex_digitc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is an ASCII hexadecimal digit (0-9, a-f, A-F).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_hex_digit(c)</code></li>
 </ul>
 <h3 id="fn-is_ascii_punctuationc-char-bool"><code>fn is_ascii_punctuation(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_ascii_punctuationc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is ASCII punctuation (codes 33-47, 58-64, 91-96, 123-126).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_punctuation(c)</code></li>
 </ul>
 <h3 id="fn-is_ascii_whitespacec-char-bool"><code>fn is_ascii_whitespace(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_ascii_whitespacec-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is ASCII whitespace (space, tab, newline, carriage return).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_whitespace(c)</code></li>
 </ul>
 <h3 id="fn-is_ascii_controlc-char-bool"><code>fn is_ascii_control(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_ascii_controlc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is an ASCII control character (codes 0-31 or 127).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_control(c)</code></li>
 </ul>
 <h3 id="fn-is_ascii_graphicc-char-bool"><code>fn is_ascii_graphic(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_ascii_graphicc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is an ASCII graphic character (codes 33-126, visible + space).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (to_int_from_char(c) &gt;= 33 &amp;&amp; to_int_from_char(c) &lt;= 126)</code></li>
 </ul>
 <h3 id="fn-is_ascii_printablec-char-bool"><code>fn is_ascii_printable(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_ascii_printablec-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is an ASCII printable character (codes 32-126, includes space).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (to_int_from_char(c) &gt;= 32 &amp;&amp; to_int_from_char(c) &lt;= 126)</code></li>
 </ul>
 <h3 id="fn-char_to_digit_valuec-char-optionint"><code>fn char_to_digit_value(c: Char) -&gt; Option[Int]</code><a class="headerlink" href="#fn-char_to_digit_valuec-char-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the numeric value (0-9) of a digit character, or None if <code>c</code> is not a digit.</p>
+</blockquote>
 <h3 id="fn-digit_value_to_charn-int-optionchar"><code>fn digit_value_to_char(n: Int) -&gt; Option[Char]</code><a class="headerlink" href="#fn-digit_value_to_charn-int-optionchar" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>Option[Char]</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the character representation of a single digit value <code>n</code> (0-9), or None if out of range.</p>
+</blockquote>
 <h3 id="fn-is_uppercase_asciic-char-bool"><code>fn is_uppercase_ascii(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_uppercase_asciic-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is an uppercase ASCII letter (A-Z).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_uppercase(c)</code></li>
 </ul>
 <h3 id="fn-is_lowercase_asciic-char-bool"><code>fn is_lowercase_ascii(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_lowercase_asciic-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is a lowercase ASCII letter (a-z).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == is_lowercase(c)</code></li>
 </ul>
 <h3 id="fn-to_ascii_upperc-char-char"><code>fn to_ascii_upper(c: Char) -&gt; Char</code><a class="headerlink" href="#fn-to_ascii_upperc-char-char" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Char</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the ASCII uppercase version of <code>c</code>. If <code>c</code> is not a lowercase ASCII letter, it is returned unchanged.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == to_uppercase(c)</code></li>
 </ul>
 <h3 id="fn-to_ascii_lowerc-char-char"><code>fn to_ascii_lower(c: Char) -&gt; Char</code><a class="headerlink" href="#fn-to_ascii_lowerc-char-char" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Char</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the ASCII lowercase version of <code>c</code>. If <code>c</code> is not an uppercase ASCII letter, it is returned unchanged.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == to_lowercase(c)</code></li>
 </ul>
 <h3 id="fn-is_whitespace_or_separatorc-char-bool"><code>fn is_whitespace_or_separator(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-is_whitespace_or_separatorc-char-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>c</code> is whitespace or a Unicode separator character. Covers ASCII whitespace + line/paragraph separators (U+2028, U+2029).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (is_whitespace(c) || to_int_from_char(c) == 8232 || to_int_from_char(c) == 8233)</code></li>
 </ul>
@@ -14004,10 +14118,16 @@
 <blockquote>
 <p>Random permutation of the characters of <code>s</code> via Fisher-Yates, drawing swap indices from the runtime PRNG. The result is a rearrangement of the characters of <code>s</code> (same byte length); the order is not specified. Params: s the string to shuffle. Returns: a random permutation of the characters of <code>s</code>. Error case: none; the empty string maps to itself. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
+</ul>
 <h4 id="fn-str_shuffle_seededs-str-seed-int-str"><code>fn str_shuffle_seeded(s: Str, seed: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_shuffle_seededs-str-seed-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Deterministic shuffle of <code>s</code> using the given <code>seed</code>: the same seed always produces the same permutation via the Park-Miller sequence. The empty string maps to itself. Params: s the string to shuffle; seed the PRNG seed. Returns: the seeded permutation of <code>s</code>. Error case: none. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
+</ul>
 <h4 id="fn-str_shuffle_wordss-str-str"><code>fn str_shuffle_words(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_shuffle_wordss-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Random permutation of the whitespace-separated words of <code>s</code>. The result rejoins the shuffled words with single spaces; the original spacing runs are not preserved (see <code>str_reverse_words</code> for spacing preservation). Params: s the string whose words to shuffle. Returns: the shuffled words joined by single spaces. Error case: none; a string with no words yields "". Complexity: O(|s|).</p>
@@ -14045,58 +14165,100 @@
 <blockquote>
 <p>All permutations of the characters of <code>s</code>, treating the characters as distinct (n! results for |s| = n; duplicate characters yield duplicate permutations). An empty string yields a vector containing "". The permutations are emitted in lexicographic byte order. Params: s the source string. Returns: a Vec[Str] with n! permutations. Error case: inputs longer than 8 characters return an empty vector (documented guard against an impractical 8!+ result set). Complexity: O(n! * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-str_permutations_ns-str-n-int-vecstr"><code>fn str_permutations_n(s: Str, n: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_permutations_ns-str-n-int-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>All n-length arrangements of the characters of <code>s</code> (P(|s|, n) results, ordered, without repetition). n == 0 yields [""]; n &lt; 0 or n &gt; |s| yields an empty vector. Params: s the source string; n the arrangement length. Returns: a Vec[Str] of n-length permutations. Error case: n &lt; 0 or n &gt; |s| =&gt; empty vector; large inputs are guarded as in str_permutations. Complexity: O(P(n, k) * k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-str_combinationss-str-n-int-vecstr"><code>fn str_combinations(s: Str, n: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_combinationss-str-n-int-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>All n-length combinations of the characters of <code>s</code>, each kept in source order (C(|s|, n) results). n &lt; 1 or n &gt; |s| yields an empty vector, matching <code>xiom.string.combine.str_combinations</code>. Params: s the source string; n the combination length. Returns: a Vec[Str] of n-length combinations. Error case: n &lt; 1 or n &gt; |s| =&gt; empty vector. Complexity: O(C(n, k) * k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-str_cartesiana-str-b-str-vecstr"><code>fn str_cartesian(a: Str, b: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_cartesiana-str-b-str-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Every character of <code>a</code> paired with every character of <code>b</code>, in order ("ab" x "12" yields "a1", "a2", "b1", "b2"). Params: a, b the source strings. Returns: a Vec[Str] of two-character pairs. Error case: none; an empty operand yields an empty vector. Complexity: O(|a| * |b|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-str_interleavea-str-b-str-str"><code>fn str_interleave(a: Str, b: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_interleavea-str-b-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Merge <code>a</code> and <code>b</code> alternating characters, appending the remainder of the longer string ("abc" + "12" yields "a1b2c"). Params: a, b the strings to interleave. Returns: the interleaved string. Error case: none. Complexity: O(|a| + |b|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == a.len() + b.len()</code></li>
+</ul>
 <h4 id="fn-str_chunks-str-n-int-vecstr_1"><code>fn str_chunk(s: Str, n: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_chunks-str-n-int-vecstr_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Split <code>s</code> into consecutive chunks of <code>n</code> bytes; the final chunk may be shorter. A chunk size below 1 or an empty input yields an empty vector. Params: s the source string; n the chunk size in bytes. Returns: a Vec[Str] of chunks covering <code>s</code> exactly once. Error case: n &lt; 1 or s.len() == 0 =&gt; empty vector. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-str_chunks_reverses-str-n-int-vecstr_1"><code>fn str_chunks_reverse(s: Str, n: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_chunks_reverses-str-n-int-vecstr_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Split <code>s</code> into chunks of <code>n</code> bytes starting from the end; the remainder (if any) forms the first chunk. A chunk size below 1 or an empty input yields an empty vector. Params: s the source string; n the chunk size in bytes. Returns: a Vec[Str] of chunks in source order (first may be shorter). Error case: n &lt; 1 or s.len() == 0 =&gt; empty vector. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-str_windowss-str-n-int-vecstr_1"><code>fn str_windows(s: Str, n: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_windowss-str-n-int-vecstr_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>All length-<code>n</code> overlapping substrings (windows) of <code>s</code>. A window size below 1 or larger than the input yields an empty vector. Params: s the source string; n the window size in bytes. Returns: a Vec[Str] with one element per start position 0..len-n. Error case: n &lt; 1 or len &lt; n =&gt; empty vector. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-str_chunk_bytess-str-n-int-vecstr"><code>fn str_chunk_bytes(s: Str, n: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_chunk_bytess-str-n-int-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Split <code>s</code> into chunks of <code>n</code> bytes that never split a multi-byte UTF-8 character: a chunk is extended to the end of a character that would cross the <code>n</code>-byte boundary. Params: s the source string; n the target chunk size in bytes. Returns: a Vec[Str] of chunks covering <code>s</code> exactly once. Error case: n &lt; 1 or s.len() == 0 =&gt; empty vector. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-str_reverse_wordss-str-str"><code>fn str_reverse_words(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_reverse_wordss-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Reverse the order of the whitespace-separated words of <code>s</code>, preserving the whitespace runs: only the token order changes ("a  b" -&gt; "b  a"). Returns <code>s</code> unchanged when <code>s</code> has no words. Params: s the string whose words to reverse. Returns: the word-reversed string. Error case: none. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
+</ul>
 <h4 id="fn-str_unique_charss-str-str"><code>fn str_unique_chars(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_unique_charss-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>The characters of <code>s</code> without duplicates, in first-seen order. Dedup is byte-based, so two different multi-byte code points sharing a leading byte are treated as duplicates (documented; ASCII is exact). Params: s the source string. Returns: a string of distinct characters. Error case: none. Complexity: O(|s|^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-str_frequenciess-str-vecchar-int"><code>fn str_frequencies(s: Str) -&gt; Vec[(Char, Int)]</code><a class="headerlink" href="#fn-str_frequenciess-str-vecchar-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Each distinct character of <code>s</code> and its occurrence count, in first-seen order. Characters are derived from their bytes (ASCII-exact; multi-byte code points are counted per byte, documented). Params: s the source string. Returns: a Vec[(Char, Int)] of (character, count) pairs. Error case: none. Complexity: O(|s|^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-str_most_frequents-str-optionchar"><code>fn str_most_frequent(s: Str) -&gt; Option[Char]</code><a class="headerlink" href="#fn-str_most_frequents-str-optionchar" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>The character that appears most often in <code>s</code>, or None when <code>s</code> is empty. When several characters tie, the first-seen one wins. Params: s the source string. Returns: Some with the most frequent character, None when empty. Error case: none. Complexity: O(|s|^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; s.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-str_char_sets-str-vecchar"><code>fn str_char_set(s: Str) -&gt; Vec[Char]</code><a class="headerlink" href="#fn-str_char_sets-str-vecchar" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>The distinct characters of <code>s</code> in first-seen order, as Char values. Params: s the source string. Returns: a Vec[Char] of distinct characters. Error case: none. Complexity: O(|s|^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -14246,18 +14408,30 @@
 <blockquote>
 <p>Escapes the control and special characters of <code>s</code> (\n, \t, \", \, \r) so the result can be embedded safely in source or data. All other characters pass through unchanged. Params: s the source string. Returns: the escaped string. Error case: none. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_unescapes-str-str"><code>fn str_unescape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_unescapes-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Interprets the escape sequences in <code>s</code> (\n, \t, \", \, \r) back into literal characters. Unrecognised escapes are left unchanged, so str_escape then str_unescape is a faithful round-trip. Params: s the source string. Returns: the unescaped string. Error case: none. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_escape_asciis-str-str"><code>fn str_escape_ascii(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_escape_asciis-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Escapes every non-ASCII byte of <code>s</code> as a lowercase \xNN sequence; ASCII bytes pass through unchanged. Useful for producing pure-ASCII output. Params: s the source string. Returns: the ASCII-escaped string. Error case: none. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_escape_unicodes-str-str"><code>fn str_escape_unicode(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_escape_unicodes-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Escapes every non-ASCII code point of <code>s</code> as a lowercase \uNNNN sequence (four hex digits, high bits dropped for code points above U+FFFF); ASCII code points pass through unchanged. Useful for producing pure-ASCII output. Params: s the source string. Returns: the Unicode-escaped string. Error case: none. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -14375,13 +14549,33 @@
 <hr />
 <h2 id="joinxi"><code>join.xi</code><a class="headerlink" href="#joinxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_joinparts-vecstr-sep-str-str"><code>fn str_join(parts: &amp;Vec[Str], sep: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_joinparts-vecstr-sep-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>parts: &amp;Vec[Str]</code>, <code>sep: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Joins <code>parts</code> with <code>sep</code> between consecutive elements. Returns an empty string when <code>parts</code> is empty. Complexity: O(total bytes of parts).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>parts.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_join_afterparts-vecstr-sep-str-after-int-str"><code>fn str_join_after(parts: &amp;Vec[Str], sep: Str, after: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_join_afterparts-vecstr-sep-str-after-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>parts: &amp;Vec[Str]</code>, <code>sep: Str</code>, <code>after: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Joins <code>parts</code>, inserting <code>sep</code> after every <code>after</code>-th element. When <code>after &lt;= 0</code>, no separator is inserted at all. Returns an empty string when <code>parts</code> is empty. Complexity: O(total bytes of parts).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>after &lt;= 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-vec_int_joinvalues-vecint-sep-str-str"><code>fn vec_int_join(values: &amp;Vec[Int], sep: Str) -&gt; Str</code><a class="headerlink" href="#fn-vec_int_joinvalues-vecint-sep-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>values: &amp;Vec[Int]</code>, <code>sep: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Joins the <code>Int</code> values in <code>values</code> with <code>sep</code> between consecutive elements. Returns an empty string when <code>values</code> is empty. Complexity: O(total digits of values).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>values.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-vec_float_joinvalues-vecfloat64-sep-str-str"><code>fn vec_float_join(values: &amp;Vec[Float64], sep: Str) -&gt; Str</code><a class="headerlink" href="#fn-vec_float_joinvalues-vecfloat64-sep-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>values: &amp;Vec[Float64]</code>, <code>sep: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Joins the <code>Float64</code> values in <code>values</code> with <code>sep</code> between consecutive elements. Returns an empty string when <code>values</code> is empty. Complexity: O(total digits of values).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>values.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -14461,12 +14655,16 @@
 <hr />
 <h2 id="lowercasexi"><code>lowercase.xi</code><a class="headerlink" href="#lowercasexi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_lowercases-str-str"><code>fn str_lowercase(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_lowercases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts all characters of <code>s</code> to lowercase. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-char_lowercasec-char-char"><code>fn char_lowercase(c: Char) -&gt; Char</code><a class="headerlink" href="#fn-char_lowercasec-char-char" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Char</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the lowercase variant of <code>c</code>, or <code>c</code> unchanged when <code>c</code> has no lowercase mapping. Complexity: O(1).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
@@ -14534,38 +14732,83 @@
 <blockquote>
 <p>Normalize <code>s</code> to NFC (canonical composition): characters are canonically decomposed, canonically reordered, then recomposed to their precomposed forms where one exists (e.g. "e\u0301" -&gt; "e"). Characters outside the covered table pass through unchanged. Params: s the string to normalize. Returns: the NFC-normalized string. Error case: none; malformed UTF-8 bytes pass through approximately. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-unicode_normalize_nfds-str-str"><code>fn unicode_normalize_nfd(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-unicode_normalize_nfds-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Normalize <code>s</code> to NFD (canonical decomposition): precomposed characters are decomposed into their base letter plus combining marks, and combining marks are canonically reordered by combining class (e.g. "e" -&gt; "e" + U+0301). Params: s the string to normalize. Returns: the NFD-normalized string. Error case: none; malformed UTF-8 bytes pass through approximately. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-unicode_normalize_nfkcs-str-str_1"><code>fn unicode_normalize_nfkc(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-unicode_normalize_nfkcs-str-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Normalize <code>s</code> to NFKC (compatibility composition): NFKD then NFC-style recomposition. Compatibility characters such as ligatures, superscripts and fullwidth forms are decomposed first (e.g. "1" -&gt; "1", "[U+FF66]" -&gt; "[U+FF66]"... 1:1 fullwidth forms fold to ASCII). See the module header for the covered set. Params: s the string to normalize. Returns: the NFKC-normalized string. Error case: none; malformed UTF-8 bytes pass through approximately. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-unicode_normalize_nfkds-str-str_1"><code>fn unicode_normalize_nfkd(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-unicode_normalize_nfkds-str-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Normalize <code>s</code> to NFKD (compatibility decomposition): like NFD plus the compatibility mappings (e.g. "fi" -&gt; "fi", "1/2" -&gt; "1/2", "8" -&gt; "8"). Params: s the string to normalize. Returns: the NFKD-normalized string. Error case: none; malformed UTF-8 bytes pass through approximately. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_normalize_asciis-str-str"><code>fn str_normalize_ascii(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_normalize_asciis-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fold <code>s</code> to plain ASCII, removing accents and combining marks. Accented Latin letters reduce to their base letter ("cafe" -&gt; "cafe"); common non-ASCII letters without an ASCII base are transliterated via a small map ("o" -&gt; "o", "ss" -&gt; "s", "ae" -&gt; "a"). Characters with no ASCII transliteration are dropped. See the module header for the covered set. Params: s the string to fold. Returns: an ASCII-only string. Error case: none; malformed UTF-8 bytes pass through approximately. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
 <h2 id="padxi"><code>pad.xi</code><a class="headerlink" href="#padxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_pad_lefts-str-width-int-pad-char-str"><code>fn str_pad_left(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_lefts-str-width-int-pad-char-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>, <code>pad: Char</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Pads <code>s</code> on the left with <code>pad</code> up to <code>width</code> bytes. Returns <code>s</code> unchanged when <code>s</code> is already at least <code>width</code> bytes long. Complexity: O(width - |s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt;= s.len() =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_pad_rights-str-width-int-pad-char-str"><code>fn str_pad_right(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_rights-str-width-int-pad-char-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>, <code>pad: Char</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Pads <code>s</code> on the right with <code>pad</code> up to <code>width</code> bytes. Returns <code>s</code> unchanged when <code>s</code> is already at least <code>width</code> bytes long. Complexity: O(width - |s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt;= s.len() =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_pad_boths-str-width-int-pad-char-str"><code>fn str_pad_both(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_boths-str-width-int-pad-char-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>, <code>pad: Char</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Pads <code>s</code> on both sides with <code>pad</code> up to <code>width</code> bytes, distributing the padding so that the left side carries the extra character when the pad count is odd. Returns <code>s</code> unchanged when <code>s</code> is already at least <code>width</code> bytes long. Complexity: O(width - |s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt;= s.len() =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_centers-str-width-int-pad-char-str"><code>fn str_center(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_centers-str-width-int-pad-char-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>, <code>pad: Char</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Centers <code>s</code> in a field of <code>width</code> bytes using <code>pad</code>. Equivalent to <code>str_pad_both</code>. Returns <code>s</code> unchanged when <code>s</code> is already at least <code>width</code> bytes long. Complexity: O(width - |s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt;= s.len() =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_pad_starts-str-width-int-pad-char-str"><code>fn str_pad_start(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_starts-str-width-int-pad-char-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>, <code>pad: Char</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Alias of <code>str_pad_left</code>: pads <code>s</code> at the start with <code>pad</code> up to <code>width</code>. Complexity: O(width - |s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt;= s.len() =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_pad_ends-str-width-int-pad-char-str"><code>fn str_pad_end(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_ends-str-width-int-pad-char-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>, <code>pad: Char</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Alias of <code>str_pad_right</code>: pads <code>s</code> at the end with <code>pad</code> up to <code>width</code>. Complexity: O(width - |s|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt;= s.len() =&gt; result == s</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -14603,36 +14846,71 @@
 <hr />
 <h2 id="repeatxi"><code>repeat.xi</code><a class="headerlink" href="#repeatxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_repeats-str-n-int-str"><code>fn str_repeat(s: Str, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_repeats-str-n-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>n: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Repeats <code>s</code> <code>n</code> times. Returns the empty string when <code>n &lt;= 0</code>. Complexity: O(n * |s|).</p>
+</blockquote>
 <h4 id="fn-str_repeat_charc-char-n-int-str"><code>fn str_repeat_char(c: Char, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_repeat_charc-char-n-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>c: Char</code>, <code>n: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns a string consisting of <code>c</code> repeated <code>n</code> times. Returns the empty string when <code>n &lt;= 0</code>. Multi-byte characters are encoded correctly. Complexity: O(n).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="replacexi"><code>replace.xi</code><a class="headerlink" href="#replacexi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_replaces-str-from-str-to-str-str"><code>fn str_replace(s: Str, from: Str, to: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_replaces-str-from-str-to-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>from: Str</code>, <code>to: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Replaces all non-overlapping occurrences of <code>from</code> with <code>to</code> in <code>s</code>. Returns <code>s</code> unchanged when <code>from</code> is empty or does not occur. Complexity: O(|s| * |from|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>from.len() == 0 =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_replace_alls-str-from-str-to-str-str"><code>fn str_replace_all(s: Str, from: Str, to: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_replace_alls-str-from-str-to-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>from: Str</code>, <code>to: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Replaces all non-overlapping occurrences of <code>from</code> with <code>to</code> in <code>s</code>. Returns <code>s</code> unchanged when <code>from</code> is empty or does not occur. Complexity: O(|s| * |from|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>from.len() == 0 =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_replace_ns-str-from-str-to-str-n-int-str"><code>fn str_replace_n(s: Str, from: Str, to: Str, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_replace_ns-str-from-str-to-str-n-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>from: Str</code>, <code>to: Str</code>, <code>n: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Replaces at most <code>n</code> non-overlapping occurrences of <code>from</code> with <code>to</code> in <code>s</code>. When <code>n &lt;= 0</code>, returns <code>s</code> unchanged. Returns <code>s</code> unchanged when <code>from</code> is empty or does not occur. Complexity: O(|s| * |from|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_replace_firsts-str-from-str-to-str-str"><code>fn str_replace_first(s: Str, from: Str, to: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_replace_firsts-str-from-str-to-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>from: Str</code>, <code>to: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Replaces the first occurrence of <code>from</code> with <code>to</code> in <code>s</code>. Returns <code>s</code> unchanged when <code>from</code> is empty or does not occur. Complexity: O(|s| * |from|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>from.len() == 0 =&gt; result == s</code></li>
+</ul>
 <h4 id="fn-str_replace_lasts-str-from-str-to-str-str"><code>fn str_replace_last(s: Str, from: Str, to: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_replace_lasts-str-from-str-to-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>from: Str</code>, <code>to: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Replaces the last occurrence of <code>from</code> with <code>to</code> in <code>s</code>. Returns <code>s</code> unchanged when <code>from</code> is empty or does not occur. Complexity: O(|s| * |from|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>from.len() == 0 =&gt; result == s</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
 <h2 id="reversexi"><code>reverse.xi</code><a class="headerlink" href="#reversexi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_reverses-str-str"><code>fn str_reverse(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_reverses-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Reverses the characters of <code>s</code>, iterating over UTF-8 character boundaries so multi-byte characters are preserved. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_reverse_wordss-str-str_1"><code>fn str_reverse_words(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_reverse_wordss-str-str_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Reverses the order of the whitespace-separated words of <code>s</code>. The runs of whitespace between words are preserved as runs; only the token order is reversed. Returns <code>s</code> unchanged when <code>s</code> has no words. Complexity: O(|s|).</p>
+</blockquote>
 <h4 id="fn-str_reverse_charss-str-str"><code>fn str_reverse_chars(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_reverse_charss-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Alias of <code>str_reverse</code>: reverses the characters of <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
@@ -14659,7 +14937,7 @@
 <h4 id="type-floatscan"><code>type FloatScan</code><a class="headerlink" href="#type-floatscan" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Results of <code>str_scanf_floats</code>: the parsed Float64 values in v0..v7 (the first <code>count</code> slots are valid) and the unconsumed <code>remainder</code> of the input. On failure <code>is_ok</code> is false, <code>count</code> is 0, the value slots are 0.0 and <code>remainder</code> carries the error message.</p>
-<p>LAYOUT NOTE: this struct is deliberately index-compatible with <code>xiom.fmt.FloatScan</code> (Bool, Int, 8x Float64, Str) because the codegen layer deduplicates same-named struct types by name; the shared layout keeps all field accesses valid. The field occupying the shared Str slot is named <code>remainder</code> here (it doubles as the error message on failure).</p>
+<p>LAYOUT NOTE (R44, 2026-09-18): this struct was formerly unified with <code>xiom.fmt.FloatScan</code> by the codegen same-name dedup, which hid a type mismatch in <code>str_scanf_floats</code>. The fmt twin is now <code>FormatFloatScan</code> and this wrapper copies every field explicitly, so the two leaves are genuinely independent (same field order/types, different leaf + names).</p>
 </blockquote>
 <table>
 <thead>
@@ -14726,7 +15004,7 @@
 <h4 id="fn-str_scanf_floatss-str-spec-str-floatscan"><code>fn str_scanf_floats(s: Str, spec: Str) -&gt; FloatScan</code><a class="headerlink" href="#fn-str_scanf_floatss-str-spec-str-floatscan" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Scan <code>s</code> per <code>spec</code>, extracting Float64 values (%f/%e/%g tokens). Values land in v0..v7 in token order with <code>count</code> valid slots. Specs with more than eight float conversions, or with a non-float conversion, yield is_ok = false with <code>error</code> set.</p>
-<p>NOTE (compiler): the <code>remainder</code> slot aliases <code>xiom.fmt.FloatScan.error</code> (the structs are index-compatible and the codegen layer unifies same-named types), so on success <code>remainder</code> is the empty string and on failure it carries the error message. The unconsumed input tail is not populated; use <code>str_scanf</code> with a trailing capture to observe unconsumed input. Params: s the input string; spec the scanf-style format. Returns: a FloatScan struct. Error case: parse failure, too many float conversions, non-float conversion. Complexity: O(|s| + |spec|).</p>
+<p>NOTE (R44): <code>xiom.fmt.FloatScan</code> was renamed <code>FormatFloatScan</code>; this wrapper copies the fields explicitly, so <code>remainder</code> is the fmt <code>error</code> slot on failure and the empty string on success. The unconsumed input tail is not populated; use <code>str_scanf</code> with a trailing capture to observe unconsumed input. Params: s the input string; spec the scanf-style format. Returns: a FloatScan struct. Error case: parse failure, too many float conversions, non-float conversion. Complexity: O(|s| + |spec|).</p>
 </blockquote>
 <hr />
 <hr />
@@ -14748,18 +15026,30 @@
 <blockquote>
 <p>Returns the byte offset of the first occurrence of <code>needle</code> in <code>s</code>, or None when <code>needle</code> does not occur. An empty <code>needle</code> matches at offset 0. Params: s the haystack; needle the substring to find. Returns: Some(offset) on the first match, None when absent. Error case: none. Complexity: O(|s| * |needle|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>needle.len() == 0 =&gt; result.is_some</code></li>
+</ul>
 <h4 id="fn-str_last_index_ofs-str-needle-str-optionint"><code>fn str_last_index_of(s: Str, needle: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-str_last_index_ofs-str-needle-str-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the byte offset of the last occurrence of <code>needle</code> in <code>s</code>, or None when <code>needle</code> does not occur. An empty <code>needle</code> matches at the end of <code>s</code> (offset s.len()). Params: s the haystack; needle the substring to find. Returns: Some(offset) on the last match, None when absent. Error case: none. Complexity: O(|s| * |needle|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>needle.len() == 0 =&gt; result.is_some</code></li>
+</ul>
 <h4 id="fn-str_containss-str-needle-str-bool"><code>fn str_contains(s: Str, needle: Str) -&gt; Bool</code><a class="headerlink" href="#fn-str_containss-str-needle-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true when <code>s</code> contains <code>needle</code> at least once. Params: s the haystack; needle the substring to look for. Returns: true on a match, false otherwise (including an empty needle). Error case: none. Complexity: O(|s| * |needle|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>needle.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h4 id="fn-str_contains_anys-str-needles-vecstr-bool"><code>fn str_contains_any(s: Str, needles: &amp;Vec[Str]) -&gt; Bool</code><a class="headerlink" href="#fn-str_contains_anys-str-needles-vecstr-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true when <code>s</code> contains at least one of the needles. Params: s the haystack; needles the list of substrings to look for. Returns: true on the first needle found, false when none match. Error case: none. Complexity: O(k * |s| * max |needle|) where k = needles.len().</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>needles.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h4 id="fn-str_count_occurrencess-str-needle-str-int"><code>fn str_count_occurrences(s: Str, needle: Str) -&gt; Int</code><a class="headerlink" href="#fn-str_count_occurrencess-str-needle-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the number of non-overlapping occurrences of <code>needle</code> in <code>s</code>. An empty <code>needle</code> yields 0 (an occurrence requires at least one byte). Params: s the haystack; needle the substring to count. Returns: the occurrence count (&gt;= 0). Error case: none. Complexity: O(|s| * |needle|).</p>
@@ -14771,6 +15061,9 @@
 <blockquote>
 <p>Returns the byte offset of the earliest occurrence of any needle in <code>s</code>, or None when none of the needles occur. When several needles match at the same offset the first needle in <code>needles</code> wins. Empty needles match at offset 0. Params: s the haystack; needles the list of substrings to look for. Returns: Some(offset) of the earliest match, None when none match. Error case: none. Complexity: O(k * |s| * max |needle|) where k = needles.len().</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>needles.len() == 0 =&gt; result.is_some == false</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -14867,32 +15160,46 @@
 <hr />
 <h2 id="splitxi"><code>split.xi</code><a class="headerlink" href="#splitxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_splits-str-delim-str-vecstr"><code>fn str_split(s: Str, delim: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_splits-str-delim-str-vecstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>delim: Str</code>; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Splits <code>s</code> on every occurrence of <code>delim</code>. Always returns at least one part. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>delim.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
 </ul>
 <h4 id="fn-str_split_ns-str-delim-str-n-int-vecstr"><code>fn str_split_n(s: Str, delim: Str, n: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_split_ns-str-delim-str-n-int-vecstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>delim: Str</code>, <code>n: Int</code>; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Splits <code>s</code> on <code>delim</code> into at most <code>n</code> parts. When <code>n &lt;= 1</code>, returns a single part holding all of <code>s</code>. Always returns at least one part. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
 </ul>
 <h4 id="fn-str_split_anys-str-delims-vecstr-vecstr"><code>fn str_split_any(s: Str, delims: &amp;Vec[Str]) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_split_anys-str-delims-vecstr-vecstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>delims: &amp;Vec[Str]</code>; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Splits <code>s</code> on any of the delimiters in <code>delims</code>. The longest delimiter match at each position wins; when <code>delims</code> is empty, returns a single part holding all of <code>s</code>. Always returns at least one part. Complexity: O(|s| * |delims|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
 </ul>
 <h4 id="fn-str_split_onces-str-delim-str-str-str"><code>fn str_split_once(s: Str, delim: Str) -&gt; (Str, Str)</code><a class="headerlink" href="#fn-str_split_onces-str-delim-str-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>delim: Str) -&gt; (Str, Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Splits <code>s</code> at the first occurrence of <code>delim</code> into a pair holding the part before <code>delim</code> and the part after it. When <code>delim</code> does not occur in <code>s</code>, returns <code>(s, "")</code>. Complexity: O(|s|).</p>
+</blockquote>
 <h4 id="fn-str_liness-str-vecstr"><code>fn str_lines(s: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_liness-str-vecstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Splits <code>s</code> on newline boundaries; the lines exclude the trailing newline. Always returns at least one part. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
 </ul>
 <h4 id="fn-str_wordss-str-vecstr"><code>fn str_words(s: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_wordss-str-vecstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Splits <code>s</code> on whitespace boundaries into words. Returns an empty vector when <code>s</code> contains no words. Complexity: O(|s|).</p>
+</blockquote>
 <h4 id="fn-str_rsplits-str-delim-str-vecstr"><code>fn str_rsplit(s: Str, delim: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_rsplits-str-delim-str-vecstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>delim: Str</code>; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Splits <code>s</code> on <code>delim</code> scanning from the end of <code>s</code>; the parts are returned in source order. When <code>delim</code> is empty or does not occur, returns a single part holding all of <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
 </ul>
@@ -14999,7 +15306,9 @@
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-is_emptys-str-bool"><code>fn is_empty(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_emptys-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Method form: <code>x.is_empty()</code>. The plain fn above is NOT a method -- the compiler's receiver-typed method lookup needs the Str receiver decl (method-form <code>x.is_empty()</code> otherwise falls through to a Vec/array is_empty leaf or a stub and always returns false).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (s.len() == 0)</code></li>
 </ul>
@@ -15019,96 +15328,136 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h3 id="fn-str_index_ofhaystack-str-needle-str-optionint"><code>fn str_index_of(haystack: Str, needle: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-str_index_ofhaystack-str-needle-str-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>haystack: Str</code>, <code>needle: Str</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the first byte index of needle in haystack, or None if not found. O(n*m) naive search. For an empty needle, returns Some(0).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>needle.len() &gt; 0</code></li>
 </ul>
 <h3 id="fn-str_rindex_ofhaystack-str-needle-str-optionint"><code>fn str_rindex_of(haystack: Str, needle: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-str_rindex_ofhaystack-str-needle-str-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>haystack: Str</code>, <code>needle: Str</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the last byte index of needle in haystack, or None if not found. O(n*m) reverse naive search. For an empty needle, returns Some(haystack.len()).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result &gt;= 0 &amp;&amp; result &lt;= haystack.len()</code></li>
 </ul>
 <h3 id="fn-str_replace_alls-str-from_needle-str-to_replacement-str-str"><code>fn str_replace_all(s: Str, from_needle: Str, to_replacement: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_replace_alls-str-from_needle-str-to_replacement-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>from_needle: Str</code>, <code>to_replacement: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Replaces every occurrence of <code>from</code> with <code>to</code> in <code>s</code>. O(n*m) where n = |s|, m = |from|. If <code>from</code> is empty, returns <code>s</code> unchanged.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>from_needle.len() &gt; 0</code></li>
 </ul>
 <h3 id="fn-str_repeats-str-n-int-str_1"><code>fn str_repeat(s: Str, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_repeats-str-n-int-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>n: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Repeats <code>s</code> <code>n</code> times. Returns empty string if n &lt;= 0. O(n * |s|) using repeated concatenation.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>n &lt;= 0 =&gt; result.len() == 0</code></li>
 </ul>
 <h3 id="fn-str_pad_lefts-str-width-int-pad-char-str_1"><code>fn str_pad_left(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_lefts-str-width-int-pad-char-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>, <code>pad: Char</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Left-pads <code>s</code> with <code>pad</code> until the string reaches <code>width</code> bytes. If <code>s</code> is already &gt;= <code>width</code> in bytes, returns <code>s</code> unchanged. O(width - |s|). Only handles single-byte pad characters correctly.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
 </ul>
 <h3 id="fn-str_pad_rights-str-width-int-pad-char-str_1"><code>fn str_pad_right(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_rights-str-width-int-pad-char-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>, <code>pad: Char</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Right-pads <code>s</code> with <code>pad</code> until the string reaches <code>width</code> bytes. If <code>s</code> is already &gt;= <code>width</code> in bytes, returns <code>s</code> unchanged. O(width - |s|). Only handles single-byte pad characters correctly.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
 </ul>
 <h3 id="fn-str_strip_prefixs-str-prefix-str-optionstr"><code>fn str_strip_prefix(s: Str, prefix: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-str_strip_prefixs-str-prefix-str-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>prefix: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>If <code>s</code> starts with <code>prefix</code>, returns <code>Some(s without prefix)</code>. Otherwise returns <code>None</code>. O(|prefix|).</p>
+</blockquote>
 <h3 id="fn-str_strip_suffixs-str-suffix-str-optionstr"><code>fn str_strip_suffix(s: Str, suffix: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-str_strip_suffixs-str-suffix-str-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>suffix: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>If <code>s</code> ends with <code>suffix</code>, returns <code>Some(s without suffix)</code>. Otherwise returns <code>None</code>. O(|suffix|).</p>
+</blockquote>
 <h3 id="fn-str_escapes-str-str_1"><code>fn str_escape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_escapes-str-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Escapes special characters (\n, \t, \", \, \r) in <code>s</code>. Returns a new string with escape sequences replaced by their literal representations. O(|s|). For multi-byte UTF-8 chars, only \n \t \" \ \r are escaped.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-str_unescapes-str-str_1"><code>fn str_unescape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_unescapes-str-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Un-escapes a string that contains escape sequences like \n \t \" \ \r. Returns the string with literal escape sequences replaced by the actual characters. O(|s|). Unrecognised escape sequences are left unchanged.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-str_title_cases-str-str"><code>fn str_title_case(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_title_cases-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts <code>s</code> to Title Case: first character of each space-separated word is uppercased, remaining characters are lowercased. O(|s|) byte-by-byte. Only handles ASCII letter case correctly.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h3 id="fn-str_swap_cases-str-str_1"><code>fn str_swap_case(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_swap_cases-str-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Swaps the case of every character in <code>s</code>: uppercase becomes lowercase and vice versa. Characters that are neither are left unchanged. O(|s|) byte-by-byte. Only handles ASCII letter case correctly.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h3 id="fn-str_is_emptys-str-bool"><code>fn str_is_empty(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-str_is_emptys-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>s</code> has zero length. O(1).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (s.len() == 0)</code></li>
 </ul>
 <h3 id="fn-str_reverses-str-str_1"><code>fn str_reverse(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_reverses-str-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Reverses the characters in <code>s</code>. Unicode-aware: iterates by proper UTF-8 character boundaries. O(|s|) -- two passes (collect + build).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h3 id="fn-str_count_charss-str-int"><code>fn str_count_chars(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-str_count_charss-str-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Counts the number of Unicode characters in <code>s</code> using xiom_char_at. Unicode-aware: advances by the byte length of each character. O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h3 id="fn-str_truncate_utf8s-str-max_bytes-int-str"><code>fn str_truncate_utf8(s: Str, max_bytes: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_truncate_utf8s-str-max_bytes-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>max_bytes: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Truncates <code>s</code> at the given byte position <code>max_bytes</code>, ensuring the result does not split a multi-byte UTF-8 character. If <code>max_bytes</code> lands in the middle of a multi-byte sequence, the result is truncated before that character begins. O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>max_bytes &gt;= 0 =&gt; result.len() &lt;= max_bytes</code></li>
 </ul>
 <h3 id="fn-str_centers-str-width-int-str"><code>fn str_center(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_centers-str-width-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Centers <code>s</code> within a field of <code>width</code> bytes by adding spaces on both sides. If an odd number of spaces are needed, the extra space goes on the right. Only handles single-byte pad characters correctly. O(width).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
 </ul>
 <h3 id="fn-str_starts_with_anys-str-prefixes-vecstr-bool"><code>fn str_starts_with_any(s: Str, prefixes: &amp;Vec[Str]) -&gt; Bool</code><a class="headerlink" href="#fn-str_starts_with_anys-str-prefixes-vecstr-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>prefixes: &amp;Vec[Str]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>s</code> starts with any of the given prefixes. O(n * k) where n = |s|, k = prefixes.len().</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>prefixes.len() == 0 =&gt; result == false</code></li>
 </ul>
 <h3 id="fn-str_ends_with_anys-str-suffixes-vecstr-bool"><code>fn str_ends_with_any(s: Str, suffixes: &amp;Vec[Str]) -&gt; Bool</code><a class="headerlink" href="#fn-str_ends_with_anys-str-suffixes-vecstr-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>suffixes: &amp;Vec[Str]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>s</code> ends with any of the given suffixes. O(n * k) where n = |s|, k = suffixes.len().</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>suffixes.len() == 0 =&gt; result == false</code></li>
 </ul>
 <h3 id="fn-str_contains_anys-str-needles-vecstr-bool_1"><code>fn str_contains_any(s: Str, needles: &amp;Vec[Str]) -&gt; Bool</code><a class="headerlink" href="#fn-str_contains_anys-str-needles-vecstr-bool_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>needles: &amp;Vec[Str]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns true if <code>s</code> contains any of the given substrings. O(n * m * k) where n = |s|, m = max substring length, k = needles.len().</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>needles.len() == 0 =&gt; result == false</code></li>
 </ul>
@@ -15165,16 +15514,24 @@
 <hr />
 <h2 id="stripxi"><code>strip.xi</code><a class="headerlink" href="#stripxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_strip_prefixs-str-prefix-str-optionstr_1"><code>fn str_strip_prefix(s: Str, prefix: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-str_strip_prefixs-str-prefix-str-optionstr_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>prefix: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>If <code>s</code> starts with <code>prefix</code>, returns <code>Some(s without the prefix)</code>. Returns <code>None</code> when <code>s</code> does not start with <code>prefix</code>. Complexity: O(|prefix|).</p>
+</blockquote>
 <h4 id="fn-str_strip_suffixs-str-suffix-str-optionstr_1"><code>fn str_strip_suffix(s: Str, suffix: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-str_strip_suffixs-str-suffix-str-optionstr_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>suffix: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>If <code>s</code> ends with <code>suffix</code>, returns <code>Some(s without the suffix)</code>. Returns <code>None</code> when <code>s</code> does not end with <code>suffix</code>. Complexity: O(|suffix|).</p>
+</blockquote>
 <h4 id="fn-str_strip_whitespaces-str-str"><code>fn str_strip_whitespace(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_strip_whitespaces-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Removes all whitespace characters from <code>s</code>. Returns a new string no longer than <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
 </ul>
 <h4 id="fn-str_strip_controls-str-str"><code>fn str_strip_control(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_strip_controls-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Removes all control characters from <code>s</code>. Returns a new string no longer than <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
 </ul>
@@ -15290,12 +15647,16 @@
 <hr />
 <h2 id="titlecasexi"><code>titlecase.xi</code><a class="headerlink" href="#titlecasexi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_titlecases-str-str"><code>fn str_titlecase(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_titlecases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts <code>s</code> to title case: the first character of each whitespace-separated word is uppercased and the remaining characters are lowercased. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_titlecase_wordss-str-str"><code>fn str_titlecase_words(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_titlecase_wordss-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts each word of <code>s</code> to title case, exactly like <code>str_titlecase</code>. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
@@ -15304,32 +15665,44 @@
 <hr />
 <h2 id="trimxi"><code>trim.xi</code><a class="headerlink" href="#trimxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_trims-str-str_1"><code>fn str_trim(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_trims-str-str_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Removes leading and trailing whitespace from <code>s</code>. Returns a new string no longer than <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
 </ul>
 <h4 id="fn-str_trim_starts-str-str"><code>fn str_trim_start(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_trim_starts-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Removes leading whitespace from <code>s</code>. Returns a new string no longer than <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
 </ul>
 <h4 id="fn-str_trim_ends-str-str"><code>fn str_trim_end(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_trim_ends-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Removes trailing whitespace from <code>s</code>. Returns a new string no longer than <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
 </ul>
 <h4 id="fn-str_trim_matchess-str-chars-str-str"><code>fn str_trim_matches(s: Str, chars: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_trim_matchess-str-chars-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>chars: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Removes leading and trailing characters listed in <code>chars</code> from <code>s</code>. When <code>chars</code> is empty, <code>s</code> is returned unchanged. Returns a new string no longer than <code>s</code>. Complexity: O(|s| * |chars|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
 </ul>
 <h4 id="fn-str_trim_start_matchess-str-chars-str-str"><code>fn str_trim_start_matches(s: Str, chars: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_trim_start_matchess-str-chars-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>chars: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Removes leading characters listed in <code>chars</code> from <code>s</code>. When <code>chars</code> is empty, <code>s</code> is returned unchanged. Returns a new string no longer than <code>s</code>. Complexity: O(|s| * |chars|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
 </ul>
 <h4 id="fn-str_trim_end_matchess-str-chars-str-str"><code>fn str_trim_end_matches(s: Str, chars: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_trim_end_matchess-str-chars-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>chars: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Removes trailing characters listed in <code>chars</code> from <code>s</code>. When <code>chars</code> is empty, <code>s</code> is returned unchanged. Returns a new string no longer than <code>s</code>. Complexity: O(|s| * |chars|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
 </ul>
@@ -15487,6 +15860,9 @@
 <blockquote>
 <p>Split <code>s</code> into extended grapheme clusters (simplified: base + combining marks + ZWJ sequences + emoji modifiers).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-unicode_grapheme_counts-str-int"><code>fn unicode_grapheme_count(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-unicode_grapheme_counts-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of extended grapheme clusters in <code>s</code>.</p>
@@ -15498,6 +15874,9 @@
 <blockquote>
 <p>Byte offsets of word boundaries in <code>s</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-unicode_word_counts-str-int"><code>fn unicode_word_count(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-unicode_word_counts-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of words in <code>s</code>.</p>
@@ -15509,6 +15888,9 @@
 <blockquote>
 <p>Byte offsets of sentence boundaries in <code>s</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-unicode_sentence_counts-str-int"><code>fn unicode_sentence_count(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-unicode_sentence_counts-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of sentences in <code>s</code>.</p>
@@ -15520,10 +15902,16 @@
 <blockquote>
 <p>Byte offsets of allowed line break points in <code>s</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-unicode_line_breakss-str-vecstr"><code>fn unicode_line_breaks(s: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-unicode_line_breakss-str-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Split <code>s</code> into lines at the allowed break points.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-unicode_next_graphemes-str-offset-int-int"><code>fn unicode_next_grapheme(s: Str, offset: Int) -&gt; Int</code><a class="headerlink" href="#fn-unicode_next_graphemes-str-offset-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Byte offset just past the grapheme starting at <code>offset</code>.</p>
@@ -15556,14 +15944,23 @@
 <blockquote>
 <p>Truncate <code>s</code> to fit <code>max_width</code> display cells (grapheme-safe).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-unicode_pad_displays-str-width-int-side-str-str"><code>fn unicode_pad_display(s: Str, width: Int, side: Str) -&gt; Str</code><a class="headerlink" href="#fn-unicode_pad_displays-str-width-int-side-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pad <code>s</code> to a display width; side "left", "right" or "center".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h4 id="fn-unicode_display_slices-str-start-int-end-int-str"><code>fn unicode_display_slice(s: Str, start: Int, end: Int) -&gt; Str</code><a class="headerlink" href="#fn-unicode_display_slices-str-start-int-end-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Substring of <code>s</code> bounded by display-cell offsets <code>start</code> and <code>end</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-unicode_is_widec-char-bool"><code>fn unicode_is_wide(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-unicode_is_widec-char-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>c</code> has East Asian Width W or F.</p>
@@ -15597,6 +15994,9 @@
 <blockquote>
 <p>Extract full emoji sequences (ZWJ joins, skin-tone modifiers, keycaps, regional-indicator flag pairs) from <code>s</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h4 id="fn-unicode_emoji_modifierc-char-bool"><code>fn unicode_emoji_modifier(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-unicode_emoji_modifierc-char-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>c</code> is an emoji modifier (skin tone).</p>
@@ -15613,6 +16013,9 @@
 <blockquote>
 <p>ISO 15924 script code of <code>c</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 4</code></li>
+</ul>
 <h4 id="fn-unicode_script_namecode-str-str_1"><code>fn unicode_script_name(code: Str) -&gt; Str</code><a class="headerlink" href="#fn-unicode_script_namecode-str-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Long English script name for an ISO 15924 code.</p>
@@ -15625,6 +16028,9 @@
 <blockquote>
 <p>Short general category of <code>c</code>, e.g. "Lu", "Nd", "Zs".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 2</code></li>
+</ul>
 <h4 id="fn-unicode_general_category_namec-char-str"><code>fn unicode_general_category_name(c: Char) -&gt; Str</code><a class="headerlink" href="#fn-unicode_general_category_namec-char-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Long general category name of <code>c</code>, e.g. "Uppercase_Letter".</p>
@@ -15672,10 +16078,17 @@
 <blockquote>
 <p>Dominant script of <code>s</code> by character count; "Zzzz" for empty input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 4</code></li>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result == "Zzzz"</code></li>
+</ul>
 <h4 id="fn-unicode_scriptss-str-vecstr"><code>fn unicode_scripts(s: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-unicode_scriptss-str-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Distinct scripts present in <code>s</code>, in first-seen order.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-unicode_is_ideographicc-char-bool"><code>fn unicode_is_ideographic(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-unicode_is_ideographicc-char-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>c</code> is in an ideographic range (Han, Hiragana, Katakana, Hangul).</p>
@@ -15707,6 +16120,9 @@
 <blockquote>
 <p>Resolved bidi levels of each char of <code>s</code> (simplified UBA: base level from the first strong character, strong/weak resolved per the bidi class).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h4 id="fn-unicode_is_whitespacec-char-bool"><code>fn unicode_is_whitespace(c: Char) -&gt; Bool</code><a class="headerlink" href="#fn-unicode_is_whitespacec-char-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>c</code> matches the White_Space property.</p>
@@ -15727,25 +16143,38 @@
 <blockquote>
 <p>Decimal numeric value of <code>c</code> (Nd), None when not a decimal digit.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
 <h4 id="fn-unicode_digit_valuec-char-optionint"><code>fn unicode_digit_value(c: Char) -&gt; Option[Int]</code><a class="headerlink" href="#fn-unicode_digit_valuec-char-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Digit numeric value of <code>c</code> (Nd and Nl/No digit forms), None otherwise.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
 <h4 id="fn-unicode_numeric_valuec-char-optionfloat64"><code>fn unicode_numeric_value(c: Char) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-unicode_numeric_valuec-char-optionfloat64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Full numeric value of <code>c</code> including fractions, None when none.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
 <h2 id="uppercasexi"><code>uppercase.xi</code><a class="headerlink" href="#uppercasexi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-str_uppercases-str-str"><code>fn str_uppercase(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_uppercases-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts all characters of <code>s</code> to uppercase. Returns a new string with the same byte length as <code>s</code>. Complexity: O(|s|).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-char_uppercasec-char-char"><code>fn char_uppercase(c: Char) -&gt; Char</code><a class="headerlink" href="#fn-char_uppercasec-char-char" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Char</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the uppercase variant of <code>c</code>, or <code>c</code> unchanged when <code>c</code> has no uppercase mapping. Complexity: O(1).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
@@ -15821,18 +16250,30 @@
 <blockquote>
 <p>Wraps <code>s</code> into lines no longer than <code>width</code> bytes (soft wrapping): words are kept whole and the width is measured in bytes; a single word longer than the width is hard-split to honour the limit. A width below 1 or an empty input yields an empty vector. Params: s the source string; width the maximum line width in bytes. Returns: a Vec[Str] of wrapped lines. Error case: width &lt; 1 =&gt; empty vector. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt; 1 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_wrap_hards-str-width-int-vecstr"><code>fn str_wrap_hard(s: Str, width: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_wrap_hards-str-width-int-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Wraps <code>s</code> by breaking at exactly <code>width</code> bytes regardless of word boundaries. A width below 1 or an empty input yields an empty vector. Params: s the source string; width the chunk size in bytes. Returns: a Vec[Str] of fixed-width lines (the last may be shorter). Error case: width &lt; 1 =&gt; empty vector. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt; 1 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_wrap_softs-str-width-int-vecstr"><code>fn str_wrap_soft(s: Str, width: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_wrap_softs-str-width-int-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Wraps <code>s</code> at word boundaries without ever splitting a word: words are packed greedily and a word longer than <code>width</code> becomes its own line. A width below 1 or an empty input yields an empty vector. Params: s the source string; width the maximum line width in bytes. Returns: a Vec[Str] of wrapped lines. Error case: width &lt; 1 =&gt; empty vector. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt; 1 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="fn-str_wrap_joins-str-width-int-sep-str-str"><code>fn str_wrap_join(s: Str, width: Int, sep: Str) -&gt; Str</code><a class="headerlink" href="#fn-str_wrap_joins-str-width-int-sep-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Wraps <code>s</code> with str_wrap and joins the resulting lines with <code>sep</code>. A width below 1 yields the empty string. Params: s the source string; width the maximum line width in bytes; sep the line separator. Returns: the wrapped lines joined by <code>sep</code>. Error case: width &lt; 1 =&gt; "". Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &lt; 1 =&gt; result.len() == 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

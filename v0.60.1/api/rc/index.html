@@ -2595,6 +2595,9 @@
 </blockquote>
 <h2 id="rcxi"><code>rc.xi</code><a class="headerlink" href="#rcxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-rcinner"><code>type RcInner</code><a class="headerlink" href="#type-rcinner" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Control block behind <code>Rc</code>/<code>Weak</code>: strong and weak counts plus the value.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2622,6 +2625,9 @@
 - <code>weak &gt;= 0</code>
 - <code>strong + weak &gt; 0</code></p>
 <h3 id="type-rc"><code>type Rc</code><a class="headerlink" href="#type-rc" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Shared-ownership smart pointer; cloning a handle bumps the strong count.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2637,48 +2643,66 @@
 </tbody>
 </table>
 <h3 id="fn-newtvalue-t-rct"><code>fn new[T](value: T) -&gt; Rc[T]</code><a class="headerlink" href="#fn-newtvalue-t-rct" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: T</code>; returns <code>Rc[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Allocate a fresh control block with strong count 1 and no weak handles.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>strong_count == 1</code></li>
 <li><strong>Postcondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-clonetself-self-rct"><code>fn clone[T](self: Self) -&gt; Rc[T]</code><a class="headerlink" href="#fn-clonetself-self-rct" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Rc[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Increment the strong count; the returned handle aliases the same value.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
-<li><strong>Postcondition:</strong> <code>strong_count() == strong_count()@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>strong_count() &gt;= 1</code></li>
 </ul>
 <h3 id="fn-strong_counttself-self-int"><code>fn strong_count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-strong_counttself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Number of strong handles; at least 1 while any <code>Rc</code> is live.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 <li><strong>Postcondition:</strong> <code>result &gt;= 1</code></li>
 </ul>
 <h3 id="fn-weak_counttself-self-int"><code>fn weak_count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-weak_counttself-self-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Number of weak handles (they do not keep the value alive).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-gettself-self-t"><code>fn get[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-gettself-self-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Read the value by value (moves/copies it out of the control block).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-ptr_eqt-uself-self-other-rcu-bool"><code>fn ptr_eq[T, U](self: Self, other: &amp;Rc[U]) -&gt; Bool</code><a class="headerlink" href="#fn-ptr_eqt-uself-self-other-rcu-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>other: &amp;Rc[U]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>True when both handles reference the same control block (T and U may differ).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-downgradetself-self-weakt"><code>fn downgrade[T](self: Self) -&gt; Weak[T]</code><a class="headerlink" href="#fn-downgradetself-self-weakt" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Weak[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Create a <code>Weak</code> handle; it does not keep the value alive.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 <li><strong>Postcondition:</strong> <code>result.weak_count() &gt; 0</code></li>
 </ul>
 <h3 id="fn-unwrap_or_clonetself-self-t"><code>fn unwrap_or_clone[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-unwrap_or_clonetself-self-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Return the value without cloning when this is the last strong handle; otherwise return a clone.</p>
+</blockquote>
 <h3 id="fn-droptself-self"><code>fn drop[T](self: Self)</code><a class="headerlink" href="#fn-droptself-self" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Decrement the strong count; free the control block when the last strong and weak handles are gone.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
@@ -2694,6 +2718,9 @@
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="type-weak"><code>type Weak</code><a class="headerlink" href="#type-weak" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Non-owning handle; <code>upgrade</code> re-acquires a strong <code>Rc</code> while the value is alive.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2709,24 +2736,32 @@
 </tbody>
 </table>
 <h3 id="fn-upgradetself-self-optionrct"><code>fn upgrade[T](self: Self) -&gt; Option[Rc[T]]</code><a class="headerlink" href="#fn-upgradetself-self-optionrct" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Rc[T]]</code>. No source comment yet.</p>
+<blockquote>
+<p>Some(new strong handle) while the value is alive, None after the last strong handle dropped.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
-<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; strong_count() == strong_count()@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; strong_count() &gt;= 1</code></li>
 <li><strong>Postcondition:</strong> <code>result is None =&gt; strong_count() == 0</code></li>
 </ul>
 <h3 id="fn-strong_counttself-self-int_1"><code>fn strong_count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-strong_counttself-self-int_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Strong count observed through the weak handle (0 after the value dies).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-weak_counttself-self-int_1"><code>fn weak_count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-weak_counttself-self-int_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Weak count observed through the weak handle.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-droptself-self_1"><code>fn drop[T](self: Self)</code><a class="headerlink" href="#fn-droptself-self_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Decrement the weak count; free the control block when no strong or weak handles remain.</p>
+</blockquote>
 <hr />
 <hr />
 

@@ -4868,22 +4868,37 @@
 <blockquote>
 <p>Wrap an fd; BufReader holds the fd and an internal buffer. Params: fd - the file descriptor (FILE* as Int). Returns: a buffered reader over <code>fd</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == fd</code></li>
+</ul>
 <h4 id="fn-br_read_liner-mut-bufreader-resultstr-str"><code>fn br_read_line(r: &amp;mut BufReader) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-br_read_liner-mut-bufreader-resultstr-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Read one line through the buffer. Params: r - the reader. Returns: Ok(line without the trailing newline), Err on read failure. Complexity: O(n) where n is the line length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-br_read_bytesr-mut-bufreader-n-int-resultvecuint8-str"><code>fn br_read_bytes(r: &amp;mut BufReader, n: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-br_read_bytesr-mut-bufreader-n-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Read exactly <code>n</code> bytes. Params: r - the reader; n - the byte count (clamped to &gt;= 0). Returns: Ok(bytes read; fewer than n only at EOF), Err on read failure. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-br_read_untilr-mut-bufreader-delim-uint8-resultvecuint8-str"><code>fn br_read_until(r: &amp;mut BufReader, delim: UInt8) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-br_read_untilr-mut-bufreader-delim-uint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Read bytes up to a delimiter (inclusive). Params: r - the reader; delim - the delimiter byte. Returns: Ok(bytes including the delimiter), Err on read failure. Complexity: O(n) where n is the number of bytes read.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-br_peekr-mut-bufreader-n-int-resultvecuint8-str"><code>fn br_peek(r: &amp;mut BufReader, n: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-br_peekr-mut-bufreader-n-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Look ahead <code>n</code> bytes without consuming. Params: r - the reader; n - the byte count (clamped to &gt;= 0). Returns: Ok(bytes staged in the internal buffer), Err on read failure. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-br_seekr-mut-bufreader-pos-int"><code>fn br_seek(r: &amp;mut BufReader, pos: Int)</code><a class="headerlink" href="#fn-br_seekr-mut-bufreader-pos-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Move the underlying read position. Params: r - the reader; pos - the byte offset from the start. Complexity: O(1) syscall.</p>
@@ -4903,22 +4918,37 @@
 <blockquote>
 <p>Wrap an fd; BufWriter holds the fd and an internal buffer. Params: fd - the file descriptor (FILE* as Int). Returns: a buffered writer over <code>fd</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == fd</code></li>
+</ul>
 <h4 id="fn-bw_writew-mut-bufwriter-data-vecuint8-resultunit-str"><code>fn bw_write(w: &amp;mut BufWriter, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-bw_writew-mut-bufwriter-data-vecuint8-resultunit-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Buffer bytes for writing. Params: w - the writer; data - the bytes to buffer. Returns: Ok(()) on success. Complexity: O(n) where n is the data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-bw_write_strw-mut-bufwriter-s-str-resultunit-str"><code>fn bw_write_str(w: &amp;mut BufWriter, s: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-bw_write_strw-mut-bufwriter-s-str-resultunit-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Buffer a string for writing. Params: w - the writer; s - the string. Returns: Ok(()) on success. Complexity: O(n) where n is the string length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-bw_flushw-mut-bufwriter-resultunit-str"><code>fn bw_flush(w: &amp;mut BufWriter) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-bw_flushw-mut-bufwriter-resultunit-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Flush buffered bytes to the fd. Params: w - the writer. Returns: Ok(()) on success, Err if fewer bytes than buffered were written. Complexity: O(n) where n is the buffer length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; w.buf.len() == 0</code></li>
+</ul>
 <h4 id="fn-bw_into_innerw-mut-bufwriter-int"><code>fn bw_into_inner(w: &amp;mut BufWriter) -&gt; Int</code><a class="headerlink" href="#fn-bw_into_innerw-mut-bufwriter-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Flush and return the underlying fd. Params: w - the writer (consumed). Returns: the file descriptor. Complexity: O(n) where n is the buffer length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == w.inner</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5027,10 +5057,16 @@
 <blockquote>
 <p>Whether the path is a regular file. Params: path - the path. Returns: true if the path is a regular file. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; fs_exists(path)</code></li>
+</ul>
 <h4 id="fn-fs_is_dirpath-str-bool"><code>fn fs_is_dir(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_is_dirpath-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Whether the path is a directory. Params: path - the path. Returns: true if the path is a directory. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; fs_exists(path)</code></li>
+</ul>
 <h4 id="fn-fs_sizepath-str-resultint-str"><code>fn fs_size(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-fs_sizepath-str-resultint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>File size in bytes. Params: path - the file path. Returns: Ok(size in bytes), Err on failure. Complexity: O(1).</p>
@@ -5069,6 +5105,9 @@
 <hr />
 <h2 id="ioxi"><code>io.xi</code><a class="headerlink" href="#ioxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-ioerror"><code>type IOError</code><a class="headerlink" href="#type-ioerror" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== Error type ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5088,13 +5127,18 @@
 </tbody>
 </table>
 <h3 id="enum-seekfrom"><code>enum SeekFrom</code><a class="headerlink" href="#enum-seekfrom" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== SeekFrom ===</p>
+</blockquote>
 <ul>
 <li><code>Start(_0: Int)</code></li>
 <li><code>End(_0: Int)</code></li>
 <li><code>Current(_0: Int)</code></li>
 </ul>
 <h3 id="fn-printmsg-str"><code>fn print(msg: Str)</code><a class="headerlink" href="#fn-printmsg-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>msg: Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>=== Console ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
@@ -5121,7 +5165,9 @@
 <p>Parse a decimal float (optional sign, one optional '.', ASCII digits; no exponent support). Deterministic core of read_float.</p>
 </blockquote>
 <h3 id="fn-read_filepath-str-resultstr-ioerror"><code>fn read_file(path: Str) -&gt; Result[Str, IOError]</code><a class="headerlink" href="#fn-read_filepath-str-resultstr-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Str, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== File system ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
@@ -5179,7 +5225,9 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; !file_exists(src) &amp;&amp; file_exists(dst)</code></li>
 </ul>
 <h3 id="fn-exitcode-int"><code>fn exit(code: Int)</code><a class="headerlink" href="#fn-exitcode-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>=== Process ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>code &gt;= 0</code></li>
 </ul>
@@ -5194,7 +5242,9 @@
 <li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
 </ul>
 <h3 id="fn-time_now-int"><code>fn time_now() -&gt; Int</code><a class="headerlink" href="#fn-time_now-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Time ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
@@ -5219,6 +5269,9 @@
 <li><strong>Precondition:</strong> <code>handle != 0</code></li>
 </ul>
 <h3 id="type-bufreader"><code>type BufReader</code><a class="headerlink" href="#type-bufreader" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== Buffered I/O ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5241,6 +5294,9 @@
 - <code>inner &gt;= 0</code></p>
 <h3 id="fn-newreader-int-bufreader"><code>fn new(reader: Int) -&gt; BufReader</code><a class="headerlink" href="#fn-newreader-int-bufreader" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>reader: Int</code>; returns <code>BufReader</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == reader</code></li>
+</ul>
 <h3 id="fn-read_lineself-self-buf-mut-str-resultint-ioerror"><code>fn read_line(self: Self, buf: &amp;mut Str) -&gt; Result[Int, IOError]</code><a class="headerlink" href="#fn-read_lineself-self-buf-mut-str-resultint-ioerror" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; takes <code>buf: &amp;mut Str</code>; returns <code>Result[Int, IOError]</code>. No source comment yet.</p>
 <ul>
@@ -5273,7 +5329,13 @@
 </table>
 <h3 id="fn-newwriter-int-bufwriter"><code>fn new(writer: Int) -&gt; BufWriter</code><a class="headerlink" href="#fn-newwriter-int-bufwriter" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>writer: Int</code>; returns <code>BufWriter</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == writer</code></li>
+</ul>
 <h3 id="type-metadata"><code>type Metadata</code><a class="headerlink" href="#type-metadata" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== File metadata ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5321,7 +5383,9 @@
 <li><strong>Precondition:</strong> <code>perm &gt;= 0</code></li>
 </ul>
 <h3 id="fn-stdin-int"><code>fn stdin() -&gt; Int</code><a class="headerlink" href="#fn-stdin-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Standard streams === Numeric file descriptors (for fd-based APIs: pipe/dup/close).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
@@ -5360,6 +5424,9 @@
 <li><strong>Postcondition:</strong> <code>result != 0</code></li>
 </ul>
 <h3 id="type-cursor"><code>type Cursor</code><a class="headerlink" href="#type-cursor" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== Memory I/O ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5392,12 +5459,17 @@
 <li><strong>Postcondition:</strong> <code>result.len() == self.data.len()</code></li>
 </ul>
 <h3 id="fn-join_pathsbase-str-child-str-str"><code>fn join_paths(base: Str, child: Str) -&gt; Str</code><a class="headerlink" href="#fn-join_pathsbase-str-child-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>base: Str</code>, <code>child: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Path operations ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= base.len()</code></li>
 </ul>
 <h3 id="fn-parent_pathpath-str-optionstr"><code>fn parent_path(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-parent_pathpath-str-optionstr" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h3 id="fn-file_namepath-str-optionstr"><code>fn file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_namepath-str-optionstr" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
 <ul>
@@ -5411,47 +5483,86 @@
 <h3 id="fn-is_absolutepath-str-bool"><code>fn is_absolute(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_absolutepath-str-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-read_line_trim-str"><code>fn read_line_trim() -&gt; Str</code><a class="headerlink" href="#fn-read_line_trim-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>read_line_trim reads a line from stdin and trims trailing whitespace (including \r, \n).  Delegates to read_line + trim. Complexity: O(n) where n is line length.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-read_all_stdin-str"><code>fn read_all_stdin() -&gt; Str</code><a class="headerlink" href="#fn-read_all_stdin-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>read_all_stdin reads the entire standard input stream until EOF and returns the concatenated content.  Returns "" if stdin is empty. Complexity: O(N) where N is total bytes read.  Each call to read_line allocates up to 4096 bytes; memory usage peaks at ~2x input size.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-stdin_read_line-str"><code>fn stdin_read_line() -&gt; Str</code><a class="headerlink" href="#fn-stdin_read_line-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>stdin_read_line is an alias for read_line.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-flush_stdout"><code>fn flush_stdout()</code><a class="headerlink" href="#fn-flush_stdout" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>flush_stdout is a no-op: the Xiom runtime does not expose fflush via externs, but stdio is line-buffered by default so explicit flushing is rarely required.</p>
+</blockquote>
 <h3 id="fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror"><code>fn write_file_bytes(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>write_file_bytes writes raw bytes to a file, truncating if it exists. Complexity: O(n) where n = data.len().</p>
+</blockquote>
 <h3 id="fn-read_file_bytespath-str-resultvecuint8-ioerror"><code>fn read_file_bytes(path: Str) -&gt; Result[Vec[UInt8], IOError]</code><a class="headerlink" href="#fn-read_file_bytespath-str-resultvecuint8-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Vec[UInt8], IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>read_file_bytes reads a file and returns its raw bytes. Complexity: O(n) where n = file size.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
 <h3 id="fn-file_sizepath-str-optionint"><code>fn file_size(path: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-file_sizepath-str-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_size returns the size of a file in bytes, or None if the path cannot be stated.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0</code></li>
 </ul>
 <h3 id="fn-file_modified_timepath-str-optionint"><code>fn file_modified_time(path: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-file_modified_timepath-str-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_modified_time returns the last modification time of a file as a Unix timestamp, or None if the path cannot be stated.</p>
+</blockquote>
 <h3 id="fn-move_filesrc-str-dst-str-resultunit-ioerror"><code>fn move_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-move_filesrc-str-dst-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>src: Str</code>, <code>dst: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>move_file renames (moves) a file or directory from src to dst. Alias for rename.  Complexity: O(1) OS call.</p>
+</blockquote>
 <h3 id="fn-dir_existspath-str-bool"><code>fn dir_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_existspath-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_exists returns true if the path exists and is a directory.</p>
+</blockquote>
 <h3 id="fn-create_dir_allpath-str-resultunit-ioerror"><code>fn create_dir_all(path: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-create_dir_allpath-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>create_dir_all creates the directory and all missing parent directories along the path.  Returns Ok(()) on success. Complexity: O(d) where d = directory depth.</p>
+</blockquote>
 <h3 id="fn-list_dir_recursivepath-str-resultvecstr-ioerror"><code>fn list_dir_recursive(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-list_dir_recursivepath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Vec[Str], IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>list_dir_recursive recursively collects all file and directory paths under the given root directory.  Returns the full paths relative to root.  Complexity: O(N) where N = total entries.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
 <h3 id="fn-read_file_linespath-str-resultvecstr-ioerror"><code>fn read_file_lines(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-read_file_linespath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Vec[Str], IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>read_file_lines reads a file and returns its lines as a Vec[Str]. Trailing newline characters are stripped.  Complexity: O(n).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
 <h3 id="fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror"><code>fn write_file_lines(path: Str, lines: &amp;Vec[Str]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>lines: &amp;Vec[Str]</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>write_file_lines writes a Vec[Str] to a file, one line per entry. Lines are separated by '\n'.  Complexity: O(n).</p>
+</blockquote>
 <h3 id="fn-append_linepath-str-line-str-resultunit-ioerror"><code>fn append_line(path: Str, line: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-append_linepath-str-line-str-resultunit-ioerror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>line: Str</code>; returns <code>Result[Unit, IOError]</code>. No source comment yet.</p>
+<blockquote>
+<p>append_line appends a single line (followed by '\n') to a file. If the file does not exist it will be created. Complexity: O(n) where n = line length.</p>
+</blockquote>
 <hr />
 <hr />
 <h2 id="pipexi"><code>pipe.xi</code><a class="headerlink" href="#pipexi" title="Permanent link">&para;</a></h2>

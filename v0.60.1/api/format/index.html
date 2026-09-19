@@ -2134,10 +2134,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#type-floatscan" class="md-nav__link">
+  <a href="#type-formatfloatscan" class="md-nav__link">
     <span class="md-ellipsis">
       
-        type FloatScan
+        type FormatFloatScan
       
     </span>
   </a>
@@ -2145,10 +2145,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fn-sscanf_floatss-str-spec-str-floatscan" class="md-nav__link">
+  <a href="#fn-sscanf_floatss-str-spec-str-formatfloatscan" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fn sscanf_floats(s: Str, spec: Str) -&gt; FloatScan
+        fn sscanf_floats(s: Str, spec: Str) -&gt; FormatFloatScan
       
     </span>
   </a>
@@ -5803,10 +5803,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#type-floatscan" class="md-nav__link">
+  <a href="#type-formatfloatscan" class="md-nav__link">
     <span class="md-ellipsis">
       
-        type FloatScan
+        type FormatFloatScan
       
     </span>
   </a>
@@ -5814,10 +5814,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fn-sscanf_floatss-str-spec-str-floatscan" class="md-nav__link">
+  <a href="#fn-sscanf_floatss-str-spec-str-formatfloatscan" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fn sscanf_floats(s: Str, spec: Str) -&gt; FloatScan
+        fn sscanf_floats(s: Str, spec: Str) -&gt; FormatFloatScan
       
     </span>
   </a>
@@ -8146,31 +8146,57 @@
 <h3 id="fn-printlns-str"><code>fn println(s: Str)</code><a class="headerlink" href="#fn-printlns-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>s: Str</code>; returns nothing. No source comment yet.</p>
 <h3 id="fn-format_tableheaders-vecstr-cells-vecstr-col_count-int-str"><code>fn format_table(headers: &amp;Vec[Str], cells: &amp;Vec[Str], col_count: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_tableheaders-vecstr-cells-vecstr-col_count-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>headers: &amp;Vec[Str]</code>, <code>cells: &amp;Vec[Str]</code>, <code>col_count: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Formats a simple aligned-column table with <code>|</code> separators. O(r * c). No padding -- cells are left-aligned as-is.</p>
+</blockquote>
 <h3 id="fn-format_columnsitems-vecstr-width-int-str"><code>fn format_columns(items: &amp;Vec[Str], width: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_columnsitems-vecstr-width-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>items: &amp;Vec[Str]</code>, <code>width: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Arranges <code>items</code> into multiple columns, wrapping at <code>width</code>. Items are placed column-by-column (top-to-bottom then left-to-right). O(n) where n = items.len().</p>
+</blockquote>
 <h3 id="fn-format_wraptext-str-width-int-str"><code>fn format_wrap(text: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_wraptext-str-width-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>text: Str</code>, <code>width: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Wraps <code>text</code> at word boundaries to fit within <code>width</code> characters. Words longer than <code>width</code> are placed on their own line. O(n) where n = |text|.</p>
+</blockquote>
 <h3 id="fn-format_indenttext-str-spaces-int-str"><code>fn format_indent(text: Str, spaces: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_indenttext-str-spaces-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>text: Str</code>, <code>spaces: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Adds <code>spaces</code> spaces at the beginning of each line in <code>text</code>. O(n + lines * spaces).</p>
+</blockquote>
 <h3 id="fn-format_hexdumpdata-vecuint8-width-int-str"><code>fn format_hexdump(data: &amp;Vec[UInt8], width: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_hexdumpdata-vecuint8-width-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>, <code>width: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Formats a byte buffer as a classic hexdump: offset, hex bytes, ASCII preview. <code>width</code> controls bytes per line (default 16). Returns multi-line string. O(n) where n = data.len().</p>
+</blockquote>
 <h3 id="fn-format_pad_numbern-int-width-int-str"><code>fn format_pad_number(n: Int, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_pad_numbern-int-width-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: Int</code>, <code>width: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Zero-pads integer <code>n</code> to <code>width</code> digits. Negative numbers are handled (the sign is not counted in the width). Returns the string representation.</p>
+</blockquote>
 <h3 id="fn-format_float_fixedf-float64-decimals-int-str"><code>fn format_float_fixed(f: Float64, decimals: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_float_fixedf-float64-decimals-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>f: Float64</code>, <code>decimals: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Formats a float with <code>decimals</code> decimal places, ROUNDED half away from zero (2026-08-11: previously truncated via the old float_to_string, which itself was fptosi-garbage -- see convert.xi; now delegates to the exact scaled-integer formatter).</p>
+</blockquote>
 <h3 id="fn-format_boolb-bool-str"><code>fn format_bool(b: Bool) -&gt; Str</code><a class="headerlink" href="#fn-format_boolb-bool-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: Bool</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Converts a boolean to "true" or "false".</p>
+</blockquote>
 <h3 id="fn-format_align_lefts-str-width-int-str"><code>fn format_align_left(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_align_lefts-str-width-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Left-aligns <code>s</code> within a field of <code>width</code> characters by right-padding with spaces.</p>
+</blockquote>
 <h3 id="fn-format_align_rights-str-width-int-str"><code>fn format_align_right(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_align_rights-str-width-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>width: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Right-aligns <code>s</code> within a field of <code>width</code> characters by left-padding with spaces.</p>
+</blockquote>
 <h3 id="fn-format_joinitems-vecstr-sep-str-str"><code>fn format_join(items: &amp;Vec[Str], sep: Str) -&gt; Str</code><a class="headerlink" href="#fn-format_joinitems-vecstr-sep-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>items: &amp;Vec[Str]</code>, <code>sep: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Joins <code>items</code> into a single string separated by <code>sep</code>. O(n * |sep|) where n = items.len().</p>
+</blockquote>
 <h3 id="fn-format_repeats-str-n-int-str"><code>fn format_repeat(s: Str, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_repeats-str-n-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>n: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Repeats <code>s</code> <code>n</code> times. Delegates to string.str_repeat.</p>
+</blockquote>
 <h3 id="fn-format_lineprefix-str-body-str-str"><code>fn format_line(prefix: Str, body: Str) -&gt; Str</code><a class="headerlink" href="#fn-format_lineprefix-str-body-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>prefix: Str</code>, <code>body: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Formats a line with a prefix and body, separated by ": ". Useful for key-value display: format_line("Name", "Alice") -&gt; "Name: Alice"</p>
+</blockquote>
 <h3 id="fn-sprintf_ispec-str-values-vecint-resultstr-str"><code>fn sprintf_i(spec: Str, values: &amp;Vec[Int]) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-sprintf_ispec-str-values-vecint-resultstr-str" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>printf-style formatting of an Int-only spec. Supports %d/%i/%u/%x/%X/%o/%b with flags/width/precision. Wrong conversion family or missing values -&gt; Err.</p>
@@ -8204,6 +8230,9 @@
 <p>sprintf_s with two Str arguments.</p>
 </blockquote>
 <h3 id="type-scanresult"><code>type ScanResult</code><a class="headerlink" href="#type-scanresult" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Captured tokens (parallel arrays: convs 0=int(%d/%i/%u), 1=hex(%x/%X), 2=float(%f/%e/%g), 3=str(%s), 4=char(%c)). Plain struct on purpose: the compiler's generic Result[Vec[struct], <em>] instantiation collides with Result[Int, </em>] in mono layout (docs/COMPILER_BUGS.md), so the engine returns a concrete named struct instead.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -8238,7 +8267,10 @@
 <blockquote>
 <p>sscanf + typed integer extraction: converts %d/%i/%u (decimal) and %x/%X (hex) tokens to Int with overflow checking. Non-integer conversions in the spec -&gt; Err. The returned Vec is in token order.</p>
 </blockquote>
-<h3 id="type-floatscan"><code>type FloatScan</code><a class="headerlink" href="#type-floatscan" title="Permanent link">&para;</a></h3>
+<h3 id="type-formatfloatscan"><code>type FormatFloatScan</code><a class="headerlink" href="#type-formatfloatscan" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Float results of sscanf_floats. Fixed 8 scalar slots instead of a Vec[Float64] (BUG 12: float container element reads broken -- TODO(compiler) restore a Vec-based API once fixed). Specs with more than 8 float conversions -&gt; is_ok = false ("too many float conversions").</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -8293,7 +8325,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="fn-sscanf_floatss-str-spec-str-floatscan"><code>fn sscanf_floats(s: Str, spec: Str) -&gt; FloatScan</code><a class="headerlink" href="#fn-sscanf_floatss-str-spec-str-floatscan" title="Permanent link">&para;</a></h3>
+<h3 id="fn-sscanf_floatss-str-spec-str-formatfloatscan"><code>fn sscanf_floats(s: Str, spec: Str) -&gt; FormatFloatScan</code><a class="headerlink" href="#fn-sscanf_floatss-str-spec-str-formatfloatscan" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>sscanf + typed float extraction: converts %f/%e/%g tokens to Float64 (normalized ".5" -&gt; "0.5" for the builtin parser). Non-float conversions in the spec or more than 8 float conversions -&gt; is_ok = false with error. Values land in v0..v7 in token order; <code>count</code> says how many are valid.</p>
 </blockquote>

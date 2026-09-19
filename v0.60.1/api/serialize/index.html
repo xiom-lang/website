@@ -2792,6 +2792,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fn-toml_writet-tomltable-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn toml_write(t: &amp;TomlTable) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4310,6 +4321,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fn-toml_writet-tomltable-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fn toml_write(t: &amp;TomlTable) -&gt; Str
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4555,7 +4577,7 @@
 
 <h1 id="stdlibserialize"><code>stdlib.serialize</code><a class="headerlink" href="#stdlibserialize" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>Generated from <code>v0.60.1</code>. 7 source files, 98 documented symbols.</p>
+<p>Generated from <code>v0.60.1</code>. 7 source files, 99 documented symbols.</p>
 </blockquote>
 <h2 id="csvxi"><code>csv.xi</code><a class="headerlink" href="#csvxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-csv_parsetext-str-resultvecvecstr-str"><code>fn csv_parse(text: Str) -&gt; Result[Vec[Vec[Str]], Str]</code><a class="headerlink" href="#fn-csv_parsetext-str-resultvecvecstr-str" title="Permanent link">&para;</a></h4>
@@ -4654,6 +4676,9 @@
 <hr />
 <h2 id="jsonxi"><code>json.xi</code><a class="headerlink" href="#jsonxi" title="Permanent link">&para;</a></h2>
 <h4 id="enum-jsonvalue"><code>enum JsonValue</code><a class="headerlink" href="#enum-jsonvalue" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>NOTE: The parent module xiom.serialize is always present in the compile unit when any xiom.serialize.* submodule is used, and it defines its own <code>JsonValue</code> type (Object: Map[Str, JsonValue]). The compiler unifies the two same-named types, so this module MUST use the identical enum shape (Map-backed objects) or LLVM lowering fails.</p>
+</blockquote>
 <ul>
 <li><code>Null</code></li>
 <li><code>Bool(value: Bool)</code></li>
@@ -4729,6 +4754,9 @@
 <hr />
 <h2 id="serializexi"><code>serialize.xi</code><a class="headerlink" href="#serializexi" title="Permanent link">&para;</a></h2>
 <h3 id="type-serializeerror"><code>type SerializeError</code><a class="headerlink" href="#type-serializeerror" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== Error type ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -4763,7 +4791,9 @@
 <h3 id="fn-format_error-str"><code>fn format_error() -&gt; Str</code><a class="headerlink" href="#fn-format_error-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
 <h3 id="fn-detect_formatdata-vecuint8-str"><code>fn detect_format(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_formatdata-vecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Format detection ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
 </ul>
@@ -4775,7 +4805,9 @@
 <h3 id="fn-is_valid_bytesdata-vecuint8-bool"><code>fn is_valid_bytes(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_bytesdata-vecuint8-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-json_strings-str-str"><code>fn json_string(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-json_strings-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>=== JSON helpers ===</p>
+</blockquote>
 <h3 id="fn-json_numbern-float64-str"><code>fn json_number(n: Float64) -&gt; Str</code><a class="headerlink" href="#fn-json_numbern-float64-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>n: Float64</code>; returns <code>Str</code>. No source comment yet.</p>
 <h3 id="fn-json_boolb-bool-str"><code>fn json_bool(b: Bool) -&gt; Str</code><a class="headerlink" href="#fn-json_boolb-bool-str" title="Permanent link">&para;</a></h3>
@@ -4815,7 +4847,9 @@
 <h3 id="fn-indexself-self-i-int-optionjsonvalue"><code>fn index(self: Self, i: Int) -&gt; Option[JsonValue]</code><a class="headerlink" href="#fn-indexself-self-i-int-optionjsonvalue" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; takes <code>i: Int</code>; returns <code>Option[JsonValue]</code>. No source comment yet.</p>
 <h3 id="fn-little_endian-bool"><code>fn little_endian() -&gt; Bool</code><a class="headerlink" href="#fn-little_endian-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Binary helpers ===</p>
+</blockquote>
 <h3 id="fn-big_endian-bool"><code>fn big_endian() -&gt; Bool</code><a class="headerlink" href="#fn-big_endian-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-json_escapes-str-str_1"><code>fn json_escape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-json_escapes-str-str_1" title="Permanent link">&para;</a></h3>
@@ -4921,6 +4955,10 @@
 <h4 id="fn-toml_keyst-tomltable-vecstr"><code>fn toml_keys(t: &amp;TomlTable) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-toml_keyst-tomltable-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>All keys in file order.</p>
+</blockquote>
+<h4 id="fn-toml_writet-tomltable-str"><code>fn toml_write(t: &amp;TomlTable) -&gt; Str</code><a class="headerlink" href="#fn-toml_writet-tomltable-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Render <code>t</code> as TOML text for the v1 subset: root keys first (file order), then one <code>[section]</code> block per dotted-key prefix, in first-appearance order. Round-trips through <code>toml_parse</code> except for non-finite floats (written as <code>nan</code>/<code>inf</code>, which the v1 reader does not accept back). Complexity: O(n^2) worst case in the number of keys (section grouping).</p>
 </blockquote>
 <hr />
 <hr />

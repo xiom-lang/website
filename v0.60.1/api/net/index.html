@@ -3519,10 +3519,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#type-httpresponse_1" class="md-nav__link">
+  <a href="#type-nethttpresponse" class="md-nav__link">
     <span class="md-ellipsis">
       
-        type HttpResponse
+        type NetHttpResponse
       
     </span>
   </a>
@@ -3530,10 +3530,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fn-http_geturl-str-resulthttpresponse-neterror" class="md-nav__link">
+  <a href="#fn-http_geturl-str-resultnethttpresponse-neterror" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fn http_get(url: Str) -&gt; Result[HttpResponse, NetError]
+        fn http_get(url: Str) -&gt; Result[NetHttpResponse, NetError]
       
     </span>
   </a>
@@ -3541,10 +3541,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fn-http_posturl-str-body-str-resulthttpresponse-neterror" class="md-nav__link">
+  <a href="#fn-http_posturl-str-body-str-resultnethttpresponse-neterror" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fn http_post(url: Str, body: Str) -&gt; Result[HttpResponse, NetError]
+        fn http_post(url: Str, body: Str) -&gt; Result[NetHttpResponse, NetError]
       
     </span>
   </a>
@@ -8105,10 +8105,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#type-httpresponse_1" class="md-nav__link">
+  <a href="#type-nethttpresponse" class="md-nav__link">
     <span class="md-ellipsis">
       
-        type HttpResponse
+        type NetHttpResponse
       
     </span>
   </a>
@@ -8116,10 +8116,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fn-http_geturl-str-resulthttpresponse-neterror" class="md-nav__link">
+  <a href="#fn-http_geturl-str-resultnethttpresponse-neterror" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fn http_get(url: Str) -&gt; Result[HttpResponse, NetError]
+        fn http_get(url: Str) -&gt; Result[NetHttpResponse, NetError]
       
     </span>
   </a>
@@ -8127,10 +8127,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fn-http_posturl-str-body-str-resulthttpresponse-neterror" class="md-nav__link">
+  <a href="#fn-http_posturl-str-body-str-resultnethttpresponse-neterror" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fn http_post(url: Str, body: Str) -&gt; Result[HttpResponse, NetError]
+        fn http_post(url: Str, body: Str) -&gt; Result[NetHttpResponse, NetError]
       
     </span>
   </a>
@@ -10191,6 +10191,9 @@
 </blockquote>
 <h2 id="addressxi"><code>address.xi</code><a class="headerlink" href="#addressxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-address"><code>type Address</code><a class="headerlink" href="#type-address" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct Address { family: Str; host: Str; port: Int } family is "ipv4", "ipv6" or "hostname"; port 0 means "no explicit port".</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10245,6 +10248,9 @@
 <hr />
 <h2 id="cookiexi"><code>cookie.xi</code><a class="headerlink" href="#cookiexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-cookie"><code>type Cookie</code><a class="headerlink" href="#type-cookie" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct Cookie { name: Str; value: Str; domain: Str; path: Str; expires: Int; max_age: Int; secure: Bool; http_only: Bool; same_site: Str } expires is a unix timestamp (0 = session cookie); same_site is "Strict", "Lax" or "None" ("" when unset).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10292,6 +10298,9 @@
 </tbody>
 </table>
 <h4 id="type-cookiejar"><code>type CookieJar</code><a class="headerlink" href="#type-cookiejar" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct CookieJar - an ordered collection of cookies.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10358,55 +10367,95 @@
 <hr />
 <h2 id="dnsxi"><code>dns.xi</code><a class="headerlink" href="#dnsxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-dns_parse_ipv4s-str-optionvecuint8"><code>fn dns_parse_ipv4(s: Str) -&gt; Option[Vec[UInt8]]</code><a class="headerlink" href="#fn-dns_parse_ipv4s-str-optionvecuint8" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Option[Vec[UInt8]]</code>. No source comment yet.</p>
+<blockquote>
+<p>dns_parse_ipv4 parses "a.b.c.d" into 4 bytes, or None on invalid input. Delegates to the canonical xiom.net.ip4 (dedup wave, 2026-09-16; parity proven in p_dns_parity). The Option/Result translation binds the parsed value to a named local first (R28 workaround: <code>.value</code> on a temporary aggregate payload is corrupt).</p>
+</blockquote>
 <h4 id="fn-dns_ipv4_to_stroctets-vecuint8-optionstr"><code>fn dns_ipv4_to_str(octets: &amp;Vec[UInt8]) -&gt; Option[Str]</code><a class="headerlink" href="#fn-dns_ipv4_to_stroctets-vecuint8-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>octets: &amp;Vec[UInt8]</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dns_ipv4_to_str formats 4 bytes as "a.b.c.d", or None if the length is not 4. Delegates to the canonical xiom.net.ip4.</p>
+</blockquote>
 <h4 id="fn-dns_parse_ipv6s-str-optionvecuint8"><code>fn dns_parse_ipv6(s: Str) -&gt; Option[Vec[UInt8]]</code><a class="headerlink" href="#fn-dns_parse_ipv6s-str-optionvecuint8" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Option[Vec[UInt8]]</code>. No source comment yet.</p>
+<blockquote>
+<p>dns_parse_ipv6 parses a full-form IPv6 address (8 hex groups) or a compressed form with a single "::" into 16 bytes. Returns None on invalid input. Delegates to the canonical xiom.net.ip6 (parity proven in p_dns_parity).</p>
+</blockquote>
 <h4 id="fn-dns_ipv6_to_strbytes-vecuint8-optionstr"><code>fn dns_ipv6_to_str(bytes: &amp;Vec[UInt8]) -&gt; Option[Str]</code><a class="headerlink" href="#fn-dns_ipv6_to_strbytes-vecuint8-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>bytes: &amp;Vec[UInt8]</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dns_ipv6_to_str formats 16 bytes as a full-form IPv6 address (8 groups, no "::" compression). Delegates to the canonical xiom.net.ip6 (same full-form convention; parity proven in p_dns_parity).</p>
+</blockquote>
 <h4 id="fn-dns_parse_record_lineline-str-optionstr-str-str"><code>fn dns_parse_record_line(line: Str) -&gt; Option[(Str, Str, Str)]</code><a class="headerlink" href="#fn-dns_parse_record_lineline-str-optionstr-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>line: Str</code>; returns <code>Option[(Str, Str, Str)]</code>. No source comment yet.</p>
+<blockquote>
+<p>dns_parse_record_line parses a presentation-format zone record line such as "example.com. 3600 IN A 93.184.216.34" into (name, type, rdata).</p>
+</blockquote>
 <h4 id="fn-dns_is_valid_hostnamename-str-bool"><code>fn dns_is_valid_hostname(name: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dns_is_valid_hostnamename-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>name: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>dns_is_valid_hostname validates a hostname: labels of [A-Za-z0-9-] with no leading/trailing hyphen, 1-63 chars each, total length &lt;= 253, at least one label, and no empty labels. A single trailing dot is allowed.</p>
+</blockquote>
 <h4 id="fn-dns_reverse_ipv4octets-vecuint8-optionstr"><code>fn dns_reverse_ipv4(octets: &amp;Vec[UInt8]) -&gt; Option[Str]</code><a class="headerlink" href="#fn-dns_reverse_ipv4octets-vecuint8-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>octets: &amp;Vec[UInt8]</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dns_reverse_ipv4 formats 4 bytes as the in-addr.arpa reverse name, or None if the length is not 4.</p>
+</blockquote>
 <h4 id="fn-dns_well_known_portservice-str-optionint"><code>fn dns_well_known_port(service: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-dns_well_known_portservice-str-optionint" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>service: Str</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>dns_well_known_port maps a well-known service name to its default port, or None for unknown services.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="ftpxi"><code>ftp.xi</code><a class="headerlink" href="#ftpxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-ftp_default_port-int"><code>fn ftp_default_port() -&gt; Int</code><a class="headerlink" href="#fn-ftp_default_port-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_default_port returns the default FTP control port (21). Complexity: O(1). Pure.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == 21</code></li>
 </ul>
 <h4 id="fn-ftp_command_useruser-str-str"><code>fn ftp_command_user(user: Str) -&gt; Str</code><a class="headerlink" href="#fn-ftp_command_useruser-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>user: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_command_user formats a USER command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_command_passpass-str-str"><code>fn ftp_command_pass(pass: Str) -&gt; Str</code><a class="headerlink" href="#fn-ftp_command_passpass-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>pass: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_command_pass formats a PASS command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_command_retrpath-str-str"><code>fn ftp_command_retr(path: Str) -&gt; Str</code><a class="headerlink" href="#fn-ftp_command_retrpath-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_command_retr formats a RETR command for a remote path. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_command_storpath-str-str"><code>fn ftp_command_stor(path: Str) -&gt; Str</code><a class="headerlink" href="#fn-ftp_command_storpath-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_command_stor formats a STOR command for a remote path. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_command_listpath-str-str"><code>fn ftp_command_list(path: Str) -&gt; Str</code><a class="headerlink" href="#fn-ftp_command_listpath-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_command_list formats a LIST command with an optional path. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_command_quit-str"><code>fn ftp_command_quit() -&gt; Str</code><a class="headerlink" href="#fn-ftp_command_quit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_command_quit formats a QUIT command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_command_cwddir-str-str"><code>fn ftp_command_cwd(dir: Str) -&gt; Str</code><a class="headerlink" href="#fn-ftp_command_cwddir-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>dir: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_command_cwd formats a CWD command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_command_typekind-str-str"><code>fn ftp_command_type(kind: Str) -&gt; Str</code><a class="headerlink" href="#fn-ftp_command_typekind-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>kind: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_command_type formats a TYPE command (A or I). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_parse_replyline-str-optionint-str"><code>fn ftp_parse_reply(line: Str) -&gt; Option[(Int, Str)]</code><a class="headerlink" href="#fn-ftp_parse_replyline-str-optionint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>line: Str</code>; returns <code>Option[(Int, Str)]</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_parse_reply parses an FTP reply line like "220 Ready" into (code, text). Returns None if the line does not start with a 3-digit code. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ftp_reply_is_successcode-int-bool"><code>fn ftp_reply_is_success(code: Int) -&gt; Bool</code><a class="headerlink" href="#fn-ftp_reply_is_successcode-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_reply_is_success returns true for 2xx replies. Complexity: O(1). Pure.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (code &gt;= 200 &amp;&amp; code &lt; 300)</code></li>
 </ul>
 <h4 id="fn-ftp_reply_is_positive_preliminarycode-int-bool"><code>fn ftp_reply_is_positive_preliminary(code: Int) -&gt; Bool</code><a class="headerlink" href="#fn-ftp_reply_is_positive_preliminarycode-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ftp_reply_is_positive_preliminary returns true for 1xx replies. Complexity: O(1). Pure.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == (code &gt;= 100 &amp;&amp; code &lt; 200)</code></li>
 </ul>
@@ -10443,6 +10492,9 @@
 <hr />
 <h2 id="httpxi"><code>http.xi</code><a class="headerlink" href="#httpxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-httpresponse"><code>type HttpResponse</code><a class="headerlink" href="#type-httpresponse" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>type HttpResponse - an HTTP response: status code (Int), headers, and raw body bytes.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10467,72 +10519,133 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h4 id="fn-http_status_textcode-int-str"><code>fn http_status_text(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-http_status_textcode-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>http_status_text returns the standard reason phrase for a status code, or "Unknown" for codes not in the table. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-http_request_linemethod-str-target-str-str"><code>fn http_request_line(method: Str, target: Str) -&gt; Str</code><a class="headerlink" href="#fn-http_request_linemethod-str-target-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>method: Str</code>, <code>target: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>http_request_line builds the request line for a method and target, e.g. http_request_line("GET", "/") == "GET / HTTP/1.1". Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-http_build_requestmethod-str-url_str-str-headers-vecstr-str-body-vecuint8-resultstr-str"><code>fn http_build_request(method: Str, url_str: Str, headers: &amp;Vec[(Str, Str)], body: &amp;Vec[UInt8]) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-http_build_requestmethod-str-url_str-str-headers-vecstr-str-body-vecuint8-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>method: Str</code>, <code>url_str: Str</code>, <code>headers: &amp;Vec[(Str, Str)]</code>, <code>body: &amp;Vec[UInt8]</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_build_request builds a full HTTP/1.1 request text from a parsed URL, method, headers, and body. Used by the client and exposed for callers that want to send raw requests themselves.</p>
+</blockquote>
 <h4 id="fn-http_response_statusraw-str-optionint"><code>fn http_response_status(raw: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-http_response_statusraw-str-optionint" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>raw: Str</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_response_status extracts the HTTP status code from a raw response without allocating a full response value. Returns None if the status line is malformed. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-http_parse_response_headersraw-str-vecstr-str"><code>fn http_parse_response_headers(raw: Str) -&gt; Vec[(Str, Str)]</code><a class="headerlink" href="#fn-http_parse_response_headersraw-str-vecstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>raw: Str</code>; returns <code>Vec[(Str, Str)]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_parse_response_headers extracts the (name, value) header pairs from a raw HTTP response block (everything after the status line and before the blank line). Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-http_parse_responseraw-str-resulthttpresponse-str"><code>fn http_parse_response(raw: Str) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_parse_responseraw-str-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>raw: Str</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_parse_response parses a raw HTTP/1.1 response into an HttpResponse. Invalid input returns Err. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-http_status_coderesp-httpresponse-int"><code>fn http_status_code(resp: &amp;HttpResponse) -&gt; Int</code><a class="headerlink" href="#fn-http_status_coderesp-httpresponse-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>resp: &amp;HttpResponse</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>http_status_code returns the HTTP status code of a response. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-http_headerresp-httpresponse-name-str-optionstr"><code>fn http_header(resp: &amp;HttpResponse, name: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-http_headerresp-httpresponse-name-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>resp: &amp;HttpResponse</code>, <code>name: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_header returns the value of a named response header (matched case-insensitively), or None if absent. Complexity: O(h). Pure.</p>
+</blockquote>
 <h4 id="fn-http_body_textresp-httpresponse-str"><code>fn http_body_text(resp: &amp;HttpResponse) -&gt; Str</code><a class="headerlink" href="#fn-http_body_textresp-httpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>resp: &amp;HttpResponse</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>http_body_text decodes the response body bytes as UTF-8 text. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-http_url_encodes-str-str"><code>fn http_url_encode(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-http_url_encodes-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>http_url_encode percent-encodes a string for use in a URL. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-http_url_decodes-str-resultstr-str"><code>fn http_url_decode(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-http_url_decodes-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_url_decode percent-decodes a URL-encoded string. Returns Err on truncated or invalid escapes. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-http_geturl-str-resulthttpresponse-str"><code>fn http_get(url: Str) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_geturl-str-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_get performs an HTTP GET request and returns the response. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_posturl-str-body-vecuint8-resulthttpresponse-str"><code>fn http_post(url: Str, body: &amp;Vec[UInt8]) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_posturl-str-body-vecuint8-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>, <code>body: &amp;Vec[UInt8]</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_post performs an HTTP POST with a raw byte body. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_puturl-str-body-vecuint8-resulthttpresponse-str"><code>fn http_put(url: Str, body: &amp;Vec[UInt8]) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_puturl-str-body-vecuint8-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>, <code>body: &amp;Vec[UInt8]</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_put performs an HTTP PUT with a raw byte body. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_deleteurl-str-resulthttpresponse-str"><code>fn http_delete(url: Str) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_deleteurl-str-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_delete performs an HTTP DELETE request. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_headurl-str-resulthttpresponse-str"><code>fn http_head(url: Str) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_headurl-str-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_head performs an HTTP HEAD request. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_patchurl-str-body-vecuint8-resulthttpresponse-str"><code>fn http_patch(url: Str, body: &amp;Vec[UInt8]) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_patchurl-str-body-vecuint8-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>, <code>body: &amp;Vec[UInt8]</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_patch performs an HTTP PATCH with a raw byte body. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_get_texturl-str-resultstr-str"><code>fn http_get_text(url: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-http_get_texturl-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_get_text performs an HTTP GET and returns the response body decoded as text. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_get_bytesurl-str-resultvecuint8-str"><code>fn http_get_bytes(url: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-http_get_bytesurl-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_get_bytes performs an HTTP GET and returns the raw body bytes. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_redirect_followurl-str-max-int-resulthttpresponse-str"><code>fn http_redirect_follow(url: Str, max: Int) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_redirect_followurl-str-max-int-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>, <code>max: Int</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_redirect_follow follows up to max HTTP redirects (301/302/303/ 307/308) before returning the final response. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-http_requestmethod-str-url-str-headers-vecstr-str-body-vecuint8-resulthttpresponse-str"><code>fn http_request(method: Str, url: Str, headers: &amp;Vec[(Str, Str)], body: &amp;Vec[UInt8]) -&gt; Result[HttpResponse, Str]</code><a class="headerlink" href="#fn-http_requestmethod-str-url-str-headers-vecstr-str-body-vecuint8-resulthttpresponse-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>method: Str</code>, <code>url: Str</code>, <code>headers: &amp;Vec[(Str, Str)]</code>, <code>body: &amp;Vec[UInt8]</code>; returns <code>Result[HttpResponse, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_request performs a generic HTTP request; each tuple in headers is a (name, value) header pair. Complexity: network I/O.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="httpsxi"><code>https.xi</code><a class="headerlink" href="#httpsxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-https_default_port-int"><code>fn https_default_port() -&gt; Int</code><a class="headerlink" href="#fn-https_default_port-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>https_default_port returns the default HTTPS port (443). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-https_request_linemethod-str-target-str-str"><code>fn https_request_line(method: Str, target: Str) -&gt; Str</code><a class="headerlink" href="#fn-https_request_linemethod-str-target-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>method: Str</code>, <code>target: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>https_request_line builds the request line for a method and target, e.g. https_request_line("GET", "/") == "GET / HTTP/1.1". Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-https_build_requestmethod-str-url_str-str-headers-vecstr-str-body-vecuint8-resultstr-str"><code>fn https_build_request(method: Str, url_str: Str, headers: &amp;Vec[(Str, Str)], body: &amp;Vec[UInt8]) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-https_build_requestmethod-str-url_str-str-headers-vecstr-str-body-vecuint8-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>method: Str</code>, <code>url_str: Str</code>, <code>headers: &amp;Vec[(Str, Str)]</code>, <code>body: &amp;Vec[UInt8]</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>https_build_request builds a full HTTPS request text from a URL, method, headers, and body. The Host header carries the explicit port only when it differs from 443. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-https_status_textcode-int-str"><code>fn https_status_text(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-https_status_textcode-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>https_status_text returns the standard reason phrase for a status code, or "Unknown" for codes not in the table. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-https_response_statusraw-str-optionint"><code>fn https_response_status(raw: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-https_response_statusraw-str-optionint" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>raw: Str</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>https_response_status extracts the HTTP status code from a raw response. Returns None if malformed. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-https_parse_response_headersraw-str-vecstr-str"><code>fn https_parse_response_headers(raw: Str) -&gt; Vec[(Str, Str)]</code><a class="headerlink" href="#fn-https_parse_response_headersraw-str-vecstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>raw: Str</code>; returns <code>Vec[(Str, Str)]</code>. No source comment yet.</p>
+<blockquote>
+<p>https_parse_response_headers extracts the (name, value) header pairs from a raw response block. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-https_url_encodes-str-str"><code>fn https_url_encode(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-https_url_encodes-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>https_url_encode percent-encodes a string for use in a URL. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-https_url_decodes-str-resultstr-str"><code>fn https_url_decode(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-https_url_decodes-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>https_url_decode percent-decodes a URL-encoded string. Complexity: O(n). Pure.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="ipxi"><code>ip.xi</code><a class="headerlink" href="#ipxi" title="Permanent link">&para;</a></h2>
 <h4 id="enum-ipaddr"><code>enum IpAddr</code><a class="headerlink" href="#enum-ipaddr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>type IpAddr - an IP address enum: V4 holding four octets, V6 holding eight 16-bit parts.</p>
+</blockquote>
 <ul>
 <li><code>V4(octets: Vec[UInt8])</code></li>
 <li><code>V6(parts: Vec[UInt16])</code></li>
@@ -10602,50 +10715,89 @@
 <hr />
 <h2 id="ip4xi"><code>ip4.xi</code><a class="headerlink" href="#ip4xi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-ip4_parses-str-resultvecuint8-str"><code>fn ip4_parse(s: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-ip4_parses-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_parse parses a dotted-quad IPv4 string into four octets. Invalid input (wrong segment count, non-numeric, or out-of-range octets) returns Err. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_validates-str-bool"><code>fn ip4_validate(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip4_validates-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_validate returns true if s is a valid dotted-quad IPv4 address. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_to_stroctets-vecuint8-resultstr-str"><code>fn ip4_to_str(octets: &amp;Vec[UInt8]) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-ip4_to_stroctets-vecuint8-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>octets: &amp;Vec[UInt8]</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_to_str formats four octets as a dotted-quad string. Returns Err if octets.len() is not 4. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_octetss-str-vecint"><code>fn ip4_octets(s: Str) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-ip4_octetss-str-vecint" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Vec[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_octets splits a dotted-quad IPv4 string into its four numeric octets as Int. Invalid input returns an empty vector. Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_is_loopbacks-str-bool"><code>fn ip4_is_loopback(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip4_is_loopbacks-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_is_loopback returns true for 127.0.0.0/8. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_is_privates-str-bool"><code>fn ip4_is_private(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip4_is_privates-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_is_private returns true for RFC 1918 ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16). Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_is_link_locals-str-bool"><code>fn ip4_is_link_local(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip4_is_link_locals-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_is_link_local returns true for 169.254.0.0/16. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_is_multicasts-str-bool"><code>fn ip4_is_multicast(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip4_is_multicasts-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_is_multicast returns true for 224.0.0.0/4. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_is_unspecifieds-str-bool"><code>fn ip4_is_unspecified(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip4_is_unspecifieds-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_is_unspecified returns true for 0.0.0.0. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip4_is_broadcasts-str-bool"><code>fn ip4_is_broadcast(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip4_is_broadcasts-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip4_is_broadcast returns true for 255.255.255.255. Complexity: O(n). Pure.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="ip6xi"><code>ip6.xi</code><a class="headerlink" href="#ip6xi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-ip6_parses-str-resultvecuint8-str"><code>fn ip6_parse(s: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-ip6_parses-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ip6_parse parses an IPv6 string (full form or with a single "::" compression) into 16 bytes. Invalid input returns Err. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip6_validates-str-bool"><code>fn ip6_validate(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip6_validates-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip6_validate returns true if s is a valid IPv6 address. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip6_to_strbytes-vecuint8-resultstr-str"><code>fn ip6_to_str(bytes: &amp;Vec[UInt8]) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-ip6_to_strbytes-vecuint8-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>bytes: &amp;Vec[UInt8]</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ip6_to_str formats 16 bytes as a full-form IPv6 address (eight 16-bit groups, no "::" compression). Returns Err if the length is not 16. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip6_expands-str-resultstr-str"><code>fn ip6_expand(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-ip6_expands-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ip6_expand returns the full eight-group form of an IPv6 string, expanding "::" and zero-padding each group to four hex digits. Returns Err on invalid input. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip6_is_loopbacks-str-bool"><code>fn ip6_is_loopback(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip6_is_loopbacks-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip6_is_loopback returns true for ::1. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip6_is_unspecifieds-str-bool"><code>fn ip6_is_unspecified(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip6_is_unspecifieds-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip6_is_unspecified returns true for :: Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip6_is_multicasts-str-bool"><code>fn ip6_is_multicast(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip6_is_multicasts-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip6_is_multicast returns true for ff00::/8. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ip6_is_link_locals-str-bool"><code>fn ip6_is_link_local(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ip6_is_link_locals-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ip6_is_link_local returns true for fe80::/10. Complexity: O(n). Pure.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="jwtxi"><code>jwt.xi</code><a class="headerlink" href="#jwtxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-jwt"><code>type Jwt</code><a class="headerlink" href="#type-jwt" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct Jwt { header: Str; payload: Str; signature: Str }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10709,6 +10861,9 @@
 <hr />
 <h2 id="mimexi"><code>mime.xi</code><a class="headerlink" href="#mimexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-mimetype"><code>type MimeType</code><a class="headerlink" href="#type-mimetype" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct MimeType { kind: Str; subtype: Str; params: Vec[(Str, Str)] } NOTE: the frozen spec documents <code>params: Map[Str, Str]</code>. The compiler cannot construct/return a struct containing a Map field (hangs/0xC0000005, see probe in agent_net2); the main-type field is named <code>kind</code> because the reserved word <code>type</code> is unreadable at call sites (P001) and breaks cross-module resolution. Params are stored as ordered (name, value) pairs.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10732,6 +10887,9 @@
 </tbody>
 </table>
 <h4 id="type-link"><code>type Link</code><a class="headerlink" href="#type-link" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct Link { href: Str; rel: Str; title: Str; kind: Str }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10835,6 +10993,9 @@
 <hr />
 <h2 id="multipartxi"><code>multipart.xi</code><a class="headerlink" href="#multipartxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-part"><code>type Part</code><a class="headerlink" href="#type-part" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct Part { name: Str; filename: Str; content_type: Str; data: Vec[UInt8] }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10890,6 +11051,9 @@
 <hr />
 <h2 id="netxi"><code>net.xi</code><a class="headerlink" href="#netxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-tcpstream"><code>type TcpStream</code><a class="headerlink" href="#type-tcpstream" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== TCP ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10969,7 +11133,10 @@
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
-<h3 id="type-httpresponse_1"><code>type HttpResponse</code><a class="headerlink" href="#type-httpresponse_1" title="Permanent link">&para;</a></h3>
+<h3 id="type-nethttpresponse"><code>type NetHttpResponse</code><a class="headerlink" href="#type-nethttpresponse" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== HTTP === NOTE: named NetHttpResponse to keep the bare type leaf distinct from xiom.net.http.HttpResponse (R44 same-leaf struct collision; both used to inject as %struct.HttpResponse and clobbered each other's fields).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -10989,14 +11156,17 @@
 </tbody>
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
-<h3 id="fn-http_geturl-str-resulthttpresponse-neterror"><code>fn http_get(url: Str) -&gt; Result[HttpResponse, NetError]</code><a class="headerlink" href="#fn-http_geturl-str-resulthttpresponse-neterror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[HttpResponse, NetError]</code>. No source comment yet.</p>
+<h3 id="fn-http_geturl-str-resultnethttpresponse-neterror"><code>fn http_get(url: Str) -&gt; Result[NetHttpResponse, NetError]</code><a class="headerlink" href="#fn-http_geturl-str-resultnethttpresponse-neterror" title="Permanent link">&para;</a></h3>
+<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[NetHttpResponse, NetError]</code>. No source comment yet.</p>
 <ul>
 <li><strong>Precondition:</strong> <code>url.len() &gt; 0</code></li>
 </ul>
-<h3 id="fn-http_posturl-str-body-str-resulthttpresponse-neterror"><code>fn http_post(url: Str, body: Str) -&gt; Result[HttpResponse, NetError]</code><a class="headerlink" href="#fn-http_posturl-str-body-str-resulthttpresponse-neterror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>url: Str</code>, <code>body: Str</code>; returns <code>Result[HttpResponse, NetError]</code>. No source comment yet.</p>
+<h3 id="fn-http_posturl-str-body-str-resultnethttpresponse-neterror"><code>fn http_post(url: Str, body: Str) -&gt; Result[NetHttpResponse, NetError]</code><a class="headerlink" href="#fn-http_posturl-str-body-str-resultnethttpresponse-neterror" title="Permanent link">&para;</a></h3>
+<p><em>Generated summary:</em> takes <code>url: Str</code>, <code>body: Str</code>; returns <code>Result[NetHttpResponse, NetError]</code>. No source comment yet.</p>
 <h3 id="type-udpsocket"><code>type UdpSocket</code><a class="headerlink" href="#type-udpsocket" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== UDP ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11026,7 +11196,9 @@
 <h3 id="fn-closeself-self-resultunit-neterror_1"><code>fn close(self: Self) -&gt; Result[Unit, NetError]</code><a class="headerlink" href="#fn-closeself-self-resultunit-neterror_1" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Result[Unit, NetError]</code>. No source comment yet.</p>
 <h3 id="fn-resolve_hosthostname-str-resultvecstr-neterror"><code>fn resolve_host(hostname: Str) -&gt; Result[Vec[Str], NetError]</code><a class="headerlink" href="#fn-resolve_hosthostname-str-resultvecstr-neterror" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>hostname: Str</code>; returns <code>Result[Vec[Str], NetError]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== DNS ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
@@ -11036,6 +11208,9 @@
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="type-urlparts"><code>type UrlParts</code><a class="headerlink" href="#type-urlparts" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== URL parsing ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11073,6 +11248,9 @@
 <h3 id="fn-parse_urlurl-str-resulturlparts-neterror"><code>fn parse_url(url: Str) -&gt; Result[UrlParts, NetError]</code><a class="headerlink" href="#fn-parse_urlurl-str-resulturlparts-neterror" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[UrlParts, NetError]</code>. No source comment yet.</p>
 <h3 id="enum-httpmethod"><code>enum HttpMethod</code><a class="headerlink" href="#enum-httpmethod" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== HTTP methods ===</p>
+</blockquote>
 <ul>
 <li><code>GET</code></li>
 <li><code>POST</code></li>
@@ -11133,6 +11311,9 @@
 <hr />
 <h2 id="ntpxi"><code>ntp.xi</code><a class="headerlink" href="#ntpxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-ntppacket"><code>type NtpPacket</code><a class="headerlink" href="#type-ntppacket" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct NtpPacket { li: Int; vn: Int; mode: Int; stratum: Int; poll: Int; precision: Int; root_delay: Float64; root_dispersion: Float64; ref_id: Int; ref_timestamp: Int; origin_timestamp: Int; recv_timestamp: Int; transmit_timestamp: Int } Timestamps are 64-bit NTP era timestamps (seconds since 1900-01-01).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11236,6 +11417,9 @@
 <hr />
 <h2 id="pingxi"><code>ping.xi</code><a class="headerlink" href="#pingxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-pingstats"><code>type PingStats</code><a class="headerlink" href="#type-pingstats" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct PingStats { sent: Int; received: Int; min_ms: Int; avg_ms: Int; max_ms: Int }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11299,116 +11483,213 @@
 <hr />
 <h2 id="protoxi"><code>proto.xi</code><a class="headerlink" href="#protoxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-jsonrpc_requestid-int-method-str-params_json-str-str"><code>fn jsonrpc_request(id: Int, method: Str, params_json: Str) -&gt; Str</code><a class="headerlink" href="#fn-jsonrpc_requestid-int-method-str-params_json-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>id: Int</code>, <code>method: Str</code>, <code>params_json: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>jsonrpc_request builds a JSON-RPC 2.0 request object. The params value is embedded verbatim as pre-serialized JSON.</p>
+</blockquote>
 <h4 id="fn-jsonrpc_successid-int-result_json-str-str"><code>fn jsonrpc_success(id: Int, result_json: Str) -&gt; Str</code><a class="headerlink" href="#fn-jsonrpc_successid-int-result_json-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>id: Int</code>, <code>result_json: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>jsonrpc_success builds a JSON-RPC 2.0 success response. The result value is embedded verbatim as pre-serialized JSON.</p>
+</blockquote>
 <h4 id="fn-jsonrpc_errorid-int-code-int-message-str-str"><code>fn jsonrpc_error(id: Int, code: Int, message: Str) -&gt; Str</code><a class="headerlink" href="#fn-jsonrpc_errorid-int-code-int-message-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>id: Int</code>, <code>code: Int</code>, <code>message: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>jsonrpc_error builds a JSON-RPC 2.0 error response.</p>
+</blockquote>
 <h4 id="fn-sse_format_eventevent-str-data-str-str"><code>fn sse_format_event(event: Str, data: Str) -&gt; Str</code><a class="headerlink" href="#fn-sse_format_eventevent-str-data-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>event: Str</code>, <code>data: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>sse_format_event formats an SSE event with an "event:" line followed by "data:" lines and a terminating blank line.</p>
+</blockquote>
 <h4 id="fn-sse_format_datadata-str-str"><code>fn sse_format_data(data: Str) -&gt; Str</code><a class="headerlink" href="#fn-sse_format_datadata-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>data: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>sse_format_data formats a single SSE data message with a terminating blank line.</p>
+</blockquote>
 <h4 id="fn-http_header_parseheaders-str-vecstr-str"><code>fn http_header_parse(headers: Str) -&gt; Vec[(Str, Str)]</code><a class="headerlink" href="#fn-http_header_parseheaders-str-vecstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>headers: Str</code>; returns <code>Vec[(Str, Str)]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_header_parse parses a block of "Name: value" lines (one per line, '\r' tolerated) into (name, value) pairs. Blank lines are skipped.</p>
+</blockquote>
 <h4 id="fn-http_header_getheaders-vecstr-str-name-str-optionstr"><code>fn http_header_get(headers: Vec[(Str, Str)], name: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-http_header_getheaders-vecstr-str-name-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>headers: Vec[(Str, Str)]</code>, <code>name: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>http_header_get finds the value for a header name in a parsed header list, matching case-insensitively and returning the first match.</p>
+</blockquote>
 <h4 id="fn-basic_auth_headerusername-str-password-str-str"><code>fn basic_auth_header(username: Str, password: Str) -&gt; Str</code><a class="headerlink" href="#fn-basic_auth_headerusername-str-password-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>username: Str</code>, <code>password: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>basic_auth_header builds a "Basic <base64(user:password)>" Authorization header value.</p>
+</blockquote>
 <h4 id="fn-bearer_auth_headertoken-str-str"><code>fn bearer_auth_header(token: Str) -&gt; Str</code><a class="headerlink" href="#fn-bearer_auth_headertoken-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>token: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>bearer_auth_header builds a "Bearer <token>" Authorization header value.</p>
+</blockquote>
 <h4 id="fn-http_status_textcode-int-str_1"><code>fn http_status_text(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-http_status_textcode-int-str_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>http_status_text maps an HTTP status code to its standard reason phrase, or "Unknown" for codes not in the table.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="serverxi"><code>server.xi</code><a class="headerlink" href="#serverxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-server_default_port-int"><code>fn server_default_port() -&gt; Int</code><a class="headerlink" href="#fn-server_default_port-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>server_default_port returns the default HTTP server port (80). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-server_parse_request_lineline-str-optionstr-str-str"><code>fn server_parse_request_line(line: Str) -&gt; Option[(Str, Str, Str)]</code><a class="headerlink" href="#fn-server_parse_request_lineline-str-optionstr-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>line: Str</code>; returns <code>Option[(Str, Str, Str)]</code>. No source comment yet.</p>
+<blockquote>
+<p>server_parse_request_line parses an HTTP request line like "GET /path HTTP/1.1" into (method, target, version). Returns None if the line does not contain three space-separated tokens. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-server_build_status_linecode-int-str"><code>fn server_build_status_line(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-server_build_status_linecode-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>server_build_status_line builds a status line like "HTTP/1.1 200 OK". Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-server_build_responsecode-int-body-str-str"><code>fn server_build_response(code: Int, body: Str) -&gt; Str</code><a class="headerlink" href="#fn-server_build_responsecode-int-body-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>, <code>body: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>server_build_response builds a minimal HTTP/1.1 response with a text/plain body. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-server_build_response_headerscode-int-headers-vecstr-str-body-str-str"><code>fn server_build_response_headers(code: Int, headers: &amp;Vec[(Str, Str)], body: Str) -&gt; Str</code><a class="headerlink" href="#fn-server_build_response_headerscode-int-headers-vecstr-str-body-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>, <code>headers: &amp;Vec[(Str, Str)]</code>, <code>body: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>server_build_response_headers builds an HTTP/1.1 response with custom (name, value) header pairs and a text body. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-server_status_textcode-int-str"><code>fn server_status_text(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-server_status_textcode-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>server_status_text returns the standard reason phrase for a status code, or "Unknown" for codes not in the table. Complexity: O(1).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="smtpxi"><code>smtp.xi</code><a class="headerlink" href="#smtpxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-smtp_default_port-int"><code>fn smtp_default_port() -&gt; Int</code><a class="headerlink" href="#fn-smtp_default_port-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_default_port returns the default SMTP port (25). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_helohost-str-str"><code>fn smtp_command_helo(host: Str) -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_helohost-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>host: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_helo formats a HELO command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_ehlohost-str-str"><code>fn smtp_command_ehlo(host: Str) -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_ehlohost-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>host: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_ehlo formats an EHLO command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_mail_fromaddr-str-str"><code>fn smtp_command_mail_from(addr: Str) -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_mail_fromaddr-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>addr: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_mail_from formats a MAIL FROM command with an address. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_rcpt_toaddr-str-str"><code>fn smtp_command_rcpt_to(addr: Str) -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_rcpt_toaddr-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>addr: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_rcpt_to formats a RCPT TO command with an address. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_data-str"><code>fn smtp_command_data() -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_data-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_data formats a DATA command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_quit-str"><code>fn smtp_command_quit() -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_quit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_quit formats a QUIT command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_noop-str"><code>fn smtp_command_noop() -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_noop-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_noop formats a NOOP command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_rset-str"><code>fn smtp_command_rset() -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_rset-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_rset formats a RSET command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_command_auth_login-str"><code>fn smtp_command_auth_login() -&gt; Str</code><a class="headerlink" href="#fn-smtp_command_auth_login-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_command_auth_login formats an AUTH LOGIN command. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_body_end-str"><code>fn smtp_body_end() -&gt; Str</code><a class="headerlink" href="#fn-smtp_body_end-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_body_end formats the end-of-data marker (dot on its own line). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_parse_replyline-str-optionint-str"><code>fn smtp_parse_reply(line: Str) -&gt; Option[(Int, Str)]</code><a class="headerlink" href="#fn-smtp_parse_replyline-str-optionint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>line: Str</code>; returns <code>Option[(Int, Str)]</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_parse_reply parses an SMTP reply line like "250 OK" into (code, text). Returns None if the line does not start with a 3-digit code. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-smtp_reply_is_successcode-int-bool"><code>fn smtp_reply_is_success(code: Int) -&gt; Bool</code><a class="headerlink" href="#fn-smtp_reply_is_successcode-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>smtp_reply_is_success returns true for 2xx replies. Complexity: O(1). Pure.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="socketxi"><code>socket.xi</code><a class="headerlink" href="#socketxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-socket_tcp-resultint-str"><code>fn socket_tcp() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-socket_tcp-resultint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_tcp creates a TCP socket and returns its fd, or Err. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-socket_udp-resultint-str"><code>fn socket_udp() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-socket_udp-resultint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_udp creates a UDP socket and returns its fd, or Err. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-socket_bindfd-int-addr-str-port-int-resultunit-str"><code>fn socket_bind(fd: Int, addr: Str, port: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-socket_bindfd-int-addr-str-port-int-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>addr: Str</code>, <code>port: Int</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_bind binds a socket to addr:port. The runtime binds to the given port on the wildcard address; the addr string is validated for non-emptiness. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-socket_listenfd-int-backlog-int-resultunit-str"><code>fn socket_listen(fd: Int, backlog: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-socket_listenfd-int-backlog-int-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>backlog: Int</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_listen marks a bound TCP socket as listening. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-socket_acceptfd-int-resultint-str"><code>fn socket_accept(fd: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-socket_acceptfd-int-resultint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_accept accepts a connection and returns the new socket fd. Complexity: O(1) blocking syscall.</p>
+</blockquote>
 <h4 id="fn-socket_connectfd-int-addr-str-port-int-resultunit-str"><code>fn socket_connect(fd: Int, addr: Str, port: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-socket_connectfd-int-addr-str-port-int-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>addr: Str</code>, <code>port: Int</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_connect connects a socket to a remote addr:port. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-socket_sendfd-int-data-vecuint8-resultint-str"><code>fn socket_send(fd: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-socket_sendfd-int-data-vecuint8-resultint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_send sends bytes on a socket; returns the count written. Complexity: O(n) syscall.</p>
+</blockquote>
 <h4 id="fn-socket_recvfd-int-max-int-resultvecuint8-str"><code>fn socket_recv(fd: Int, max: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-socket_recvfd-int-max-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>max: Int</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_recv receives up to max bytes; returns the bytes received. Complexity: O(n) blocking syscall.</p>
+</blockquote>
 <h4 id="fn-socket_send_tofd-int-data-vecuint8-addr-str-port-int-resultint-str"><code>fn socket_send_to(fd: Int, data: &amp;Vec[UInt8], addr: Str, port: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-socket_send_tofd-int-data-vecuint8-addr-str-port-int-resultint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>data: &amp;Vec[UInt8]</code>, <code>addr: Str</code>, <code>port: Int</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_send_to sends a datagram to addr:port; returns the count written. Complexity: O(n) syscall.</p>
+</blockquote>
 <h4 id="fn-socket_recv_fromfd-int-max-int-resultvecuint8-str-int-str"><code>fn socket_recv_from(fd: Int, max: Int) -&gt; Result[(Vec[UInt8], Str, Int), Str]</code><a class="headerlink" href="#fn-socket_recv_fromfd-int-max-int-resultvecuint8-str-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>max: Int</code>; returns <code>Result[(Vec[UInt8], Str, Int), Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_recv_from receives a datagram; the tuple is (data, peer_addr, peer_port). Complexity: O(n) blocking syscall.</p>
+</blockquote>
 <h4 id="fn-socket_closefd-int"><code>fn socket_close(fd: Int)</code><a class="headerlink" href="#fn-socket_closefd-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>socket_close closes a socket, releasing the fd. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-socket_set_timeoutfd-int-ms-int-resultunit-str"><code>fn socket_set_timeout(fd: Int, ms: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-socket_set_timeoutfd-int-ms-int-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>ms: Int</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_set_timeout sets the receive timeout in milliseconds. The runtime does not expose SO_RCVTIMEO; always returns a documented Err.</p>
+</blockquote>
 <h4 id="fn-socket_set_nonblockingfd-int-on-bool-resultunit-str"><code>fn socket_set_nonblocking(fd: Int, on: Bool) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-socket_set_nonblockingfd-int-on-bool-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>on: Bool</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_set_nonblocking enables or disables non-blocking mode. The runtime does not expose FIONBIO/O_NONBLOCK; always returns a documented Err.</p>
+</blockquote>
 <h4 id="fn-socket_shutdownfd-int-how-int-resultunit-str"><code>fn socket_shutdown(fd: Int, how: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-socket_shutdownfd-int-how-int-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>how: Int</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_shutdown shuts down reading, writing, or both per how (0 = receive, 1 = send, 2 = both). The runtime does not expose shutdown(); always returns a documented Err.</p>
+</blockquote>
 <h4 id="fn-socket_peer_addrfd-int-resultstr-int-str"><code>fn socket_peer_addr(fd: Int) -&gt; Result[(Str, Int), Str]</code><a class="headerlink" href="#fn-socket_peer_addrfd-int-resultstr-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>; returns <code>Result[(Str, Int), Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_peer_addr returns the connected peer address. The runtime does not expose getpeername(); always returns a documented Err.</p>
+</blockquote>
 <h4 id="fn-socket_local_addrfd-int-resultstr-int-str"><code>fn socket_local_addr(fd: Int) -&gt; Result[(Str, Int), Str]</code><a class="headerlink" href="#fn-socket_local_addrfd-int-resultstr-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>; returns <code>Result[(Str, Int), Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_local_addr returns the bound local address. The runtime does not expose getsockname(); always returns a documented Err.</p>
+</blockquote>
 <h4 id="fn-socket_availablefd-int-int"><code>fn socket_available(fd: Int) -&gt; Int</code><a class="headerlink" href="#fn-socket_availablefd-int-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_available returns the number of bytes currently readable without blocking. The runtime does not expose FIONREAD; returns 0.</p>
+</blockquote>
 <h4 id="fn-socket_reuse_addrfd-int-on-bool-resultunit-str"><code>fn socket_reuse_addr(fd: Int, on: Bool) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-socket_reuse_addrfd-int-on-bool-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>, <code>on: Bool</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>socket_reuse_addr enables or disables SO_REUSEADDR. The runtime does not expose setsockopt(); always returns a documented Err.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="ssexi"><code>sse.xi</code><a class="headerlink" href="#ssexi" title="Permanent link">&para;</a></h2>
 <h4 id="type-sseconnection"><code>type SseConnection</code><a class="headerlink" href="#type-sseconnection" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct SseConnection { socket: TcpStream; url: Str; open: Bool }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11432,6 +11713,9 @@
 </tbody>
 </table>
 <h4 id="type-sseevent"><code>type SseEvent</code><a class="headerlink" href="#type-sseevent" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct SseEvent { id: Str; event: Str; data: Str; retry: Int }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11495,27 +11779,45 @@
 <hr />
 <h2 id="tcpxi"><code>tcp.xi</code><a class="headerlink" href="#tcpxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-tcp_validate_portp-int-bool"><code>fn tcp_validate_port(p: Int) -&gt; Bool</code><a class="headerlink" href="#fn-tcp_validate_portp-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>p: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>tcp_validate_port returns true if p is a valid TCP port (1-65535). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-tcp_is_valid_portp-int-bool"><code>fn tcp_is_valid_port(p: Int) -&gt; Bool</code><a class="headerlink" href="#fn-tcp_is_valid_portp-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>p: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>tcp_is_valid_port is an alias for tcp_validate_port. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-tcp_parse_endpoints-str-optionstr-int"><code>fn tcp_parse_endpoint(s: Str) -&gt; Option[(Str, Int)]</code><a class="headerlink" href="#fn-tcp_parse_endpoints-str-optionstr-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Option[(Str, Int)]</code>. No source comment yet.</p>
+<blockquote>
+<p>tcp_parse_endpoint splits a "host:port" string into (host, port). Returns None if no colon or a malformed port is present. The host may be empty (an empty host string is rejected). Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-tcp_format_endpointhost-str-port-int-str"><code>fn tcp_format_endpoint(host: Str, port: Int) -&gt; Str</code><a class="headerlink" href="#fn-tcp_format_endpointhost-str-port-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>host: Str</code>, <code>port: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>tcp_format_endpoint builds a "host:port" string. Complexity: O(1). Pure.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="tlsxi"><code>tls.xi</code><a class="headerlink" href="#tlsxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-tls_default_port-int"><code>fn tls_default_port() -&gt; Int</code><a class="headerlink" href="#fn-tls_default_port-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>tls_default_port returns the default TLS port (443). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-tls_version_nameversion-int-str"><code>fn tls_version_name(version: Int) -&gt; Str</code><a class="headerlink" href="#fn-tls_version_nameversion-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>version: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>tls_version_name maps a TLS version code point to its name. Recognised values: 0x0301 TLSv1.0, 0x0302 TLSv1.1, 0x0303 TLSv1.2, 0x0304 TLSv1.3. Unknown values return "unknown". Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-tls_handshake_type_namet-int-str"><code>fn tls_handshake_type_name(t: Int) -&gt; Str</code><a class="headerlink" href="#fn-tls_handshake_type_namet-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>t: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>tls_handshake_type_name maps a TLS handshake message type to its name. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-tls_alert_namecode-int-str"><code>fn tls_alert_name(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-tls_alert_namecode-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>tls_alert_name maps a TLS alert description to its name per RFC 5246 and RFC 8446. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-tls_cipher_suite_namecode-int-str"><code>fn tls_cipher_suite_name(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-tls_cipher_suite_namecode-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>tls_cipher_suite_name maps a TLS cipher suite code to a human-readable name for the most common suites, or "unknown" (0x0000- 0xFFFF, two-byte IANA code). Complexity: O(1).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
@@ -11573,18 +11875,29 @@
 <hr />
 <h2 id="udpxi"><code>udp.xi</code><a class="headerlink" href="#udpxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-udp_validate_portp-int-bool"><code>fn udp_validate_port(p: Int) -&gt; Bool</code><a class="headerlink" href="#fn-udp_validate_portp-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>p: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>udp_validate_port returns true if p is a valid UDP port (1-65535). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-udp_is_valid_portp-int-bool"><code>fn udp_is_valid_port(p: Int) -&gt; Bool</code><a class="headerlink" href="#fn-udp_is_valid_portp-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>p: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>udp_is_valid_port is an alias for udp_validate_port. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-udp_parse_endpoints-str-optionstr-int"><code>fn udp_parse_endpoint(s: Str) -&gt; Option[(Str, Int)]</code><a class="headerlink" href="#fn-udp_parse_endpoints-str-optionstr-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Option[(Str, Int)]</code>. No source comment yet.</p>
+<blockquote>
+<p>udp_parse_endpoint splits a "host:port" string into (host, port). Returns None if no colon or a malformed port is present. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-udp_format_endpointhost-str-port-int-str"><code>fn udp_format_endpoint(host: Str, port: Int) -&gt; Str</code><a class="headerlink" href="#fn-udp_format_endpointhost-str-port-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>host: Str</code>, <code>port: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>udp_format_endpoint builds a "host:port" string. Complexity: O(1). Pure.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="unixxi"><code>unix.xi</code><a class="headerlink" href="#unixxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-unixsocket"><code>type UnixSocket</code><a class="headerlink" href="#type-unixsocket" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct UnixSocket { fd: Int; path: Str; listening: Bool }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11652,26 +11965,45 @@
 <hr />
 <h2 id="urlxi"><code>url.xi</code><a class="headerlink" href="#urlxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-url_parseurl-str-resulturlparts-str"><code>fn url_parse(url: Str) -&gt; Result[UrlParts, Str]</code><a class="headerlink" href="#fn-url_parseurl-str-resulturlparts-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[UrlParts, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>url_parse parses a URL into its scheme/host/port/path/query/fragment components. Userinfo (user:pass@) is skipped.</p>
+</blockquote>
 <h4 id="fn-url_decode_components-str-resultstr-str"><code>fn url_decode_component(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-url_decode_components-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>url_decode_component percent-decodes %XX sequences. '+' is left as-is (component semantics -- '+' is only a space in form-encoding).</p>
+</blockquote>
 <h4 id="fn-url_encode_components-str-resultstr-str"><code>fn url_encode_component(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-url_encode_components-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>url_encode_component percent-encodes everything except the unreserved characters A-Z a-z 0-9 - _ . ~ (reuses xiom.encoding.percent_encode).</p>
+</blockquote>
 <h4 id="fn-url_query_parsequery-str-vecstr-str"><code>fn url_query_parse(query: Str) -&gt; Vec[(Str, Str)]</code><a class="headerlink" href="#fn-url_query_parsequery-str-vecstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>query: Str</code>; returns <code>Vec[(Str, Str)]</code>. No source comment yet.</p>
+<blockquote>
+<p>url_query_parse splits a query string on '&amp;' and each pair on the first '=', percent-decoding both sides and converting '+' to a space (application/x-www-form-urlencoded semantics).</p>
+</blockquote>
 <h4 id="fn-url_query_buildpairs-vecstr-str-str"><code>fn url_query_build(pairs: Vec[(Str, Str)]) -&gt; Str</code><a class="headerlink" href="#fn-url_query_buildpairs-vecstr-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>pairs: Vec[(Str, Str)]</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>url_query_build joins key/value pairs as k=v separated by '&amp;', applying component encoding to both keys and values.</p>
+</blockquote>
 <h4 id="fn-url_normalizeurl-str-resultstr-str"><code>fn url_normalize(url: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-url_normalizeurl-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>url_normalize lowercases the scheme and host, strips the default port, and removes dot segments from the path. Query and fragment are kept.</p>
+</blockquote>
 <h4 id="fn-url_is_absoluteurl-str-bool"><code>fn url_is_absolute(url: Str) -&gt; Bool</code><a class="headerlink" href="#fn-url_is_absoluteurl-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>url_is_absolute returns true if the URL carries a scheme (a ':' before any '/').</p>
+</blockquote>
 <h4 id="fn-url_joinbase-str-relative-str-resultstr-str"><code>fn url_join(base: Str, relative: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-url_joinbase-str-relative-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>base: Str</code>, <code>relative: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>url_join resolves a relative reference against a base URL (RFC 3986 S5.3 merge), then normalizes dot segments. If the reference carries its own scheme it is returned unchanged.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="websocketxi"><code>websocket.xi</code><a class="headerlink" href="#websocketxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-wsframe"><code>type WsFrame</code><a class="headerlink" href="#type-wsframe" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct WsFrame { opcode: Int; fin: Bool; masked: Bool; payload: Vec[UInt8] }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11700,6 +12032,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h4 id="type-wsconnection"><code>type WsConnection</code><a class="headerlink" href="#type-wsconnection" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct WsConnection { socket: TcpStream; key: Str; open: Bool }</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11723,47 +12058,85 @@
 </tbody>
 </table>
 <h4 id="fn-ws_handshake_requesthost-str-path-str-key-str-str"><code>fn ws_handshake_request(host: Str, path: Str, key: Str) -&gt; Str</code><a class="headerlink" href="#fn-ws_handshake_requesthost-str-path-str-key-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>host: Str</code>, <code>path: Str</code>, <code>key: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_handshake_request builds a client upgrade request for the given host, path, and Sec-WebSocket-Key value. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ws_accept_keykey-str-str"><code>fn ws_accept_key(key: Str) -&gt; Str</code><a class="headerlink" href="#fn-ws_accept_keykey-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>key: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_accept_key computes the Sec-WebSocket-Accept value for a client key per RFC 6455: base64(SHA-1(key + GUID)). Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-ws_handshake_verifyresponse-str-key-str-bool"><code>fn ws_handshake_verify(response: Str, key: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ws_handshake_verifyresponse-str-key-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>response: Str</code>, <code>key: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_handshake_verify checks a server upgrade response against the client key: the status line must be 101 and the Sec-WebSocket-Accept header must match the computed accept value. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ws_frame_encodeopcode-int-payload-vecuint8-mask-bool-vecuint8"><code>fn ws_frame_encode(opcode: Int, payload: &amp;Vec[UInt8], mask: Bool) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-ws_frame_encodeopcode-int-payload-vecuint8-mask-bool-vecuint8" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>opcode: Int</code>, <code>payload: &amp;Vec[UInt8]</code>, <code>mask: Bool</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_frame_encode serializes one WebSocket frame. When mask is true a random-looking client mask (derived from payload length) is applied. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ws_frame_decodeframe-vecuint8-resultwsframe-str"><code>fn ws_frame_decode(frame: &amp;Vec[UInt8]) -&gt; Result[WsFrame, Str]</code><a class="headerlink" href="#fn-ws_frame_decodeframe-vecuint8-resultwsframe-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>frame: &amp;Vec[UInt8]</code>; returns <code>Result[WsFrame, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_frame_decode parses one WebSocket frame from bytes. Returns Err on truncated or invalid input. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ws_random_key-str"><code>fn ws_random_key() -&gt; Str</code><a class="headerlink" href="#fn-ws_random_key-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_random_key generates a Sec-WebSocket-Key value (base64 of 16 bytes) for use in client handshakes. Deterministic derivation from the current time keeps the module free of external RNG state.</p>
+</blockquote>
 <h4 id="fn-ws_parse_urlurl-str-resultstr-int-str-str"><code>fn ws_parse_url(url: Str) -&gt; Result[(Str, Int, Str), Str]</code><a class="headerlink" href="#fn-ws_parse_urlurl-str-resultstr-int-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[(Str, Int, Str), Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_parse_url splits a ws:// or wss:// URL into host, port, and path. The port is the explicit port when present, otherwise the scheme default. Returns Err for malformed input. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ws_connecturl-str-resultwsconnection-str"><code>fn ws_connect(url: Str) -&gt; Result[WsConnection, Str]</code><a class="headerlink" href="#fn-ws_connecturl-str-resultwsconnection-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[WsConnection, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_connect opens a WebSocket connection to a ws:// or wss:// URL, performing the client handshake. TLS (wss) is not supported by the runtime socket layer; use ws://. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-ws_sendconn-wsconnection-text-str-resultunit-str"><code>fn ws_send(conn: &amp;WsConnection, text: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-ws_sendconn-wsconnection-text-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>conn: &amp;WsConnection</code>, <code>text: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_send sends a text message over an open connection. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-ws_send_binaryconn-wsconnection-data-vecuint8-resultunit-str"><code>fn ws_send_binary(conn: &amp;WsConnection, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-ws_send_binaryconn-wsconnection-data-vecuint8-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>conn: &amp;WsConnection</code>, <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_send_binary sends a binary message over an open connection. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-ws_recvconn-wsconnection-resultwsframe-str"><code>fn ws_recv(conn: &amp;WsConnection) -&gt; Result[WsFrame, Str]</code><a class="headerlink" href="#fn-ws_recvconn-wsconnection-resultwsframe-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>conn: &amp;WsConnection</code>; returns <code>Result[WsFrame, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_recv receives the next frame from the connection. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-ws_closeconn-wsconnection-code-int"><code>fn ws_close(conn: &amp;WsConnection, code: Int)</code><a class="headerlink" href="#fn-ws_closeconn-wsconnection-code-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>conn: &amp;WsConnection</code>, <code>code: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>ws_close sends a close frame and tears down the connection. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-ws_pingconn-wsconnection"><code>fn ws_ping(conn: &amp;WsConnection)</code><a class="headerlink" href="#fn-ws_pingconn-wsconnection" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>conn: &amp;WsConnection</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>ws_ping sends a ping frame. Complexity: network I/O.</p>
+</blockquote>
 <h4 id="fn-ws_pongconn-wsconnection"><code>fn ws_pong(conn: &amp;WsConnection)</code><a class="headerlink" href="#fn-ws_pongconn-wsconnection" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>conn: &amp;WsConnection</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>ws_pong sends a pong frame. Complexity: network I/O.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="wsxi"><code>ws.xi</code><a class="headerlink" href="#wsxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-ws_default_portscheme-str-int"><code>fn ws_default_port(scheme: Str) -&gt; Int</code><a class="headerlink" href="#fn-ws_default_portscheme-str-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>scheme: Str</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_default_port returns the default port for a ws scheme ("ws" -&gt; 80, "wss" -&gt; 443, anything else -&gt; 80). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-ws_parse_urlurl-str-resultstr-int-str-str_1"><code>fn ws_parse_url(url: Str) -&gt; Result[(Str, Int, Str), Str]</code><a class="headerlink" href="#fn-ws_parse_urlurl-str-resultstr-int-str-str_1" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Result[(Str, Int, Str), Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_parse_url splits a ws:// or wss:// URL into (host, port, path). The port is the explicit port from the URL when present, otherwise the scheme default. Returns Err for malformed input. Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-ws_build_urlscheme-str-host-str-port-int-path-str-str"><code>fn ws_build_url(scheme: Str, host: Str, port: Int, path: Str) -&gt; Str</code><a class="headerlink" href="#fn-ws_build_urlscheme-str-host-str-port-int-path-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>scheme: Str</code>, <code>host: Str</code>, <code>port: Int</code>, <code>path: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_build_url builds a ws:// or wss:// URL from host, port, and path. When port matches the scheme default it is omitted. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-ws_is_ws_urlurl-str-bool"><code>fn ws_is_ws_url(url: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ws_is_ws_urlurl-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_is_ws_url returns true if url starts with ws://. Complexity: O(n). Pure.</p>
+</blockquote>
 <h4 id="fn-ws_is_wss_urlurl-str-bool"><code>fn ws_is_wss_url(url: Str) -&gt; Bool</code><a class="headerlink" href="#fn-ws_is_wss_urlurl-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>url: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>ws_is_wss_url returns true if url starts with wss://. Complexity: O(n). Pure.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />

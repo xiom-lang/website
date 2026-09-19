@@ -4541,6 +4541,9 @@
 <hr />
 <h2 id="compressxi"><code>compress.xi</code><a class="headerlink" href="#compressxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-gzipcompressor"><code>type GzipCompressor</code><a class="headerlink" href="#type-gzipcompressor" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>=== Gzip ===</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -4560,7 +4563,9 @@
 <h3 id="fn-with_levellevel-int-gzipcompressor"><code>fn with_level(level: Int) -&gt; GzipCompressor</code><a class="headerlink" href="#fn-with_levellevel-int-gzipcompressor" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>level: Int</code>; returns <code>GzipCompressor</code>. No source comment yet.</p>
 <h3 id="fn-gzip_compressdata-vecuint8-resultvecuint8-str"><code>fn gzip_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Gzip functions === Aggregate facade: delegate to the real sublib implementations (xiom.compress.gzip). The earlier RLE-based duplicates trapped on empty input (requires: data.len() &gt; 0) and were not gzip-compatible.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 18</code></li>
 </ul>
@@ -4570,16 +4575,22 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 18</code></li>
 </ul>
 <h3 id="fn-gzip_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn gzip_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>, <code>max_out: Int</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Capped variant: hard ceiling on decompressed size (bomb guard).</p>
+</blockquote>
 <h3 id="fn-deflate_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn deflate_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>, <code>max_out: Int</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Capped variant: hard ceiling on decompressed size (bomb guard).</p>
+</blockquote>
 <h3 id="fn-gzip_decompressdata-vecuint8-resultvecuint8-str"><code>fn gzip_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-deflate_compressdata-vecuint8-resultvecuint8-str"><code>fn deflate_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Deflate / Raw ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
@@ -4594,7 +4605,9 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-zlib_compressdata-vecuint8-resultvecuint8-str"><code>fn zlib_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-zlib_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Zlib ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 6</code></li>
 </ul>
@@ -4609,7 +4622,9 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-brotli_compressdata-vecuint8-resultvecuint8-str"><code>fn brotli_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-brotli_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Brotli ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 8</code></li>
 </ul>
@@ -4624,7 +4639,9 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-lz4_compressdata-vecuint8-resultvecuint8-str"><code>fn lz4_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== LZ4 ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 1</code></li>
 </ul>
@@ -4634,7 +4651,9 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
 <h3 id="fn-snappy_compressdata-vecuint8-resultvecuint8-str"><code>fn snappy_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-snappy_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Result[Vec[UInt8], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Snappy ===</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 1</code></li>
 </ul>

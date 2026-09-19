@@ -11228,7 +11228,9 @@
 <h4 id="fn-to_bytesn-int-vecuint8"><code>fn to_bytes(n: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-to_bytesn-int-vecuint8" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
 <h4 id="fn-from_bytesbytes-vecuint8-int"><code>fn from_bytes(bytes: &amp;Vec[UInt8]) -&gt; Int</code><a class="headerlink" href="#fn-from_bytesbytes-vecuint8-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>bytes: &amp;Vec[UInt8]</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>TODO(compiler): <code>from_bytes</code> collides with a compiler-builtin name. Any call to a module function named <code>from_bytes</code> taking a <code>&amp;Vec[T]</code> (or Str) parameter produces invalid LLVM IR ("invalid getelementptr indices" on %struct.Vec) -- verified by minimal probe. The real algorithm is kept below (it is correct once the name collision is fixed); callers must avoid it until then.</p>
+</blockquote>
 <h4 id="fn-bytes_to_hexbytes-vecuint8-str"><code>fn bytes_to_hex(bytes: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-bytes_to_hexbytes-vecuint8-str" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>bytes: &amp;Vec[UInt8]</code>; returns <code>Str</code>. No source comment yet.</p>
 <h4 id="fn-hex_to_bytess-str-resultvecuint8-str"><code>fn hex_to_bytes(s: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-hex_to_bytess-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
@@ -11282,9 +11284,13 @@
 <hr />
 <h2 id="convertxi"><code>convert.xi</code><a class="headerlink" href="#convertxi" title="Permanent link">&para;</a></h2>
 <h3 id="fn-identitytx-t-t"><code>fn identity[T](x: T) -&gt; T</code><a class="headerlink" href="#fn-identitytx-t-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>x: T</code>; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Identity conversion</p>
+</blockquote>
 <h3 id="fn-int_to_floatn-int-float64"><code>fn int_to_float(n: Int) -&gt; Float64</code><a class="headerlink" href="#fn-int_to_floatn-int-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>Common conversions</p>
+</blockquote>
 <h3 id="fn-float_to_intf-float64-int"><code>fn float_to_int(f: Float64) -&gt; Int</code><a class="headerlink" href="#fn-float_to_intf-float64-int" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>f: Float64</code>; returns <code>Int</code>. No source comment yet.</p>
 <h3 id="fn-int_to_stringn-int-str"><code>fn int_to_string(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-int_to_stringn-int-str" title="Permanent link">&para;</a></h3>
@@ -11685,6 +11691,9 @@
 <hr />
 <h2 id="irixi"><code>iri.xi</code><a class="headerlink" href="#irixi" title="Permanent link">&para;</a></h2>
 <h4 id="type-iri"><code>type Iri</code><a class="headerlink" href="#type-iri" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Iri -- parsed IRI components.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -12196,6 +12205,9 @@
 <hr />
 <h2 id="urixi"><code>uri.xi</code><a class="headerlink" href="#urixi" title="Permanent link">&para;</a></h2>
 <h4 id="type-uri"><code>type Uri</code><a class="headerlink" href="#type-uri" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Uri -- parsed URI components.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -12243,6 +12255,9 @@
 <hr />
 <h2 id="urlxi"><code>url.xi</code><a class="headerlink" href="#urlxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-url"><code>type Url</code><a class="headerlink" href="#type-url" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Url -- parsed URL components.</p>
+</blockquote>
 <table>
 <thead>
 <tr>

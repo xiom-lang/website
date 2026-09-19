@@ -13567,6 +13567,9 @@
 </tbody>
 </table>
 <h4 id="type-intfrac"><code>type IntFrac</code><a class="headerlink" href="#type-intfrac" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Split result of _split_int_frac: magnitude = q + r / 10^d. PUB (not private): catalog fns returning module-local PRIVATE struct types are degraded to i64 by the checker (see docs/COMPILER_BUGS.md BUG 9) -- the type must be part of the module's public surface.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -13600,9 +13603,13 @@
 <h4 id="fn-bigfloat_half-bigfloat"><code>fn bigfloat_half() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_half-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Takes no arguments; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_pi-bigfloat"><code>fn bigfloat_pi() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_pi-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>pi to 100 decimal digits.</p>
+</blockquote>
 <h4 id="fn-bigfloat_e-bigfloat"><code>fn bigfloat_e() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_e-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>e to 100 decimal digits.</p>
+</blockquote>
 <h4 id="fn-bigfloat_set_round_modemode-roundmode"><code>fn bigfloat_set_round_mode(mode: RoundMode)</code><a class="headerlink" href="#fn-bigfloat_set_round_modemode-roundmode" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>mode: RoundMode</code>; returns nothing. No source comment yet.</p>
 <h4 id="fn-bigfloat_get_round_mode-roundmode"><code>fn bigfloat_get_round_mode() -&gt; RoundMode</code><a class="headerlink" href="#fn-bigfloat_get_round_mode-roundmode" title="Permanent link">&para;</a></h4>
@@ -13610,13 +13617,17 @@
 <h4 id="fn-bigfloat_from_intn-int-bigfloat"><code>fn bigfloat_from_int(n: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_from_intn-int-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_from_floatf-float64-bigfloat"><code>fn bigfloat_from_float(f: Float64) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_from_floatf-float64-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: Float64</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Exact to 15 significant digits (the f64 round-trip guarantee); power-of-10 inputs (0.1, 1e300, 3.14) come out exact.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!xiom.math.is_nan(f)</code></li>
 <li><strong>Precondition:</strong> <code>!xiom.math.is_inf(f)</code></li>
 </ul>
 <h4 id="fn-bigfloat_from_strs-str-resultbigfloat-str"><code>fn bigfloat_from_str(s: Str) -&gt; Result[BigFloat, Str]</code><a class="headerlink" href="#fn-bigfloat_from_strs-str-resultbigfloat-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[BigFloat, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Parse decimal strings: "3.14159", "-1e-10", "2.5E+3", ".5", "3.". Exponent range is Int (i64). Result is normalized.</p>
+</blockquote>
 <h4 id="fn-bigfloat_from_bigintb-bigint-bigfloat"><code>fn bigfloat_from_bigint(b: &amp;BigInt) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_from_bigintb-bigint-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_with_precisionn-int-precision-int-bigfloat"><code>fn bigfloat_with_precision(n: Int, precision: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_with_precisionn-int-precision-int-bigfloat" title="Permanent link">&para;</a></h4>
@@ -13625,14 +13636,20 @@
 <li><strong>Precondition:</strong> <code>precision &gt;= 1</code></li>
 </ul>
 <h4 id="fn-bigfloat_to_strf-bigfloat-str"><code>fn bigfloat_to_str(f: &amp;BigFloat) -&gt; Str</code><a class="headerlink" href="#fn-bigfloat_to_strf-bigfloat-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Exact decimal representation of the stored value ("shortest round-trip" by construction: the representation IS the decimal).</p>
+</blockquote>
 <h4 id="fn-bigfloat_to_str_precf-bigfloat-digits-int-str"><code>fn bigfloat_to_str_prec(f: &amp;BigFloat, digits: Int) -&gt; Str</code><a class="headerlink" href="#fn-bigfloat_to_str_precf-bigfloat-digits-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>, <code>digits: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Round to <code>digits</code> significant digits (current round mode) then format. Trailing zeros produced by rounding stay significant ("1.41421356237310" is 15 digits); a rounding carry that overflows the digit budget collapses to its normalized form ("1" for 0.999...9 -&gt; 20 digits).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>digits &gt;= 1</code></li>
 </ul>
 <h4 id="fn-bigfloat_to_bigintf-bigfloat-bigint"><code>fn bigfloat_to_bigint(f: &amp;BigFloat) -&gt; BigInt</code><a class="headerlink" href="#fn-bigfloat_to_bigintf-bigfloat-bigint" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Truncate toward zero.</p>
+</blockquote>
 <h4 id="fn-bigfloat_to_float128f-bigfloat-float128"><code>fn bigfloat_to_float128(f: &amp;BigFloat) -&gt; Float128</code><a class="headerlink" href="#fn-bigfloat_to_float128f-bigfloat-float128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float128 conversion. Same accumulation strategy as bigfloat_to_float64 but in fp128: ~34 significant digits of the significand survive, and the exponent range extends to ~1.1e4932. Values whose exponent exceeds the fp128 range saturate to +/-inf (fp128 IEEE-754 semantics). TODO(compiler): BUG 33 -- Option[Float128] payload unwrap emits a load of the undefined <code>%struct.Float128</code> (opaque) instead of native <code>fp128</code>, so the Option-returning form cannot be consumed yet; returns the value directly until the unwrap path is fixed.</p>
@@ -13658,7 +13675,9 @@
 <h4 id="fn-bigfloat_mula-bigfloat-b-bigfloat-bigfloat"><code>fn bigfloat_mul(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_mula-bigfloat-b-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>a: &amp;BigFloat</code>, <code>b: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_diva-bigfloat-b-bigfloat-bigfloat"><code>fn bigfloat_div(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_diva-bigfloat-b-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>a: &amp;BigFloat</code>, <code>b: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Truncating long division with guard digits, then rounded to precision. Requires a non-zero divisor.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(b)</code></li>
 </ul>
@@ -13667,17 +13686,23 @@
 <h4 id="fn-bigfloat_absf-bigfloat-bigfloat"><code>fn bigfloat_abs(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_absf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_invf-bigfloat-bigfloat"><code>fn bigfloat_inv(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_invf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>1/f with guard digits, rounded to precision.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(f)</code></li>
 </ul>
 <h4 id="fn-bigfloat_sqrtf-bigfloat-bigfloat"><code>fn bigfloat_sqrt(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_sqrtf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Square root via Newton on the significand (bigint_sqrt is floor-exact), with 2 guard digits. Requires a non-negative operand.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(f)</code></li>
 </ul>
 <h4 id="fn-bigfloat_powbase-bigfloat-exp-int-bigfloat"><code>fn bigfloat_pow(base: &amp;BigFloat, exp: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_powbase-bigfloat-exp-int-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>base: &amp;BigFloat</code>, <code>exp: Int</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Integer power (exp &gt;= 0) by square-and-multiply.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>exp &gt;= 0</code></li>
 </ul>
@@ -13688,11 +13713,17 @@
 <h4 id="fn-bigfloat_ceilf-bigfloat-bigfloat"><code>fn bigfloat_ceil(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_ceilf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_roundf-bigfloat-bigfloat"><code>fn bigfloat_round(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_roundf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Round to the nearest integer, ties to even (magnitude rounding).</p>
+</blockquote>
 <h4 id="fn-bigfloat_fractf-bigfloat-bigfloat"><code>fn bigfloat_fract(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_fractf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Fractional part with the sign of f: f - trunc(f).</p>
+</blockquote>
 <h4 id="fn-bigfloat_with_roundingf-bigfloat-mode-roundmode-digits-int-bigfloat"><code>fn bigfloat_with_rounding(f: &amp;BigFloat, mode: RoundMode, digits: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_with_roundingf-bigfloat-mode-roundmode-digits-int-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>, <code>mode: RoundMode</code>, <code>digits: Int</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Explicit rounding of <code>f</code> to <code>digits</code> significant digits with <code>mode</code>.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>digits &gt;= 1</code></li>
 </ul>
@@ -13709,7 +13740,9 @@
 <h4 id="fn-bigfloat_gea-bigfloat-b-bigfloat-bool"><code>fn bigfloat_ge(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_gea-bigfloat-b-bigfloat-bool" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>a: &amp;BigFloat</code>, <code>b: &amp;BigFloat</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_pi_with_precisionprecision-int-bigfloat"><code>fn bigfloat_pi_with_precision(precision: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_pi_with_precisionprecision-int-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>precision: Int</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>pi / e at explicit precision.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>precision &gt;= 1</code></li>
 </ul>
@@ -13719,9 +13752,13 @@
 <li><strong>Precondition:</strong> <code>precision &gt;= 1</code></li>
 </ul>
 <h4 id="fn-bigfloat_expf-bigfloat-bigfloat"><code>fn bigfloat_exp(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_expf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>exp(x) = exp(r) * 10^k with r = x - k*ln(10) in [-ln(10)/2, ln(10)/2].</p>
+</blockquote>
 <h4 id="fn-bigfloat_lnf-bigfloat-bigfloat"><code>fn bigfloat_ln(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_lnf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>ln(x): x = m * 10^k with m in [1, 10); reduce m to [1, sqrt(10)) via one sqrt; ln(x) = 2<em>atanh((m-1)/(m+1)) + k</em>ln(10).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(f)</code></li>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(f)</code></li>
@@ -13739,62 +13776,96 @@
 <h4 id="fn-bigfloat_tanf-bigfloat-bigfloat"><code>fn bigfloat_tan(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_tanf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_atanf-bigfloat-bigfloat"><code>fn bigfloat_atan(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_atanf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>atan(x) in [-pi/2, pi/2].</p>
+</blockquote>
 <h4 id="fn-bigfloat_atan2y-bigfloat-x-bigfloat-bigfloat"><code>fn bigfloat_atan2(y: &amp;BigFloat, x: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_atan2y-bigfloat-x-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>y: &amp;BigFloat</code>, <code>x: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>atan2(y, x) in [-pi, pi].</p>
+</blockquote>
 <h4 id="fn-bigfloat_pow_bfbase-bigfloat-exp-bigfloat-bigfloat"><code>fn bigfloat_pow_bf(base: &amp;BigFloat, exp: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_pow_bfbase-bigfloat-exp-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>base: &amp;BigFloat</code>, <code>exp: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>base^exp for base &gt;= 0 via exp(exp * ln(base)); negative exponents via inv.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(base)</code></li>
 </ul>
 <h4 id="fn-bigfloat_log2f-bigfloat-bigfloat"><code>fn bigfloat_log2(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_log2f-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>log2(x) = ln(x) / ln(2).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(f)</code></li>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(f)</code></li>
 </ul>
 <h4 id="fn-bigfloat_exp2f-bigfloat-bigfloat"><code>fn bigfloat_exp2(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_exp2f-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>exp2(x) = exp(x * ln(2)).</p>
+</blockquote>
 <h4 id="fn-bigfloat_cbrtf-bigfloat-bigfloat"><code>fn bigfloat_cbrt(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_cbrtf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Cube root (Newton: x = (2x + n/x^2)/3). Works for negative operands via sign symmetry; the significand is scaled to a multiple-of-3 exponent so the final 10^(exp/3) shift is exact.</p>
+</blockquote>
 <h4 id="fn-bigfloat_hypota-bigfloat-b-bigfloat-bigfloat"><code>fn bigfloat_hypot(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_hypota-bigfloat-b-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>a: &amp;BigFloat</code>, <code>b: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>hypot(a, b) = sqrt(a^2 + b^2).</p>
+</blockquote>
 <h4 id="fn-bigfloat_sinhf-bigfloat-bigfloat"><code>fn bigfloat_sinh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_sinhf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Hyperbolic functions via exp.</p>
+</blockquote>
 <h4 id="fn-bigfloat_coshf-bigfloat-bigfloat"><code>fn bigfloat_cosh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_coshf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_tanhf-bigfloat-bigfloat"><code>fn bigfloat_tanh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_tanhf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_asinf-bigfloat-bigfloat"><code>fn bigfloat_asin(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_asinf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>asin(x) = atan(x / sqrt(1 - x^2)); asin(+-1) = +-pi/2.</p>
+</blockquote>
 <h4 id="fn-bigfloat_acosf-bigfloat-bigfloat"><code>fn bigfloat_acos(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_acosf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>acos(x) = pi/2 - asin(x). Exact endpoints: acos(1) = 0, acos(-1) = pi.</p>
+</blockquote>
 <h4 id="fn-bigfloat_asinhf-bigfloat-bigfloat"><code>fn bigfloat_asinh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_asinhf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>asinh(x) = ln(x + sqrt(x^2 + 1)).</p>
+</blockquote>
 <h4 id="fn-bigfloat_acoshf-bigfloat-bigfloat"><code>fn bigfloat_acosh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_acoshf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>acosh(x) = ln(x + sqrt(x^2 - 1)); requires x &gt;= 1.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_lt(f, &amp;bigfloat_one())</code></li>
 </ul>
 <h4 id="fn-bigfloat_atanhf-bigfloat-bigfloat"><code>fn bigfloat_atanh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_atanhf-bigfloat-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>atanh(x) = ln((1 + x)/(1 - x)) / 2; requires |x| &lt; 1.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>bigfloat_lt(&amp;bigfloat_abs(f), &amp;bigfloat_one())</code></li>
 </ul>
 <h4 id="fn-bigfloat_to_str_scif-bigfloat-digits-int-str"><code>fn bigfloat_to_str_sci(f: &amp;BigFloat, digits: Int) -&gt; Str</code><a class="headerlink" href="#fn-bigfloat_to_str_scif-bigfloat-digits-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>, <code>digits: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Scientific notation: d.ddd...e[+-]k with <code>digits</code> significant digits. Zero renders as "0".</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>digits &gt;= 1</code></li>
 </ul>
 <h4 id="fn-bigfloat_from_ration-int-d-int-bigfloat"><code>fn bigfloat_from_ratio(n: Int, d: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_from_ration-int-d-int-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>n: Int</code>, <code>d: Int</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Exact rational n/d at the default precision.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>d != 0</code></li>
 </ul>
 <h4 id="fn-bigfloat_pow10f-bigfloat-n-int-bigfloat"><code>fn bigfloat_pow10(f: &amp;BigFloat, n: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_pow10f-bigfloat-n-int-bigfloat" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>, <code>n: Int</code>; returns <code>BigFloat</code>. No source comment yet.</p>
+<blockquote>
+<p>Exact x * 10^n (pure exponent shift; no rounding).</p>
+</blockquote>
 <h4 id="fn-bigfloat_floor_intf-bigfloat-resultint-str"><code>fn bigfloat_floor_int(f: &amp;BigFloat) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigfloat_floor_intf-bigfloat-resultint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Integer-valued helpers (range-checked to i64).</p>
+</blockquote>
 <h4 id="fn-bigfloat_ceil_intf-bigfloat-resultint-str"><code>fn bigfloat_ceil_int(f: &amp;BigFloat) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigfloat_ceil_intf-bigfloat-resultint-str" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> takes <code>f: &amp;BigFloat</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
 <h4 id="fn-bigfloat_round_intf-bigfloat-resultint-str"><code>fn bigfloat_round_int(f: &amp;BigFloat) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigfloat_round_intf-bigfloat-resultint-str" title="Permanent link">&para;</a></h4>
@@ -13830,11 +13901,17 @@
 <h3 id="fn-bigint_from_intn-int-bigint"><code>fn bigint_from_int(n: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_from_intn-int-bigint" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>BigInt</code>. No source comment yet.</p>
 <h3 id="fn-bigint_from_u64n-uint64-bigint"><code>fn bigint_from_u64(n: UInt64) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_from_u64n-uint64-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: UInt64</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Build from an unsigned 64-bit value. The compiler emits SIGNED LLVM instructions for UInt64 <code>/</code> and <code>%</code>, so the proven unsigned helpers from xiom.num (u64_div_floor / u64_mod_euclid) are used instead -- exact for the full 0 .. 2^64-1 range.</p>
+</blockquote>
 <h3 id="fn-bigint_from_strs-str-resultbigint-str"><code>fn bigint_from_str(s: Str) -&gt; Result[BigInt, Str]</code><a class="headerlink" href="#fn-bigint_from_strs-str-resultbigint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[BigInt, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Parse decimal string. Uses xiom.string.str_slice for char access. O(n2) due to repeated multiply-by-10-and-add during accumulation.</p>
+</blockquote>
 <h3 id="fn-bigint_to_strb-bigint-str"><code>fn bigint_to_str(b: &amp;BigInt) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_strb-bigint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Convert to decimal string via repeated division by BASE.</p>
+</blockquote>
 <h3 id="fn-bigint_adda-bigint-b-bigint-bigint"><code>fn bigint_add(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_adda-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>a: &amp;BigInt</code>, <code>b: &amp;BigInt</code>; returns <code>BigInt</code>. No source comment yet.</p>
 <h3 id="fn-bigint_suba-bigint-b-bigint-bigint"><code>fn bigint_sub(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_suba-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h3>
@@ -13870,24 +13947,40 @@
 <h3 id="fn-bigint_two-bigint"><code>fn bigint_two() -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_two-bigint" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Takes no arguments; returns <code>BigInt</code>. No source comment yet.</p>
 <h3 id="fn-bigint_from_bases-str-base-int-resultbigint-str"><code>fn bigint_from_base(s: Str, base: Int) -&gt; Result[BigInt, Str]</code><a class="headerlink" href="#fn-bigint_from_bases-str-base-int-resultbigint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>, <code>base: Int</code>; returns <code>Result[BigInt, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Parse a string in base 2..36 (optional leading - or +).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>base &gt;= 2 &amp;&amp; base &lt;= 36</code></li>
 </ul>
 <h3 id="fn-bigint_from_hexs-str-resultbigint-str"><code>fn bigint_from_hex(s: Str) -&gt; Result[BigInt, Str]</code><a class="headerlink" href="#fn-bigint_from_hexs-str-resultbigint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[BigInt, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Parse hexadecimal ("ff", "-1a"). Case-insensitive; no "0x" prefix.</p>
+</blockquote>
 <h3 id="fn-bigint_to_baseb-bigint-base-int-str"><code>fn bigint_to_base(b: &amp;BigInt, base: Int) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_baseb-bigint-base-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>, <code>base: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Convert to a string in base 2..36 (digits 0-9, A-Z; "-" prefix for negatives). Returns "" for an invalid base.</p>
+</blockquote>
 <h3 id="fn-bigint_to_hexb-bigint-str"><code>fn bigint_to_hex(b: &amp;BigInt) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_hexb-bigint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Lowercase hexadecimal (matches the parse examples "ff"/"-1a").</p>
+</blockquote>
 <h3 id="fn-bigint_to_intb-bigint-resultint-str"><code>fn bigint_to_int(b: &amp;BigInt) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigint_to_intb-bigint-resultint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Range-checked conversion to Int (i64). Err on overflow.</p>
+</blockquote>
 <h3 id="fn-bigint_to_u64b-bigint-resultuint64-str"><code>fn bigint_to_u64(b: &amp;BigInt) -&gt; Result[UInt64, Str]</code><a class="headerlink" href="#fn-bigint_to_u64b-bigint-resultuint64-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Result[UInt64, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Convert to UInt64 (0 .. 2^64-1). Negative or &gt;= 2^64 -&gt; Err.</p>
+</blockquote>
 <h3 id="fn-bigint_to_u128b-bigint-resultuint128-str"><code>fn bigint_to_u128(b: &amp;BigInt) -&gt; Result[UInt128, Str]</code><a class="headerlink" href="#fn-bigint_to_u128b-bigint-resultuint128-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Result[UInt128, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Convert to UInt128 (0 .. 2^128-1). Negative or &gt;= 2^128 -&gt; Err.</p>
+</blockquote>
 <h3 id="fn-bigint_to_i128b-bigint-resultint128-str"><code>fn bigint_to_i128(b: &amp;BigInt) -&gt; Result[Int128, Str]</code><a class="headerlink" href="#fn-bigint_to_i128b-bigint-resultint128-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Result[Int128, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Convert to Int128 (-2^127 .. 2^127-1). Out of range -&gt; Err.</p>
+</blockquote>
 <h3 id="fn-bigint_is_oneb-bigint-bool"><code>fn bigint_is_one(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_oneb-bigint-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-bigint_is_evenb-bigint-bool"><code>fn bigint_is_even(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_evenb-bigint-bool" title="Permanent link">&para;</a></h3>
@@ -13897,48 +13990,70 @@
 <h3 id="fn-bigint_is_negativeb-bigint-bool"><code>fn bigint_is_negative(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_negativeb-bigint-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-bigint_diva-bigint-b-bigint-bigint"><code>fn bigint_div(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_diva-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: &amp;BigInt</code>, <code>b: &amp;BigInt</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Truncating division (quotient of bigint_div_mod).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigint_is_zero(b)</code></li>
 </ul>
 <h3 id="fn-bigint_pow_modbase-bigint-exp-bigint-m-bigint-bigint"><code>fn bigint_pow_mod(base: &amp;BigInt, exp: &amp;BigInt, m: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_pow_modbase-bigint-exp-bigint-m-bigint-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>base: &amp;BigInt</code>, <code>exp: &amp;BigInt</code>, <code>m: &amp;BigInt</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Modular exponentiation: (base^exp) mod m. exp &gt;= 0, m != 0. Square-and-multiply.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigint_is_zero(m)</code></li>
 <li><strong>Precondition:</strong> <code>!bigint_is_negative(exp)</code></li>
 </ul>
 <h3 id="fn-bigint_sqrtb-bigint-bigint"><code>fn bigint_sqrt(b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_sqrtb-bigint-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Integer square root (floor): Newton's method with a decimal-digit-based initial guess 10^ceil(D/2) &gt;= sqrt(n). Quadratic convergence.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigint_is_negative(b)</code></li>
 </ul>
 <h3 id="fn-bigint_sqrt_remb-bigint-bigint-bigint"><code>fn bigint_sqrt_rem(b: &amp;BigInt) -&gt; (BigInt, BigInt)</code><a class="headerlink" href="#fn-bigint_sqrt_remb-bigint-bigint-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt) -&gt; (BigInt, BigInt</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>(floor sqrt, n - sqrt^2).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigint_is_negative(b)</code></li>
 </ul>
 <h3 id="fn-bigint_lcma-bigint-b-bigint-bigint"><code>fn bigint_lcm(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_lcma-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: &amp;BigInt</code>, <code>b: &amp;BigInt</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Least common multiple. lcm(0, x) == 0.</p>
+</blockquote>
 <h3 id="fn-bigint_ext_gcda-bigint-b-bigint-bigint-bigint-bigint"><code>fn bigint_ext_gcd(a: &amp;BigInt, b: &amp;BigInt) -&gt; (BigInt, BigInt, BigInt)</code><a class="headerlink" href="#fn-bigint_ext_gcda-bigint-b-bigint-bigint-bigint-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: &amp;BigInt</code>, <code>b: &amp;BigInt) -&gt; (BigInt, BigInt, BigInt</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Extended Euclidean algorithm: returns (g, x, y) with a<em>x + b</em>y == g, g = gcd(|a|, |b|) &gt; 0.</p>
+</blockquote>
 <h3 id="fn-bigint_is_primeb-bigint-bool"><code>fn bigint_is_prime(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_primeb-bigint-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Miller-Rabin primality test. Deterministic for n &lt; 3.3e24 (bases 2..37), probabilistic (error &lt; 4^-rounds) above.</p>
+</blockquote>
 <h3 id="fn-bigint_next_primeb-bigint-bigint"><code>fn bigint_next_prime(b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_next_primeb-bigint-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Smallest prime strictly greater than b. next_prime(1) == 2.</p>
+</blockquote>
 <h3 id="fn-bigint_factorialn-int-bigint"><code>fn bigint_factorial(n: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_factorialn-int-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>n! for n &gt;= 0. O(n) BigInt multiplications.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>n &gt;= 0</code></li>
 </ul>
 <h3 id="fn-bigint_binomialn-int-k-int-bigint"><code>fn bigint_binomial(n: Int, k: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_binomialn-int-k-int-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: Int</code>, <code>k: Int</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>C(n, k) for 0 &lt;= k &lt;= n. Multiplicative formula; every intermediate division is exact.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>n &gt;= 0</code></li>
 <li><strong>Precondition:</strong> <code>k &gt;= 0</code></li>
 <li><strong>Precondition:</strong> <code>k &lt;= n</code></li>
 </ul>
 <h3 id="fn-bigint_fibonaccin-int-bigint"><code>fn bigint_fibonacci(n: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_fibonaccin-int-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>F(n): F(0)=0, F(1)=1. Iterative, O(n) BigInt additions.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>n &gt;= 0</code></li>
 </ul>
@@ -13949,14 +14064,20 @@
 <h3 id="fn-bigint_bit_xora-bigint-b-bigint-bigint"><code>fn bigint_bit_xor(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_bit_xora-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>a: &amp;BigInt</code>, <code>b: &amp;BigInt</code>; returns <code>BigInt</code>. No source comment yet.</p>
 <h3 id="fn-bigint_shift_rightb-bigint-n-int-bigint"><code>fn bigint_shift_right(b: &amp;BigInt, n: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_shift_rightb-bigint-n-int-bigint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>, <code>n: Int</code>; returns <code>BigInt</code>. No source comment yet.</p>
+<blockquote>
+<p>Arithmetic (floor) right shift by n bits: b &gt;&gt; n. For negative b this rounds toward -inf (true arithmetic shift).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>n &gt;= 0</code></li>
 </ul>
 <h3 id="fn-bigint_popcountb-bigint-int"><code>fn bigint_popcount(b: &amp;BigInt) -&gt; Int</code><a class="headerlink" href="#fn-bigint_popcountb-bigint-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Number of set bits in |b| (well-defined for all signs).</p>
+</blockquote>
 <h3 id="fn-bigint_bit_lenb-bigint-int"><code>fn bigint_bit_len(b: &amp;BigInt) -&gt; Int</code><a class="headerlink" href="#fn-bigint_bit_lenb-bigint-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>b: &amp;BigInt</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Bits needed to represent |b|; 0 for zero.</p>
+</blockquote>
 <h3 id="fn-bigint_eqa-bigint-b-bigint-bool"><code>fn bigint_eq(a: &amp;BigInt, b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_eqa-bigint-b-bigint-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>a: &amp;BigInt</code>, <code>b: &amp;BigInt</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-bigint_lta-bigint-b-bigint-bool"><code>fn bigint_lt(a: &amp;BigInt, b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_lta-bigint-b-bigint-bool" title="Permanent link">&para;</a></h3>
@@ -14123,7 +14244,9 @@
 <h3 id="fn-epsilont-t"><code>fn epsilon[T]() -&gt; T</code><a class="headerlink" href="#fn-epsilont-t" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Takes no arguments; returns <code>T</code>. No source comment yet.</p>
 <h3 id="fn-gcda-int-b-int-int"><code>fn gcd(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-gcda-int-b-int-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: Int</code>, <code>b: Int</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Integer-specific</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 <li><strong>Postcondition:</strong> <code>a == 0 &amp;&amp; b == 0 =&gt; result == 0</code></li>
@@ -14166,7 +14289,9 @@
 <h3 id="fn-from_len-int-int"><code>fn from_le(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-from_len-int-int" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>n: Int</code>; returns <code>Int</code>. No source comment yet.</p>
 <h3 id="fn-is_finitex-float64-bool"><code>fn is_finite(x: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-is_finitex-float64-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>x: Float64</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>Float-specific</p>
+</blockquote>
 <h3 id="fn-is_normalx-float64-bool"><code>fn is_normal(x: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-is_normalx-float64-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>x: Float64</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-classifyx-float64-int"><code>fn classify(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-classifyx-float64-int" title="Permanent link">&para;</a></h3>
@@ -14202,13 +14327,17 @@
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-saturating_addta-t-b-t-t"><code>fn saturating_add[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-saturating_addta-t-b-t-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: T</code>, <code>b: T</code>; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Saturation arithmetic</p>
+</blockquote>
 <h3 id="fn-saturating_subta-t-b-t-t"><code>fn saturating_sub[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-saturating_subta-t-b-t-t" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>a: T</code>, <code>b: T</code>; returns <code>T</code>. No source comment yet.</p>
 <h3 id="fn-saturating_multa-t-b-t-t"><code>fn saturating_mul[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-saturating_multa-t-b-t-t" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>a: T</code>, <code>b: T</code>; returns <code>T</code>. No source comment yet.</p>
 <h3 id="fn-checked_addta-t-b-t-optiont"><code>fn checked_add[T](a: T, b: T) -&gt; Option[T]</code><a class="headerlink" href="#fn-checked_addta-t-b-t-optiont" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: T</code>, <code>b: T</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<blockquote>
+<p>Checked arithmetic</p>
+</blockquote>
 <h3 id="fn-checked_subta-t-b-t-optiont"><code>fn checked_sub[T](a: T, b: T) -&gt; Option[T]</code><a class="headerlink" href="#fn-checked_subta-t-b-t-optiont" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>a: T</code>, <code>b: T</code>; returns <code>Option[T]</code>. No source comment yet.</p>
 <h3 id="fn-checked_multa-t-b-t-optiont"><code>fn checked_mul[T](a: T, b: T) -&gt; Option[T]</code><a class="headerlink" href="#fn-checked_multa-t-b-t-optiont" title="Permanent link">&para;</a></h3>
@@ -14219,13 +14348,17 @@
 <li><strong>Postcondition:</strong> <code>b == zero() =&gt; result is None</code></li>
 </ul>
 <h3 id="fn-wrapping_addta-t-b-t-t"><code>fn wrapping_add[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-wrapping_addta-t-b-t-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>a: T</code>, <code>b: T</code>; returns <code>T</code>. No source comment yet.</p>
+<blockquote>
+<p>Wrapping arithmetic</p>
+</blockquote>
 <h3 id="fn-wrapping_subta-t-b-t-t"><code>fn wrapping_sub[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-wrapping_subta-t-b-t-t" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>a: T</code>, <code>b: T</code>; returns <code>T</code>. No source comment yet.</p>
 <h3 id="fn-wrapping_multa-t-b-t-t"><code>fn wrapping_mul[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-wrapping_multa-t-b-t-t" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>a: T</code>, <code>b: T</code>; returns <code>T</code>. No source comment yet.</p>
 <h3 id="fn-parse_ints-str-resultint-str"><code>fn parse_int(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-parse_ints-str-resultint-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Parse</p>
+</blockquote>
 <h3 id="fn-parse_floats-str-resultfloat64-str"><code>fn parse_float(s: Str) -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-parse_floats-str-resultfloat64-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Result[Float64, Str]</code>. No source comment yet.</p>
 <h3 id="fn-parse_int_radixs-str-radix-int-resultint-str"><code>fn parse_int_radix(s: Str, radix: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-parse_int_radixs-str-radix-int-resultint-str" title="Permanent link">&para;</a></h3>
@@ -14355,6 +14488,9 @@
 <p>Parse integer from string in given base (2-36). Delegates to parse_int_radix. Returns None on invalid input or overflow. O(N).</p>
 </blockquote>
 <h3 id="type-fraction_1"><code>type Fraction</code><a class="headerlink" href="#type-fraction_1" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>-- Rational number (num / den, den &gt; 0, always reduced) -------------------</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -14374,6 +14510,9 @@
 </tbody>
 </table>
 <h3 id="type-u64divrem"><code>type U64DivRem</code><a class="headerlink" href="#type-u64divrem" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Internal: unsigned 64-bit division result.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -14393,6 +14532,9 @@
 </tbody>
 </table>
 <h3 id="type-i128divrem"><code>type I128DivRem</code><a class="headerlink" href="#type-i128divrem" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Internal: Int128 division by a small scalar.</p>
+</blockquote>
 <table>
 <thead>
 <tr>

@@ -11306,27 +11306,49 @@
 <hr />
 <h2 id="dirxi"><code>dir.xi</code><a class="headerlink" href="#dirxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-dir_current-resultstr-str"><code>fn dir_current() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-dir_current-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_current returns the current working directory. Delegates to env.current_dir. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-dir_createpath-str-resultunit-str"><code>fn dir_create(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_createpath-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_create creates a single directory. Delegates to io.create_dir. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-dir_create_allpath-str-resultunit-str"><code>fn dir_create_all(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_create_allpath-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_create_all creates a directory and all missing parents. Delegates to io.create_dir_all. Complexity: O(depth) syscalls.</p>
+</blockquote>
 <h4 id="fn-dir_listpath-str-resultvecstr-str"><code>fn dir_list(path: Str) -&gt; Result[Vec[Str], Str]</code><a class="headerlink" href="#fn-dir_listpath-str-resultvecstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Vec[Str], Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_list returns the names of entries in a directory. Delegates to io.list_dir. Complexity: O(n) syscalls.</p>
+</blockquote>
 <h4 id="fn-dir_existspath-str-bool"><code>fn dir_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_existspath-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_exists returns true if path exists and is a directory. Delegates to io.is_dir. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-dir_removepath-str-resultunit-str"><code>fn dir_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_removepath-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_remove removes an empty directory. Delegates to io.remove_file (which handles both files and dirs via the C runtime). Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-dir_temp-str"><code>fn dir_temp() -&gt; Str</code><a class="headerlink" href="#fn-dir_temp-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_temp returns the system temporary directory. Delegates to env.temp_dir. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-dir_home-optionstr"><code>fn dir_home() -&gt; Option[Str]</code><a class="headerlink" href="#fn-dir_home-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_home returns the current user's home directory, if known. Delegates to env.home_dir. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-dir_is_emptypath-str-bool"><code>fn dir_is_empty(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_is_emptypath-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_is_empty returns true if a directory contains no entries. Complexity: O(n) syscalls.</p>
+</blockquote>
 <h4 id="fn-dir_joina-str-b-str-str"><code>fn dir_join(a: Str, b: Str) -&gt; Str</code><a class="headerlink" href="#fn-dir_joina-str-b-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>a: Str</code>, <code>b: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_join joins two path components with the OS separator. Delegates to io.join_paths. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-dir_parentpath-str-optionstr"><code>fn dir_parent(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-dir_parentpath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>dir_parent returns the parent directory of path, or None if there is none. Delegates to fs.fs_parent_dir. Complexity: O(n).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
@@ -11393,25 +11415,45 @@
 <h3 id="fn-path_separator-str"><code>fn path_separator() -&gt; Str</code><a class="headerlink" href="#fn-path_separator-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
 <h3 id="fn-var_orname-str-default-str-str"><code>fn var_or(name: Str, default: Str) -&gt; Str</code><a class="headerlink" href="#fn-var_orname-str-default-str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>name: Str</code>, <code>default: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>var_or returns the value of the environment variable name, or default if the variable is not set. Complexity: O(1).</p>
+</blockquote>
 <h3 id="fn-has_varname-str-bool"><code>fn has_var(name: Str) -&gt; Bool</code><a class="headerlink" href="#fn-has_varname-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>name: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>has_var returns true if the environment variable name is set. Complexity: O(1).</p>
+</blockquote>
 <h3 id="fn-all_var_names-vecstr"><code>fn all_var_names() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-all_var_names-vecstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>all_var_names returns an empty vector on all platforms -- the Xiom runtime does not support iterating over environment variables via the C standard library.</p>
+</blockquote>
 <h3 id="fn-all_var_values-vecstr"><code>fn all_var_values() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-all_var_values-vecstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>all_var_values returns an empty vector on all platforms -- see all_var_names for rationale.</p>
+</blockquote>
 <h3 id="fn-set_var_if_absentname-str-value-str"><code>fn set_var_if_absent(name: Str, value: Str)</code><a class="headerlink" href="#fn-set_var_if_absentname-str-value-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>name: Str</code>, <code>value: Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>set_var_if_absent sets name to value only if name is not already set. Complexity: O(1).  WARNING: setenv is not available on Windows MSVC.</p>
+</blockquote>
 <h3 id="fn-clear_varname-str"><code>fn clear_var(name: Str)</code><a class="headerlink" href="#fn-clear_varname-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>name: Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>clear_var removes the environment variable name. Alias for remove_var.  Same Windows caveat.</p>
+</blockquote>
 <h3 id="fn-args_len-int"><code>fn args_len() -&gt; Int</code><a class="headerlink" href="#fn-args_len-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>args_len returns the number of command-line arguments. Complexity: O(1).</p>
+</blockquote>
 <h3 id="fn-arg_ati-int-optionstr"><code>fn arg_at(i: Int) -&gt; Option[Str]</code><a class="headerlink" href="#fn-arg_ati-int-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>i: Int</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>arg_at returns the i-th command-line argument, or None if i is out of bounds.  Complexity: O(1).</p>
+</blockquote>
 <h3 id="fn-arg_containss-str-bool"><code>fn arg_contains(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-arg_containss-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>arg_contains returns true if any command-line argument equals s. Complexity: O(n) where n = arg count.</p>
+</blockquote>
 <h3 id="fn-current_dir_str-str"><code>fn current_dir_str() -&gt; Str</code><a class="headerlink" href="#fn-current_dir_str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>current_dir_str returns the current working directory as a Str, or "." if the OS call fails.  Wraps getcwd directly. Complexity: O(1).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
@@ -11467,6 +11509,9 @@
 <hr />
 <h2 id="eventxi"><code>event.xi</code><a class="headerlink" href="#eventxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-epollevent"><code>type EpollEvent</code><a class="headerlink" href="#type-epollevent" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct EpollEvent { events: UInt32, data: UInt64 } - one epoll readiness event; layout matches struct epoll_event.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11486,6 +11531,9 @@
 </tbody>
 </table>
 <h4 id="type-kevent"><code>type KEvent</code><a class="headerlink" href="#type-kevent" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct KEvent { ident: UInt64, filter: Int16, flags: UInt16, fflags: UInt32, data: Int64 } - one kqueue event; layout matches struct kevent.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11517,6 +11565,9 @@
 </tbody>
 </table>
 <h4 id="type-pollfd"><code>type PollFd</code><a class="headerlink" href="#type-pollfd" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct PollFd { fd: Int, events: Int16, revents: Int16 } - one poll descriptor; layout matches struct pollfd.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -11628,29 +11679,53 @@
 <hr />
 <h2 id="filexi"><code>file.xi</code><a class="headerlink" href="#filexi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-file_readpath-str-resultstr-str"><code>fn file_read(path: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-file_readpath-str-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_read reads an entire file as text. Delegates to io.read_file. Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-file_writepath-str-content-str-resultunit-str"><code>fn file_write(path: Str, content: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_writepath-str-content-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>content: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_write writes text to a file, truncating if it exists. Delegates to io.write_file. Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-file_appendpath-str-content-str-resultunit-str"><code>fn file_append(path: Str, content: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_appendpath-str-content-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>content: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_append appends text to a file, creating it if needed. Delegates to io.append_file. Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-file_existspath-str-bool"><code>fn file_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-file_existspath-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>file_exists returns true if path exists (file or directory). Implemented locally via io.metadata to avoid a same-name delegation. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-file_removepath-str-resultunit-str"><code>fn file_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_removepath-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_remove deletes a file. Delegates to io.remove_file. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-file_copysrc-str-dst-str-resultunit-str"><code>fn file_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_copysrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>src: Str</code>, <code>dst: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_copy copies a file from src to dst. Delegates to io.copy_file. Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-file_renamesrc-str-dst-str-resultunit-str"><code>fn file_rename(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_renamesrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>src: Str</code>, <code>dst: Str</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_rename renames (moves) a file or directory. Delegates to io.rename. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-file_sizepath-str-resultint-str"><code>fn file_size(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-file_sizepath-str-resultint-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Result[Int, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_size returns the size of a file in bytes. Implemented locally via io.metadata. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-file_extensionpath-str-optionstr"><code>fn file_extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_extensionpath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_extension returns the extension of path's file name (text after the last dot), or None. Delegates to fs.fs_extension. Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-file_stempath-str-optionstr"><code>fn file_stem(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_stempath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_stem returns path without its last extension. Delegates to fs.fs_stem. Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-file_namepath-str-optionstr"><code>fn file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_namepath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_name returns the file-name portion of path, or None. Delegates to fs.fs_file_name. Complexity: O(n).</p>
+</blockquote>
 <h4 id="fn-file_parentpath-str-optionstr"><code>fn file_parent(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_parentpath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>file_parent returns the directory portion of path, or None. Delegates to fs.fs_parent_dir. Complexity: O(n).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
@@ -11748,30 +11823,53 @@
 <hr />
 <h2 id="fsxi"><code>fs.xi</code><a class="headerlink" href="#fsxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-fs_file_namepath-str-optionstr"><code>fn fs_file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_file_namepath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_file_name returns the file-name portion of path (after the last '/' or '\'), or None if path is empty or ends in a separator.</p>
+</blockquote>
 <h4 id="fn-fs_parent_dirpath-str-optionstr"><code>fn fs_parent_dir(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_parent_dirpath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_parent_dir returns the directory portion of path (everything before the last '/' or '\'), or None if path has no parent.</p>
+</blockquote>
 <h4 id="fn-fs_extensionpath-str-optionstr"><code>fn fs_extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_extensionpath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_extension returns the extension (text after the last dot in the file name), or None if there is no dot or the dot is leading/trailing. "a/b.tar.gz" -&gt; Some("gz"); "a/b" -&gt; None.</p>
+</blockquote>
 <h4 id="fn-fs_stempath-str-optionstr"><code>fn fs_stem(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_stempath-str-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_stem returns the path with the last extension stripped, or the path unchanged if it has no extension. "a/b.tar.gz" -&gt; "a/b.tar".</p>
+</blockquote>
 <h4 id="fn-fs_is_hiddenpath-str-bool"><code>fn fs_is_hidden(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_is_hiddenpath-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_is_hidden returns true if the file name starts with a dot, except for the special entries "." and "..".</p>
+</blockquote>
 <h4 id="fn-fs_join_partsparts-vecstr-str"><code>fn fs_join_parts(parts: Vec[Str]) -&gt; Str</code><a class="headerlink" href="#fn-fs_join_partsparts-vecstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>parts: Vec[Str]</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_join_parts joins the given components with the OS path separator (env.path_separator: "\" on Windows, "/" elsewhere).</p>
+</blockquote>
 <h4 id="fn-fs_normalizepath-str-str"><code>fn fs_normalize(path: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_normalizepath-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_normalize collapses duplicate separators and resolves "." and ".." lexically, without touching the filesystem. Leading "/" and "C:\"-style drive prefixes are preserved. "a/b/../c//d/./e" -&gt; "a/c/d/e".</p>
+</blockquote>
 <h4 id="fn-fs_with_extensionpath-str-new_ext-str-str"><code>fn fs_with_extension(path: Str, new_ext: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_with_extensionpath-str-new_ext-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str</code>, <code>new_ext: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_with_extension replaces the extension of path with new_ext, or appends it if path has no extension. "a/b.txt" + "md" -&gt; "a/b.md".</p>
+</blockquote>
 <h4 id="fn-fs_splitpath-str-str-str"><code>fn fs_split(path: Str) -&gt; (Str, Str)</code><a class="headerlink" href="#fn-fs_splitpath-str-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>path: Str) -&gt; (Str, Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>fs_split returns (dir, file) -- the directory and file-name portions.</p>
+</blockquote>
 <h4 id="fn-fs_unique_pathdir-str-name-str-str"><code>fn fs_unique_path(dir: Str, name: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_unique_pathdir-str-name-str-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>dir: Str</code>, <code>name: Str</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>fs_unique_path returns dir/name if it does not exist, otherwise appends " (1)", " (2)", ... up to a maximum of 1000 attempts.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="fs_ffixi"><code>fs_ffi.xi</code><a class="headerlink" href="#fs_ffixi" title="Permanent link">&para;</a></h2>
 <h4 id="type-mappedfile"><code>type MappedFile</code><a class="headerlink" href="#type-mappedfile" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct MappedFile { ptr: Int; length: Int; fd: Int; } - mmap result.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -12195,38 +12293,62 @@
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
 </ul>
 <h3 id="fn-hostname-resultstr-str"><code>fn hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-hostname-resultstr-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>hostname returns the system hostname via gethostname (POSIX) or GetComputerNameA (Windows).  Uses an internal static buffer in the C runtime.  Returns Err on failure.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-os_version_str-str"><code>fn os_version_str() -&gt; Str</code><a class="headerlink" href="#fn-os_version_str-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>os_version_str returns a best-effort OS version string via the xiom_os_version_str runtime intrinsic (GetVersionExA on Windows, uname on POSIX).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-is_unix-bool"><code>fn is_unix() -&gt; Bool</code><a class="headerlink" href="#fn-is_unix-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>is_unix returns true if the platform is linux or macos.</p>
+</blockquote>
 <h3 id="fn-user_name-optionstr"><code>fn user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-user_name-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>user_name returns the current user name by reading the USERNAME (Windows) or USER (Unix) environment variable.</p>
+</blockquote>
 <h3 id="fn-total_memory_mb-int"><code>fn total_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-total_memory_mb-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>total_memory_mb returns total system memory in MiB. Wraps total_memory() / (1024 * 1024).  Complexity: O(1).</p>
+</blockquote>
 <h3 id="fn-free_memory_mb-int"><code>fn free_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-free_memory_mb-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>free_memory_mb returns free system memory in MiB. Wraps free_memory() / (1024 * 1024).  Complexity: O(1).</p>
+</blockquote>
 <h3 id="fn-page_size-int"><code>fn page_size() -&gt; Int</code><a class="headerlink" href="#fn-page_size-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>page_size returns the system page size in bytes. Returns 4096 -- the runtime does not expose sysconf(_SC_PAGESIZE).</p>
+</blockquote>
 <h3 id="fn-terminal_width-optionint"><code>fn terminal_width() -&gt; Option[Int]</code><a class="headerlink" href="#fn-terminal_width-optionint" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>terminal_width returns the terminal width in columns, if detectable. The Xiom runtime does not expose TIOCGWINSZ -- always returns None.</p>
+</blockquote>
 <h3 id="fn-sleep_millisms-int"><code>fn sleep_millis(ms: Int)</code><a class="headerlink" href="#fn-sleep_millisms-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ms: Int</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>sleep_millis sleeps for at least the given number of milliseconds. Uses busy-wait; usleep is not available on Windows MSVC.</p>
+</blockquote>
 <h3 id="fn-current_exe_path-optionstr"><code>fn current_exe_path() -&gt; Option[Str]</code><a class="headerlink" href="#fn-current_exe_path-optionstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>current_exe_path returns the path of the currently running executable. Delegates to env.current_exe().  Returns None on failure.</p>
+</blockquote>
 <h3 id="fn-process_id-int"><code>fn process_id() -&gt; Int</code><a class="headerlink" href="#fn-process_id-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>process_id returns the current process ID via the xiom_getpid runtime intrinsic.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-cpu_model-str"><code>fn cpu_model() -&gt; Str</code><a class="headerlink" href="#fn-cpu_model-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>cpu_model returns a human-readable CPU model string. The Xiom runtime does not expose CPUID or /proc/cpuinfo. Always returns "unknown".</p>
+</blockquote>
 <hr />
 <hr />
 <h2 id="pathxi"><code>path.xi</code><a class="headerlink" href="#pathxi" title="Permanent link">&para;</a></h2>
@@ -12263,7 +12385,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Eq, Clone</code></p>
 <h3 id="fn-news-str-path"><code>fn new(s: Str) -&gt; Path</code><a class="headerlink" href="#fn-news-str-path" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>s: Str</code>; returns <code>Path</code>. No source comment yet.</p>
+<blockquote>
+<p>Path constructors</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.inner == s</code></li>
 </ul>
@@ -12278,7 +12402,9 @@
 <li><strong>Postcondition:</strong> <code>result.inner == s</code></li>
 </ul>
 <h3 id="fn-parentself-self-optionpath"><code>fn parent(self: Self) -&gt; Option[Path]</code><a class="headerlink" href="#fn-parentself-self-optionpath" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Path]</code>. No source comment yet.</p>
+<blockquote>
+<p>Path operations</p>
+</blockquote>
 <h3 id="fn-file_nameself-self-optionstr"><code>fn file_name(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_nameself-self-optionstr" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
 <h3 id="fn-extensionself-self-optionstr"><code>fn extension(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-extensionself-self-optionstr" title="Permanent link">&para;</a></h3>
@@ -12325,7 +12451,9 @@
 <h3 id="fn-ends_withself-self-child-path-bool"><code>fn ends_with(self: Self, child: Path) -&gt; Bool</code><a class="headerlink" href="#fn-ends_withself-self-child-path-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; takes <code>child: Path</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-pushself-self-component-str"><code>fn push(self: Self, component: Str)</code><a class="headerlink" href="#fn-pushself-self-component-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; takes <code>component: Str</code>; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>PathBuf operations NOTE: These take &amp;mut self (the old by-value forms mutated a copy and required callers to capture the return -- the stale "&amp;mut self not supported" note predates the BUG 55 fixes; cell.xi &amp;mut self works).</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>component.len() &gt;= 0</code></li>
 </ul>
@@ -12336,46 +12464,80 @@
 <h3 id="fn-clearself-self"><code>fn clear(self: Self)</code><a class="headerlink" href="#fn-clearself-self" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns nothing. No source comment yet.</p>
 <h3 id="fn-path_separator-str_1"><code>fn path_separator() -&gt; Str</code><a class="headerlink" href="#fn-path_separator-str_1" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Utility</p>
+</blockquote>
 <h3 id="fn-path_is_absolute_strp-str-bool"><code>fn path_is_absolute_str(p: Str) -&gt; Bool</code><a class="headerlink" href="#fn-path_is_absolute_strp-str-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>p: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>path_is_absolute_str returns true if p starts with '/' or '\'.</p>
+</blockquote>
 <hr />
 <hr />
 <h2 id="platformxi"><code>platform.xi</code><a class="headerlink" href="#platformxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-platform_name-str"><code>fn platform_name() -&gt; Str</code><a class="headerlink" href="#fn-platform_name-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_name returns the OS name ("windows", "linux", "macos", ...). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-platform_arch-str"><code>fn platform_arch() -&gt; Str</code><a class="headerlink" href="#fn-platform_arch-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_arch returns the target architecture ("x86_64", ...). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-platform_family-str"><code>fn platform_family() -&gt; Str</code><a class="headerlink" href="#fn-platform_family-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_family returns "unix" or "windows". Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-platform_is_windows-bool"><code>fn platform_is_windows() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_windows-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_is_windows returns true on Windows. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-platform_is_linux-bool"><code>fn platform_is_linux() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_linux-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_is_linux returns true on Linux. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-platform_is_macos-bool"><code>fn platform_is_macos() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_macos-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_is_macos returns true on macOS. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-platform_is_unix-bool"><code>fn platform_is_unix() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_unix-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_is_unix returns true on Linux or macOS. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-platform_hostname-resultstr-str"><code>fn platform_hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-platform_hostname-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_hostname returns the system hostname. Implemented locally via the env.TEMP-free C getenv-free approach: reads the COMPUTERNAME variable (Windows) or HOSTNAME (Unix) as a best effort. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-platform_os_version-str"><code>fn platform_os_version() -&gt; Str</code><a class="headerlink" href="#fn-platform_os_version-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_os_version returns a best-effort OS version string derived from environment constants. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-platform_user_name-optionstr"><code>fn platform_user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-platform_user_name-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>platform_user_name returns the current user name from the USERNAME (Windows) or USER (Unix) environment variable. Complexity: O(1).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="procxi"><code>proc.xi</code><a class="headerlink" href="#procxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-proc_is_runningpid-int-bool"><code>fn proc_is_running(pid: Int) -&gt; Bool</code><a class="headerlink" href="#fn-proc_is_runningpid-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>pid: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>proc_is_running returns true if the process with the given pid is still alive. Delegates to xiom.process.is_running, which wraps the xiom_process_running runtime intrinsic. Pids must be positive.</p>
+</blockquote>
 <h4 id="fn-proc_exit_code_successcode-int-bool"><code>fn proc_exit_code_success(code: Int) -&gt; Bool</code><a class="headerlink" href="#fn-proc_exit_code_successcode-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>proc_exit_code_success returns true when the exit code indicates success (code == 0).</p>
+</blockquote>
 <h4 id="fn-proc_signal_namesig-int-str"><code>fn proc_signal_name(sig: Int) -&gt; Str</code><a class="headerlink" href="#fn-proc_signal_namesig-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>sig: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>proc_signal_name maps a POSIX signal number to its conventional name, or returns "SIG" + the number for unknown signals.</p>
+</blockquote>
 <h4 id="fn-proc_status_textcode-int-str"><code>fn proc_status_text(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-proc_status_textcode-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>code: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>proc_status_text formats a process exit code as "exit(<code>)". The runtime does not expose wait-status decoding (WIFSIGNALED etc.), so signals cannot be distinguished here.</p>
+</blockquote>
 <h4 id="fn-proc_command_existscmd-str-bool"><code>fn proc_command_exists(cmd: Str) -&gt; Bool</code><a class="headerlink" href="#fn-proc_command_existscmd-str-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>cmd: Str</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>proc_command_exists returns true if the named command can be found on the system PATH. Delegates to xiom.process.command_exists, which runs "where <name>" (Windows) or "which <name>" (Unix) via the shell. Spawning the command itself is not a reliable existence probe, since the system()-based spawn reports the command's exit code rather than a spawn failure.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
@@ -12530,17 +12692,29 @@
 <hr />
 <h2 id="signalxi"><code>signal.xi</code><a class="headerlink" href="#signalxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-signal_namenum-int-str"><code>fn signal_name(num: Int) -&gt; Str</code><a class="headerlink" href="#fn-signal_namenum-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>num: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>signal_name returns the canonical name for a signal number, or "unknown" for numbers outside the table. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-signal_codename-str-optionint"><code>fn signal_code(name: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-signal_codename-str-optionint" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>name: Str</code>; returns <code>Option[Int]</code>. No source comment yet.</p>
+<blockquote>
+<p>signal_code returns the signal number for a canonical name, or None. Matching is case-insensitive on the letters. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-signal_is_ignorablenum-int-bool"><code>fn signal_is_ignorable(num: Int) -&gt; Bool</code><a class="headerlink" href="#fn-signal_is_ignorablenum-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>num: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>signal_is_ignorable returns true for signals that can be ignored (not SIGKILL or SIGSTOP). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-signal_is_catchablenum-int-bool"><code>fn signal_is_catchable(num: Int) -&gt; Bool</code><a class="headerlink" href="#fn-signal_is_catchablenum-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>num: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>signal_is_catchable returns true for signals a process can install a handler for (not SIGKILL or SIGSTOP). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-signal_default_actionnum-int-str"><code>fn signal_default_action(num: Int) -&gt; Str</code><a class="headerlink" href="#fn-signal_default_actionnum-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>num: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>signal_default_action returns the default disposition ("term", "core", "stop", "cont", "ignore", or "unknown"). Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-signal_raisenum-int-resultunit-str"><code>fn signal_raise(num: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-signal_raisenum-int-resultunit-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>num: Int</code>; returns <code>Result[Unit, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>signal_raise sends a signal to the current process via the runtime raise() primitive. Complexity: O(1) syscall.</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
@@ -12606,60 +12780,109 @@
 <hr />
 <h2 id="sysinfoxi"><code>sysinfo.xi</code><a class="headerlink" href="#sysinfoxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-sysinfo_cpu_count-int"><code>fn sysinfo_cpu_count() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_cpu_count-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_cpu_count returns the number of logical CPUs. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-sysinfo_total_memory-int"><code>fn sysinfo_total_memory() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_total_memory-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_total_memory returns total system memory in bytes. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-sysinfo_free_memory-int"><code>fn sysinfo_free_memory() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_free_memory-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_free_memory returns free system memory in bytes. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-sysinfo_total_memory_mb-int"><code>fn sysinfo_total_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_total_memory_mb-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_total_memory_mb returns total system memory in MiB. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-sysinfo_free_memory_mb-int"><code>fn sysinfo_free_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_free_memory_mb-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_free_memory_mb returns free system memory in MiB. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-sysinfo_page_size-int"><code>fn sysinfo_page_size() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_page_size-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_page_size returns the system page size in bytes (4096 on the supported runtimes). Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-sysinfo_hostname-resultstr-str"><code>fn sysinfo_hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-sysinfo_hostname-resultstr-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Result[Str, Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_hostname returns the system hostname from the COMPUTERNAME (Windows) or HOSTNAME (Unix) environment variable. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-sysinfo_os_name-str"><code>fn sysinfo_os_name() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_os_name-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_os_name returns the OS name. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-sysinfo_os_version-str"><code>fn sysinfo_os_version() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_os_version-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_os_version returns a best-effort OS version string derived from environment constants. Complexity: O(1). Pure.</p>
+</blockquote>
 <h4 id="fn-sysinfo_process_id-int"><code>fn sysinfo_process_id() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_process_id-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_process_id returns the current process ID. Complexity: O(1) syscall.</p>
+</blockquote>
 <h4 id="fn-sysinfo_user_name-optionstr"><code>fn sysinfo_user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-sysinfo_user_name-optionstr" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Option[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_user_name returns the current user name from the USERNAME (Windows) or USER (Unix) environment variable. Complexity: O(1).</p>
+</blockquote>
 <h4 id="fn-sysinfo_cpu_model-str"><code>fn sysinfo_cpu_model() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_cpu_model-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>sysinfo_cpu_model returns a CPU model string. The runtime does not expose CPUID; always returns "unknown". Complexity: O(1).</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="termxi"><code>term.xi</code><a class="headerlink" href="#termxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-term_is_ttyfd-int-bool"><code>fn term_is_tty(fd: Int) -&gt; Bool</code><a class="headerlink" href="#fn-term_is_ttyfd-int-bool" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>fd: Int</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>term_is_tty returns true if the given file descriptor refers to a terminal. Delegates to xiom.os.terminal.isatty (the runtime does not expose an isatty intrinsic, so that is also false until an FFI exists).</p>
+</blockquote>
 <h4 id="fn-term_clear_screen-str"><code>fn term_clear_screen() -&gt; Str</code><a class="headerlink" href="#fn-term_clear_screen-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_clear_screen returns the ANSI escape sequence that clears the screen and homes the cursor.</p>
+</blockquote>
 <h4 id="fn-term_set_foregroundcolor-int-str"><code>fn term_set_foreground(color: Int) -&gt; Str</code><a class="headerlink" href="#fn-term_set_foregroundcolor-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>color: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_set_foreground returns the ANSI 256-color foreground escape for the given color index (0..255).</p>
+</blockquote>
 <h4 id="fn-term_reset-str"><code>fn term_reset() -&gt; Str</code><a class="headerlink" href="#fn-term_reset-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_reset returns the ANSI sequence that resets all attributes.</p>
+</blockquote>
 <h4 id="fn-term_bold-str"><code>fn term_bold() -&gt; Str</code><a class="headerlink" href="#fn-term_bold-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_bold returns the ANSI sequence enabling bold.</p>
+</blockquote>
 <h4 id="fn-term_dim-str"><code>fn term_dim() -&gt; Str</code><a class="headerlink" href="#fn-term_dim-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_dim returns the ANSI sequence enabling dim intensity.</p>
+</blockquote>
 <h4 id="fn-term_underline-str"><code>fn term_underline() -&gt; Str</code><a class="headerlink" href="#fn-term_underline-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_underline returns the ANSI sequence enabling underline.</p>
+</blockquote>
 <h4 id="fn-term_cursor_hide-str"><code>fn term_cursor_hide() -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_hide-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_cursor_hide returns the ANSI sequence that hides the cursor.</p>
+</blockquote>
 <h4 id="fn-term_cursor_show-str"><code>fn term_cursor_show() -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_show-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_cursor_show returns the ANSI sequence that shows the cursor.</p>
+</blockquote>
 <h4 id="fn-term_cursor_moverow-int-col-int-str"><code>fn term_cursor_move(row: Int, col: Int) -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_moverow-int-col-int-str" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> takes <code>row: Int</code>, <code>col: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>term_cursor_move returns the ANSI sequence that moves the cursor to the given 1-based row and column.</p>
+</blockquote>
 <h4 id="fn-term_width-int"><code>fn term_width() -&gt; Int</code><a class="headerlink" href="#fn-term_width-int" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>term_width returns the terminal width in columns. Delegates to xiom.os.terminal.terminal_width; the runtime does not expose TIOCGWINSZ/GetConsoleScreenBufferInfo, so 0 means "unknown".</p>
+</blockquote>
 <hr />
 <hr />
 <hr />
 <h2 id="terminalxi"><code>terminal.xi</code><a class="headerlink" href="#terminalxi" title="Permanent link">&para;</a></h2>
 <h4 id="type-termios"><code>type Termios</code><a class="headerlink" href="#type-termios" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>struct Termios { c_iflag: UInt32, c_oflag: UInt32, c_cflag: UInt32, c_lflag: UInt32, c_cc: Vec[UInt8] } - terminal attribute struct; layout mirrors struct termios.</p>
+</blockquote>
 <table>
 <thead>
 <tr>

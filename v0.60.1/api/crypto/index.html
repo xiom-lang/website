@@ -7668,7 +7668,9 @@
 <h3 id="fn-chacha20_poly1305_decryptkey-vecuint8-nonce-vecuint8-aad-vecuint8-ciphertext-vecuint8-tag-vecuint8-plaintext-mut-vecuint8-bool"><code>fn chacha20_poly1305_decrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], aad: &amp;Vec[UInt8], ciphertext: &amp;Vec[UInt8], tag: &amp;Vec[UInt8], plaintext: &amp;mut Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-chacha20_poly1305_decryptkey-vecuint8-nonce-vecuint8-aad-vecuint8-ciphertext-vecuint8-tag-vecuint8-plaintext-mut-vecuint8-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>key: &amp;Vec[UInt8]</code>, <code>nonce: &amp;Vec[UInt8]</code>, <code>aad: &amp;Vec[UInt8]</code>, <code>ciphertext: &amp;Vec[UInt8]</code>, ...; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-sha224data-vecuint8-vecuint8"><code>fn sha224(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha224data-vecuint8-vecuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>data: &amp;Vec[UInt8]</code>; returns <code>Vec[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>SHA-224 delegates to the runtime C path (xiom_sha224_hash in runtime/sha256_sw.c). The previous XIOM-side state marshalling around xiom_sha256_sw_compress miscompiles (zero-offset store corruption into the malloc'd state buffer; probed 2026-08-24 -- wrong digests for any non-empty message while empty passed). Same architecture as sha256 below.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 28</code></li>
 </ul>

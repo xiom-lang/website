@@ -2652,7 +2652,9 @@
 </tbody>
 </table>
 <h3 id="fn-global_alloc-globalalloc"><code>fn global_alloc() -&gt; GlobalAlloc</code><a class="headerlink" href="#fn-global_alloc-globalalloc" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>GlobalAlloc</code>. No source comment yet.</p>
+<blockquote>
+<p>Returns the concrete GlobalAlloc (the Allocator interface is a bound for generic code, not a value type the checker can return).</p>
+</blockquote>
 <h3 id="fn-allocateself-self-layout-layout-resultuint8-allocerror"><code>fn allocate(self: Self, layout: Layout) -&gt; Result[*UInt8, AllocError]</code><a class="headerlink" href="#fn-allocateself-self-layout-layout-resultuint8-allocerror" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; takes <code>layout: Layout</code>; returns <code>Result[*UInt8, AllocError]</code>. No source comment yet.</p>
 <ul>
@@ -2684,7 +2686,9 @@
 <li><strong>Precondition:</strong> <code>new.size &gt; 0</code></li>
 </ul>
 <h3 id="fn-allocsize-int-uint8"><code>fn alloc(size: Int) -&gt; *UInt8</code><a class="headerlink" href="#fn-allocsize-int-uint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>size: Int</code>; returns <code>*UInt8</code>. No source comment yet.</p>
+<blockquote>
+<p>Global allocator (wraps malloc/free)</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>size &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result != null</code></li>
@@ -2696,7 +2700,9 @@
 <li><strong>Postcondition:</strong> <code>result != null</code></li>
 </ul>
 <h3 id="fn-realloc_sizedptr-uint8-old_size-int-new_size-int-uint8"><code>fn realloc_sized(ptr: *UInt8, old_size: Int, new_size: Int) -&gt; *UInt8</code><a class="headerlink" href="#fn-realloc_sizedptr-uint8-old_size-int-new_size-int-uint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>ptr: *UInt8</code>, <code>old_size: Int</code>, <code>new_size: Int</code>; returns <code>*UInt8</code>. No source comment yet.</p>
+<blockquote>
+<p>Resize an allocation. Named realloc_sized to avoid shadowing the C ABI symbol <code>realloc</code> -- a same-named wrapper would collide with the extern declaration and be silently dropped from codegen.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 <li><strong>Precondition:</strong> <code>new_size &gt; 0</code></li>
@@ -2708,7 +2714,9 @@
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
 <h3 id="fn-alloc_layoutlayout-layout-uint8"><code>fn alloc_layout(layout: Layout) -&gt; *UInt8</code><a class="headerlink" href="#fn-alloc_layoutlayout-layout-uint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>layout: Layout</code>; returns <code>*UInt8</code>. No source comment yet.</p>
+<blockquote>
+<p>Sized allocation</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>layout.size &gt; 0</code></li>
 <li><strong>Postcondition:</strong> <code>result != null</code></li>

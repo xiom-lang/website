@@ -5547,6 +5547,9 @@
 <h3 id="fn-clamp_floatvalue-float64-min_val-float64-max_val-float64-float64"><code>fn clamp_float(value: Float64, min_val: Float64, max_val: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-clamp_floatvalue-float64-min_val-float64-max_val-float64-float64" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>value: Float64</code>, <code>min_val: Float64</code>, <code>max_val: Float64</code>; returns <code>Float64</code>. No source comment yet.</p>
 <h3 id="type-reverse"><code>type Reverse</code><a class="headerlink" href="#type-reverse" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Reverse ordering wrapper</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5595,6 +5598,9 @@
 <hr />
 <h2 id="contractsxi"><code>contracts.xi</code><a class="headerlink" href="#contractsxi" title="Permanent link">&para;</a></h2>
 <h3 id="type-contractclause"><code>type ContractClause</code><a class="headerlink" href="#type-contractclause" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>A single contract clause (requires, ensures, or invariant)</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5627,6 +5633,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Eq, Clone</code></p>
 <h3 id="type-functioncontracts"><code>type FunctionContracts</code><a class="headerlink" href="#type-functioncontracts" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>All contracts for a function</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5659,6 +5668,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="type-typecontracts"><code>type TypeContracts</code><a class="headerlink" href="#type-typecontracts" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>All contracts for a type</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5683,6 +5695,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="type-contractindex"><code>type ContractIndex</code><a class="headerlink" href="#type-contractindex" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Complete contract index for a package</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5727,6 +5742,9 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="type-contractcheckresult"><code>type ContractCheckResult</code><a class="headerlink" href="#type-contractcheckresult" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Result of a contract check</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -5755,36 +5773,60 @@
 </table>
 <p><strong>Derives:</strong> <code>Clone</code></p>
 <h3 id="fn-verify_invariantstvalue-t-veccontractcheckresult"><code>fn verify_invariants[T](value: &amp;T) -&gt; Vec[ContractCheckResult]</code><a class="headerlink" href="#fn-verify_invariantstvalue-t-veccontractcheckresult" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: &amp;T</code>; returns <code>Vec[ContractCheckResult]</code>. No source comment yet.</p>
+<blockquote>
+<p>Verify ALL invariants of a type against a value at runtime. Returns list of failures (empty = all passed).</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
 </ul>
 <h3 id="fn-verify_function_contractsfunc-str-args-mapstr-str-veccontractcheckresult"><code>fn verify_function_contracts(func: Str, args: Map[Str, Str]) -&gt; Vec[ContractCheckResult]</code><a class="headerlink" href="#fn-verify_function_contractsfunc-str-args-mapstr-str-veccontractcheckresult" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>func: Str</code>, <code>args: Map[Str, Str]</code>; returns <code>Vec[ContractCheckResult]</code>. No source comment yet.</p>
+<blockquote>
+<p>Verify ALL contracts of a function against its actual call. Called automatically by the compiler at runtime.</p>
+</blockquote>
 <h3 id="fn-check_invarianttvalue-t-invariant-str-contractcheckresult"><code>fn check_invariant[T](value: &amp;T, invariant: Str) -&gt; ContractCheckResult</code><a class="headerlink" href="#fn-check_invarianttvalue-t-invariant-str-contractcheckresult" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: &amp;T</code>, <code>invariant: Str</code>; returns <code>ContractCheckResult</code>. No source comment yet.</p>
+<blockquote>
+<p>Verify a single invariant expression against a value.</p>
+</blockquote>
 <h3 id="fn-build_contract_index-contractindex"><code>fn build_contract_index() -&gt; ContractIndex</code><a class="headerlink" href="#fn-build_contract_index-contractindex" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>ContractIndex</code>. No source comment yet.</p>
+<blockquote>
+<p>Build a complete contract index for the current package. This is what --dump-contracts does at compile time, but available at runtime. REAL: reads function names and requires/ensures counts from the compiler contract table. LIMITED: clause expression text, locations, params, return types and type invariants are not embedded, so those remain empty.</p>
+</blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.functions.len() &gt;= 0</code></li>
 <li><strong>Postcondition:</strong> <code>result.total_clauses &gt;= 0</code></li>
 </ul>
 <h3 id="fn-get_function_contractsname-str-optionvecfunctioncontracts"><code>fn get_function_contracts(name: Str) -&gt; Option[Vec[FunctionContracts]]</code><a class="headerlink" href="#fn-get_function_contractsname-str-optionvecfunctioncontracts" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>name: Str</code>; returns <code>Option[Vec[FunctionContracts]]</code>. No source comment yet.</p>
+<blockquote>
+<p>Query contracts for a specific function.</p>
+</blockquote>
 <h3 id="fn-get_type_contractsname-str-optionvectypecontracts"><code>fn get_type_contracts(name: Str) -&gt; Option[Vec[TypeContracts]]</code><a class="headerlink" href="#fn-get_type_contractsname-str-optionvectypecontracts" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>name: Str</code>; returns <code>Option[Vec[TypeContracts]]</code>. No source comment yet.</p>
+<blockquote>
+<p>Query contracts for a specific type.</p>
+</blockquote>
 <h3 id="fn-find_functions_using_typetype_name-str-vecstr"><code>fn find_functions_using_type(type_name: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-find_functions_using_typetype_name-str-vecstr" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>type_name: Str</code>; returns <code>Vec[Str]</code>. No source comment yet.</p>
+<blockquote>
+<p>Find all functions whose contracts reference a given type.</p>
+</blockquote>
 <h3 id="fn-find_invariants_using_fieldtype_name-str-field_name-str-veccontractclause"><code>fn find_invariants_using_field(type_name: Str, field_name: Str) -&gt; Vec[ContractClause]</code><a class="headerlink" href="#fn-find_invariants_using_fieldtype_name-str-field_name-str-veccontractclause" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>type_name: Str</code>, <code>field_name: Str</code>; returns <code>Vec[ContractClause]</code>. No source comment yet.</p>
+<blockquote>
+<p>Find all invariants that reference a given field.</p>
+</blockquote>
 <h3 id="fn-export_contracts_json-str"><code>fn export_contracts_json() -&gt; Str</code><a class="headerlink" href="#fn-export_contracts_json-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Export the contract index as JSON (same format as --dump-contracts).</p>
+</blockquote>
 <h3 id="fn-export_contracts_markdown-str"><code>fn export_contracts_markdown() -&gt; Str</code><a class="headerlink" href="#fn-export_contracts_markdown-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Export the contract index as structured documentation.</p>
+</blockquote>
 <h3 id="fn-export_contracts_openapi-str"><code>fn export_contracts_openapi() -&gt; Str</code><a class="headerlink" href="#fn-export_contracts_openapi-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Export contract index as OpenAPI/Swagger-like spec.</p>
+</blockquote>
 <h3 id="fn-reset_contract_coverage"><code>fn reset_contract_coverage()</code><a class="headerlink" href="#fn-reset_contract_coverage" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns nothing. No source comment yet.</p>
+<blockquote>
+<p>Track which contracts have been exercised by tests.</p>
+</blockquote>
 <h3 id="fn-record_contract_hitclause-contractclause-input_values-mapstr-str"><code>fn record_contract_hit(clause: ContractClause, input_values: Map[Str, Str])</code><a class="headerlink" href="#fn-record_contract_hitclause-contractclause-input_values-mapstr-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>clause: ContractClause</code>, <code>input_values: Map[Str, Str]</code>; returns nothing. No source comment yet.</p>
 <h3 id="fn-get_contract_coverage-mapstr-bool"><code>fn get_contract_coverage() -&gt; Map[Str, Bool]</code><a class="headerlink" href="#fn-get_contract_coverage-mapstr-bool" title="Permanent link">&para;</a></h3>
@@ -5797,9 +5839,13 @@
 <li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 100</code></li>
 </ul>
 <h3 id="fn-can_composef_requires-veccontractclause-g_ensures-veccontractclause-str"><code>fn can_compose(f_requires: Vec[ContractClause], g_ensures: Vec[ContractClause]) -&gt; Str</code><a class="headerlink" href="#fn-can_composef_requires-veccontractclause-g_ensures-veccontractclause-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>f_requires: Vec[ContractClause]</code>, <code>g_ensures: Vec[ContractClause]</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Given two functions f and g, can g's output satisfy f's requires? Returns the condition that must hold, or "impossible" if never.</p>
+</blockquote>
 <h3 id="fn-verify_chainfns-vecstr-resultunit-veccontractcheckresult"><code>fn verify_chain(fns: Vec[Str]) -&gt; Result[Unit, Vec[ContractCheckResult]]</code><a class="headerlink" href="#fn-verify_chainfns-vecstr-resultunit-veccontractcheckresult" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>fns: Vec[Str]</code>; returns <code>Result[Unit, Vec[ContractCheckResult]]</code>. No source comment yet.</p>
+<blockquote>
+<p>Given a chain of function calls, verify contract propagation.</p>
+</blockquote>
 <h3 id="fn-total_contracts-int"><code>fn total_contracts() -&gt; Int</code><a class="headerlink" href="#fn-total_contracts-int" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
 <ul>
@@ -5863,7 +5909,9 @@
 <hr />
 <h2 id="corexi"><code>core.xi</code><a class="headerlink" href="#corexi" title="Permanent link">&para;</a></h2>
 <h3 id="fn-to_intx-float64-int"><code>fn to_int(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-to_intx-float64-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>x: Float64</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Numeric conversions ===</p>
+</blockquote>
 <h3 id="fn-to_floatx-int-float64"><code>fn to_float(x: Int) -&gt; Float64</code><a class="headerlink" href="#fn-to_floatx-int-float64" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>x: Int</code>; returns <code>Float64</code>. No source comment yet.</p>
 <h3 id="fn-to_stringx-int-str"><code>fn to_string(x: Int) -&gt; Str</code><a class="headerlink" href="#fn-to_stringx-int-str" title="Permanent link">&para;</a></h3>
@@ -5885,7 +5933,9 @@
 <h3 id="fn-to_int_from_charc-char-int"><code>fn to_int_from_char(c: Char) -&gt; Int</code><a class="headerlink" href="#fn-to_int_from_charc-char-int" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>c: Char</code>; returns <code>Int</code>. No source comment yet.</p>
 <h3 id="fn-is_sortedtitems-slicet-bool"><code>fn is_sorted[T](items: &amp;Slice[T]) -&gt; Bool</code><a class="headerlink" href="#fn-is_sortedtitems-slicet-bool" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>items: &amp;Slice[T]</code>; returns <code>Bool</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Collection contract methods ===</p>
+</blockquote>
 <h3 id="fn-alltitems-slicet-predicate-fnt-bool-bool"><code>fn all[T](items: &amp;Slice[T], predicate: fn(T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-alltitems-slicet-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> takes <code>items: &amp;Slice[T]</code>, <code>predicate: fn(T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
 <h3 id="fn-nonetitems-slicet-predicate-fnt-bool-bool"><code>fn none[T](items: &amp;Slice[T], predicate: fn(T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-nonetitems-slicet-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h3>
@@ -5905,7 +5955,9 @@
 <li><strong>Postcondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-as_reftself-self-t"><code>fn as_ref[T](self: Self) -&gt; &amp;T</code><a class="headerlink" href="#fn-as_reftself-self-t" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>&amp;T</code>. No source comment yet.</p>
+<blockquote>
+<p>=== M7: AsRef[Str] impl for Str ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>
 </ul>
@@ -5917,11 +5969,16 @@
 <h3 id="fn-as_refself-self-str"><code>fn as_ref(self: Self) -&gt; &amp;Str</code><a class="headerlink" href="#fn-as_refself-self-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>&amp;Str</code>. No source comment yet.</p>
 <h3 id="fn-as_bytesself-self-sliceuint8"><code>fn as_bytes(self: Self) -&gt; &amp;Slice[UInt8]</code><a class="headerlink" href="#fn-as_bytesself-self-sliceuint8" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>&amp;Slice[UInt8]</code>. No source comment yet.</p>
+<blockquote>
+<p>=== M7: AsRef&lt;[UInt8]&gt; impl for Str ===</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="enum-cow"><code>enum Cow</code><a class="headerlink" href="#enum-cow" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>8B/M7: Clone-on-Write -- either owned or borrowed</p>
+</blockquote>
 <ul>
 <li><code>Borrowed(value: T)</code></li>
 <li><code>Owned(value: T)</code></li>
@@ -5952,42 +6009,65 @@
 <li><strong>Postcondition:</strong> <code>true</code></li>
 </ul>
 <h3 id="fn-fromvalue-float64-int"><code>fn from(value: Float64) -&gt; Int</code><a class="headerlink" href="#fn-fromvalue-float64-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: Float64</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Int -&gt; Float64 (lossless for reasonable values)</p>
+</blockquote>
 <h3 id="fn-intoself-self-int"><code>fn into(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-intoself-self-int" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
 <h3 id="fn-fromvalue-int-float64"><code>fn from(value: Int) -&gt; Float64</code><a class="headerlink" href="#fn-fromvalue-int-float64" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: Int</code>; returns <code>Float64</code>. No source comment yet.</p>
+<blockquote>
+<p>Float64 -&gt; Int (may truncate)</p>
+</blockquote>
 <h3 id="fn-intoself-self-float64"><code>fn into(self: Self) -&gt; Float64</code><a class="headerlink" href="#fn-intoself-self-float64" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Float64</code>. No source comment yet.</p>
 <h3 id="fn-fromvalue-int-str"><code>fn from(value: Int) -&gt; Str</code><a class="headerlink" href="#fn-fromvalue-int-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: Int</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Int -&gt; Str</p>
+</blockquote>
 <h3 id="fn-intoself-self-str"><code>fn into(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-intoself-self-str" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
 <h3 id="fn-fromvalue-float64-str"><code>fn from(value: Float64) -&gt; Str</code><a class="headerlink" href="#fn-fromvalue-float64-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: Float64</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Float64 -&gt; Str</p>
+</blockquote>
 <h3 id="fn-intoself-self-str_1"><code>fn into(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-intoself-self-str_1" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
 <h3 id="fn-fromvalue-bool-str"><code>fn from(value: Bool) -&gt; Str</code><a class="headerlink" href="#fn-fromvalue-bool-str" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: Bool</code>; returns <code>Str</code>. No source comment yet.</p>
+<blockquote>
+<p>Bool -&gt; Str</p>
+</blockquote>
 <h3 id="fn-intoself-self-str_2"><code>fn into(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-intoself-self-str_2" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Str</code>. No source comment yet.</p>
 <h3 id="fn-fromvalue-bool-int"><code>fn from(value: Bool) -&gt; Int</code><a class="headerlink" href="#fn-fromvalue-bool-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: Bool</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Bool -&gt; Int</p>
+</blockquote>
 <h3 id="fn-intoself-self-int_1"><code>fn into(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-intoself-self-int_1" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
 <h3 id="fn-fromvalue-char-int"><code>fn from(value: Char) -&gt; Int</code><a class="headerlink" href="#fn-fromvalue-char-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: Char</code>; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Char -&gt; Int</p>
+</blockquote>
 <h3 id="fn-intoself-self-int_2"><code>fn into(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-intoself-self-int_2" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
 <h3 id="fn-fromvalue-int-char"><code>fn from(value: Int) -&gt; Char</code><a class="headerlink" href="#fn-fromvalue-int-char" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> takes <code>value: Int</code>; returns <code>Char</code>. No source comment yet.</p>
+<blockquote>
+<p>Int -&gt; Char (may fail, returns first char)</p>
+</blockquote>
 <h3 id="fn-intoself-self-char"><code>fn into(self: Self) -&gt; Char</code><a class="headerlink" href="#fn-intoself-self-char" title="Permanent link">&para;</a></h3>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Char</code>. No source comment yet.</p>
 <h3 id="fn-size_oft-int"><code>fn size_of[T]() -&gt; Int</code><a class="headerlink" href="#fn-size_oft-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>=== Type-level operations === Compiler intrinsic: returns size of type in bytes</p>
+</blockquote>
 <h3 id="fn-align_oft-int"><code>fn align_of[T]() -&gt; Int</code><a class="headerlink" href="#fn-align_oft-int" title="Permanent link">&para;</a></h3>
-<p><em>Generated summary:</em> Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<blockquote>
+<p>Compiler intrinsic: returns alignment of type in bytes</p>
+</blockquote>
 <h3 id="type-phantomdata"><code>type PhantomData</code><a class="headerlink" href="#type-phantomdata" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>8B/M7: Zero-size type marker for generic parameters</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -6003,6 +6083,9 @@
 </tbody>
 </table>
 <h3 id="type-maybeuninit"><code>type MaybeUninit</code><a class="headerlink" href="#type-maybeuninit" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>8B/M7: Uninitialized memory container</p>
+</blockquote>
 <table>
 <thead>
 <tr>
