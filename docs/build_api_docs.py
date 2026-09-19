@@ -131,6 +131,36 @@ def heading_symbol(line):
 
 SIGNATURE_RE = re.compile(r'^fn\s+[A-Za-z0-9_.]+(?:\[[^\]]*\])?\((.*)\)\s*(?:->\s*(.+))?$')
 
+TITLE_RE = re.compile(r'^//\s*XIOM\s*\W+\s*(.+?)\s*$')
+PURPOSE_RE = re.compile(r'^//\s*Purpose:\s*(.+?)\s*$')
+
+
+def module_purpose(module_dir, module_name):
+    """One-line module purpose.
+
+    Prefers an explicit `// Purpose:` line (the convention to adopt in the
+    stdlib), falling back to the `// XIOM -- Title` line at the top of the
+    module's primary file.
+    """
+    primary = module_dir / (module_name + ".xi")
+    candidates = [primary] if primary.is_file() else sorted(module_dir.glob("*.xi"))
+    if not candidates:
+        return None
+    try:
+        lines = candidates[0].read_text(encoding="utf-8", errors="replace").split("\n")
+    except OSError:
+        return None
+    title = None
+    for index, line in enumerate(lines):
+        match = PURPOSE_RE.match(line)
+        if match:
+            return match.group(1).strip()
+        if title is None and index < 40:
+            match = TITLE_RE.match(line)
+            if match:
+                title = match.group(1).strip()
+    return title
+
 
 def split_top_level(text):
     parts, depth, current = [], 0, ""
@@ -253,6 +283,7 @@ def build(stdlib_root, binary, out_dir, tag, strict):
 
     out_dir.mkdir(parents=True, exist_ok=True)
     stamp = tag or "latest"
+    purposes = {module: module_purpose(src_root / module, module) for module in modules}
     index_lines = [
         "# Standard Library API",
         "",
@@ -266,20 +297,22 @@ def build(stdlib_root, binary, out_dir, tag, strict):
         "> generated summary), followed by its contracts: the contract is the",
         "> specification.",
         "",
-        "| Module | Files | Symbols |",
-        "|---|---|---|",
+        "| Module | Purpose | Files | Symbols |",
+        "|---|---|---|---|",
     ]
     written = 0
     for module in sorted(modules, key=module_sort_key):
         entries = sorted(modules[module])
         page = out_dir / f"{module}.md"
-        lines = [
-            f"# `stdlib.{module}`",
-            "",
+        lines = [f"# `stdlib.{module}`", ""]
+        if purposes.get(module):
+            lines.append(f"> **{purposes[module]}**")
+            lines.append(">")
+        lines.append(
             f"> Generated from `{stamp}`. {len(entries)} source files, "
-            f"{sum(c for _, _, c in entries)} documented symbols.",
-            "",
-        ]
+            f"{sum(c for _, _, c in entries)} documented symbols."
+        )
+        lines.append("")
         for name, body, _ in entries:
             if not body:
                 continue
@@ -289,7 +322,14 @@ def build(stdlib_root, binary, out_dir, tag, strict):
             lines.append("")
         write_text(page, "\n".join(lines).rstrip() + "\n")
         written += 1
-        index_lines.append(f"| [`{module}`]({module}.md) | {len(entries)} | {sum(c for _, _, c in entries)} |")
+        index_lines.append(
+            "| [`{0}`]({0}.md) | {1} | {2} | {3} |".format(
+                module,
+                purposes.get(module) or "-",
+                len(entries),
+                sum(c for _, _, c in entries),
+            )
+        )
     index_lines.append("")
     write_text(out_dir / "index.md", "\n".join(index_lines))
 
