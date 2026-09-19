@@ -148,11 +148,15 @@
 <p>unless <code>--runtime-contracts</code> / <code>--keep-debug-checks</code> are passed.</p>
 <ul>
 <li><code>--lto</code>: ThinLTO whole-program optimization.</li>
-<li><code>--target wasm|arm</code>, <code>--shared</code>: cross-compilation and library output.</li>
+<li><code>--target wasm|arm|riscv</code>, <code>--shared</code>: cross-compilation and library</li>
 </ul>
+<p>output.</p>
 <h3>Execution modes</h3>
 <ul>
-<li><code>xiom build</code>: compile a package (directory containing <code>package.xi</code>).</li>
+<li><code>xiom build</code>: build the project from <code>xiom.toml</code>; <code>xiom build --watch</code></li>
+</ul>
+<p>keeps rebuilding on change.</p>
+<ul>
 <li><code>xiom run <file></code>: scripting mode. Shebang scripts, inline <code>-e</code>, stdin</li>
 </ul>
 <p><code>-</code>, and <code>--watch</code> are supported, and top-level code is wrapped   automatically, so <code>fn main()</code> is optional.</p>
@@ -161,6 +165,10 @@
 <li><code>--jit</code> and <code>--jit --lazy</code>: in-process JIT with an optional incremental</li>
 </ul>
 <p>cache; <code>--cache</code> caches binaries by source hash.</p>
+<ul>
+<li><code>--watch</code> / <code>--hot-reload</code>: recompile on change, optionally hot-swapping</li>
+</ul>
+<p>a shared library (<code>--hot-reload-contracts</code> verifies contracts first).</p>
 <ul>
 <li><code>--standalone script.xi -o app</code>: turn a script into a binary.</li>
 </ul>
@@ -217,12 +225,16 @@ xiom --ai source.xi
 <td>Refuse binary output on contract violations</td>
 </tr>
 <tr>
+<td><code>--ai-batch</code></td>
+<td>Batch mode: analyze all sources into one <code>.xiom_ai.json</code></td>
+</tr>
+<tr>
 <td><code>--ai-model=<name></code></td>
 <td>Override the model</td>
 </tr>
 <tr>
 <td><code>--ai-timeout=<sec></code></td>
-<td>Model timeout in seconds (default: 30)</td>
+<td>Model timeout in seconds (default: 10)</td>
 </tr>
 </table>
 <p>Configuration can also live in <code>.xiom_ai_config.json</code>, or in the <code>XIOM_AI_KEY</code>, <code>XIOM_AI_ENDPOINT</code>, <code>XIOM_AI_MODEL</code> and <code>XIOM_AI_PROVIDER</code> environment variables. <code>xiom --help-ai</code> prints the full guide.</p>
@@ -243,183 +255,320 @@ xiom --ai source.xi
 </ul>
 <p>disables them.</p>
 <ul>
+<li><code>--sanitize=address|undefined|leak|thread</code>: sanitizer instrumentation;</li>
+</ul>
+<p><code>--stack-protector</code> adds stack canaries.</p>
+<ul>
 <li><code>--strict-mode</code> turns borrow-checker warnings (E001) into hard errors;</li>
 </ul>
 <p><code>--strict-exhaustive</code> makes non-exhaustive matches a hard error.</p>
 <ul>
-<li><code>--sanitize=address|undefined|thread</code>: sanitizer instrumentation.</li>
 <li>Unsafe confinement: every <code>unsafe</code> block is a confined transaction.</li>
 </ul>
 <p><code>#[unsafe_no_retry]</code> and <code>#[unsafe_direct]</code> (with   <code>--enable-unsafe-direct</code>) are the explicit escape hatches.</p>
-<h3>Concurrency, caching, and limits</h3>
 <ul>
-<li><code>--parallel</code>: parallel parsing; <code>--parallel-codegen</code>: per-function IR</li>
+<li><code>--sandbox</code> runs a safety audit over <code>unsafe</code> blocks; <code>--sandbox=strict</code></li>
 </ul>
-<p>emission.</p>
+<p>blocks compilation on HIGH severity findings, and   <code>--sandbox-report=json</code> emits the report as JSON.</p>
+<h3>Iteration, caching, and limits</h3>
 <ul>
-<li><code>--max-depth <N></code>: recursion limit (default: 500).</li>
+<li><code>--watch</code> recompiles on change; <code>--hot-reload</code> pairs it with shared</li>
 </ul>
+<p>library reloads, and <code>--hot-reload-contracts</code> verifies contracts before   swapping function pointers.</p>
+<ul>
+<li><code>--incremental</code> caches IR and skips unchanged sources; <code>--force</code></li>
+</ul>
+<p>ignores every cache.</p>
+<ul>
+<li><code>--parallel</code> / <code>--sequential</code> / <code>--jobs <N></code> control parallelism;</li>
+</ul>
+<p><code>--parallel-codegen</code> emits IR per function.</p>
+<ul>
+<li><code>--timeout <seconds></code> (default 300; 0 disables) and</li>
+</ul>
+<p><code>--max-memory-mb <N></code> bound a compilation; <code>--max-depth <N></code> bounds   recursion (default 500).</p>
 <h2>CLI Reference</h2>
 <pre><code>
 xiom [flags] <source.xi>
 </code></pre>
-<h3>Compilation Flags</h3>
+<h3>Invocation and subcommands</h3>
+<table>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>xiom <file.xi></code></td>
+<td>Compile a single file</td>
+</tr>
+<tr>
+<td><code>xiom --run <file.xi></code></td>
+<td>Compile and run (requires <code>fn main()</code>)</td>
+</tr>
+<tr>
+<td><code>xiom run <file.xi></code></td>
+<td>Execute as a script (auto-wraps in <code>fn main()</code>)</td>
+</tr>
+<tr>
+<td><code>xiom run -</code></td>
+<td>Read the script from stdin</td>
+</tr>
+<tr>
+<td><code>xiom run -e "<code>"</code></td>
+<td>Execute inline code</td>
+</tr>
+<tr>
+<td><code>xiom build</code></td>
+<td>Build the project from <code>xiom.toml</code></td>
+</tr>
+<tr>
+<td><code>xiom build --watch</code></td>
+<td>Build daemon: watch and rebuild</td>
+</tr>
+<tr>
+<td><code>xiom repl</code></td>
+<td>Interactive shell</td>
+</tr>
+<tr>
+<td><code>xiom doc <file.xi></code></td>
+<td>Generate documentation (Markdown/HTML)</td>
+</tr>
+<tr>
+<td><code>xiom doctor</code></td>
+<td>Check toolchain dependencies</td>
+</tr>
+</table>
+<h3>Output, targets and debug builds</h3>
 <table>
 <tr>
 <th>Flag</th>
 <th>Description</th>
-<th>Default</th>
 </tr>
 <tr>
 <td><code>-o <output></code></td>
-<td>Output binary path</td>
-<td><code>a.exe</code> (Win) / <code>a.out</code> (Linux)</td>
+<td>Output binary path (default <code>a.exe</code> / <code>a.out</code>)</td>
 </tr>
 <tr>
-<td><code>--run</code></td>
-<td>Compile and run, print exit code</td>
-<td>--</td>
+<td><code>--emit-ir</code></td>
+<td>Print LLVM IR to stdout (no compilation)</td>
+</tr>
+<tr>
+<td><code>--emit-tokens</code></td>
+<td>Print the token stream</td>
 </tr>
 <tr>
 <td><code>--check</code></td>
 <td>Type-check only, no binary</td>
-<td>--</td>
-</tr>
-<tr>
-<td><code>--emit-ir</code></td>
-<td>Print LLVM IR to stdout</td>
-<td>--</td>
 </tr>
 <tr>
 <td><code>--release</code></td>
-<td>clang -O3 optimization</td>
-<td>--</td>
+<td>clang <code>-O3</code>; strips contract guards and debug checks unless re-enabled</td>
 </tr>
 <tr>
 <td><code>--debug</code> / <code>-g</code></td>
-<td>DWARF/PDB debug info (DIFile, DICompileUnit, DISubprogram)</td>
-<td>off</td>
+<td>DWARF/PDB debug metadata</td>
 </tr>
 <tr>
 <td><code>--lto</code></td>
-<td>ThinLTO link-time optimization (<code>-flto=thin</code>)</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--jit</code></td>
-<td>In-process DLL JIT compilation (xiom-jit)</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--jit --lazy</code></td>
-<td>JIT with SHA-256 incremental cache</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--cache</code></td>
-<td>Binary cache by source hash</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--no-cache</code></td>
-<td>Disable caching</td>
-<td>--</td>
-</tr>
-<tr>
-<td><code>--parallel</code></td>
-<td>Rayon-based parallel parse</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--parallel-codegen</code></td>
-<td>Rayon-based per-function IR emission</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--target wasm</code></td>
-<td>Compile to <code>wasm32-unknown-unknown</code></td>
-<td>native</td>
-</tr>
-<tr>
-<td><code>--target arm</code></td>
-<td>Compile to <code>aarch64-unknown-linux-gnu</code></td>
-<td>native</td>
+<td>ThinLTO link-time optimization</td>
 </tr>
 <tr>
 <td><code>--shared</code></td>
-<td>Compile to shared library (.dll/.so)</td>
-<td>off</td>
+<td>Compile as a shared library (.dll/.so)</td>
 </tr>
 <tr>
 <td><code>--standalone <file> -o <exe></code></td>
-<td>Script-to-binary</td>
-<td>--</td>
+<td>Turn a script into a binary</td>
+</tr>
+<tr>
+<td><code>--target <target></code></td>
+<td><code>native</code> (default), <code>wasm</code>, <code>arm</code>, <code>riscv</code></td>
+</tr>
+<tr>
+<td><code>--jit</code> / <code>--jit --lazy</code></td>
+<td>In-process JIT; <code>--lazy</code> adds the incremental cache</td>
+</tr>
+<tr>
+<td><code>--cache</code> / <code>--no-cache</code></td>
+<td>Binary cache by source hash / disable it</td>
 </tr>
 </table>
-<h3>Safety Flags</h3>
+<h3>Contracts and verification</h3>
 <table>
 <tr>
 <th>Flag</th>
 <th>Description</th>
-<th>Default</th>
-</tr>
-<tr>
-<td><code>--overflow-checks</code></td>
-<td>Integer overflow traps (<code>@llvm.trap</code>)</td>
-<td><strong>ON</strong> (v0.56)</td>
-</tr>
-<tr>
-<td><code>--no-overflow-checks</code></td>
-<td>Disable overflow checks</td>
-<td>--</td>
 </tr>
 <tr>
 <td><code>--no-contracts</code></td>
-<td>Disable all contract runtime guards</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--strict-exhaustive</code></td>
-<td>Non-exhaustive match -> hard error</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--sanitize=address</code></td>
-<td>Enable ASan</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--sanitize=undefined</code></td>
-<td>Enable UBSan</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--sanitize=thread</code></td>
-<td>Enable TSan</td>
-<td>off</td>
-</tr>
-<tr>
-<td><code>--strict-mode</code></td>
-<td>Borrow errors (E001) become hard errors</td>
-<td>off</td>
+<td>Disable all contract runtime checks</td>
 </tr>
 <tr>
 <td><code>--runtime-contracts</code></td>
-<td>Force contract guards in release builds</td>
-<td>off</td>
+<td>Force runtime contract checks, even in release</td>
+</tr>
+<tr>
+<td><code>--dump-contracts</code></td>
+<td>Print the contract index as JSON</td>
+</tr>
+<tr>
+<td><code>--verify</code></td>
+<td>Generate SMT-LIB contract verification output</td>
+</tr>
+<tr>
+<td><code>--verify-output <file></code></td>
+<td>Write the SMT-LIB output to a file</td>
 </tr>
 <tr>
 <td><code>--keep-debug-checks</code></td>
 <td>Keep debug intrinsics in release builds</td>
-<td>off</td>
+</tr>
+</table>
+<h3>Safety and hardening</h3>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>--sandbox</code></td>
+<td>Safety audit over <code>unsafe</code> blocks (text report)</td>
+</tr>
+<tr>
+<td><code>--sandbox=strict</code></td>
+<td>Block compilation on HIGH severity findings</td>
+</tr>
+<tr>
+<td><code>--sandbox-report=json</code></td>
+<td>Emit the sandbox report as JSON</td>
+</tr>
+<tr>
+<td><code>--sanitize=address</code></td>
+<td>AddressSanitizer</td>
+</tr>
+<tr>
+<td><code>--sanitize=undefined</code></td>
+<td>UndefinedBehaviorSanitizer</td>
+</tr>
+<tr>
+<td><code>--sanitize=leak</code></td>
+<td>LeakSanitizer</td>
+</tr>
+<tr>
+<td><code>--sanitize=thread</code></td>
+<td>ThreadSanitizer</td>
+</tr>
+<tr>
+<td><code>--stack-protector</code></td>
+<td>Stack canaries (<code>-fstack-protector</code>)</td>
+</tr>
+<tr>
+<td><code>--overflow-checks</code> / <code>--no-overflow-checks</code></td>
+<td>Integer overflow traps (ON by default)</td>
 </tr>
 <tr>
 <td><code>--enable-unsafe-direct</code></td>
-<td>Allow <code>#[unsafe_direct]</code> trusted escapes</td>
-<td>off</td>
+<td>Allow <code>#[unsafe_direct]</code> in user code</td>
+</tr>
+<tr>
+<td><code>--strict-mode</code></td>
+<td>Borrow-checker warnings (E001) become hard errors</td>
+</tr>
+<tr>
+<td><code>--strict-exhaustive</code></td>
+<td>Non-exhaustive matches become hard errors</td>
 </tr>
 </table>
-<h3>Utility Flags</h3>
+<h3>Iteration and performance</h3>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>--watch</code></td>
+<td>Watch source files and recompile on change</td>
+</tr>
+<tr>
+<td><code>--hot-reload</code></td>
+<td>Watch plus shared-library hot reload</td>
+</tr>
+<tr>
+<td><code>--hot-reload-contracts</code></td>
+<td>Verify contracts before hot-swapping function pointers</td>
+</tr>
+<tr>
+<td><code>--incremental</code></td>
+<td>Cache compiled IR, skip unchanged sources</td>
+</tr>
+<tr>
+<td><code>--force</code></td>
+<td>Force recompile, ignore all caches</td>
+</tr>
+<tr>
+<td><code>--parallel</code> / <code>--sequential</code></td>
+<td>Parallel lex+parse (rayon) or force sequential</td>
+</tr>
+<tr>
+<td><code>--jobs <N></code></td>
+<td>Number of parallel compile jobs (default: CPUs)</td>
+</tr>
+<tr>
+<td><code>--parallel-codegen</code></td>
+<td>Per-function IR emission</td>
+</tr>
+</table>
+<h3>Diagnostics, graphs and limits</h3>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>--diagnostics=json</code></td>
+<td>Structured compiler output</td>
+</tr>
+<tr>
+<td><code>--explain <CODE></code></td>
+<td>Explain an error code (e.g. <code>--explain T001</code>)</td>
+</tr>
+<tr>
+<td><code>--graph</code> / <code>--graph=mermaid</code></td>
+<td>Dependency graph as DOT or Mermaid</td>
+</tr>
+<tr>
+<td><code>--timeout <seconds></code></td>
+<td>Compilation timeout (default 300; 0 disables)</td>
+</tr>
+<tr>
+<td><code>--max-memory-mb <N></code></td>
+<td>Memory budget in MB (0 = disabled)</td>
+</tr>
+<tr>
+<td><code>--max-depth <N></code></td>
+<td>Maximum recursion depth (default 500)</td>
+</tr>
+</table>
+<h3>Linking</h3>
+<table>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>--link <name></code></td>
+<td>Link a native library (repeatable, e.g. <code>vulkan-1</code>)</td>
+</tr>
+<tr>
+<td><code>--link-path <dir></code></td>
+<td>Add a library search path (repeatable)</td>
+</tr>
+<tr>
+<td><code>--c-source <file></code></td>
+<td>Link an extra C/object file (repeatable)</td>
+</tr>
+</table>
+<h3>Utility</h3>
 <table>
 <tr>
 <th>Flag</th>
@@ -427,56 +576,17 @@ xiom [flags] <source.xi>
 </tr>
 <tr>
 <td><code>--version</code></td>
-<td>Print version + test stats</td>
+<td>Print version and test stats</td>
 </tr>
 <tr>
 <td><code>--help</code></td>
 <td>Print usage</td>
 </tr>
 <tr>
-<td><code>--explain T001</code></td>
-<td>Error code reference</td>
-</tr>
-<tr>
-<td><code>--emit-tokens</code></td>
-<td>Print token stream</td>
-</tr>
-<tr>
-<td><code>--verify</code></td>
-<td>Z3 formal verification (requires <code>--dump-contracts</code>)</td>
-</tr>
-<tr>
-<td><code>--dump-contracts</code></td>
-<td>SMT-LIB contract generation</td>
-</tr>
-<tr>
-<td><code>--diagnostics=json</code></td>
-<td>Structured compiler output</td>
-</tr>
-<tr>
-<td><code>--max-depth <N></code></td>
-<td>Max recursion depth (default: 500)</td>
+<td><code>--help-ai</code></td>
+<td>AI mode setup and configuration guide</td>
 </tr>
 </table>
-<h3>Scripting Mode</h3>
-<pre><code>
-xiom run <file.xi>          Execute script
-xiom run -e <span class='str'>code</span>           Inline expression
-xiom run -                   stdin script
-xiom run --watch <file>      Watch + re-run
-xiom run --jit <file>        In-process DLL JIT
-xiom run --jit --lazy <file> JIT with incremental cache
-xiom run --cache <file>      Binary cache <span class='kw'>for</span> instant re-run
-xiom run --no-cache          Disable caching
-</code></pre>
-<h3>Other Commands</h3>
-<pre><code>
-xiom build-runtime            Build libxiom_runtime.dll/.so
-xiom repl                     Interactive shell
-xiom doctor                   Check toolchain
-xiom clean                    Remove build artifacts
-xiom clean --cache            Clear JIT cache
-</code></pre>
 <h2>Targets</h2>
 <table>
 <tr>
@@ -494,6 +604,14 @@ xiom clean --cache            Clear JIT cache
 <tr>
 <td><code>wasm32-unknown-unknown</code></td>
 <td>[OK] Verified</td>
+</tr>
+<tr>
+<td><code>aarch64-unknown-linux-gnu</code> (<code>--target arm</code>)</td>
+<td>Accepted by the CLI</td>
+</tr>
+<tr>
+<td><code>riscv</code></td>
+<td>Accepted by the CLI; status tracked in the compiler repository</td>
 </tr>
 <tr>
 <td><code>aarch64-apple-darwin</code></td>

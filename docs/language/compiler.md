@@ -55,17 +55,21 @@ list every flag.
 - `--release`: clang `-O3`. Contract guards and debug checks are stripped
   unless `--runtime-contracts` / `--keep-debug-checks` are passed.
 - `--lto`: ThinLTO whole-program optimization.
-- `--target wasm|arm`, `--shared`: cross-compilation and library output.
+- `--target wasm|arm|riscv`, `--shared`: cross-compilation and library
+  output.
 
 ### Execution modes
 
-- `xiom build`: compile a package (directory containing `package.xi`).
+- `xiom build`: build the project from `xiom.toml`; `xiom build --watch`
+  keeps rebuilding on change.
 - `xiom run <file>`: scripting mode. Shebang scripts, inline `-e`, stdin
   `-`, and `--watch` are supported, and top-level code is wrapped
   automatically, so `fn main()` is optional.
 - `xiom repl`: interactive shell.
 - `--jit` and `--jit --lazy`: in-process JIT with an optional incremental
   cache; `--cache` caches binaries by source hash.
+- `--watch` / `--hot-reload`: recompile on change, optionally hot-swapping
+  a shared library (`--hot-reload-contracts` verifies contracts first).
 - `--standalone script.xi -o app`: turn a script into a binary.
 
 ### Contract modes
@@ -114,8 +118,9 @@ xiom --ai source.xi
 | `--ai-dry-run` | Print the prompt without calling the model |
 | `--ai-silent` | Suppress stdout; write only `.xiom_ai.json` |
 | `--ai-strict` | Refuse binary output on contract violations |
+| `--ai-batch` | Batch mode: analyze all sources into one `.xiom_ai.json` |
 | `--ai-model=<name>` | Override the model |
-| `--ai-timeout=<sec>` | Model timeout in seconds (default: 30) |
+| `--ai-timeout=<sec>` | Model timeout in seconds (default: 10) |
 
 Configuration can also live in `.xiom_ai_config.json`, or in the
 `XIOM_AI_KEY`, `XIOM_AI_ENDPOINT`, `XIOM_AI_MODEL` and `XIOM_AI_PROVIDER`
@@ -147,18 +152,29 @@ tools are built from source with `cargo build --release -p <crate>`.
 
 - Integer overflow checks are ON by default; `--no-overflow-checks`
   disables them.
+- `--sanitize=address|undefined|leak|thread`: sanitizer instrumentation;
+  `--stack-protector` adds stack canaries.
 - `--strict-mode` turns borrow-checker warnings (E001) into hard errors;
   `--strict-exhaustive` makes non-exhaustive matches a hard error.
-- `--sanitize=address|undefined|thread`: sanitizer instrumentation.
 - Unsafe confinement: every `unsafe` block is a confined transaction.
   `#[unsafe_no_retry]` and `#[unsafe_direct]` (with
   `--enable-unsafe-direct`) are the explicit escape hatches.
+- `--sandbox` runs a safety audit over `unsafe` blocks; `--sandbox=strict`
+  blocks compilation on HIGH severity findings, and
+  `--sandbox-report=json` emits the report as JSON.
 
-### Concurrency, caching, and limits
+### Iteration, caching, and limits
 
-- `--parallel`: parallel parsing; `--parallel-codegen`: per-function IR
-  emission.
-- `--max-depth <N>`: recursion limit (default: 500).
+- `--watch` recompiles on change; `--hot-reload` pairs it with shared
+  library reloads, and `--hot-reload-contracts` verifies contracts before
+  swapping function pointers.
+- `--incremental` caches IR and skips unchanged sources; `--force`
+  ignores every cache.
+- `--parallel` / `--sequential` / `--jobs <N>` control parallelism;
+  `--parallel-codegen` emits IR per function.
+- `--timeout <seconds>` (default 300; 0 disables) and
+  `--max-memory-mb <N>` bound a compilation; `--max-depth <N>` bounds
+  recursion (default 500).
 
 ## CLI Reference
 
@@ -166,79 +182,105 @@ tools are built from source with `cargo build --release -p <crate>`.
 xiom [flags] <source.xi>
 ```
 
-### Compilation Flags
+### Invocation and subcommands
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `-o <output>` | Output binary path | `a.exe` (Win) / `a.out` (Linux) |
-| `--run` | Compile and run, print exit code | -- |
-| `--check` | Type-check only, no binary | -- |
-| `--emit-ir` | Print LLVM IR to stdout | -- |
-| `--release` | clang -O3 optimization | -- |
-| `--debug` / `-g` | DWARF/PDB debug info (DIFile, DICompileUnit, DISubprogram) | off |
-| `--lto` | ThinLTO link-time optimization (`-flto=thin`) | off |
-| `--jit` | In-process DLL JIT compilation (xiom-jit) | off |
-| `--jit --lazy` | JIT with SHA-256 incremental cache | off |
-| `--cache` | Binary cache by source hash | off |
-| `--no-cache` | Disable caching | -- |
-| `--parallel` | Rayon-based parallel parse | off |
-| `--parallel-codegen` | Rayon-based per-function IR emission | off |
-| `--target wasm` | Compile to `wasm32-unknown-unknown` | native |
-| `--target arm` | Compile to `aarch64-unknown-linux-gnu` | native |
-| `--shared` | Compile to shared library (.dll/.so) | off |
-| `--standalone <file> -o <exe>` | Script-to-binary | -- |
+| Command | Description |
+|---------|-------------|
+| `xiom <file.xi>` | Compile a single file |
+| `xiom --run <file.xi>` | Compile and run (requires `fn main()`) |
+| `xiom run <file.xi>` | Execute as a script (auto-wraps in `fn main()`) |
+| `xiom run -` | Read the script from stdin |
+| `xiom run -e "<code>"` | Execute inline code |
+| `xiom build` | Build the project from `xiom.toml` |
+| `xiom build --watch` | Build daemon: watch and rebuild |
+| `xiom repl` | Interactive shell |
+| `xiom doc <file.xi>` | Generate documentation (Markdown/HTML) |
+| `xiom doctor` | Check toolchain dependencies |
 
-### Safety Flags
-
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--overflow-checks` | Integer overflow traps (`@llvm.trap`) | **ON** (v0.56) |
-| `--no-overflow-checks` | Disable overflow checks | -- |
-| `--no-contracts` | Disable all contract runtime guards | off |
-| `--strict-exhaustive` | Non-exhaustive match -> hard error | off |
-| `--sanitize=address` | Enable ASan | off |
-| `--sanitize=undefined` | Enable UBSan | off |
-| `--sanitize=thread` | Enable TSan | off |
-| `--strict-mode` | Borrow errors (E001) become hard errors | off |
-| `--runtime-contracts` | Force contract guards in release builds | off |
-| `--keep-debug-checks` | Keep debug intrinsics in release builds | off |
-| `--enable-unsafe-direct` | Allow `#[unsafe_direct]` trusted escapes | off |
-
-### Utility Flags
+### Output, targets and debug builds
 
 | Flag | Description |
 |------|-------------|
-| `--version` | Print version + test stats |
-| `--help` | Print usage |
-| `--explain T001` | Error code reference |
-| `--emit-tokens` | Print token stream |
-| `--verify` | Z3 formal verification (requires `--dump-contracts`) |
-| `--dump-contracts` | SMT-LIB contract generation |
+| `-o <output>` | Output binary path (default `a.exe` / `a.out`) |
+| `--emit-ir` | Print LLVM IR to stdout (no compilation) |
+| `--emit-tokens` | Print the token stream |
+| `--check` | Type-check only, no binary |
+| `--release` | clang `-O3`; strips contract guards and debug checks unless re-enabled |
+| `--debug` / `-g` | DWARF/PDB debug metadata |
+| `--lto` | ThinLTO link-time optimization |
+| `--shared` | Compile as a shared library (.dll/.so) |
+| `--standalone <file> -o <exe>` | Turn a script into a binary |
+| `--target <target>` | `native` (default), `wasm`, `arm`, `riscv` |
+| `--jit` / `--jit --lazy` | In-process JIT; `--lazy` adds the incremental cache |
+| `--cache` / `--no-cache` | Binary cache by source hash / disable it |
+
+### Contracts and verification
+
+| Flag | Description |
+|------|-------------|
+| `--no-contracts` | Disable all contract runtime checks |
+| `--runtime-contracts` | Force runtime contract checks, even in release |
+| `--dump-contracts` | Print the contract index as JSON |
+| `--verify` | Generate SMT-LIB contract verification output |
+| `--verify-output <file>` | Write the SMT-LIB output to a file |
+| `--keep-debug-checks` | Keep debug intrinsics in release builds |
+
+### Safety and hardening
+
+| Flag | Description |
+|------|-------------|
+| `--sandbox` | Safety audit over `unsafe` blocks (text report) |
+| `--sandbox=strict` | Block compilation on HIGH severity findings |
+| `--sandbox-report=json` | Emit the sandbox report as JSON |
+| `--sanitize=address` | AddressSanitizer |
+| `--sanitize=undefined` | UndefinedBehaviorSanitizer |
+| `--sanitize=leak` | LeakSanitizer |
+| `--sanitize=thread` | ThreadSanitizer |
+| `--stack-protector` | Stack canaries (`-fstack-protector`) |
+| `--overflow-checks` / `--no-overflow-checks` | Integer overflow traps (ON by default) |
+| `--enable-unsafe-direct` | Allow `#[unsafe_direct]` in user code |
+| `--strict-mode` | Borrow-checker warnings (E001) become hard errors |
+| `--strict-exhaustive` | Non-exhaustive matches become hard errors |
+
+### Iteration and performance
+
+| Flag | Description |
+|------|-------------|
+| `--watch` | Watch source files and recompile on change |
+| `--hot-reload` | Watch plus shared-library hot reload |
+| `--hot-reload-contracts` | Verify contracts before hot-swapping function pointers |
+| `--incremental` | Cache compiled IR, skip unchanged sources |
+| `--force` | Force recompile, ignore all caches |
+| `--parallel` / `--sequential` | Parallel lex+parse (rayon) or force sequential |
+| `--jobs <N>` | Number of parallel compile jobs (default: CPUs) |
+| `--parallel-codegen` | Per-function IR emission |
+
+### Diagnostics, graphs and limits
+
+| Flag | Description |
+|------|-------------|
 | `--diagnostics=json` | Structured compiler output |
-| `--max-depth <N>` | Max recursion depth (default: 500) |
+| `--explain <CODE>` | Explain an error code (e.g. `--explain T001`) |
+| `--graph` / `--graph=mermaid` | Dependency graph as DOT or Mermaid |
+| `--timeout <seconds>` | Compilation timeout (default 300; 0 disables) |
+| `--max-memory-mb <N>` | Memory budget in MB (0 = disabled) |
+| `--max-depth <N>` | Maximum recursion depth (default 500) |
 
-### Scripting Mode
+### Linking
 
-```
-xiom run <file.xi>          Execute script
-xiom run -e "code"           Inline expression
-xiom run -                   stdin script
-xiom run --watch <file>      Watch + re-run
-xiom run --jit <file>        In-process DLL JIT
-xiom run --jit --lazy <file> JIT with incremental cache
-xiom run --cache <file>      Binary cache for instant re-run
-xiom run --no-cache          Disable caching
-```
+| Flag | Description |
+|------|-------------|
+| `--link <name>` | Link a native library (repeatable, e.g. `vulkan-1`) |
+| `--link-path <dir>` | Add a library search path (repeatable) |
+| `--c-source <file>` | Link an extra C/object file (repeatable) |
 
-### Other Commands
+### Utility
 
-```
-xiom build-runtime            Build libxiom_runtime.dll/.so
-xiom repl                     Interactive shell
-xiom doctor                   Check toolchain
-xiom clean                    Remove build artifacts
-xiom clean --cache            Clear JIT cache
-```
+| Flag | Description |
+|------|-------------|
+| `--version` | Print version and test stats |
+| `--help` | Print usage |
+| `--help-ai` | AI mode setup and configuration guide |
 
 ## Targets
 
@@ -247,6 +289,8 @@ xiom clean --cache            Clear JIT cache
 | `x86_64-pc-windows-msvc` | [OK] Verified |
 | `x86_64-unknown-linux-gnu` | [OK] Verified (WSL build + compile + run) |
 | `wasm32-unknown-unknown` | [OK] Verified |
+| `aarch64-unknown-linux-gnu` (`--target arm`) | Accepted by the CLI |
+| `riscv` | Accepted by the CLI; status tracked in the compiler repository |
 | `aarch64-apple-darwin` | Planned |
 
 ## Language Features
