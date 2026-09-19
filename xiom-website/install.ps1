@@ -1,4 +1,4 @@
-# Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+# Copyright (c) 2026 XIOM Foundation
 # SPDX-License-Identifier: MIT OR Apache-2.0
 #
 # XIOM toolchain installer for Windows (x64).

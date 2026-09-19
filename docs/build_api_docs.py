@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 Eleftherios Notas and XIOM Foundation
+# Copyright (c) 2026 XIOM Foundation
 # SPDX-License-Identifier: MIT OR Apache-2.0
 """
 xiom API documentation builder.
