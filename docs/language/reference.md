@@ -61,7 +61,7 @@ pub const PI: Float64 = 3.1415926535;
 | `Int128` | Signed 128-bit integer    | `170141183460469231731687303715884105727` |
 | `UInt128`| Unsigned 128-bit integer  | `340282366920938463463374607431768211455` |
 | `Float64`| 64-bit IEEE 754 float     | `3.14`, `-0.5`   |
-| `Float128`| 128-bit IEEE 754 float   | `3.14`           |
+| `Float128`| 128-bit IEEE 754 float   | `3.14 as Float128` |
 | `Bool`   | Boolean                   | `true`, `false`  |
 | `Str`    | Immutable string          | `"hello"`        |
 | `Char`   | Single Unicode character  | `'a'`, `'\n'`    |

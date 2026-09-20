@@ -10,6 +10,14 @@ Version 0.3  --  Language Definition Only
 
 This document defines the XIOM language. Applications are out of scope.
 
+> **Revision note (2026-09-20).** The primitive type set below includes the
+> 128-bit integers and the 128-bit float. The canonical spellings are
+> exactly `Int128`, `UInt128` and `Float128` -- there are no language-level
+> aliases (`i128`, `u128` and `I128` are ordinary user type names, and a
+> bare `Float` is not an alias for `Float64`). Integer literals beyond
+> `u64` are representable, so `Int128` / `UInt128` values need no suffix;
+> `Float128` values are produced by conversion and have no literal suffix.
+
 # Contents
 
 1.  Overview & Core Goals
@@ -258,13 +266,16 @@ TypeGenericArgs = "[" Type { "," Type } "]"
 | **Int16** | 16 bits | Signed short. |
 | **Int32** | 32 bits | Signed word. |
 | **Int64** | 64 bits | Signed double word. |
+| **Int128** | 128 bits | Signed, base-2, range `-2^127 .. 2^127-1`. Literals beyond `u64` are supported. |
 | **UInt** | Platform (64-bit) | Unsigned. Use for sizes and indices. |
 | **UInt8** | 8 bits | Byte. Alias: `Byte`. |
 | **UInt16** | 16 bits | |
 | **UInt32** | 32 bits | |
 | **UInt64** | 64 bits | |
+| **UInt128** | 128 bits | Unsigned, `0 .. 2^128-1`. |
 | **Float32** | IEEE 754 single | |
 | **Float64** | IEEE 754 double | Default float type. |
+| **Float128** | IEEE 754 binary128 | Lowered to LLVM `fp128`. Values come from conversion; no literal suffix. |
 | **Char** | 32 bits | Unicode scalar value. Not a byte. |
 | **Str** | Fat pointer | Immutable UTF-8 slice. Not null-terminated. |
 

@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 | `UInt128` | 128 bits | Unsigned 128-bit integer. |
 | `Float32` | IEEE 754 single | |
 | `Float64` | IEEE 754 double | Default float type. |
-| `Float128` | IEEE 754 quad | 128-bit floating point. |
+| `Float128` | IEEE 754 binary128 | Lowered to LLVM `fp128`. Values come from conversion; there is no `Float128` literal suffix. |
 | `Char` | 32 bits | Unicode scalar value. Not a byte. |
 | `Str` | Fat pointer | Immutable UTF-8 slice. Not null-terminated. |
 
