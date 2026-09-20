@@ -5373,6 +5373,8 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>lhmap_contains(m, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; lhmap_size(m) == lhmap_size(m)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; lhmap_size(m) == lhmap_size(m)@pre</code></li>
 </ul>
 <h5 id="fn-lhmap_sizem-lhmap-int"><code>fn lhmap_size(m: &amp;LhMap) -&gt; Int</code><a class="headerlink" href="#fn-lhmap_sizem-lhmap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -5925,6 +5927,8 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>int_map_contains(m, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; int_map_size(m) == int_map_size(m)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; int_map_size(m) == int_map_size(m)@pre</code></li>
 </ul>
 <h5 id="fn-int_map_sizem-intmap-int"><code>fn int_map_size(m: &amp;IntMap) -&gt; Int</code><a class="headerlink" href="#fn-int_map_sizem-intmap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -5990,6 +5994,8 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>string_map_contains(m, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; string_map_size(m) == string_map_size(m)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; string_map_size(m) == string_map_size(m)@pre</code></li>
 </ul>
 <h5 id="fn-string_map_sizem-orderedstringmap-int"><code>fn string_map_size(m: &amp;OrderedStringMap) -&gt; Int</code><a class="headerlink" href="#fn-string_map_sizem-orderedstringmap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -6295,14 +6301,16 @@
 <p>Remove and return the front value. None if the list is empty. O(1).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result is None =&gt; ll_len(l) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; ll_len(l) == ll_len(l)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; ll_len(l) == ll_len(l)@pre</code></li>
 </ul>
 <h5 id="fn-ll_pop_backl-mut-linkedlist-optionint"><code>fn ll_pop_back(l: &amp;mut LinkedList) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ll_pop_backl-mut-linkedlist-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the back value. None if the list is empty. O(1).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result is None =&gt; ll_len(l) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; ll_len(l) == ll_len(l)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; ll_len(l) == ll_len(l)@pre</code></li>
 </ul>
 <h5 id="fn-ll_frontl-linkedlist-optionint"><code>fn ll_front(l: &amp;LinkedList) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ll_frontl-linkedlist-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -7179,7 +7187,8 @@
 <p>Remove and return the front item. None if empty.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result is None =&gt; workqueue_len(q) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; workqueue_len(q) == workqueue_len(q)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; workqueue_len(q) == workqueue_len(q)@pre</code></li>
 </ul>
 <h5 id="fn-workqueue_peekq-workqueue-optionint"><code>fn workqueue_peek(q: &amp;WorkQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-workqueue_peekq-workqueue-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -7248,14 +7257,16 @@
 <p>Remove and return the front item. None if empty.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result is None =&gt; deque_len(d) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; deque_len(d) == deque_len(d)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; deque_len(d) == deque_len(d)@pre</code></li>
 </ul>
 <h5 id="fn-deque_pop_backd-mut-deque-optionint_1"><code>fn deque_pop_back(d: &amp;mut Deque) -&gt; Option[Int]</code><a class="headerlink" href="#fn-deque_pop_backd-mut-deque-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the back item. None if empty.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result is None =&gt; deque_len(d) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; deque_len(d) == deque_len(d)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; deque_len(d) == deque_len(d)@pre</code></li>
 </ul>
 <h5 id="fn-deque_lend-deque-int_1"><code>fn deque_len(d: &amp;Deque) -&gt; Int</code><a class="headerlink" href="#fn-deque_lend-deque-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -7533,7 +7544,8 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>rbtree_contains(t, key) == true</code></li>
-<li><strong>Postcondition:</strong> <code>result == true =&gt; rbtree_size(t) &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; rbtree_size(t) == rbtree_size(t)@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; rbtree_size(t) == rbtree_size(t)@pre</code></li>
 </ul>
 <h5 id="fn-rbtree_gett-rbtree-key-int-optionint"><code>fn rbtree_get(t: &amp;RbTree, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-rbtree_gett-rbtree-key-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -7552,6 +7564,8 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>rbtree_contains(t, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; rbtree_size(t) == rbtree_size(t)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; rbtree_size(t) == rbtree_size(t)@pre</code></li>
 </ul>
 <h5 id="fn-rbtree_sizet-rbtree-int"><code>fn rbtree_size(t: &amp;RbTree) -&gt; Int</code><a class="headerlink" href="#fn-rbtree_sizet-rbtree-int" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -7909,7 +7923,7 @@
 <p>Insert a 2D point (x, y) with its value. Duplicates are allowed. O(h) expected, O(n) worst case.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>kdtree_size(t) &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>kdtree_size(t) == kdtree_size(t)@pre + 1</code></li>
 </ul>
 <h5 id="fn-kdtree_nearestt-kdtree-x-int-y-int-optionint_1"><code>fn kdtree_nearest(t: &amp;KdTree, x: Int, y: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-kdtree_nearestt-kdtree-x-int-y-int-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -8007,7 +8021,8 @@
 <p>Insert a 2D point (x, y) with its value. Returns false if the point lies outside the quadtree bounds. O(depth).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result == true =&gt; quadtree_size(q) &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; quadtree_size(q) == quadtree_size(q)@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; quadtree_size(q) == quadtree_size(q)@pre</code></li>
 </ul>
 <h5 id="fn-quadtree_queryq-quadtree-x1-int-y1-int-x2-int-y2-int-vecint"><code>fn quadtree_query(q: &amp;Quadtree, x1: Int, y1: Int, x2: Int, y2: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-quadtree_queryq-quadtree-x1-int-y1-int-x2-int-y2-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -8109,7 +8124,8 @@
 <p>Insert a 3D point (x, y, z) with its value. Returns false if the point lies outside the octree bounds. O(depth).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result == true =&gt; octree_size(o) &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; octree_size(o) == octree_size(o)@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; octree_size(o) == octree_size(o)@pre</code></li>
 </ul>
 <h5 id="fn-octree_queryo-octree-x1-int-y1-int-z1-int-x2-int-y2-int-z2-int-vecint"><code>fn octree_query(o: &amp;Octree, x1: Int, y1: Int, z1: Int, x2: Int, y2: Int, z2: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-octree_queryo-octree-x1-int-y1-int-z1-int-x2-int-y2-int-z2-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -8572,6 +8588,8 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>bst_contains(b, key) == false</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; bst_size(b) == bst_size(b)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; bst_size(b) == bst_size(b)@pre</code></li>
 </ul>
 <h5 id="fn-bst_sizeb-bst-int"><code>fn bst_size(b: &amp;Bst) -&gt; Int</code><a class="headerlink" href="#fn-bst_sizeb-bst-int" title="Permanent link">&para;</a></h5>
 <blockquote>
