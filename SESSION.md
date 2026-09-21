@@ -296,6 +296,14 @@ Remaining:
    them; publish a current specification revision (compiler lane);
    playground copy fixes ("Never Crash", stats bar) belong to the playground
    lane; the legal-entity wording is an owner decision.
+10. **XIOM snippet syntax lint (done 2026-09-21)**: `docs/check_syntax.py`
+    lints ```xiom fenced blocks in the guides and `AI_CONTEXT.md` plus the
+    code blocks in the site pages for contract colons, `use` semicolons and
+    square-bracket generics (turbofish flagged separately); wired into
+    `docs.yml` and into the publish gate in `docs-versioned.yml`. The first
+    run found and fixed drift in `modules.md`,
+    `stdlib/crypto.md`, `stdlib/serialize.md` and `AI_CONTEXT.md`
+    (`Result<KeyPair, Str>`, `Vec<JsonValue>`, turbofish intrinsics).
 
 ## Rules
 
@@ -342,7 +350,8 @@ prefers "// Purpose:" lines. The "Prior art and trade-offs" page is live
 (prior-art.html) and linked from spec section 8, the Why page and the
 homepage why-section; C# rows were added to the Concepts page and the
 docs wording now matches the page (no "same safety as Rust", contracts are
-not unique to XIOM).
+not unique to XIOM). The snippet syntax lint is live in `docs.yml`
+(`docs/check_syntax.py`) and the current corpus is clean.
 
 Next, in order:
 1. Draft "XIOM for game developers" once the owner provides engine facts
@@ -355,8 +364,6 @@ Next, in order:
 3. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
-4. Optional: docs syntax lint in CI (contract colons, use semicolons,
-   angle-bracket generics in XIOM snippets) to prevent drift.
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS installer support
