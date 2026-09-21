@@ -2978,14 +2978,35 @@ xiom<span class="w"> </span>--ai<span class="w"> </span>source.xi
 </tr>
 </tbody>
 </table>
-<p>Configuration can also live in <code>.xiom_ai_config.json</code>, or in the
-<code>XIOM_AI_KEY</code>, <code>XIOM_AI_ENDPOINT</code>, <code>XIOM_AI_MODEL</code> and <code>XIOM_AI_PROVIDER</code>
-environment variables. <code>xiom --help-ai</code> prints the full guide.</p>
+<p>Configuration can also live in <code>.xiom_ai_config.json</code>. The compiler searches,
+first found wins:</p>
+<ol>
+<li><code>&lt;project&gt;/.xiom_ai_config.json</code></li>
+<li><code>$XIOM_HOME/.xiom_ai_config.json</code> -- what the installers write; on Windows
+   <code>%LOCALAPPDATA%\xiom</code>, on Linux/macOS <code>~/.local/share/xiom</code></li>
+<li><code>~/.xiom_ai_config.json</code></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deepseek"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.deepseek.com"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sk-your-key-here"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deepseek-chat"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"timeout_secs"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Environment variables override the file and command-line flags override the
+environment: <code>XIOM_AI_KEY</code>, <code>XIOM_AI_ENDPOINT</code>, <code>XIOM_AI_MODEL</code>,
+<code>XIOM_AI_PROVIDER</code>, <code>XIOM_AI_TIMEOUT</code>, <code>XIOM_AI_MAX_TOKENS</code> and
+<code>XIOM_AI_ALLOW_HTTP</code>. To change a key later, edit that file or export
+<code>XIOM_AI_KEY</code> again. Keys are refused over plaintext <code>http://</code> to non-local
+hosts. <code>xiom --help-ai</code> prints the full guide from the compiler itself, and
+<a href="../getting-started/">Getting Started</a> walks through first-time setup.</p>
 <h3 id="mcp-server-and-companion-tools">MCP server and companion tools<a class="headerlink" href="#mcp-server-and-companion-tools" title="Permanent link">&para;</a></h3>
 <p><code>xiom-mcp</code> is a Model Context Protocol server (stdio, JSON-RPC 2.0) that
 lets AI agents compile-check XIOM code, read the language and workflow
-guides, and query the standard library reference as tools. Register it in
-any MCP-capable client:</p>
+guides, query the standard library reference, and search package metadata in
+the registry (<code>search_packages</code>, <code>package_info</code>, read-only) as tools. Register
+it in any MCP-capable client:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">"xiom"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"C:\\path\\to\\xiom-mcp.exe"</span><span class="w"> </span><span class="p">}</span>

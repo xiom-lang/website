@@ -2419,10 +2419,16 @@
 <blockquote>
 <p>Number of set bits. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-bit_array_lenba-bitarray-int"><code>fn bit_array_len(ba: BitArray) -&gt; Int</code><a class="headerlink" href="#fn-bit_array_lenba-bitarray-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of bits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-bit_array_anda-bitarray-b-bitarray-bitarray"><code>fn bit_array_and(a: BitArray, b: BitArray) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_anda-bitarray-b-bitarray-bitarray" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bitwise AND of two bit arrays; the result has max(a.len, b.len) bits and missing bits read as 0. Complexity: O(max/8).</p>
@@ -2451,6 +2457,9 @@
 <blockquote>
 <p>Extracts <code>width</code> bits at <code>offset</code> as an unsigned, right-justified value. Out-of-range requests are clamped: width &lt;= 0 yields 0; the field is truncated at bit 63. Complexity: O(width).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-bitfield_setvalue-int-offset-int-width-int-val-int-int"><code>fn bitfield_set(value: Int, offset: Int, width: Int, val: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_setvalue-int-offset-int-width-int-val-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inserts <code>val</code> (masked to the field width) into the field at <code>offset</code>, leaving all other bits unchanged. The field is truncated at bit 63. Complexity: O(width).</p>
@@ -2467,10 +2476,16 @@
 <blockquote>
 <p>Mask of <code>width</code> low bits set. width &lt;= 0 yields 0; width &gt;= 64 yields -1 (all 64 bits). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &gt;= 1 &amp;&amp; width &lt;= 63 =&gt; result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-bitfield_extract_uvalue-int-offset-int-width-int-int"><code>fn bitfield_extract_u(value: Int, offset: Int, width: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_extract_uvalue-int-offset-int-width-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unsigned field extract, right-justified (alias of bitfield_get). Complexity: O(width).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-bitfield_insertbase-int-value-int-offset-int-width-int-int"><code>fn bitfield_insert(base: Int, value: Int, offset: Int, width: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_insertbase-int-value-int-offset-int-width-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Places <code>value</code> into the field of <code>base</code> at <code>offset</code> (alias of bitfield_set with the arguments in insertion order). Complexity: O(width).</p>
@@ -2483,6 +2498,9 @@
 <blockquote>
 <p>bit_get -- Returns 1 if the bit at position pos (0 = LSB) is set, 0 otherwise. Position must be in [0, 63] for 64-bit Int.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+</ul>
 <h4 id="fn-bit_setn-int-pos-int-int"><code>fn bit_set(n: Int, pos: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_setn-int-pos-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>bit_set -- Returns n with the bit at position pos set to 1.</p>
@@ -2499,22 +2517,37 @@
 <blockquote>
 <p>bit_count_ones (popcount) -- Counts set bits (1s) in n. Delegates to xiom.num.count_ones for the canonical implementation.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h4 id="fn-bit_count_zerosn-int-int"><code>fn bit_count_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_count_zerosn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>bit_count_zeros -- Counts cleared bits (0s) in n.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h4 id="fn-popcountn-int-int"><code>fn popcount(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-popcountn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>popcount -- Alias for bit_count_ones. Hamming weight of the value. Delegates to the built-in counting function.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h4 id="fn-clzn-int-int"><code>fn clz(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-clzn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>clz -- Count Leading Zeros. Returns the number of consecutive zero bits starting from the most significant bit.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h4 id="fn-ctzn-int-int"><code>fn ctz(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-ctzn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>ctz -- Count Trailing Zeros. Returns the number of consecutive zero bits starting from the least significant bit.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h4 id="fn-rot_leftn-int-k-int-int"><code>fn rot_left(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rot_leftn-int-k-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>rot_left -- Circularly shifts bits left by k positions. Bits shifted off the MSB reappear at the LSB. Equivalent to xiom.num.rotate_left.</p>
@@ -2555,10 +2588,16 @@
 <blockquote>
 <p>low_nibble -- Extracts the lower 4 bits (nibble) of n. Returns 0-15.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 15</code></li>
+</ul>
 <h4 id="fn-high_nibblen-int-int"><code>fn high_nibble(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-high_nibblen-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>high_nibble -- Extracts bits 4-7 (the high nibble of the low byte). Returns 0-15.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 15</code></li>
+</ul>
 <h4 id="fn-pack_u16_lelow_byte-int-high_byte-int-int"><code>fn pack_u16_le(low_byte: Int, high_byte: Int) -&gt; Int</code><a class="headerlink" href="#fn-pack_u16_lelow_byte-int-high_byte-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>pack_u16_le -- Packs two byte values (0-255) into a 16-bit integer in little-endian order: low_byte at bits 0-7, high_byte at bits 8-15.</p>
@@ -2579,18 +2618,30 @@
 <blockquote>
 <p>unpack_u16_le -- Unpacks a little-endian 16-bit value into (low_byte, high_byte).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255 &amp;&amp; result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255</code></li>
+</ul>
 <h4 id="fn-unpack_u16_bevalue-int-int-int"><code>fn unpack_u16_be(value: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-unpack_u16_bevalue-int-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>unpack_u16_be -- Unpacks a big-endian 16-bit value into (high_byte, low_byte).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255 &amp;&amp; result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255</code></li>
+</ul>
 <h4 id="fn-unpack_u32_levalue-int-int-int-int-int"><code>fn unpack_u32_le(value: Int) -&gt; (Int, Int, Int, Int)</code><a class="headerlink" href="#fn-unpack_u32_levalue-int-int-int-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>unpack_u32_le -- Unpacks a little-endian 32-bit value into a 4-tuple of bytes (b0=LSB .. b3=MSB).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255 &amp;&amp; result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255 &amp;&amp; result._2 &gt;= 0 &amp;&amp; result._2 &lt;= 255 &amp;&amp; result._3 &gt;= 0 &amp;&amp; result._3 &lt;= 255</code></li>
+</ul>
 <h4 id="fn-unpack_u32_bevalue-int-int-int-int-int"><code>fn unpack_u32_be(value: Int) -&gt; (Int, Int, Int, Int)</code><a class="headerlink" href="#fn-unpack_u32_bevalue-int-int-int-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>unpack_u32_be -- Unpacks a big-endian 32-bit value into a 4-tuple of bytes (b0=MSB .. b3=LSB).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255 &amp;&amp; result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255 &amp;&amp; result._2 &gt;= 0 &amp;&amp; result._2 &lt;= 255 &amp;&amp; result._3 &gt;= 0 &amp;&amp; result._3 &lt;= 255</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="bitwisexi"><code>bitwise.xi</code><a class="headerlink" href="#bitwisexi" title="Permanent link">&para;</a></h2>
@@ -2598,14 +2649,23 @@
 <blockquote>
 <p>Population count: number of set bits in n. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-clzn-int-int_1"><code>fn clz(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-clzn-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Count of consecutive zero bits starting from the most significant bit; 64 for zero. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-ctzn-int-int_1"><code>fn ctz(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-ctzn-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Count of consecutive zero bits starting from the least significant bit; 64 for zero. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-bit_reversen-int-int_1"><code>fn bit_reverse(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_reversen-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reverses the bit order of n (bit 0 &lt;-&gt; bit 63). Complexity: O(64).</p>
@@ -2630,30 +2690,51 @@
 <blockquote>
 <p>Number of bits needed to represent n: 0 for zero, 64 for negative values (the sign bit is counted), otherwise floor(log2 n) + 1. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-bit_lengthn-int-int"><code>fn bit_length(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_lengthn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Alias of bit_width. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-leading_onesn-int-int"><code>fn leading_ones(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-leading_onesn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Count of consecutive 1 bits starting from the most significant bit. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-trailing_onesn-int-int"><code>fn trailing_ones(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-trailing_onesn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Count of consecutive 1 bits starting from the least significant bit. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-bit_parityn-int-int"><code>fn bit_parity(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_parityn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>1 if the population count is odd, else 0. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+</ul>
 <h5 id="fn-bit_scan_forwardn-int-int"><code>fn bit_scan_forward(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_scan_forwardn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the lowest set bit; -1 when n == 0. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 63</code></li>
+</ul>
 <h5 id="fn-bit_scan_reversen-int-int"><code>fn bit_scan_reverse(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_scan_reversen-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the highest set bit; -1 when n == 0. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 63</code></li>
+</ul>
 <h5 id="fn-is_power_of_two_bitn-int-bool"><code>fn is_power_of_two_bit(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_power_of_two_bitn-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n &gt; 0 and n is a power of two (exactly one set bit). Complexity: O(64).</p>
@@ -2734,34 +2815,58 @@
 <blockquote>
 <p>Number of set bits in n. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-popcount64n-uint64-int"><code>fn popcount64(n: UInt64) -&gt; Int</code><a class="headerlink" href="#fn-popcount64n-uint64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of set bits in a UInt64 value. The low bit of an arithmetic shift is identical to a logical shift, so <code>(n &gt;&gt; i) &amp; 1</code> is exact. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-count_leading_zerosn-int-int"><code>fn count_leading_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_leading_zerosn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Consecutive zero bits from the most significant bit; 64 for zero. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-count_trailing_zerosn-int-int"><code>fn count_trailing_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_trailing_zerosn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Consecutive zero bits from the least significant bit; 64 for zero. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-count_onesn-int-int"><code>fn count_ones(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_onesn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of set bits (alias of popcount). Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-count_zerosn-int-int"><code>fn count_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_zerosn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of cleared bits (64 - popcount). Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-parityn-int-int"><code>fn parity(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-parityn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>1 if the population count is odd, else 0. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+</ul>
 <h5 id="fn-bit_lengthn-int-int_1"><code>fn bit_length(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_lengthn-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of bits needed to represent n: 0 for zero, 64 for negative values, otherwise floor(log2 n) + 1. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
 <h5 id="fn-next_pow2n-int-int"><code>fn next_pow2(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-next_pow2n-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest power of two &gt;= n. n &lt;= 0 yields 1; values above 2^62 yield 0 (the next power of two would not fit an Int). Complexity: O(63).</p>
@@ -2794,10 +2899,16 @@
 <blockquote>
 <p>Rotate-left-with-carry: performs k rotate-through-carry steps (each step moves bit 63 into the carry and shifts the carry into bit 0). Returns (rotated_value, new_carry). The shift amount is reduced mod 64. Complexity: O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._1 == 0 || result._1 == 1</code></li>
+</ul>
 <h5 id="fn-rotate_right_carryn-int-k-int-carry_in-int-int-int"><code>fn rotate_right_carry(n: Int, k: Int, carry_in: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-rotate_right_carryn-int-k-int-carry_in-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rotate-right-with-carry: performs k rotate-through-carry steps (each step moves bit 0 into the carry and shifts the carry into bit 63). Returns (rotated_value, new_carry). The shift amount is reduced mod 64. Complexity: O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._1 == 0 || result._1 == 1</code></li>
+</ul>
 <h5 id="fn-rol_immn-int-k-int-int"><code>fn rol_imm(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rol_immn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rotate left by a "compile-time constant" k (equivalent to rotate_left; the language has no distinct immediate form). Complexity: O(1).</p>
