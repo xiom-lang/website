@@ -2483,6 +2483,177 @@
   
   
   
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_23" id="__nav_23_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Error Codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/X0010/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0010
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/X0011/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0011
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/X0100/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0100
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../AI_CONTEXT/" class="md-nav__link">
         
@@ -2945,10 +3116,14 @@ them unless <code>--runtime-contracts</code> forces them.</p>
   <code>unimplemented!()</code>, and <code>debugger;</code>. These are stripped in release builds
   unless <code>--keep-debug-checks</code> is passed.</li>
 <li><code>--diagnostics=json</code>: structured output for tooling.</li>
-<li><code>--explain T001</code>: explain an error code.</li>
-<li><code>--emit-tokens</code>, <code>--emit-ir</code>, <code>--check</code>: inspect a single compilation
-  stage.</li>
 </ul>
+<p>Every diagnostic carries a stable code (<code>X0010</code> type mismatch, <code>X0100</code>
+contract violation). The reference is the <strong>Error Codes</strong> section of this
+documentation, and <code>xiom --explain &lt;code&gt;</code> prints the same page when the
+current directory contains <code>docs/error_codes/</code> (a checkout).
+- <code>--explain T001</code>: explain an error code.
+- <code>--emit-tokens</code>, <code>--emit-ir</code>, <code>--check</code>: inspect a single compilation
+  stage.</p>
 <h3 id="ai-assisted-diagnostics-ai">AI-assisted diagnostics (<code>--ai</code>)<a class="headerlink" href="#ai-assisted-diagnostics-ai" title="Permanent link">&para;</a></h3>
 <p>The compiler can send compilation errors to an LLM and get actionable hints
 back. Results are written to <code>.xiom_ai.json</code>; source files are <strong>never
@@ -3007,13 +3182,11 @@ xiom<span class="w"> </span>--ai<span class="w"> </span>source.xi
 </tbody>
 </table>
 <p>Configuration can also live in <code>.xiom_ai_config.json</code>. The compiler searches,
-first found wins:</p>
-<ol>
-<li><code>&lt;project&gt;/.xiom_ai_config.json</code></li>
-<li><code>$XIOM_HOME/.xiom_ai_config.json</code> -- what the installers write; on Windows
-   <code>%LOCALAPPDATA%\xiom</code>, on Linux/macOS <code>~/.local/share/xiom</code></li>
-<li><code>~/.xiom_ai_config.json</code></li>
-</ol>
+first found wins:
+1. <code>&lt;project&gt;/.xiom_ai_config.json</code>
+2. <code>$XIOM_HOME/.xiom_ai_config.json</code> -- what the installers write; on Windows
+   <code>%LOCALAPPDATA%\xiom</code>, on Linux/macOS <code>~/.local/share/xiom</code>
+3. <code>~/.xiom_ai_config.json</code></p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deepseek"</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.deepseek.com"</span><span class="p">,</span>
