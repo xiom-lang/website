@@ -476,10 +476,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-contracts-unique-to-xiom" class="md-nav__link">
+  <a href="#6-contracts-in-the-language-not-in-comments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Contracts -- Unique to XIOM
+        6. Contracts -- In the Language, Not in Comments
       
     </span>
   </a>
@@ -2372,10 +2372,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-contracts-unique-to-xiom" class="md-nav__link">
+  <a href="#6-contracts-in-the-language-not-in-comments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Contracts -- Unique to XIOM
+        6. Contracts -- In the Language, Not in Comments
       
     </span>
   </a>
@@ -2522,8 +2522,12 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <td>Type hints become mandatory. <code>Optional</code> -&gt; <code>Option[T]</code>. No <code>None</code>. No exceptions.</td>
 </tr>
 <tr>
-<td><strong>Java/C#</strong></td>
+<td><strong>Java</strong></td>
 <td>Interfaces without <code>implements</code>. No <code>null</code>. No exceptions. No <code>class</code> -- use structs + methods.</td>
+</tr>
+<tr>
+<td><strong>C#</strong></td>
+<td>Properties become fields plus methods, delegates become <code>fn</code> types, <code>Task</code> maps to async/await and <code>spawn</code>. No <code>null</code>, no exceptions, no classes or inheritance -- use structs, composition and structural interfaces.</td>
 </tr>
 <tr>
 <td><strong>JavaScript</strong></td>
@@ -2543,8 +2547,12 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </thead>
 <tbody>
 <tr>
-<td>Java/C#</td>
+<td>Java</td>
 <td><code>null</code> -- crashes at runtime</td>
+</tr>
+<tr>
+<td>C#</td>
+<td><code>null</code>; nullable reference types are opt-in annotations, not a language-wide guarantee</td>
 </tr>
 <tr>
 <td>Python</td>
@@ -2645,7 +2653,7 @@ match read_config("config.json") {
 </tr>
 <tr>
 <td><strong>XIOM</strong></td>
-<td><strong>Ownership + lexical scope borrowing -- same safety, no lifetimes</strong></td>
+<td><strong>Ownership + lexical scope borrowing -- no lifetime annotations</strong></td>
 </tr>
 </tbody>
 </table>
@@ -2662,6 +2670,7 @@ mutate(&amp;mut b);  // exclusive write borrow
 let c = b.clone();  // explicit copy -- both valid
 </code></pre></div>
 <p><strong>The key difference from Rust:</strong> No lifetime annotations. Ever. Borrows expire at the end of the block where they're created. You can see when a borrow ends by looking at the braces.</p>
+<p><strong>Coming from C#:</strong> <code>using</code> and <code>IDisposable</code> give deterministic cleanup for the resources you wrap explicitly. XIOM applies a lifetime rule like that to every owned value -- memory is freed when its owner leaves scope -- and duplication is always explicit with <code>.clone()</code>.</p>
 <hr />
 <h2 id="4-structs-methods-no-classes-no-inheritance">4. Structs + Methods -- No Classes, No Inheritance<a class="headerlink" href="#4-structs-methods-no-classes-no-inheritance" title="Permanent link">&para;</a></h2>
 <p>XIOM has no <code>class</code>, no <code>extends</code>, no <code>implements</code>, no <code>virtual</code>, no <code>override</code>, no <code>protected</code>. Here's what you use instead:</p>
@@ -2759,8 +2768,8 @@ let winner = max(Score{ value: 10 }, Score{ value: 20 });
 </code></pre></div>
 <p>This is Go's interface model. It's also how Python's duck typing works, except compile-time verified.</p>
 <hr />
-<h2 id="6-contracts-unique-to-xiom">6. Contracts -- Unique to XIOM<a class="headerlink" href="#6-contracts-unique-to-xiom" title="Permanent link">&para;</a></h2>
-<p>No mainstream language has contracts as compiler-enforced specifications. This is XIOM's defining feature.</p>
+<h2 id="6-contracts-in-the-language-not-in-comments">6. Contracts -- In the Language, Not in Comments<a class="headerlink" href="#6-contracts-in-the-language-not-in-comments" title="Permanent link">&para;</a></h2>
+<p>No mainstream language ships contracts as part of its core syntax. Design by Contract has a long lineage -- Eiffel had it in 1986, and Ada 2012/SPARK, Dafny and Frama-C pushed it further with static verification. XIOM's bet is packaging: contracts in the core language of a systems compiler, enforced at runtime by default and available to verification tooling for supported properties. The website's <a href="https://xiom-lang.org/prior-art.html">Prior art and trade-offs</a> page covers the comparison.</p>
 <div class="highlight"><pre><span></span><code>fn divide(a: Float64, b: Float64) -&gt; Float64
   requires: b != 0.0           // PRE-CONDITION: caller must guarantee this
   ensures:  result * b == a    // POST-CONDITION: implementation must guarantee this
@@ -2787,12 +2796,12 @@ type Health = {
 <tr>
 <td><code>requires:</code></td>
 <td><code>assert()</code> at function entry</td>
-<td>Compiler can check at call sites, not just runtime</td>
+<td>Part of the language, enforced by the toolchain instead of stripped by convention</td>
 </tr>
 <tr>
 <td><code>ensures:</code></td>
 <td><code>assert()</code> at function exit + unit test</td>
-<td>Compiler-verified, not just hoped-for</td>
+<td>Enforced on every return path, and exported to verification tooling</td>
 </tr>
 <tr>
 <td><code>invariant:</code></td>
@@ -2801,7 +2810,7 @@ type Health = {
 </tr>
 </tbody>
 </table>
-<p>When a contract is violated at runtime, the program panics with the <strong>exact</strong> contract that failed, the file, and the line number. In debug mode, this replaces most unit tests.</p>
+<p>When a contract is violated at runtime, the program panics with the <strong>exact</strong> contract that failed, the file, and the line number -- an error a unit test would only catch if it exercised that path with those values.</p>
 <hr />
 <h2 id="7-public-private-module-based-visibility">7. Public / Private -- Module-Based Visibility<a class="headerlink" href="#7-public-private-module-based-visibility" title="Permanent link">&para;</a></h2>
 <table>
@@ -2950,6 +2959,10 @@ match rx.recv() {
 </tr>
 <tr>
 <td><code>Promise</code> / <code>Future</code></td>
+<td>Future (implicit)</td>
+</tr>
+<tr>
+<td>C# <code>Task</code> / <code>Task&lt;T&gt;</code></td>
 <td>Future (implicit)</td>
 </tr>
 <tr>

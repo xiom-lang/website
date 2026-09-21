@@ -2317,7 +2317,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 <h1 id="memory-model">Memory Model<a class="headerlink" href="#memory-model" title="Permanent link">&para;</a></h1>
 <p>XIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
-<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.</p>
+<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are compile errors, and patterns that need escaping borrows use owned values instead.</p>
 <h2 id="ownership-rules">Ownership Rules<a class="headerlink" href="#ownership-rules" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
