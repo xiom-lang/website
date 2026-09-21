@@ -304,6 +304,23 @@ Remaining:
     run found and fixed drift in `modules.md`,
     `stdlib/crypto.md`, `stdlib/serialize.md` and `AI_CONTEXT.md`
     (`Result<KeyPair, Str>`, `Vec<JsonValue>`, turbofish intrinsics).
+11. **UI/UX and docs-content pass (done 2026-09-21)**: footer rebuilt as a
+    brand block plus Language/Explore/Project link columns over a legal bar
+    on every site page and in the generated docs template; Prior art was
+    added to the top nav (with a mid-width gap rule) and History to the
+    footer everywhere. `history.html` narrates the project evolution
+    (v0.1.0/v0.2.0 pipeline and full surface, v0.22-v0.33 hardening,
+    v0.50.0 first release, v0.52+ cadence, v0.56-v0.61, self-hosting
+    status) from the compiler repo records and links to Roadmap/Versions.
+    Code blocks got framed panels, a language badge, scroll styling and
+    the missing `.func` token color; `build_docs.py` now HTML-escapes code
+    blocks and inline code (raw `<` used to swallow comparison operators
+    and `<T>` generics in generated pages) and protects code spans from
+    the bold/italic rules. Version teaching was removed from user docs:
+    AI_CONTEXT "New in vX" banners and inline version tags, the
+    `compiler.md` "Since" column, and the `index.md` milestones table now
+    point at History/Versions. MkDocs code chrome restyled; mobile pass on
+    nav, footer and code sizing.
 
 ## Rules
 
@@ -351,7 +368,10 @@ prefers "// Purpose:" lines. The "Prior art and trade-offs" page is live
 homepage why-section; C# rows were added to the Concepts page and the
 docs wording now matches the page (no "same safety as Rust", contracts are
 not unique to XIOM). The snippet syntax lint is live in `docs.yml`
-(`docs/check_syntax.py`) and the current corpus is clean.
+(`docs/check_syntax.py`) and the current corpus is clean. The UI/UX pass
+landed on 2026-09-21: rebuilt footer and Prior art nav item across the site
+and the generated docs, a new History page, styled code blocks, and version
+teaching removed from the user guides.
 
 Next, in order:
 1. Draft "XIOM for game developers" once the owner provides engine facts
