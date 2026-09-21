@@ -2368,6 +2368,9 @@
 <blockquote>
 <p>Read a line from standard input. Returns: Ok(line without the trailing newline), Err on EOF or failure. Complexity: O(n) where n is the line length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-console_read_char-optionchar"><code>fn console_read_char() -&gt; Option[Char]</code><a class="headerlink" href="#fn-console_read_char-optionchar" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read one character without echo. Returns: Some(char) read from stdin, None at EOF. Complexity: O(1).</p>
@@ -2413,14 +2416,23 @@
 <blockquote>
 <p>Whether standard output is an interactive terminal. Returns: false (the runtime does not expose isatty). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false</code></li>
+</ul>
 <h5 id="fn-console_passwordprompt-str-resultstr-str"><code>fn console_password(prompt: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-console_passwordprompt-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read input without echo. Params: prompt - the prompt to display. Returns: Ok(line) without echo, Err on EOF. Complexity: O(n) where n is the line length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-console_read_until_eof-resultstr-str"><code>fn console_read_until_eof() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-console_read_until_eof-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read all remaining standard input. Returns: Ok(all bytes until EOF), Err on a read failure. Complexity: O(N) where N is the total input size.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_)</code></li>
+</ul>
 <h5 id="fn-console_flush"><code>fn console_flush()</code><a class="headerlink" href="#fn-console_flush" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Flush standard output. Complexity: O(1) syscall.</p>
@@ -2436,30 +2448,51 @@
 <blockquote>
 <p>Read the whole file as bytes. Params: path - the file path. Returns: Ok(file bytes), Err on failure. Complexity: O(n) where n is the file size.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_writepath-str-data-vecuint8-resultunit-str"><code>fn fs_write(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_writepath-str-data-vecuint8-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write bytes, truncating an existing file (binary mode). Params: path - the file path; data - the bytes to write. Returns: Ok(()) on success, Err on failure. Complexity: O(n) where n is the data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_appendpath-str-data-vecuint8-resultunit-str"><code>fn fs_append(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_appendpath-str-data-vecuint8-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Append bytes to a file (binary mode). Params: path - the file path; data - the bytes to append. Returns: Ok(()) on success, Err on failure. Complexity: O(n) where n is the data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_read_textpath-str-resultstr-str"><code>fn fs_read_text(path: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-fs_read_textpath-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read a file as UTF-8 text. Params: path - the file path. Returns: Ok(file content), Err on failure. Complexity: O(n) where n is the file size.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_write_textpath-str-s-str-resultunit-str"><code>fn fs_write_text(path: Str, s: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_write_textpath-str-s-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write a text string to a file. Params: path - the file path; s - the content. Returns: Ok(()) on success, Err on failure. Complexity: O(n) where n is the content length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_copysrc-str-dst-str-resultunit-str"><code>fn fs_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_copysrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Copy a file to a new path. Params: src - the source path; dst - the destination path. Returns: Ok(()) on success, Err on failure. Complexity: O(n) where n is the source size.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_movesrc-str-dst-str-resultunit-str"><code>fn fs_move(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_movesrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Move or rename a file. Params: src - the source path; dst - the destination path. Returns: Ok(()) on success, Err on failure. Complexity: O(1) syscall (atomic rename via the runtime shim; an existing dst is replaced, matching POSIX rename semantics on both platforms).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_existspath-str-bool"><code>fn fs_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_existspath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether the path exists. Params: path - the path. Returns: true if the path can be opened for reading. Complexity: O(1).</p>
@@ -2484,26 +2517,39 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
 </ul>
 <h5 id="fn-fs_mtimepath-str-resultint-str"><code>fn fs_mtime(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-fs_mtimepath-str-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Last modification time as a Unix timestamp. Params: path - the file path. Returns: Ok(mtime in seconds since the epoch), Err on failure. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_read_rangepath-str-offset-int-len-int-resultvecuint8-str"><code>fn fs_read_range(path: Str, offset: Int, len: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-fs_read_rangepath-str-offset-int-len-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read <code>len</code> bytes starting at <code>offset</code>. Params: path - the file path; offset - the start offset; len - the count. Returns: Ok(bytes read; fewer only at EOF), Err on failure. Complexity: O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) &amp;&amp; len &gt;= 0 =&gt; result.value.len() &lt;= len</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) &amp;&amp; len &lt;= 0 =&gt; result.value.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_write_rangepath-str-offset-int-data-vecuint8-resultint-str"><code>fn fs_write_range(path: Str, offset: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-fs_write_rangepath-str-offset-int-data-vecuint8-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write bytes at an offset, returning bytes written. Params: path - the file path; offset - the start offset; data - the bytes. Returns: Ok(bytes written), Err on failure. Complexity: O(n) where n is the data length.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &lt;= data.len()</code></li>
 </ul>
 <h5 id="fn-fs_touchpath-str-resultunit-str"><code>fn fs_touch(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_touchpath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create an empty file if missing, update mtime. Params: path - the file path. Returns: Ok(()) on success, Err on failure. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-fs_temp_dir-str"><code>fn fs_temp_dir() -&gt; Str</code><a class="headerlink" href="#fn-fs_temp_dir-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return a usable temporary directory path. Returns: the system temporary directory. Complexity: O(1).</p>
@@ -3048,10 +3094,18 @@
 <blockquote>
 <p>Read available bytes into <code>buf</code>. Params: fd - the pipe fd; buf - the destination buffer. Returns: Ok(bytes read), Err on failure. Complexity: O(n) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-pipe_writefd-int-data-vecuint8-resultint-str"><code>fn pipe_write(fd: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pipe_writefd-int-data-vecuint8-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write bytes to the pipe. Params: fd - the pipe fd; data - the bytes. Returns: Ok(bytes written), Err on failure. Complexity: O(n) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-pipe_closefd-int"><code>fn pipe_close(fd: Int)</code><a class="headerlink" href="#fn-pipe_closefd-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Close a pipe descriptor. Params: fd - the pipe fd. Complexity: O(1) syscall.</p>
@@ -3067,10 +3121,16 @@
 <blockquote>
 <p>Read a line from a pipe. Params: fd - the pipe fd. Returns: Ok(line without the trailing newline), Err on failure. Complexity: O(n) where n is the line length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_)</code></li>
+</ul>
 <h5 id="fn-pipe_write_linefd-int-s-str-resultunit-str"><code>fn pipe_write_line(fd: Int, s: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-pipe_write_linefd-int-s-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write a line to a pipe. Params: fd - the pipe fd; s - the line. Returns: Ok(()) on success, Err on a short or failed write. Complexity: O(n) where n is the line length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-pipe_availablefd-int-int"><code>fn pipe_available(fd: Int) -&gt; Int</code><a class="headerlink" href="#fn-pipe_availablefd-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bytes currently buffered in the pipe. Params: fd - the pipe fd. Returns: 0 (the runtime does not expose FIONREAD). Complexity: O(1).</p>
@@ -3084,6 +3144,7 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
 </ul>
 <h5 id="fn-pipe_write_timeoutfd-int-data-vecuint8-ms-int-resultint-str"><code>fn pipe_write_timeout(fd: Int, data: &amp;Vec[UInt8], ms: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pipe_write_timeoutfd-int-data-vecuint8-ms-int-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3091,6 +3152,7 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
 </ul>
 <hr />
 <hr />

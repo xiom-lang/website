@@ -531,10 +531,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#while-let" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        While Let
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#for" class="md-nav__link">
     <span class="md-ellipsis">
       
         For
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loop-break-continue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loop, Break, Continue
       
     </span>
   </a>
@@ -2462,10 +2484,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#while-let" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        While Let
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#for" class="md-nav__link">
     <span class="md-ellipsis">
       
         For
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loop-break-continue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loop, Break, Continue
       
     </span>
   </a>
@@ -2745,9 +2789,33 @@ pub fn Vec3.set_x(value: Float32) {
   count = count - 1;
 }
 </code></pre></div>
+<h3 id="while-let">While Let<a class="headerlink" href="#while-let" title="Permanent link">&para;</a></h3>
+<p><code>while let</code> repeats while a pattern matches. <code>if let</code> is not implemented; use <code>match</code> or <code>if value is Variant</code> instead.</p>
+<div class="highlight"><pre><span></span><code>var iter = make_iterator();
+while let Some(item) = iter.next() {
+  process(item);
+}
+</code></pre></div>
 <h3 id="for">For<a class="headerlink" href="#for" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>for item in items {
   process(item);
+}
+</code></pre></div>
+<p>Iteration works over arrays and <code>Vec[T]</code> values. There is no range expression: iterate the collection, or use a counter with <code>while</code>.</p>
+<h3 id="loop-break-continue">Loop, Break, Continue<a class="headerlink" href="#loop-break-continue" title="Permanent link">&para;</a></h3>
+<p><code>loop { ... }</code> repeats until a <code>break</code>. A label targets an outer loop.</p>
+<div class="highlight"><pre><span></span><code>loop {
+  if done { break; }
+}
+
+@outer: while i &lt; 10 {
+  var j = 0;
+  while j &lt; 10 {
+    j = j + 1;
+    if j &gt; 5 { break @outer; }       // exits the OUTER loop
+    if j == 2 { continue @outer; }   // continues the OUTER loop
+  }
+  i = i + 1;
 }
 </code></pre></div>
 <h3 id="match">Match<a class="headerlink" href="#match" title="Permanent link">&para;</a></h3>
@@ -2766,7 +2834,7 @@ match state {
 <ul>
 <li>Every <code>match</code> must cover all cases. Non-exhaustive matches are compile errors.</li>
 <li>Use <code>_</code> as a wildcard to cover remaining cases.</li>
-<li>Match arms can be blocks or expressions.</li>
+<li>Single-expression arms end with <code>,</code>; block arms need no separator.</li>
 </ul>
 <h2 id="expressions">Expressions<a class="headerlink" href="#expressions" title="Permanent link">&para;</a></h2>
 <h3 id="literals">Literals<a class="headerlink" href="#literals" title="Permanent link">&para;</a></h3>
@@ -2775,13 +2843,16 @@ match state {
 3.14            // Float64
 true | false    // Bool
 "hello"         // Str
-'A'             // Char
-\n \t \\ \"     // Escape sequences
-\u{1F600}       // Unicode codepoint
+'A'             // Char -- single quotes, one Unicode scalar value
+"line\nnext"    // Str escapes: \n  \t  \\  \"  \u{...}
+"\u{1F600}"     // Unicode codepoint escape (Str only)
 </code></pre></div>
+<p><code>\n</code>, <code>\t</code>, <code>\\</code> and <code>\"</code> work in both strings and character literals. <code>\u{...}</code> is a string-only escape: <code>'\u{1F600}'</code> is a lexer error, so write the codepoint as a string when needed.</p>
 <h3 id="arithmetic">Arithmetic<a class="headerlink" href="#arithmetic" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>a + b   a - b   a * b   a / b   a % b
 -a      // negation
+
+x += 1;   x -= 2;   x *= 3;   x /= 4;   x %= 5;   // compound assignment
 </code></pre></div>
 <h3 id="comparison">Comparison<a class="headerlink" href="#comparison" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>a == b   a != b   a &lt; b   a &gt; b   a &lt;= b   a &gt;= b
@@ -2831,7 +2902,7 @@ Ok(value)
 Err(error)
 
 // Await (async)
-await fetch(url)
+await fetch(url);
 
 // Comptime evaluation
 comptime expensive_computation()
@@ -2841,6 +2912,28 @@ x is Some
 
 // Pre-state reference (in contracts)
 items.len()@pre
+
+// Compile-time constant block and constant declaration
+const { 40 + 2 }
+const LIMIT: Int = 10;
+
+// defer -- runs when the enclosing scope exits
+defer { cleanup(); }
+defer io.println("done");
+
+// Never type -- a diverging function body
+fn abort() -&gt; ! { loop { } }
+
+// Unsafe -- confined block; required for asm and raw pointer operations
+unsafe { asm("nop"); }
+
+// Debug intrinsics -- release builds strip them; --keep-debug-checks retains
+assert(condition);
+assert(condition, "message");
+let checked = dbg!(expression);
+todo!();
+unimplemented!();
+debugger;
 </code></pre></div>
 <h2 id="operators-precedence">Operators (Precedence)<a class="headerlink" href="#operators-precedence" title="Permanent link">&para;</a></h2>
 <table>
@@ -2901,8 +2994,8 @@ items.len()@pre
 </code></pre></div>
 <h2 id="keywords">Keywords<a class="headerlink" href="#keywords" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>let  var  const  fn  return
-if  elif  else  match  while  for  in
-spawn  async  await  comptime
+if  elif  else  match  while  for  in  loop  break  continue
+spawn  async  await  comptime  defer  asm  move
 module  use  pub  as
 type  enum  interface  derive
 requires  ensures  invariant

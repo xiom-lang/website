@@ -524,6 +524,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#numeric-literals-and-casts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric Literals and Casts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#structs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2262,6 +2273,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#numeric-literals-and-casts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric Literals and Casts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#structs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2391,7 +2413,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <tr>
 <td><code>UInt8</code></td>
 <td>8 bits</td>
-<td>Byte. Alias: <code>Byte</code>.</td>
+<td>Unsigned byte. Use <code>UInt8</code> in source: the <code>Byte</code> alias name is not accepted by the current compiler.</td>
 </tr>
 <tr>
 <td><code>UInt16</code></td>
@@ -2494,6 +2516,19 @@ let f = 3.14;        // inferred: Float64
 let s = "hello";     // inferred: Str
 let v = [1, 2, 3];   // inferred: Vec[Int]
 let t = (1, true);   // inferred: (Int, Bool)
+</code></pre></div>
+<h2 id="numeric-literals-and-casts">Numeric Literals and Casts<a class="headerlink" href="#numeric-literals-and-casts" title="Permanent link">&para;</a></h2>
+<ul>
+<li>An integer literal binds to an annotated built-in integer width: <code>let x: Int8 = 1;</code>, <code>let n: UInt = 100;</code> and <code>let b: UInt8 = 1;</code> are all valid.</li>
+<li>Integer literals beyond 64 bits are supported with <code>Int128</code> and <code>UInt128</code>.</li>
+<li>Mixing <code>Int</code> and <code>Float64</code> in arithmetic, comparisons or typed bindings requires an explicit <code>as</code>. An integer literal alone may adopt the float type: <code>1 + 2.5</code> is valid.</li>
+<li>Same-family widening is automatic (<code>Int8 + Int</code> becomes <code>Int</code>, <code>Float32 + Float64</code> becomes <code>Float64</code>); narrowing always needs <code>as</code>: <code>1 as Int8</code>, <code>200 as UInt8</code>.</li>
+<li><code>Float128</code> has no literal form. Produce it by conversion: <code>let q = 1.0 as Float128;</code>. Binding a plain <code>Float64</code> value to <code>Float128</code> is a compile error.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>let a: Int8 = 1;              // integer literal adopts the annotated width
+let n = 1 as Float64 + 2.5;   // explicit mixed-family conversion
+let q = 1.0 as Float128;      // Float128 comes from conversion only
+let b: UInt8 = 200;           // UInt8 accepts a literal in range
 </code></pre></div>
 <h2 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>type Point = {

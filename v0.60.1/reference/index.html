@@ -589,10 +589,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#if-let-while-let" class="md-nav__link">
+  <a href="#while-let" class="md-nav__link">
     <span class="md-ellipsis">
       
-        if let / while let
+        while let
       
     </span>
   </a>
@@ -2900,10 +2900,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#if-let-while-let" class="md-nav__link">
+  <a href="#while-let" class="md-nav__link">
     <span class="md-ellipsis">
       
-        if let / while let
+        while let
       
     </span>
   </a>
@@ -3465,8 +3465,8 @@ type Point3D = { x: Float64; y: Float64; z: Float64; };
 </code></pre></div>
 <h3 id="match-pattern-matching"><code>match</code> -- Pattern matching<a class="headerlink" href="#match-pattern-matching" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>match value {
-  Some(v) =&gt; io.println(v);
-  None =&gt; io.println("nothing");
+  Some(v) =&gt; io.println(v),
+  None =&gt; io.println("nothing"),
 }
 </code></pre></div>
 <p>Multi-line arms use braces:</p>
@@ -3474,17 +3474,17 @@ type Point3D = { x: Float64; y: Float64; z: Float64; };
   Ok(data) =&gt; {
     process(data);
     return data;
-  };
+  }
   Err(e) =&gt; {
     io.println(e.message);
     return defaultValue;
-  };
+  }
 }
 </code></pre></div>
-<h3 id="if-let-while-let"><code>if let</code> / <code>while let</code><a class="headerlink" href="#if-let-while-let" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>if let Some(v) = maybe_val { use(v); }
-while let Some(item) = iter.next() { process(item); }
+<h3 id="while-let"><code>while let</code><a class="headerlink" href="#while-let" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>while let Some(item) = iter.next() { process(item); }
 </code></pre></div>
+<p><code>if let</code> is not implemented by the current compiler. Use <code>match</code>, or test a variant with <code>if value is Variant</code> when no binding is needed.</p>
 <h3 id="while-loop"><code>while</code> loop<a class="headerlink" href="#while-loop" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>var i = 0;
 while i &lt; 10 {
@@ -3509,6 +3509,16 @@ while i &lt; 10 {
   if i % 2 == 0 { continue; };
   if i &gt; 50 { break; };
   io.println(i);
+}
+</code></pre></div>
+<p>Loops can carry a label; <code>break @label;</code> and <code>continue @label;</code> target the labeled loop instead of the innermost one:</p>
+<div class="highlight"><pre><span></span><code>@outer: while i &lt; 10 {
+  var j = 0;
+  while j &lt; 10 {
+    j = j + 1;
+    if j &gt; 5 { break @outer; }
+  }
+  i = i + 1;
 }
 </code></pre></div>
 <hr />

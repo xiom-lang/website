@@ -786,10 +786,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#if-let-conditional-destructuring" class="md-nav__link">
+  <a href="#conditional-handling-without-if-let" class="md-nav__link">
     <span class="md-ellipsis">
       
-        if let -- Conditional Destructuring
+        Conditional Handling Without if let
       
     </span>
   </a>
@@ -2473,10 +2473,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#if-let-conditional-destructuring" class="md-nav__link">
+  <a href="#conditional-handling-without-if-let" class="md-nav__link">
     <span class="md-ellipsis">
       
-        if let -- Conditional Destructuring
+        Conditional Handling Without if let
       
     </span>
   </a>
@@ -2560,47 +2560,47 @@ Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 <h1 id="pattern-matching">Pattern Matching<a class="headerlink" href="#pattern-matching" title="Permanent link">&para;</a></h1>
-<p>XIOM supports structural pattern matching on enums, tuples, and literals via <code>match</code>, <code>if let</code>, and <code>while let</code>.</p>
+<p>XIOM supports structural pattern matching on enums, tuples, and literals via <code>match</code> and <code>while let</code>, plus the <code>is</code> test for variant checks without binding.</p>
 <hr />
 <h2 id="match-expression"><code>match</code> Expression<a class="headerlink" href="#match-expression" title="Permanent link">&para;</a></h2>
 <p>The <code>match</code> expression is the primary pattern matching construct. It must be exhaustive -- every variant must be covered.</p>
 <div class="highlight"><pre><span></span><code>match value {
-  Some(v) =&gt; io.println(v);
-  None =&gt; io.println("nothing");
+  Some(v) =&gt; io.println(v),
+  None =&gt; io.println("nothing"),
 }
 </code></pre></div>
 <h3 id="multi-line-arms-with-braces">Multi-line Arms with Braces<a class="headerlink" href="#multi-line-arms-with-braces" title="Permanent link">&para;</a></h3>
-<p>When an arm requires multiple statements, use braces:</p>
+<p>When an arm requires multiple statements, use braces. Block arms need no separator:</p>
 <div class="highlight"><pre><span></span><code>match result {
   Ok(data) =&gt; {
     process(data);
     return data.len();
-  };
+  }
   Err(e) =&gt; {
     io.println("error: " + e.message);
     return 0;
-  };
+  }
 }
 </code></pre></div>
 <h3 id="match-on-integers">Match on Integers<a class="headerlink" href="#match-on-integers" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>fn grade(score: Int) -&gt; Str {
   match score {
-    0 | 1 | 2 =&gt; return "F";
-    3 | 4 =&gt; return "D";
-    5 | 6 =&gt; return "C";
-    7 | 8 =&gt; return "B";
-    9 | 10 =&gt; return "A";
-    _ =&gt; return "invalid";
+    0 | 1 | 2 =&gt; { return "F"; }
+    3 | 4 =&gt; { return "D"; }
+    5 | 6 =&gt; { return "C"; }
+    7 | 8 =&gt; { return "B"; }
+    9 | 10 =&gt; { return "A"; }
+    _ =&gt; { return "invalid"; }
   }
 }
 </code></pre></div>
 <h3 id="match-on-strings">Match on Strings<a class="headerlink" href="#match-on-strings" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>fn command(cmd: Str) {
   match cmd {
-    "start" =&gt; { io.println("starting..."); };
-    "stop" =&gt; { io.println("stopping..."); };
-    "restart" =&gt; { io.println("restarting..."); };
-    _ =&gt; { io.println("unknown command"); };
+    "start" =&gt; { io.println("starting..."); }
+    "stop" =&gt; { io.println("stopping..."); }
+    "restart" =&gt; { io.println("restarting..."); }
+    _ =&gt; { io.println("unknown command"); }
   }
 }
 </code></pre></div>
@@ -2609,42 +2609,42 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <h3 id="literal-patterns">Literal Patterns<a class="headerlink" href="#literal-patterns" title="Permanent link">&para;</a></h3>
 <p>Match exact values: integers, strings, characters, booleans.</p>
 <div class="highlight"><pre><span></span><code>match x {
-  0 =&gt; "zero";
-  1 =&gt; "one";
-  _ =&gt; "other";
+  0 =&gt; "zero",
+  1 =&gt; "one",
+  _ =&gt; "other",
 }
 </code></pre></div>
 <h3 id="enum-variant-patterns">Enum Variant Patterns<a class="headerlink" href="#enum-variant-patterns" title="Permanent link">&para;</a></h3>
 <p>Match enum constructors, optionally binding inner data.</p>
 <div class="highlight"><pre><span></span><code>match option {
-  Some(v) =&gt; v;        // binds `v` to the inner value
-  None =&gt; default;
+  Some(v) =&gt; v,        // binds `v` to the inner value
+  None =&gt; default,
 }
 </code></pre></div>
 <h3 id="struct-patterns">Struct Patterns<a class="headerlink" href="#struct-patterns" title="Permanent link">&para;</a></h3>
 <p>Destructure structs by field:</p>
 <div class="highlight"><pre><span></span><code>match point {
-  Point{x: 0, y: 0} =&gt; "origin";
+  Point{x: 0, y: 0} =&gt; "origin",
   Point{x, y} =&gt; {
     // x and y are bound to the fields
     "somewhere";
-  };
+  }
 }
 </code></pre></div>
 <h3 id="or-patterns">OR Patterns<a class="headerlink" href="#or-patterns" title="Permanent link">&para;</a></h3>
 <p>Match any of several alternatives with <code>|</code>:</p>
 <div class="highlight"><pre><span></span><code>match code {
-  200 | 201 | 204 =&gt; "success";
-  400 | 404 =&gt; "client error";
-  500 | 502 | 503 =&gt; "server error";
-  _ =&gt; "unknown";
+  200 | 201 | 204 =&gt; "success",
+  400 | 404 =&gt; "client error",
+  500 | 502 | 503 =&gt; "server error",
+  _ =&gt; "unknown",
 }
 </code></pre></div>
 <h3 id="wildcard-pattern-_">Wildcard Pattern <code>_</code><a class="headerlink" href="#wildcard-pattern-_" title="Permanent link">&para;</a></h3>
 <p>Matches anything, discarding the value:</p>
 <div class="highlight"><pre><span></span><code>match result {
-  Ok(v) =&gt; v;
-  _ =&gt; default;
+  Ok(v) =&gt; v,
+  _ =&gt; default,
 }
 </code></pre></div>
 <h3 id="binding-pattern-is">Binding Pattern <code>is</code><a class="headerlink" href="#binding-pattern-is" title="Permanent link">&para;</a></h3>
@@ -2654,23 +2654,23 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 }
 </code></pre></div>
 <hr />
-<h2 id="if-let-conditional-destructuring"><code>if let</code> -- Conditional Destructuring<a class="headerlink" href="#if-let-conditional-destructuring" title="Permanent link">&para;</a></h2>
-<p>Binds variables only if the pattern matches:</p>
-<div class="highlight"><pre><span></span><code>if let Some(v) = maybe_value {
-  // `v` is bound here
-  io.println(v);
+<h2 id="conditional-handling-without-if-let">Conditional Handling Without <code>if let</code><a class="headerlink" href="#conditional-handling-without-if-let" title="Permanent link">&para;</a></h2>
+<p><code>if let</code> is not implemented by the current compiler. Two supported forms cover the same cases.</p>
+<p>Test the variant without binding:</p>
+<div class="highlight"><pre><span></span><code>if value is Some {
+  io.println("value is Some");
 }
 </code></pre></div>
-<p>With else branch:</p>
-<div class="highlight"><pre><span></span><code>if let Some(user) = find_user(id) {
-  io.println("Found: " + user.name);
-} else {
-  io.println("User not found");
+<p>Bind with <code>match</code>:</p>
+<div class="highlight"><pre><span></span><code>match find_user(id) {
+  Some(user) =&gt; io.println("Found: " + user.name),
+  None =&gt; io.println("User not found"),
 }
 </code></pre></div>
-<p>Nested patterns:</p>
-<div class="highlight"><pre><span></span><code>if let Ok(Some(data)) = parse_and_lookup() {
-  process(data);
+<p>Nested patterns work the same way in <code>match</code>:</p>
+<div class="highlight"><pre><span></span><code>match parse_and_lookup() {
+  Ok(Some(data)) =&gt; process(data),
+  _ =&gt; {},
 }
 </code></pre></div>
 <hr />
@@ -2694,8 +2694,8 @@ let file = io.read_file(path)?;
 
 // Expands to:
 let file = match io.read_file(path) {
-  Ok(f) =&gt; f;
-  Err(e) =&gt; return Err(e.into());
+  Ok(f) =&gt; f,
+  Err(e) =&gt; return Err(e.into()),
 };
 </code></pre></div>
 <p>Works with both <code>Result</code> and <code>Option</code>:</p>
@@ -2709,15 +2709,15 @@ let file = match io.read_file(path) {
 <p>The compiler checks that <code>match</code> expressions cover all possible cases. If a variant is missing, compilation fails with a type error:</p>
 <div class="highlight"><pre><span></span><code>// ERROR: missing Pattern Green
 match color {
-  Color.Red =&gt; { ... };
-  Color.Blue =&gt; { ... };
+  Color.Red =&gt; { ... }
+  Color.Blue =&gt; { ... }
   // Color.Green is not covered!
 }
 </code></pre></div>
 <p>Use <code>_</code> as a catch-all to satisfy exhaustiveness:</p>
 <div class="highlight"><pre><span></span><code>match color {
-  Color.Red =&gt; { ... };
-  _ =&gt; { ... };          // catches remaining variants
+  Color.Red =&gt; { ... }
+  _ =&gt; { ... }          // catches remaining variants
 }
 </code></pre></div>
 <hr />
@@ -2727,9 +2727,9 @@ match color {
   Some(v) =&gt; {
     if v &gt; 0 {
       // guarded logic here
-    };
-  };
-  None =&gt; {};
+    }
+  }
+  None =&gt; {}
 }
 </code></pre></div>
 <hr />

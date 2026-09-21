@@ -4903,10 +4903,10 @@ include <code>use xiom.io;</code> explicitly. AI agents should always include ex
 to ensure code works in all compilation modes.</p>
 </blockquote>
 <h3 id="21-variables">2.1 Variables<a class="headerlink" href="#21-variables" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>let x: Int = 42           // immutable -- cannot be reassigned
-var y: Float64 = 3.14     // mutable -- can be reassigned with =
-let name = "XIOM"        // type inferred -- Str
-let v = [1, 2, 3]         // type inferred -- Vec[Int]
+<div class="highlight"><pre><span></span><code>let x: Int = 42;          // immutable -- cannot be reassigned
+var y: Float64 = 3.14;    // mutable -- can be reassigned with =
+let name = "XIOM";       // type inferred -- Str
+let v = [1, 2, 3];        // type inferred -- Vec[Int]
 </code></pre></div>
 <p><strong>Rules:</strong>
 - <code>let</code> = immutable. <code>var</code> = mutable.
@@ -4986,8 +4986,8 @@ match state {
   AgentState.Patrolling(route) =&gt; follow(route),
 }
 
-// if let -- desugars to match
-if let Some(v) = maybe_val { use(v); } else { fallback(); }
+// if let is NOT implemented -- test with `is` or use match:
+if maybe_val is Some { handle(); }
 
 // while let -- desugars to while true + match
 while let Some(v) = next() { process(v); }
@@ -4996,10 +4996,15 @@ while let Some(v) = next() { process(v); }
 - <code>if</code> / <code>elif</code> / <code>else</code> -- canonical spelling; <code>else if</code> is ALSO accepted as a
   desugared form of <code>elif</code> (a following <code>if</code> after <code>else</code> chains as an <code>elif</code>;
   the resulting AST is identical).
+- <code>if let</code> is not implemented by the current compiler. Use <code>match</code>, or test the
+  variant with <code>if value is Variant</code> when no binding is needed. <code>while let</code> is
+  implemented and desugars to <code>while true</code> plus <code>match</code>.
 - <code>match</code> arms use <code>=&gt;</code> not <code>:</code>.
 - Every <code>match</code> must cover ALL cases. Non-exhaustive = compile error.
 - Wildcard is <code>_</code>, not <code>default</code> or <code>otherwise</code>.
-- Match arms that are blocks need no separator. Single-expression arms end with <code>,</code>.</p>
+- Single-expression match arms end with <code>,</code>; block arms need no separator.
+- <code>loop { ... }</code> repeats until <code>break;</code>. <code>break</code> / <code>continue</code> target the
+  innermost loop, or a labeled loop with <code>break @label;</code> / <code>continue @label;</code>.</p>
 <p><strong>Labeled loops:</strong> loops may carry a label for <code>break</code>/<code>continue</code>
 targeting (Rust-style):</p>
 <div class="highlight"><pre><span></span><code>@outer: while i &lt; 10 {
@@ -5081,9 +5086,9 @@ type_id[Int]()               // FNV-1a type hash (compile-time)
 field_offset[Point]("x")     // field byte offset (compile-time)
 is_signed[Int]()             // Bool: is type signed? (compile-time)
 
-// Inline assembly (Intel syntax, GCC-style constraints)
-asm("nop");
-asm("mov $0, $1" : "=r"(result) : "r"(input));
+// Inline assembly (Intel syntax, GCC-style constraints) -- requires `unsafe`
+unsafe { asm("nop"); }
+unsafe { asm("mov $0, $1" : "=r"(result) : "r"(input)); }
 
 // defer -- guaranteed scope-exit execution
 defer { cleanup(); }
@@ -5153,7 +5158,7 @@ let a = align_of[Float64]();
 </table>
 <h3 id="27-keywords-complete-list">2.7 Keywords (Complete List)<a class="headerlink" href="#27-keywords-complete-list" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>let  var  const  fn  return
-if  elif  else  match  while  for  in
+if  elif  else  match  while  for  in  loop  break  continue
 spawn  async  await  comptime  defer  asm  move
 module  use  pub  as
 type  enum  interface  derive
@@ -5212,13 +5217,13 @@ and inline <code>[T: Interface]</code> constraints instead.</p>
 <td><code>42</code></td>
 </tr>
 <tr>
-<td><code>Int8</code>-<code>Int64</code></td>
-<td>8-64 bits</td>
+<td><code>Int8</code>-<code>Int128</code></td>
+<td>8-128 bits</td>
 <td><code>let x: Int32 = 1;</code></td>
 </tr>
 <tr>
-<td><code>UInt</code>-<code>UInt64</code></td>
-<td>8-64 bits unsigned</td>
+<td><code>UInt8</code>-<code>UInt128</code></td>
+<td>8-128 bits unsigned</td>
 <td><code>let n: UInt = 100;</code></td>
 </tr>
 <tr>
@@ -5230,6 +5235,11 @@ and inline <code>[T: Interface]</code> constraints instead.</p>
 <td><code>Float64</code></td>
 <td>IEEE 754 double</td>
 <td><code>3.14</code> (default)</td>
+</tr>
+<tr>
+<td><code>Float128</code></td>
+<td>IEEE 754 binary128</td>
+<td><code>let q = 1.0 as Float128;</code> -- no literal suffix, convert with <code>as</code></td>
 </tr>
 <tr>
 <td><code>Char</code></td>
@@ -5261,6 +5271,9 @@ and inline <code>[T: Interface]</code> constraints instead.</p>
   <code>x + y as Int</code>.</li>
 <li><strong>Int literals may adopt the float type</strong> of the other operand:
   <code>1 + 2.5</code> is valid -- the literal <code>1</code> adopts <code>Float64</code>.</li>
+<li><strong>Int literals bind to an annotated built-in integer width</strong>:
+  <code>let x: Int8 = 1;</code>, <code>let n: UInt = 100;</code> and <code>let b: UInt8 = 1;</code> are valid.
+  The <code>Byte</code> alias name is NOT accepted by the current compiler -- use <code>UInt8</code>.</li>
 <li><strong>Same-family widening stays automatic</strong>: <code>Int8 + Int</code> widens to <code>Int</code>
   (and to <code>Int64</code>/<code>Int128</code>/<code>UInt</code> per the widest operand); <code>Float32 + Float64</code>
   widens to <code>Float64</code>. No cast needed within a family.</li>
