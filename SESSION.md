@@ -353,6 +353,47 @@ Remaining:
     Contributing is in the top nav and the footer Project column on every
     page, the landing "Start contributing" card points at it, and the
     sitemap lists it. Commit `-s` sign-off is now used.
+14. **Social links (done 2026-09-21)**: eight inline SVG icons (Simple Icons,
+    CC0) in the footer brand column of every page and in the generated docs
+    template: Discord (community, open invite), X, Mastodon (rel=me so the
+    profile can verify), Bluesky, Reddit, Hacker News, LinkedIn, Facebook.
+    The order is community, then updates, then discussion, then professional
+    and broad reach. Every link has an aria-label and title, opens in a new
+    tab with rel=noopener, and `.footer-social` wraps on mobile. The icons
+    are inline (no webfont, no external request); each anchor stays on one
+    line so the markup compresses well.
+
+## Paste-ready prompts for other lanes
+
+Send these to the playground and registry sessions; they match the website
+implementation committed on 2026-09-21 (`xiom-website/index.html` and the
+`.footer-social` rules in `xiom-website/style.css`).
+
+### Playground lane
+
+Add the website's social row to the playground footer (or About panel):
+copy the `.footer-social` block from `xiom-website/index.html` and the
+matching `.footer-social*` CSS from `xiom-website/style.css`. Keep the order
+Discord, X, Mastodon, Bluesky, Reddit, Hacker News, LinkedIn, Facebook;
+one `aria-label` and `title` per link; `target="_blank" rel="noopener"`
+(Mastodon also `rel="me"` immediately after `title`). Wording for Discord
+must stay "XIOM community Discord (open invite)" -- the server is invite
+only and must not be described as discoverable.
+URLs:
+- https://discord.gg/fsxQfDUg9
+- https://x.com/XiomLang
+- https://mastodon.social/@xiom_lang
+- https://bsky.app/profile/xiom-lang.bsky.social
+- https://www.reddit.com/r/xiom_lang/
+- https://news.ycombinator.com/user?id=xiom-lang
+- https://www.linkedin.com/company/145216062/
+- https://www.facebook.com/profile.php?id=61594524426045
+
+### Registry lane
+
+Same block and CSS in the registry UI footer, same order, labels and
+rel/target rules. Keep the Discord invite wording identical; keep
+registry@xiom-lang.org next to the row for registry-specific contact.
 
 ## Rules
 
