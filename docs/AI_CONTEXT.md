@@ -3306,10 +3306,10 @@ The XIOM compiler is written in XIOM (`selfhost/` directory), compiled by the Ru
 
 ### Core Mindset
 
-1. **Always prioritize contracts** (`requires`, `ensures`, `invariant`) -- this is XIOM's biggest strength over every other language. Write contracts BEFORE the function body.
+1. **Always prioritize contracts** (`requires`, `ensures`, `invariant`) -- design intent first. Write contracts BEFORE the function body.
 2. **Make code explicit and readable** -- no hidden behavior, no magic numbers, no implicit conversions.
 3. **Ownership first** -- prefer `&T` borrows when possible. Move when ownership transfer is needed. Clone sparingly.
-4. **Think in terms of verification, not just "it works"** -- contracts are the specification. The compiler is the verifier.
+4. **Think in terms of verification, not just "it works"** -- contracts are the specification; runtime enforcement is the default, and verification tooling reports what it can and cannot prove.
 
 ### Code Structure Rules
 

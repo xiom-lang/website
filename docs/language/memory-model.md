@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 XIOM uses **ownership semantics** for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.
 
-The model uses **lexical scope borrowing** -- simpler than Rust's lifetime system while providing the same core safety guarantee: use-after-free and double-free are compile errors.
+The model uses **lexical scope borrowing** -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are compile errors, and patterns that need escaping borrows use owned values instead.
 
 ## Ownership Rules
 

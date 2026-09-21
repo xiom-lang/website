@@ -16,7 +16,8 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 | **Go** | Structural interfaces (same!), `if err != nil` -> `Result[T,E]`, goroutines -> `spawn`. You lose GC and null. |
 | **C++** | RAII, move semantics, templates -> generics, `std::optional` -> `Option[T]`. You lose inheritance, exceptions, and header files. |
 | **Python** | Type hints become mandatory. `Optional` -> `Option[T]`. No `None`. No exceptions. |
-| **Java/C#** | Interfaces without `implements`. No `null`. No exceptions. No `class` -- use structs + methods. |
+| **Java** | Interfaces without `implements`. No `null`. No exceptions. No `class` -- use structs + methods. |
+| **C#** | Properties become fields plus methods, delegates become `fn` types, `Task` maps to async/await and `spawn`. No `null`, no exceptions, no classes or inheritance -- use structs, composition and structural interfaces. |
 | **JavaScript** | `undefined` doesn't exist. Promises -> async/await. No prototype chain. No `this`. |
 
 ---
@@ -27,7 +28,8 @@ Every language has null. XIOM doesn't.
 
 | Language | Absence |
 |----------|---------|
-| Java/C# | `null` -- crashes at runtime |
+| Java | `null` -- crashes at runtime |
+| C# | `null`; nullable reference types are opt-in annotations, not a language-wide guarantee |
 | Python | `None` -- crashes at runtime |
 | Rust | `Option<T>` -- compiler enforces handling |
 | **XIOM** | **`Option[T]` -- compiler enforces handling** |
@@ -86,7 +88,7 @@ The `?` operator is `try!` from Rust, `try` from Zig. It returns `Err(...)` imme
 | C | `malloc`/`free` -- manual, error-prone |
 | C++ | RAII + smart pointers -- complex rules |
 | Rust | Ownership + borrow checker + lifetimes -- powerful but complex |
-| **XIOM** | **Ownership + lexical scope borrowing -- same safety, no lifetimes** |
+| **XIOM** | **Ownership + lexical scope borrowing -- no lifetime annotations** |
 
 ```xiom
 // A value has ONE owner. Assignment moves ownership.
@@ -103,6 +105,8 @@ let c = b.clone();  // explicit copy -- both valid
 ```
 
 **The key difference from Rust:** No lifetime annotations. Ever. Borrows expire at the end of the block where they're created. You can see when a borrow ends by looking at the braces.
+
+**Coming from C#:** `using` and `IDisposable` give deterministic cleanup for the resources you wrap explicitly. XIOM applies a lifetime rule like that to every owned value -- memory is freed when its owner leaves scope -- and duplication is always explicit with `.clone()`.
 
 ---
 
@@ -173,9 +177,9 @@ This is Go's interface model. It's also how Python's duck typing works, except c
 
 ---
 
-## 6. Contracts -- Unique to XIOM
+## 6. Contracts -- In the Language, Not in Comments
 
-No mainstream language has contracts as compiler-enforced specifications. This is XIOM's defining feature.
+No mainstream language ships contracts as part of its core syntax. Design by Contract has a long lineage -- Eiffel had it in 1986, and Ada 2012/SPARK, Dafny and Frama-C pushed it further with static verification. XIOM's bet is packaging: contracts in the core language of a systems compiler, enforced at runtime by default and available to verification tooling for supported properties. The website's [Prior art and trade-offs](https://xiom-lang.org/prior-art.html) page covers the comparison.
 
 ```xiom
 fn divide(a: Float64, b: Float64) -> Float64
@@ -195,11 +199,11 @@ type Health = {
 
 | Contract | Like... | But... |
 |----------|---------|--------|
-| `requires:` | `assert()` at function entry | Compiler can check at call sites, not just runtime |
-| `ensures:` | `assert()` at function exit + unit test | Compiler-verified, not just hoped-for |
+| `requires:` | `assert()` at function entry | Part of the language, enforced by the toolchain instead of stripped by convention |
+| `ensures:` | `assert()` at function exit + unit test | Enforced on every return path, and exported to verification tooling |
 | `invariant:` | A database CHECK constraint | On every mutation, checked at compile time or runtime |
 
-When a contract is violated at runtime, the program panics with the **exact** contract that failed, the file, and the line number. In debug mode, this replaces most unit tests.
+When a contract is violated at runtime, the program panics with the **exact** contract that failed, the file, and the line number -- an error a unit test would only catch if it exercised that path with those values.
 
 ---
 
@@ -311,6 +315,7 @@ match rx.recv() {
 | `async function` / `async fn` | `async fn` |
 | `await` | `await` |
 | `Promise` / `Future` | Future (implicit) |
+| C# `Task` / `Task<T>` | Future (implicit) |
 | `Go` goroutine | `spawn` |
 | `Go` channel | `Channel[T]` |
 
