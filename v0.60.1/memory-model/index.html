@@ -2409,56 +2409,56 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </table>
 <h2 id="borrowing">Borrowing<a class="headerlink" href="#borrowing" title="Permanent link">&para;</a></h2>
 <p>Borrows expire at the end of the block or statement they are created in. You can see when a borrow ends by looking at the braces.</p>
-<div class="highlight"><pre><span></span><code>fn consume(data: Vec[Int]) { }          // takes ownership
-fn read_only(data: &amp;Vec[Int]) { }       // read borrow
-fn mutate(data: &amp;mut Vec[Int]) { }      // write borrow
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">consume</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">          </span><span class="c1">// takes ownership</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">read_only</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">       </span><span class="c1">// read borrow</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">      </span><span class="c1">// write borrow</span>
 
-let v = [1, 2, 3];
-read_only(&amp;v);        // borrow, v still valid
-mutate(&amp;mut v);       // write borrow, v still valid  
-consume(v);           // move -- v no longer usable here
-// read_only(&amp;v)     // COMPILE ERROR: v was moved
+<span class="k">let</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">];</span>
+<span class="nf">read_only</span><span class="p">(</span><span class="o">&amp;</span><span class="n">v</span><span class="p">);</span><span class="w">        </span><span class="c1">// borrow, v still valid</span>
+<span class="nf">mutate</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">v</span><span class="p">);</span><span class="w">       </span><span class="c1">// write borrow, v still valid  </span>
+<span class="nf">consume</span><span class="p">(</span><span class="n">v</span><span class="p">);</span><span class="w">           </span><span class="c1">// move -- v no longer usable here</span>
+<span class="c1">// read_only(&amp;v)     // COMPILE ERROR: v was moved</span>
 </code></pre></div>
 <h2 id="what-the-model-cannot-handle">What the Model Cannot Handle<a class="headerlink" href="#what-the-model-cannot-handle" title="Permanent link">&para;</a></h2>
 <p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
 <p>This is a constraint, not a bug -- it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
 <h2 id="clone">Clone<a class="headerlink" href="#clone" title="Permanent link">&para;</a></h2>
 <p>Use <code>.clone()</code> to explicitly duplicate a value:</p>
-<div class="highlight"><pre><span></span><code>let a = Vec.new();
-a.push(1);
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Vec</span><span class="p">.</span><span class="nf">new</span><span class="p">();</span>
+<span class="n">a</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-let b = a.clone();    // explicit deep copy
-// a is still valid -- ownership was not moved
+<span class="k">let</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="nf">clone</span><span class="p">();</span><span class="w">    </span><span class="c1">// explicit deep copy</span>
+<span class="c1">// a is still valid -- ownership was not moved</span>
 
-consume(a);           // a is moved
-// b is still valid  -- it was cloned, not moved
+<span class="nf">consume</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w">           </span><span class="c1">// a is moved</span>
+<span class="c1">// b is still valid  -- it was cloned, not moved</span>
 </code></pre></div>
 <p>Types with <code>derive[Clone]</code> get automatic clone implementations. Manual <code>clone()</code> methods can be written for types that need custom duplication logic.</p>
 <h2 id="move-semantics">Move Semantics<a class="headerlink" href="#move-semantics" title="Permanent link">&para;</a></h2>
 <p>Passing a value to a function moves ownership:</p>
-<div class="highlight"><pre><span></span><code>fn take(v: Vec[Int]) {
-  // v is owned here -- freed at end of scope
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">take</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// v is owned here -- freed at end of scope</span>
+<span class="p">}</span>
 
-let data = [1, 2, 3];
-take(data);           // ownership moves to take()
-// data is no longer valid here
+<span class="k">let</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">];</span>
+<span class="nf">take</span><span class="p">(</span><span class="n">data</span><span class="p">);</span><span class="w">           </span><span class="c1">// ownership moves to take()</span>
+<span class="c1">// data is no longer valid here</span>
 </code></pre></div>
 <p>Use borrows when you don't need ownership:</p>
-<div class="highlight"><pre><span></span><code>fn inspect(v: &amp;Vec[Int]) {
-  // read-only access -- caller retains ownership
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">inspect</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// read-only access -- caller retains ownership</span>
+<span class="p">}</span>
 
-let data = [1, 2, 3];
-inspect(&amp;data);       // borrow -- data still valid
-inspect(&amp;data);       // can borrow again
+<span class="k">let</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">];</span>
+<span class="nf">inspect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">);</span><span class="w">       </span><span class="c1">// borrow -- data still valid</span>
+<span class="nf">inspect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">);</span><span class="w">       </span><span class="c1">// can borrow again</span>
 </code></pre></div>
 <h2 id="unsafe-blocks">Unsafe Blocks<a class="headerlink" href="#unsafe-blocks" title="Permanent link">&para;</a></h2>
 <p>Raw pointer arithmetic and C interop that cannot be verified by the compiler are permitted only inside explicit <code>unsafe { }</code> blocks.</p>
-<div class="highlight"><pre><span></span><code>unsafe {
-  let raw: *Int = some_c_function();
-  let value = *raw;   // dereference -- programmer guarantees validity
-}
+<div class="highlight"><pre><span></span><code><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">raw</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">some_c_function</span><span class="p">();</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">raw</span><span class="p">;</span><span class="w">   </span><span class="c1">// dereference -- programmer guarantees validity</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>The <code>unsafe</code> keyword is a declaration that the programmer takes responsibility for memory safety inside that scope. Unsafe blocks are visible in code review and audits. They cannot be hidden.</p>
 <p>Three rules matter when writing them:</p>

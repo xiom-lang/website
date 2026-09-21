@@ -2618,173 +2618,173 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <hr />
 <h2 id="match-expression"><code>match</code> Expression<a class="headerlink" href="#match-expression" title="Permanent link">&para;</a></h2>
 <p>The <code>match</code> expression is the primary pattern matching construct. It must be exhaustive -- every variant must be covered.</p>
-<div class="highlight"><pre><span></span><code>match value {
-  Some(v) =&gt; io.println(v),
-  None =&gt; io.println("nothing"),
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"nothing"</span><span class="p">),</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="multi-line-arms-with-braces">Multi-line Arms with Braces<a class="headerlink" href="#multi-line-arms-with-braces" title="Permanent link">&para;</a></h3>
 <p>When an arm requires multiple statements, use braces. Block arms need no separator:</p>
-<div class="highlight"><pre><span></span><code>match result {
-  Ok(data) =&gt; {
-    process(data);
-    return data.len();
-  }
-  Err(e) =&gt; {
-    io.println("error: " + e.message);
-    return 0;
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="kc">result</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nf">process</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="nf">len</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"error: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">message</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="match-on-integers">Match on Integers<a class="headerlink" href="#match-on-integers" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>fn grade(score: Int) -&gt; Str {
-  match score {
-    0 | 1 | 2 =&gt; { return "F"; }
-    3 | 4 =&gt; { return "D"; }
-    5 | 6 =&gt; { return "C"; }
-    7 | 8 =&gt; { return "B"; }
-    9 | 10 =&gt; { return "A"; }
-    _ =&gt; { return "invalid"; }
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">grade</span><span class="p">(</span><span class="n">score</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Str</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">match</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s2">"F"</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s2">"D"</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s2">"C"</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="mi">7</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s2">"B"</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="mi">9</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s2">"A"</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s2">"invalid"</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="match-on-strings">Match on Strings<a class="headerlink" href="#match-on-strings" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>fn command(cmd: Str) {
-  match cmd {
-    "start" =&gt; { io.println("starting..."); }
-    "stop" =&gt; { io.println("stopping..."); }
-    "restart" =&gt; { io.println("restarting..."); }
-    _ =&gt; { io.println("unknown command"); }
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">command</span><span class="p">(</span><span class="n">cmd</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">match</span><span class="w"> </span><span class="n">cmd</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"start"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"starting..."</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="s2">"stop"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"stopping..."</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="s2">"restart"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"restarting..."</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"unknown command"</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="pattern-types">Pattern Types<a class="headerlink" href="#pattern-types" title="Permanent link">&para;</a></h2>
 <h3 id="literal-patterns">Literal Patterns<a class="headerlink" href="#literal-patterns" title="Permanent link">&para;</a></h3>
 <p>Match exact values: integers, strings, characters, booleans.</p>
-<div class="highlight"><pre><span></span><code>match x {
-  0 =&gt; "zero",
-  1 =&gt; "one",
-  _ =&gt; "other",
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="mi">0</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"zero"</span><span class="p">,</span>
+<span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"one"</span><span class="p">,</span>
+<span class="w">  </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"other"</span><span class="p">,</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="enum-variant-patterns">Enum Variant Patterns<a class="headerlink" href="#enum-variant-patterns" title="Permanent link">&para;</a></h3>
 <p>Match enum constructors, optionally binding inner data.</p>
-<div class="highlight"><pre><span></span><code>match option {
-  Some(v) =&gt; v,        // binds `v` to the inner value
-  None =&gt; default,
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">option</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w">        </span><span class="c1">// binds `v` to the inner value</span>
+<span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">default</span><span class="p">,</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="struct-patterns">Struct Patterns<a class="headerlink" href="#struct-patterns" title="Permanent link">&para;</a></h3>
 <p>Destructure structs by field:</p>
-<div class="highlight"><pre><span></span><code>match point {
-  Point{x: 0, y: 0} =&gt; "origin",
-  Point{x, y} =&gt; {
-    // x and y are bound to the fields
-    "somewhere";
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">point</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nc">Point</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">}</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"origin"</span><span class="p">,</span>
+<span class="w">  </span><span class="nc">Point</span><span class="p">{</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">}</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// x and y are bound to the fields</span>
+<span class="w">    </span><span class="s2">"somewhere"</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="or-patterns">OR Patterns<a class="headerlink" href="#or-patterns" title="Permanent link">&para;</a></h3>
 <p>Match any of several alternatives with <code>|</code>:</p>
-<div class="highlight"><pre><span></span><code>match code {
-  200 | 201 | 204 =&gt; "success",
-  400 | 404 =&gt; "client error",
-  500 | 502 | 503 =&gt; "server error",
-  _ =&gt; "unknown",
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="mi">200</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">201</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">204</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span>
+<span class="w">  </span><span class="mi">400</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">404</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"client error"</span><span class="p">,</span>
+<span class="w">  </span><span class="mi">500</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">502</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">503</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"server error"</span><span class="p">,</span>
+<span class="w">  </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="wildcard-pattern-_">Wildcard Pattern <code>_</code><a class="headerlink" href="#wildcard-pattern-_" title="Permanent link">&para;</a></h3>
 <p>Matches anything, discarding the value:</p>
-<div class="highlight"><pre><span></span><code>match result {
-  Ok(v) =&gt; v,
-  _ =&gt; default,
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="kc">result</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span>
+<span class="w">  </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">default</span><span class="p">,</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="binding-pattern-is">Binding Pattern <code>is</code><a class="headerlink" href="#binding-pattern-is" title="Permanent link">&para;</a></h3>
 <p>Test if a value matches a pattern without destructuring:</p>
-<div class="highlight"><pre><span></span><code>if value is Some {
-  io.println("value is Some");
-}
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="no">Some</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"value is Some"</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="conditional-handling-without-if-let">Conditional Handling Without <code>if let</code><a class="headerlink" href="#conditional-handling-without-if-let" title="Permanent link">&para;</a></h2>
 <p><code>if let</code> is not implemented by the current compiler. Two supported forms cover the same cases.</p>
 <p>Test the variant without binding:</p>
-<div class="highlight"><pre><span></span><code>if value is Some {
-  io.println("value is Some");
-}
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="no">Some</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"value is Some"</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Bind with <code>match</code>:</p>
-<div class="highlight"><pre><span></span><code>match find_user(id) {
-  Some(user) =&gt; io.println("Found: " + user.name),
-  None =&gt; io.println("User not found"),
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="nf">find_user</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"Found: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">user</span><span class="p">.</span><span class="n">name</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"User not found"</span><span class="p">),</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Nested patterns work the same way in <code>match</code>:</p>
-<div class="highlight"><pre><span></span><code>match parse_and_lookup() {
-  Ok(Some(data)) =&gt; process(data),
-  _ =&gt; {},
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="nf">parse_and_lookup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="no">Some</span><span class="p">(</span><span class="n">data</span><span class="p">))</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+<span class="w">  </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{},</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="while-let-looping-destructuring"><code>while let</code> -- Looping Destructuring<a class="headerlink" href="#while-let-looping-destructuring" title="Permanent link">&para;</a></h2>
 <p>Continues looping while the pattern matches:</p>
-<div class="highlight"><pre><span></span><code>var iter = make_iterator();
-while let Some(item) = iter.next() {
-  process(item);
-}
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="w"> </span><span class="n">iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">make_iterator</span><span class="p">();</span>
+<span class="k">while</span><span class="w"> </span><span class="k">let</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iter</span><span class="p">.</span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">process</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Example with a channel:</p>
-<div class="highlight"><pre><span></span><code>while let Ok(msg) = channel.try_recv() {
-  handle(msg);
-}
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="k">let</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="nf">try_recv</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">handle</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="operator"><code>?</code> Operator<a class="headerlink" href="#operator" title="Permanent link">&para;</a></h2>
 <p>The <code>?</code> operator is syntactic sugar for <code>match</code> with early return on <code>Err</code> or <code>None</code>:</p>
-<div class="highlight"><pre><span></span><code>// These are equivalent:
-let file = io.read_file(path)?;
+<div class="highlight"><pre><span></span><code><span class="c1">// These are equivalent:</span>
+<span class="k">let</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">read_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
 
-// Expands to:
-let file = match io.read_file(path) {
-  Ok(f) =&gt; f,
-  Err(e) =&gt; return Err(e.into()),
-};
+<span class="c1">// Expands to:</span>
+<span class="k">let</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">match</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">read_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">f</span><span class="p">,</span>
+<span class="w">  </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="nf">into</span><span class="p">()),</span>
+<span class="p">};</span>
 </code></pre></div>
 <p>Works with both <code>Result</code> and <code>Option</code>:</p>
-<div class="highlight"><pre><span></span><code>fn lookup(key: Str) -&gt; Option[Int] {
-  let val = cache.get(&amp;key)?;  // returns None if miss
-  return Some(val);
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="n">key</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cache</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">key</span><span class="p">)</span><span class="o">?</span><span class="p">;</span><span class="w">  </span><span class="c1">// returns None if miss</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="exhaustiveness">Exhaustiveness<a class="headerlink" href="#exhaustiveness" title="Permanent link">&para;</a></h2>
 <p>The compiler checks that <code>match</code> expressions cover all possible cases. If a variant is missing, compilation fails with a type error:</p>
-<div class="highlight"><pre><span></span><code>// ERROR: missing Pattern Green
-match color {
-  Color.Red =&gt; { ... }
-  Color.Blue =&gt; { ... }
-  // Color.Green is not covered!
-}
+<div class="highlight"><pre><span></span><code><span class="c1">// ERROR: missing Pattern Green</span>
+<span class="k">match</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nc">Color</span><span class="p">.</span><span class="nc">Red</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nc">Color</span><span class="p">.</span><span class="nc">Blue</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// Color.Green is not covered!</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Use <code>_</code> as a catch-all to satisfy exhaustiveness:</p>
-<div class="highlight"><pre><span></span><code>match color {
-  Color.Red =&gt; { ... }
-  _ =&gt; { ... }          // catches remaining variants
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nc">Color</span><span class="p">.</span><span class="nc">Red</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w">          </span><span class="c1">// catches remaining variants</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="guards-planned">Guards (Planned)<a class="headerlink" href="#guards-planned" title="Permanent link">&para;</a></h2>
 <p>Pattern guards (<code>match value { Some(v) if v &gt; 0 =&gt; ... }</code>) are not yet implemented. Use <code>if</code> inside the match arm body as a workaround:</p>
-<div class="highlight"><pre><span></span><code>match value {
-  Some(v) =&gt; {
-    if v &gt; 0 {
-      // guarded logic here
-    }
-  }
-  None =&gt; {}
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// guarded logic here</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

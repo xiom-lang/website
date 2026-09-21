@@ -2509,40 +2509,40 @@ Compile: <code>xiom --run file.xi</code> (or <code>cargo run -p xiom -- --run fi
 </blockquote>
 <hr />
 <h2 id="1-hello-world">1. Hello World<a class="headerlink" href="#1-hello-world" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>// hello.xi -- your first XIOM program
-// Run: xiom --run hello.xi
-use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="c1">// hello.xi -- your first XIOM program</span>
+<span class="c1">// Run: xiom --run hello.xi</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-fn main() {
-  io.println("Hello, World!");  // prints to console
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"Hello, World!"</span><span class="p">);</span><span class="w">  </span><span class="c1">// prints to console</span>
+<span class="p">}</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>$ xiom --run hello.xi
 Hello, World!
 </code></pre></div>
 <p><code>use xiom.io;</code> imports the I/O module. <code>io.println()</code> prints to console. Every file that uses I/O needs this import.</p>
 <p><strong>Three ways to import -- all valid:</strong></p>
-<div class="highlight"><pre><span></span><code>// Style A: module prefix (recommended -- clear origin)
-use xiom.io;
-fn main() { io.println("Hello"); }
+<div class="highlight"><pre><span></span><code><span class="c1">// Style A: module prefix (recommended -- clear origin)</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
 
-// Style B: glob import (shorter -- for small programs)
-use xiom.io.*;
-fn main() { println("Hello"); }
+<span class="c1">// Style B: glob import (shorter -- for small programs)</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="o">*</span><span class="p">;</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nf">println</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
 
-// Style C: single import (precise -- import only what you need)
-use xiom.io.println;
-fn main() { println("Hello"); }
+<span class="c1">// Style C: single import (precise -- import only what you need)</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">println</span><span class="p">;</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nf">println</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="2-variables-arithmetic">2. Variables &amp; Arithmetic<a class="headerlink" href="#2-variables-arithmetic" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>fn main() -&gt; Int {
-  let x: Int = 10;           // immutable -- cannot be reassigned
-  var y = 3.14;              // mutable -- can be reassigned, type inferred as Float64
-  let z = x * 2;             // type inferred: Int
-  y = y + 1.0;               // reassign mutable var
-  return x + z;              // 30 -- main() can return an exit code
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">           </span><span class="c1">// immutable -- cannot be reassigned</span>
+<span class="w">  </span><span class="k">var</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="p">;</span><span class="w">              </span><span class="c1">// mutable -- can be reassigned, type inferred as Float64</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">             </span><span class="c1">// type inferred: Int</span>
+<span class="w">  </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w">               </span><span class="c1">// reassign mutable var</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">;</span><span class="w">              </span><span class="c1">// 30 -- main() can return an exit code</span>
+<span class="p">}</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>$ xiom --run vars.xi
 # exit code: 30
@@ -2550,171 +2550,171 @@ fn main() { println("Hello"); }
 <p><code>let</code> = immutable. <code>var</code> = mutable. Type annotation optional when the compiler can infer. Every statement ends with <code>;</code>.</p>
 <hr />
 <h2 id="3-functions">3. Functions<a class="headerlink" href="#3-functions" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-// Functions with return values
-fn add(a: Int, b: Int) -&gt; Int {
-  return a + b;
-}
+<span class="c1">// Functions with return values</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Functions returning nothing (void)
-fn greet(name: Str) {
-  io.println("Hello, " + name + "!");
-}
+<span class="c1">// Functions returning nothing (void)</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"Hello, "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"!"</span><span class="p">);</span>
+<span class="p">}</span>
 
-fn main() {
-  greet("World");            // prints: Hello, World!
-  let result = add(10, 20);  // 30
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">greet</span><span class="p">(</span><span class="s2">"World"</span><span class="p">);</span><span class="w">            </span><span class="c1">// prints: Hello, World!</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="kc">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span><span class="w">  </span><span class="c1">// 30</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Every parameter must have a type. Return type is required unless void. Functions call other functions -- <code>greet()</code> calls <code>io.println()</code>.</p>
 <hr />
 <h2 id="4-control-flow-fibonacci">4. Control Flow -- Fibonacci<a class="headerlink" href="#4-control-flow-fibonacci" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-// Compute the nth Fibonacci number
-fn fib(n: Int) -&gt; Int
-  requires: n &gt;= 0        // contract: caller must pass non-negative n
-{
-  if n &lt;= 1 { return n; }
-  return fib(n - 1) + fib(n - 2);
-}
+<span class="c1">// Compute the nth Fibonacci number</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w">        </span><span class="c1">// contract: caller must pass non-negative n</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
 
-fn main() {
-  io.println("fib(10) = " + fib(10).to_str());  // fib(10) = 55
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"fib(10) = "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">fib</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nf">to_str</span><span class="p">());</span><span class="w">  </span><span class="c1">// fib(10) = 55</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>if</code> / <code>elif</code> / <code>else</code> -- note <code>elif</code>, not <code>else if</code>. <code>to_str()</code> converts numbers to strings for printing.</p>
 <hr />
 <h2 id="5-structs-methods">5. Structs &amp; Methods<a class="headerlink" href="#5-structs-methods" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>// A 2D point with compiler-generated equality, clone, and display
-type Point = {
-  x: Float64;
-  y: Float64;
-} derive[Eq, Clone, Display]
+<div class="highlight"><pre><span></span><code><span class="c1">// A 2D point with compiler-generated equality, clone, and display</span>
+<span class="k">type</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="w">  </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Eq</span><span class="p">,</span><span class="w"> </span><span class="nc">Clone</span><span class="p">,</span><span class="w"> </span><span class="nc">Display</span><span class="p">]</span>
 
-// Free function taking references (borrows)
-fn distance(a: &amp;Point, b: &amp;Point) -&gt; Float64 {
-  let dx = a.x - b.x;
-  let dy = a.y - b.y;
-  return dx * dx + dy * dy;
-}
+<span class="c1">// Free function taking references (borrows)</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">distance</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Point</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Point</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dy</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Method on Point -- self is implicit (no self.x, just x)
-fn Point.magnitude() -&gt; Float64 {
-  return x * x + y * y;
-}
+<span class="c1">// Method on Point -- self is implicit (no self.x, just x)</span>
+<span class="k">fn</span><span class="w"> </span><span class="nc">Point</span><span class="p">.</span><span class="nf">magnitude</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
 
-fn main() -&gt; Int {
-  let p1 = Point{ x: 0.0, y: 0.0 };
-  let p2 = Point{ x: 3.0, y: 4.0 };
-  let d = distance(&amp;p1, &amp;p2);   // 25.0
-  let m = p2.magnitude();       // 25.0
-  return 0;
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Point</span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Point</span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="mf">4.0</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">distance</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p2</span><span class="p">);</span><span class="w">   </span><span class="c1">// 25.0</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p2</span><span class="p">.</span><span class="nf">magnitude</span><span class="p">();</span><span class="w">       </span><span class="c1">// 25.0</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>derive[Eq, Clone, Display]</code> -- compiler generates <code>eq()</code>, <code>clone()</code>, <code>to_str()</code> automatically. Methods use <code>fn TypeName.methodName()</code> -- <code>self</code> is implicit.</p>
 <hr />
 <h2 id="6-enums-pattern-matching">6. Enums &amp; Pattern Matching<a class="headerlink" href="#6-enums-pattern-matching" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-// Algebraic data type
-enum Option { Some(value: Int), None }
+<span class="c1">// Algebraic data type</span>
+<span class="k">enum</span><span class="w"> </span><span class="nc">Option</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">),</span><span class="w"> </span><span class="no">None</span><span class="w"> </span><span class="p">}</span>
 
-// Match must cover all variants -- compiler enforces this
-fn describe(opt: Option) -&gt; Str {
-  match opt {
-    Some(v) =&gt; "got " + v.to_str(),
-    None    =&gt; "nothing",
-  }
-}
+<span class="c1">// Match must cover all variants -- compiler enforces this</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">describe</span><span class="p">(</span><span class="n">opt</span><span class="p">:</span><span class="w"> </span><span class="nc">Option</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Str</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">match</span><span class="w"> </span><span class="n">opt</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"got "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="nf">to_str</span><span class="p">(),</span>
+<span class="w">    </span><span class="no">None</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"nothing"</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 
-fn main() {
-  io.println(describe(Some{ value: 42 }));  // "got 42"
-  io.println(describe(None));               // "nothing"
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="nf">describe</span><span class="p">(</span><span class="no">Some</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="w"> </span><span class="p">}));</span><span class="w">  </span><span class="c1">// "got 42"</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="nf">describe</span><span class="p">(</span><span class="no">None</span><span class="p">));</span><span class="w">               </span><span class="c1">// "nothing"</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Every <code>match</code> must be exhaustive -- missing a variant is a compile error. Use <code>_</code> as wildcard. Variants carry named fields: <code>VariantName(field: Type)</code>.</p>
 <hr />
 <h2 id="7-error-handling-result">7. Error Handling -- Result &amp; ?<a class="headerlink" href="#7-error-handling-result" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-// Returns Result instead of crashing on division by zero
-fn divide_safe(a: Float64, b: Float64) -&gt; Result[Float64, Str] {
-  if b == 0.0 {
-    return Err("division by zero");
-  }
-  return Ok(a / b);
-}
+<span class="c1">// Returns Result instead of crashing on division by zero</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">divide_safe</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="kt">Str</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="no">Err</span><span class="p">(</span><span class="s2">"division by zero"</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="p">}</span>
 
-// ? operator propagates errors up -- clean and readable
-fn compute(x: Float64, y: Float64) -&gt; Result[Float64, Str] {
-  let step1 = divide_safe(x, y)?;
-  let step2 = divide_safe(step1, 2.0)?;
-  return Ok(step2);
-}
+<span class="c1">// ? operator propagates errors up -- clean and readable</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">compute</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="kt">Str</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">step1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">divide_safe</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">step2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">divide_safe</span><span class="p">(</span><span class="n">step1</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="n">step2</span><span class="p">);</span>
+<span class="p">}</span>
 
-fn main() {
-  match compute(10.0, 2.0) {
-    Ok(result) =&gt; io.println("result: " + result.to_str()),  // "result: 2.5"
-    Err(msg)   =&gt; io.println("error: " + msg),
-  };
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">match</span><span class="w"> </span><span class="nf">compute</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="no">Ok</span><span class="p">(</span><span class="kc">result</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"result: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kc">result</span><span class="p">.</span><span class="nf">to_str</span><span class="p">()),</span><span class="w">  </span><span class="c1">// "result: 2.5"</span>
+<span class="w">    </span><span class="no">Err</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"error: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">msg</span><span class="p">),</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>?</code> returns the error immediately. Only usable inside functions returning <code>Result</code> or <code>Option</code>. <code>E</code> in <code>Result[T, E]</code> can be any type -- no Error interface required.</p>
 <hr />
 <h2 id="8-contracts-division-by-zero-prevention">8. Contracts -- Division by Zero Prevention<a class="headerlink" href="#8-contracts-division-by-zero-prevention" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-// requires: caller must ensure b != 0
-// ensures:  the implementation guarantees result * b == a
-fn divide(a: Float64, b: Float64) -&gt; Float64
-  requires: b != 0.0
-  ensures:  result * b == a
-{
-  return a / b;
-}
+<span class="c1">// requires: caller must ensure b != 0</span>
+<span class="c1">// ensures:  the implementation guarantees result * b == a</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w">  </span><span class="kc">result</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">a</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Type with invariant -- compiler checks after every mutation
-type PositiveInt = {
-  value: Int;
-  invariant: value &gt; 0;
-}
+<span class="c1">// Type with invariant -- compiler checks after every mutation</span>
+<span class="k">type</span><span class="w"> </span><span class="nc">PositiveInt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 
-fn main() {
-  let x = divide(10.0, 2.0);     // 5.0 -- contract passes
-  io.println("10.0 / 2.0 = " + x.to_str());
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">);</span><span class="w">     </span><span class="c1">// 5.0 -- contract passes</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"10.0 / 2.0 = "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="nf">to_str</span><span class="p">());</span>
 
-  // let y = divide(10.0, 0.0);  // RUNTIME PANIC: contract violated
-}
+<span class="w">  </span><span class="c1">// let y = divide(10.0, 0.0);  // RUNTIME PANIC: contract violated</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Contracts are compiler-enforced. <code>requires</code> = caller's responsibility. <code>ensures</code> = implementation's responsibility. <code>invariant</code> = always true after any mutation.</p>
 <hr />
 <h2 id="9-ownership-borrowing">9. Ownership &amp; Borrowing<a class="headerlink" href="#9-ownership-borrowing" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-// Takes ownership -- x moved here, caller can't use it anymore
-fn take_ownership(x: Int) -&gt; Int {
-  return x + 1;
-}
+<span class="c1">// Takes ownership -- x moved here, caller can't use it anymore</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">take_ownership</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Borrows immutably -- caller retains ownership, can still use x
-fn read_borrow(x: &amp;Int) -&gt; Int {
-  return x + 0;
-}
+<span class="c1">// Borrows immutably -- caller retains ownership, can still use x</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">read_borrow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Borrows mutably -- exclusive access, no other borrows active
-fn write_borrow(x: &amp;mut Int) {
-  x = x + 10;
-}
+<span class="c1">// Borrows mutably -- exclusive access, no other borrows active</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">write_borrow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
 
-fn main() -&gt; Int {
-  let a = take_ownership(41);   // a = 42 -- moved into function
-  let b = read_borrow(&amp;a);      // &amp;a = read borrow, a still valid
-  var c = 5;
-  write_borrow(&amp;mut c);         // c = 15 -- exclusive write
-  return a + b + c;             // 42 + 42 + 15 = 99
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">take_ownership</span><span class="p">(</span><span class="mi">41</span><span class="p">);</span><span class="w">   </span><span class="c1">// a = 42 -- moved into function</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">read_borrow</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span><span class="w">      </span><span class="c1">// &amp;a = read borrow, a still valid</span>
+<span class="w">  </span><span class="k">var</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="w">  </span><span class="nf">write_borrow</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w">         </span><span class="c1">// c = 15 -- exclusive write</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w">             </span><span class="c1">// 42 + 42 + 15 = 99</span>
+<span class="p">}</span>
 </code></pre></div>
 <ul>
 <li><code>&amp;T</code> -- read borrow (multiple allowed, no mutation)</li>
@@ -2725,132 +2725,132 @@ fn main() -&gt; Int {
 </ul>
 <hr />
 <h2 id="10-generics-typed-stack">10. Generics -- Typed Stack<a class="headerlink" href="#10-generics-typed-stack" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
-use xiom.collections.Vec;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">collections</span><span class="p">.</span><span class="nc">Vec</span><span class="p">;</span>
 
-// Generic stack with contract-verified invariants
-type Stack[T] = {
-  items: Vec[T];
-  capacity: Int;
-  invariant: items.len() &lt;= capacity;  // never overflow
-  invariant: capacity &gt; 0;             // always usable
-}
+<span class="c1">// Generic stack with contract-verified invariants</span>
+<span class="k">type</span><span class="w"> </span><span class="nc">Stack</span><span class="p">[</span><span class="nc">T</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">];</span>
+<span class="w">  </span><span class="n">capacity</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span><span class="w">  </span><span class="c1">// never overflow</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">             </span><span class="c1">// always usable</span>
+<span class="p">}</span>
 
-fn Stack.new[T](capacity: Int) -&gt; Result[Stack[T], Str]
-  requires: capacity &gt; 0
-{
-  if capacity &lt;= 0 {
-    return Err("capacity must be positive");
-  }
-  return Ok(Stack[T]{ items: Vec[T].new(), capacity: capacity });
-}
+<span class="k">fn</span><span class="w"> </span><span class="nc">Stack</span><span class="p">.</span><span class="nf">new</span><span class="p">[</span><span class="nc">T</span><span class="p">](</span><span class="n">capacity</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="nc">Stack</span><span class="p">[</span><span class="nc">T</span><span class="p">],</span><span class="w"> </span><span class="kt">Str</span><span class="p">]</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="no">Err</span><span class="p">(</span><span class="s2">"capacity must be positive"</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="nc">Stack</span><span class="p">[</span><span class="nc">T</span><span class="p">]{</span><span class="w"> </span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">].</span><span class="nf">new</span><span class="p">(),</span><span class="w"> </span><span class="n">capacity</span><span class="p">:</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="p">});</span>
+<span class="p">}</span>
 
-fn Stack.push[T](value: T) -&gt; Result[Unit, Str]
-  requires: items.len() &lt; capacity
-  ensures:  result is Ok =&gt; items.len() == items.len()@pre + 1
-{
-  if items.len() &gt;= capacity {
-    return Err("stack is full");
-  }
-  items.push(value);
-  return Ok(());
-}
+<span class="k">fn</span><span class="w"> </span><span class="nc">Stack</span><span class="p">.</span><span class="nf">push</span><span class="p">[</span><span class="nc">T</span><span class="p">](</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="kt">Unit</span><span class="p">,</span><span class="w"> </span><span class="kt">Str</span><span class="p">]</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">capacity</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w">  </span><span class="kc">result</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="no">Ok</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="kp">@pre</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="no">Err</span><span class="p">(</span><span class="s2">"stack is full"</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">items</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(());</span>
+<span class="p">}</span>
 
-fn Stack.pop[T]() -&gt; Option[T] {
-  return items.pop();
-}
+<span class="k">fn</span><span class="w"> </span><span class="nc">Stack</span><span class="p">.</span><span class="nf">pop</span><span class="p">[</span><span class="nc">T</span><span class="p">]()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="nc">T</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">pop</span><span class="p">();</span>
+<span class="p">}</span>
 
-fn Stack.is_empty[T]() -&gt; Bool {
-  return items.len() == 0;
-}
+<span class="k">fn</span><span class="w"> </span><span class="nc">Stack</span><span class="p">.</span><span class="nf">is_empty</span><span class="p">[</span><span class="nc">T</span><span class="p">]()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Bool</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 
-fn main() -&gt; Result[Unit, Str] {
-  var s = Stack.new[Int](3)?;     // ? propagates error from new()
-  s.push(10)?;                     // ? propagates error from push()
-  s.push(20)?;
-  s.push(30)?;
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="kt">Unit</span><span class="p">,</span><span class="w"> </span><span class="kt">Str</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">var</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Stack</span><span class="p">.</span><span class="nf">new</span><span class="p">[</span><span class="kt">Int</span><span class="p">](</span><span class="mi">3</span><span class="p">)</span><span class="o">?</span><span class="p">;</span><span class="w">     </span><span class="c1">// ? propagates error from new()</span>
+<span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">?</span><span class="p">;</span><span class="w">                     </span><span class="c1">// ? propagates error from push()</span>
+<span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+<span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
 
-  // This push should fail -- stack is full
-  match s.push(40) {
-    Ok(()) =&gt; io.println("unexpected"),
-    Err(e) =&gt; io.println("rejected: " + e),  // prints: rejected: stack is full
-  };
+<span class="w">  </span><span class="c1">// This push should fail -- stack is full</span>
+<span class="w">  </span><span class="k">match</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="no">Ok</span><span class="p">(())</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"unexpected"</span><span class="p">),</span>
+<span class="w">    </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"rejected: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">e</span><span class="p">),</span><span class="w">  </span><span class="c1">// prints: rejected: stack is full</span>
+<span class="w">  </span><span class="p">};</span>
 
-  io.println("popping:");
-  while !s.is_empty() {
-    match s.pop() {
-      Some(v) =&gt; io.println("  " + v.to_str()),
-      None    =&gt; {},
-    };
-  }
-  return Ok(());
-}
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"popping:"</span><span class="p">);</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="nf">is_empty</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">match</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="nf">pop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"  "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="nf">to_str</span><span class="p">()),</span>
+<span class="w">      </span><span class="no">None</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(());</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Generics + contracts + error handling + ownership -- all in one program. The Stack's capacity invariant is checked after every mutation. The push contract verifies the element was actually added.</p>
 <hr />
 <h2 id="11-interfaces-no-implements-keyword">11. Interfaces -- No <code>implements</code> Keyword<a class="headerlink" href="#11-interfaces-no-implements-keyword" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>// Define an interface
-interface Comparable {
-  fn compare(other: &amp;Self) -&gt; Int;  // returns -1, 0, or 1
-}
+<div class="highlight"><pre><span></span><code><span class="c1">// Define an interface</span>
+<span class="k">interface</span><span class="w"> </span><span class="nc">Comparable</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span><span class="w">  </span><span class="c1">// returns -1, 0, or 1</span>
+<span class="p">}</span>
 
-// Create a type
-type Score = { value: Int; }
+<span class="c1">// Create a type</span>
+<span class="k">type</span><span class="w"> </span><span class="nc">Score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-// Implement the interface -- just write the method
-fn Score.compare(other: &amp;Score) -&gt; Int {
-  if value &lt; other.value { return -1; }
-  if value &gt; other.value { return  1; }
-  return 0;
-}
+<span class="c1">// Implement the interface -- just write the method</span>
+<span class="k">fn</span><span class="w"> </span><span class="nc">Score</span><span class="p">.</span><span class="nf">compare</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Score</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w">  </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Generic function constrained by interface
-fn max[T: Comparable](a: T, b: T) -&gt; T {
-  if a.compare(&amp;b) &gt; 0 { return a; }
-  return b;
-}
+<span class="c1">// Generic function constrained by interface</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">max</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Comparable</span><span class="p">](</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="nf">compare</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 
-fn main() -&gt; Int {
-  let s1 = Score{ value: 10 };
-  let s2 = Score{ value: 20 };
-  let winner = max(s1, s2);
-  return winner.value;   // 20
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Score</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Score</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">winner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="n">s2</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">winner</span><span class="p">.</span><span class="n">value</span><span class="p">;</span><span class="w">   </span><span class="c1">// 20</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>No <code>implements</code> keyword. A type satisfies an interface by having the right methods. Structural typing -- compose types across module boundaries without shared ancestry.</p>
 <hr />
 <h2 id="12-sort-with-contract-verification">12. Sort with Contract Verification<a class="headerlink" href="#12-sort-with-contract-verification" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
-use xiom.collections.Vec;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">collections</span><span class="p">.</span><span class="nc">Vec</span><span class="p">;</span>
 
-// Contract ensures the output IS sorted -- verified at runtime
-fn sort(items: &amp;mut Vec[Int])
-  ensures: items.is_sorted()
-{
-  // Bubble sort -- simple but correct
-  let n = items.len();
-  var i = 0;
-  while i &lt; n {
-    var j = 0;
-    while j &lt; n - i - 1 {
-      let a = items.get(j).unwrap();
-      let b = items.get(j + 1).unwrap();
-      if a &gt; b {
-        items.set(j, b);
-        items.set(j + 1, a);
-      }
-      j = j + 1;
-    }
-    i = i + 1;
-  }
-  // Contract checked HERE -- if items is NOT sorted, program panics
-}
+<span class="c1">// Contract ensures the output IS sorted -- verified at runtime</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">sort</span><span class="p">(</span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">is_sorted</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// Bubble sort -- simple but correct</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">();</span>
+<span class="w">  </span><span class="k">var</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">var</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">j</span><span class="p">).</span><span class="nf">unwrap</span><span class="p">();</span>
+<span class="w">      </span><span class="k">let</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">).</span><span class="nf">unwrap</span><span class="p">();</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">items</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">        </span><span class="n">items</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// Contract checked HERE -- if items is NOT sorted, program panics</span>
+<span class="p">}</span>
 
-fn main() {
-  var nums: Vec[Int] = [4, 1, 3, 2];
-  sort(&amp;mut nums);
-  io.println("sorted: " + nums.get(0).unwrap().to_str());  // 1
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">var</span><span class="w"> </span><span class="n">nums</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span>
+<span class="w">  </span><span class="nf">sort</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">nums</span><span class="p">);</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"sorted: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nums</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nf">unwrap</span><span class="p">().</span><span class="nf">to_str</span><span class="p">());</span><span class="w">  </span><span class="c1">// 1</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>The <code>ensures: items.is_sorted()</code> contract is verified after <code>sort()</code> returns. If the implementation is buggy, the program panics with a clear message -- no silent corruption.</p>
 <hr />

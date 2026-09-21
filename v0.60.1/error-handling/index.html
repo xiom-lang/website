@@ -2372,73 +2372,73 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <h1 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h1>
 <p>XIOM has no exceptions. Functions that can fail return <code>Result[T, E]</code>. Absence of a value is expressed through <code>Option[T]</code>. The compiler enforces exhaustive handling of both at every use site.</p>
 <h2 id="result-type">Result Type<a class="headerlink" href="#result-type" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>fn parse_int(s: Str) -&gt; Result[Int, ParseError] {
-  // ...
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">parse_int</span><span class="p">(</span><span class="n">s</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="nc">ParseError</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>E</code> in <code>Result[T, E]</code> is <strong>any type</strong>. No <code>Error</code> interface is required. The standard library provides a <code>StdError</code> interface for its own functions. Library authors are free to use any error type.</p>
-<div class="highlight"><pre><span></span><code>// All valid
-Result[Int, Str]
-Result[Config, IOError]
-Result[Data, MyCustomErrorEnum]
+<div class="highlight"><pre><span></span><code><span class="c1">// All valid</span>
+<span class="nc">Result</span><span class="p">[</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="kt">Str</span><span class="p">]</span>
+<span class="nc">Result</span><span class="p">[</span><span class="nc">Config</span><span class="p">,</span><span class="w"> </span><span class="nc">IOError</span><span class="p">]</span>
+<span class="nc">Result</span><span class="p">[</span><span class="nc">Data</span><span class="p">,</span><span class="w"> </span><span class="nc">MyCustomErrorEnum</span><span class="p">]</span>
 </code></pre></div>
 <h2 id="the-operator">The <code>?</code> Operator<a class="headerlink" href="#the-operator" title="Permanent link">&para;</a></h2>
 <p>The <code>?</code> operator returns the error from the current function if the <code>Result</code> is <code>Err</code>. It is syntactic sugar for an explicit match that returns the error.</p>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-fn load_config(path: Str) -&gt; Result[Config, AppError] {
-  let file   = io.read_file(path)?;     // returns Err on failure
-  let config = parse_config(file)?;     // returns Err on failure
-  return Ok(config);
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="nc">Config</span><span class="p">,</span><span class="w"> </span><span class="nc">AppError</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">file</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">read_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">?</span><span class="p">;</span><span class="w">     </span><span class="c1">// returns Err on failure</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">parse_config</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">?</span><span class="p">;</span><span class="w">     </span><span class="c1">// returns Err on failure</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>?</code> can only appear inside a function that returns <code>Result</code>.</p>
 <h2 id="match-exhaustion">Match Exhaustion<a class="headerlink" href="#match-exhaustion" title="Permanent link">&para;</a></h2>
 <p>Every <code>match</code> expression must cover all cases. The compiler rejects non-exhaustive matches.</p>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-match parse_int("42") {
-  Ok(n)  =&gt; io.print(n.to_str()),
-  Err(e) =&gt; io.print_err(e.message),
-}
+<span class="k">match</span><span class="w"> </span><span class="nf">parse_int</span><span class="p">(</span><span class="s2">"42"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="nf">to_str</span><span class="p">()),</span>
+<span class="w">  </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">print_err</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">message</span><span class="p">),</span>
+<span class="p">}</span>
 
-// Matching an enum -- all variants required
-match state {
-  AgentState.Idle              =&gt; wait(),
-  AgentState.Patrolling(route) =&gt; follow(route),
-  AgentState.Attacking(target) =&gt; engage(target),
-  AgentState.Dead(cause)       =&gt; log(cause),
-}
+<span class="c1">// Matching an enum -- all variants required</span>
+<span class="k">match</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Idle</span><span class="w">              </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">wait</span><span class="p">(),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Patrolling</span><span class="p">(</span><span class="n">route</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">follow</span><span class="p">(</span><span class="n">route</span><span class="p">),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Attacking</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">engage</span><span class="p">(</span><span class="n">target</span><span class="p">),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Dead</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">cause</span><span class="p">),</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Use <code>_</code> as a wildcard to cover remaining cases:</p>
-<div class="highlight"><pre><span></span><code>match value {
-  Some(v) =&gt; process(v),
-  _       =&gt; {}  // handle all other cases
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+<span class="w">  </span><span class="n">_</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{}</span><span class="w">  </span><span class="c1">// handle all other cases</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="option-type">Option Type<a class="headerlink" href="#option-type" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>let val: Option[Int] = Some(10);
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">val</span><span class="p">:</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 
-// Unwrap with default
-let n = val.unwrap_or(0);
+<span class="c1">// Unwrap with default</span>
+<span class="k">let</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">val</span><span class="p">.</span><span class="nf">unwrap_or</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 
-// Pattern match
-match val {
-  Some(n) =&gt; use(n),
-  None    =&gt; handle_absent(),
-}
+<span class="c1">// Pattern match</span>
+<span class="k">match</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">use</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">handle_absent</span><span class="p">(),</span>
+<span class="p">}</span>
 
-// Propagate None with ? (inside a function returning Option)
-let n = val?;
+<span class="c1">// Propagate None with ? (inside a function returning Option)</span>
+<span class="k">let</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">val</span><span class="o">?</span><span class="p">;</span>
 </code></pre></div>
 <h2 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>// Option
-let present = Some(42);
-let absent: Option[Int] = None;
+<div class="highlight"><pre><span></span><code><span class="c1">// Option</span>
+<span class="k">let</span><span class="w"> </span><span class="n">present</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+<span class="k">let</span><span class="w"> </span><span class="n">absent</span><span class="p">:</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">None</span><span class="p">;</span>
 
-// Result
-let success = Ok("done");
-let failure: Result[Str, IOError] = Err(IOError.new("file not found"));
+<span class="c1">// Result</span>
+<span class="k">let</span><span class="w"> </span><span class="n">success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="s2">"done"</span><span class="p">);</span>
+<span class="k">let</span><span class="w"> </span><span class="n">failure</span><span class="p">:</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="kt">Str</span><span class="p">,</span><span class="w"> </span><span class="nc">IOError</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Err</span><span class="p">(</span><span class="nc">IOError</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"file not found"</span><span class="p">));</span>
 </code></pre></div>
 <h2 id="propagation-rules"><code>?</code> Propagation Rules<a class="headerlink" href="#propagation-rules" title="Permanent link">&para;</a></h2>
 <ul>

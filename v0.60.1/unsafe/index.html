@@ -2398,25 +2398,25 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <p>XIOM is memory-safe by default. <code>unsafe</code> exists for the three things a compiler cannot verify on its own: raw pointer operations, calls into C, and inline assembly. Writing <code>unsafe</code> does not switch safety off -- it marks a region where the compiler applies a confinement model instead of ordinary rules.</p>
 <h2 id="the-block-rule">The Block Rule<a class="headerlink" href="#the-block-rule" title="Permanent link">&para;</a></h2>
 <p><code>unsafe</code> applies strictly to a block expression. It cannot prefix a declaration:</p>
-<div class="highlight"><pre><span></span><code>fn abi_like() -&gt; Int
-  requires: true
-{
-  unsafe {
-    asm("nop");
-    return 0;
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">abi_like</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">asm</span><span class="p">(</span><span class="s2">"nop"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>unsafe fn</code>, <code>unsafe module</code>, <code>unsafe struct</code> and <code>unsafe impl</code> are hard errors, not warnings. The compiler reports: "<code>unsafe</code> applies only to block expressions <code>unsafe { ... }</code>; it cannot prefix declarations".</p>
 <p>Inline assembly is only available inside an <code>unsafe</code> block. A function whose entire body is a single <code>unsafe</code> block must declare a <code>requires:</code> clause (the pre-entry contract), because callers need to know what they are buying into:</p>
-<div class="highlight"><pre><span></span><code>fn read_value() -&gt; Int
-  requires: true
-{
-  unsafe {
-    let raw: *Int = get_ptr();
-    return *raw;
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">read_value</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">raw</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">get_ptr</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="n">raw</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="the-confinement-model">The Confinement Model<a class="headerlink" href="#the-confinement-model" title="Permanent link">&para;</a></h2>
 <p>Every <code>unsafe</code> block runs as a transaction. The requirements below are enforced by the compiler or by the runtime fault path:</p>
@@ -2471,10 +2471,10 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </tbody>
 </table>
 <h2 id="attributes">Attributes<a class="headerlink" href="#attributes" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>#[unsafe_no_retry]   // disable the once-only transient retry (deterministic faults)
-#[unsafe_direct]     // trusted escape hatch: plain unsafe, no trampoline, arena or
-                     // guard page. Stdlib/selfhost only; user code requires
-                     // --enable-unsafe-direct and every use is warned and audited.
+<div class="highlight"><pre><span></span><code><span class="nd">#[unsafe_no_retry]</span><span class="w">   </span><span class="c1">// disable the once-only transient retry (deterministic faults)</span>
+<span class="nd">#[unsafe_direct]</span><span class="w">     </span><span class="c1">// trusted escape hatch: plain unsafe, no trampoline, arena or</span>
+<span class="w">                     </span><span class="c1">// guard page. Stdlib/selfhost only; user code requires</span>
+<span class="w">                     </span><span class="c1">// --enable-unsafe-direct and every use is warned and audited.</span>
 </code></pre></div>
 <h2 id="fault-handling">Fault Handling<a class="headerlink" href="#fault-handling" title="Permanent link">&para;</a></h2>
 <p>A fault inside a confined block does not abort the process. The block yields a recoverable zero for the enclosing function's return type, and the fault is classified:</p>
@@ -2513,24 +2513,24 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </tbody>
 </table>
 <p>Runtime types for callers that want the details:</p>
-<div class="highlight"><pre><span></span><code>pub type HardwareFault     = { signal: Str; pc: UInt64; retried: Bool; }
-pub type ContractViolation = { contract: Str; }
+<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="nc">HardwareFault</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">signal</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">;</span><span class="w"> </span><span class="n">pc</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt64</span><span class="p">;</span><span class="w"> </span><span class="n">retried</span><span class="p">:</span><span class="w"> </span><span class="kt">Bool</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="k">pub</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="nc">ContractViolation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">contract</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <h2 id="a-safe-wrapper-for-c">A Safe Wrapper for C<a class="headerlink" href="#a-safe-wrapper-for-c" title="Permanent link">&para;</a></h2>
 <p>The pattern the compiler expects: a function with a contract that owns the unsafe block, and converts any raw result into an owned XIOM value before returning.</p>
-<div class="highlight"><pre><span></span><code>extern "C" {
-  fn get_ptr() -&gt; *Int;
-}
+<div class="highlight"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="s2">"C"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">get_ptr</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">*</span><span class="kt">Int</span><span class="p">;</span>
+<span class="p">}</span>
 
-fn read_value() -&gt; Int
-  requires: true
-{
-  unsafe {
-    let raw: *Int = get_ptr();
-    let value = *raw;
-    return value;
-  }
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">read_value</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">raw</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">get_ptr</span><span class="p">();</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">raw</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Callers see a normal safe function. The unsafe region is at the boundary, in one place, visible in review.</p>
 <h2 id="auditing-unsafe-code">Auditing Unsafe Code<a class="headerlink" href="#auditing-unsafe-code" title="Permanent link">&para;</a></h2>

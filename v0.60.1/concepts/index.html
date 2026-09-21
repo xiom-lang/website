@@ -2622,14 +2622,14 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code>// Instead of:  String name = null;
-let name: Option[Str] = None;
+<div class="highlight"><pre><span></span><code><span class="c1">// Instead of:  String name = null;</span>
+<span class="k">let</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="kt">Str</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">None</span><span class="p">;</span>
 
-// Instead of:  if (name != null) { use(name); }
-match name {
-  Some(n) =&gt; io.println("Hello, " + n),
-  None    =&gt; io.println("no name"),
-};
+<span class="c1">// Instead of:  if (name != null) { use(name); }</span>
+<span class="k">match</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"Hello, "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"no name"</span><span class="p">),</span>
+<span class="p">};</span>
 </code></pre></div>
 <p>You cannot accidentally use <code>None</code> as a value. The compiler rejects it.</p>
 <hr />
@@ -2665,18 +2665,18 @@ match name {
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code>// Instead of:  throw new IOException("file not found");
-fn read_config(path: Str) -&gt; Result[Config, Str] {
-  let file = io.read_file(path)?;    // ? returns the error immediately
-  let config = parse(file)?;
-  return Ok(config);
-}
+<div class="highlight"><pre><span></span><code><span class="c1">// Instead of:  throw new IOException("file not found");</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">read_config</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="nc">Config</span><span class="p">,</span><span class="w"> </span><span class="kt">Str</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">read_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">?</span><span class="p">;</span><span class="w">    </span><span class="c1">// ? returns the error immediately</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+<span class="p">}</span>
 
-// At the call site -- must handle both cases
-match read_config("config.json") {
-  Ok(c)  =&gt; use(c),
-  Err(e) =&gt; io.println("error: " + e),
-};
+<span class="c1">// At the call site -- must handle both cases</span>
+<span class="k">match</span><span class="w"> </span><span class="nf">read_config</span><span class="p">(</span><span class="s2">"config.json"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">use</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
+<span class="w">  </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"error: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">e</span><span class="p">),</span>
+<span class="p">};</span>
 </code></pre></div>
 <p>The <code>?</code> operator is <code>try!</code> from Rust, <code>try</code> from Zig. It returns <code>Err(...)</code> immediately if the value is an error. Clean propagation without invisible control flow.</p>
 <hr />
@@ -2711,17 +2711,17 @@ match read_config("config.json") {
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code>// A value has ONE owner. Assignment moves ownership.
-let a = Vec.new();
-let b = a;       // a MOVED to b -- a is now invalid
-// a.push(1);    // COMPILE ERROR: a was moved
+<div class="highlight"><pre><span></span><code><span class="c1">// A value has ONE owner. Assignment moves ownership.</span>
+<span class="k">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Vec</span><span class="p">.</span><span class="nf">new</span><span class="p">();</span>
+<span class="k">let</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">       </span><span class="c1">// a MOVED to b -- a is now invalid</span>
+<span class="c1">// a.push(1);    // COMPILE ERROR: a was moved</span>
 
-// Borrow temporarily with &amp; (read) or &amp;mut (write)
-read_only(&amp;b);   // b is borrowed -- still valid after
-mutate(&amp;mut b);  // exclusive write borrow
+<span class="c1">// Borrow temporarily with &amp; (read) or &amp;mut (write)</span>
+<span class="nf">read_only</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span><span class="w">   </span><span class="c1">// b is borrowed -- still valid after</span>
+<span class="nf">mutate</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w">  </span><span class="c1">// exclusive write borrow</span>
 
-// Clone to duplicate
-let c = b.clone();  // explicit copy -- both valid
+<span class="c1">// Clone to duplicate</span>
+<span class="k">let</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="nf">clone</span><span class="p">();</span><span class="w">  </span><span class="c1">// explicit copy -- both valid</span>
 </code></pre></div>
 <p><strong>The key difference from Rust:</strong> No lifetime annotations. Ever. Borrows expire at the end of the block where they're created. You can see when a borrow ends by looking at the braces.</p>
 <p><strong>Coming from C#:</strong> <code>using</code> and <code>IDisposable</code> give deterministic cleanup for the resources you wrap explicitly. XIOM applies a lifetime rule like that to every owned value -- memory is freed when its owner leaves scope -- and duplication is always explicit with <code>.clone()</code>.</p>
@@ -2782,61 +2782,61 @@ let c = b.clone();  // explicit copy -- both valid
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code>// Instead of:  class Point { private float x; public float getX()... }
-type Point = {
-  x: Float64;               // private by default
-  y: Float64;
-} derive[Eq, Clone, Display]  // auto-generate equality, clone, to-string
+<div class="highlight"><pre><span></span><code><span class="c1">// Instead of:  class Point { private float x; public float getX()... }</span>
+<span class="k">type</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span><span class="w">               </span><span class="c1">// private by default</span>
+<span class="w">  </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Eq</span><span class="p">,</span><span class="w"> </span><span class="nc">Clone</span><span class="p">,</span><span class="w"> </span><span class="nc">Display</span><span class="p">]</span><span class="w">  </span><span class="c1">// auto-generate equality, clone, to-string</span>
 
-pub fn Point.distance(other: &amp;Point) -&gt; Float64 {
-  // self is implicit -- x means self.x
-  let dx = x - other.x;
-  let dy = y - other.y;
-  return dx * dx + dy * dy;
-}
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nc">Point</span><span class="p">.</span><span class="nf">distance</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Point</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// self is implicit -- x means self.x</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dy</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="5-polymorphism-structural-interfaces">5. Polymorphism -- Structural Interfaces<a class="headerlink" href="#5-polymorphism-structural-interfaces" title="Permanent link">&para;</a></h2>
 <p>XIOM has no inheritance. Polymorphism works through <strong>structural interfaces</strong> -- if a type has the required methods, it satisfies the interface. No declaration needed.</p>
-<div class="highlight"><pre><span></span><code>// Define what "comparable" means
-interface Comparable {
-  fn compare(other: &amp;Self) -&gt; Int;  // -1, 0, 1
-}
+<div class="highlight"><pre><span></span><code><span class="c1">// Define what "comparable" means</span>
+<span class="k">interface</span><span class="w"> </span><span class="nc">Comparable</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span><span class="w">  </span><span class="c1">// -1, 0, 1</span>
+<span class="p">}</span>
 
-// Create two completely unrelated types
-type Score = { value: Int; }
-type Temperature = { kelvin: Float64; }
+<span class="c1">// Create two completely unrelated types</span>
+<span class="k">type</span><span class="w"> </span><span class="nc">Score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="k">type</span><span class="w"> </span><span class="nc">Temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">kelvin</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-// Implement compare for each -- NO "implements" keyword needed
-fn Score.compare(other: &amp;Score) -&gt; Int { return value - other.value; }
-fn Temperature.compare(other: &amp;Temperature) -&gt; Int { ... }
+<span class="c1">// Implement compare for each -- NO "implements" keyword needed</span>
+<span class="k">fn</span><span class="w"> </span><span class="nc">Score</span><span class="p">.</span><span class="nf">compare</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Score</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="k">fn</span><span class="w"> </span><span class="nc">Temperature</span><span class="p">.</span><span class="nf">compare</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Temperature</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
 
-// A generic function that works with ANY comparable type
-fn max[T: Comparable](a: T, b: T) -&gt; T {
-  if a.compare(&amp;b) &gt; 0 { return a; }
-  return b;
-}
+<span class="c1">// A generic function that works with ANY comparable type</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">max</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Comparable</span><span class="p">](</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="nf">compare</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 
-let winner = max(Score{ value: 10 }, Score{ value: 20 });
-// Both Score and Temperature satisfy Comparable automatically
+<span class="k">let</span><span class="w"> </span><span class="n">winner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="nc">Score</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nc">Score</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="p">});</span>
+<span class="c1">// Both Score and Temperature satisfy Comparable automatically</span>
 </code></pre></div>
 <p>This is Go's interface model. It's also how Python's duck typing works, except compile-time verified.</p>
 <hr />
 <h2 id="6-contracts-in-the-language-not-in-comments">6. Contracts -- In the Language, Not in Comments<a class="headerlink" href="#6-contracts-in-the-language-not-in-comments" title="Permanent link">&para;</a></h2>
 <p>No mainstream language ships contracts as part of its core syntax. Design by Contract has a long lineage -- Eiffel had it in 1986, and Ada 2012/SPARK, Dafny and Frama-C pushed it further with static verification. XIOM's bet is packaging: contracts in the core language of a systems compiler, enforced at runtime by default and available to verification tooling for supported properties. The website's <a href="https://xiom-lang.org/prior-art.html">Prior art and trade-offs</a> page covers the comparison.</p>
-<div class="highlight"><pre><span></span><code>fn divide(a: Float64, b: Float64) -&gt; Float64
-  requires: b != 0.0           // PRE-CONDITION: caller must guarantee this
-  ensures:  result * b == a    // POST-CONDITION: implementation must guarantee this
-{
-  return a / b;
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">0.0</span><span class="w">           </span><span class="c1">// PRE-CONDITION: caller must guarantee this</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w">  </span><span class="kc">result</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">a</span><span class="w">    </span><span class="c1">// POST-CONDITION: implementation must guarantee this</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 
-type Health = {
-  current: Int;
-  maximum: Int;
-  invariant: current &gt;= 0;      // TYPE INVARIANT: always true
-  invariant: current &lt;= maximum;
-}
+<span class="k">type</span><span class="w"> </span><span class="nc">Health</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">current</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="w">  </span><span class="n">maximum</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">      </span><span class="c1">// TYPE INVARIANT: always true</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">maximum</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <table>
 <thead>
@@ -2897,20 +2897,20 @@ type Health = {
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code>module myproject.data;
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">myproject</span><span class="p">.</span><span class="n">data</span><span class="p">;</span>
 
-pub type User = {              // visible outside this module
-  name: Str;
-  email: Str;
-} derive[Clone]
+<span class="k">pub</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="nc">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">              </span><span class="c1">// visible outside this module</span>
+<span class="w">  </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">;</span>
+<span class="w">  </span><span class="n">email</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Clone</span><span class="p">]</span>
 
-pub fn User.validate() -&gt; Bool {  // visible outside
-  return email.contains("@");
-}
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nc">User</span><span class="p">.</span><span class="nf">validate</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Bool</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// visible outside</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">email</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="s2">"@"</span><span class="p">);</span>
+<span class="p">}</span>
 
-fn hash_email(user: &amp;User) -&gt; Int {  // PRIVATE -- only visible in this module
-  // ...
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">hash_email</span><span class="p">(</span><span class="n">user</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">User</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// PRIVATE -- only visible in this module</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>No <code>protected</code>. No <code>friend</code>. No <code>package-private</code>. Just <code>pub</code> or private.</p>
 <hr />
@@ -2945,55 +2945,55 @@ fn hash_email(user: &amp;User) -&gt; Int {  // PRIVATE -- only visible in this m
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code>// Instead of:  template&lt;typename T&gt; T max(T a, T b) { return a &gt; b ? a : b; }
-fn max[T: Comparable](a: T, b: T) -&gt; T {
-  if a &gt; b { return a; }
-  return b;
-}
+<div class="highlight"><pre><span></span><code><span class="c1">// Instead of:  template&lt;typename T&gt; T max(T a, T b) { return a &gt; b ? a : b; }</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">max</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Comparable</span><span class="p">](</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Works with any type that satisfies Comparable
-let m1 = max(10, 20);             // T = Int
-let m2 = max(1.5, 2.7);           // T = Float64
-let m3 = max(Score{value:10}, Score{value:20});  // T = Score
+<span class="c1">// Works with any type that satisfies Comparable</span>
+<span class="k">let</span><span class="w"> </span><span class="n">m1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span><span class="w">             </span><span class="c1">// T = Int</span>
+<span class="k">let</span><span class="w"> </span><span class="n">m2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="mf">2.7</span><span class="p">);</span><span class="w">           </span><span class="c1">// T = Float64</span>
+<span class="k">let</span><span class="w"> </span><span class="n">m3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="nc">Score</span><span class="p">{</span><span class="n">value</span><span class="p">:</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="nc">Score</span><span class="p">{</span><span class="n">value</span><span class="p">:</span><span class="mi">20</span><span class="p">});</span><span class="w">  </span><span class="c1">// T = Score</span>
 </code></pre></div>
 <p>The <code>[T: Comparable]</code> constraint means: "T must have a <code>compare</code> method." The compiler checks this before generating code. No template-instantiation-error soup.</p>
 <hr />
 <h2 id="9-pattern-matching-like-switch-but-exhaustive">9. Pattern Matching -- Like switch, But Exhaustive<a class="headerlink" href="#9-pattern-matching-like-switch-but-exhaustive" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>// Instead of:  switch (value) { case 1: ... break; default: ... }
-match value {
-  Some(v) =&gt; io.println("got " + v.to_str()),
-  None    =&gt; io.println("nothing"),
-};
+<div class="highlight"><pre><span></span><code><span class="c1">// Instead of:  switch (value) { case 1: ... break; default: ... }</span>
+<span class="k">match</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"got "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="nf">to_str</span><span class="p">()),</span>
+<span class="w">  </span><span class="no">None</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"nothing"</span><span class="p">),</span>
+<span class="p">};</span>
 
-// Instead of:  if (state == IDLE) ... else if (state == ATTACKING) ...
-match state {
-  AgentState.Idle              =&gt; wait(),
-  AgentState.Patrolling(route) =&gt; follow(route),
-  AgentState.Attacking(target) =&gt; engage(target),
-  AgentState.Dead(cause)       =&gt; log(cause),
-};
+<span class="c1">// Instead of:  if (state == IDLE) ... else if (state == ATTACKING) ...</span>
+<span class="k">match</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Idle</span><span class="w">              </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">wait</span><span class="p">(),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Patrolling</span><span class="p">(</span><span class="n">route</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">follow</span><span class="p">(</span><span class="n">route</span><span class="p">),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Attacking</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">engage</span><span class="p">(</span><span class="n">target</span><span class="p">),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Dead</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">cause</span><span class="p">),</span>
+<span class="p">};</span>
 </code></pre></div>
 <p>The compiler forces you to handle <strong>every</strong> variant. Missing a case is a compile error. This eliminates an entire class of runtime bugs.</p>
 <hr />
 <h2 id="10-async-like-asyncawait-with-channels">10. Async -- Like async/await, With Channels<a class="headerlink" href="#10-async-like-asyncawait-with-channels" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.async;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="k">async</span><span class="p">;</span>
 
-// Instead of:  async function fetch() { const r = await http.get(url); }
-async fn fetch(url: Str) -&gt; Result[Str, NetError] {
-  let response = await net.http_get(url)?;
-  return Ok(response.body);
-}
+<span class="c1">// Instead of:  async function fetch() { const r = await http.get(url); }</span>
+<span class="k">async</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="kt">Str</span><span class="p">,</span><span class="w"> </span><span class="nc">NetError</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">net</span><span class="p">.</span><span class="nf">http_get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">body</span><span class="p">);</span>
+<span class="p">}</span>
 
-// Instead of:  new Thread(() -&gt; { channel.send(compute()); }).start();
-let (tx, rx) = Channel.bounded[Int](32);
-spawn {
-  tx.send(expensive_computation());
-};
+<span class="c1">// Instead of:  new Thread(() -&gt; { channel.send(compute()); }).start();</span>
+<span class="k">let</span><span class="w"> </span><span class="p">(</span><span class="n">tx</span><span class="p">,</span><span class="w"> </span><span class="n">rx</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Channel</span><span class="p">.</span><span class="nf">bounded</span><span class="p">[</span><span class="kt">Int</span><span class="p">](</span><span class="mi">32</span><span class="p">);</span>
+<span class="k">spawn</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">tx</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nf">expensive_computation</span><span class="p">());</span>
+<span class="p">};</span>
 
-match rx.recv() {
-  Ok(value) =&gt; use(value),
-  Err(_)    =&gt; io.println("channel closed"),
-};
+<span class="k">match</span><span class="w"> </span><span class="n">rx</span><span class="p">.</span><span class="nf">recv</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">use</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+<span class="w">  </span><span class="no">Err</span><span class="p">(</span><span class="n">_</span><span class="p">)</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"channel closed"</span><span class="p">),</span>
+<span class="p">};</span>
 </code></pre></div>
 <table>
 <thead>
@@ -3032,26 +3032,26 @@ match rx.recv() {
 <hr />
 <h2 id="11-compile-time-code-comptime">11. Compile-Time Code -- comptime<a class="headerlink" href="#11-compile-time-code-comptime" title="Permanent link">&para;</a></h2>
 <p>No preprocessor. No macros. No templates. One keyword: <code>comptime</code>.</p>
-<div class="highlight"><pre><span></span><code>// Evaluated at compile time -- zero runtime cost
-let size = comptime expensive_computation();
+<div class="highlight"><pre><span></span><code><span class="c1">// Evaluated at compile time -- zero runtime cost</span>
+<span class="k">let</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">comptime</span><span class="w"> </span><span class="nf">expensive_computation</span><span class="p">();</span>
 
-// Generics are just comptime type parameters
-fn max[T: Comparable](a: T, b: T) -&gt; T { ... }
+<span class="c1">// Generics are just comptime type parameters</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">max</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Comparable</span><span class="p">](</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <p><code>comptime</code> is Zig's model -- any expression can be marked compile-time. This is how generics, reflection, and specialization all work. One mechanism.</p>
 <hr />
 <h2 id="12-c-ffi-call-any-c-library">12. C FFI -- Call Any C Library<a class="headerlink" href="#12-c-ffi-call-any-c-library" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>extern "C" {
-  fn malloc(size: UInt) -&gt; *UInt8;
-  fn free(ptr: *UInt8);
-  fn printf(format: *UInt8, ...) -&gt; Int32;
-}
+<div class="highlight"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="s2">"C"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">;</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">free</span><span class="p">(</span><span class="n">ptr</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">);</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="n">format</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int32</span><span class="p">;</span>
+<span class="p">}</span>
 
-fn alloc(size: UInt) -&gt; *UInt8
-  requires: size &gt; 0
-{
-  unsafe { return malloc(size); }
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">alloc</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>XIOM does not rewrite C libraries. It wraps them with safe interfaces and contracts. SQLite, OpenSSL, Vulkan, BLAS -- all accessed through FFI with contract-verified preconditions.</p>
 <hr />

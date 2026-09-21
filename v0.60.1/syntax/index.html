@@ -2772,11 +2772,11 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <p><strong>Quick look:</strong> <code>let x = 42;</code> - <code>fn name(args) -&gt; Type { ... }</code> - <code>if/elif/else</code> - <code>match x { Arm =&gt; ..., }</code> - <code>;</code> on every statement</p>
 </blockquote>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>let x: Int = 42;           // immutable binding
-var y: Float64 = 3.14;     // mutable binding
-let name = "XIOM";        // type inferred as Str
-let v = [1, 2, 3];         // type inferred as Vec[Int]
-let t = (1, true);         // type inferred as (Int, Bool)
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w">           </span><span class="c1">// immutable binding</span>
+<span class="k">var</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="p">;</span><span class="w">     </span><span class="c1">// mutable binding</span>
+<span class="k">let</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"XIOM"</span><span class="p">;</span><span class="w">        </span><span class="c1">// type inferred as Str</span>
+<span class="k">let</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">];</span><span class="w">         </span><span class="c1">// type inferred as Vec[Int]</span>
+<span class="k">let</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w">         </span><span class="c1">// type inferred as (Int, Bool)</span>
 </code></pre></div>
 <ul>
 <li><code>let</code> -- immutable binding. Cannot be reassigned.</li>
@@ -2785,24 +2785,24 @@ let t = (1, true);         // type inferred as (Int, Bool)
 <li>Type inference does not cross function boundaries.</li>
 </ul>
 <h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-fn add(a: Int, b: Int) -&gt; Int {
-  return a + b;
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Void return (no return type annotation)
-fn log(message: Str) {
-  io.print(message);
-}
+<span class="c1">// Void return (no return type annotation)</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+<span class="p">}</span>
 
-// With contracts
-fn divide(a: Float64, b: Float64) -&gt; Float64
-  requires: b != 0.0
-  ensures:  result * b == a
-{
-  return a / b;
-}
+<span class="c1">// With contracts</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w">  </span><span class="kc">result</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">a</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <ul>
 <li>Function signatures are always fully annotated.</li>
@@ -2811,16 +2811,16 @@ fn divide(a: Float64, b: Float64) -&gt; Float64
 <li>Every statement <strong>must</strong> end with <code>;</code>. Tail expressions do not.</li>
 </ul>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>pub type Vec3 = { x: Float32; y: Float32; z: Float32; }
+<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="nc">Vec3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span><span class="w"> </span><span class="n">z</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-// self is implicit -- fields accessed directly
-pub fn Vec3.dot(other: &amp;Vec3) -&gt; Float32 {
-  return x * other.x + y * other.y + z * other.z;
-}
+<span class="c1">// self is implicit -- fields accessed directly</span>
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nc">Vec3</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Vec3</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float32</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
 
-pub fn Vec3.set_x(value: Float32) {
-  x = value;   // self is &amp;mut Vec3 -- mutation detected
-}
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nc">Vec3</span><span class="p">.</span><span class="nf">set_x</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w">   </span><span class="c1">// self is &amp;mut Vec3 -- mutation detected</span>
+<span class="p">}</span>
 </code></pre></div>
 <ul>
 <li>Methods use <code>TypeName.methodName</code> syntax.</li>
@@ -2830,60 +2830,60 @@ pub fn Vec3.set_x(value: Float32) {
 </ul>
 <h2 id="control-flow">Control Flow<a class="headerlink" href="#control-flow" title="Permanent link">&para;</a></h2>
 <h3 id="if-elif-else">If / Elif / Else<a class="headerlink" href="#if-elif-else" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>if x &gt; 0 {
-  return 1;
-} elif x &lt; 0 {
-  return -1;
-} else {
-  return 0;
-}
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">elif</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="while">While<a class="headerlink" href="#while" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>while count &gt; 0 {
-  count = count - 1;
-}
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="while-let">While Let<a class="headerlink" href="#while-let" title="Permanent link">&para;</a></h3>
 <p><code>while let</code> repeats while a pattern matches. <code>if let</code> is not implemented; use <code>match</code> or <code>if value is Variant</code> instead.</p>
-<div class="highlight"><pre><span></span><code>var iter = make_iterator();
-while let Some(item) = iter.next() {
-  process(item);
-}
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="w"> </span><span class="n">iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">make_iterator</span><span class="p">();</span>
+<span class="k">while</span><span class="w"> </span><span class="k">let</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iter</span><span class="p">.</span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">process</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="for">For<a class="headerlink" href="#for" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>for item in items {
-  process(item);
-}
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">process</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Iteration works over arrays and <code>Vec[T]</code> values. There is no range expression: iterate the collection, or use a counter with <code>while</code>.</p>
 <h3 id="loop-break-continue">Loop, Break, Continue<a class="headerlink" href="#loop-break-continue" title="Permanent link">&para;</a></h3>
 <p><code>loop { ... }</code> repeats until a <code>break</code>. A label targets an outer loop.</p>
-<div class="highlight"><pre><span></span><code>loop {
-  if done { break; }
-}
+<div class="highlight"><pre><span></span><code><span class="k">loop</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">done</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
 
-@outer: while i &lt; 10 {
-  var j = 0;
-  while j &lt; 10 {
-    j = j + 1;
-    if j &gt; 5 { break @outer; }       // exits the OUTER loop
-    if j == 2 { continue @outer; }   // continues the OUTER loop
-  }
-  i = i + 1;
-}
+<span class="nl">@outer</span><span class="p">:</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">var</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">break</span><span class="w"> </span><span class="nl">@outer</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">       </span><span class="c1">// exits the OUTER loop</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">continue</span><span class="w"> </span><span class="nl">@outer</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c1">// continues the OUTER loop</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="match">Match<a class="headerlink" href="#match" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>match value {
-  Some(v) =&gt; process(v),
-  None    =&gt; handle_absent(),
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">handle_absent</span><span class="p">(),</span>
+<span class="p">}</span>
 
-match state {
-  AgentState.Idle              =&gt; wait(),
-  AgentState.Patrolling(route) =&gt; follow(route),
-  AgentState.Attacking(target) =&gt; engage(target),
-  AgentState.Dead(cause)       =&gt; log(cause),
-}
+<span class="k">match</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Idle</span><span class="w">              </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">wait</span><span class="p">(),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Patrolling</span><span class="p">(</span><span class="n">route</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">follow</span><span class="p">(</span><span class="n">route</span><span class="p">),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Attacking</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">engage</span><span class="p">(</span><span class="n">target</span><span class="p">),</span>
+<span class="w">  </span><span class="nc">AgentState</span><span class="p">.</span><span class="nc">Dead</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">cause</span><span class="p">),</span>
+<span class="p">}</span>
 </code></pre></div>
 <ul>
 <li>Every <code>match</code> must cover all cases. Non-exhaustive matches are compile errors.</li>
@@ -2892,102 +2892,102 @@ match state {
 </ul>
 <h2 id="expressions">Expressions<a class="headerlink" href="#expressions" title="Permanent link">&para;</a></h2>
 <h3 id="literals">Literals<a class="headerlink" href="#literals" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>42              // Int
-100_000         // Int with separators
-3.14            // Float64
-true | false    // Bool
-"hello"         // Str
-'A'             // Char -- single quotes, one Unicode scalar value
-"line\nnext"    // Str escapes: \n  \t  \\  \"  \u{...}
-"\u{1F600}"     // Unicode codepoint escape (Str only)
+<div class="highlight"><pre><span></span><code><span class="mi">42</span><span class="w">              </span><span class="c1">// Int</span>
+<span class="mi">100_000</span><span class="w">         </span><span class="c1">// Int with separators</span>
+<span class="mf">3.14</span><span class="w">            </span><span class="c1">// Float64</span>
+<span class="kc">true</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">false</span><span class="w">    </span><span class="c1">// Bool</span>
+<span class="s2">"hello"</span><span class="w">         </span><span class="c1">// Str</span>
+<span class="sc">'A'</span><span class="w">             </span><span class="c1">// Char -- single quotes, one Unicode scalar value</span>
+<span class="s2">"line\nnext"</span><span class="w">    </span><span class="c1">// Str escapes: \n  \t  \\  \"  \u{...}</span>
+<span class="s2">"\u{1F600}"</span><span class="w">     </span><span class="c1">// Unicode codepoint escape (Str only)</span>
 </code></pre></div>
 <p><code>\n</code>, <code>\t</code>, <code>\\</code> and <code>\"</code> work in both strings and character literals. <code>\u{...}</code> is a string-only escape: <code>'\u{1F600}'</code> is a lexer error, so write the codepoint as a string when needed.</p>
 <h3 id="arithmetic">Arithmetic<a class="headerlink" href="#arithmetic" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>a + b   a - b   a * b   a / b   a % b
--a      // negation
+<div class="highlight"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">b</span>
+<span class="o">-</span><span class="n">a</span><span class="w">      </span><span class="c1">// negation</span>
 
-x += 1;   x -= 2;   x *= 3;   x /= 4;   x %= 5;   // compound assignment
+<span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">   </span><span class="n">x</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">   </span><span class="n">x</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">   </span><span class="n">x</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">   </span><span class="n">x</span><span class="w"> </span><span class="o">%=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">   </span><span class="c1">// compound assignment</span>
 </code></pre></div>
 <h3 id="comparison">Comparison<a class="headerlink" href="#comparison" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>a == b   a != b   a &lt; b   a &gt; b   a &lt;= b   a &gt;= b
+<div class="highlight"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">b</span>
 </code></pre></div>
 <h3 id="logical">Logical<a class="headerlink" href="#logical" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>!a          // not
-a &amp;&amp; b      // and
-a || b      // or
+<div class="highlight"><pre><span></span><code><span class="o">!</span><span class="n">a</span><span class="w">          </span><span class="c1">// not</span>
+<span class="n">a</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">b</span><span class="w">      </span><span class="c1">// and</span>
+<span class="n">a</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">b</span><span class="w">      </span><span class="c1">// or</span>
 </code></pre></div>
 <h3 id="struct-literals">Struct Literals<a class="headerlink" href="#struct-literals" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>let p = Point{ x: 1.0, y: 2.0 };
-let s = Stack[Int]{ items: [], capacity: 10 };
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Point</span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="w"> </span><span class="p">};</span>
+<span class="k">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Stack</span><span class="p">[</span><span class="kt">Int</span><span class="p">]{</span><span class="w"> </span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="n">capacity</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">};</span>
 </code></pre></div>
 <h3 id="array-literals">Array Literals<a class="headerlink" href="#array-literals" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>let nums = [1, 2, 3, 4, 5];
-let empty: Vec[Int] = [];
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">nums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">];</span>
+<span class="k">let</span><span class="w"> </span><span class="n">empty</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
 </code></pre></div>
 <h3 id="field-access">Field Access<a class="headerlink" href="#field-access" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>let dist = p.x * p.x + p.y * p.y;
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="function-calls">Function Calls<a class="headerlink" href="#function-calls" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>let result = add(10, 20);
-let x = max[Int](a, b);      // explicit type parameter
-let y = max(a, b);           // inferred type parameter
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="kc">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
+<span class="k">let</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">[</span><span class="kt">Int</span><span class="p">](</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w">      </span><span class="c1">// explicit type parameter</span>
+<span class="k">let</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w">           </span><span class="c1">// inferred type parameter</span>
 </code></pre></div>
 <h3 id="closures">Closures<a class="headerlink" href="#closures" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>// fn(params) { body } -- closure expression
-let doubler = fn(x: Int) -&gt; Int { return x * 2; };
+<div class="highlight"><pre><span></span><code><span class="c1">// fn(params) { body } -- closure expression</span>
+<span class="k">let</span><span class="w"> </span><span class="n">doubler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">fn</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
 
-// |params| body -- pipe closure
-let tripler = |x| x * 3;
+<span class="c1">// |params| body -- pipe closure</span>
+<span class="k">let</span><span class="w"> </span><span class="n">tripler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="other-expressions">Other Expressions<a class="headerlink" href="#other-expressions" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>// Error propagation
-let f = open(path)?;
+<div class="highlight"><pre><span></span><code><span class="c1">// Error propagation</span>
+<span class="k">let</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
 
-// Reference creation
-let r = &amp;x;
-let rm = &amp;mut x;
+<span class="c1">// Reference creation</span>
+<span class="k">let</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">;</span>
+<span class="k">let</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
 
-// Option constructors
-Some(value)
-None
+<span class="c1">// Option constructors</span>
+<span class="no">Some</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="no">None</span>
 
-// Result constructors
-Ok(value)
-Err(error)
+<span class="c1">// Result constructors</span>
+<span class="no">Ok</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="no">Err</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 
-// Await (async)
-await fetch(url);
+<span class="c1">// Await (async)</span>
+<span class="k">await</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">);</span>
 
-// Comptime evaluation
-comptime expensive_computation()
+<span class="c1">// Comptime evaluation</span>
+<span class="k">comptime</span><span class="w"> </span><span class="nf">expensive_computation</span><span class="p">()</span>
 
-// Type test
-x is Some
+<span class="c1">// Type test</span>
+<span class="n">x</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="no">Some</span>
 
-// Pre-state reference (in contracts)
-items.len()@pre
+<span class="c1">// Pre-state reference (in contracts)</span>
+<span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="kp">@pre</span>
 
-// Compile-time constant block and constant declaration
-const { 40 + 2 }
-const LIMIT: Int = 10;
+<span class="c1">// Compile-time constant block and constant declaration</span>
+<span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+<span class="k">const</span><span class="w"> </span><span class="nc">LIMIT</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
 
-// defer -- runs when the enclosing scope exits
-defer { cleanup(); }
-defer io.println("done");
+<span class="c1">// defer -- runs when the enclosing scope exits</span>
+<span class="k">defer</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<span class="k">defer</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"done"</span><span class="p">);</span>
 
-// Never type -- a diverging function body
-fn abort() -&gt; ! { loop { } }
+<span class="c1">// Never type -- a diverging function body</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">abort</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">!</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 
-// Unsafe -- confined block; required for asm and raw pointer operations
-unsafe { asm("nop"); }
+<span class="c1">// Unsafe -- confined block; required for asm and raw pointer operations</span>
+<span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">asm</span><span class="p">(</span><span class="s2">"nop"</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
 
-// Debug intrinsics -- release builds strip them; --keep-debug-checks retains
-assert(condition);
-assert(condition, "message");
-let checked = dbg!(expression);
-todo!();
-unimplemented!();
-debugger;
+<span class="c1">// Debug intrinsics -- release builds strip them; --keep-debug-checks retains</span>
+<span class="nf">assert</span><span class="p">(</span><span class="n">condition</span><span class="p">);</span>
+<span class="nf">assert</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span><span class="w"> </span><span class="s2">"message"</span><span class="p">);</span>
+<span class="k">let</span><span class="w"> </span><span class="n">checked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">dbg</span><span class="o">!</span><span class="p">(</span><span class="n">expression</span><span class="p">);</span>
+<span class="nb">todo</span><span class="o">!</span><span class="p">();</span>
+<span class="nb">unimplemented</span><span class="o">!</span><span class="p">();</span>
+<span class="n">debugger</span><span class="p">;</span>
 </code></pre></div>
 <h2 id="operators-precedence">Operators (Precedence)<a class="headerlink" href="#operators-precedence" title="Permanent link">&para;</a></h2>
 <table>
@@ -3041,10 +3041,10 @@ debugger;
 </tbody>
 </table>
 <h2 id="comments">Comments<a class="headerlink" href="#comments" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>// Single-line comment
+<div class="highlight"><pre><span></span><code><span class="c1">// Single-line comment</span>
 
-/* Multi-line
-   block comment */
+<span class="cm">/* Multi-line</span>
+<span class="cm">   block comment */</span>
 </code></pre></div>
 <h2 id="keywords">Keywords<a class="headerlink" href="#keywords" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>let  var  const  fn  return

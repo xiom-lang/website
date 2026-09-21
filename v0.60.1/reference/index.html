@@ -3326,28 +3326,28 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <hr />
 <h2 id="program-structure">Program Structure<a class="headerlink" href="#program-structure" title="Permanent link">&para;</a></h2>
 <p>A XIOM source file consists of top-level declarations: <code>fn</code>, <code>type</code>, <code>enum</code>, <code>interface</code>, <code>module</code>, <code>const</code>, <code>use</code>, <code>extern</code>.</p>
-<div class="highlight"><pre><span></span><code>use xiom.io;
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
-fn main() -&gt; Int {
-  io.println("Hello, world!");
-  return 0;
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"Hello, world!"</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Scripts (via <code>xiom run</code>) may omit <code>fn main()</code> -- the compiler wraps top-level code automatically.</p>
 <hr />
 <h2 id="variables-and-constants">Variables and Constants<a class="headerlink" href="#variables-and-constants" title="Permanent link">&para;</a></h2>
 <h3 id="var-mutable-variable"><code>var</code> -- Mutable variable<a class="headerlink" href="#var-mutable-variable" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>var x: Int = 0;        // type-annotated
-var y = 42;            // type-inferred
-var z: Float64 = 3.14;
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// type-annotated</span>
+<span class="k">var</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w">            </span><span class="c1">// type-inferred</span>
+<span class="k">var</span><span class="w"> </span><span class="n">z</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="let-immutable-binding"><code>let</code> -- Immutable binding<a class="headerlink" href="#let-immutable-binding" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>let name: Str = "xiom";     // cannot be reassigned
-let pi: Float64 = 3.14159;
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"xiom"</span><span class="p">;</span><span class="w">     </span><span class="c1">// cannot be reassigned</span>
+<span class="k">let</span><span class="w"> </span><span class="n">pi</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="const-compile-time-constant"><code>const</code> -- Compile-time constant<a class="headerlink" href="#const-compile-time-constant" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>pub const MAX: Int = 1024;
-pub const PI: Float64 = 3.1415926535;
+<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nc">MAX</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span>
+<span class="k">pub</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nc">PI</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.1415926535</span><span class="p">;</span>
 </code></pre></div>
 <hr />
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
@@ -3478,166 +3478,166 @@ pub const PI: Float64 = 3.1415926535;
 </tbody>
 </table>
 <h3 id="type-aliases">Type Aliases<a class="headerlink" href="#type-aliases" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>type UserId = Int;
-type Point3D = { x: Float64; y: Float64; z: Float64; };
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">UserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="k">type</span><span class="w"> </span><span class="nc">Point3D</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span><span class="w"> </span><span class="n">z</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
 </code></pre></div>
 <hr />
 <h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
 <h3 id="basic-function">Basic function<a class="headerlink" href="#basic-function" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>fn add(a: Int, b: Int) -&gt; Int {
-  return a + b;
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="method-on-a-type-receiver">Method on a type (receiver)<a class="headerlink" href="#method-on-a-type-receiver" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>pub fn Point.distance(self, other: &amp;Point) -&gt; Float64 {
-  let dx = self.x - other.x;
-  let dy = self.y - other.y;
-  return math.sqrt(dx * dx + dy * dy);
-}
+<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nc">Point</span><span class="p">.</span><span class="nf">distance</span><span class="p">(</span><span class="kc">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Point</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">self</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">self</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">math</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">dx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dy</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="generic-function">Generic function<a class="headerlink" href="#generic-function" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>fn max[T: Comparable](a: T, b: T) -&gt; T {
-  if a &gt; b { return a; }
-  return b;
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">max</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Comparable</span><span class="p">](</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="impl-trait-return-type-m96"><code>impl Trait</code> return type (M9.6)<a class="headerlink" href="#impl-trait-return-type-m96" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>fn get_display() -&gt; impl Display {
-  return 42;
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">get_display</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">impl</span><span class="w"> </span><span class="nc">Display</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="control-flow">Control Flow<a class="headerlink" href="#control-flow" title="Permanent link">&para;</a></h2>
 <h3 id="if-elif-else"><code>if</code> / <code>elif</code> / <code>else</code><a class="headerlink" href="#if-elif-else" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>if x &gt; 0 {
-  io.println("positive");
-} elif x &lt; 0 {
-  io.println("negative");
-} else {
-  io.println("zero");
-}
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"positive"</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">elif</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"negative"</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"zero"</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="match-pattern-matching"><code>match</code> -- Pattern matching<a class="headerlink" href="#match-pattern-matching" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>match value {
-  Some(v) =&gt; io.println(v),
-  None =&gt; io.println("nothing"),
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"nothing"</span><span class="p">),</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Multi-line arms use braces:</p>
-<div class="highlight"><pre><span></span><code>match result {
-  Ok(data) =&gt; {
-    process(data);
-    return data;
-  }
-  Err(e) =&gt; {
-    io.println(e.message);
-    return defaultValue;
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="kc">result</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nf">process</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">message</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="while-let"><code>while let</code><a class="headerlink" href="#while-let" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>while let Some(item) = iter.next() { process(item); }
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="k">let</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iter</span><span class="p">.</span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">item</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <p><code>if let</code> is not implemented by the current compiler. Use <code>match</code>, or test a variant with <code>if value is Variant</code> when no binding is needed.</p>
 <h3 id="while-loop"><code>while</code> loop<a class="headerlink" href="#while-loop" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>var i = 0;
-while i &lt; 10 {
-  io.println(i);
-  i = i + 1;
-}
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="for-loop-range-based"><code>for</code> loop (range-based)<a class="headerlink" href="#for-loop-range-based" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>for i in [0, 1, 2, 3] {
-  io.println(i);
-}
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="loop-infinite-loop"><code>loop</code> -- infinite loop<a class="headerlink" href="#loop-infinite-loop" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>loop {
-  // ...
-  if done { break; };
-}
+<div class="highlight"><pre><span></span><code><span class="k">loop</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">done</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="break-continue"><code>break</code> / <code>continue</code><a class="headerlink" href="#break-continue" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>while i &lt; 100 {
-  i = i + 1;
-  if i % 2 == 0 { continue; };
-  if i &gt; 50 { break; };
-  io.println(i);
-}
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Loops can carry a label; <code>break @label;</code> and <code>continue @label;</code> target the labeled loop instead of the innermost one:</p>
-<div class="highlight"><pre><span></span><code>@outer: while i &lt; 10 {
-  var j = 0;
-  while j &lt; 10 {
-    j = j + 1;
-    if j &gt; 5 { break @outer; }
-  }
-  i = i + 1;
-}
+<div class="highlight"><pre><span></span><code><span class="nl">@outer</span><span class="p">:</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">var</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">break</span><span class="w"> </span><span class="nl">@outer</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="expressions">Expressions<a class="headerlink" href="#expressions" title="Permanent link">&para;</a></h2>
 <h3 id="arithmetic">Arithmetic<a class="headerlink" href="#arithmetic" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>a + b    a - b    a * b    a / b    a % b
+<div class="highlight"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">b</span>
 </code></pre></div>
 <h3 id="comparison">Comparison<a class="headerlink" href="#comparison" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>a == b   a != b   a &lt; b    a &lt;= b   a &gt; b    a &gt;= b
+<div class="highlight"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">b</span>
 </code></pre></div>
 <h3 id="logical">Logical<a class="headerlink" href="#logical" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>a &amp;&amp; b   a || b   !a
+<div class="highlight"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="o">!</span><span class="n">a</span>
 </code></pre></div>
 <h3 id="bitwise">Bitwise<a class="headerlink" href="#bitwise" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>a &amp; b    a | b    a ^ b    a &lt;&lt; b   a &gt;&gt; b   ~a
+<div class="highlight"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">b</span><span class="w">   </span><span class="err">~</span><span class="n">a</span>
 </code></pre></div>
 <h3 id="assignment">Assignment<a class="headerlink" href="#assignment" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>x = value;           // simple
-x += 1;              // compound: +=, -=, *=, /=, %=, &amp;=, |=, ^=
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w">           </span><span class="c1">// simple</span>
+<span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">              </span><span class="c1">// compound: +=, -=, *=, /=, %=, &amp;=, |=, ^=</span>
 </code></pre></div>
 <h3 id="type-cast">Type cast<a class="headerlink" href="#type-cast" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>x as Float64;         // safe numeric cast
-x as Int;             // truncating float-&gt;int
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span><span class="w">         </span><span class="c1">// safe numeric cast</span>
+<span class="n">x</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span><span class="w">             </span><span class="c1">// truncating float-&gt;int</span>
 </code></pre></div>
 <h3 id="is-type-check"><code>is</code> -- Type check<a class="headerlink" href="#is-type-check" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>result is Ok;         // true if result matches Ok pattern
-value is Some;        // true if value is Some variant
+<div class="highlight"><pre><span></span><code><span class="kc">result</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="no">Ok</span><span class="p">;</span><span class="w">         </span><span class="c1">// true if result matches Ok pattern</span>
+<span class="n">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="no">Some</span><span class="p">;</span><span class="w">        </span><span class="c1">// true if value is Some variant</span>
 </code></pre></div>
 <h3 id="-error-propagation"><code>?</code> -- Error propagation<a class="headerlink" href="#-error-propagation" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>let file = io.read_file(path)?;
-// Equivalent to:
-//   match io.read_file(path) {
-//     Ok(f) =&gt; f,
-//     Err(e) =&gt; return Err(e.into()),
-//   }
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">read_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+<span class="c1">// Equivalent to:</span>
+<span class="c1">//   match io.read_file(path) {</span>
+<span class="c1">//     Ok(f) =&gt; f,</span>
+<span class="c1">//     Err(e) =&gt; return Err(e.into()),</span>
+<span class="c1">//   }</span>
 </code></pre></div>
 <h3 id="-implication-contracts-only"><code>=&gt;</code> -- Implication (contracts only)<a class="headerlink" href="#-implication-contracts-only" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>requires: x &gt; 0 =&gt; result &gt; 0
+<div class="highlight"><pre><span></span><code><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kc">result</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
 </code></pre></div>
 <h3 id="string-interpolation-via">String interpolation via <code>+</code><a class="headerlink" href="#string-interpolation-via" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>var msg = "Hello, " + name + "!";
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Hello, "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"!"</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="arrayvec-indexing">Array/Vec indexing<a class="headerlink" href="#arrayvec-indexing" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>arr[0]            // 0-indexed access
-vec[i]            // bounds-checked at runtime
+<div class="highlight"><pre><span></span><code><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">            </span><span class="c1">// 0-indexed access</span>
+<span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">            </span><span class="c1">// bounds-checked at runtime</span>
 </code></pre></div>
 <h3 id="field-access">Field access<a class="headerlink" href="#field-access" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>point.x             // struct field
-enum_type.Variant   // enum variant
-type.method()       // method call
+<div class="highlight"><pre><span></span><code><span class="n">point</span><span class="p">.</span><span class="n">x</span><span class="w">             </span><span class="c1">// struct field</span>
+<span class="n">enum_type</span><span class="p">.</span><span class="nc">Variant</span><span class="w">   </span><span class="c1">// enum variant</span>
+<span class="k">type</span><span class="p">.</span><span class="nf">method</span><span class="p">()</span><span class="w">       </span><span class="c1">// method call</span>
 </code></pre></div>
 <hr />
 <h2 id="contracts">Contracts<a class="headerlink" href="#contracts" title="Permanent link">&para;</a></h2>
 <p>Contracts are compile-time verified safety annotations.</p>
-<div class="highlight"><pre><span></span><code>fn divide(a: Float64, b: Float64) -&gt; Float64
-  requires: b != 0.0
-  ensures:  result * b == a
-{
-  return a / b;
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w">  </span><span class="kc">result</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">a</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>type NonEmptyStack[T] = {
-  items: Vec[T];
-  invariant: items.len() &gt; 0;
-}
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">NonEmptyStack</span><span class="p">[</span><span class="nc">T</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">];</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <table>
 <thead>
@@ -3668,72 +3668,72 @@ type.method()       // method call
 <hr />
 <h2 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h2>
 <h3 id="resultt-e"><code>Result[T, E]</code><a class="headerlink" href="#resultt-e" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>fn parse_int(s: Str) -&gt; Result[Int, Str] {
-  // ...
-  return Ok(value);
-  // or
-  return Err("invalid integer");
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">parse_int</span><span class="p">(</span><span class="n">s</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="kt">Str</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Ok</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// or</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Err</span><span class="p">(</span><span class="s2">"invalid integer"</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="optiont"><code>Option[T]</code><a class="headerlink" href="#optiont" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>fn find_user(id: Int) -&gt; Option[User] {
-  // ...
-  return Some(user);
-  // or
-  return None;
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">find_user</span><span class="p">(</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="nc">User</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="n">user</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// or</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="no">None</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="unwrapping">Unwrapping<a class="headerlink" href="#unwrapping" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>let val = result.unwrap();           // panics on Err
-let val = result.unwrap_or(default); // safe fallback
-let val = option.unwrap_or(42);     // safe fallback for Option
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">result</span><span class="p">.</span><span class="nf">unwrap</span><span class="p">();</span><span class="w">           </span><span class="c1">// panics on Err</span>
+<span class="k">let</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">result</span><span class="p">.</span><span class="nf">unwrap_or</span><span class="p">(</span><span class="n">default</span><span class="p">);</span><span class="w"> </span><span class="c1">// safe fallback</span>
+<span class="k">let</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">option</span><span class="p">.</span><span class="nf">unwrap_or</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span><span class="w">     </span><span class="c1">// safe fallback for Option</span>
 </code></pre></div>
 <hr />
 <h2 id="modules-and-visibility">Modules and Visibility<a class="headerlink" href="#modules-and-visibility" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>module mylib.data;           // namespace declaration
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">mylib</span><span class="p">.</span><span class="n">data</span><span class="p">;</span><span class="w">           </span><span class="c1">// namespace declaration</span>
 
-pub fn public_api() { ... }; // visible outside module
-fn private_impl() { ... };   // module-private
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nf">public_api</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">// visible outside module</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">private_impl</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span><span class="w">   </span><span class="c1">// module-private</span>
 
-use xiom.io;                 // import module
-use xiom.collections.Map;    // import specific type
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span><span class="w">                 </span><span class="c1">// import module</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">collections</span><span class="p">.</span><span class="nc">Map</span><span class="p">;</span><span class="w">    </span><span class="c1">// import specific type</span>
 </code></pre></div>
 <hr />
 <h2 id="ownership-and-borrowing">Ownership and Borrowing<a class="headerlink" href="#ownership-and-borrowing" title="Permanent link">&para;</a></h2>
 <p>XIOM uses lexical-scope ownership. When a value leaves scope, it is freed.</p>
-<div class="highlight"><pre><span></span><code>fn take_ownership(v: Vec[Int]) { ... } // v is moved -- caller loses access
-fn borrow_read(v: &amp;Vec[Int]) { ... }   // v is borrowed -- caller keeps access
-fn borrow_write(v: &amp;mut Vec[Int]) { ... } // exclusive mutable borrow
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">take_ownership</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// v is moved -- caller loses access</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">borrow_read</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c1">// v is borrowed -- caller keeps access</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">borrow_write</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// exclusive mutable borrow</span>
 </code></pre></div>
 <p>See <a href="../memory-model/">Memory Model</a> for the complete ownership and borrowing rules.</p>
 <hr />
 <h2 id="generics">Generics<a class="headerlink" href="#generics" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>fn identity[T](x: T) -&gt; T { return x; }
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">identity</span><span class="p">[</span><span class="nc">T</span><span class="p">](</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-type Pair[A, B] = { first: A; second: B; }
+<span class="k">type</span><span class="w"> </span><span class="nc">Pair</span><span class="p">[</span><span class="nc">A</span><span class="p">,</span><span class="w"> </span><span class="nc">B</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">first</span><span class="p">:</span><span class="w"> </span><span class="nc">A</span><span class="p">;</span><span class="w"> </span><span class="n">second</span><span class="p">:</span><span class="w"> </span><span class="nc">B</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-enum Option[T] { Some(T), None }
+<span class="k">enum</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="nc">T</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="nc">T</span><span class="p">),</span><span class="w"> </span><span class="no">None</span><span class="w"> </span><span class="p">}</span>
 
-interface Add {
-  fn add(self, other: &amp;Self) -&gt; Self;
-}
+<span class="k">interface</span><span class="w"> </span><span class="nc">Add</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kc">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Self</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Bounded generic
-fn sum[T: Add](a: T, b: T) -&gt; T {
-  return a.add(&amp;b);
-}
+<span class="c1">// Bounded generic</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">sum</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Add</span><span class="p">](</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="unsafe-and-ffi">Unsafe and FFI<a class="headerlink" href="#unsafe-and-ffi" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>unsafe {
-  let ptr = malloc(1024);
-  free(ptr);
-}
+<div class="highlight"><pre><span></span><code><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>
+<span class="w">  </span><span class="nf">free</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
+<span class="p">}</span>
 
-extern "C" {
-  fn printf(format: *UInt8, ...) -&gt; Int32;
-  fn malloc(size: UInt) -&gt; *UInt8;
-}
+<span class="k">extern</span><span class="w"> </span><span class="s2">"C"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="n">format</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int32</span><span class="p">;</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="scripting-mode">Scripting Mode<a class="headerlink" href="#scripting-mode" title="Permanent link">&para;</a></h2>
@@ -3744,8 +3744,8 @@ xiom<span class="w"> </span>repl<span class="w">                   </span><span 
 xiom<span class="w"> </span>--standalone<span class="w"> </span>script.xi<span class="w"> </span><span class="c1"># produce standalone binary</span>
 </code></pre></div>
 <p>Shebangs are supported:</p>
-<div class="highlight"><pre><span></span><code>#!/usr/bin/env xiom
-io.println("Hello from script!");
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="o">!/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span><span class="w"> </span><span class="n">xiom</span>
+<span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"Hello from script!"</span><span class="p">);</span>
 </code></pre></div>
 <hr />
 <h2 id="cli-reference">CLI Reference<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h2>

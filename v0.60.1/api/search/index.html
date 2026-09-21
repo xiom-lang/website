@@ -2355,30 +2355,51 @@
 <blockquote>
 <p>Index of target in a sorted v, or None. O(log n). Requires v to be sorted in non-decreasing order.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-binary_search_rangev-vecint-target-int-lo-int-hi-int-optionint"><code>fn binary_search_range(v: &amp;Vec[Int], target: Int, lo: Int, hi: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-binary_search_rangev-vecint-target-int-lo-int-hi-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binary search restricted to the inclusive range v[lo..=hi]. O(log n). Returns None when the range is empty, inverted, or out of bounds.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-lower_boundv-vecint-target-int-int"><code>fn lower_bound(v: &amp;Vec[Int], target: Int) -&gt; Int</code><a class="headerlink" href="#fn-lower_boundv-vecint-target-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the first element &gt;= target; v.len() if none. O(log n). Requires v to be sorted.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= v.len()</code></li>
+</ul>
 <h5 id="fn-upper_boundv-vecint-target-int-int"><code>fn upper_bound(v: &amp;Vec[Int], target: Int) -&gt; Int</code><a class="headerlink" href="#fn-upper_boundv-vecint-target-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the first element &gt; target; v.len() if none. O(log n). Requires v to be sorted.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= v.len()</code></li>
+</ul>
 <h5 id="fn-binary_search_byv-vecint-target-int-compare-fnint-int-int-optionint"><code>fn binary_search_by(v: &amp;Vec[Int], target: Int, compare: fn(&amp;Int, &amp;Int) -&gt; Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-binary_search_byv-vecint-target-int-compare-fnint-int-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binary search with a custom comparator: compare(&amp;v[mid], &amp;target). O(log n). The comparator must be a named function returning -1/0/1. Requires v to be sorted per the comparator.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-search_rangev-vecint-target-int-int-int"><code>fn search_range(v: &amp;Vec[Int], target: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-search_rangev-vecint-target-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>(lo, hi) tuple: all occurrences of target span the half-open index range [lo, hi). If target is absent, lo == hi (empty range). O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._1 &gt;= result._0 &amp;&amp; result._1 &lt;= v.len()</code></li>
+</ul>
 <h5 id="fn-binary_search_floatv-vecfloat64-target-float64-optionint"><code>fn binary_search_float(v: &amp;Vec[Float64], target: Float64) -&gt; Option[Int]</code><a class="headerlink" href="#fn-binary_search_floatv-vecfloat64-target-float64-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binary search for an exact float value in a sorted Vec[Float64]. O(log n). Requires v to be sorted ascending (exact IEEE-754 equality semantics: -0.0 and +0.0 compare equal; NaN never matches because NaN == NaN is false). Returns None when target is absent.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2387,6 +2408,9 @@
 <blockquote>
 <p>Bad-character shift table indexed by byte value: table[b] is the index of the last occurrence of byte b in pattern, or -1 if b never occurs. O(m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 256</code></li>
+</ul>
 <h5 id="fn-boyer_moore_good_suffixpattern-str-vecint"><code>fn boyer_moore_good_suffix(pattern: Str) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-boyer_moore_good_suffixpattern-str-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Good-suffix shift table: gs[i] is the safe shift when a mismatch occurs at pattern position i. O(m). Computed from the standard suffix array.</p>
@@ -2395,14 +2419,23 @@
 <blockquote>
 <p>Start index of the first pattern occurrence in text using the full Boyer-Moore algorithm (bad-character + good-suffix tables). O(n/m) best, O(n*m) worst. Returns None when pattern is empty or longer than text.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value + pattern.len() &lt;= text.len()</code></li>
+</ul>
 <h5 id="fn-boyer_moore_search_alltext-str-pattern-str-vecint"><code>fn boyer_moore_search_all(text: Str, pattern: Str) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-boyer_moore_search_alltext-str-pattern-str-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Start indices of every occurrence of pattern in text (full Boyer-Moore). O(n/m) average. Empty pattern yields an empty result.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h5 id="fn-boyer_moore_horspooltext-str-pattern-str-optionint"><code>fn boyer_moore_horspool(text: Str, pattern: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-boyer_moore_horspooltext-str-pattern-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Horspool variant of Boyer-Moore: bad-character table only, keyed on the last text character of the window. O(n*m) worst, good average.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value + pattern.len() &lt;= text.len()</code></li>
+</ul>
 <h5 id="fn-rabin_karp_hashs-str-int"><code>fn rabin_karp_hash(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-rabin_karp_hashs-str-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rolling hash value of the string s. O(len). Uses the fixed base 31 and the Mersenne prime 2^31-1 as modulus; values are always in [0, mod).</p>
@@ -2419,18 +2452,30 @@
 <blockquote>
 <p>Index of target via value-proportional probing. O(log log n) average on uniformly distributed sorted Int arrays, O(n) worst. Returns Some(index) or None. Safe on unsorted data (degrades to a probe sequence).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-interpolation_search_sortedv-vecint-target-int-optionint"><code>fn interpolation_search_sorted(v: &amp;Vec[Int], target: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-interpolation_search_sortedv-vecint-target-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Interpolation search assuming the input is already sorted. O(log log n) average, O(n) worst. Identical probing logic to interpolation_search; the separate entry point documents the sortedness precondition.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-exponential_searchv-vecint-target-int-optionint"><code>fn exponential_search(v: &amp;Vec[Int], target: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-exponential_searchv-vecint-target-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Exponential (galloping) search: finds a bounding range [2^(k-1), 2^k] then binary-searches it. O(log i) where i is the target index. Requires a sorted vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-jump_searchv-vecint-target-int-optionint"><code>fn jump_search(v: &amp;Vec[Int], target: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-jump_searchv-vecint-target-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Jump search: jumps ahead by sqrt(n) blocks then linearly scans the target block. O(sqrt(n)). Requires a sorted vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-ternary_searchf-fnint-int-lo-int-hi-int-int"><code>fn ternary_search(f: fn(Int) -&gt; Int, lo: Int, hi: Int) -&gt; Int</code><a class="headerlink" href="#fn-ternary_searchf-fnint-int-lo-int-hi-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Ternary search over a unimodal f on [lo, hi]: returns the x maximizing f. O(log n) iterations. f must be a named function; the curve must be strictly unimodal over the range.</p>
@@ -2439,6 +2484,9 @@
 <blockquote>
 <p>Fibonacci-number-stepped search of a sorted vector. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2447,14 +2495,23 @@
 <blockquote>
 <p>Longest proper prefix-suffix lengths for each position of pattern. pi[i] is the length of the longest proper prefix of pattern[0..=i] that is also a suffix. O(m). Internal building block exposed for reuse.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == pattern.len()</code></li>
+</ul>
 <h5 id="fn-kmp_searchtext-str-pattern-str-optionint"><code>fn kmp_search(text: Str, pattern: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-kmp_searchtext-str-pattern-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Start index of the first occurrence of pattern in text, or None. O(n + m). Returns None when pattern is empty or longer than text.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value + pattern.len() &lt;= text.len()</code></li>
+</ul>
 <h5 id="fn-kmp_search_alltext-str-pattern-str-vecint"><code>fn kmp_search_all(text: Str, pattern: Str) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-kmp_search_alltext-str-pattern-str-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Start indices of every (overlapping) occurrence of pattern in text. O(n+m). Empty pattern yields an empty result.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h5 id="fn-kmp_containstext-str-pattern-str-bool"><code>fn kmp_contains(text: Str, pattern: Str) -&gt; Bool</code><a class="headerlink" href="#fn-kmp_containstext-str-pattern-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if pattern occurs anywhere in text. O(n + m). Empty pattern is false.</p>
@@ -2463,6 +2520,9 @@
 <blockquote>
 <p>Number of non-overlapping occurrences of pattern in text. O(n + m). Empty pattern yields 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2471,14 +2531,23 @@
 <blockquote>
 <p>Index of the first occurrence of target, or None. O(n). Works on any data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-linear_search_fromv-vecint-target-int-start-int-optionint"><code>fn linear_search_from(v: &amp;Vec[Int], target: Int, start: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-linear_search_fromv-vecint-target-int-start-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the first occurrence of target at or after start, or None. O(n). A negative start behaves as 0; a start beyond the end yields None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; v.len()</code></li>
+</ul>
 <h5 id="fn-linear_search_allv-vecint-target-int-vecint"><code>fn linear_search_all(v: &amp;Vec[Int], target: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-linear_search_allv-vecint-target-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Indices of every occurrence of target, in ascending order. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h5 id="fn-linear_search_byv-vecint-pred-fnint-bool-optionint"><code>fn linear_search_by(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-linear_search_byv-vecint-pred-fnint-bool-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the first element satisfying pred, or None. O(n). Short-circuits. The predicate must be a named function.</p>

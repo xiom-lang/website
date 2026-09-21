@@ -2565,11 +2565,11 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </table>
 <h2 id="type-inference">Type Inference<a class="headerlink" href="#type-inference" title="Permanent link">&para;</a></h2>
 <p>Types are inferred from context in <code>let</code> and <code>var</code> bindings and in closure parameters. Inference does not cross function boundaries -- function signatures are always fully annotated.</p>
-<div class="highlight"><pre><span></span><code>let x = 42;          // inferred: Int
-let f = 3.14;        // inferred: Float64
-let s = "hello";     // inferred: Str
-let v = [1, 2, 3];   // inferred: Vec[Int]
-let t = (1, true);   // inferred: (Int, Bool)
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w">          </span><span class="c1">// inferred: Int</span>
+<span class="k">let</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="p">;</span><span class="w">        </span><span class="c1">// inferred: Float64</span>
+<span class="k">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello"</span><span class="p">;</span><span class="w">     </span><span class="c1">// inferred: Str</span>
+<span class="k">let</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">];</span><span class="w">   </span><span class="c1">// inferred: Vec[Int]</span>
+<span class="k">let</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w">   </span><span class="c1">// inferred: (Int, Bool)</span>
 </code></pre></div>
 <h2 id="numeric-literals-and-casts">Numeric Literals and Casts<a class="headerlink" href="#numeric-literals-and-casts" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2579,16 +2579,16 @@ let t = (1, true);   // inferred: (Int, Bool)
 <li>Same-family widening is automatic (<code>Int8 + Int</code> becomes <code>Int</code>, <code>Float32 + Float64</code> becomes <code>Float64</code>); narrowing always needs <code>as</code>: <code>1 as Int8</code>, <code>200 as UInt8</code>.</li>
 <li><code>Float128</code> has no literal form. Produce it by conversion: <code>let q = 1.0 as Float128;</code>. Binding a plain <code>Float64</code> value to <code>Float128</code> is a compile error.</li>
 </ul>
-<div class="highlight"><pre><span></span><code>let a: Int8 = 1;              // integer literal adopts the annotated width
-let n = 1 as Float64 + 2.5;   // explicit mixed-family conversion
-let q = 1.0 as Float128;      // Float128 comes from conversion only
-let b: UInt8 = 200;           // UInt8 accepts a literal in range
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Int8</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">              </span><span class="c1">// integer literal adopts the annotated width</span>
+<span class="k">let</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">2.5</span><span class="p">;</span><span class="w">   </span><span class="c1">// explicit mixed-family conversion</span>
+<span class="k">let</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">Float128</span><span class="p">;</span><span class="w">      </span><span class="c1">// Float128 comes from conversion only</span>
+<span class="k">let</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt8</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w">           </span><span class="c1">// UInt8 accepts a literal in range</span>
 </code></pre></div>
 <h2 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>type Point = {
-  x: Float64;
-  y: Float64;
-} derive[Eq, Clone, Display]
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="w">  </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Eq</span><span class="p">,</span><span class="w"> </span><span class="nc">Clone</span><span class="p">,</span><span class="w"> </span><span class="nc">Display</span><span class="p">]</span>
 </code></pre></div>
 <ul>
 <li>Fields are separated by <code>;</code>.</li>
@@ -2596,17 +2596,17 @@ let b: UInt8 = 200;           // UInt8 accepts a literal in range
 <li>Optional <code>invariant</code> clauses enforce type-level contracts.</li>
 </ul>
 <h2 id="enums">Enums<a class="headerlink" href="#enums" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>enum Option[T] {
-  Some(value: T),
-  None,
-}
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="nc">T</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="p">,</span>
+<span class="p">}</span>
 
-enum AgentState {
-  Idle,
-  Patrolling(route: Vec[Vector3]),
-  Attacking(target: EntityId),
-  Dead(cause: DamageCause),
-}
+<span class="k">enum</span><span class="w"> </span><span class="nc">AgentState</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nc">Idle</span><span class="p">,</span>
+<span class="w">  </span><span class="nc">Patrolling</span><span class="p">(</span><span class="n">route</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">Vector3</span><span class="p">]),</span>
+<span class="w">  </span><span class="nc">Attacking</span><span class="p">(</span><span class="n">target</span><span class="p">:</span><span class="w"> </span><span class="nc">EntityId</span><span class="p">),</span>
+<span class="w">  </span><span class="nc">Dead</span><span class="p">(</span><span class="n">cause</span><span class="p">:</span><span class="w"> </span><span class="nc">DamageCause</span><span class="p">),</span>
+<span class="p">}</span>
 </code></pre></div>
 <ul>
 <li>Variants can carry named fields.</li>
@@ -2617,27 +2617,27 @@ enum AgentState {
 </ul>
 <h2 id="structural-interfaces">Structural Interfaces<a class="headerlink" href="#structural-interfaces" title="Permanent link">&para;</a></h2>
 <p>A type satisfies an interface if it provides all required fields and methods with matching signatures. No <code>implements</code> keyword is needed.</p>
-<div class="highlight"><pre><span></span><code>interface Comparable {
-  fn compare(other: &amp;Self) -&gt; Int  // -1, 0, 1
-}
+<div class="highlight"><pre><span></span><code><span class="k">interface</span><span class="w"> </span><span class="nc">Comparable</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w">  </span><span class="c1">// -1, 0, 1</span>
+<span class="p">}</span>
 
-type Score = { value: Int }
+<span class="k">type</span><span class="w"> </span><span class="nc">Score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">}</span>
 
-fn Score.compare(other: &amp;Score) -&gt; Int {
-  if value &lt; other.value { return -1; }
-  if value &gt; other.value { return  1; }
-  return 0;
-}
+<span class="k">fn</span><span class="w"> </span><span class="nc">Score</span><span class="p">.</span><span class="nf">compare</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Score</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w">  </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Score now satisfies Comparable -- no declaration needed
-let result = max(Score{ value: 10 }, Score{ value: 20 });
+<span class="c1">// Score now satisfies Comparable -- no declaration needed</span>
+<span class="k">let</span><span class="w"> </span><span class="kc">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="nc">Score</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nc">Score</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="p">});</span>
 </code></pre></div>
 <h2 id="type-constraints-inline">Type Constraints (Inline)<a class="headerlink" href="#type-constraints-inline" title="Permanent link">&para;</a></h2>
 <p>Type-level interface requirements are declared inline with the type parameter:</p>
-<div class="highlight"><pre><span></span><code>fn sort[T: Ord](items: &amp;mut Vec[T])
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">sort</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Ord</span><span class="p">](</span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">])</span>
 
-// Multiple constraints
-fn dedup[T: Eq + Hash](items: &amp;mut Vec[T])
+<span class="c1">// Multiple constraints</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">dedup</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Eq</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nc">Hash</span><span class="p">](</span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">])</span>
 </code></pre></div>
 <p>This separates type requirements from value preconditions -- <code>requires</code> is for value-level conditions only.</p>
 <h2 id="derive">Derive<a class="headerlink" href="#derive" title="Permanent link">&para;</a></h2>
@@ -2673,10 +2673,10 @@ fn dedup[T: Eq + Hash](items: &amp;mut Vec[T])
 </tbody>
 </table>
 <p><strong>Constraint:</strong> Types with <code>invariant</code> clauses cannot derive <code>Eq</code>, <code>Hash</code>, or <code>Ord</code>. Invariants make equality semantically ambiguous. <code>Clone</code> and <code>Display</code> remain available.</p>
-<div class="highlight"><pre><span></span><code>type Point = {
-  x: Float64;
-  y: Float64;
-} derive[Eq, Clone, Display, Hash, Ord]
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="w">  </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Eq</span><span class="p">,</span><span class="w"> </span><span class="nc">Clone</span><span class="p">,</span><span class="w"> </span><span class="nc">Display</span><span class="p">,</span><span class="w"> </span><span class="nc">Hash</span><span class="p">,</span><span class="w"> </span><span class="nc">Ord</span><span class="p">]</span>
 </code></pre></div>
 <p>See <a href="../derive/">Derive</a> for full details.</p>
 

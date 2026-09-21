@@ -2359,6 +2359,9 @@
 <blockquote>
 <p>In-place heap sort of an Int vector. O(n log n), unstable, O(1) space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>intro.is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-heap_sort_byv-mut-vecint-compare-fnint-int-int"><code>fn heap_sort_by(v: &amp;mut Vec[Int], compare: fn(&amp;Int, &amp;Int) -&gt; Int)</code><a class="headerlink" href="#fn-heap_sort_byv-mut-vecint-compare-fnint-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Heap sort with a custom comparator. O(n log n), unstable, O(1) space. The comparator must be a named function returning -1/0/1.</p>
@@ -2371,26 +2374,44 @@
 <blockquote>
 <p>Introsort: quicksort that switches to heapsort when the recursion depth budget is exhausted, and to insertion sort on small ranges. O(n log n) worst case, O(log n) auxiliary space. Unstable.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-insertion_sortv-mut-vecint"><code>fn insertion_sort(v: &amp;mut Vec[Int])</code><a class="headerlink" href="#fn-insertion_sortv-mut-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>O(n^2) insertion sort of the whole vector; fast for small/nearly-sorted input. Stable.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-tim_sortv-mut-vecint"><code>fn tim_sort(v: &amp;mut Vec[Int])</code><a class="headerlink" href="#fn-tim_sortv-mut-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Timsort: merge sort over natural runs with insertion sort for short runs. O(n log n) worst case, O(n) best (already sorted). Stable. O(n) space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-shell_sortv-mut-vecint"><code>fn shell_sort(v: &amp;mut Vec[Int])</code><a class="headerlink" href="#fn-shell_sortv-mut-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Gap-based insertion sort using the Ciura sequence. O(n log^2 n) average, O(n^2) worst. Unstable. In-place, O(1) space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-bubble_sortv-mut-vecint"><code>fn bubble_sort(v: &amp;mut Vec[Int])</code><a class="headerlink" href="#fn-bubble_sortv-mut-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Adjacent-swap bubble sort. O(n^2) worst/average, O(n) best. Stable. Educational only.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-selection_sortv-mut-vecint"><code>fn selection_sort(v: &amp;mut Vec[Int])</code><a class="headerlink" href="#fn-selection_sortv-mut-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minimum-selection sort with O(n) swaps. O(n^2) always. Unstable.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-is_sortedv-vecint-bool"><code>fn is_sorted(v: &amp;Vec[Int]) -&gt; Bool</code><a class="headerlink" href="#fn-is_sortedv-vecint-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if v is non-decreasing. O(n).</p>
@@ -2411,6 +2432,9 @@
 <blockquote>
 <p>Stable sort guaranteeing equal elements keep their relative order. Delegates to a stable merge sort. O(n log n), O(n) space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_sorted(v) == true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2419,10 +2443,16 @@
 <blockquote>
 <p>Stable in-place merge sort of an Int vector. O(n log n) always, O(n) space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>intro.is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-mergea-vecint-b-vecint-vecint"><code>fn merge(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-mergea-vecint-b-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Merge two sorted vectors into one sorted vector. O(a.len() + b.len()). Both inputs must already be sorted in non-decreasing order.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == a.len() + b.len()</code></li>
+</ul>
 <h5 id="fn-merge_sort_stablev-mut-vecint-compare-fnint-int-int"><code>fn merge_sort_stable(v: &amp;mut Vec[Int], compare: fn(&amp;Int, &amp;Int) -&gt; Int)</code><a class="headerlink" href="#fn-merge_sort_stablev-mut-vecint-compare-fnint-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Stable merge sort with a custom comparator. O(n log n), O(n) space. The comparator must be a named function returning -1/0/1.</p>
@@ -2431,6 +2461,9 @@
 <blockquote>
 <p>Natural merge sort: merge sort that exploits existing sorted runs. O(n log n) worst case, O(n) when v is already sorted, O(n) space. Stable.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>intro.is_sorted(v) == true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2439,6 +2472,9 @@
 <blockquote>
 <p>In-place quicksort of an Int vector. O(n log n) average, O(n^2) worst. Unstable. Small ranges use insertion sort for speed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>intro.is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-quick_sort_byv-mut-vecint-compare-fnint-int-int"><code>fn quick_sort_by(v: &amp;mut Vec[Int], compare: fn(&amp;Int, &amp;Int) -&gt; Int)</code><a class="headerlink" href="#fn-quick_sort_byv-mut-vecint-compare-fnint-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Quicksort with a custom comparator. O(n log n) average, O(n^2) worst. Unstable. The comparator must be a named function returning -1/0/1.</p>
@@ -2451,6 +2487,9 @@
 <blockquote>
 <p>Quicksort with 3-way (Dutch national flag) partitioning. O(n log n) average, O(n^2) worst. Unstable. Handles vectors with many duplicate values efficiently.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>intro.is_sorted(v) == true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2459,6 +2498,9 @@
 <blockquote>
 <p>LSD radix sort of non-negative Int values. O(n * d) where d is the number of bytes needed for the maximum value. Stable. In-place, O(n) space. NOTE: negative values are NOT supported; if any element is negative the vector is left unchanged (documented contract of the frozen API).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>intro.is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-radix_sort_u64v-mut-vecuint64"><code>fn radix_sort_u64(v: &amp;mut Vec[UInt64])</code><a class="headerlink" href="#fn-radix_sort_u64v-mut-vecuint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Radix sort of UInt64 values. O(n * d), stable, in-place, O(n) space.</p>
@@ -2467,6 +2509,9 @@
 <blockquote>
 <p>Radix sort over raw byte digits (4 passes of 8 bits). Stable. Handles the same input domain as radix_sort: non-negative values only; negative values are left unchanged (documented contract).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>intro.is_sorted(v) == true</code></li>
+</ul>
 <h5 id="fn-counting_sortv-mut-vecint-max_val-int"><code>fn counting_sort(v: &amp;mut Vec[Int], max_val: Int)</code><a class="headerlink" href="#fn-counting_sortv-mut-vecint-max_val-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Stable counting sort for values in [0, max_val]. O(n + k), stable, O(n+k) space. If max_val &lt; 0, or if any element lies outside [0, max_val], the vector is left unchanged (documented contract).</p>

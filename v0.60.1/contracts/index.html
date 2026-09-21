@@ -2404,32 +2404,32 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </tbody>
 </table>
 <h2 id="function-contracts">Function Contracts<a class="headerlink" href="#function-contracts" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>fn divide(a: Float64, b: Float64) -&gt; Float64
-  requires: b != 0.0
-  ensures:  result * b == a
-{
-  return a / b;
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float64</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w">  </span><span class="kc">result</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">a</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><strong>Type-level constraints</strong> (which interfaces a generic parameter must satisfy) are declared <strong>inline</strong> with the type parameter, not as <code>requires</code> clauses. This separates type requirements from value preconditions:</p>
-<div class="highlight"><pre><span></span><code>// Type constraint -- inline
-fn sort[T: Ord](items: &amp;mut Vec[T])
+<div class="highlight"><pre><span></span><code><span class="c1">// Type constraint -- inline</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">sort</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Ord</span><span class="p">](</span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">])</span>
 
-// Value precondition -- requires clause
-fn pop[T](stack: &amp;mut Stack[T]) -&gt; Option[T]
-  requires: !stack.is_empty()
+<span class="c1">// Value precondition -- requires clause</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">pop</span><span class="p">[</span><span class="nc">T</span><span class="p">](</span><span class="n">stack</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Stack</span><span class="p">[</span><span class="nc">T</span><span class="p">])</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="nc">T</span><span class="p">]</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="o">!</span><span class="n">stack</span><span class="p">.</span><span class="nf">is_empty</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="type-invariants">Type Invariants<a class="headerlink" href="#type-invariants" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>type Health = {
-  current: Int;
-  maximum: Int;
-  invariant: current &gt;= 0;
-  invariant: current &lt;= maximum;
-  invariant: maximum &gt; 0;
-}
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">Health</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">current</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="w">  </span><span class="n">maximum</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">maximum</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 
-// The compiler rejects any code that could violate these invariants.
-// No runtime crash -- compile error.
+<span class="c1">// The compiler rejects any code that could violate these invariants.</span>
+<span class="c1">// No runtime crash -- compile error.</span>
 </code></pre></div>
 <p>The compiler guarantees these invariants hold after every mutation. Any code path that could violate them is a compile error.</p>
 <h2 id="contract-collection-methods">Contract Collection Methods<a class="headerlink" href="#contract-collection-methods" title="Permanent link">&para;</a></h2>
@@ -2468,18 +2468,18 @@ fn pop[T](stack: &amp;mut Stack[T]) -&gt; Option[T]
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code>fn sort(items: &amp;mut Vec[Int])
-  ensures: items.is_sorted()
-{
-  // ... sorting implementation
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">sort</span><span class="p">(</span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">is_sorted</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// ... sorting implementation</span>
+<span class="p">}</span>
 
-fn filter_positive(items: &amp;Vec[Int]) -&gt; Vec[Int]
-  ensures: result.all(|x| x &gt; 0)
-  ensures: result.len() &lt;= items.len()
-{
-  // ... filter implementation
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">filter_positive</span><span class="p">(</span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">])</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w"> </span><span class="kc">result</span><span class="p">.</span><span class="nf">all</span><span class="p">(</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">  </span><span class="kd">ensures</span><span class="p">:</span><span class="w"> </span><span class="kc">result</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// ... filter implementation</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="verification-modes">Verification Modes<a class="headerlink" href="#verification-modes" title="Permanent link">&para;</a></h2>
 <table>

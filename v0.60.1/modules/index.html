@@ -2472,38 +2472,38 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <h1 id="module-system">Module System<a class="headerlink" href="#module-system" title="Permanent link">&para;</a></h1>
 <h2 id="declaring-modules">Declaring Modules<a class="headerlink" href="#declaring-modules" title="Permanent link">&para;</a></h2>
 <p>A module is a named namespace. Every source file begins with a module declaration. A module hierarchy corresponds to the directory structure.</p>
-<div class="highlight"><pre><span></span><code>module math.vector
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">math</span><span class="p">.</span><span class="n">vector</span>
 
-// Everything declared here is in the math.vector namespace.
+<span class="c1">// Everything declared here is in the math.vector namespace.</span>
 </code></pre></div>
 <h2 id="importing">Importing<a class="headerlink" href="#importing" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>use math.vector;             // imports the module -- access as vector.Vec3
-use math.vector.Vec3;        // imports one type -- access as Vec3
-use math.vector.Vec3 as V3;  // alias -- access as V3
-use math.vector.*;           // imports all public symbols (discouraged)
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">math</span><span class="p">.</span><span class="n">vector</span><span class="p">;</span><span class="w">             </span><span class="c1">// imports the module -- access as vector.Vec3</span>
+<span class="k">use</span><span class="w"> </span><span class="n">math</span><span class="p">.</span><span class="n">vector</span><span class="p">.</span><span class="nc">Vec3</span><span class="p">;</span><span class="w">        </span><span class="c1">// imports one type -- access as Vec3</span>
+<span class="k">use</span><span class="w"> </span><span class="n">math</span><span class="p">.</span><span class="n">vector</span><span class="p">.</span><span class="nc">Vec3</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nc">V3</span><span class="p">;</span><span class="w">  </span><span class="c1">// alias -- access as V3</span>
+<span class="k">use</span><span class="w"> </span><span class="n">math</span><span class="p">.</span><span class="n">vector</span><span class="p">.</span><span class="o">*</span><span class="p">;</span><span class="w">           </span><span class="c1">// imports all public symbols (discouraged)</span>
 </code></pre></div>
 <h2 id="visibility">Visibility<a class="headerlink" href="#visibility" title="Permanent link">&para;</a></h2>
 <p>All declarations are private to their module by default. The <code>pub</code> keyword makes a declaration visible to other modules. There is no <code>protected</code> or <code>friend</code> visibility.</p>
-<div class="highlight"><pre><span></span><code>pub type Vec3 = {
-  x: Float32;
-  y: Float32;
-  z: Float32;
-} derive[Eq, Clone, Display]
+<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="nc">Vec3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span>
+<span class="w">  </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span>
+<span class="w">  </span><span class="n">z</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Eq</span><span class="p">,</span><span class="w"> </span><span class="nc">Clone</span><span class="p">,</span><span class="w"> </span><span class="nc">Display</span><span class="p">]</span>
 
-fn internal_helper() {  // private to this module
-  // ...
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">internal_helper</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// private to this module</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="method-declarations">Method Declarations<a class="headerlink" href="#method-declarations" title="Permanent link">&para;</a></h2>
 <p>Methods on a type are declared using the <code>TypeName.methodName</code> syntax. The receiver (<code>self</code>) is synthesized implicitly by the compiler -- it does not appear in the parameter list.</p>
-<div class="highlight"><pre><span></span><code>pub fn Vec3.dot(other: &amp;Vec3) -&gt; Float32 {
-  return x * other.x + y * other.y + z * other.z;
-  // self is implicit -- fields accessed directly
-}
+<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nc">Vec3</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Vec3</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Float32</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">// self is implicit -- fields accessed directly</span>
+<span class="p">}</span>
 
-pub fn Vec3.set_x(value: Float32) {
-  x = value;   // self is &amp;mut Vec3 -- field mutation detected
-}
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nc">Vec3</span><span class="p">.</span><span class="nf">set_x</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w">   </span><span class="c1">// self is &amp;mut Vec3 -- field mutation detected</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>The compiler infers the receiver type:
 - Methods that do not mutate fields get <code>self: &amp;Self</code> (read borrow)
@@ -2511,21 +2511,21 @@ pub fn Vec3.set_x(value: Float32) {
 - If a field is mutated anywhere in the method body, the receiver is <code>&amp;mut Self</code></p>
 <h2 id="method-dispatch">Method Dispatch<a class="headerlink" href="#method-dispatch" title="Permanent link">&para;</a></h2>
 <p>Methods can be called on any value of the type:</p>
-<div class="highlight"><pre><span></span><code>let v = Vec3{ x: 1.0, y: 2.0, z: 3.0 };
-let d = v.dot(&amp;other);
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Vec3</span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span><span class="w"> </span><span class="p">};</span>
+<span class="k">let</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="o">&amp;</span><span class="n">other</span><span class="p">);</span>
 </code></pre></div>
 <p>Methods are dispatched structurally -- any type with matching method signatures satisfies the interface, regardless of module boundaries.</p>
 <h2 id="package-manifest">Package Manifest<a class="headerlink" href="#package-manifest" title="Permanent link">&para;</a></h2>
 <p>Packages are defined by a <code>package.xi</code> manifest file at the project root. Dependencies are resolved at build time. Version pinning uses semantic versioning.</p>
-<div class="highlight"><pre><span></span><code>// package.xi
-package {
-  name:    "myproject"
-  version: "1.0.0"
-  deps: {
-    "xiom-std": "0.4.*"
-    "xiom-net":  "0.2.1"
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="c1">// package.xi</span>
+<span class="n">package</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">name</span><span class="p">:</span><span class="w">    </span><span class="s2">"myproject"</span>
+<span class="w">  </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span>
+<span class="w">  </span><span class="n">deps</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"xiom-std"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.4.*"</span>
+<span class="w">    </span><span class="s2">"xiom-net"</span><span class="p">:</span><span class="w">  </span><span class="s2">"0.2.1"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="package-manager">Package Manager<a class="headerlink" href="#package-manager" title="Permanent link">&para;</a></h2>
 <p>The package manager resolves dependencies from the <a href="https://gitea.example.com/xiom-lang/registry">XIOM package registry</a>:</p>
@@ -2613,9 +2613,9 @@ xiom<span class="w"> </span>run<span class="w">               </span><span class
 </tbody>
 </table>
 <h3 id="importing_1">Importing<a class="headerlink" href="#importing_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>use xiom.collections;     // import the module
-use xiom.collections.Vec;  // import one type
-use xiom.io;               // import I/O functions
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">collections</span><span class="p">;</span><span class="w">     </span><span class="c1">// import the module</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">collections</span><span class="p">.</span><span class="nc">Vec</span><span class="p">;</span><span class="w">  </span><span class="c1">// import one type</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span><span class="w">               </span><span class="c1">// import I/O functions</span>
 </code></pre></div>
 
 

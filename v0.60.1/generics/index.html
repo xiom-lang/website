@@ -2372,45 +2372,45 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <h1 id="generics">Generics<a class="headerlink" href="#generics" title="Permanent link">&para;</a></h1>
 <p>Generics are implemented through <strong>comptime type parameters</strong>. The type parameter is resolved at compile time, producing a monomorphised specialisation. No runtime dispatch, no boxing, no virtual calls unless explicitly requested via interface references.</p>
 <h2 id="basic-generics">Basic Generics<a class="headerlink" href="#basic-generics" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>fn max[T: Comparable](a: T, b: T) -&gt; T {
-  if a &gt; b { return a; }
-  return b;
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">max</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Comparable</span><span class="p">](</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Call sites -- T inferred from arguments
-let m1 = max(10, 20);          // T = Int
-let m2 = max(1.5, 2.7);        // T = Float64
+<span class="c1">// Call sites -- T inferred from arguments</span>
+<span class="k">let</span><span class="w"> </span><span class="n">m1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span><span class="w">          </span><span class="c1">// T = Int</span>
+<span class="k">let</span><span class="w"> </span><span class="n">m2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="mf">2.7</span><span class="p">);</span><span class="w">        </span><span class="c1">// T = Float64</span>
 </code></pre></div>
 <h2 id="inline-type-constraints">Inline Type Constraints<a class="headerlink" href="#inline-type-constraints" title="Permanent link">&para;</a></h2>
 <p>Type-level requirements are declared <strong>inline</strong> with the type parameter. This separates type requirements from value-level preconditions:</p>
-<div class="highlight"><pre><span></span><code>// Single constraint
-fn sort[T: Ord](items: &amp;mut Vec[T])
+<div class="highlight"><pre><span></span><code><span class="c1">// Single constraint</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">sort</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Ord</span><span class="p">](</span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">])</span>
 
-// Multiple constraints
-fn dedup[T: Eq + Hash](items: &amp;mut Vec[T])
+<span class="c1">// Multiple constraints</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">dedup</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Eq</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nc">Hash</span><span class="p">](</span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">])</span>
 
-// Constraint with interface
-fn process[T: Comparable + Display](value: T) -&gt; Str {
-  return value.to_str();
-}
+<span class="c1">// Constraint with interface</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">process</span><span class="p">[</span><span class="nc">T</span><span class="p">:</span><span class="w"> </span><span class="nc">Comparable</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nc">Display</span><span class="p">](</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Str</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="p">.</span><span class="nf">to_str</span><span class="p">();</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="explicit-type-parameters">Explicit Type Parameters<a class="headerlink" href="#explicit-type-parameters" title="Permanent link">&para;</a></h2>
 <p>If a type parameter appears only in the return type and not in any argument, it must be annotated explicitly at the call site:</p>
-<div class="highlight"><pre><span></span><code>fn parse[T](s: Str) -&gt; Result[T, ParseError] { ... }
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">parse</span><span class="p">[</span><span class="nc">T</span><span class="p">](</span><span class="n">s</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Result</span><span class="p">[</span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="nc">ParseError</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
 
-let n = parse[Int]("42");   // T must be explicit -- not inferrable from arguments
+<span class="k">let</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">parse</span><span class="p">[</span><span class="kt">Int</span><span class="p">](</span><span class="s2">"42"</span><span class="p">);</span><span class="w">   </span><span class="c1">// T must be explicit -- not inferrable from arguments</span>
 </code></pre></div>
 <h2 id="generic-types">Generic Types<a class="headerlink" href="#generic-types" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>type Stack[T] = {
-  items: Vec[T];
-  capacity: UInt;
-  invariant: items.len() &lt;= capacity;
-}
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">Stack</span><span class="p">[</span><span class="nc">T</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="nc">Vec</span><span class="p">[</span><span class="nc">T</span><span class="p">];</span>
+<span class="w">  </span><span class="n">capacity</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="nf">len</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span>
+<span class="p">}</span>
 
-type Pair[A, B] = {
-  first: A;
-  second: B;
-} derive[Eq, Clone]
+<span class="k">type</span><span class="w"> </span><span class="nc">Pair</span><span class="p">[</span><span class="nc">A</span><span class="p">,</span><span class="w"> </span><span class="nc">B</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">first</span><span class="p">:</span><span class="w"> </span><span class="nc">A</span><span class="p">;</span>
+<span class="w">  </span><span class="n">second</span><span class="p">:</span><span class="w"> </span><span class="nc">B</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Eq</span><span class="p">,</span><span class="w"> </span><span class="nc">Clone</span><span class="p">]</span>
 </code></pre></div>
 <h2 id="monomorphisation">Monomorphisation<a class="headerlink" href="#monomorphisation" title="Permanent link">&para;</a></h2>
 <p>Generics use <strong>two-pass monomorphisation</strong>:</p>
@@ -2418,27 +2418,27 @@ type Pair[A, B] = {
 <li><strong>Pass 1 -- Register:</strong> The compiler scans for concrete instantiations at call sites and registers them.</li>
 <li><strong>Pass 2 -- Specialize:</strong> For each registered instantiation, the compiler emits a specialized version with full type substitution.</li>
 </ol>
-<div class="highlight"><pre><span></span><code>// Source
-fn identity[T](x: T) -&gt; T { return x; }
+<div class="highlight"><pre><span></span><code><span class="c1">// Source</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">identity</span><span class="p">[</span><span class="nc">T</span><span class="p">](</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-let a = identity(42);      // T = Int
-let b = identity("hi");    // T = Str
+<span class="k">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">identity</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span><span class="w">      </span><span class="c1">// T = Int</span>
+<span class="k">let</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">identity</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">);</span><span class="w">    </span><span class="c1">// T = Str</span>
 
-// Generated (conceptual)
-fn identity_Int(x: Int) -&gt; Int { return x; }
-fn identity_Str(x: Str) -&gt; Str { return x; }
+<span class="c1">// Generated (conceptual)</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">identity_Int</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">identity_Str</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Str</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <p>This produces zero-overhead abstractions -- generic code compiles to the same machine code as hand-specialized versions.</p>
 <h2 id="interface-satisfaction">Interface Satisfaction<a class="headerlink" href="#interface-satisfaction" title="Permanent link">&para;</a></h2>
 <p>Inline constraints are checked at monomorphisation time. If a type parameter <code>T: Ord</code> is declared, the compiler verifies that the concrete type satisfies <code>Ord</code> before specializing:</p>
-<div class="highlight"><pre><span></span><code>type Score = { value: Int }
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">Score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">}</span>
 
-fn Score.compare(other: &amp;Score) -&gt; Int { ... }
-// Score now satisfies Comparable
+<span class="k">fn</span><span class="w"> </span><span class="nc">Score</span><span class="p">.</span><span class="nf">compare</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Score</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="c1">// Score now satisfies Comparable</span>
 
-let winner = max(Score{ value: 10 }, Score{ value: 20 });
-// Compiler verifies: Score satisfies Comparable [OK]
-// Generates: max_Score(Score, Score) -&gt; Score
+<span class="k">let</span><span class="w"> </span><span class="n">winner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="nc">Score</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nc">Score</span><span class="p">{</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="p">});</span>
+<span class="c1">// Compiler verifies: Score satisfies Comparable [OK]</span>
+<span class="c1">// Generates: max_Score(Score, Score) -&gt; Score</span>
 </code></pre></div>
 <p>If a type does not satisfy the required interface, the compiler produces a clear error:</p>
 <div class="highlight"><pre><span></span><code>error[E0301]: type does not satisfy interface
@@ -2454,7 +2454,7 @@ let winner = max(Score{ value: 10 }, Score{ value: 20 });
 </code></pre></div>
 <h2 id="comptime">Comptime<a class="headerlink" href="#comptime" title="Permanent link">&para;</a></h2>
 <p><code>comptime</code> marks expressions and blocks to be evaluated at compile time. It is the single mechanism for all metaprogramming -- generics, reflection, and specialisation all flow through it.</p>
-<div class="highlight"><pre><span></span><code>let size = comptime expensive_computation();  // evaluated once, at compile time
+<div class="highlight"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">comptime</span><span class="w"> </span><span class="nf">expensive_computation</span><span class="p">();</span><span class="w">  </span><span class="c1">// evaluated once, at compile time</span>
 </code></pre></div>
 
 

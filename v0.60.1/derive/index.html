@@ -2507,35 +2507,35 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </tbody>
 </table>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>type Point = {
-  x: Float64;
-  y: Float64;
-} derive[Eq, Clone, Display]
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="w">  </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Eq</span><span class="p">,</span><span class="w"> </span><span class="nc">Clone</span><span class="p">,</span><span class="w"> </span><span class="nc">Display</span><span class="p">]</span>
 
-// Compiler generates:
-//   fn Point.eq(other: &amp;Point) -&gt; Bool     -- x == x &amp;&amp; y == y
-//   fn Point.clone() -&gt; Point              -- deep copy of both fields
-//   fn Point.to_str() -&gt; Str               -- "Point{ x: 1.0, y: 2.0 }"
+<span class="c1">// Compiler generates:</span>
+<span class="c1">//   fn Point.eq(other: &amp;Point) -&gt; Bool     -- x == x &amp;&amp; y == y</span>
+<span class="c1">//   fn Point.clone() -&gt; Point              -- deep copy of both fields</span>
+<span class="c1">//   fn Point.to_str() -&gt; Str               -- "Point{ x: 1.0, y: 2.0 }"</span>
 </code></pre></div>
 <h2 id="invariant-restriction">Invariant Restriction<a class="headerlink" href="#invariant-restriction" title="Permanent link">&para;</a></h2>
 <p>Types with <code>invariant</code> clauses cannot derive <code>Eq</code>, <code>Hash</code>, or <code>Ord</code>. Invariants make structural equality semantically ambiguous -- two values with different internal state may both satisfy the same invariant. <code>Clone</code> and <code>Display</code> remain available.</p>
-<div class="highlight"><pre><span></span><code>type Health = {
-  current: Int;
-  maximum: Int;
-  invariant: current &gt;= 0;
-  invariant: current &lt;= maximum;
-} derive[Clone, Display]
-// Eq, Hash, Ord are rejected -- invariants make equality/hashing ambiguous
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">Health</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">current</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="w">  </span><span class="n">maximum</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">invariant</span><span class="p">:</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">maximum</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Clone</span><span class="p">,</span><span class="w"> </span><span class="nc">Display</span><span class="p">]</span>
+<span class="c1">// Eq, Hash, Ord are rejected -- invariants make equality/hashing ambiguous</span>
 </code></pre></div>
 <h2 id="enums">Enums<a class="headerlink" href="#enums" title="Permanent link">&para;</a></h2>
 <p>Enums support derive too:</p>
-<div class="highlight"><pre><span></span><code>enum Option[T] {
-  Some(value: T),
-  None,
-} derive[Eq, Clone]
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="nc">T</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="nc">T</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="k">derive</span><span class="p">[</span><span class="nc">Eq</span><span class="p">,</span><span class="w"> </span><span class="nc">Clone</span><span class="p">]</span>
 
-// Enums with variant data can derive Clone, Display, Debug
-// Enums with only unit variants can also derive Eq, Hash, Ord
+<span class="c1">// Enums with variant data can derive Clone, Display, Debug</span>
+<span class="c1">// Enums with only unit variants can also derive Eq, Hash, Ord</span>
 </code></pre></div>
 <h2 id="codegen-details">Codegen Details<a class="headerlink" href="#codegen-details" title="Permanent link">&para;</a></h2>
 <h3 id="eq">Eq<a class="headerlink" href="#eq" title="Permanent link">&para;</a></h3>
@@ -2566,11 +2566,11 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </code></pre></div>
 <h2 id="custom-implementations">Custom Implementations<a class="headerlink" href="#custom-implementations" title="Permanent link">&para;</a></h2>
 <p>You can always write a manual implementation instead of using <code>derive</code>:</p>
-<div class="highlight"><pre><span></span><code>type Point = { x: Float64; y: Float64 }
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float64</span><span class="w"> </span><span class="p">}</span>
 
-fn Point.eq(other: &amp;Point) -&gt; Bool {
-  return x == other.x &amp;&amp; y == other.y;
-}
+<span class="k">fn</span><span class="w"> </span><span class="nc">Point</span><span class="p">.</span><span class="nf">eq</span><span class="p">(</span><span class="n">other</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Point</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Bool</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Manual implementations take precedence over derived ones. This is useful when the structural definition doesn't match the semantic definition (e.g., a type that should compare only a subset of fields).</p>
 

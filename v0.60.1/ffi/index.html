@@ -2395,47 +2395,47 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <p>XIOM has zero-cost C interoperability. C functions and types are declared in <code>extern</code> blocks. The compiler generates no wrapper code. C ABI calling conventions are used directly.</p>
 <p><code>unsafe</code> is required because the compiler cannot verify C memory safety.</p>
 <h2 id="extern-blocks">Extern Blocks<a class="headerlink" href="#extern-blocks" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>extern "C" {
-  fn malloc(size: UInt) -&gt; *UInt8
-  fn free(ptr: *UInt8)
-  fn strlen(s: *UInt8) -&gt; UInt
-  fn printf(format: *UInt8, ...) -&gt; Int32
-}
+<div class="highlight"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="s2">"C"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">free</span><span class="p">(</span><span class="n">ptr</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">)</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">UInt</span>
+<span class="w">  </span><span class="k">fn</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="n">format</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int32</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="calling-c-functions">Calling C Functions<a class="headerlink" href="#calling-c-functions" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>fn c_string_length(ptr: *UInt8) -&gt; UInt {
-  unsafe { return strlen(ptr); }
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">c_string_length</span><span class="p">(</span><span class="n">ptr</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">UInt</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nf">strlen</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
 
-fn allocate_buffer(size: UInt) -&gt; *UInt8 {
-  unsafe { return malloc(size); }
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">allocate_buffer</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="raw-pointers">Raw Pointers<a class="headerlink" href="#raw-pointers" title="Permanent link">&para;</a></h2>
 <p>Raw pointers (<code>*T</code>) are only usable inside <code>unsafe</code> blocks. They cannot be dereferenced in safe code.</p>
-<div class="highlight"><pre><span></span><code>unsafe {
-  let raw: *Int = some_c_function();
-  let value = *raw;   // dereference -- programmer guarantees validity
-  *raw = 42;          // write through pointer
-}
+<div class="highlight"><pre><span></span><code><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">raw</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">some_c_function</span><span class="p">();</span>
+<span class="w">  </span><span class="k">let</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">raw</span><span class="p">;</span><span class="w">   </span><span class="c1">// dereference -- programmer guarantees validity</span>
+<span class="w">  </span><span class="o">*</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w">          </span><span class="c1">// write through pointer</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="safe-wrappers">Safe Wrappers<a class="headerlink" href="#safe-wrappers" title="Permanent link">&para;</a></h2>
 <p>The recommended pattern is to wrap C libraries with safe XIOM interfaces that add contracts:</p>
-<div class="highlight"><pre><span></span><code>fn safe_alloc(size: UInt) -&gt; Option[*UInt8]
-  requires: size &gt; 0
-{
-  unsafe {
-    let ptr = malloc(size);
-    if ptr == null_ptr() {
-      return None;
-    }
-    return Some(ptr);
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="k">fn</span><span class="w"> </span><span class="nf">safe_alloc</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="kt">UInt</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Option</span><span class="p">[</span><span class="o">*</span><span class="kt">UInt8</span><span class="p">]</span>
+<span class="w">  </span><span class="kd">requires</span><span class="p">:</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nf">null_ptr</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="no">None</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="no">Some</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 
-fn safe_free(ptr: *UInt8) {
-  unsafe { free(ptr) }
-}
+<span class="k">fn</span><span class="w"> </span><span class="nf">safe_free</span><span class="p">(</span><span class="n">ptr</span><span class="p">:</span><span class="w"> </span><span class="o">*</span><span class="kt">UInt8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nf">free</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="type-mapping">Type Mapping<a class="headerlink" href="#type-mapping" title="Permanent link">&para;</a></h2>
 <table>
@@ -2486,9 +2486,9 @@ fn safe_free(ptr: *UInt8) {
 </table>
 <h2 id="c-abi-export">C-ABI Export<a class="headerlink" href="#c-abi-export" title="Permanent link">&para;</a></h2>
 <p>XIOM functions can be exported with C ABI for consumption from other languages:</p>
-<div class="highlight"><pre><span></span><code>extern "C" fn xiom_add(a: Int32, b: Int32) -&gt; Int32 {
-  return a + b;
-}
+<div class="highlight"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="s2">"C"</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nf">xiom_add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kt">Int32</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kt">Int32</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Int32</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>This compiles to a standard C-callable symbol that can be linked from Rust, Python, or any language with C FFI.</p>
 <h2 id="strategy">Strategy<a class="headerlink" href="#strategy" title="Permanent link">&para;</a></h2>
