@@ -115,7 +115,7 @@ pub type KeyPair = { public: Vec[UInt8]; private: Vec[UInt8]; }
 Generates a new RSA key pair with the given key size in bits (e.g., 2048 or 4096).
 
 ```xiom
-pub fn generate_rsa_keypair(bits: Int) -> Result<KeyPair, Str>
+pub fn generate_rsa_keypair(bits: Int) -> Result[KeyPair, Str]
 ```
 
 ### `rsa_encrypt(public_key, data)`
@@ -147,7 +147,7 @@ pub fn rsa_sign(private_key: &Vec[UInt8], data: &Vec[UInt8]) -> Result<Vec[UInt8
 Verifies a digital `signature` of `data` against the RSA public key. Returns `true` if the signature is valid.
 
 ```xiom
-pub fn rsa_verify(public_key: &Vec[UInt8], data: &Vec[UInt8], signature: &Vec[UInt8]) -> Result<Bool, Str>
+pub fn rsa_verify(public_key: &Vec[UInt8], data: &Vec[UInt8], signature: &Vec[UInt8]) -> Result[Bool, Str]
 ```
 
 ---

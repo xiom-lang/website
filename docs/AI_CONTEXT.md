@@ -259,11 +259,11 @@ items.len()@pre            // pre-state (contracts only)
 
 // v0.54: Compile-time evaluation
 const { 40 + 2 }            // compile-time constant block -> evaluated to 42
-sizeof::<Int>()              // type size (compile-time)
-align_of::<Point>()          // type alignment (compile-time)
-type_id::<Int>()             // FNV-1a type hash (compile-time)
-field_offset::<Point>("x")  // field byte offset (compile-time)
-is_signed::<Int>()           // Bool: is type signed? (compile-time)
+size_of[Int]()               // type size (compile-time)
+align_of[Point]()            // type alignment (compile-time)
+type_id[Int]()               // FNV-1a type hash (compile-time)
+field_offset[Point]("x")     // field byte offset (compile-time)
+is_signed[Int]()             // Bool: is type signed? (compile-time)
 
 // v0.55: Inline assembly (Intel syntax, GCC-style constraints)
 asm("nop");
@@ -280,9 +280,9 @@ spawn move { var x = captured_var + 1; }  // v0.56: move semantics for captures
 // v0.55: Never type -- diverging function
 fn abort() -> ! { loop {} }
 
-// v0.55: Turbofish -- explicit generic type parameter
-let n = parse::<Int>("42");
-let a = align_of::<Float64>();
+// v0.55: Explicit generic type parameters
+let n = parse[Int]("42");
+let a = align_of[Float64]();
 ```
 
 ### 2.6 Operator Precedence (Highest to Lowest)

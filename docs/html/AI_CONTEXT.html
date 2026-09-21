@@ -347,11 +347,11 @@ items.<span class='func'>len</span>()@pre            <span class='cm'>// pre-<sp
 
 <span class='cm'>// v0.<span class='num'>54</span>: Compile-time evaluation</span>
 <span class='kw'>const</span> { <span class='num'>40</span> + <span class='num'>2</span> }            <span class='cm'>// compile-time constant block -> evaluated to <span class='num'>42</span></span>
-sizeof::<<span class='ty'>Int</span>>()              <span class='cm'>// <span class='kw'>type</span> <span class='func'>size</span>(compile-time)</span>
-align_of::<<span class='ty'>Point</span>>()          <span class='cm'>// <span class='kw'>type</span> <span class='func'>alignment</span>(compile-time)</span>
-type_id::<<span class='ty'>Int</span>>()             <span class='cm'>// FNV-1a <span class='kw'>type</span> <span class='func'>hash</span>(compile-time)</span>
-field_offset::<<span class='ty'>Point</span>>(<span class='str'>x</span>)  <span class='cm'>// field byte <span class='func'>offset</span>(compile-time)</span>
-is_signed::<<span class='ty'>Int</span>>()           <span class='cm'>// <span class='ty'>Bool</span>: <span class='kw'>is</span> <span class='kw'>type</span> signed? (compile-time)</span>
+size_of[<span class='ty'>Int</span>]()               <span class='cm'>// <span class='kw'>type</span> <span class='func'>size</span>(compile-time)</span>
+align_of[<span class='ty'>Point</span>]()            <span class='cm'>// <span class='kw'>type</span> <span class='func'>alignment</span>(compile-time)</span>
+type_id[<span class='ty'>Int</span>]()               <span class='cm'>// FNV-1a <span class='kw'>type</span> <span class='func'>hash</span>(compile-time)</span>
+field_offset[<span class='ty'>Point</span>](<span class='str'>x</span>)     <span class='cm'>// field byte <span class='func'>offset</span>(compile-time)</span>
+is_signed[<span class='ty'>Int</span>]()             <span class='cm'>// <span class='ty'>Bool</span>: <span class='kw'>is</span> <span class='kw'>type</span> signed? (compile-time)</span>
 
 <span class='cm'>// v0.<span class='num'>55</span>: Inline <span class='func'>assembly</span>(Intel syntax, GCC-style constraints)</span>
 <span class='func'>asm</span>(<span class='str'>nop</span>);
@@ -368,9 +368,9 @@ defer io.<span class='func'>println</span>(<span class='str'>done</span>);
 <span class='cm'>// v0.<span class='num'>55</span>: Never <span class='kw'>type</span> -- diverging function</span>
 <span class='kw'>fn</span> <span class='func'>abort</span>() -> ! { loop {} }
 
-<span class='cm'>// v0.<span class='num'>55</span>: Turbofish -- explicit generic <span class='kw'>type</span> parameter</span>
-<span class='kw'>let</span> n = parse::<<span class='ty'>Int</span>>(<span class='str'><span class='num'>42</span></span>);
-<span class='kw'>let</span> a = align_of::<<span class='ty'>Float64</span>>();
+<span class='cm'>// v0.<span class='num'>55</span>: Explicit generic <span class='kw'>type</span> parameters</span>
+<span class='kw'>let</span> n = parse[<span class='ty'>Int</span>](<span class='str'><span class='num'>42</span></span>);
+<span class='kw'>let</span> a = align_of[<span class='ty'>Float64</span>]();
 </code></pre>
 <h3>2.6 Operator Precedence (Highest to Lowest)</h3>
 <table>

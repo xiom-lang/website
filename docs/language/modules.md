@@ -17,10 +17,10 @@ module math.vector
 ## Importing
 
 ```xiom
-use math.vector              // imports the module -- access as vector.Vec3
-use math.vector.Vec3         // imports one type -- access as Vec3
-use math.vector.Vec3 as V3   // alias -- access as V3
-use math.vector.*            // imports all public symbols (discouraged)
+use math.vector;             // imports the module -- access as vector.Vec3
+use math.vector.Vec3;        // imports one type -- access as Vec3
+use math.vector.Vec3 as V3;  // alias -- access as V3
+use math.vector.*;           // imports all public symbols (discouraged)
 ```
 
 ## Visibility
@@ -137,7 +137,7 @@ For the full stdlib reference with every type, function, and signature, see the 
 ### Importing
 
 ```xiom
-use xiom.collections     // import the module
-use xiom.collections.Vec  // import one type
-use xiom.io               // import I/O functions
+use xiom.collections;     // import the module
+use xiom.collections.Vec;  // import one type
+use xiom.io;               // import I/O functions
 ```

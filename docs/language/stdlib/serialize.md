@@ -77,7 +77,7 @@ pub type JsonValue = enum {
   Bool(value: Bool),
   Number(value: Float64),
   String(value: Str),
-  Array(items: Vec<JsonValue>),
+  Array(items: Vec[JsonValue]),
   Object(entries: Map[Str, JsonValue]),
 }
 ```

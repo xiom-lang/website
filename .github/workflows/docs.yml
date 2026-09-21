@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 #
 # Fails when the committed generated docs do not match docs/build_docs.py
-# output, and checks relative links across the published trees.
+# output, checks relative links across the published trees, and lints the
+# XIOM code snippets for canonical syntax (contract colons, use semicolons,
+# square-bracket generics).
 # Run `python docs/build_docs.py` and commit the result to fix drift.
 #
 # Keep every action ref pinned to a full commit SHA: the xiom-lang org
@@ -50,3 +52,5 @@ jobs:
           fi
       - name: Check relative links
         run: python docs/check_links.py docs/html xiom-website
+      - name: Check XIOM snippet syntax
+        run: python docs/check_syntax.py docs/language docs/AI_CONTEXT.md xiom-website

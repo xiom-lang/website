@@ -12,6 +12,7 @@ repository; there is no build step for the marketing pages.
 | `docs/language/`, `docs/ecosystem/`, `docs/error_codes/`, `docs/build_docs.py` | sources for the generated docs |
 | `docs/build_api_docs.py`, `docs/build_mkdocs.py`, `mkdocs.yml`, `requirements-docs.txt` | versioned MkDocs pipeline (mike) |
 | `docs/check_links.py` | relative-link check used by CI |
+| `docs/check_syntax.py` | XIOM snippet syntax lint used by CI (contract colons, use semicolons, square-bracket generics) |
 | `specs/` | language specification and strategy documents |
 | `resource/img/` | shared image assets |
 
