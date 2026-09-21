@@ -130,16 +130,39 @@ xiom --ai source.xi
 | `--ai-model=<name>` | Override the model |
 | `--ai-timeout=<sec>` | Model timeout in seconds (default: 10) |
 
-Configuration can also live in `.xiom_ai_config.json`, or in the
-`XIOM_AI_KEY`, `XIOM_AI_ENDPOINT`, `XIOM_AI_MODEL` and `XIOM_AI_PROVIDER`
-environment variables. `xiom --help-ai` prints the full guide.
+Configuration can also live in `.xiom_ai_config.json`. The compiler searches,
+first found wins:
+
+1. `<project>/.xiom_ai_config.json`
+2. `$XIOM_HOME/.xiom_ai_config.json` -- what the installers write; on Windows
+   `%LOCALAPPDATA%\xiom`, on Linux/macOS `~/.local/share/xiom`
+3. `~/.xiom_ai_config.json`
+
+```json
+{
+  "provider": "deepseek",
+  "endpoint": "https://api.deepseek.com",
+  "api_key": "sk-your-key-here",
+  "model": "deepseek-chat",
+  "timeout_secs": 10
+}
+```
+
+Environment variables override the file and command-line flags override the
+environment: `XIOM_AI_KEY`, `XIOM_AI_ENDPOINT`, `XIOM_AI_MODEL`,
+`XIOM_AI_PROVIDER`, `XIOM_AI_TIMEOUT`, `XIOM_AI_MAX_TOKENS` and
+`XIOM_AI_ALLOW_HTTP`. To change a key later, edit that file or export
+`XIOM_AI_KEY` again. Keys are refused over plaintext `http://` to non-local
+hosts. `xiom --help-ai` prints the full guide from the compiler itself, and
+[Getting Started](getting-started.md) walks through first-time setup.
 
 ### MCP server and companion tools
 
 `xiom-mcp` is a Model Context Protocol server (stdio, JSON-RPC 2.0) that
 lets AI agents compile-check XIOM code, read the language and workflow
-guides, and query the standard library reference as tools. Register it in
-any MCP-capable client:
+guides, query the standard library reference, and search package metadata in
+the registry (`search_packages`, `package_info`, read-only) as tools. Register
+it in any MCP-capable client:
 
 ```json
 {

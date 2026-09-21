@@ -386,6 +386,35 @@ Remaining:
     (light and slate). Tests: `python docs/xiom_lexer.py` self-test; the hook
     registration was verified against Pygments 2.14 locally and the lookup
     code is unchanged in Pygments 2.19.2 (checked from the wheel source).
+17. **Install path and AI setup docs (done 2026-09-21)**: `getting-started.md`
+    was stale (monorepo tree, `XIOM-lang/XIOM` clone URL, "1041 tests", VS Code
+    extension planned, playground on the wrong host). It now documents the
+    multi-repo layout, the release installer for Windows/Linux/macOS with
+    beginner notes (where it installs, PATH behaviour, pinning, uninstall),
+    LLVM/Clang required plus NASM recommended and Z3 bundled with the verifier,
+    build-from-source with `scripts/fetch-stdlib`, the editor story
+    (xiom-lsp/xiom-dbg in recent archives, editors/README.md matrix, VS Code
+    listing pending), and a full `--ai` setup section: config file search order
+    (project, `$XIOM_HOME`, home), JSON fields, env vars, how to change the key,
+    and security notes. `compiler.md` gained the same config details and the
+    MCP registry tools. The website `download.html` Requirements section now
+    lists NASM (recommended) and the Z3 bundling, the One-Line Install block
+    covers macOS and explains what the installer changes, and a new
+    "AI-assisted errors (--ai)" section shows the key file; the index AI
+    paragraph links to the setup guide.
+
+## Cross-lane notes
+
+Release archives (v0.60.1) ship a stale `README.md` inside the package: it
+names the XIOM Foundation as copyright holder, points at
+`NgonArt_STUDIO/XIOM`, claims version 0.20.0 and self-hosting. The compiler
+lane should refresh the README that goes into the archives before the next
+tag; the website must not reflect any of it.
+
+The v0.60.1 archives contain only `bin/xiom(.exe)`; the release workflow now
+builds the nine tool crates and a pinned z3, so the next tag is the first
+archive with the full `bin/` set. Docs say "recent releases ship" and point at
+the release notes rather than promising the tool list for every tag.
 
 ## Paste-ready prompts for other lanes
 

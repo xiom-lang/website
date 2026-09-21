@@ -108,30 +108,76 @@
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Getting Started</h1>
       <h2>Prerequisites</h2>
+<p>Release installs need one external tool; everything else is optional:</p>
 <ul>
-<li><strong>Rust</strong> 1.85+ (<a href="https://rustup.rs">rustup</a>)</li>
-<li><strong>LLVM/Clang</strong> 18+ for native compilation</li>
-<li>Windows: <code>winget install LLVM.LLVM</code></li>
-<li>macOS: <code>brew install llvm</code></li>
-<li>Linux: <code>apt install clang</code> or <code>dnf install clang</code></li>
+<li><strong>LLVM/Clang 18 or newer (required).</strong> The compiler uses <code>clang</code> to assemble</li>
 </ul>
-<h2>Build from Source</h2>
+<p>and link every program.</p>
+<ul>
+<li>Windows: <code>winget install LLVM.LLVM</code></li>
+<li>macOS: <code>xcode-select --install</code> (Xcode command line tools)</li>
+<li>Debian/Ubuntu: <code>sudo apt install clang</code></li>
+<li>Fedora: <code>sudo dnf install clang</code></li>
+<li><strong>NASM 2.15 or newer (recommended).</strong> Source builds with the <code>nasm</code> feature</li>
+</ul>
+<p>use it to assemble the hardware-accelerated runtime (crypto, memory, context   switching); released binaries fall back to the C runtime when it is absent.   <code>xiom doctor</code> reports whether it was found.</p>
+<ul>
+<li>Windows: <code>winget install NASM.NASM</code></li>
+<li>macOS: <code>brew install nasm</code></li>
+<li>Debian/Ubuntu: <code>sudo apt install nasm</code></li>
+<li>Fedora: <code>sudo dnf install nasm</code></li>
+<li><strong>Z3</strong> is not installed separately. The contract verifier uses the copy that</li>
+</ul>
+<p>ships with the toolchain (<code>xiom-verify</code>), or a system <code>z3</code> when present.</p>
+<ul>
+<li><strong>Rust 1.86+</strong> is only needed to build the compiler from source.</li>
+</ul>
+<h2>Install the Toolchain</h2>
+<p>The installer downloads the latest release from <code>dl.xiom-lang.org</code>, verifies its SHA256 checksum, installs it for your user (no administrator or root needed), and makes the tools available on your <code>PATH</code>. It also checks for LLVM/Clang and prints install instructions when it is missing.</p>
+<p>Linux:</p>
 <pre class="language-bash"><code>
-git clone https:<span class='cm'>//github.com/XIOM-lang/XIOM.git </span>
-cd xiom
-cargo build
-cargo test          # <span class='num'>1041</span> tests should pass
-</code></pre>
-<p>Verify your toolchain dependencies:</p>
-<pre class="language-bash"><code>
-# Using standalone <span class='func'>binary</span>(after build)
-xiom doctor
-# -&gt; Checks: clang [OK]  opt [OK]  nasm [OK]
+curl -fsSL https:<span class='cm'>//xiom-lang.org/install.sh | sh</span>
 
-# Using <span class='func'>cargo</span>(development)
-cargo run -p xiom -- doctor
-# -&gt; Checks: clang [OK]  opt [OK]  nasm [OK]
+# pin a specific release
+curl -fsSL https:<span class='cm'>//xiom-lang.org/install.sh | sh -s -- --version v0.<span class='num'>60.1</span></span>
 </code></pre>
+<p>macOS: the same script detects macOS and arm64 or Intel. Install the Xcode command line tools first. macOS archives are not published yet; until the release workflow enables them, use the build-from-source path below.</p>
+<pre class="language-bash"><code>
+curl -fsSL https:<span class='cm'>//xiom-lang.org/install.sh | sh</span>
+</code></pre>
+<p>Windows (PowerShell):</p>
+<pre class="language-powershell"><code>
+irm https:<span class='cm'>//xiom-lang.org/install.ps1 | iex</span>
+
+# pinned release
+irm https:<span class='cm'>//xiom-lang.org/install.ps1 -OutFile install.ps1</span>
+.\install.ps1 -Version v0.<span class='num'>60.1</span>
+</code></pre>
+<p>What the installer does, so you know what you are agreeing to:</p>
+<ul>
+<li>Installs into <code>%LOCALAPPDATA%\xiom</code> on Windows and</li>
+</ul>
+<p><code>~/.local/share/xiom</code> (or <code>$XIOM_HOME</code>) on Linux/macOS. An existing install   in that directory is replaced.</p>
+<ul>
+<li>Windows adds <code>bin</code> to your user <code>PATH</code> (use <code>-NoPath</code> to skip it; reopen the</li>
+</ul>
+<p>terminal afterwards). Linux/macOS links every tool into <code>~/.local/bin</code>   (use <code>XIOM_ADD_PATH=1</code> to also append the export to <code>~/.profile</code>).</p>
+<ul>
+<li>Verifies the archive against <code>SHA256SUMS</code> and refuses to install on</li>
+</ul>
+<p>mismatch.</p>
+<ul>
+<li><code>-InstallDir &lt;path&gt;</code> on Windows overrides the install directory.</li>
+</ul>
+<p>Activate the current shell and verify:</p>
+<pre class="language-bash"><code>
+export PATH=<span class='str'>$HOME/.local/bin:$PATH</span>; hash -r     # Linux/macOS <span class='kw'>if</span> needed
+xiom --version
+xiom doctor
+# -&gt; clang [OK]  opt [OK]  nasm [OK]
+</code></pre>
+<p><code>xiom doctor</code> is the fastest way to see what is present, including the companion tools (<code>xiom-lsp</code>, <code>xiom-dbg</code>, <code>xiom-pkg</code>, <code>xiom-fmt</code>, <code>xiom-mcp</code>, <code>xiom-verify</code>) that recent releases ship in the same <code>bin/</code> directory.</p>
+<p>To uninstall, delete the install directory and, on Windows, remove that <code>bin</code> entry from your user <code>PATH</code>; on Linux/macOS remove the <code>xiom*</code> links from <code>~/.local/bin</code>.</p>
 <h2>Your First Program</h2>
 <p>Create a file <code>hello.xi</code>:</p>
 <pre class="language-xiom"><code>
@@ -145,28 +191,12 @@ cargo run -p xiom -- doctor
 </code></pre>
 <p>Compile and run:</p>
 <pre class="language-bash"><code>
-# Using standalone binary
-xiom --emit-ir hello.xi
-
-# Compile to native binary
-xiom -o hello.exe hello.xi
-
-# Compile and <span class='func'>run</span>(prints exit code)
-xiom --run hello.xi
+xiom --emit-ir hello.xi            # print LLVM IR
+xiom -o hello hello.xi             # compile to a native binary
+xiom --run hello.xi                # compile and run
 # -&gt; exit code: <span class='num'>30</span>
-
-# Compile to WASM
 xiom --target wasm -o hello.wasm hello.xi
-# -&gt; wasm size: <span class='num'>618</span> bytes
-
-# Development via cargo
-cargo run -p xiom -- --emit-ir hello.xi
-cargo run -p xiom -- -o hello.exe hello.xi
-cargo run -p xiom -- --run hello.xi
-cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
 </code></pre>
-<h2>Try in Browser</h2>
-<p>Open the <a href="https://xiom-lang.org/playground">XIOM Playground</a> to write and compile XIOM directly in your browser. No install required.</p>
 <h2>CLI Reference</h2>
 <table>
 <tr>
@@ -199,47 +229,142 @@ cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
 </tr>
 <tr>
 <td><code>--diagnostics=json</code></td>
-<td>Structured compiler output (Phase 2 tooling)</td>
+<td>Structured compiler output</td>
 </tr>
 <tr>
 <td><code>--dump-contracts</code></td>
-<td>Queryable contract index (Phase 2 tooling)</td>
+<td>Queryable contract index</td>
+</tr>
+<tr>
+<td><code>--ai</code></td>
+<td>Explain errors with a model (see below)</td>
 </tr>
 </table>
-<h2>Project Structure</h2>
-<pre><code>
-XIOM/
-|-- crates/             # Rust bootstrap <span class='func'>compiler</span>(permanent)
-|   |-- xiom-ast/      # AST node definitions
-|   |-- xiom-lexer/    # Tokenizer
-|   |-- xiom-parser/   # Recursive descent parser
-|   |-- xiom-check/    # Type checker + borrow checker + <span class='kw'>module</span> resolver
-|   |-- xiom-codegen/  # LLVM IR emitter + contracts + <span class='kw'>derive</span> + generics
-|   `-- xiom/         # CLI binary
-|-- selfhost/           # XIOM <span class='kw'>self</span>-hosted compiler
-|   |-- xiom-lexer.xi
-|   |-- xiom-parser.xi
-|   |-- xiom-check.xi
-|   |-- xiom-codegen.xi
-|   `-- xiom.xi
-|-- stdlib/             # Standard <span class='func'>library</span>(XIOM source)
-|-- examples/           # Example programs
-|-- specs/              # Language specification
-|-- docs/               # Documentation
-|-- website/            # Official website
-`-- playground/         # WASM playground
+<h2>AI-Assisted Compilation (<code>--ai</code>)</h2>
+<p><code>--ai</code> sends compilation errors to a model and writes actionable hints to <code>.xiom_ai.json</code>. Source files are never modified. There are two ways to set a provider.</p>
+<p>Local, free, nothing leaves the machine (Ollama):</p>
+<pre class="language-bash"><code>
+ollama pull codellama
+xiom --ai --ai-local source.xi
 </code></pre>
+<p>A cloud key, configured in a file. Create <code>.xiom_ai_config.json</code>; the compiler searches these locations in order and uses the first one it finds:</p>
+<ul>
+<li><code>&lt;project&gt;/.xiom_ai_config.json</code> (per project)</li>
+<li><code>%LOCALAPPDATA%\xiom\.xiom_ai_config.json</code> on Windows,</li>
+</ul>
+<p><code>~/.local/share/xiom/.xiom_ai_config.json</code> on Linux/macOS (the install    directory; the installer writes it here)</p>
+<ul>
+<li><code>~/.xiom_ai_config.json</code> (home)</li>
+</ul>
+<pre class="language-json"><code>
+{
+  <span class='str'>provider</span>: <span class='str'>deepseek</span>,
+  <span class='str'>endpoint</span>: <span class='str'>https:<span class='cm'>//api.deepseek.com</span>,</span>
+  <span class='str'>api_key</span>: <span class='str'>sk-your-key-here</span>,
+  <span class='str'>model</span>: <span class='str'>deepseek-chat</span>
+}
+</code></pre>
+<p>Environment variables override the file, and command-line flags override the environment. This is also how you change the key later: edit the same JSON file, or export a new value.</p>
+<table>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td><code>XIOM_AI_KEY</code></td>
+<td>API key (not needed for Ollama; HTTPS endpoints only)</td>
+</tr>
+<tr>
+<td><code>XIOM_AI_ENDPOINT</code></td>
+<td>Endpoint URL</td>
+</tr>
+<tr>
+<td><code>XIOM_AI_MODEL</code></td>
+<td>Model name</td>
+</tr>
+<tr>
+<td><code>XIOM_AI_PROVIDER</code></td>
+<td>Force <code>ollama</code>, <code>deepseek</code>, <code>openai</code>, <code>openrouter</code> or <code>groq</code></td>
+</tr>
+<tr>
+<td><code>XIOM_AI_TIMEOUT</code></td>
+<td>Per-request timeout in seconds (default 10)</td>
+</tr>
+<tr>
+<td><code>XIOM_AI_MAX_TOKENS</code></td>
+<td>Response token cap (default 150)</td>
+</tr>
+<tr>
+<td><code>XIOM_AI_ALLOW_HTTP</code></td>
+<td><code>1</code> allows a key over <code>http://</code> to a trusted local proxy</td>
+</tr>
+</table>
+<p>Useful flags: <code>--ai-local</code> forces Ollama on loopback and drops any cloud key, <code>--ai-dry-run</code> prints the prompt without calling a model, <code>--ai-silent</code> writes only <code>.xiom_ai.json</code>, <code>--ai-model=&lt;name&gt;</code> overrides the model, and <code>--ai-timeout=&lt;sec&gt;</code> the timeout. Keys are refused over plaintext <code>http://</code> to non-local hosts, and <code>xiom --help-ai</code> prints this guide from the compiler itself. The installer's config file is gitignored; prefer <code>XIOM_AI_KEY</code> over a key on disk.</p>
+<h2>Build from Source</h2>
+<p>Requires Rust 1.86+ and LLVM/Clang 18+.</p>
+<pre class="language-bash"><code>
+git clone https:<span class='cm'>//github.com/xiom-lang/xiom.git</span>
+cd xiom
+./scripts/fetch-stdlib.ps1        # PowerShell; scripts/fetch-stdlib.sh on Linux/macOS
+cargo build --release -p xiom     # driver at target/release/xiom
+cargo test --workspace --lib
+</code></pre>
+<p>The compiler test suites expect the pinned standard library checkout; without it the stdlib-dependent suites skip loudly.</p>
+<h2>Repository Layout</h2>
+<p>XIOM is split across repositories, not one monorepo:</p>
+<table>
+<tr>
+<th>Repository</th>
+<th>Contents</th>
+</tr>
+<tr>
+<td><code>xiom-lang/xiom</code></td>
+<td>Compiler, tooling crates (<code>pkg</code>, <code>lsp</code>, <code>dbg</code>, <code>mcp</code>, <code>fmt</code>, <code>doc</code>, <code>verify</code>, <code>ffigen</code>), end-to-end tests</td>
+</tr>
+<tr>
+<td><code>xiom-lang/stdlib</code></td>
+<td>Standard library sources, runtime, smoke corpus and known-answer vectors</td>
+</tr>
+<tr>
+<td><code>xiom-lang/registry</code></td>
+<td>Package registry service</td>
+</tr>
+<tr>
+<td><code>xiom-lang/website</code></td>
+<td>This site and the documentation sources</td>
+</tr>
+<tr>
+<td><code>xiom-lang/playground</code></td>
+<td>Browser playground</td>
+</tr>
+<tr>
+<td><code>xiom-lang/.github</code></td>
+<td>Organization profile, process documents and default templates</td>
+</tr>
+</table>
+<p>Inside <code>xiom-lang/xiom</code>, the compiler lives under <code>crates/</code>: <code>xiom-lexer</code>, <code>xiom-parser</code>, <code>xiom-ast</code>, <code>xiom-check</code> (types, borrows, modules), <code>xiom-codegen</code> (LLVM IR, contracts, derive, generics), <code>xiom-graph</code> (semantic graph) and the <code>xiom</code> driver, with the self-hosted sources under <code>selfhost/</code>. Release archives pack the standard library and runtime under <code>lib/</code>; the compiler discovers them next to the executable, through <code>XIOM_STDLIB</code>, from the working directory, or from <code>XIOM_HOME</code>.</p>
 <h2>Editor Support</h2>
 <ul>
-<li><strong>VS Code</strong> -- Install <code>vscode-xiom</code> extension for syntax highlighting</li>
-<li><strong>Any editor</strong> -- XIOM uses <code>.xi</code> file extension. Set up <code>.xi</code> -> plain text with 4-space indentation for now. Full LSP support planned for Phase 3.</li>
+<li><strong>VS Code</strong> -- an extension (language server, diagnostics, formatting) is</li>
 </ul>
+<p>being published to the Marketplace and Open VSX; until the listing is live,   the client sources are in the toolchain repository.</p>
+<ul>
+<li><strong>Language server (<code>xiom-lsp</code>)</strong> and <strong>debugger (<code>xiom-dbg</code>)</strong> ship in recent</li>
+</ul>
+<p>releases and work with any LSP/DAP client.</p>
+<ul>
+<li><strong>Other editors</strong> -- the support matrix for Neovim, JetBrains, Helix,</li>
+</ul>
+<p>Sublime, Emacs and Zed is maintained in   <a href="https://github.com/xiom-lang/xiom/blob/main/editors/README.html">editors/README.md</a>.</p>
+<h2>Try in Browser</h2>
+<p>Open the <a href="https://playground.xiom-lang.org">XIOM Playground</a> to write and compile XIOM directly in your browser. No install required.</p>
 <h2>Next Steps</h2>
 <ul>
 <li>Read the <a href="syntax.html">Syntax Guide</a></li>
 <li>Explore the <a href="types.html">Type System</a></li>
 <li>Understand the <a href="memory-model.html">Memory Model</a></li>
 <li>Learn about <a href="contracts.html">Contracts</a></li>
+<li>Read the <a href="unsafe.html">Unsafe guide</a></li>
 </ul>
     </main>
 

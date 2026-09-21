@@ -104,15 +104,15 @@ SPDX-License-Identifier: MIT OR Apache-2.0
         <td>-</td>
       </tr>
     </table>
-    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. The expected SHA256 column is filled from <code>SHA256SUMS</code> next to the release. Archives unpack to <code>bin/</code> (compiler) and <code>lib/</code> (standard library and runtime).</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. The expected SHA256 column is filled from <code>SHA256SUMS</code> next to the release. Archives unpack to <code>bin/</code> (toolchain executables) and <code>lib/</code> (standard library and runtime).</p>
   </div>
 
   <div class="content-section">
     <h2>Requirements</h2>
     <ul>
-      <li><strong>LLVM/Clang 18 or newer is required.</strong> The compiler uses <code>clang</code> to assemble and link every program. Install it first: <code>winget install LLVM.LLVM</code> (Windows), <code>apt install clang</code> (Debian/Ubuntu), <code>xcode-select --install</code> (macOS).</li>
-      <li><strong>Z3 is optional.</strong> It is only needed for the contract-verification tool. Contracts themselves are checked at runtime.</li>
-      <li><strong>NASM is not required</strong> for the standard toolchain.</li>
+      <li><strong>LLVM/Clang 18 or newer is required.</strong> The compiler uses <code>clang</code> to assemble and link every program: <code>winget install LLVM.LLVM</code> (Windows), <code>xcode-select --install</code> (macOS), <code>sudo apt install clang</code> (Debian/Ubuntu), <code>sudo dnf install clang</code> (Fedora).</li>
+      <li><strong>NASM 2.15 or newer (recommended).</strong> It assembles the hardware-accelerated runtime (crypto, memory, context switching) in source builds; released binaries fall back to the C runtime without it. <code>xiom doctor</code> reports whether it was found: <code>winget install NASM.NASM</code> (Windows), <code>brew install nasm</code> (macOS), <code>sudo apt install nasm</code> (Debian/Ubuntu), <code>sudo dnf install nasm</code> (Fedora).</li>
+      <li><strong>Z3 is optional and not installed separately.</strong> The contract verifier (<code>xiom-verify</code>) uses the copy shipped with the toolchain, or a system <code>z3</code> when present; normal compiles never need it.</li>
     </ul>
   </div>
 
@@ -131,8 +131,7 @@ gh attestation verify xiom-*-windows-x64.zip --repo xiom-lang/xiom</code></pre>
 
   <div class="content-section">
     <h2>One-Line Install</h2>
-    <p>The installer downloads the latest archive from the mirror, verifies its SHA256, installs it into your user directory, and links the XIOM tools into your PATH. It also checks for LLVM/Clang (or the Xcode command line tools on macOS) and tells you how to install them when missing. Pass a release tag to pin a specific version.</p>
-    <p style="color:var(--muted);font-size:13px;">Piping a script from the internet runs whatever the server sends. Both installers are short and served from this site - read <a href="install.ps1" style="color:var(--signal);">install.ps1</a> or <a href="install.sh" style="color:var(--signal);">install.sh</a> first if you prefer.</p>
+    <p>The installer downloads the latest archive from the mirror, verifies its SHA256, installs it for your user (no administrator or root needed), and puts the tools on your PATH. It also checks for LLVM/Clang (or the Xcode command line tools on macOS) and tells you how to install them when missing. Pass a release tag to pin a specific version.</p>
     <pre><code><span class="cm"># Windows PowerShell</span>
 irm https://xiom-lang.org/install.ps1 | iex
 
@@ -140,11 +139,20 @@ irm https://xiom-lang.org/install.ps1 | iex
 irm https://xiom-lang.org/install.ps1 -OutFile install.ps1
 .\install.ps1 -Version &lt;tag&gt;
 
-<span class="cm"># Linux</span>
+<span class="cm"># Linux and macOS</span>
 curl -fsSL https://xiom-lang.org/install.sh | sh
 
-<span class="cm"># Linux (pinned release)</span>
+<span class="cm"># Linux and macOS (pinned release)</span>
 curl -fsSL https://xiom-lang.org/install.sh | sh -s -- --version &lt;tag&gt;</code></pre>
+    <p style="color:var(--muted);font-size:13px;">Where it lands: <code>%LOCALAPPDATA%\xiom</code> on Windows, with <code>bin</code> added to your user PATH (use <code>-NoPath</code> to skip; reopen the terminal afterwards), and <code>~/.local/share/xiom</code> on Linux and macOS, with every tool linked into <code>~/.local/bin</code> (add <code>XIOM_ADD_PATH=1</code> to persist the PATH export in <code>~/.profile</code>). An existing install in that directory is replaced. macOS archives ship once the release workflow enables them; the installer detects the platform and says so clearly when no archive exists yet. Afterwards run <code>xiom doctor</code> to confirm clang, opt and nasm.</p>
+    <p style="color:var(--muted);font-size:13px;">Piping a script from the internet runs whatever the server sends. Both installers are short and served from this site - read <a href="install.ps1" style="color:var(--signal);">install.ps1</a> or <a href="install.sh" style="color:var(--signal);">install.sh</a> first if you prefer.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>AI-assisted errors (--ai)</h2>
+    <p><code>--ai</code> asks a model to explain compilation errors and writes the hints to <code>.xiom_ai.json</code>; source files are never modified. Local Ollama needs no key: <code>ollama pull codellama</code>, then <code>xiom --ai --ai-local source.xi</code>. For a cloud key, create <code>.xiom_ai_config.json</code> in your project or in the install directory (<code>%LOCALAPPDATA%\xiom</code> on Windows, <code>~/.local/share/xiom</code> on Linux/macOS); the project file wins, then the install directory, then your home directory.</p>
+    <pre><code>{ "provider": "deepseek", "endpoint": "https://api.deepseek.com", "api_key": "sk-your-key-here", "model": "deepseek-chat" }</code></pre>
+    <p style="color:var(--muted);font-size:13px;">To change the key later, edit that same file; environment variables like <code>XIOM_AI_KEY</code> override it and command-line flags override both. <code>xiom --help-ai</code> prints every provider and variable. Full walkthrough in <a href="https://docs.xiom-lang.org/latest/getting-started/" style="color:var(--signal);">Getting Started</a>.</p>
   </div>
 
   <div class="content-section">
