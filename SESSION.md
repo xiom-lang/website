@@ -362,6 +362,15 @@ Remaining:
     tab with rel=noopener, and `.footer-social` wraps on mobile. The icons
     are inline (no webfont, no external request); each anchor stays on one
     line so the markup compresses well.
+15. **Publishing assets (done 2026-09-21)**: `docs/wikipedia-draft.md` is a
+    paste-ready wikitext draft (instructions header then `--- paste below
+    this line ---`): AfC/COI/notability instructions, infobox, neutral
+    History/Design/Tooling/Licensing sections, primary-source references and
+    a Reception section left empty on purpose. It is not built or published
+    (mkdocs builds `build/mkdocs-src`, the standalone builder only walks its
+    nav lists). `docs/marketplace-publisher.md` holds the marketplace copy:
+    vendor name, tagline, 193-character short description, ~70-word About,
+    keywords, links and the legal line. Neither file is part of the site.
 
 ## Paste-ready prompts for other lanes
 
