@@ -1,0 +1,161 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XIOM -- Prior art and trade-offs</title>
+<meta name="description" content="Where XIOM's ideas come from and what its design gives up: Design by Contract prior art, Rust's lifetime system, and the cost of runtime contracts. Non-normative.">
+<link rel="canonical" href="https://xiom-lang.org/prior-art.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XIOM">
+<meta property="og:title" content="XIOM -- Prior art and trade-offs">
+<meta property="og:description" content="Where XIOM's ideas come from and what its design gives up: Design by Contract prior art, Rust's lifetime system, and the cost of runtime contracts. Non-normative.">
+<meta property="og:url" content="https://xiom-lang.org/prior-art.html">
+<meta property="og:image" content="https://xiom-lang.org/img/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="img/xiom-icon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <img src="img/xiom-logo_bg.png" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="spec.html">Spec</a>
+      <a href="docs.html">Docs</a>
+      <a href="why.html">Why</a>
+      <a href="ecosystem.html">Ecosystem</a>
+      <a href="https://registry.xiom-lang.org">Registry</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="versions.html">Versions</a>
+      <a href="https://playground.xiom-lang.org">Playground</a>
+    </div>
+    <a class="nav-cta" href="download.html">download</a>
+  </div>
+</nav>
+
+<header class="hero blueprint-bg" style="padding:48px 0;" id="main">
+  <div class="wrap">
+    <div class="eyebrow">Non-normative documentation</div>
+    <h1>Prior art and <em>trade-offs.</em></h1>
+    <p class="lede">XIOM did not invent contracts or ownership. This page records where the ideas come from, what other languages do better, and what the design costs.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="content-section">
+    <p style="border-left:2px solid var(--signal);padding-left:16px;color:var(--muted);font-size:13.5px;">This page is documentation, not specification. It does not define XIOM; the normative definition is the <a href="spec.html" style="color:var(--signal);">Language Specification, Revision 0.3</a>. Comparisons describe documented behavior at the time of writing, cover only the aspects named, and do not imply that any language is inferior. Where a capability is planned rather than shipped, it is labelled.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Design by Contract is prior art, not a new idea</h2>
+    <p>Contracts in a programming language are a fifty-year-old idea with a strong lineage. Each project below solved a real problem, and XIOM reuses what it learned.</p>
+    <div class="eco-grid" style="margin-top:24px;">
+      <div class="eco-card">
+        <h4>Eiffel</h4>
+        <p>Introduced preconditions, postconditions and class invariants as part of the language in 1986, with the vocabulary XIOM's clauses echo: <code>require</code>, <code>ensure</code>, <code>invariant</code>. Contracts are runtime-monitored, and assertion monitoring can be switched off for production builds.</p>
+      </div>
+      <div class="eco-card">
+        <h4>Ada 2012 and SPARK</h4>
+        <p>Ada 2012 added contract aspects (<code>Pre</code>, <code>Post</code>, <code>Contract_Cases</code>, type invariants) to an existing industrial language. The SPARK subset goes further: contracts are verified statically with GNATprove for the supported fragment, which is how proofs reach safety-critical practice.</p>
+      </div>
+      <div class="eco-card">
+        <h4>Dafny</h4>
+        <p>A verification-aware language from Microsoft Research. Its compiler turns <code>requires</code> and <code>ensures</code> into proof obligations for an SMT solver, so the verifier is part of the normal toolchain rather than an external analyzer.</p>
+      </div>
+      <div class="eco-card">
+        <h4>Frama-C</h4>
+        <p>An analysis platform for existing C code. Contracts are written in ACSL and checked by plug-ins: WP discharges proof obligations through SMT solvers, Eva performs abstract interpretation. The C toolchain stays the C toolchain; the contracts are annotations and external tooling.</p>
+      </div>
+    </div>
+    <p style="margin-top:24px;">What XIOM takes from this lineage is the core claim behind it: a function's preconditions and postconditions belong in the language, where tools can read them. The bet XIOM adds is packaging and context -- an ownership-based systems language in which contracts are ordinary compiler input, runtime checks are on by default, and the toolchain is built for AI-assisted development.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Rust's lifetime system vs XIOM second-class references</h2>
+    <p>Both languages use ownership and borrowing instead of a garbage collector. Rust spends more machinery in the type system to make borrowing broadly expressive; XIOM deliberately does less.</p>
+    <table>
+      <tr><th style="width:220px;">Aspect</th><th>Rust</th><th>XIOM</th></tr>
+      <tr><td>Borrow checking</td><td>Borrow checker with lifetimes and non-lexical lifetimes</td><td>Lexical scope borrowing -- validity follows scope nesting</td></tr>
+      <tr><td>Lifetime annotations</td><td>Required for non-trivial cases</td><td>None in source</td></tr>
+      <tr><td>Borrow stored in a struct field</td><td>Allowed with lifetime parameters</td><td>Not allowed</td></tr>
+      <tr><td>Borrow returned from a function</td><td>Allowed with lifetime parameters</td><td>Not allowed</td></tr>
+      <tr><td>Zero-copy patterns</td><td>Borrowed views, iterators and adapters</td><td>Owned values; handles, indices or arenas for scope-crossing designs</td></tr>
+      <tr><td>Where the complexity sits</td><td>In signatures and type annotations</td><td>In the design of APIs that need escaping borrows</td></tr>
+    </table>
+    <p style="margin-top:16px;">In XIOM a reference is <strong>second-class</strong>: it cannot be returned from a function or stored in a struct field. This is a deliberate limitation, and it is the price of the simpler rule set. A borrow's life is visible by looking at the braces, and there are no lifetime parameters to thread through types. Patterns that depend on a borrow outliving its scope are expressed with owned values instead -- often a handle or index into an owning collection, or an arena -- and duplicating a value is always an explicit <code>.clone()</code>.</p>
+    <p>This is not parity with Rust, and the site does not claim it. It is a different point in the design space, chosen to keep the language's rule surface small for humans and for AI-generated code. Data races are addressed separately: <code>Send</code> and <code>Sync</code> are enforced at compile time, including on values captured by <code>spawn</code>.</p>
+    <pre><code><span class="kw">fn</span> <span class="fn">inspect</span>(items: &amp;<span class="ty">Vec</span>[<span class="ty">Int</span>]) { }   <span class="cm">// borrow -- caller keeps ownership</span>
+
+<span class="kw">fn</span> <span class="fn">build</span>() -> <span class="ty">Vec</span>[<span class="ty">Int</span>] {
+    <span class="kw">var</span> items = <span class="ty">Vec</span>.new();
+    items.push(<span class="num">1</span>);
+    <span class="kw">return</span> items;                    <span class="cm">// owned value, never a borrow</span>
+}</code></pre>
+    <p>The full <a href="https://docs.xiom-lang.org/memory-model/" style="color:var(--signal);">memory model</a> documents the rules and the patterns that replace escaping borrows.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>What runtime contracts cost</h2>
+    <p>XIOM contracts are enforced at runtime by default. <code>requires:</code>, <code>ensures:</code> and <code>invariant:</code> compile to guards that trap on violation with a structured diagnostic naming the clause, function and line. Guards are checks, so they cost something on every execution of a checked path; the project does not quote overhead percentages it has not measured publicly.</p>
+    <table>
+      <tr><th style="width:240px;">Mechanism</th><th>Cost model</th><th>When it applies</th></tr>
+      <tr><td>Runtime guard (default)</td><td>A check on each call or return, and after mutations covered by an invariant</td><td>Default for every contract unless the checks are explicitly stripped</td></tr>
+      <tr><td>Release builds</td><td>Checks removed unless <code>--runtime-contracts</code> is passed</td><td><code>--release</code>, or <code>--no-contracts</code> to strip them explicitly</td></tr>
+      <tr><td>Static proof</td><td>A proven obligation does not need a runtime guard; today the guard remains the default enforcement, and the verification path reports which obligations qualify</td><td>Supported properties, via the export, check and prove stages described below</td></tr>
+    </table>
+    <p style="margin-top:16px;">The verification path is separate from the runtime path and is reported in three stages: <code>--verify</code> <strong>exports</strong> SMT-LIB proof obligations and makes no proof claim; <code>xiom-verify --check</code> <strong>checks</strong> that output with the bundled <code>z3</code> and returns Proven, Violated or UNKNOWN; only <code>unsat</code> counts as <strong>proved</strong>. Obligations the encoder cannot express faithfully are reported UNKNOWN and never count as proofs. A contract in the source is not by itself a proof that it always holds -- the verdict is what carries weight, and it is labelled.</p>
+    <p>Compiling contract checks out of production builds is standard practice in this design space: Eiffel assertion monitoring can be disabled, and Ada assertion policies can turn checks off. The static route is the other answer, and it is the one SPARK and Dafny are built around. XIOM keeps runtime guards as the default, makes their removal an explicit flag, and treats proof as something to be earned per obligation rather than assumed.</p>
+    <p style="color:var(--muted);font-size:13px;">No performance numbers are published on this page. The project runs a reproducible Docker benchmark that records builds with contracts enabled and disabled, generated source, compiler output, runtime results, token usage and complete sessions. Results will be published together with the harness so anyone can rerun them; see the note on the <a href="why.html" style="color:var(--signal);">Why page</a>.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>What this page does not claim</h2>
+    <ul>
+      <li>It is not an exhaustive survey of prior work -- it names the projects that most directly shaped XIOM's design and omits many others.</li>
+      <li>It is not a benchmark. It contains no measured overhead numbers, and none should be inferred from the cost model above.</li>
+      <li>It is not a claim that contracts make a program correct. Contracts describe intent; enforcement and proof cover supported properties only.</li>
+      <li>It is not normative. Where this page and the specification disagree, the specification wins.</li>
+    </ul>
+  </div>
+
+  <div class="content-section" style="text-align:center;">
+    <div class="btn-group" style="justify-content:center;">
+      <a class="btn-primary" href="spec.html">read the specification</a>
+      <a class="btn-secondary" href="why.html">why XIOM exists</a>
+      <a class="btn-secondary" href="https://docs.xiom-lang.org/">language documentation</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="legal">
+      <p>XIOM is dual-licensed under <a href="LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
+      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      <p><a href="terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
+    </div>
+    <div class="foot-links social">
+      <a href="https://github.com/xiom-lang">GitHub</a>
+      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+    </div>
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="spec.html">Spec</a>
+      <a href="docs.html">Docs</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
