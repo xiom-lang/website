@@ -57,7 +57,7 @@ Every language has exceptions. XIOM doesn't.
 | Python | `try/except` -- any line can throw |
 | Go | `if err != nil` -- explicit but verbose |
 | Rust | `Result<T, E>` + `?` -- explicit, clean |
-| **XIOM** | **`Result<T, E>` + `?` -- explicit, clean** |
+| **XIOM** | **`Result[T, E]` + `?` -- explicit, clean** |
 
 ```xiom
 // Instead of:  throw new IOException("file not found");

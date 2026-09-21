@@ -887,7 +887,7 @@ The following program demonstrates: module declaration, types with invariants an
 ```xiom
 module collections.stack
 
-use xiom.io
+use xiom.io;
 
 // -- Type with invariants ----------------------------------
 
