@@ -375,6 +375,17 @@ Remaining:
     `docs/marketplace-publisher.md` holds the marketplace copy: vendor name,
     tagline, 193-character short description, ~70-word About, keywords, links
     and the legal line. Neither file is part of the site.
+16. **MkDocs syntax highlighting (done 2026-09-21)**: `docs/xiom_lexer.py` is
+    a Pygments regex lexer for XIOM (keywords, contract clauses, built-in
+    types, function names, strings, comments, numbers, labels, attributes).
+    `docs/mkdocs_hooks.py` registers it in `pygments.lexers._mapping.LEXERS`
+    during `on_config`, and `mkdocs.yml` loads `hooks: [docs/mkdocs_hooks.py]`,
+    so ```xiom fences on docs.xiom-lang.org are highlighted instead of
+    rendering as plain text. Token colours are aligned with the standalone
+    docs palette through `--md-code-hl-*` overrides in `docs/mkdocs-brand.css`
+    (light and slate). Tests: `python docs/xiom_lexer.py` self-test; the hook
+    registration was verified against Pygments 2.14 locally and the lookup
+    code is unchanged in Pygments 2.19.2 (checked from the wheel source).
 
 ## Paste-ready prompts for other lanes
 
