@@ -316,19 +316,47 @@ Remaining:
 
 ```
 Work in E:\xiom-lang\website (website lane) for the XIOM project. Read
-SESSION.md (this file) and DEPLOY.md before acting. Deploys are pull-based
-from this repo to the VPS via /opt/xiom/bin/web-deploy.sh (cron minute 23);
-push to main and it publishes within the hour, or run the script on the VPS
-with the owner in PuTTY (outputs pasted back; never request credentials).
+SESSION.md and DEPLOY.md before acting. Deploys are pull-based: push to main
+publishes the site within the hour (web-deploy.sh, cron minute 23) and the
+docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
+switch is DONE and live. The owner account has a ruleset bypass, so direct
+pushes to main are expected.
 
-Priority: (1) ops session executes the docs docroot switch on the VPS
-(script ready, `xiom-lang/ops` `docs/DOCS_MIKE_SWITCH.md`) and verifies
-`/`, `/latest/`, `/v0.60.1/`, `versions.json`, a legacy stub such as
-`/syntax.html`, and `/api/core/`; (2) compiler release workflow fires
-`repository_dispatch: compiler-release` with the tag so publishes are
-automatic; (3) stdlib lane pins its workflow action refs (blocker reported
-by ops); (4) macOS installer support once `RELEASE_BUILD_MACOS=true`;
-(5) ecosystem doc pointers stay deferred until stdlib is 100%. Keep the
-site static, ASCII-only, and driven by the mirror JSON files - never
-hardcode versions.
+State (2026-09-21): HEAD 6d2cd65. Copyright notices across the repo read
+"Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
+xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
+be named as holder. Review rounds 1-2 are applied (honest claims, Why page
+rewritten around intent -> enforcement -> AI, spec page labelled Revision
+0.3 for the core language, 128-bit primitives documented, module purpose
+lines rendered, syntax examples aligned to requires:/ensures: colons and
+use semicolons). Module purposes come from stdlib primary files; the driver
+prefers "// Purpose:" lines.
+
+Next, in order:
+1. Build the "Prior art and trade-offs" page the reviewer asked for:
+   Rust borrowing limits vs XIOM second-class references, Eiffel/Ada-SPARK/
+   Dafny/Frama-C prior art, runtime-contract cost framing. Comparisons are
+   explicitly non-normative (spec page section 8 points here).
+2. Add C# to the Concepts page and draft "XIOM for game developers" once
+   the owner provides engine facts.
+3. Benchmark showcase: the benchmark is a separate private repo plus a
+   research paper; when the owner says it is public, add a "Reproducible
+   evidence" page (task definition, generated source, compiler output,
+   runtime results, contract configuration, tool interactions, tokens,
+   environment, sessions) and link it from the Why page.
+4. If the compiler lane publishes a current specification revision, update
+   specs/ and the spec page and bump the revision label (0.3 carries a
+   2026-09-20 maintenance note for 128-bit primitives).
+5. Optional: docs syntax lint in CI (contract colons, use semicolons,
+   angle-bracket generics in XIOM snippets) to prevent drift.
+
+Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
+audience framing) per the brief already delivered; macOS installer support
+activates when RELEASE_BUILD_MACOS ships assets; ecosystem/registry doc
+pointers stay deferred until stdlib is 100%.
+
+Rules: ASCII-only; never hardcode versions (read mirror JSON); pin GitHub
+Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
+<lefterisnotas@gmail.com>); keep the site static and honest - no claim the
+implementation does not support.
 ```
