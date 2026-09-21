@@ -420,6 +420,7 @@ pointers stay deferred until stdlib is 100%.
 
 Rules: ASCII-only; never hardcode versions (read mirror JSON); pin GitHub
 Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
-<lefterisnotas@gmail.com>); keep the site static and honest - no claim the
+<lefterisnotas@gmail.com>); DCO is now a required check on main -- sign
+commits with `git commit -s`; keep the site static and honest - no claim the
 implementation does not support.
 ```
