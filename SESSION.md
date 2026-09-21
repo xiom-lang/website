@@ -362,15 +362,19 @@ Remaining:
     tab with rel=noopener, and `.footer-social` wraps on mobile. The icons
     are inline (no webfont, no external request); each anchor stays on one
     line so the markup compresses well.
-15. **Publishing assets (done 2026-09-21)**: `docs/wikipedia-draft.md` is a
-    paste-ready wikitext draft (instructions header then `--- paste below
-    this line ---`): AfC/COI/notability instructions, infobox, neutral
-    History/Design/Tooling/Licensing sections, primary-source references and
-    a Reception section left empty on purpose. It is not built or published
-    (mkdocs builds `build/mkdocs-src`, the standalone builder only walks its
-    nav lists). `docs/marketplace-publisher.md` holds the marketplace copy:
-    vendor name, tagline, 193-character short description, ~70-word About,
-    keywords, links and the legal line. Neither file is part of the site.
+15. **Publishing assets (done 2026-09-21, revised after review)**:
+    `docs/wikipedia-draft.md` is now an internal planning and fact sheet, NOT
+    article text: it states that Wikipedia prohibits LLM-generated content
+    (WP:LLM plus the speedy-deletion criterion), records the reviewer's
+    round-1 blockers (notability, COI, AI text) and fixes (infobox `released`
+    not `first appeared`, one consistent date story, the corrected Z3 nuance
+    -- runtime guards shipped, `--verify` export plus `xiom-verify --check`
+    with bundled z3, automatic static proof still planned), and carries a
+    verified fact/source table where every URL returned 200 on 2026-09-21.
+    The earlier paste-ready wikitext was removed so it cannot be submitted.
+    `docs/marketplace-publisher.md` holds the marketplace copy: vendor name,
+    tagline, 193-character short description, ~70-word About, keywords, links
+    and the legal line. Neither file is part of the site.
 
 ## Paste-ready prompts for other lanes
 
