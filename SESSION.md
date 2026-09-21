@@ -505,6 +505,17 @@ audience framing) per the brief already delivered; macOS installer support
 activates when RELEASE_BUILD_MACOS ships assets; ecosystem/registry doc
 pointers stay deferred until stdlib is 100%.
 
+Mirror CORS (owner/VPS action, found 2026-09-21): `dl.xiom-lang.org` serves
+`latest.json` and `releases/index.json` without
+`Access-Control-Allow-Origin`, so browser `fetch()` from xiom-lang.org is
+blocked; the versions page used to show "could not load mirror data" while
+the download page silently used its GitHub API fallback. Both pages now try
+the mirror first and fall back to `api.github.com/repos/xiom-lang/xiom`
+(which sends CORS), then to static links. Proper fix: add
+`add_header Access-Control-Allow-Origin "https://xiom-lang.org";` (or `*`)
+for the JSON paths in the mirror nginx config; the pages pick the mirror up
+automatically once the header exists.
+
 Rules: ASCII-only; never hardcode versions (read mirror JSON); pin GitHub
 Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
 <lefterisnotas@gmail.com>); DCO is now a required check on main -- sign

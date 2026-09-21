@@ -148,6 +148,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 (function () {
   "use strict";
   var INDEX = "https://dl.xiom-lang.org/releases/index.json";
+  var API = "https://api.github.com/repos/xiom-lang/xiom/releases?per_page=30";
   var RELEASES = "https://github.com/xiom-lang/xiom/releases";
 
   function notesUrl(tag) {
@@ -189,7 +190,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
   function fail() {
     var date = document.getElementById("current-date");
-    if (date) date.textContent = "could not load mirror data (offline or blocked)";
+    if (date) date.textContent = "could not load release data (mirror and GitHub unreachable)";
     var tbody = document.getElementById("release-rows");
     if (!tbody) return;
     tbody.textContent = "";
@@ -205,12 +206,43 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     tbody.appendChild(row);
   }
 
+  function ok(res) {
+    if (!res.ok) throw new Error("http " + res.status);
+    return res.json();
+  }
+
+  function fromMirror(data) {
+    return (data.releases || []).map(function (entry) {
+      return { tag: entry.tag, published: entry.published };
+    });
+  }
+
+  function fromGitHub(releases) {
+    return releases
+      .filter(function (entry) { return !entry.draft; })
+      .map(function (entry) {
+        return { tag: entry.tag_name, published: entry.published_at };
+      });
+  }
+
+  // Mirror first: it is the canonical source once it sends CORS headers.
+  // The mirror does not send Access-Control-Allow-Origin (checked 2026-09-21),
+  // so browsers fall through to the GitHub API, which does.
   fetch(INDEX, { cache: "no-store" })
-    .then(function (res) { if (!res.ok) throw new Error("index " + res.status); return res.json(); })
+    .then(ok)
     .then(function (data) {
-      var entries = data.releases || [];
+      var entries = fromMirror(data);
       if (!entries.length) throw new Error("empty index");
       render(entries);
+    })
+    .catch(function () {
+      return fetch(API, { headers: { "Accept": "application/vnd.github+json" } })
+        .then(ok)
+        .then(function (releases) {
+          var entries = fromGitHub(releases);
+          if (!entries.length) throw new Error("empty api");
+          render(entries);
+        });
     })
     .catch(fail);
 })();

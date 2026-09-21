@@ -225,6 +225,10 @@ cargo test --workspace --lib</code></pre>
 <script>
 (function () {
   "use strict";
+  // Mirror first, then the GitHub API. The mirror does not currently send
+  // Access-Control-Allow-Origin (checked 2026-09-21), so browsers block this
+  // fetch and the API fallback serves the page. Keep both paths: the mirror
+  // becomes the canonical source as soon as the header exists.
   var MIRROR = "https://dl.xiom-lang.org/latest.json";
   var API = "https://api.github.com/repos/xiom-lang/xiom/releases/latest";
   var FALLBACK = "https://github.com/xiom-lang/xiom/releases/latest";
