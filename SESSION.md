@@ -277,17 +277,25 @@ Remaining:
    "one way to write each thing" and "no hidden allocations"; repositioned
    the Why page around intent -> enforcement -> AI; the spec page is now
    labelled Revision 0.3 for the core language with implementation docs
-   separate and the comparison table removed). Still open: publish a
-   current specification revision (compiler lane); publish benchmark
-   results with the harness -- the benchmark lives in its own repository and
-   includes a research paper, both private for now; the owner will say when
-   to link and showcase them; verification wording is settled (compiler
-   lane, 2026-09-19): checked/exported/proved documented in `compiler.md`,
-   `--verify` exports, `xiom-verify --check` runs the bundled z3, unsat is
-   the only proof verdict; a prior-art and trade-offs
-   page; a "XIOM for game developers" page; C# on the concepts page;
-   playground copy fixes ("Never Crash", stats bar); the legal-entity
-   wording is an owner decision.
+   separate and the comparison table removed). Verification wording is
+   settled (compiler lane, 2026-09-19): checked/exported/proved documented
+   in `compiler.md`, `--verify` exports, `xiom-verify --check` runs the
+   bundled z3, unsat is the only proof verdict.
+9. **Prior art and trade-offs (done 2026-09-21)**: `prior-art.html` covers
+   the Design by Contract lineage (Eiffel, Ada 2012/SPARK, Dafny, Frama-C),
+   Rust's lifetime system vs XIOM second-class references, and the runtime
+   contract cost model without invented numbers. It is explicitly
+   non-normative; spec section 8, the Why page and the homepage why-section
+   point at it, and the sitemap lists it. Concepts and memory-model wording
+   was aligned in the same pass (no "same safety as Rust", contracts are not
+   unique to XIOM) and C# rows were added to the Concepts page (intro, null,
+   async `Task`, `IDisposable` mapping). Still open: a "XIOM for game
+   developers" page (waiting on owner engine facts); publish benchmark
+   results with the harness -- the benchmark and its research paper live in
+   a private repository and the owner will say when to link and showcase
+   them; publish a current specification revision (compiler lane);
+   playground copy fixes ("Never Crash", stats bar) belong to the playground
+   lane; the legal-entity wording is an owner decision.
 
 ## Rules
 
@@ -322,7 +330,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-09-21): HEAD 6d2cd65. Copyright notices across the repo read
+State (2026-09-21): HEAD c54643e. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
@@ -330,24 +338,24 @@ rewritten around intent -> enforcement -> AI, spec page labelled Revision
 0.3 for the core language, 128-bit primitives documented, module purpose
 lines rendered, syntax examples aligned to requires:/ensures: colons and
 use semicolons). Module purposes come from stdlib primary files; the driver
-prefers "// Purpose:" lines.
+prefers "// Purpose:" lines. The "Prior art and trade-offs" page is live
+(prior-art.html) and linked from spec section 8, the Why page and the
+homepage why-section; C# rows were added to the Concepts page and the
+docs wording now matches the page (no "same safety as Rust", contracts are
+not unique to XIOM).
 
 Next, in order:
-1. Build the "Prior art and trade-offs" page the reviewer asked for:
-   Rust borrowing limits vs XIOM second-class references, Eiffel/Ada-SPARK/
-   Dafny/Frama-C prior art, runtime-contract cost framing. Comparisons are
-   explicitly non-normative (spec page section 8 points here).
-2. Add C# to the Concepts page and draft "XIOM for game developers" once
-   the owner provides engine facts.
-3. Benchmark showcase: the benchmark is a separate private repo plus a
+1. Draft "XIOM for game developers" once the owner provides engine facts
+   (C# coverage on the Concepts page landed 2026-09-21).
+2. Benchmark showcase: the benchmark is a separate private repo plus a
    research paper; when the owner says it is public, add a "Reproducible
    evidence" page (task definition, generated source, compiler output,
    runtime results, contract configuration, tool interactions, tokens,
    environment, sessions) and link it from the Why page.
-4. If the compiler lane publishes a current specification revision, update
+3. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
-5. Optional: docs syntax lint in CI (contract colons, use semicolons,
+4. Optional: docs syntax lint in CI (contract colons, use semicolons,
    angle-bracket generics in XIOM snippets) to prevent drift.
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
