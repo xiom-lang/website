@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom -- Memory Model</title>
+<title>xiom -- Contributing</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="stylesheet" href="style.css">
@@ -44,7 +44,7 @@
         <a href="examples.html" style="color:var(--muted);">By Example</a>
         <a href="syntax.html" style="color:var(--muted);">Syntax</a>
         <a href="types.html" style="color:var(--muted);">Type System</a>
-        <a href="memory-model.html" style="color:var(--signal);font-weight:500;">Memory Model</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
         <a href="unsafe.html" style="color:var(--muted);">Unsafe</a>
         <a href="contracts.html" style="color:var(--muted);">Contracts</a>
         <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
@@ -55,7 +55,7 @@
         <a href="ffi.html" style="color:var(--muted);">C FFI</a>
         <a href="compiler.html" style="color:var(--muted);">Compiler</a>
         <a href="registry.html" style="color:var(--muted);">Package Registry</a>
-        <a href="contributing.html" style="color:var(--muted);">Contributing</a>
+        <a href="contributing.html" style="color:var(--signal);font-weight:500;">Contributing</a>
         <a href="stdlib.html" style="color:var(--muted);">Stdlib Reference</a>
         <a href="AI_CONTEXT.html" style="color:var(--muted);">AI Coding Ref</a>
         <div style="margin-top:20px;"></div>
@@ -106,137 +106,90 @@
 
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">Memory Model</h1>
-      <p>XIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
-<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are compile errors, and patterns that need escaping borrows use owned values instead.</p>
-<h2>Ownership Rules</h2>
+      <h1 style="font-size:36px;margin-bottom:24px;">Contributing</h1>
+      <blockquote><p><strong>Quick look:</strong> fork, branch <code>feat/&lt;topic&gt;</code>, Conventional Commits, <code>git commit -s</code>, pull request. The organization default guide is <a href="https://github.com/xiom-lang/.github/blob/main/CONTRIBUTING.html">CONTRIBUTING.md</a>; this page summarizes it and links to the policy sources. If they disagree, they win.</p></blockquote>
+<p>XIOM is pre-beta and the standard library is beta. The same summary lives on the website's <a href="https://xiom-lang.org/contributing.html">Contributing page</a>.</p>
+<h2>Policy sources</h2>
 <table>
 <tr>
-<th>Rule</th>
-<th>Description</th>
+<th>Topic</th>
+<th>Document</th>
 </tr>
 <tr>
-<td><strong>Single Owner</strong></td>
-<td>Every value has exactly one owner at any time. Assignment moves ownership.</td>
+<td>Contribution guide (org default)</td>
+<td><a href="https://github.com/xiom-lang/.github/blob/main/CONTRIBUTING.html">CONTRIBUTING.md</a></td>
 </tr>
 <tr>
-<td><strong>Scope Lifetime</strong></td>
-<td>A value is freed when its owning binding leaves scope. No GC, no manual free.</td>
+<td>Licensing: <code>MIT OR Apache-2.0</code>, inbound equals outbound, no CLA</td>
+<td><a href="https://github.com/xiom-lang/.github/blob/main/docs/LICENSING.html">docs/LICENSING.md</a></td>
 </tr>
 <tr>
-<td><strong>Read Borrow (<code>&amp;T</code>)</strong></td>
-<td>Multiple simultaneous read borrows allowed. No mutation during active read borrows.</td>
+<td>Developer Certificate of Origin 1.1</td>
+<td><a href="https://github.com/xiom-lang/.github/blob/main/DCO">DCO</a></td>
 </tr>
 <tr>
-<td><strong>Write Borrow (<code>&amp;mut T</code>)</strong></td>
-<td>Exactly one write borrow at a time. No other borrows active simultaneously.</td>
+<td>Governance and the RFC process</td>
+<td><a href="https://github.com/xiom-lang/.github/blob/main/GOVERNANCE.html">GOVERNANCE.md</a></td>
 </tr>
 <tr>
-<td><strong>Explicit Clone</strong></td>
-<td>Duplicating a value requires <code>.clone()</code>. No implicit deep copy.</td>
+<td>Code of conduct</td>
+<td><a href="https://github.com/xiom-lang/.github/blob/main/CODE_OF_CONDUCT.html">CODE_OF_CONDUCT.md</a></td>
 </tr>
 <tr>
-<td><strong>Move On Call</strong></td>
-<td>Passing a value to a function moves ownership unless the parameter is a borrow.</td>
+<td>Support channels</td>
+<td><a href="https://github.com/xiom-lang/.github/blob/main/SUPPORT.html">SUPPORT.md</a></td>
+</tr>
+<tr>
+<td>Security reporting (private, never a public issue)</td>
+<td><a href="https://github.com/xiom-lang/.github/blob/main/SECURITY.html">SECURITY.md</a></td>
 </tr>
 </table>
-<h2>Borrowing</h2>
-<p>Borrows expire at the end of the block or statement they are created in. You can see when a borrow ends by looking at the braces.</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>consume</span>(data: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }          <span class='cm'>// takes ownership</span>
-<span class='kw'>fn</span> <span class='func'>read_only</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }       <span class='cm'>// read borrow</span>
-<span class='kw'>fn</span> <span class='func'>mutate</span>(data: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }      <span class='cm'>// write borrow</span>
-
-<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>read_only</span>(&amp;v);        <span class='cm'>// borrow, v still valid</span>
-<span class='func'>mutate</span>(&amp;mut v);       <span class='cm'>// write borrow, v still valid  </span>
-<span class='func'>consume</span>(v);           <span class='cm'>// move -- v no longer usable here</span>
-<span class='cm'>// <span class='func'>read_only</span>(&amp;v)     // COMPILE ERROR: v was moved</span>
-</code></pre>
-<h2>What the Model Cannot Handle</h2>
-<p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
-<p>This is a constraint, not a bug -- it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
-<h2>Clone</h2>
-<p>Use <code>.clone()</code> to explicitly duplicate a value:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>let</span> a = <span class='ty'>Vec</span>.<span class='func'>new</span>();
-a.<span class='func'>push</span>(<span class='num'>1</span>);
-
-<span class='kw'>let</span> b = a.<span class='func'>clone</span>();    <span class='cm'>// explicit deep copy</span>
-<span class='cm'>// a <span class='kw'>is</span> still valid -- ownership was not moved</span>
-
-<span class='func'>consume</span>(a);           <span class='cm'>// a <span class='kw'>is</span> moved</span>
-<span class='cm'>// b <span class='kw'>is</span> still valid  -- it was cloned, not moved</span>
-</code></pre>
-<p>Types with <code>derive[Clone]</code> get automatic clone implementations. Manual <code>clone()</code> methods can be written for types that need custom duplication logic.</p>
-<h2>Move Semantics</h2>
-<p>Passing a value to a function moves ownership:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>take</span>(v: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
-  <span class='cm'>// v <span class='kw'>is</span> owned here -- freed at end of scope</span>
-}
-
-<span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>take</span>(data);           <span class='cm'>// ownership moves to <span class='func'>take</span>()</span>
-<span class='cm'>// data <span class='kw'>is</span> no longer valid here</span>
-</code></pre>
-<p>Use borrows when you don't need ownership:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>inspect</span>(v: &amp;<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
-  <span class='cm'>// read-only access -- caller retains ownership</span>
-}
-
-<span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>inspect</span>(&amp;data);       <span class='cm'>// borrow -- data still valid</span>
-<span class='func'>inspect</span>(&amp;data);       <span class='cm'>// can borrow again</span>
-</code></pre>
-<h2>Unsafe Blocks</h2>
-<p>Raw pointer arithmetic and C interop that cannot be verified by the compiler are permitted only inside explicit <code>unsafe { }</code> blocks.</p>
-<pre class="language-xiom"><code>
-<span class='kw'>unsafe</span> {
-  <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>some_c_function</span>();
-  <span class='kw'>let</span> value = *raw;   <span class='cm'>// dereference -- programmer guarantees validity</span>
-}
-</code></pre>
-<p>The <code>unsafe</code> keyword is a declaration that the programmer takes responsibility for memory safety inside that scope. Unsafe blocks are visible in code review and audits. They cannot be hidden.</p>
-<p>Three rules matter when writing them:</p>
+<h2>The path</h2>
 <ul>
-<li>Inline assembly (<code>asm("...")</code>) is only allowed inside an <code>unsafe</code> block.</li>
-<li>A function whose entire body is a single <code>unsafe</code> block must declare <code>requires:</code> (the pre-entry contract); the compiler rejects it otherwise.</li>
-<li>Safe functions cannot return a raw pointer (<code>*T</code>), and calling an <code>extern "C"</code> function from safe code is an error unless that function declares contracts.</li>
+<li>Fork the repository and branch from <code>main</code>: <code>feat/&lt;topic&gt;</code>, <code>fix/&lt;topic&gt;</code> or <code>docs/&lt;topic&gt;</code>.</li>
+<li>Make one logical change; add or update tests and keep documentation with it.</li>
+<li>Write Conventional Commits in the imperative mood (<code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>test:</code>, <code>chore:</code>, <code>refactor:</code>); breaking changes use <code>!</code> and a <code>BREAKING CHANGE:</code> paragraph.</li>
+<li>Sign off every commit: <code>git commit -s</code>. The name and email must match the commit author or committer.</li>
+<li>Open the pull request with the repository template and paste the exact commands you ran.</li>
+<li>Required checks must pass and a maintainer reviews; keep the branch rebased, <code>main</code> stays linear.</li>
 </ul>
-<p>The <a href="compiler.html">compiler guide</a> lists the full confinement model and the <a href="ffi.html">C FFI guide</a> shows the sanctioned wrapper patterns. Every unsafe block is a confined transaction with a guard heap, fault trapping, a once-only transient retry and zero-escape rules; the <a href="unsafe.html">Unsafe</a> guide documents all of it.</p>
-<h2>Differences from Rust</h2>
+<p>Language and standard library changes go through the RFC process, which opens with the public launch. Routine fixes, docs, tests and tooling need one maintainer approval and green checks.</p>
+<h2>Sign-off, in practice</h2>
+<pre class="language-text"><code>
+git commit -s -m <span class='str'>fix: correct tz offset <span class='kw'>for</span> DST boundaries</span>
+
+Signed-off-by: Your Name &lt;you@example.com&gt;
+</code></pre>
+<p>CI checks every commit in a pull request. Forgot a sign-off? <code>git commit --amend -s --no-edit</code> fixes the last commit; <code>git rebase --signoff main</code> signs a whole branch.</p>
+<h2>Where things live</h2>
 <table>
 <tr>
-<th></th>
-<th>XIOM</th>
-<th>Rust</th>
+<th>Repository</th>
+<th>Contents</th>
 </tr>
 <tr>
-<td>Lifetime annotations</td>
-<td>None</td>
-<td>Required for non-trivial cases</td>
+<td><code>xiom</code></td>
+<td>Compiler and tooling crates plus end-to-end tests.</td>
 </tr>
 <tr>
-<td>Borrow scope</td>
-<td>Lexical (visible by braces)</td>
-<td>NLL (non-lexical lifetimes)</td>
+<td><code>stdlib</code></td>
+<td>Standard library sources, smoke corpus and known-answer vectors.</td>
 </tr>
 <tr>
-<td>Borrow in structs</td>
-<td>Not allowed</td>
-<td>Allowed with lifetime parameters</td>
+<td><code>registry</code></td>
+<td>Package registry service.</td>
 </tr>
 <tr>
-<td>Return borrows</td>
-<td>Not allowed</td>
-<td>Allowed with lifetime parameters</td>
+<td><code>website</code></td>
+<td>This site and the documentation sources.</td>
 </tr>
 <tr>
-<td>Learning curve</td>
-<td>Moderate</td>
-<td>Steep</td>
+<td><code>playground</code></td>
+<td>Browser playground.</td>
+</tr>
+<tr>
+<td><code>.github</code></td>
+<td>Organization profile, process documents and default templates.</td>
 </tr>
 </table>
     </main>

@@ -103,7 +103,7 @@ Three rules matter when writing them:
 - A function whose entire body is a single `unsafe` block must declare `requires:` (the pre-entry contract); the compiler rejects it otherwise.
 - Safe functions cannot return a raw pointer (`*T`), and calling an `extern "C"` function from safe code is an error unless that function declares contracts.
 
-The [compiler guide](compiler.md) lists the full confinement model and the [C FFI guide](ffi.md) shows the sanctioned wrapper patterns.
+The [compiler guide](compiler.md) lists the full confinement model and the [C FFI guide](ffi.md) shows the sanctioned wrapper patterns. Every unsafe block is a confined transaction with a guard heap, fault trapping, a once-only transient retry and zero-escape rules; the [Unsafe](unsafe.md) guide documents all of it.
 
 ## Differences from Rust
 

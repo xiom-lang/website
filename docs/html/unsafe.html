@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom -- Memory Model</title>
+<title>xiom -- Unsafe</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="stylesheet" href="style.css">
@@ -44,8 +44,8 @@
         <a href="examples.html" style="color:var(--muted);">By Example</a>
         <a href="syntax.html" style="color:var(--muted);">Syntax</a>
         <a href="types.html" style="color:var(--muted);">Type System</a>
-        <a href="memory-model.html" style="color:var(--signal);font-weight:500;">Memory Model</a>
-        <a href="unsafe.html" style="color:var(--muted);">Unsafe</a>
+        <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
+        <a href="unsafe.html" style="color:var(--signal);font-weight:500;">Unsafe</a>
         <a href="contracts.html" style="color:var(--muted);">Contracts</a>
         <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
         <a href="modules.html" style="color:var(--muted);">Modules</a>
@@ -106,139 +106,163 @@
 
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">Memory Model</h1>
-      <p>XIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
-<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are compile errors, and patterns that need escaping borrows use owned values instead.</p>
-<h2>Ownership Rules</h2>
+      <h1 style="font-size:36px;margin-bottom:24px;">Unsafe</h1>
+      <blockquote><p><strong>Quick look:</strong> <code>unsafe { ... }</code> is a confined transaction. Raw pointers, extern calls and inline assembly live inside it; everything that could escape is checked at the block boundary.</p></blockquote>
+<p>XIOM is memory-safe by default. <code>unsafe</code> exists for the three things a compiler cannot verify on its own: raw pointer operations, calls into C, and inline assembly. Writing <code>unsafe</code> does not switch safety off -- it marks a region where the compiler applies a confinement model instead of ordinary rules.</p>
+<h2>The Block Rule</h2>
+<p><code>unsafe</code> applies strictly to a block expression. It cannot prefix a declaration:</p>
+<pre class="language-xiom"><code>
+<span class='kw'>fn</span> <span class='func'>abi_like</span>() -&gt; <span class='ty'>Int</span>
+  <span class='kw'>requires</span>: <span class='kw'>true</span>
+{
+  <span class='kw'>unsafe</span> {
+    <span class='func'>asm</span>(<span class='str'>nop</span>);
+    <span class='kw'>return</span> <span class='num'>0</span>;
+  }
+}
+</code></pre>
+<p><code>unsafe fn</code>, <code>unsafe module</code>, <code>unsafe struct</code> and <code>unsafe impl</code> are hard errors, not warnings. The compiler reports: "<code>unsafe</code> applies only to block expressions <code>unsafe { ... }</code>; it cannot prefix declarations".</p>
+<p>Inline assembly is only available inside an <code>unsafe</code> block. A function whose entire body is a single <code>unsafe</code> block must declare a <code>requires:</code> clause (the pre-entry contract), because callers need to know what they are buying into:</p>
+<pre class="language-xiom"><code>
+<span class='kw'>fn</span> <span class='func'>read_value</span>() -&gt; <span class='ty'>Int</span>
+  <span class='kw'>requires</span>: <span class='kw'>true</span>
+{
+  <span class='kw'>unsafe</span> {
+    <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>get_ptr</span>();
+    <span class='kw'>return</span> *raw;
+  }
+}
+</code></pre>
+<h2>The Confinement Model</h2>
+<p>Every <code>unsafe</code> block runs as a transaction. The requirements below are enforced by the compiler or by the runtime fault path:</p>
 <table>
 <tr>
 <th>Rule</th>
-<th>Description</th>
+<th>What it enforces</th>
 </tr>
 <tr>
-<td><strong>Single Owner</strong></td>
-<td>Every value has exactly one owner at any time. Assignment moves ownership.</td>
+<td>Lexical</td>
+<td><code>unsafe</code> is a block expression only. Whole-body unsafe functions declare <code>requires:</code>.</td>
 </tr>
 <tr>
-<td><strong>Scope Lifetime</strong></td>
-<td>A value is freed when its owning binding leaves scope. No GC, no manual free.</td>
+<td>Extern gate</td>
+<td>Calling an <code>extern "C"</code> function from safe code is an error. Functions that declare contracts are sanctioned wrappers; otherwise call inside <code>unsafe</code>.</td>
 </tr>
 <tr>
-<td><strong>Read Borrow (<code>&amp;T</code>)</strong></td>
-<td>Multiple simultaneous read borrows allowed. No mutation during active read borrows.</td>
+<td>Signature gate</td>
+<td>A safe function cannot cast or return a raw pointer outside <code>unsafe</code>. The integer-to-pointer cast is itself gated.</td>
 </tr>
 <tr>
-<td><strong>Write Borrow (<code>&amp;mut T</code>)</strong></td>
-<td>Exactly one write borrow at a time. No other borrows active simultaneously.</td>
+<td>Pre-entry contracts</td>
+<td>A function whose entire body is one <code>unsafe</code> block must declare <code>requires:</code>.</td>
 </tr>
 <tr>
-<td><strong>Explicit Clone</strong></td>
-<td>Duplicating a value requires <code>.clone()</code>. No implicit deep copy.</td>
+<td>Heap isolation</td>
+<td>Allocations inside the block route to a per-thread guard arena, discarded wholesale at block exit.</td>
 </tr>
 <tr>
-<td><strong>Move On Call</strong></td>
-<td>Passing a value to a function moves ownership unless the parameter is a borrow.</td>
+<td>Stack guard</td>
+<td>A per-thread guard page is armed at block entry; a stack overflow faults in the red zone instead of writing into adjacent memory.</td>
+</tr>
+<tr>
+<td>Fault trap</td>
+<td>A hardware fault inside the block is caught by the platform trampoline (SEH on Windows, sigsetjmp elsewhere); the process survives.</td>
+</tr>
+<tr>
+<td>Transient retry</td>
+<td>A transient fault is retried once on a fresh memory slot. <code>#[unsafe_no_retry]</code> disables this for deterministic behavior.</td>
+</tr>
+<tr>
+<td>Zero escape</td>
+<td>A raw pointer, <code>&amp;T</code> / <code>&amp;mut T</code>, function type, or struct containing them cannot be the block's tail value. String tails are copied out to the main heap before the arena resets.</td>
+</tr>
+<tr>
+<td>FFI ownership</td>
+<td>An extern call returning <code>*T</code> must be converted to an owned XIOM type before the block tail (<code>ffi.safe_ptr_from_raw</code>, <code>box_from_ptr</code>, <code>vec_from_ptr_with_free</code>, <code>str_from_ptr_owned</code>).</td>
 </tr>
 </table>
-<h2>Borrowing</h2>
-<p>Borrows expire at the end of the block or statement they are created in. You can see when a borrow ends by looking at the braces.</p>
+<h2>Attributes</h2>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>consume</span>(data: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }          <span class='cm'>// takes ownership</span>
-<span class='kw'>fn</span> <span class='func'>read_only</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }       <span class='cm'>// read borrow</span>
-<span class='kw'>fn</span> <span class='func'>mutate</span>(data: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }      <span class='cm'>// write borrow</span>
-
-<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>read_only</span>(&amp;v);        <span class='cm'>// borrow, v still valid</span>
-<span class='func'>mutate</span>(&amp;mut v);       <span class='cm'>// write borrow, v still valid  </span>
-<span class='func'>consume</span>(v);           <span class='cm'>// move -- v no longer usable here</span>
-<span class='cm'>// <span class='func'>read_only</span>(&amp;v)     // COMPILE ERROR: v was moved</span>
+#[unsafe_no_retry]   <span class='cm'>// disable the once-only transient <span class='func'>retry</span>(deterministic faults)</span>
+#[unsafe_direct]     <span class='cm'>// trusted escape hatch: plain <span class='kw'>unsafe</span>, no trampoline, arena or</span>
+                     <span class='cm'>// guard page. Stdlib/selfhost only; user code <span class='kw'>requires</span></span>
+                     <span class='cm'>// --enable-<span class='kw'>unsafe</span>-direct and every <span class='kw'>use</span> <span class='kw'>is</span> warned and audited.</span>
 </code></pre>
-<h2>What the Model Cannot Handle</h2>
-<p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
-<p>This is a constraint, not a bug -- it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
-<h2>Clone</h2>
-<p>Use <code>.clone()</code> to explicitly duplicate a value:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>let</span> a = <span class='ty'>Vec</span>.<span class='func'>new</span>();
-a.<span class='func'>push</span>(<span class='num'>1</span>);
-
-<span class='kw'>let</span> b = a.<span class='func'>clone</span>();    <span class='cm'>// explicit deep copy</span>
-<span class='cm'>// a <span class='kw'>is</span> still valid -- ownership was not moved</span>
-
-<span class='func'>consume</span>(a);           <span class='cm'>// a <span class='kw'>is</span> moved</span>
-<span class='cm'>// b <span class='kw'>is</span> still valid  -- it was cloned, not moved</span>
-</code></pre>
-<p>Types with <code>derive[Clone]</code> get automatic clone implementations. Manual <code>clone()</code> methods can be written for types that need custom duplication logic.</p>
-<h2>Move Semantics</h2>
-<p>Passing a value to a function moves ownership:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>take</span>(v: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
-  <span class='cm'>// v <span class='kw'>is</span> owned here -- freed at end of scope</span>
-}
-
-<span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>take</span>(data);           <span class='cm'>// ownership moves to <span class='func'>take</span>()</span>
-<span class='cm'>// data <span class='kw'>is</span> no longer valid here</span>
-</code></pre>
-<p>Use borrows when you don't need ownership:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>inspect</span>(v: &amp;<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
-  <span class='cm'>// read-only access -- caller retains ownership</span>
-}
-
-<span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>inspect</span>(&amp;data);       <span class='cm'>// borrow -- data still valid</span>
-<span class='func'>inspect</span>(&amp;data);       <span class='cm'>// can borrow again</span>
-</code></pre>
-<h2>Unsafe Blocks</h2>
-<p>Raw pointer arithmetic and C interop that cannot be verified by the compiler are permitted only inside explicit <code>unsafe { }</code> blocks.</p>
-<pre class="language-xiom"><code>
-<span class='kw'>unsafe</span> {
-  <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>some_c_function</span>();
-  <span class='kw'>let</span> value = *raw;   <span class='cm'>// dereference -- programmer guarantees validity</span>
-}
-</code></pre>
-<p>The <code>unsafe</code> keyword is a declaration that the programmer takes responsibility for memory safety inside that scope. Unsafe blocks are visible in code review and audits. They cannot be hidden.</p>
-<p>Three rules matter when writing them:</p>
-<ul>
-<li>Inline assembly (<code>asm("...")</code>) is only allowed inside an <code>unsafe</code> block.</li>
-<li>A function whose entire body is a single <code>unsafe</code> block must declare <code>requires:</code> (the pre-entry contract); the compiler rejects it otherwise.</li>
-<li>Safe functions cannot return a raw pointer (<code>*T</code>), and calling an <code>extern "C"</code> function from safe code is an error unless that function declares contracts.</li>
-</ul>
-<p>The <a href="compiler.html">compiler guide</a> lists the full confinement model and the <a href="ffi.html">C FFI guide</a> shows the sanctioned wrapper patterns. Every unsafe block is a confined transaction with a guard heap, fault trapping, a once-only transient retry and zero-escape rules; the <a href="unsafe.html">Unsafe</a> guide documents all of it.</p>
-<h2>Differences from Rust</h2>
+<h2>Fault Handling</h2>
+<p>A fault inside a confined block does not abort the process. The block yields a recoverable zero for the enclosing function's return type, and the fault is classified:</p>
 <table>
 <tr>
-<th></th>
-<th>XIOM</th>
-<th>Rust</th>
+<th>Code</th>
+<th>Cause</th>
 </tr>
 <tr>
-<td>Lifetime annotations</td>
-<td>None</td>
-<td>Required for non-trivial cases</td>
+<td>1</td>
+<td>Access violation (SIGSEGV)</td>
 </tr>
 <tr>
-<td>Borrow scope</td>
-<td>Lexical (visible by braces)</td>
-<td>NLL (non-lexical lifetimes)</td>
+<td>2</td>
+<td>Illegal instruction (SIGILL)</td>
 </tr>
 <tr>
-<td>Borrow in structs</td>
-<td>Not allowed</td>
-<td>Allowed with lifetime parameters</td>
+<td>3</td>
+<td>Floating-point error (SIGFPE)</td>
 </tr>
 <tr>
-<td>Return borrows</td>
-<td>Not allowed</td>
-<td>Allowed with lifetime parameters</td>
+<td>4</td>
+<td>Stack overflow</td>
 </tr>
 <tr>
-<td>Learning curve</td>
-<td>Moderate</td>
-<td>Steep</td>
+<td>5</td>
+<td>Guard page hit</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Other</td>
 </tr>
 </table>
+<p>Runtime types for callers that want the details:</p>
+<pre class="language-xiom"><code>
+<span class='kw'>pub</span> <span class='kw'>type</span> HardwareFault     = { signal: <span class='ty'>Str</span>; pc: <span class='ty'>UInt64</span>; retried: <span class='ty'>Bool</span>; }
+<span class='kw'>pub</span> <span class='kw'>type</span> ContractViolation = { contract: <span class='ty'>Str</span>; }
+</code></pre>
+<h2>A Safe Wrapper for C</h2>
+<p>The pattern the compiler expects: a function with a contract that owns the unsafe block, and converts any raw result into an owned XIOM value before returning.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>extern</span> <span class='str'>C</span> {
+  <span class='kw'>fn</span> <span class='func'>get_ptr</span>() -&gt; *<span class='ty'>Int</span>;
+}
+
+<span class='kw'>fn</span> <span class='func'>read_value</span>() -&gt; <span class='ty'>Int</span>
+  <span class='kw'>requires</span>: <span class='kw'>true</span>
+{
+  <span class='kw'>unsafe</span> {
+    <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>get_ptr</span>();
+    <span class='kw'>let</span> value = *raw;
+    <span class='kw'>return</span> value;
+  }
+}
+</code></pre>
+<p>Callers see a normal safe function. The unsafe region is at the boundary, in one place, visible in review.</p>
+<h2>Auditing Unsafe Code</h2>
+<p>The compiler can report what each <code>unsafe</code> block does:</p>
+<pre><code>
+xiom --sandbox file.xi              # text safety report
+xiom --sandbox=strict file.xi       # fail the build on HIGH severity findings
+xiom --sandbox-report=json file.xi  # machine-readable report
+</code></pre>
+<p><code>#[unsafe_direct]</code> is the only escape from confinement, and using it is deliberately loud: the compiler prints a warning on every invocation so release logs cannot silently contain unguarded code.</p>
+<h2>What Unsafe Does Not Change</h2>
+<ul>
+<li>Memory safety in safe code: ownership, borrowing and <code>Send</code>/<code>Sync</code> rules are unchanged.</li>
+<li>Contracts: they still run (unless stripped) inside and outside unsafe blocks.</li>
+<li>Review expectations: an unsafe block is the place to document the invariant the compiler cannot see.</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+<li><a href="memory-model.html">Memory Model</a> -- ownership, borrowing, and where unsafe fits</li>
+<li><a href="ffi.html">C FFI</a> -- extern declarations and wrapper patterns</li>
+<li><a href="compiler.html">Compiler</a> -- flags, targets, and the confinement model summary</li>
+</ul>
     </main>
 
   </div>

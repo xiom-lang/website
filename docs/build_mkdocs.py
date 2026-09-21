@@ -46,6 +46,7 @@ NAV = [
     ("syntax.md", "Syntax"),
     ("types.md", "Type System"),
     ("memory-model.md", "Memory Model"),
+    ("unsafe.md", "Unsafe"),
     ("contracts.md", "Contracts"),
     ("error-handling.md", "Error Handling"),
     ("modules.md", "Modules"),
@@ -55,6 +56,7 @@ NAV = [
     ("ffi.md", "C FFI"),
     ("compiler.md", "Compiler"),
     ("registry.md", "Package Registry"),
+    ("contributing.md", "Contributing"),
 ]
 
 STUB = """<!DOCTYPE html>

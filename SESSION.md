@@ -339,6 +339,20 @@ Remaining:
     "accepted but not canonical". Compiler-lane discrepancies to report:
     the spec's `Byte` alias is not implemented, and `if let` appears in the
     spec/older material only.
+13. **Unsafe guide and Contributing hub (done 2026-09-21)**: a dedicated
+    `docs/language/unsafe.md` now documents the confinement model end to end
+    (block rule, extern and signature gates, pre-entry contracts, guard heap,
+    stack guard, fault trap with codes, once-only retry, zero-escape rules,
+    FFI ownership, `#[unsafe_no_retry]` / `#[unsafe_direct]`, the safe C
+    wrapper pattern, and `--sandbox` auditing); it is wired into both docs
+    navs and linked from the memory model. The site also gained
+    `contributing.html` plus a docs mirror (`docs/language/contributing.md`):
+    pre-beta status, links to the .github policy sources (CONTRIBUTING,
+    LICENSING, DCO, GOVERNANCE, CODE_OF_CONDUCT, SUPPORT, SECURITY), the
+    fork-to-PR path, signed-off commit examples and the repository map.
+    Contributing is in the top nav and the footer Project column on every
+    page, the landing "Start contributing" card points at it, and the
+    sitemap lists it. Commit `-s` sign-off is now used.
 
 ## Rules
 
@@ -393,7 +407,9 @@ teaching removed from the user guides. All guide syntax was audited against
 a local v0.61.0 compiler build on 2026-09-21 (see item 12): `if let`, range
 expressions and the `Byte` alias are not implemented and the docs no longer
 claim them; labeled loops, `loop`, `defer`, `const` blocks, `while let` and
-the numeric widths/casts are now documented and probe-verified.
+the numeric widths/casts are now documented and probe-verified. The unsafe
+guide and the Contributing hub landed on 2026-09-21 (items 12-13); commits
+now carry `-s` sign-off.
 
 Next, in order:
 1. Draft "XIOM for game developers" once the owner provides engine facts
@@ -406,12 +422,13 @@ Next, in order:
 3. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
-4. Incoming peer requests (owner decision, not started): the registry session
-   asks for an "Editor support" block on the install page (xiom-lsp/xiom-dbg
-   ship in the archives, VS Code Marketplace/Open VSX links once published,
-   editors/README.md matrix for other editors, toolchain-first prerequisite);
-   the .github session asks for a Contributing hub page plus nav/footer links
-   and a docs/contributing.md, committed with `git commit -s` (DCO check).
+4. Editor support block on the install page (registry session request, owner
+   to confirm): toolchain first, then the editor integration; xiom-lsp and
+   xiom-dbg ship in the archives; VS Code Marketplace and Open VSX links once
+   the compiler session publishes the universal VSIX; the MCP tool can query
+   the registry (link the PUBLISHING/USING docs); other editors link to
+   editors/README.md's support matrix (Neovim, JetBrains, Helix, Sublime,
+   Emacs, Zed planned).
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS installer support

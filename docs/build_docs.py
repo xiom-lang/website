@@ -288,6 +288,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <a href="{site_base}ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="{site_base}roadmap.html">Roadmap</a>
+      <a href="{site_base}contributing.html">Contributing</a>
       <a href="{site_base}versions.html">Versions</a>
       <a href="https://playground.xiom-lang.org">Playground</a>
     </div>
@@ -345,6 +346,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         <h4>Project</h4>
         <a href="https://github.com/xiom-lang">GitHub</a>
         <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="{site_base}contributing.html">Contributing</a>
         <a href="{site_base}terms.html">Terms of Use</a>
         <a href="{site_base}privacy.html">Privacy Policy</a>
       </div>
@@ -370,6 +372,7 @@ NAV_ORDER = [
     ("syntax.md", "Syntax"),
     ("types.md", "Type System"),
     ("memory-model.md", "Memory Model"),
+    ("unsafe.md", "Unsafe"),
     ("contracts.md", "Contracts"),
     ("error-handling.md", "Error Handling"),
     ("modules.md", "Modules"),
@@ -379,6 +382,7 @@ NAV_ORDER = [
     ("ffi.md", "C FFI"),
     ("compiler.md", "Compiler"),
     ("registry.md", "Package Registry"),
+    ("contributing.md", "Contributing"),
     ("stdlib.md", "Stdlib Reference"),
     ("api.md", "_api"),           # built but shown as sidebar section header
     ("../AI_CONTEXT.md", "AI Coding Ref"),

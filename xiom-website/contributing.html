@@ -1,0 +1,178 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XIOM -- Contributing</title>
+<meta name="description" content="How to contribute to XIOM: the path from fork to pull request, licensing and DCO sign-off, where the repositories live, and how language changes are decided.">
+<link rel="canonical" href="https://xiom-lang.org/contributing.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XIOM">
+<meta property="og:title" content="XIOM -- Contributing">
+<meta property="og:description" content="How to contribute to XIOM: the path from fork to pull request, licensing and DCO sign-off, where the repositories live, and how language changes are decided.">
+<meta property="og:url" content="https://xiom-lang.org/contributing.html">
+<meta property="og:image" content="https://xiom-lang.org/img/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="img/xiom-icon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <img src="img/xiom-logo_bg.png" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="spec.html">Spec</a>
+      <a href="docs.html">Docs</a>
+      <a href="why.html">Why</a>
+      <a href="prior-art.html">Prior art</a>
+      <a href="ecosystem.html">Ecosystem</a>
+      <a href="https://registry.xiom-lang.org">Registry</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="contributing.html" class="active">Contributing</a>
+      <a href="versions.html">Versions</a>
+      <a href="https://playground.xiom-lang.org">Playground</a>
+    </div>
+    <a class="nav-cta" href="download.html">download</a>
+  </div>
+</nav>
+
+<header class="hero blueprint-bg" style="padding:48px 0;" id="main">
+  <div class="wrap">
+    <div class="eyebrow">Contributing</div>
+    <h1>Help build <em>XIOM.</em></h1>
+    <p class="lede">The project is pre-beta and the standard library is beta. Contributions run on the same rule as the code: explicit intent, verified changes, honest claims.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="content-section">
+    <p style="border-left:2px solid var(--signal);padding-left:16px;color:var(--muted);font-size:13.5px;">The canonical contribution guide lives in the organization repository. This page summarizes the path and links to the policy sources; if anything here disagrees with those documents, they win.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Start here</h2>
+    <div class="eco-grid" style="margin-top:24px;">
+      <div class="eco-card">
+        <h4>Contribution guide</h4>
+        <p>The default guide for every repository in the organization, unless a repository overrides it. Prerequisites, per-repository quick starts, development rules, commit style and review expectations.</p>
+        <a href="https://github.com/xiom-lang/.github/blob/main/CONTRIBUTING.md" style="color:var(--signal);font-size:13px;">read CONTRIBUTING.md</a>
+      </div>
+      <div class="eco-card">
+        <h4>Licensing and sign-off</h4>
+        <p>MIT OR Apache-2.0, inbound equals outbound. No CLA: you keep the copyright in your contribution. Every commit carries a DCO 1.1 sign-off.</p>
+        <a href="https://github.com/xiom-lang/.github/blob/main/docs/LICENSING.md" style="color:var(--signal);font-size:13px;">licensing policy</a> &middot; <a href="https://github.com/xiom-lang/.github/blob/main/DCO" style="color:var(--signal);font-size:13px;">DCO text</a>
+      </div>
+      <div class="eco-card">
+        <h4>Governance</h4>
+        <p>XIOM runs under a lead-maintainer model today; routine changes go through pull requests and language or standard library changes go through the RFC process, which opens with the public launch.</p>
+        <a href="https://github.com/xiom-lang/.github/blob/main/GOVERNANCE.md" style="color:var(--signal);font-size:13px;">read GOVERNANCE.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h2>The path</h2>
+    <ol style="padding-left:20px;">
+      <li style="margin-bottom:10px;">Fork the repository and branch from <code>main</code>: <code>feat/&lt;topic&gt;</code>, <code>fix/&lt;topic&gt;</code> or <code>docs/&lt;topic&gt;</code>.</li>
+      <li style="margin-bottom:10px;">Make one logical change. Add or update tests, and keep documentation in the same change when behavior changes.</li>
+      <li style="margin-bottom:10px;">Write Conventional Commits in the imperative mood: <code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>test:</code>, <code>chore:</code>, <code>refactor:</code>. Breaking changes use <code>!</code> and a <code>BREAKING CHANGE:</code> paragraph.</li>
+      <li style="margin-bottom:10px;">Sign off every commit with <code>git commit -s</code>. The name and email must match the commit author or committer.</li>
+      <li style="margin-bottom:10px;">Open the pull request with the repository template, paste the exact commands you ran, and link the issue it closes.</li>
+      <li>Required checks must pass and a maintainer reviews. Keep the branch rebased; <code>main</code> stays linear.</li>
+    </ol>
+    <p>Probe first: reduce a suspected compiler or standard library defect to a minimal <code>.xi</code> program before changing anything, and keep the probe with the fix. A five-line reproduction gets triaged; a five-hundred-line report usually cannot be.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Sign-off, in practice</h2>
+    <pre><code>git commit -s -m "fix: correct tz offset for DST boundaries"
+
+Signed-off-by: Your Name &lt;you@example.com&gt;</code></pre>
+    <p>CI checks every commit in a pull request. If you forget a sign-off, amend the last commit with <code>git commit --amend -s --no-edit</code> or sign a whole branch with <code>git rebase --signoff main</code>. If you contribute as part of your job, confirm your employer allows submitting the work under this license before signing off.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Where things live</h2>
+    <table>
+      <tr><th>Repository</th><th>Contents</th></tr>
+      <tr><td><code>xiom</code></td><td>Compiler and tooling (package manager, language server, debugger, MCP server, formatter, doc generator) plus end-to-end tests.</td></tr>
+      <tr><td><code>stdlib</code></td><td>Standard library sources, smoke corpus, known-answer test vectors and probes.</td></tr>
+      <tr><td><code>registry</code></td><td>Package registry service.</td></tr>
+      <tr><td><code>website</code></td><td>This site and the documentation sources.</td></tr>
+      <tr><td><code>playground</code></td><td>Browser playground.</td></tr>
+      <tr><td><code>.github</code></td><td>Organization profile, process documents and default templates.</td></tr>
+    </table>
+  </div>
+
+  <div class="content-section">
+    <h2>Conduct, help and security</h2>
+    <ul>
+      <li><strong>Conduct:</strong> participation is covered by the <a href="https://github.com/xiom-lang/.github/blob/main/CODE_OF_CONDUCT.md" style="color:var(--signal);">Code of Conduct</a>; concerns go to <code>conduct@xiom-lang.org</code>.</li>
+      <li><strong>Help and questions:</strong> GitHub Discussions on the relevant repository, or the channels listed in <a href="https://github.com/xiom-lang/.github/blob/main/SUPPORT.md" style="color:var(--signal);">SUPPORT.md</a>.</li>
+      <li><strong>Security:</strong> never open a public issue. Use GitHub private vulnerability reporting or <code>security@xiom-lang.org</code>, as described in <a href="https://github.com/xiom-lang/.github/blob/main/SECURITY.md" style="color:var(--signal);">SECURITY.md</a>.</li>
+    </ul>
+    <p style="color:var(--muted);font-size:13px;">No self-hosted release or download is claimed here: the project is pre-beta, the standard library is beta, and the released toolchain is the bootstrap compiler.</p>
+  </div>
+
+  <div class="content-section" style="text-align:center;">
+    <div class="btn-group" style="justify-content:center;">
+      <a class="btn-primary" href="https://github.com/xiom-lang/.github/blob/main/CONTRIBUTING.md">contribution guide</a>
+      <a class="btn-secondary" href="https://github.com/xiom-lang/.github/blob/main/GOVERNANCE.md">governance</a>
+      <a class="btn-secondary" href="https://github.com/xiom-lang/.github/blob/main/SUPPORT.md">support</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="img/xiom-logo_bg.png" alt="XIOM">
+          XIOM
+        </a>
+        <p>Dual-licensed <a href="LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="spec.html">Specification</a>
+        <a href="why.html">Why XIOM</a>
+        <a href="prior-art.html">Prior art</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="docs.html">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="versions.html">Versions</a>
+        <a href="download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="contributing.html">Contributing</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
