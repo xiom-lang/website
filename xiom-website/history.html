@@ -1,0 +1,182 @@
+<!--
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XIOM -- History</title>
+<meta name="description" content="How XIOM evolved: from the first compiler pipeline to the current release, with the milestones that shaped the language and toolchain.">
+<link rel="canonical" href="https://xiom-lang.org/history.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XIOM">
+<meta property="og:title" content="XIOM -- History">
+<meta property="og:description" content="How XIOM evolved: from the first compiler pipeline to the current release, with the milestones that shaped the language and toolchain.">
+<meta property="og:url" content="https://xiom-lang.org/history.html">
+<meta property="og:image" content="https://xiom-lang.org/img/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="img/xiom-icon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <img src="img/xiom-logo_bg.png" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="spec.html">Spec</a>
+      <a href="docs.html">Docs</a>
+      <a href="why.html">Why</a>
+      <a href="prior-art.html">Prior art</a>
+      <a href="ecosystem.html">Ecosystem</a>
+      <a href="https://registry.xiom-lang.org">Registry</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="versions.html">Versions</a>
+      <a href="https://playground.xiom-lang.org">Playground</a>
+    </div>
+    <a class="nav-cta" href="download.html">download</a>
+  </div>
+</nav>
+
+<header class="hero blueprint-bg" style="padding:48px 0;" id="main">
+  <div class="wrap">
+    <div class="eyebrow">History</div>
+    <h1>How XIOM <em>got here.</em></h1>
+    <p class="lede">From the first compiler pipeline to the current release, in the order it happened. Current status lives on the Roadmap and Versions pages; this page is the record.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="content-section">
+    <h2>Milestones at a glance</h2>
+    <table>
+      <tr><th>Date</th><th>Milestone</th><th>What it delivered</th></tr>
+      <tr><td>2026-06-30</td><td>v0.1.0 "Pipeline"</td><td>First working pipeline: lexer, parser, type checker, LLVM IR, native and WebAssembly output.</td></tr>
+      <tr><td>2026-06-30</td><td>v0.2.0 "Guardian"</td><td>Full language surface: ownership, contracts, generics, modules, derive, error handling, 7 stdlib modules.</td></tr>
+      <tr><td>2026-07-04</td><td>v0.22.1</td><td>Module catalog and struct/tuple code generation.</td></tr>
+      <tr><td>2026-07-11</td><td>v0.30.0 - v0.33.0</td><td>Safety gate (type errors abort codegen), intrinsics, enum constructors, generic function keys, by-reference struct passing, or-patterns; 37/37 stdlib modules passing.</td></tr>
+      <tr><td>2026-07-25</td><td>v0.50.0</td><td>First public release: production hardening, scripting and JIT mode, editor tooling, release automation and installers.</td></tr>
+      <tr><td>v0.52 and later</td><td>Release cadence</td><td>Steady releases: diagnostics and tooling, unsafe sandbox audit, package registry work, repository split.</td></tr>
+    </table>
+  </div>
+
+  <div class="content-section">
+    <h2>Foundations: a pipeline that enforced nothing</h2>
+    <p>The first compiler, v0.1.0 "Pipeline", landed on 2026-06-30 and established the end-to-end path that still defines the project: source text through lexer, parser, type checker and LLVM IR to a native binary or a WebAssembly module. It ran 36 tests. It parsed the full grammar and enforced almost none of it -- a foundation to build on, not a language yet.</p>
+    <p>The full language surface arrived the same day with v0.2.0 "Guardian": the lexical-scope borrow checker, contracts as runtime guards, monomorphised generics with inline constraints, modules, <code>derive</code>, and <code>Result</code> / <code>Option</code> error handling, with seven standard library modules and 87 tests. From that point the language described in the specification existed in an implementation.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>July 2026: hardening and language parity</h2>
+    <p>Through dozens of releases the compiler closed the gap between "compiles" and "compiles correctly". v0.22.1 added the module catalog and struct/tuple code generation. The v0.30-v0.33 line brought the safety gate that aborts code generation on any type error, the <code>size_of</code> and <code>align_of</code> intrinsics, enum variant constructors, pre-computed generic function keys, real by-reference passing for <code>&amp;mut</code> structs, and or-patterns in <code>match</code>. By v0.33.0 every one of the 37 standard library modules compiled and passed its tests.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>First public release: v0.50.0 (2026-07-25)</h2>
+    <p>v0.50.0 was the first stable public release. It packaged the production-hardening phases with scripting and JIT execution, language-server and editor work, expanded test gates, release automation, verified installers, and the first package registry backend. It shipped with 1,041 tests passing. From here the project moved from building a language to shipping one.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>v0.52 and later: a release cadence</h2>
+    <p>Subsequent releases added AI-assisted diagnostics (<code>--ai</code>), the unsafe-block sandbox audit, and a steady rhythm of tooling and library work. Release history from this point is best read from the mirror itself: the <a href="versions.html" style="color:var(--signal);">Versions page</a> lists every published tag, artifact and date.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>v0.56: concurrency and numerical safety</h2>
+    <ul>
+      <li><code>move</code> captures for <code>spawn</code>, with capture analysis and environment forwarding.</li>
+      <li>Integer overflow checks on by default, with an explicit opt-out.</li>
+      <li>Parallel code generation and DWARF debug metadata.</li>
+      <li>Compile-time <code>Send</code> / <code>Sync</code> enforcement, including on values captured by <code>spawn</code>.</li>
+    </ul>
+  </div>
+
+  <div class="content-section">
+    <h2>v0.57: unsafe confinement</h2>
+    <p>Every <code>unsafe</code> block became a confined transaction: allocations inside the block route to a guard heap that is discarded at block exit, faults are trapped rather than left to corrupt state, and values are prevented from escaping the block. The model is documented in the compiler guide, and the audit tooling reports what it finds in those blocks.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>v0.58: debug intrinsics and numeric policy</h2>
+    <ul>
+      <li>Debug intrinsics (<code>assert</code>, <code>dbg!</code>, <code>todo!</code>, <code>unimplemented!</code>, <code>debugger;</code>) with release stripping and <code>--keep-debug-checks</code> to retain them.</li>
+      <li>Secure numeric policy: mixing <code>Int</code> and <code>Float64</code> requires an explicit <code>as</code> conversion.</li>
+      <li>Labeled loops (<code>@label: while</code> / <code>break @label;</code>).</li>
+      <li>Contracts stripped from release builds unless <code>--runtime-contracts</code> forces them.</li>
+    </ul>
+  </div>
+
+  <div class="content-section">
+    <h2>v0.59 - v0.61: repositories and supply chain</h2>
+    <p>The compiler and the standard library became separate repositories with a pinned stdlib version, the workspace moved to a single-source version with a tag-equals-version release guard, and supply-chain gates were added for dependencies and for registry installs, including fail-closed installs and a signed registry chain. Release archives also began shipping the package tooling alongside the compiler.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Self-hosting: gates cleared, not shipped</h2>
+    <p>Self-hosting -- compiling the compiler with itself -- has been the long-running goal. Earlier attempts stalled: at one point the XIOM-written compiler was a function-signature extractor that delegated code generation to C helpers, and the differential test suite compared feature counts rather than bytes. The prerequisite gaps were then closed one by one: broken <code>for...in</code> iteration and <code>defer</code>, missing intrinsics, and the checks needed before the bootstrap could be trusted. The self-hosting gates are cleared today, but no self-hosted release has shipped; the released toolchain is still the bootstrap compiler.</p>
+    <p>The detailed plan and its honest status log live in the compiler repository (<code>docs/SELFHOST_PLAN.md</code> and the self-host checklists), not on this page.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Where the details live</h2>
+    <p>This page is a summary drawn from the compiler repository's own records -- <code>docs/COMPILER_VERSIONS.md</code>, <code>docs/ROADMAP.md</code>, and <code>docs/SELFHOST_PLAN.md</code>. For exact release artifacts and dates, use the <a href="versions.html" style="color:var(--signal);">Versions page</a>; for what is happening now, use the <a href="roadmap.html" style="color:var(--signal);">Roadmap</a>.</p>
+  </div>
+
+  <div class="content-section" style="text-align:center;">
+    <div class="btn-group" style="justify-content:center;">
+      <a class="btn-primary" href="roadmap.html">see the roadmap</a>
+      <a class="btn-secondary" href="versions.html">release history</a>
+      <a class="btn-secondary" href="https://github.com/xiom-lang/xiom/tree/main/docs">compiler repo docs</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="img/xiom-logo_bg.png" alt="XIOM">
+          XIOM
+        </a>
+        <p>Dual-licensed <a href="LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="spec.html">Specification</a>
+        <a href="why.html">Why XIOM</a>
+        <a href="prior-art.html">Prior art</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="docs.html">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="versions.html">Versions</a>
+        <a href="download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
