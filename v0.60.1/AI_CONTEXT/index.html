@@ -2338,10 +2338,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-unsafe-confined-blocks-v057" class="md-nav__link">
+  <a href="#44-unsafe-confined-blocks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4 Unsafe (Confined Blocks -- v0.57)
+        4.4 Unsafe (Confined Blocks)
       
     </span>
   </a>
@@ -2702,10 +2702,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#822a-channel-mpsc-channel-v055" class="md-nav__link">
+  <a href="#822a-channel-mpsc-channel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.22a channel -- MPSC Channel (v0.55)
+        8.22a channel -- MPSC Channel
       
     </span>
   </a>
@@ -3719,10 +3719,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-unsafe-confined-blocks-v057" class="md-nav__link">
+  <a href="#44-unsafe-confined-blocks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4 Unsafe (Confined Blocks -- v0.57)
+        4.4 Unsafe (Confined Blocks)
       
     </span>
   </a>
@@ -4083,10 +4083,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#822a-channel-mpsc-channel-v055" class="md-nav__link">
+  <a href="#822a-channel-mpsc-channel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.22a channel -- MPSC Channel (v0.55)
+        8.22a channel -- MPSC Channel
       
     </span>
   </a>
@@ -4859,10 +4859,9 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 files under xiom/, 509 check_modules probes, 6,532 pub fns).
 Compiler gates: e2e 2338/2338, checker 195/195, feature-reg 510,
 robustness 63, fuzz 24, perf/determinism 2/2, fmt 86, lsp 45.
-<strong>New in v0.56:</strong> <code>move</code> keyword for spawn captures, overflow checks ON by default, parallel codegen (<code>--parallel-codegen</code>), DWARF debug metadata (<code>--debug</code>), Send/Sync enforcement, Z3 verifier deterministic.
-<strong>New in v0.57 (Unsafe Confinement):</strong> every <code>unsafe</code> block is a confined transaction -- guard-heap arena isolation (req d), stack guard pages (req e), SEH/sigsetjmp fault trapping (req f), once-only transient-fault retry (req h), Copy-Out of Str tails (req i), zero-escape gates (T002/T003/T005/T006/T007), <code>#[unsafe_no_retry]</code>, and <code>#[unsafe_direct]</code> (trusted escape hatch, <code>--enable-unsafe-direct</code>).
-<strong>New in v0.58 (Debug &amp; Numeric Policy):</strong> secure numeric policy (Int&lt;-&gt;Float mixing requires explicit <code>as</code>; int literals may adopt float; same-family widening stays auto), labeled loops (<code>@label: while</code> / <code>break @label;</code>), debug intrinsics (<code>assert(cond[, msg])</code>, <code>dbg!()</code>, <code>todo!()</code>, <code>unimplemented!()</code>, <code>debugger;</code>) with release stripping (<code>--keep-debug-checks</code> to retain), <code>else if</code> accepted as a desugared <code>elif</code>, sublib-prefix resolution (<code>use xiom.os; os.platform.&lt;fn&gt;</code>), and release-stripped contracts (<code>--runtime-contracts</code> to force).
-<strong>New in v0.59-v0.61:</strong> compiler/stdlib repo split with pinned stdlib (<code>STDLIB_VERSION</code>), single-source workspace version 0.61.0 (every banner from CARGO_PKG_VERSION; tag==version release guard), cargo-vet supply-chain gate, <code>xiom-pkg</code> shipped in release archives, same-leaf type qualification (R39/R44/R46/R46b), ed25519 registry supply chain (fail-closed installs, transitive closure).
+<strong>Scope:</strong> this reference documents the current language and compiler surface as
+one stable API. Features are not versioned here -- release-by-release history is
+on the website's <a href="https://xiom-lang.org/history.html">History</a> page.
 This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.</p>
 <p><strong>[WARN] IMMUTABLE DOCUMENT.</strong> This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in <code>docs/ROADMAP.md</code> Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug -- file it, do NOT alter the spec. Only the XIOM language team may update this file.</p>
 <p><strong>[WARN] KNOWN DEVIATIONS.</strong> When the compiler rejects spec-conformant code, the
@@ -5001,7 +5000,7 @@ while let Some(v) = next() { process(v); }
 - Every <code>match</code> must cover ALL cases. Non-exhaustive = compile error.
 - Wildcard is <code>_</code>, not <code>default</code> or <code>otherwise</code>.
 - Match arms that are blocks need no separator. Single-expression arms end with <code>,</code>.</p>
-<p><strong>Labeled loops (v0.58):</strong> loops may carry a label for <code>break</code>/<code>continue</code>
+<p><strong>Labeled loops:</strong> loops may carry a label for <code>break</code>/<code>continue</code>
 targeting (Rust-style):</p>
 <div class="highlight"><pre><span></span><code>@outer: while i &lt; 10 {
   var j = 0;
@@ -5074,7 +5073,7 @@ comptime heavy()           // compile-time eval
 x is Some                  // type test
 items.len()@pre            // pre-state (contracts only)
 
-// v0.54: Compile-time evaluation
+// Compile-time evaluation
 const { 40 + 2 }            // compile-time constant block -&gt; evaluated to 42
 size_of[Int]()               // type size (compile-time)
 align_of[Point]()            // type alignment (compile-time)
@@ -5082,22 +5081,22 @@ type_id[Int]()               // FNV-1a type hash (compile-time)
 field_offset[Point]("x")     // field byte offset (compile-time)
 is_signed[Int]()             // Bool: is type signed? (compile-time)
 
-// v0.55: Inline assembly (Intel syntax, GCC-style constraints)
+// Inline assembly (Intel syntax, GCC-style constraints)
 asm("nop");
 asm("mov $0, $1" : "=r"(result) : "r"(input));
 
-// v0.55: defer -- guaranteed scope-exit execution
+// defer -- guaranteed scope-exit execution
 defer { cleanup(); }
 defer io.println("done");
 
-// v0.55/v0.56: spawn -- OS thread creation with optional move captures
+// spawn -- OS thread creation with optional move captures
 spawn { heavy_work(); }
-spawn move { var x = captured_var + 1; }  // v0.56: move semantics for captures
+spawn move { var x = captured_var + 1; }  // move semantics for captures
 
-// v0.55: Never type -- diverging function
+// Never type -- diverging function
 fn abort() -&gt; ! { loop {} }
 
-// v0.55: Explicit generic type parameters
+// Explicit generic type parameters
 let n = parse[Int]("42");
 let a = align_of[Float64]();
 </code></pre></div>
@@ -5163,7 +5162,7 @@ true  false  self  result
 Some  None  Ok  Err
 unsafe  extern  is  and(reserved)  or(reserved)  not(reserved)  where(reserved)
 </code></pre></div>
-<p><strong>Debug intrinsics (v0.58)</strong> -- usable anywhere in fn bodies:</p>
+<p><strong>Debug intrinsics</strong> -- usable anywhere in fn bodies:</p>
 <div class="highlight"><pre><span></span><code>assert(cond);                 // statement: panic with location on false
 assert(cond, "message");      // statement: panic with message on false
 var x = dbg!(expr);           // expression: prints "[dbg] &lt;value&gt;" to stdout,
@@ -5254,7 +5253,7 @@ and inline <code>[T: Interface]</code> constraints instead.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Numeric policy (v0.58) -- secure mixing rules:</strong></p>
+<p><strong>Numeric policy -- secure mixing rules:</strong></p>
 <ul>
 <li><strong>Int &lt;-&gt; Float mixing in arithmetic, comparisons, and typed bindings
   requires an explicit <code>as</code> cast</strong> (Rust-style): <code>x + y</code> where <code>x: Int</code> and
@@ -5409,14 +5408,14 @@ other references to heap-allocated, caller-provided, or globally-owned data
 referent outlives the function call. The compiler enforces this via lexical
 lifetime analysis.</p>
 </blockquote>
-<h3 id="44-unsafe-confined-blocks-v057">4.4 Unsafe (Confined Blocks -- v0.57)<a class="headerlink" href="#44-unsafe-confined-blocks-v057" title="Permanent link">&para;</a></h3>
+<h3 id="44-unsafe-confined-blocks">4.4 Unsafe (Confined Blocks)<a class="headerlink" href="#44-unsafe-confined-blocks" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>unsafe {
   let raw: *Int = some_c_function();
   let value = *raw;
 }
 </code></pre></div>
 <p><code>unsafe</code> is a declaration of programmer responsibility. Only needed for C FFI and raw pointer ops.</p>
-<p><strong>Unsafe Confinement model (v0.57 -- all requirements enforced by the compiler):</strong></p>
+<p><strong>Unsafe Confinement model (all requirements enforced by the compiler):</strong></p>
 <table>
 <thead>
 <tr>
@@ -5698,7 +5697,7 @@ interface DerefMut { fn deref_mut(self) -&gt; &amp;mut Self.Target; }
 interface AsRef[T]   { fn as_ref(self) -&gt; &amp;T; }
 interface AsMut[T]   { fn as_mut(self) -&gt; &amp;mut T; }
 
-// v0.55: Thread safety marker interfaces (auto-derived, no methods)
+// Thread safety marker interfaces (auto-derived, no methods)
 interface Send { }
 interface Sync { }
 </code></pre></div></p>
@@ -6334,7 +6333,7 @@ fn context[T, E](result: Result[T, E], msg: Str) -&gt; Result[T, Str]
 fn capture_backtrace() -&gt; Backtrace
 fn Backtrace.display(self) -&gt; Str
 </code></pre></div>
-<p><strong>v0.57 Unsafe Confinement fault types</strong> (produced by the fault trap when a
+<p><strong>Unsafe Confinement fault types</strong> (produced by the fault trap when a
 confined <code>unsafe</code> block hits a hardware fault):</p>
 <div class="highlight"><pre><span></span><code>pub type HardwareFault = { signal: Str; pc: UInt64; retried: Bool; }
 pub type ContractViolation = { contract: Str; }
@@ -6564,7 +6563,7 @@ fn AtomicInt.fetch_sub(self, val: Int) -&gt; Int
 fn AtomicInt.swap(self, val: Int) -&gt; Int
 fn AtomicInt.compare_exchange(self, current: Int, new: Int) -&gt; Bool
 </code></pre></div>
-<h3 id="822a-channel-mpsc-channel-v055">8.22a <code>channel</code> -- MPSC Channel (v0.55)<a class="headerlink" href="#822a-channel-mpsc-channel-v055" title="Permanent link">&para;</a></h3>
+<h3 id="822a-channel-mpsc-channel">8.22a <code>channel</code> -- MPSC Channel<a class="headerlink" href="#822a-channel-mpsc-channel" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>type Channel[T] = { _handle: *Int; }     // Bounded MPSC ring buffer (64 slots)
 type Sender[T] = { _chan: *Channel[T]; }
 type Receiver[T] = { _chan: *Channel[T]; }
@@ -6984,7 +6983,7 @@ fn alloc(size: UInt) -&gt; *UInt8 {
 }
 </code></pre></div>
 <p>Standard libc functions link automatically. The XIOM C runtime (<code>stdlib/runtime/*.c</code>) provides the <code>xiom_*</code> helpers used by <code>io</code>, <code>os</code>, <code>sync</code>, <code>thread</code>, <code>net</code>, and <code>async</code>, and is linked by <code>xiom</code> on every native build -- no manual setup needed. Use <code>--link</code>, <code>--link-path</code>, and <code>--c-source</code> (section 11) to link additional native libraries.</p>
-<p><strong>v0.57 FFI ownership (T006):</strong> an extern call returning <code>*T</code> inside a confined <code>unsafe</code> block must convert its result to an owned XIOM type before the block's tail. <code>xiom.ffi</code> provides:</p>
+<p><strong>FFI ownership (T006):</strong> an extern call returning <code>*T</code> inside a confined <code>unsafe</code> block must convert its result to an owned XIOM type before the block's tail. <code>xiom.ffi</code> provides:</p>
 <div class="highlight"><pre><span></span><code>fn safe_ptr_from_raw(ptr: *UInt8, size: Int) -&gt; Result[SafePtr, Str]
 // box_from_ptr / vec_from_ptr_with_free / str_from_ptr_owned (plan-named conversions)
 </code></pre></div>
@@ -7576,7 +7575,7 @@ fn connect(host: Str, port: Port) -&gt; Result[Conn, NetError]
 </tr>
 <tr>
 <td><code>else if</code> instead of <code>elif</code></td>
-<td>(accepted since v0.58)</td>
+<td>(accepted)</td>
 <td><code>else if</code> desugars to <code>elif</code>; <code>elif</code> remains the canonical spelling.</td>
 </tr>
 <tr>
@@ -7644,11 +7643,11 @@ OPTIONS:
   --target &lt;target&gt;     Target backend: native (default), wasm, arm, riscv
   --no-contracts        Disable contract runtime checks (strips requires/ensures/invariant guards)
   --runtime-contracts   Force contract checks in release builds (overrides --no-contracts)
-  --keep-debug-checks   v0.58: keep assert/dbg!/debugger; in RELEASE builds (debug builds always keep them)
+  --keep-debug-checks   keep assert/dbg!/debugger; in RELEASE builds (debug builds always keep them)
   --release             Optimized release build (-O3); strips contracts and debug checks by default
   --sanitize=&lt;type&gt;     Enable sanitizer: address, undefined, leak, thread
   --stack-protector     Enable stack canaries
-  --enable-unsafe-direct  D2.1/v0.57: allow `#[unsafe_direct]` (trusted escape hatch) in user code (stdlib/selfhost always allowed). v0.58: prints a prominent warning on every invocation so release build logs cannot silently contain unguarded code
+  --enable-unsafe-direct  allow `#[unsafe_direct]` (trusted escape hatch) in user code (stdlib/selfhost always allowed); prints a prominent warning on every invocation so release build logs cannot silently contain unguarded code
   --diagnostics=json    Emit diagnostics as JSON (type/borrow/codegen errors, or {"status":"ok"})
   --dump-contracts      Print the program's contract index as JSON and exit
   --verify              Generate SMT-LIB contract verification output (to stdout)
