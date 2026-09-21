@@ -91,7 +91,8 @@ Verification is a separate path with three distinct stages:
 
 ### Debug and diagnostics
 
-- `--debug` / `-g`: DWARF/PDB metadata for debuggers.
+- `--debug` / `-g`: DWARF/PDB metadata for debuggers. See the
+  [Debugging guide](debugger.md) for clients, breakpoints and contract traps.
 - Debug intrinsics: `assert(cond[, msg])`, `dbg!()`, `todo!()`,
   `unimplemented!()`, and `debugger;`. These are stripped in release builds
   unless `--keep-debug-checks` is passed.

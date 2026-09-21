@@ -55,6 +55,7 @@ NAV = [
     ("derive.md", "Derive"),
     ("ffi.md", "C FFI"),
     ("compiler.md", "Compiler"),
+    ("debugger.md", "Debugging"),
     ("registry.md", "Package Registry"),
     ("contributing.md", "Contributing"),
 ]

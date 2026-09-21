@@ -222,7 +222,8 @@ from `XIOM_HOME`.
   being published to the Marketplace and Open VSX; until the listing is live,
   the client sources are in the toolchain repository.
 - **Language server (`xiom-lsp`)** and **debugger (`xiom-dbg`)** ship in recent
-  releases and work with any LSP/DAP client.
+  releases and work with any LSP/DAP client; the [Debugging guide](debugger.md)
+  covers compiling with `-g`, editor launch configs and the JSON API.
 - **Other editors** -- the support matrix for Neovim, JetBrains, Helix,
   Sublime, Emacs and Zed is maintained in
   [editors/README.md](https://github.com/xiom-lang/xiom/blob/main/editors/README.md).

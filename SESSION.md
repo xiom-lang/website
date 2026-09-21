@@ -402,6 +402,17 @@ Remaining:
     covers macOS and explains what the installer changes, and a new
     "AI-assisted errors (--ai)" section shows the key file; the index AI
     paragraph links to the setup guide.
+18. **Debugger guide (done 2026-09-21)**: the guides only mentioned `xiom-dbg`
+    in passing, so `docs/language/debugger.md` now covers it: `-g` compile,
+    the debug intrinsics and their release stripping, DAP client wiring
+    (VS Code launch config, Neovim `nvim-dap`, Emacs `dape`, editors/README.md
+    matrix), the `xiom-dbg --json` command set, raw GDB usage,
+    breakpoints/stepping/inspection, contract traps, and the honest limits
+    (no conditional or hit-count breakpoints, no logpoints, the JSON API has
+    no pause, the CDB backend is basic). Verified locally: the guide snippet
+    type-checks and `xiom dbg --version` dispatches to `xiom-dbg v0.61.0`.
+    Wired into both docs navs and the guide index, linked from `compiler.md`
+    and `getting-started.md`.
 
 ## Cross-lane notes
 
