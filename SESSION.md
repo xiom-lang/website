@@ -178,6 +178,9 @@ Owner decisions:
   recommendation in `specs/XIOM_Website_Content_Spec.md` Part 1/2); code is
   MIT OR Apache-2.0. The Godot third-party notice in that spec does not
   apply.
+  - 2026-09-21: superseded -- the XIOM Foundation is not yet a legal entity;
+    the copyright holder is Eleftherios Notas and The XIOM Authors until it
+    is formed (policy: `xiom-lang/.github` `docs/LICENSING.md` section 8).
 - No self-hosting claims: gates are cleared, but no self-hosted release has
   shipped. Likewise no test counts or codebase stats on the site.
 - The standard library is beta; the site and docs link
@@ -238,9 +241,10 @@ Remaining:
    counts, and the new v0.59-v0.61 line). Note: the file is stamped
    v0.61.0, so it reads ahead of the released v0.60.1 docs until the next
    release publish.
-2. Header sweep (optional): source headers still read "Eleftherios Notas
-   and XIOM Foundation" while LICENSE and footers say "XIOM Foundation";
-   both name the Foundation, so this is cosmetic.
+2. ~~Header sweep~~ (done 2026-09-21): every notice now reads
+   `Copyright (c) 2026 Eleftherios Notas and The XIOM Authors`; the
+   Foundation is no longer named anywhere as holder (policy:
+   `xiom-lang/.github` `docs/LICENSING.md` section 8).
 3. Optional: self-host Inter (current stack is system-native by design).
 4. `docs/error_codes/*` stays unpublished for now -- the index is
    incomplete (one README plus X0010/X0011/X0100). Revisit when the

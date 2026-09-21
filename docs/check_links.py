@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 XIOM Foundation
+# Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 # SPDX-License-Identifier: MIT OR Apache-2.0
 """
 Check relative links in built HTML trees.

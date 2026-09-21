@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2026 XIOM Foundation
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 # XIOM Website -- Content Spec (Pages, Copy, Naming & Licensing)
@@ -57,6 +57,11 @@ out) -- not something to back into casually via a copyright line.
   project by Lefteris Notas, founder of Ngonart OU."* This gets the brand
   association without the legal commitment.
 
+> **Superseded 2026-09-21:** the org copyright policy names the holder as
+> `Copyright (c) 2026 Eleftherios Notas and The XIOM Authors`; see
+> `xiom-lang/.github` `docs/LICENSING.md` section 8. The recommendation
+> above is kept for context only.
+
 **Why this matters for open source specifically:** contributors and the
 wider ecosystem generally trust personal-maintainer copyright over
 corporate copyright for community language projects -- it signals the
@@ -87,14 +92,14 @@ block structure to include in the repo and reference on the website footer.
 -- personal, not Ngonart OU, per Part 1:**
 
 ```
-Copyright (c) 2026 Eleftherios Notas
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 ```
 
 **README / website footer short form -- copyright personal, attribution can name Ngonart:**
 
 ```
 XIOM is dual-licensed under MIT or Apache-2.0, at your option.
-Copyright (c) 2026 Eleftherios Notas.
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.
 
 XIOM is an independent project by Lefteris Notas, founder of Ngonart OU.
 ```

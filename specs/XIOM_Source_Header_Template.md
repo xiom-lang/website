@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2026 XIOM Foundation
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 # XIOM -- Source File Header Template
@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 ```
 // XIOM -- [component name, e.g. Lexer / Parser / Type Checker]
-// Copyright (c) 2026 Eleftherios Notas
+// Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 // Licensed under the MIT or Apache-2.0 license, at your option.
 // See LICENSE-MIT and LICENSE-APACHE in the project root.
 ```
@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 ```
 // XIOM Programming Language
 // -----------------------------------------------------------------------
-// Copyright (c) 2026 Eleftherios Notas
+// Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 //
 // XIOM is an independent project by Lefteris Notas, founder of Ngonart OU.
 //
@@ -51,7 +51,7 @@ not on unrelated XIOM files.
 
 ```
 // XIOM -- [component name]
-// Copyright (c) 2026 Eleftherios Notas
+// Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 // Licensed under the MIT or Apache-2.0 license, at your option.
 //
 // Portions of this file reference the Godot Engine (https://godotengine.org),
