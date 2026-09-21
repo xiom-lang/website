@@ -97,6 +97,11 @@ Verification is a separate path with three distinct stages:
   `unimplemented!()`, and `debugger;`. These are stripped in release builds
   unless `--keep-debug-checks` is passed.
 - `--diagnostics=json`: structured output for tooling.
+
+Every diagnostic carries a stable code (`X0010` type mismatch, `X0100`
+contract violation). The reference is the **Error Codes** section of this
+documentation, and `xiom --explain <code>` prints the same page when the
+current directory contains `docs/error_codes/` (a checkout).
 - `--explain T001`: explain an error code.
 - `--emit-tokens`, `--emit-ir`, `--check`: inspect a single compilation
   stage.
@@ -133,7 +138,6 @@ xiom --ai source.xi
 
 Configuration can also live in `.xiom_ai_config.json`. The compiler searches,
 first found wins:
-
 1. `<project>/.xiom_ai_config.json`
 2. `$XIOM_HOME/.xiom_ai_config.json` -- what the installers write; on Windows
    `%LOCALAPPDATA%\xiom`, on Linux/macOS `~/.local/share/xiom`

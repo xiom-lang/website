@@ -448,6 +448,17 @@ STDLIB_NAV = [
     ("stdlib/ffi.md", "ffi"),
 ]
 
+# Error-code reference: docs/error_codes/*.md (README.md renders as the index).
+ERROR_CODES_DIR = ROOT / "docs" / "error_codes"
+ERROR_NAV = []
+if ERROR_CODES_DIR.is_dir():
+    ERROR_NAV.append(("../error_codes/README.md", "Overview"))
+    for source in sorted(ERROR_CODES_DIR.glob("*.md")):
+        if source.name.upper() == "README.MD":
+            continue
+        ERROR_NAV.append(("../error_codes/{0}".format(source.name), source.stem))
+
+
 def build_nav(current_file: str, out_name: str, ext: str = ".html") -> str:
     """Build the navigation sidebar HTML with correct relative paths.
 
@@ -479,15 +490,37 @@ def build_nav(current_file: str, out_name: str, ext: str = ".html") -> str:
     links.append(f'<a href="{api_href}" style="{api_color};font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Standard Library</a>')
 
     # Stdlib module links
+    in_stdlib = current_file.startswith('stdlib/')
     for fname, title in STDLIB_NAV:
         href = fname.replace(".md", ext)
-        if current_depth > 0 and fname.startswith('stdlib/'):
+        if in_stdlib:
             href = fname.replace('stdlib/', '').replace(".md", ext)
-        elif current_depth == 0 and fname.startswith('stdlib/'):
-            href = fname.replace(".md", ext)
+        elif current_depth > 0:
+            href = up + href
         active = (fname == current_file)
         color = 'color:var(--signal);font-weight:500;' if active else 'color:var(--muted);'
         links.append(f'<a href="{href}" style="{color}">{title}</a>')
+
+    # Error Codes -- index plus each documented code
+    if ERROR_NAV:
+        links.append(f'<div style="margin-top:20px;"></div>')
+        error_index = 'error_codes/index' + ext
+        if current_depth > 0:
+            error_index = up + error_index
+        links.append(
+            f'<a href="{error_index}" style="color:var(--paper);font-weight:500;'
+            'font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;'
+            'text-transform:uppercase;">Error Codes</a>'
+        )
+        for fname, title in ERROR_NAV:
+            href = fname.replace('../', '').replace(".md", ext)
+            if href.endswith('README' + ext):
+                href = href.replace('README' + ext, 'index' + ext)
+            if current_depth > 0:
+                href = up + href
+            active = (fname == current_file)
+            color = 'color:var(--signal);font-weight:500;' if active else 'color:var(--muted);'
+            links.append(f'<a href="{href}" style="{color}">{title}</a>')
 
     return '\n        '.join(links)
 
@@ -507,7 +540,7 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str,
     output_dir.mkdir(parents=True)
 
     files = []
-    for fname, _ in NAV_ORDER + STDLIB_NAV:
+    for fname, _ in NAV_ORDER + STDLIB_NAV + ERROR_NAV:
         # Handle files outside the language directory
         if fname.startswith("../"):
             src = ROOT / "docs" / fname.replace("../", "")
@@ -560,6 +593,8 @@ def build(output_dir: Path, home_path: str, css_path: str, icon_path: str,
         # Adjust paths for files in subdirectories. ../AI_CONTEXT.md lands at
         # the output root, so the output path drives the relative links.
         out_rel = fname.replace('.md', ext).replace('../', '')
+        if out_rel == 'error_codes/README' + ext:
+            out_rel = 'error_codes/index' + ext
         depth = out_rel.count('/')
         file_css = '../' * depth + css_path
         file_icon = '../' * depth + icon_path

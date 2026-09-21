@@ -413,8 +413,30 @@ Remaining:
     type-checks and `xiom dbg --version` dispatches to `xiom-dbg v0.61.0`.
     Wired into both docs navs and the guide index, linked from `compiler.md`
     and `getting-started.md`.
+19. **Error-code reference published (done 2026-09-21)**: the compiler already
+    emits stable codes (`X0010` type mismatch, `X0100` contract violation),
+    `--diagnostics=json` carries `error_code`, and `xiom --explain <code>`
+    prints `docs/error_codes/{code}.md` from the current directory. The
+    website repo already held that directory (index + X0010/X0011/X0100), but
+    nothing published it. Both builders now render `docs/error_codes/*.md`:
+    standalone pages at `docs/html/error_codes/` (README becomes the index)
+    with a sidebar "Error Codes" section, and MkDocs pages under
+    `error-codes/` with a nav section. The index gained a Doc column
+    (linked vs pending), `compiler.md` points at the reference, and the syntax
+    lint now also scans `docs/error_codes` in both workflows.
 
 ## Cross-lane notes
+
+Error-code reference gaps (compiler lane, found 2026-09-21): the published
+index documents the X family (14 rows, 3 with pages), but real compiler
+errors also carry T codes (`error[T001]`, `error[T007]`), P codes
+(`error[P001]`) and C/E codes appear in the source. The index says codes are
+`XNNNN` and stable, so the families need reconciling in one registry. Also,
+`--explain` resolves `docs/error_codes/{code}.md` from the current working
+directory, and release archives do not ship that directory, so installed
+users cannot use `--explain`; either ship the reference inside the archive or
+embed the text in the binary. The website publishes whatever is in
+`docs/error_codes/` automatically.
 
 Release archives (v0.60.1) ship a stale `README.md` inside the package: it
 names the XIOM Foundation as copyright holder, points at

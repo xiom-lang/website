@@ -177,6 +177,18 @@ def main():
     if AI_CONTEXT.is_file():
         write_text(stage / "AI_CONTEXT.md", rewrite_links(AI_CONTEXT.read_text(encoding="utf-8")))
 
+    # Error-code reference (docs/error_codes/): published under error-codes/,
+    # with README.md becoming the section index.
+    error_codes_dir = ROOT / "docs" / "error_codes"
+    error_pages = []
+    if error_codes_dir.is_dir():
+        dest = stage / "error-codes"
+        dest.mkdir(parents=True, exist_ok=True)
+        for source in sorted(error_codes_dir.glob("*.md")):
+            name = "index.md" if source.name.upper() == "README.MD" else source.name
+            write_text(dest / name, rewrite_links(source.read_text(encoding="utf-8")))
+            error_pages.append(name)
+
     brand = ROOT / "docs" / "mkdocs-brand.css"
     if brand.is_file():
         assets = stage / "assets"
@@ -213,6 +225,12 @@ def main():
     for page in api_pages:
         title = "Overview" if page.stem == "index" else page.stem
         nav_lines.append("    * [{0}](api/{1})".format(title, page.name))
+    if error_pages:
+        nav_lines.append("* Error Codes")
+        for name in error_pages:
+            stem = name[:-3]
+            title = "Overview" if stem == "index" else stem
+            nav_lines.append("    * [{0}](error-codes/{1})".format(title, name))
     nav_lines.append("* [AI Coding Reference](AI_CONTEXT.md)")
     write_text(stage / "SUMMARY.md", "\n".join(nav_lines) + "\n")
 
