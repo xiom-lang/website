@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -136,95 +137,95 @@
 <h3><code>assert(condition, name)</code></h3>
 <p>Asserts that <code>condition</code> is truthy. The test passes if <code>condition</code> evaluates to <code>true</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>assert</span>(condition: <span class='ty'>Bool</span>, name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>assert</span>(condition: <span class='ty'>Bool</span>, name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_eq(expected, actual, name)</code></h3>
 <p>Asserts that <code>expected</code> equals <code>actual</code>. Uses the <code>Eq</code> trait for comparison.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_eq[T: <span class='ty'>Eq</span>](expected: T, actual: T, name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_eq[T: <span class='ty'>Eq</span>](expected: T, actual: T, name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_ne(expected, actual, name)</code></h3>
 <p>Asserts that <code>expected</code> does not equal <code>actual</code>. Uses the <code>Eq</code> trait for comparison.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_ne[T: <span class='ty'>Eq</span>](expected: T, actual: T, name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_ne[T: <span class='ty'>Eq</span>](expected: T, actual: T, name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_lt(left, right, name)</code></h3>
 <p>Asserts that <code>left</code> is strictly less than <code>right</code>. Uses the <code>Ord</code> trait for comparison.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_lt[T: <span class='ty'>Ord</span>](left: T, right: T, name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_lt[T: <span class='ty'>Ord</span>](left: T, right: T, name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_gt(left, right, name)</code></h3>
 <p>Asserts that <code>left</code> is strictly greater than <code>right</code>. Uses the <code>Ord</code> trait for comparison.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_gt[T: <span class='ty'>Ord</span>](left: T, right: T, name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_gt[T: <span class='ty'>Ord</span>](left: T, right: T, name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_contains(haystack, needle, name)</code></h3>
 <p>Asserts that the string <code>haystack</code> contains the substring <code>needle</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>assert_contains</span>(haystack: <span class='ty'>Str</span>, needle: <span class='ty'>Str</span>, name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>assert_contains</span>(haystack: <span class='ty'>Str</span>, needle: <span class='ty'>Str</span>, name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_ok(result, name)</code></h3>
 <p>Asserts that <code>result</code> is the <code>Ok</code> variant of a <code>Result[T, E]</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_ok[T, E](<span class='kw'>result</span>: <span class='ty'>Result</span>[T, E], name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_ok[T, E](<span class='kw'>result</span>: <span class='ty'>Result</span>[T, E], name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_err(result, name)</code></h3>
 <p>Asserts that <code>result</code> is the <code>Err</code> variant of a <code>Result[T, E]</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_err[T, E](<span class='kw'>result</span>: <span class='ty'>Result</span>[T, E], name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_err[T, E](<span class='kw'>result</span>: <span class='ty'>Result</span>[T, E], name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_some(option, name)</code></h3>
 <p>Asserts that <code>option</code> is the <code>Some</code> variant of an <code>Option[T]</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_some[T](option: <span class='ty'>Option</span>[T], name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_some[T](option: <span class='ty'>Option</span>[T], name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <h3><code>assert_none(option, name)</code></h3>
 <p>Asserts that <code>option</code> is the <code>None</code> variant of an <code>Option[T]</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_none[T](option: <span class='ty'>Option</span>[T], name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_none[T](option: <span class='ty'>Option</span>[T], name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <hr>
 <h2>Contract Assertions</h2>
 <h3><code>assert_contract(value, predicate, name)</code>``</h3>
 <p>Asserts that <code>value</code> satisfies the given <code>predicate</code>. Used for testing contract invariants at runtime -- the predicate receives a reference to the value and must return <code>true</code> for the assertion to pass.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> assert_contract[T](value: T, predicate: <span class='func'><span class='kw'>fn</span></span>(&T) -> <span class='ty'>Bool</span>, name: <span class='ty'>Str</span>) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> assert_contract[T](value: T, predicate: <span class='func'><span class='kw'>fn</span></span>(&amp;T) -&gt; <span class='ty'>Bool</span>, name: <span class='ty'>Str</span>) -&gt; TestResult
 </code></pre>
 <hr>
 <h2>Test Runner</h2>
 <h3><code>run(test)</code></h3>
 <p>Runs a single test function and returns the exit code. Returns <code>0</code> if the test passed, non-zero on failure.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run</span>(test: <span class='func'><span class='kw'>fn</span></span>() -> TestResult) -> <span class='ty'>Int</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run</span>(test: <span class='func'><span class='kw'>fn</span></span>() -&gt; TestResult) -&gt; <span class='ty'>Int</span>
 </code></pre>
 <h3><code>run_all(tests)</code>``</h3>
 <p>Runs all provided test functions sequentially and returns the total exit code. Each test is executed and its result is collected for reporting.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_all</span>(tests: <span class='ty'>Vec</span>[<span class='func'><span class='kw'>fn</span></span>() -> TestResult]) -> <span class='ty'>Int</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_all</span>(tests: <span class='ty'>Vec</span>[<span class='func'><span class='kw'>fn</span></span>() -&gt; TestResult]) -&gt; <span class='ty'>Int</span>
 </code></pre>
 <h3><code>run_filtered(tests, filter)</code>``</h3>
 <p>Runs only those test functions whose name matches the given filter string. Returns the total exit code for the matched tests.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_filtered</span>(tests: <span class='ty'>Vec</span>[<span class='func'><span class='kw'>fn</span></span>() -> TestResult], filter: <span class='ty'>Str</span>) -> <span class='ty'>Int</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>run_filtered</span>(tests: <span class='ty'>Vec</span>[<span class='func'><span class='kw'>fn</span></span>() -&gt; TestResult], filter: <span class='ty'>Str</span>) -&gt; <span class='ty'>Int</span>
 </code></pre>
 <hr>
 <h2>Output Formatters</h2>
 <h3><code>format_results(results)</code>``</h3>
 <p>Formats a vector of test results into a human-readable summary string, showing passed/failed status, names, messages, contract failures, and durations.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>format_results</span>(results: <span class='ty'>Vec</span>[TestResult]) -> <span class='ty'>Str</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>format_results</span>(results: <span class='ty'>Vec</span>[TestResult]) -&gt; <span class='ty'>Str</span>
 </code></pre>
 <h3><code>format_results_json(results)</code>``</h3>
 <p>Formats a vector of test results as a JSON string for machine consumption, enabling integration with CI/CD pipelines and reporting tools.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>format_results_json</span>(results: <span class='ty'>Vec</span>[TestResult]) -> <span class='ty'>Str</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>format_results_json</span>(results: <span class='ty'>Vec</span>[TestResult]) -&gt; <span class='ty'>Str</span>
 </code></pre>
 <hr>
 <h2>Benchmarking</h2>
 <h3><code>bench(name, f)</code>``</h3>
 <p>Runs the function <code>f</code> as a benchmark, measuring its execution duration. Returns a <code>TestResult</code> with the <code>duration_ms</code> field set to the elapsed time.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>bench</span>(name: <span class='ty'>Str</span>, f: <span class='func'><span class='kw'>fn</span></span>()) -> TestResult
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>bench</span>(name: <span class='ty'>Str</span>, f: <span class='func'><span class='kw'>fn</span></span>()) -&gt; TestResult
 </code></pre>
     </main>
 
@@ -233,22 +234,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -181,9 +182,9 @@
 <h2>Language Overview</h2>
 <p>XIOM is a compiled, statically typed, memory-safe systems programming language.</p>
 <pre><code>
-.xi source -> Lexer -> Parser -> Type Checker -> Borrow Checker
-           -> LLVM IR (+ Contracts + Derive + Generics)
-           -> clang -> native .exe / .wasm
+.xi source -&gt; Lexer -&gt; Parser -&gt; Type Checker -&gt; Borrow Checker
+           -&gt; LLVM IR (+ Contracts + Derive + Generics)
+           -&gt; clang -&gt; native .exe / .wasm
 </code></pre>
 <h3>Three Pillars</h3>
 <table>
@@ -202,15 +203,15 @@
 </table>
 <h2>Quick Example</h2>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>fib</span>(n: <span class='ty'>Int</span>) -> <span class='ty'>Int</span>
-  <span class='kw'>requires</span>: n >= <span class='num'>0</span>
+<span class='kw'>fn</span> <span class='func'>fib</span>(n: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span>
+  <span class='kw'>requires</span>: n &gt;= <span class='num'>0</span>
 {
-  <span class='kw'>if</span> n <= <span class='num'>1</span> { <span class='kw'>return</span> n; }
+  <span class='kw'>if</span> n &lt;= <span class='num'>1</span> { <span class='kw'>return</span> n; }
   <span class='kw'>return</span> <span class='func'>fib</span>(n - <span class='num'>1</span>) + <span class='func'>fib</span>(n - <span class='num'>2</span>);
 }
 
-<span class='kw'>fn</span> <span class='func'>main</span>() -> <span class='ty'>Int</span> {
-  <span class='kw'>return</span> <span class='func'>fib</span>(<span class='num'>10</span>);  <span class='cm'>// -> <span class='num'>55</span></span>
+<span class='kw'>fn</span> <span class='func'>main</span>() -&gt; <span class='ty'>Int</span> {
+  <span class='kw'>return</span> <span class='func'>fib</span>(<span class='num'>10</span>);  <span class='cm'>// -&gt; <span class='num'>55</span></span>
 }
 </code></pre>
 <pre class="language-xiom"><code>
@@ -218,12 +219,12 @@
 <span class='kw'>type</span> <span class='ty'>Health</span> = {
   current: <span class='ty'>Int</span>;
   maximum: <span class='ty'>Int</span>;
-  <span class='kw'>invariant</span>: current >= <span class='num'>0</span>;
-  <span class='kw'>invariant</span>: current <= maximum;
+  <span class='kw'>invariant</span>: current &gt;= <span class='num'>0</span>;
+  <span class='kw'>invariant</span>: current &lt;= maximum;
 } <span class='kw'>derive</span>[<span class='ty'>Clone</span>, <span class='ty'>Display</span>]
 
 <span class='cm'>// Functions with contracts</span>
-<span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
+<span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>
   <span class='kw'>requires</span>: b != <span class='num'>0.0</span>
   <span class='kw'>ensures</span>:  <span class='kw'>result</span> * b == a
 {
@@ -287,50 +288,14 @@
 </tr>
 </table>
 <p>For the planned package ecosystem, see <a href="https://xiom-lang.org/ecosystem.html">Ecosystem & Packages</a>.</p>
-<h2>Milestones</h2>
-<table>
-<tr>
-<th>Phase</th>
-<th>Version</th>
-<th>Status</th>
-</tr>
-<tr>
-<td>Phase 0</td>
-<td>v0.1.0 "Pipeline"</td>
-<td>Released -- working pipeline</td>
-</tr>
-<tr>
-<td>Phase 1</td>
-<td>v0.2.0 "Guardian"</td>
-<td>Released -- full language surface</td>
-</tr>
-<tr>
-<td>Phase 2</td>
-<td>v0.4.0</td>
-<td>Released -- differential IR correctness</td>
-</tr>
-<tr>
-<td>Phase 2C</td>
-<td>v0.11.0</td>
-<td>Released -- toolchain and library milestones</td>
-</tr>
-<tr>
-<td>Phase 2C+</td>
-<td>v0.50.0</td>
-<td>Released -- expanded stdlib, scripting, JIT, contracts</td>
-</tr>
-<tr>
-<td>Phase 8B</td>
-<td>v0.51.0</td>
-<td>Released -- production hardening, M1-M12 complete</td>
-</tr>
-<tr>
-<td>Releases</td>
-<td>v0.52 and later</td>
-<td>Shipped -- scripting, JIT, AI diagnostics, sandbox audit, compiler/stdlib split</td>
-</tr>
-</table>
-<p>The current release is tracked on the <a href="https://xiom-lang.org/versions.html">versions page</a>; this table lists earlier milestones. Self-hosting gates are cleared, but no self-hosted release has shipped yet.</p>
+<h2>Evolution</h2>
+<p>XIOM's phases and release milestones are tracked on the website, not repeated here, so this guide always describes the language as it is today:</p>
+<ul>
+<li><a href="https://xiom-lang.org/history.html">History</a> -- how the compiler and language evolved.</li>
+<li><a href="https://xiom-lang.org/versions.html">Versions</a> -- every published release, read from the download mirror.</li>
+<li><a href="https://xiom-lang.org/roadmap.html">Roadmap</a> -- current status and what is next.</li>
+</ul>
+<p>The current release is always the tag published on the mirror. Self-hosting gates are cleared, but no self-hosted release has shipped yet.</p>
     </main>
 
   </div>
@@ -338,22 +303,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

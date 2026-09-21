@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -134,7 +135,7 @@
 </table>
 <h2>Function Contracts</h2>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
+<span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>
   <span class='kw'>requires</span>: b != <span class='num'>0.0</span>
   <span class='kw'>ensures</span>:  <span class='kw'>result</span> * b == a
 {
@@ -144,10 +145,10 @@
 <p><strong>Type-level constraints</strong> (which interfaces a generic parameter must satisfy) are declared <strong>inline</strong> with the type parameter, not as <code>requires</code> clauses. This separates type requirements from value preconditions:</p>
 <pre class="language-xiom"><code>
 <span class='cm'>// Type constraint -- inline</span>
-<span class='kw'>fn</span> sort[T: <span class='ty'>Ord</span>](items: &mut <span class='ty'>Vec</span>[T])
+<span class='kw'>fn</span> sort[T: <span class='ty'>Ord</span>](items: &amp;mut <span class='ty'>Vec</span>[T])
 
 <span class='cm'>// Value precondition -- <span class='kw'>requires</span> clause</span>
-<span class='kw'>fn</span> pop[T](stack: &mut <span class='ty'>Stack</span>[T]) -> <span class='ty'>Option</span>[T]
+<span class='kw'>fn</span> pop[T](stack: &amp;mut <span class='ty'>Stack</span>[T]) -&gt; <span class='ty'>Option</span>[T]
   <span class='kw'>requires</span>: !stack.<span class='func'>is_empty</span>()
 </code></pre>
 <h2>Type Invariants</h2>
@@ -155,9 +156,9 @@
 <span class='kw'>type</span> <span class='ty'>Health</span> = {
   current: <span class='ty'>Int</span>;
   maximum: <span class='ty'>Int</span>;
-  <span class='kw'>invariant</span>: current >= <span class='num'>0</span>;
-  <span class='kw'>invariant</span>: current <= maximum;
-  <span class='kw'>invariant</span>: maximum > <span class='num'>0</span>;
+  <span class='kw'>invariant</span>: current &gt;= <span class='num'>0</span>;
+  <span class='kw'>invariant</span>: current &lt;= maximum;
+  <span class='kw'>invariant</span>: maximum &gt; <span class='num'>0</span>;
 }
 
 <span class='cm'>// The compiler rejects any code that could violate these invariants.</span>
@@ -197,15 +198,15 @@
 </tr>
 </table>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>sort</span>(items: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>])
+<span class='kw'>fn</span> <span class='func'>sort</span>(items: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>])
   <span class='kw'>ensures</span>: items.<span class='func'>is_sorted</span>()
 {
   <span class='cm'>// ... sorting implementation</span>
 }
 
-<span class='kw'>fn</span> <span class='func'>filter_positive</span>(items: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) -> <span class='ty'>Vec</span>[<span class='ty'>Int</span>]
-  <span class='kw'>ensures</span>: <span class='kw'>result</span>.<span class='func'>all</span>(|x| x > <span class='num'>0</span>)
-  <span class='kw'>ensures</span>: <span class='kw'>result</span>.<span class='func'>len</span>() <= items.<span class='func'>len</span>()
+<span class='kw'>fn</span> <span class='func'>filter_positive</span>(items: &amp;<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) -&gt; <span class='ty'>Vec</span>[<span class='ty'>Int</span>]
+  <span class='kw'>ensures</span>: <span class='kw'>result</span>.<span class='func'>all</span>(|x| x &gt; <span class='num'>0</span>)
+  <span class='kw'>ensures</span>: <span class='kw'>result</span>.<span class='func'>len</span>() &lt;= items.<span class='func'>len</span>()
 {
   <span class='cm'>// ... filter implementation</span>
 }
@@ -265,22 +266,41 @@ contract violated: <span class='kw'>requires</span> b != <span class='num'>0.0</
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

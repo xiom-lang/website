@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -117,12 +118,12 @@
 <h3><code>Cell.new(value)</code></h3>
 <p>Creates a new <code>Cell</code> containing the given value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Cell</span>.new[T](value: T) -> <span class='ty'>Cell</span>[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Cell</span>.new[T](value: T) -&gt; <span class='ty'>Cell</span>[T];
 </code></pre>
 <h3><code>Cell.get(self)</code></h3>
 <p>Returns a copy of the contained value. Only works with <code>Copy</code> types.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Cell</span>.get[T](<span class='kw'>self</span>) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Cell</span>.get[T](<span class='kw'>self</span>) -&gt; T;
 </code></pre>
 <h3><code>Cell.set(self, value)</code></h3>
 <p>Sets the contained value to <code>value</code>.</p>
@@ -132,12 +133,12 @@
 <h3><code>Cell.replace(self, value)</code></h3>
 <p>Replaces the contained value with <code>value</code>, returning the old value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Cell</span>.replace[T](<span class='kw'>self</span>, value: T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Cell</span>.replace[T](<span class='kw'>self</span>, value: T) -&gt; T;
 </code></pre>
 <h3><code>Cell.swap(self, other)</code></h3>
 <p>Swaps the values of two <code>Cell</code> instances.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Cell</span>.swap[T](<span class='kw'>self</span>, other: &<span class='ty'>Cell</span>[T]);
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Cell</span>.swap[T](<span class='kw'>self</span>, other: &amp;<span class='ty'>Cell</span>[T]);
 </code></pre>
 <h2>RefCell</h2>
 <h3><code>RefCell[T]</code></h3>
@@ -148,32 +149,32 @@
 <h3><code>RefCell.new(value)</code></h3>
 <p>Creates a new <code>RefCell</code> containing the given value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.new[T](value: T) -> <span class='ty'>RefCell</span>[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.new[T](value: T) -&gt; <span class='ty'>RefCell</span>[T];
 </code></pre>
 <h3><code>RefCell.borrow(self)</code></h3>
 <p>Immutably borrows the value. Panics if the value is already mutably borrowed.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.borrow[T](<span class='kw'>self</span>) -> Ref[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.borrow[T](<span class='kw'>self</span>) -&gt; Ref[T];
 </code></pre>
 <h3><code>RefCell.borrow_mut(self)</code></h3>
 <p>Mutably borrows the value. Panics if the value is already borrowed.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.borrow_mut[T](<span class='kw'>self</span>) -> RefMut[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.borrow_mut[T](<span class='kw'>self</span>) -&gt; RefMut[T];
 </code></pre>
 <h3><code>RefCell.try_borrow(self)</code></h3>
 <p>Attempts to immutably borrow the value, returning <code>None</code> if it is already mutably borrowed.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.try_borrow[T](<span class='kw'>self</span>) -> <span class='ty'>Option</span><Ref[T]>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.try_borrow[T](<span class='kw'>self</span>) -&gt; <span class='ty'>Option</span>&lt;Ref[T]&gt;;
 </code></pre>
 <h3><code>RefCell.try_borrow_mut(self)</code></h3>
 <p>Attempts to mutably borrow the value, returning <code>None</code> if it is already borrowed.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.try_borrow_mut[T](<span class='kw'>self</span>) -> <span class='ty'>Option</span><RefMut[T]>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.try_borrow_mut[T](<span class='kw'>self</span>) -&gt; <span class='ty'>Option</span>&lt;RefMut[T]&gt;;
 </code></pre>
 <h3><code>RefCell.replace(self, value)</code></h3>
 <p>Replaces the contained value with <code>value</code>, returning the old value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.replace[T](<span class='kw'>self</span>, value: T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>RefCell</span>.replace[T](<span class='kw'>self</span>, value: T) -&gt; T;
 </code></pre>
 <h2>Ref</h2>
 <h3><code>Ref[T]</code></h3>
@@ -184,7 +185,7 @@
 <h3><code>Ref.get(self)</code></h3>
 <p>Returns a copy of the borrowed value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Ref.get[T](<span class='kw'>self</span>) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Ref.get[T](<span class='kw'>self</span>) -&gt; T;
 </code></pre>
 <h2>RefMut</h2>
 <h3><code>RefMut[T]</code></h3>
@@ -195,7 +196,7 @@
 <h3><code>RefMut.get(self)</code></h3>
 <p>Returns a copy of the borrowed value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> RefMut.get[T](<span class='kw'>self</span>) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> RefMut.get[T](<span class='kw'>self</span>) -&gt; T;
 </code></pre>
 <h3><code>RefMut.set(self, value)</code></h3>
 <p>Sets the borrowed value to <code>value</code>.</p>
@@ -209,22 +210,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

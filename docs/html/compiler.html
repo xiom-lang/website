@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -106,18 +107,18 @@
       <h2>Pipeline</h2>
 <pre><code>
 .xi source
-  -> Lexer           (tokenize -- <span class='num'>55</span>+ token kinds)
-  -> Parser          (AST -- LL(<span class='num'>1</span>), no backtracking)
-  -> Type Checker    (primitives, structs, functions, <span class='kw'>interface</span> satisfaction, Send/Sync)
-  -> Borrow Checker  (lexical scope -- &T, &mut T, move semantics, E001 warnings)
-  -> CTFE            (compile-time function evaluation -- <span class='kw'>const</span> exprs, builtins, pure <span class='kw'>fn</span> VM)
-  -> LLVM IR         (text emission, human-readable)
+  -&gt; Lexer           (tokenize -- <span class='num'>55</span>+ token kinds)
+  -&gt; Parser          (AST -- LL(<span class='num'>1</span>), no backtracking)
+  -&gt; Type Checker    (primitives, structs, functions, <span class='kw'>interface</span> satisfaction, Send/Sync)
+  -&gt; Borrow Checker  (lexical scope -- &amp;T, &amp;mut T, move semantics, E001 warnings)
+  -&gt; CTFE            (compile-time function evaluation -- <span class='kw'>const</span> exprs, builtins, pure <span class='kw'>fn</span> VM)
+  -&gt; LLVM IR         (text emission, human-readable)
      |- Contracts   (runtime guards -- @llvm.trap on violation)
      |- DWARF DI    (function-level debug metadata -- per-function !DISubprogram)
      |- Derive      (<span class='ty'>Eq</span>, <span class='ty'>Clone</span>, <span class='ty'>Display</span>, <span class='ty'>Hash</span>, <span class='ty'>Ord</span>, Debug -- struct + <span class='kw'>enum</span>)
      |- Generics    (monomorphisation -- register + specialize, worklist)
      `- Parallel    (rayon per-function IR emission -- --parallel-codegen)
-  -> <span class='func'>clang</span>(native .exe, .out, .wasm)
+  -&gt; <span class='func'>clang</span>(native .exe, .out, .wasm)
 </code></pre>
 <h2>Architecture</h2>
 <p>XIOM is a Rust toolchain of 20 crates. It emits LLVM IR as text and hands it to clang for the final binary, so there is no LLVM library dependency and the generated IR is readable by humans. The bootstrap compiler is Rust by design and permanent; self-hosting gates are cleared, but no self-hosted release has shipped yet.</p>
@@ -157,7 +158,7 @@
 </ul>
 <p>keeps rebuilding on change.</p>
 <ul>
-<li><code>xiom run <file></code>: scripting mode. Shebang scripts, inline <code>-e</code>, stdin</li>
+<li><code>xiom run &lt;file&gt;</code>: scripting mode. Shebang scripts, inline <code>-e</code>, stdin</li>
 </ul>
 <p><code>-</code>, and <code>--watch</code> are supported, and top-level code is wrapped   automatically, so <code>fn main()</code> is optional.</p>
 <ul>
@@ -242,11 +243,11 @@ xiom --ai source.xi
 <td>Batch mode: analyze all sources into one <code>.xiom_ai.json</code></td>
 </tr>
 <tr>
-<td><code>--ai-model=<name></code></td>
+<td><code>--ai-model=&lt;name&gt;</code></td>
 <td>Override the model</td>
 </tr>
 <tr>
-<td><code>--ai-timeout=<sec></code></td>
+<td><code>--ai-timeout=&lt;sec&gt;</code></td>
 <td>Model timeout in seconds (default: 10)</td>
 </tr>
 </table>
@@ -293,16 +294,16 @@ xiom --ai source.xi
 </ul>
 <p>ignores every cache.</p>
 <ul>
-<li><code>--parallel</code> / <code>--sequential</code> / <code>--jobs <N></code> control parallelism;</li>
+<li><code>--parallel</code> / <code>--sequential</code> / <code>--jobs &lt;N&gt;</code> control parallelism;</li>
 </ul>
 <p><code>--parallel-codegen</code> emits IR per function.</p>
 <ul>
-<li><code>--timeout <seconds></code> (default 300; 0 disables) and</li>
+<li><code>--timeout &lt;seconds&gt;</code> (default 300; 0 disables) and</li>
 </ul>
-<p><code>--max-memory-mb <N></code> bound a compilation; <code>--max-depth <N></code> bounds   recursion (default 500).</p>
+<p><code>--max-memory-mb &lt;N&gt;</code> bound a compilation; <code>--max-depth &lt;N&gt;</code> bounds   recursion (default 500).</p>
 <h2>CLI Reference</h2>
 <pre><code>
-xiom [flags] <source.xi>
+xiom [flags] &lt;source.xi&gt;
 </code></pre>
 <h3>Invocation and subcommands</h3>
 <table>
@@ -311,15 +312,15 @@ xiom [flags] <source.xi>
 <th>Description</th>
 </tr>
 <tr>
-<td><code>xiom <file.xi></code></td>
+<td><code>xiom &lt;file.xi&gt;</code></td>
 <td>Compile a single file</td>
 </tr>
 <tr>
-<td><code>xiom --run <file.xi></code></td>
+<td><code>xiom --run &lt;file.xi&gt;</code></td>
 <td>Compile and run (requires <code>fn main()</code>)</td>
 </tr>
 <tr>
-<td><code>xiom run <file.xi></code></td>
+<td><code>xiom run &lt;file.xi&gt;</code></td>
 <td>Execute as a script (auto-wraps in <code>fn main()</code>)</td>
 </tr>
 <tr>
@@ -327,7 +328,7 @@ xiom [flags] <source.xi>
 <td>Read the script from stdin</td>
 </tr>
 <tr>
-<td><code>xiom run -e "<code>"</code></td>
+<td><code>xiom run -e "&lt;code&gt;"</code></td>
 <td>Execute inline code</td>
 </tr>
 <tr>
@@ -343,7 +344,7 @@ xiom [flags] <source.xi>
 <td>Interactive shell</td>
 </tr>
 <tr>
-<td><code>xiom doc <file.xi></code></td>
+<td><code>xiom doc &lt;file.xi&gt;</code></td>
 <td>Generate documentation (Markdown/HTML)</td>
 </tr>
 <tr>
@@ -366,7 +367,7 @@ xiom [flags] <source.xi>
 <th>Description</th>
 </tr>
 <tr>
-<td><code>-o <output></code></td>
+<td><code>-o &lt;output&gt;</code></td>
 <td>Output binary path (default <code>a.exe</code> / <code>a.out</code>)</td>
 </tr>
 <tr>
@@ -402,15 +403,15 @@ xiom [flags] <source.xi>
 <td>Compile as a static library</td>
 </tr>
 <tr>
-<td><code>--opt-level <0..3></code></td>
+<td><code>--opt-level &lt;0..3&gt;</code></td>
 <td>Explicit optimization level</td>
 </tr>
 <tr>
-<td><code>--standalone <file> -o <exe></code></td>
+<td><code>--standalone &lt;file&gt; -o &lt;exe&gt;</code></td>
 <td>Turn a script into a binary</td>
 </tr>
 <tr>
-<td><code>--target <target></code></td>
+<td><code>--target &lt;target&gt;</code></td>
 <td><code>native</code> (default), <code>wasm</code>, <code>arm</code>, <code>riscv</code></td>
 </tr>
 <tr>
@@ -445,7 +446,7 @@ xiom [flags] <source.xi>
 <td>Export SMT-LIB proof obligations (no proof claim)</td>
 </tr>
 <tr>
-<td><code>--verify-output <file></code></td>
+<td><code>--verify-output &lt;file&gt;</code></td>
 <td>Write the SMT-LIB output to a file</td>
 </tr>
 <tr>
@@ -539,7 +540,7 @@ xiom [flags] <source.xi>
 <td>Parallel lex+parse (rayon) or force sequential</td>
 </tr>
 <tr>
-<td><code>--jobs <N></code></td>
+<td><code>--jobs &lt;N&gt;</code></td>
 <td>Number of parallel compile jobs (default: CPUs)</td>
 </tr>
 <tr>
@@ -558,7 +559,7 @@ xiom [flags] <source.xi>
 <td>Structured compiler output</td>
 </tr>
 <tr>
-<td><code>--explain <CODE></code></td>
+<td><code>--explain &lt;CODE&gt;</code></td>
 <td>Explain an error code (e.g. <code>--explain T001</code>)</td>
 </tr>
 <tr>
@@ -566,15 +567,15 @@ xiom [flags] <source.xi>
 <td>Dependency graph as DOT or Mermaid</td>
 </tr>
 <tr>
-<td><code>--timeout <seconds></code></td>
+<td><code>--timeout &lt;seconds&gt;</code></td>
 <td>Compilation timeout (default 300; 0 disables)</td>
 </tr>
 <tr>
-<td><code>--max-memory-mb <N></code></td>
+<td><code>--max-memory-mb &lt;N&gt;</code></td>
 <td>Memory budget in MB (0 = disabled)</td>
 </tr>
 <tr>
-<td><code>--max-depth <N></code></td>
+<td><code>--max-depth &lt;N&gt;</code></td>
 <td>Maximum recursion depth (default 500)</td>
 </tr>
 </table>
@@ -585,15 +586,15 @@ xiom [flags] <source.xi>
 <th>Description</th>
 </tr>
 <tr>
-<td><code>--link <name></code></td>
+<td><code>--link &lt;name&gt;</code></td>
 <td>Link a native library (repeatable, e.g. <code>vulkan-1</code>)</td>
 </tr>
 <tr>
-<td><code>--link-path <dir></code></td>
+<td><code>--link-path &lt;dir&gt;</code></td>
 <td>Add a library search path (repeatable)</td>
 </tr>
 <tr>
-<td><code>--c-source <file></code></td>
+<td><code>--c-source &lt;file&gt;</code></td>
 <td>Link an extra C/object file (repeatable)</td>
 </tr>
 </table>
@@ -608,15 +609,15 @@ xiom [flags] <source.xi>
 <td>Run the example test suite</td>
 </tr>
 <tr>
-<td><code>--test-dir <dir></code></td>
+<td><code>--test-dir &lt;dir&gt;</code></td>
 <td>Test directory for <code>--test</code> (default: examples)</td>
 </tr>
 <tr>
-<td><code>--bench-file <file></code></td>
+<td><code>--bench-file &lt;file&gt;</code></td>
 <td>Benchmark a single file</td>
 </tr>
 <tr>
-<td><code>--count <N></code></td>
+<td><code>--count &lt;N&gt;</code></td>
 <td>Benchmark iteration count</td>
 </tr>
 </table>
@@ -635,7 +636,7 @@ xiom [flags] <source.xi>
 <td>Remove build artifacts</td>
 </tr>
 <tr>
-<td><code>--registry <url></code></td>
+<td><code>--registry &lt;url&gt;</code></td>
 <td>Package registry URL (<code>xiom pkg</code>)</td>
 </tr>
 <tr>
@@ -701,70 +702,58 @@ xiom [flags] <source.xi>
 <table>
 <tr>
 <th>Feature</th>
-<th>Status</th>
-<th>Since</th>
+<th>Surface</th>
 </tr>
 <tr>
 <td><code>move</code> keyword (spawn captures)</td>
 <td><code>spawn move { ... }</code></td>
-<td>v0.56</td>
 </tr>
 <tr>
 <td>Overflow checks ON by default</td>
 <td><code>--overflow-checks</code> default true</td>
-<td>v0.56</td>
 </tr>
 <tr>
 <td>Parallel codegen</td>
 <td><code>--parallel-codegen</code></td>
-<td>v0.56</td>
 </tr>
 <tr>
 <td>DWARF debug info</td>
 <td><code>--debug</code> / <code>-g</code></td>
-<td>v0.56</td>
 </tr>
 <tr>
 <td>Thread-local recursion counter</td>
 <td><code>@xiom_recursion_counter thread_local</code></td>
-<td>v0.56</td>
 </tr>
 <tr>
 <td>Send/Sync enforcement</td>
 <td>Auto-derived, spawn capture check</td>
-<td>v0.56</td>
 </tr>
 <tr>
 <td>Spawn move semantics</td>
 <td>Capture analysis + env forwarding</td>
-<td>v0.56</td>
 </tr>
 <tr>
 <td>Unsafe confinement</td>
 <td>Confined <code>unsafe</code> transactions, guard heap, fault trapping</td>
-<td>v0.57</td>
 </tr>
 <tr>
 <td>Debug intrinsics</td>
 <td><code>assert</code>, <code>dbg!</code>, <code>todo!</code>, <code>unimplemented!</code>, <code>debugger;</code></td>
-<td>v0.58</td>
 </tr>
 <tr>
 <td>Secure numeric policy</td>
 <td><code>Int</code> / <code>Float64</code> mixing requires explicit <code>as</code></td>
-<td>v0.58</td>
 </tr>
 <tr>
 <td>Labeled loops</td>
 <td><code>@label: while</code> / <code>break @label;</code></td>
-<td>v0.58</td>
 </tr>
 <tr>
 <td>Release-stripped contracts</td>
 <td><code>--runtime-contracts</code> retains them</td>
-<td>v0.58</td>
 </tr>
 </table>
+<p>When each surface landed is part of the release history, tracked on the website's <a href="https://xiom-lang.org/history.html">History</a> page.</p>
 <h2>Selfhost Gate Status</h2>
 <p>All self-hosting gates are cleared, but no self-hosted release has shipped yet; the released compiler remains the bootstrap toolchain. Remaining work is tracked in the compiler repository (<code>docs/PRE_SELFHOST_GAPS.md</code>).</p>
 <h2>Architecture Decisions</h2>
@@ -820,22 +809,41 @@ cargo test -p xiom-codegen --test e2e_tests
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

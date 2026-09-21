@@ -13,6 +13,7 @@ Outputs:
 Set XIOM_DOCS_VERSION to stamp pages with a release tag (default: latest).
 """
 
+import html
 import os
 import re
 import shutil
@@ -30,6 +31,19 @@ IMAGE_DIR = ROOT / "resource" / "img"
 DOCS_VERSION = os.environ.get("XIOM_DOCS_VERSION", "latest")
 
 # -- Markdown -> HTML Converter ------------------------------------------
+
+def inline_code(text: str) -> str:
+    """Render `code` spans with HTML escaping.
+
+    Raw <, > and & in code must not be parsed as tags or entities by the
+    browser; escaping keeps `a < b` and `Option<T>` visible.
+    """
+    return re.sub(
+        r'`([^`]+)`',
+        lambda m: '<code>{0}</code>'.format(html.escape(m.group(1), quote=False)),
+        text,
+    )
+
 
 def md_to_html(text: str) -> str:
     """Convert markdown text to HTML body content."""
@@ -54,19 +68,32 @@ def md_to_html(text: str) -> str:
     def convert_links(s):
         return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link_repl, s)
 
+    def render_inline(s):
+        """Render one line/paragraph of inline Markdown.
+
+        Code spans are stashed first so the bold, italic and link rules can
+        never reach inside them (a '*' inside `xiom_*` must stay literal).
+        """
+        spans = []
+
+        def stash(match):
+            spans.append(
+                '<code>{0}</code>'.format(html.escape(match.group(1), quote=False))
+            )
+            return '\x00{0}\x00'.format(len(spans) - 1)
+
+        s = re.sub(r'`([^`]+)`', stash, s)
+        s = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', s)
+        s = re.sub(r'\*([^*]+)\*', r'<em>\1</em>', s)
+        s = convert_links(s)
+        return re.sub(r'\x00(\d+)\x00', lambda m: spans[int(m.group(1))], s)
+
     def flush_paragraph(buf):
         if not buf:
             return
         p = ' '.join(buf).strip()
         if p:
-            # Inline code (backticks)
-            p = re.sub(r'`([^`]+)`', r'<code>\1</code>', p)
-            # Bold
-            p = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', p)
-            # Italic
-            p = re.sub(r'\*([^*]+)\*', r'<em>\1</em>', p)
-            # Links -- convert .md to .html
-            p = convert_links(p)
+            p = render_inline(p)
             out.append(f'<p>{p}</p>')
 
     def flush_table():
@@ -79,12 +106,7 @@ def md_to_html(text: str) -> str:
             out.append('<tr>')
             for cell in row:
                 cell = cell.strip()
-                # Inline code
-                cell = re.sub(r'`([^`]+)`', r'<code>\1</code>', cell)
-                # Bold
-                cell = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', cell)
-                # Links -- convert .md to .html
-                cell = convert_links(cell)
+                cell = render_inline(cell)
                 out.append(f'<{tag}>{cell}</{tag}>')
             out.append('</tr>')
         out.append('</table>')
@@ -109,8 +131,9 @@ def md_to_html(text: str) -> str:
                 lang_class = f' class="language-{code_lang}"' if code_lang else ''
                 out.append(f'<pre{lang_class}><code>')
                 for cl in code_lines:
-                    # Basic syntax highlighting for xiom code
-                    hl = cl
+                    # Basic syntax highlighting for xiom code. Escape first so
+                    # comparison operators and generics stay visible.
+                    hl = html.escape(cl, quote=False)
                     hl = re.sub(r'(//.*$)', r"<span class='cm'>\1</span>", hl)
                     hl = re.sub(r'"([^"]*)"', r"<span class='str'>\1</span>", hl)
                     hl = re.sub(r'(\b\d+\.?\d*\b)', r"<span class='num'>\1</span>", hl)
@@ -148,22 +171,22 @@ def md_to_html(text: str) -> str:
         if line.startswith('# '):
             flush_paragraph(para_buf); para_buf = []
             flush_table()
-            h = re.sub(r'`([^`]+)`', r'<code>\1</code>', line[2:].strip())
+            h = inline_code(line[2:].strip())
             out.append(f'<h1>{h}</h1>')
         elif line.startswith('## '):
             flush_paragraph(para_buf); para_buf = []
             flush_table()
-            h = re.sub(r'`([^`]+)`', r'<code>\1</code>', line[3:].strip())
+            h = inline_code(line[3:].strip())
             out.append(f'<h2>{h}</h2>')
         elif line.startswith('### '):
             flush_paragraph(para_buf); para_buf = []
             flush_table()
-            h = re.sub(r'`([^`]+)`', r'<code>\1</code>', line[4:].strip())
+            h = inline_code(line[4:].strip())
             out.append(f'<h3>{h}</h3>')
         elif line.startswith('#### '):
             flush_paragraph(para_buf); para_buf = []
             flush_table()
-            h = re.sub(r'`([^`]+)`', r'<code>\1</code>', line[5:].strip())
+            h = inline_code(line[5:].strip())
             out.append(f'<h4>{h}</h4>')
 
         # Horizontal rule
@@ -177,9 +200,7 @@ def md_to_html(text: str) -> str:
             flush_paragraph(para_buf); para_buf = []
             flush_table()
             item = line.strip()[2:]
-            item = re.sub(r'`([^`]+)`', r'<code>\1</code>', item)
-            item = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', item)
-            item = convert_links(item)
+            item = render_inline(item)
             # Check if previous was list to avoid wrapping
             out.append(f'<li>{item}</li>')
 
@@ -187,9 +208,7 @@ def md_to_html(text: str) -> str:
             flush_paragraph(para_buf); para_buf = []
             flush_table()
             item = re.sub(r'^\d+\.\s*', '', line.strip())
-            item = re.sub(r'`([^`]+)`', r'<code>\1</code>', item)
-            item = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', item)
-            item = convert_links(item)
+            item = render_inline(item)
             out.append(f'<li>{item}</li>')
 
         # Blockquote
@@ -197,8 +216,7 @@ def md_to_html(text: str) -> str:
             flush_paragraph(para_buf); para_buf = []
             flush_table()
             q = line[2:].strip()
-            q = re.sub(r'`([^`]+)`', r'<code>\1</code>', q)
-            q = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', q)
+            q = render_inline(q)
             out.append(f'<blockquote><p>{q}</p></blockquote>')
 
         # Empty line -> end paragraph
@@ -266,6 +284,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <a href="{site_base}spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="{site_base}why.html">Why</a>
+      <a href="{site_base}prior-art.html">Prior art</a>
       <a href="{site_base}ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="{site_base}roadmap.html">Roadmap</a>
@@ -297,22 +316,41 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 
 <footer>
   <div class="wrap">
-    <p>xiom {version_short} - <a href="{site_base}" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="{site_base}LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="{site_base}LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{home_path}" class="logo">
+          <img src="{icon_path}" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="{site_base}LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="{site_base}LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="{site_base}spec.html">Specification</a>
+        <a href="{site_base}why.html">Why XIOM</a>
+        <a href="{site_base}prior-art.html">Prior art</a>
+        <a href="{site_base}roadmap.html">Roadmap</a>
+        <a href="{site_base}history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="{site_base}versions.html">Versions</a>
+        <a href="{site_base}download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="{site_base}terms.html">Terms of Use</a>
+        <a href="{site_base}privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="{site_base}terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="{site_base}privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="{site_base}spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="{site_base}ecosystem.html">Ecosystem</a>
-      <a href="{site_base}download.html">Download</a>
     </div>
   </div>
 </footer>

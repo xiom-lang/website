@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -113,9 +114,9 @@
 <p>The trait for random number generators.</p>
 <pre><code>
 <span class='kw'>pub</span> <span class='kw'>interface</span> <span class='ty'>Rng</span> {
-    <span class='kw'>fn</span> <span class='func'>next_int</span>(<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
-    <span class='kw'>fn</span> <span class='func'>next_float</span>(<span class='kw'>self</span>) -> <span class='ty'>Float64</span>;
-    <span class='kw'>fn</span> <span class='func'>next_bytes</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]);
+    <span class='kw'>fn</span> <span class='func'>next_int</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Int</span>;
+    <span class='kw'>fn</span> <span class='func'>next_float</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Float64</span>;
+    <span class='kw'>fn</span> <span class='func'>next_bytes</span>(<span class='kw'>self</span>, buf: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]);
 }
 </code></pre>
 <h3><code>Rng.next_int(self)</code></h3>
@@ -133,111 +134,111 @@
 <h3><code>StdRng.new()</code></h3>
 <p>Creates a new <code>StdRng</code> seeded from system entropy.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> StdRng.<span class='func'>new</span>() -> StdRng;
+<span class='kw'>pub</span> <span class='kw'>fn</span> StdRng.<span class='func'>new</span>() -&gt; StdRng;
 </code></pre>
 <h3><code>StdRng.from_seed(seed)</code></h3>
 <p>Creates a deterministic <code>StdRng</code> from a given seed value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> StdRng.<span class='func'>from_seed</span>(seed: <span class='ty'>Int</span>) -> StdRng;
+<span class='kw'>pub</span> <span class='kw'>fn</span> StdRng.<span class='func'>from_seed</span>(seed: <span class='ty'>Int</span>) -&gt; StdRng;
 </code></pre>
 <h2>Basic Random Values</h2>
 <h3><code>random()</code></h3>
 <p>Returns a random <code>Float64</code> in [0, 1).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random</span>() -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random</span>() -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h3><code>random_int(min, max)</code></h3>
 <p>Returns a random integer in [min, max] (inclusive).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random_int</span>(min: <span class='ty'>Int</span>, max: <span class='ty'>Int</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random_int</span>(min: <span class='ty'>Int</span>, max: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>random_float(min, max)</code></h3>
 <p>Returns a random <code>Float64</code> in [min, max) (exclusive upper bound).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random_float</span>(min: <span class='ty'>Float64</span>, max: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random_float</span>(min: <span class='ty'>Float64</span>, max: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h3><code>random_bool()</code></h3>
 <p>Returns a random boolean with equal probability.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random_bool</span>() -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random_bool</span>() -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>random_bytes(count)</code></h3>
 <p>Returns a vector of <code>count</code> random bytes.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random_bytes</span>(count: <span class='ty'>Int</span>) -> <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>random_bytes</span>(count: <span class='ty'>Int</span>) -&gt; <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>];
 </code></pre>
 <h2>Distributions</h2>
 <h3><code>sample_uniform(min, max)</code></h3>
 <p>Samples from a uniform distribution over [min, max).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_uniform</span>(min: <span class='ty'>Float64</span>, max: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_uniform</span>(min: <span class='ty'>Float64</span>, max: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h3><code>sample_normal(mean, stddev)</code></h3>
 <p>Samples from a normal (Gaussian) distribution with the given mean and standard deviation.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_normal</span>(mean: <span class='ty'>Float64</span>, stddev: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_normal</span>(mean: <span class='ty'>Float64</span>, stddev: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h3><code>sample_exponential(lambda)</code></h3>
 <p>Samples from an exponential distribution with the given rate parameter.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_exponential</span>(lambda: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_exponential</span>(lambda: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h3><code>sample_bernoulli(p)</code></h3>
 <p>Samples from a Bernoulli distribution: returns <code>true</code> with probability <code>p</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_bernoulli</span>(p: <span class='ty'>Float64</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_bernoulli</span>(p: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>sample_binomial(n, p)</code></h3>
 <p>Samples from a binomial distribution with <code>n</code> trials and success probability <code>p</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_binomial</span>(n: <span class='ty'>Int</span>, p: <span class='ty'>Float64</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_binomial</span>(n: <span class='ty'>Int</span>, p: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>sample_poisson(lambda)</code></h3>
 <p>Samples from a Poisson distribution with the given rate.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_poisson</span>(lambda: <span class='ty'>Float64</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_poisson</span>(lambda: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>sample_gamma(shape, scale)</code></h3>
 <p>Samples from a gamma distribution with the given shape and scale parameters.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_gamma</span>(shape: <span class='ty'>Float64</span>, scale: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_gamma</span>(shape: <span class='ty'>Float64</span>, scale: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h3><code>sample_beta(alpha, beta)</code></h3>
 <p>Samples from a beta distribution with the given alpha and beta parameters.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_beta</span>(alpha: <span class='ty'>Float64</span>, beta: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>sample_beta</span>(alpha: <span class='ty'>Float64</span>, beta: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h2>Shuffle & Pick</h2>
 <h3><code>shuffle(items)</code></h3>
 <p>Randomly shuffles a vector in-place using the Fisher-Yates algorithm.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> shuffle[T](items: &mut <span class='ty'>Vec</span>[T]);
+<span class='kw'>pub</span> <span class='kw'>fn</span> shuffle[T](items: &amp;mut <span class='ty'>Vec</span>[T]);
 </code></pre>
 <h3><code>pick(items)</code></h3>
 <p>Returns a reference to a random element, or <code>None</code> if the vector is empty.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> pick[T](items: &<span class='ty'>Vec</span>[T]) -> <span class='ty'>Option</span><&T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> pick[T](items: &amp;<span class='ty'>Vec</span>[T]) -&gt; <span class='ty'>Option</span>&lt;&amp;T&gt;;
 </code></pre>
 <h3><code>pick_n(items, n)</code></h3>
 <p>Returns <code>n</code> random element references from the vector (with replacement).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> pick_n[T](items: &<span class='ty'>Vec</span>[T], n: <span class='ty'>Int</span>) -> <span class='ty'>Vec</span><&T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> pick_n[T](items: &amp;<span class='ty'>Vec</span>[T], n: <span class='ty'>Int</span>) -&gt; <span class='ty'>Vec</span>&lt;&amp;T&gt;;
 </code></pre>
 <h3><code>weighted_pick(items, weights)</code></h3>
 <p>Picks a random element using weighted probabilities. Returns <code>None</code> if the vector is empty.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> weighted_pick[T](items: &<span class='ty'>Vec</span>[T], weights: &<span class='ty'>Vec</span><<span class='ty'>Float64</span>>) -> <span class='ty'>Option</span><&T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> weighted_pick[T](items: &amp;<span class='ty'>Vec</span>[T], weights: &amp;<span class='ty'>Vec</span>&lt;<span class='ty'>Float64</span>&gt;) -&gt; <span class='ty'>Option</span>&lt;&amp;T&gt;;
 </code></pre>
 <h2>UUID</h2>
 <h3><code>uuid_v4()</code></h3>
 <p>Generates a random UUID version 4 string (e.g., <code>"f47ac10b-58cc-4372-a567-0e02b2c3d479"</code>).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>uuid_v4</span>() -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>uuid_v4</span>() -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h3><code>uuid_v7()</code></h3>
 <p>Generates a time-ordered UUID version 7 string.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>uuid_v7</span>() -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>uuid_v7</span>() -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h2>Seeding</h2>
 <h3><code>seed_from_entropy()</code></h3>
@@ -262,22 +263,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

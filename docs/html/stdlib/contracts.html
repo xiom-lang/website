@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -168,60 +169,60 @@
 <h3><code>verify_invariants(value)</code></h3>
 <p>Verifies all invariants of a type against a value at runtime. Returns a list of failures (empty = all passed).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> verify_invariants[T](value: &T) -> <span class='ty'>Vec</span>[ContractCheckResult]
-    <span class='kw'>ensures</span>: <span class='kw'>result</span>.<span class='func'>len</span>() == <span class='num'>0</span> => value satisfies all invariants
+<span class='kw'>pub</span> <span class='kw'>fn</span> verify_invariants[T](value: &amp;T) -&gt; <span class='ty'>Vec</span>[ContractCheckResult]
+    <span class='kw'>ensures</span>: <span class='kw'>result</span>.<span class='func'>len</span>() == <span class='num'>0</span> =&gt; value satisfies all invariants
 </code></pre>
 <h3><code>verify_function_contracts(func, args)</code></h3>
 <p>Verifies all contracts of a function against its actual call. Automatically invoked by the compiler at runtime.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>verify_function_contracts</span>(func: <span class='ty'>Str</span>, args: <span class='ty'>Map</span>[<span class='ty'>Str</span>, <span class='ty'>Str</span>]) -> <span class='ty'>Vec</span>[ContractCheckResult];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>verify_function_contracts</span>(func: <span class='ty'>Str</span>, args: <span class='ty'>Map</span>[<span class='ty'>Str</span>, <span class='ty'>Str</span>]) -&gt; <span class='ty'>Vec</span>[ContractCheckResult];
 </code></pre>
 <h3><code>check_invariant(value, invariant)</code></h3>
 <p>Checks a single invariant expression against a value at runtime.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> check_invariant[T](value: &T, <span class='kw'>invariant</span>: <span class='ty'>Str</span>) -> ContractCheckResult;
+<span class='kw'>pub</span> <span class='kw'>fn</span> check_invariant[T](value: &amp;T, <span class='kw'>invariant</span>: <span class='ty'>Str</span>) -&gt; ContractCheckResult;
 </code></pre>
 <h2>Contract Index -- Queryable Spec Database</h2>
 <h3><code>build_contract_index()</code></h3>
 <p>Builds a complete <code>ContractIndex</code> for the current package, containing all functions, types, and their contracts.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>build_contract_index</span>() -> ContractIndex;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>build_contract_index</span>() -&gt; ContractIndex;
 </code></pre>
 <h3><code>get_function_contracts(name)</code></h3>
 <p>Returns the contracts for a specific function by name.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>get_function_contracts</span>(name: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Vec</span>[FunctionContracts]];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>get_function_contracts</span>(name: <span class='ty'>Str</span>) -&gt; <span class='ty'>Option</span>[<span class='ty'>Vec</span>[FunctionContracts]];
 </code></pre>
 <h3><code>get_type_contracts(name)</code></h3>
 <p>Returns the contracts for a specific type by name.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>get_type_contracts</span>(name: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Vec</span>[TypeContracts]];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>get_type_contracts</span>(name: <span class='ty'>Str</span>) -&gt; <span class='ty'>Option</span>[<span class='ty'>Vec</span>[TypeContracts]];
 </code></pre>
 <h3><code>find_functions_using_type(type_name)</code></h3>
 <p>Finds all functions whose contracts reference the given type name.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>find_functions_using_type</span>(type_name: <span class='ty'>Str</span>) -> <span class='ty'>Vec</span><<span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>find_functions_using_type</span>(type_name: <span class='ty'>Str</span>) -&gt; <span class='ty'>Vec</span>&lt;<span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>find_invariants_using_field(type_name, field_name)</code></h3>
 <p>Finds all invariants that reference a given field of a given type.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>find_invariants_using_field</span>(type_name: <span class='ty'>Str</span>, field_name: <span class='ty'>Str</span>) -> <span class='ty'>Vec</span><ContractClause>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>find_invariants_using_field</span>(type_name: <span class='ty'>Str</span>, field_name: <span class='ty'>Str</span>) -&gt; <span class='ty'>Vec</span>&lt;ContractClause&gt;;
 </code></pre>
 <h2>Contract Serialization</h2>
 <h3><code>export_contracts_json()</code></h3>
 <p>Exports the contract index as a JSON string.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>export_contracts_json</span>() -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>export_contracts_json</span>() -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h3><code>export_contracts_markdown()</code></h3>
 <p>Exports the contract index as structured Markdown documentation.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>export_contracts_markdown</span>() -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>export_contracts_markdown</span>() -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h3><code>export_contracts_openapi()</code></h3>
 <p>Exports the contract index as an OpenAPI/Swagger-like specification.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>export_contracts_openapi</span>() -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>export_contracts_openapi</span>() -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h2>Contract Coverage</h2>
 <h3><code>reset_contract_coverage()</code></h3>
@@ -237,64 +238,64 @@
 <h3><code>get_contract_coverage()</code></h3>
 <p>Returns a map of clause descriptions to booleans indicating whether each clause was exercised.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>get_contract_coverage</span>() -> <span class='ty'>Map</span>[<span class='ty'>Str</span>, <span class='ty'>Bool</span>];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>get_contract_coverage</span>() -&gt; <span class='ty'>Map</span>[<span class='ty'>Str</span>, <span class='ty'>Bool</span>];
 </code></pre>
 <h3><code>get_uncovered_contracts()</code></h3>
 <p>Returns all contract clauses that have not been exercised by tests.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>get_uncovered_contracts</span>() -> <span class='ty'>Vec</span><ContractClause>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>get_uncovered_contracts</span>() -&gt; <span class='ty'>Vec</span>&lt;ContractClause&gt;;
 </code></pre>
 <h3><code>coverage_percentage()</code></h3>
 <p>Returns the percentage of contract clauses that have been covered by tests.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>coverage_percentage</span>() -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>coverage_percentage</span>() -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h2>Contract Composition</h2>
 <h3>`can_compose(f_requires, g_ensures)|</h3>
 <p>Determines whether function <code>g</code>'s output can satisfy function <code>f</code>'s requires. Returns the condition that must hold, or <code>"impossible"</code> if composition is never valid.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>can_compose</span>(f_requires: <span class='ty'>Vec</span>[ContractClause], g_ensures: <span class='ty'>Vec</span>[ContractClause]) -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>can_compose</span>(f_requires: <span class='ty'>Vec</span>[ContractClause], g_ensures: <span class='ty'>Vec</span>[ContractClause]) -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h3>`verify_chain(fns)|</h3>
 <p>Verifies that a chain of function calls satisfies contract propagation throughout the chain.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>verify_chain</span>(fns: <span class='ty'>Vec</span><<span class='ty'>Str</span>>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>Vec</span>[ContractCheckResult]];
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>verify_chain</span>(fns: <span class='ty'>Vec</span>&lt;<span class='ty'>Str</span>&gt;) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>Vec</span>[ContractCheckResult]];
 </code></pre>
 <h2>Contract Statistics</h2>
 <h3><code>total_contracts()</code></h3>
 <p>Returns the total number of contract clauses across all functions and types.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>total_contracts</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>total_contracts</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>total_requires()</code></h3>
 <p>Returns the total number of <code>requires</code> clauses.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>total_requires</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>total_requires</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>total_ensures()</code></h3>
 <p>Returns the total number of <code>ensures</code> clauses.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>total_ensures</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>total_ensures</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>total_invariants()</code></h3>
 <p>Returns the total number of <code>invariant</code> clauses.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>total_invariants</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>total_invariants</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>functions_with_contracts()</code></h3>
 <p>Returns the number of functions that have at least one contract clause.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>functions_with_contracts</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>functions_with_contracts</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>types_with_invariants()</code></h3>
 <p>Returns the number of types that have at least one invariant.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>types_with_invariants</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>types_with_invariants</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>contract_density()</code></h3>
 <p>Returns the average number of contract clauses per function (contracts per function).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>contract_density</span>() -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>contract_density</span>() -&gt; <span class='ty'>Float64</span>;
 </code></pre>
     </main>
 
@@ -303,22 +304,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

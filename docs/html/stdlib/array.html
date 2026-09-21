@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -112,116 +113,116 @@
 <h3><code>len(arr)</code></h3>
 <p>Returns the length (N) of the fixed-size array.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> len[T, <span class='kw'>const</span> N: <span class='ty'>Int</span>](arr: &[N]T) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> len[T, <span class='kw'>const</span> N: <span class='ty'>Int</span>](arr: &amp;[N]T) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>is_empty(arr)</code></h3>
 <p>Returns <code>true</code> if the array has length zero.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> is_empty[T, <span class='kw'>const</span> N: <span class='ty'>Int</span>](arr: &[N]T) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> is_empty[T, <span class='kw'>const</span> N: <span class='ty'>Int</span>](arr: &amp;[N]T) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>first(arr)</code></h3>
 <p>Returns a reference to the first element, or <code>None</code> if empty.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> first[T](arr: &[N]T) -> <span class='ty'>Option</span><&T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> first[T](arr: &amp;[N]T) -&gt; <span class='ty'>Option</span>&lt;&amp;T&gt;;
 </code></pre>
 <h3><code>last(arr)</code></h3>
 <p>Returns a reference to the last element, or <code>None</code> if empty.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> last[T](arr: &[N]T) -> <span class='ty'>Option</span><&T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> last[T](arr: &amp;[N]T) -&gt; <span class='ty'>Option</span>&lt;&amp;T&gt;;
 </code></pre>
 <h3><code>get(arr, index)</code></h3>
 <p>Returns a reference to the element at the given index, or <code>None</code> if out of bounds.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> get[T](arr: &[N]T, index: <span class='ty'>Int</span>) -> <span class='ty'>Option</span><&T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> get[T](arr: &amp;[N]T, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Option</span>&lt;&amp;T&gt;;
 </code></pre>
 <h3><code>get_mut(arr, index)</code></h3>
 <p>Returns a mutable reference to the element at the given index, or <code>None</code> if out of bounds.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> get_mut[T](arr: &mut [N]T, index: <span class='ty'>Int</span>) -> <span class='ty'>Option</span><&mut T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> get_mut[T](arr: &amp;mut [N]T, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Option</span>&lt;&amp;mut T&gt;;
 </code></pre>
 <h2>Iteration & Transformation</h2>
 <h3><code>map(arr, f)</code></h3>
 <p>Transforms each element by applying <code>f</code>, producing a new array of the same size.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> map[T, U, <span class='kw'>const</span> N: <span class='ty'>Int</span>](arr: [N]T, f: <span class='func'><span class='kw'>fn</span></span>(T) -> U) -> [N]U;
+<span class='kw'>pub</span> <span class='kw'>fn</span> map[T, U, <span class='kw'>const</span> N: <span class='ty'>Int</span>](arr: [N]T, f: <span class='func'><span class='kw'>fn</span></span>(T) -&gt; U) -&gt; [N]U;
 </code></pre>
 <h3><code>zip(a, b)</code></h3>
 <p>Combines two arrays element-wise into an array of tuples.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> zip[T, U, <span class='kw'>const</span> N: <span class='ty'>Int</span>](a: [N]T, b: [N]U) -> [N](T, U);
+<span class='kw'>pub</span> <span class='kw'>fn</span> zip[T, U, <span class='kw'>const</span> N: <span class='ty'>Int</span>](a: [N]T, b: [N]U) -&gt; [N](T, U);
 </code></pre>
 <h3><code>fold(arr, init, f)</code></h3>
 <p>Accumulates a value by applying <code>f</code> to each element and the current accumulator.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> fold[T, B](arr: [N]T, init: B, f: <span class='func'><span class='kw'>fn</span></span>(B, T) -> B) -> B;
+<span class='kw'>pub</span> <span class='kw'>fn</span> fold[T, B](arr: [N]T, init: B, f: <span class='func'><span class='kw'>fn</span></span>(B, T) -&gt; B) -&gt; B;
 </code></pre>
 <h2>Slice Conversion</h2>
 <h3><code>as_slice(arr)</code></h3>
 <p>Returns a slice over the entire array.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> as_slice[T](arr: &[N]T) -> <span class='ty'>Slice</span>[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> as_slice[T](arr: &amp;[N]T) -&gt; <span class='ty'>Slice</span>[T];
 </code></pre>
 <h3><code>as_mut_slice(arr)</code></h3>
 <p>Returns a mutable slice over the entire array.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> as_mut_slice[T](arr: &mut [N]T) -> <span class='ty'>Slice</span>[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> as_mut_slice[T](arr: &amp;mut [N]T) -&gt; <span class='ty'>Slice</span>[T];
 </code></pre>
 <h3><code>each_ref(arr)</code></h3>
 <p>Converts the array to an array of references.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> each_ref[T](arr: &[N]T) -> [N]&T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> each_ref[T](arr: &amp;[N]T) -&gt; [N]&amp;T;
 </code></pre>
 <h3><code>each_mut(arr)</code></h3>
 <p>Converts the array to an array of mutable references.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> each_mut[T](arr: &mut [N]T) -> [N]&mut T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> each_mut[T](arr: &amp;mut [N]T) -&gt; [N]&amp;mut T;
 </code></pre>
 <h2>Mutation</h2>
 <h3><code>fill(arr, value)</code></h3>
 <p>Fills all elements of the array with a cloned value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> fill[T: <span class='ty'>Clone</span>](arr: &mut [N]T, value: T);
+<span class='kw'>pub</span> <span class='kw'>fn</span> fill[T: <span class='ty'>Clone</span>](arr: &amp;mut [N]T, value: T);
 </code></pre>
 <h3><code>swap(arr, a, b)</code></h3>
 <p>Swaps the elements at indices <code>a</code> and <code>b</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> swap[T](arr: &mut [N]T, a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>);
+<span class='kw'>pub</span> <span class='kw'>fn</span> swap[T](arr: &amp;mut [N]T, a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>);
 </code></pre>
 <h3><code>reverse(arr)</code></h3>
 <p>Reverses the order of elements in the array.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> reverse[T](arr: &mut [N]T);
+<span class='kw'>pub</span> <span class='kw'>fn</span> reverse[T](arr: &amp;mut [N]T);
 </code></pre>
 <h3><code>rotate_left(arr, mid)</code></h3>
 <p>Rotates the array left so that the element at <code>mid</code> becomes the first.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> rotate_left[T](arr: &mut [N]T, mid: <span class='ty'>Int</span>);
+<span class='kw'>pub</span> <span class='kw'>fn</span> rotate_left[T](arr: &amp;mut [N]T, mid: <span class='ty'>Int</span>);
 </code></pre>
 <h3><code>rotate_right(arr, k)</code></h3>
 <p>Rotates the array right by <code>k</code> positions.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> rotate_right[T](arr: &mut [N]T, k: <span class='ty'>Int</span>);
+<span class='kw'>pub</span> <span class='kw'>fn</span> rotate_right[T](arr: &amp;mut [N]T, k: <span class='ty'>Int</span>);
 </code></pre>
 <h2>Sorting & Searching</h2>
 <h3><code>sort(arr)</code></h3>
 <p>Sorts the array using the element's <code>Ord</code> implementation.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> sort[T: <span class='ty'>Ord</span>](arr: &mut [N]T);
+<span class='kw'>pub</span> <span class='kw'>fn</span> sort[T: <span class='ty'>Ord</span>](arr: &amp;mut [N]T);
 </code></pre>
 <h3><code>sort_by(arr, compare)</code></h3>
 <p>Sorts the array using a custom comparison function.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> sort_by[T](arr: &mut [N]T, compare: <span class='func'><span class='kw'>fn</span></span>(&T, &T) -> Ordering);
+<span class='kw'>pub</span> <span class='kw'>fn</span> sort_by[T](arr: &amp;mut [N]T, compare: <span class='func'><span class='kw'>fn</span></span>(&amp;T, &amp;T) -&gt; Ordering);
 </code></pre>
 <h3><code>binary_search(arr, x)</code></h3>
 <p>Binary-searches the sorted array for a value. Returns <code>Ok(index)</code> if found, or <code>Err(insert_index)</code> if not found.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> binary_search[T: <span class='ty'>Ord</span>](arr: &[N]T, x: &T) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>Int</span>];
+<span class='kw'>pub</span> <span class='kw'>fn</span> binary_search[T: <span class='ty'>Ord</span>](arr: &amp;[N]T, x: &amp;T) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>Int</span>];
 </code></pre>
 <h3><code>contains(arr, x)</code></h3>
 <p>Returns <code>true</code> if the array contains the given value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> contains[T: <span class='ty'>Eq</span>](arr: &[N]T, x: &T) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> contains[T: <span class='ty'>Eq</span>](arr: &amp;[N]T, x: &amp;T) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
     </main>
 
@@ -230,22 +231,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

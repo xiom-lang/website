@@ -8,10 +8,9 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 > files under xiom/, 509 check_modules probes, 6,532 pub fns).
 > Compiler gates: e2e 2338/2338, checker 195/195, feature-reg 510,
 > robustness 63, fuzz 24, perf/determinism 2/2, fmt 86, lsp 45.
-> **New in v0.56:** `move` keyword for spawn captures, overflow checks ON by default, parallel codegen (`--parallel-codegen`), DWARF debug metadata (`--debug`), Send/Sync enforcement, Z3 verifier deterministic.
-> **New in v0.57 (Unsafe Confinement):** every `unsafe` block is a confined transaction -- guard-heap arena isolation (req d), stack guard pages (req e), SEH/sigsetjmp fault trapping (req f), once-only transient-fault retry (req h), Copy-Out of Str tails (req i), zero-escape gates (T002/T003/T005/T006/T007), `#[unsafe_no_retry]`, and `#[unsafe_direct]` (trusted escape hatch, `--enable-unsafe-direct`).
-> **New in v0.58 (Debug & Numeric Policy):** secure numeric policy (Int<->Float mixing requires explicit `as`; int literals may adopt float; same-family widening stays auto), labeled loops (`@label: while` / `break @label;`), debug intrinsics (`assert(cond[, msg])`, `dbg!()`, `todo!()`, `unimplemented!()`, `debugger;`) with release stripping (`--keep-debug-checks` to retain), `else if` accepted as a desugared `elif`, sublib-prefix resolution (`use xiom.os; os.platform.<fn>`), and release-stripped contracts (`--runtime-contracts` to force).
-> **New in v0.59-v0.61:** compiler/stdlib repo split with pinned stdlib (`STDLIB_VERSION`), single-source workspace version 0.61.0 (every banner from CARGO_PKG_VERSION; tag==version release guard), cargo-vet supply-chain gate, `xiom-pkg` shipped in release archives, same-leaf type qualification (R39/R44/R46/R46b), ed25519 registry supply chain (fail-closed installs, transitive closure).
+> **Scope:** this reference documents the current language and compiler surface as
+> one stable API. Features are not versioned here -- release-by-release history is
+> on the website's [History](https://xiom-lang.org/history.html) page.
 > This document is the single source of truth for XIOM code generation. Every syntax rule, stdlib function, and compiler flag documented here is part of the language. Write code against this reference as the complete, stable API.
 
 > **[WARN] IMMUTABLE DOCUMENT.** This file is the XIOM language specification. Do NOT modify, add workarounds, or record compiler limitations in this document. Compiler gaps belong in `docs/ROADMAP.md` Phase 5c-E. If the compiler rejects code that matches this spec, the compiler has a bug -- file it, do NOT alter the spec. Only the XIOM language team may update this file.
@@ -178,7 +177,7 @@ while let Some(v) = next() { process(v); }
 - Wildcard is `_`, not `default` or `otherwise`.
 - Match arms that are blocks need no separator. Single-expression arms end with `,`.
 
-**Labeled loops (v0.58):** loops may carry a label for `break`/`continue`
+**Labeled loops:** loops may carry a label for `break`/`continue`
 targeting (Rust-style):
 
 ```xiom
@@ -257,7 +256,7 @@ comptime heavy()           // compile-time eval
 x is Some                  // type test
 items.len()@pre            // pre-state (contracts only)
 
-// v0.54: Compile-time evaluation
+// Compile-time evaluation
 const { 40 + 2 }            // compile-time constant block -> evaluated to 42
 size_of[Int]()               // type size (compile-time)
 align_of[Point]()            // type alignment (compile-time)
@@ -265,22 +264,22 @@ type_id[Int]()               // FNV-1a type hash (compile-time)
 field_offset[Point]("x")     // field byte offset (compile-time)
 is_signed[Int]()             // Bool: is type signed? (compile-time)
 
-// v0.55: Inline assembly (Intel syntax, GCC-style constraints)
+// Inline assembly (Intel syntax, GCC-style constraints)
 asm("nop");
 asm("mov $0, $1" : "=r"(result) : "r"(input));
 
-// v0.55: defer -- guaranteed scope-exit execution
+// defer -- guaranteed scope-exit execution
 defer { cleanup(); }
 defer io.println("done");
 
-// v0.55/v0.56: spawn -- OS thread creation with optional move captures
+// spawn -- OS thread creation with optional move captures
 spawn { heavy_work(); }
-spawn move { var x = captured_var + 1; }  // v0.56: move semantics for captures
+spawn move { var x = captured_var + 1; }  // move semantics for captures
 
-// v0.55: Never type -- diverging function
+// Never type -- diverging function
 fn abort() -> ! { loop {} }
 
-// v0.55: Explicit generic type parameters
+// Explicit generic type parameters
 let n = parse[Int]("42");
 let a = align_of[Float64]();
 ```
@@ -314,7 +313,7 @@ Some  None  Ok  Err
 unsafe  extern  is  and(reserved)  or(reserved)  not(reserved)  where(reserved)
 ```
 
-**Debug intrinsics (v0.58)** -- usable anywhere in fn bodies:
+**Debug intrinsics** -- usable anywhere in fn bodies:
 
 ```xiom
 assert(cond);                 // statement: panic with location on false
@@ -363,7 +362,7 @@ and inline `[T: Interface]` constraints instead.
 | `Unit` | `()` | Void return, empty tuple |
 | `!` | Never (bottom type) | Diverging functions, exhaustiveness proofs |
 
-**Numeric policy (v0.58) -- secure mixing rules:**
+**Numeric policy -- secure mixing rules:**
 
 - **Int <-> Float mixing in arithmetic, comparisons, and typed bindings
   requires an explicit `as` cast** (Rust-style): `x + y` where `x: Int` and
@@ -520,7 +519,7 @@ consume(v);      // move -- v NO LONGER VALID
 > referent outlives the function call. The compiler enforces this via lexical
 > lifetime analysis.
 
-### 4.4 Unsafe (Confined Blocks -- v0.57)
+### 4.4 Unsafe (Confined Blocks)
 
 ```xiom
 unsafe {
@@ -531,7 +530,7 @@ unsafe {
 
 `unsafe` is a declaration of programmer responsibility. Only needed for C FFI and raw pointer ops.
 
-**Unsafe Confinement model (v0.57 -- all requirements enforced by the compiler):**
+**Unsafe Confinement model (all requirements enforced by the compiler):**
 
 | Requirement | Rule |
 |-------------|------|
@@ -740,7 +739,7 @@ interface DerefMut { fn deref_mut(self) -> &mut Self.Target; }
 interface AsRef[T]   { fn as_ref(self) -> &T; }
 interface AsMut[T]   { fn as_mut(self) -> &mut T; }
 
-// v0.55: Thread safety marker interfaces (auto-derived, no methods)
+// Thread safety marker interfaces (auto-derived, no methods)
 interface Send { }
 interface Sync { }
 ```
@@ -1474,7 +1473,7 @@ fn capture_backtrace() -> Backtrace
 fn Backtrace.display(self) -> Str
 ```
 
-**v0.57 Unsafe Confinement fault types** (produced by the fault trap when a
+**Unsafe Confinement fault types** (produced by the fault trap when a
 confined `unsafe` block hits a hardware fault):
 
 ```xiom
@@ -1731,7 +1730,7 @@ fn AtomicInt.swap(self, val: Int) -> Int
 fn AtomicInt.compare_exchange(self, current: Int, new: Int) -> Bool
 ```
 
-### 8.22a `channel` -- MPSC Channel (v0.55)
+### 8.22a `channel` -- MPSC Channel
 
 ```xiom
 type Channel[T] = { _handle: *Int; }     // Bounded MPSC ring buffer (64 slots)
@@ -2227,7 +2226,7 @@ fn alloc(size: UInt) -> *UInt8 {
 
 Standard libc functions link automatically. The XIOM C runtime (`stdlib/runtime/*.c`) provides the `xiom_*` helpers used by `io`, `os`, `sync`, `thread`, `net`, and `async`, and is linked by `xiom` on every native build -- no manual setup needed. Use `--link`, `--link-path`, and `--c-source` (section 11) to link additional native libraries.
 
-**v0.57 FFI ownership (T006):** an extern call returning `*T` inside a confined `unsafe` block must convert its result to an owned XIOM type before the block's tail. `xiom.ffi` provides:
+**FFI ownership (T006):** an extern call returning `*T` inside a confined `unsafe` block must convert its result to an owned XIOM type before the block's tail. `xiom.ffi` provides:
 
 ```xiom
 fn safe_ptr_from_raw(ptr: *UInt8, size: Int) -> Result[SafePtr, Str]
@@ -2827,7 +2826,7 @@ fn connect(host: Str, port: Port) -> Result[Conn, NetError]
 | Mistake | Error | Fix |
 |---------|-------|-----|
 | Missing `;` after statement | `expected ';', found ...` | Every statement needs `;` except tail expressions and block closers. |
-| `else if` instead of `elif` | (accepted since v0.58) | `else if` desugars to `elif`; `elif` remains the canonical spelling. |
+| `else if` instead of `elif` | (accepted) | `else if` desugars to `elif`; `elif` remains the canonical spelling. |
 | `self.x` in method | Not a compile error but stylistically wrong | Fields accessed directly: `x`, not `self.x`. |
 | Returning a borrow | `cannot return borrow` | Return owned type or clone. |
 | Storing borrow in struct | `borrow in struct not allowed` | Store owned type, not `&T`. |
@@ -2859,11 +2858,11 @@ OPTIONS:
   --target <target>     Target backend: native (default), wasm, arm, riscv
   --no-contracts        Disable contract runtime checks (strips requires/ensures/invariant guards)
   --runtime-contracts   Force contract checks in release builds (overrides --no-contracts)
-  --keep-debug-checks   v0.58: keep assert/dbg!/debugger; in RELEASE builds (debug builds always keep them)
+  --keep-debug-checks   keep assert/dbg!/debugger; in RELEASE builds (debug builds always keep them)
   --release             Optimized release build (-O3); strips contracts and debug checks by default
   --sanitize=<type>     Enable sanitizer: address, undefined, leak, thread
   --stack-protector     Enable stack canaries
-  --enable-unsafe-direct  D2.1/v0.57: allow `#[unsafe_direct]` (trusted escape hatch) in user code (stdlib/selfhost always allowed). v0.58: prints a prominent warning on every invocation so release build logs cannot silently contain unguarded code
+  --enable-unsafe-direct  allow `#[unsafe_direct]` (trusted escape hatch) in user code (stdlib/selfhost always allowed); prints a prominent warning on every invocation so release build logs cannot silently contain unguarded code
   --diagnostics=json    Emit diagnostics as JSON (type/borrow/codegen errors, or {"status":"ok"})
   --dump-contracts      Print the program's contract index as JSON and exit
   --verify              Generate SMT-LIB contract verification output (to stdout)

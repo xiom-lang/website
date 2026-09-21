@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -112,28 +113,28 @@
 <h3><code>null()</code></h3>
 <p>Returns a null const pointer of type <code>T</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> null[T]() -> *T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> null[T]() -&gt; *T;
 </code></pre>
 <h3><code>null_mut()</code></h3>
 <p>Returns a null mutable pointer of type <code>T</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> null_mut[T]() -> *mut T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> null_mut[T]() -&gt; *mut T;
 </code></pre>
 <h3><code>dangling()</code></h3>
 <p>Returns a non-null dangling pointer of type <code>T</code> (alignment-correct but not dereferenceable).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> dangling[T]() -> *T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> dangling[T]() -&gt; *T;
 </code></pre>
 <h3><code>is_null(ptr)</code></h3>
 <p>Returns <code>true</code> if the pointer is null.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> is_null[T](ptr: *<span class='kw'>const</span> T) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> is_null[T](ptr: *<span class='kw'>const</span> T) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h2>Read & Write</h2>
 <h3><code>read(ptr)</code></h3>
 <p>Reads a value from the given pointer. The pointer must be properly aligned and dereferenceable.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> read[T](ptr: *<span class='kw'>const</span> T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> read[T](ptr: *<span class='kw'>const</span> T) -&gt; T;
 </code></pre>
 <h3><code>write(ptr, value)</code></h3>
 <p>Writes a value to the given pointer. The pointer must be properly aligned and dereferenceable.</p>
@@ -143,7 +144,7 @@
 <h3><code>read_volatile(ptr)</code></h3>
 <p>Performs a volatile read from the given pointer (reads directly from memory, bypassing caches).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> read_volatile[T](ptr: *<span class='kw'>const</span> T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> read_volatile[T](ptr: *<span class='kw'>const</span> T) -&gt; T;
 </code></pre>
 <h3><code>write_volatile(ptr, value)</code></h3>
 <p>Performs a volatile write to the given pointer.</p>
@@ -159,7 +160,7 @@
 <h3><code>replace(dest, src)</code></h3>
 <p>Replaces the value at <code>dest</code> with <code>src</code>, returning the old value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> replace[T](dest: *mut T, src: T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> replace[T](dest: *mut T, src: T) -&gt; T;
 </code></pre>
 <h2>Memory Copy</h2>
 <h3><code>copy(src, dst, count)</code></h3>
@@ -176,39 +177,39 @@
 <h3><code>eq(a, b)</code></h3>
 <p>Returns <code>true</code> if the two pointers point to the same address.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> eq[T](a: *<span class='kw'>const</span> T, b: *<span class='kw'>const</span> T) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> eq[T](a: *<span class='kw'>const</span> T, b: *<span class='kw'>const</span> T) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h2>Pointer Arithmetic</h2>
 <h3><code>offset(ptr, count)</code></h3>
 <p>Computes the offset pointer by <code>count * size_of[T]</code> bytes. The offset must be within bounds of the original allocation.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> offset[T](ptr: *<span class='kw'>const</span> T, count: <span class='ty'>Int</span>) -> *<span class='kw'>const</span> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> offset[T](ptr: *<span class='kw'>const</span> T, count: <span class='ty'>Int</span>) -&gt; *<span class='kw'>const</span> T;
 </code></pre>
 <h3><code>wrapping_offset(ptr, count)</code></h3>
 <p>Computes the offset pointer by <code>count * size_of[T]</code> bytes, wrapping around on overflow rather than causing UB.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> wrapping_offset[T](ptr: *<span class='kw'>const</span> T, count: <span class='ty'>Int</span>) -> *<span class='kw'>const</span> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> wrapping_offset[T](ptr: *<span class='kw'>const</span> T, count: <span class='ty'>Int</span>) -&gt; *<span class='kw'>const</span> T;
 </code></pre>
 <h3><code>add(ptr, count)</code></h3>
 <p>Equivalent to <code>offset(ptr, count)</code>. Advances the pointer by <code>count</code> elements.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> add[T](ptr: *<span class='kw'>const</span> T, count: <span class='ty'>Int</span>) -> *<span class='kw'>const</span> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> add[T](ptr: *<span class='kw'>const</span> T, count: <span class='ty'>Int</span>) -&gt; *<span class='kw'>const</span> T;
 </code></pre>
 <h3><code>sub(ptr, count)</code></h3>
 <p>Equivalent to <code>offset(ptr, -count)</code>. Moves the pointer back by <code>count</code> elements.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> sub[T](ptr: *<span class='kw'>const</span> T, count: <span class='ty'>Int</span>) -> *<span class='kw'>const</span> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> sub[T](ptr: *<span class='kw'>const</span> T, count: <span class='ty'>Int</span>) -&gt; *<span class='kw'>const</span> T;
 </code></pre>
 <h2>Conversion</h2>
 <h3><code>from_ref(r)</code></h3>
 <p>Converts a reference to a const pointer.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> from_ref[T](r: &T) -> *<span class='kw'>const</span> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> from_ref[T](r: &amp;T) -&gt; *<span class='kw'>const</span> T;
 </code></pre>
 <h3><code>from_mut(r)</code></h3>
 <p>Converts a mutable reference to a mutable pointer.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> from_mut[T](r: &mut T) -> *mut T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> from_mut[T](r: &amp;mut T) -&gt; *mut T;
 </code></pre>
     </main>
 
@@ -217,22 +218,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

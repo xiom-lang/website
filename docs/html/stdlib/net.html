@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -135,12 +136,12 @@
 <h3><code>tcp_connect(host, port)</code></h3>
 <p>Opens a TCP connection to the given host and port. Returns a <code>TcpStream</code> on success.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>tcp_connect</span>(host: <span class='ty'>Str</span>, port: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>TcpStream</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>tcp_connect</span>(host: <span class='ty'>Str</span>, port: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>TcpStream</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>tcp_listen(host, port)</code></h3>
 <p>Binds a TCP listener to the given host and port, accepting incoming connections. Returns a <code>TcpListener</code> on success.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>tcp_listen</span>(host: <span class='ty'>Str</span>, port: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>TcpListener</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>tcp_listen</span>(host: <span class='ty'>Str</span>, port: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>TcpListener</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>TcpStream</code></h3>
 <p>A connected TCP stream that can be read from and written to.</p>
@@ -150,17 +151,17 @@
 <h3><code>TcpStream.read(self, buf)</code></h3>
 <p>Reads data from the TCP stream into the provided byte buffer. Returns the number of bytes read.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>TcpStream</span>.<span class='func'>read</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>TcpStream</span>.<span class='func'>read</span>(<span class='kw'>self</span>, buf: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>TcpStream.write(self, data)</code></h3>
 <p>Writes the provided byte buffer to the TCP stream. Returns the number of bytes written.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>TcpStream</span>.<span class='func'>write</span>(<span class='kw'>self</span>, data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>TcpStream</span>.<span class='func'>write</span>(<span class='kw'>self</span>, data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>TcpStream.close(self)</code></h3>
 <p>Closes the TCP stream, releasing the underlying socket descriptor.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>TcpStream</span>.<span class='func'>close</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>TcpStream</span>.<span class='func'>close</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>TcpListener</code></h3>
 <p>A TCP socket listener that accepts incoming connections.</p>
@@ -170,26 +171,26 @@
 <h3><code>TcpListener.accept(self)</code></h3>
 <p>Blocks until a new TCP connection arrives. Returns a tuple of <code>(TcpStream, Str)</code> containing the connected stream and the remote address.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>TcpListener</span>.<span class='func'>accept</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[(<span class='ty'>TcpStream</span>, <span class='ty'>Str</span>), <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>TcpListener</span>.<span class='func'>accept</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Result</span>[(<span class='ty'>TcpStream</span>, <span class='ty'>Str</span>), <span class='ty'>NetError</span>]
 </code></pre>
 <hr>
 <h2>HTTP</h2>
 <h3><code>http_get(url)</code></h3>
 <p>Performs an HTTP GET request to the specified URL. Returns the response including status code and body.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>http_get</span>(url: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>HttpResponse</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>http_get</span>(url: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>HttpResponse</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>http_post(url, body)</code></h3>
 <p>Performs an HTTP POST request to the specified URL with the given string body. Returns the response including status code and body.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>http_post</span>(url: <span class='ty'>Str</span>, body: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>HttpResponse</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>http_post</span>(url: <span class='ty'>Str</span>, body: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>HttpResponse</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <hr>
 <h2>UDP</h2>
 <h3><code>udp_bind(host, port)</code></h3>
 <p>Binds a UDP socket to the given host and port. Returns a <code>UdpSocket</code> for sending and receiving datagrams.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>udp_bind</span>(host: <span class='ty'>Str</span>, port: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>UdpSocket</span>, <span class='ty'>NetError</span>]
+<span class='kw'>fn</span> <span class='func'>udp_bind</span>(host: <span class='ty'>Str</span>, port: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>UdpSocket</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>UdpSocket</code></h3>
 <p>A UDP socket bound to a local address for connectionless datagram communication.</p>
@@ -199,36 +200,36 @@
 <h3><code>UdpSocket.send_to(self, data, addr, port)</code></h3>
 <p>Sends a datagram to the specified remote address and port. Returns the number of bytes sent.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>UdpSocket</span>.<span class='func'>send_to</span>(<span class='kw'>self</span>, data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], addr: <span class='ty'>Str</span>, port: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>UdpSocket</span>.<span class='func'>send_to</span>(<span class='kw'>self</span>, data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], addr: <span class='ty'>Str</span>, port: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>UdpSocket.recv_from(self, buf)</code></h3>
 <p>Receives a datagram into the provided buffer. Returns a tuple of <code>(bytes_read, source_addr, source_port)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>UdpSocket</span>.<span class='func'>recv_from</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[(<span class='ty'>Int</span>, <span class='ty'>Str</span>, <span class='ty'>Int</span>), <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>UdpSocket</span>.<span class='func'>recv_from</span>(<span class='kw'>self</span>, buf: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>[(<span class='ty'>Int</span>, <span class='ty'>Str</span>, <span class='ty'>Int</span>), <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>UdpSocket.close(self)</code></h3>
 <p>Closes the UDP socket, releasing the underlying socket descriptor.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>UdpSocket</span>.<span class='func'>close</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>NetError</span>]
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>UdpSocket</span>.<span class='func'>close</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <hr>
 <h2>DNS</h2>
 <h3><code>resolve_host(hostname)</code></h3>
 <p>Resolves a hostname to a list of IP address strings. Returns any addresses found.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>resolve_host</span>(hostname: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>Str</span>], <span class='ty'>NetError</span>]
+<span class='kw'>fn</span> <span class='func'>resolve_host</span>(hostname: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>Str</span>], <span class='ty'>NetError</span>]
 </code></pre>
 <h3><code>local_addr(port)</code></h3>
 <p>Resolves the local IP address that would be used to connect to the given port. Useful for determining the machine's outward-facing address.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>local_addr</span>(port: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>NetError</span>]
+<span class='kw'>fn</span> <span class='func'>local_addr</span>(port: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>NetError</span>]
 </code></pre>
 <hr>
 <h2>URL Parsing</h2>
 <h3><code>parse_url(url)</code></h3>
 <p>Parses a URL string into its components (scheme, host, port, path, query, fragment). Returns a <code>UrlParts</code> struct on success.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>parse_url</span>(url: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[UrlParts, <span class='ty'>NetError</span>]
+<span class='kw'>fn</span> <span class='func'>parse_url</span>(url: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[UrlParts, <span class='ty'>NetError</span>]
 </code></pre>
     </main>
 
@@ -237,22 +238,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

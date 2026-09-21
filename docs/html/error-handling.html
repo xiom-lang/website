@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -106,7 +107,7 @@
       <p>XIOM has no exceptions. Functions that can fail return <code>Result[T, E]</code>. Absence of a value is expressed through <code>Option[T]</code>. The compiler enforces exhaustive handling of both at every use site.</p>
 <h2>Result Type</h2>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>parse_int</span>(s: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>ParseError</span>] {
+<span class='kw'>fn</span> <span class='func'>parse_int</span>(s: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>ParseError</span>] {
   <span class='cm'>// ...</span>
 }
 </code></pre>
@@ -122,7 +123,7 @@
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
 
-<span class='kw'>fn</span> <span class='func'>load_config</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[Config, <span class='ty'>AppError</span>] {
+<span class='kw'>fn</span> <span class='func'>load_config</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[Config, <span class='ty'>AppError</span>] {
   <span class='kw'>let</span> file   = io.<span class='func'>read_file</span>(path)?;     <span class='cm'>// returns <span class='kw'>Err</span> on failure</span>
   <span class='kw'>let</span> config = <span class='func'>parse_config</span>(file)?;     <span class='cm'>// returns <span class='kw'>Err</span> on failure</span>
   <span class='kw'>return</span> <span class='kw'>Ok</span>(config);
@@ -135,23 +136,23 @@
 <span class='kw'>use</span> xiom.io;
 
 <span class='kw'>match</span> <span class='func'>parse_int</span>(<span class='str'><span class='num'>42</span></span>) {
-  <span class='kw'>Ok</span>(n)  => io.<span class='func'>print</span>(n.<span class='func'>to_str</span>()),
-  <span class='kw'>Err</span>(e) => io.<span class='func'>print_err</span>(e.message),
+  <span class='kw'>Ok</span>(n)  =&gt; io.<span class='func'>print</span>(n.<span class='func'>to_str</span>()),
+  <span class='kw'>Err</span>(e) =&gt; io.<span class='func'>print_err</span>(e.message),
 }
 
 <span class='cm'>// Matching an <span class='kw'>enum</span> -- all variants required</span>
 <span class='kw'>match</span> state {
-  AgentState.Idle              => <span class='func'>wait</span>(),
-  AgentState.Patrolling(route) => <span class='func'>follow</span>(route),
-  AgentState.Attacking(target) => <span class='func'>engage</span>(target),
-  AgentState.Dead(cause)       => <span class='func'>log</span>(cause),
+  AgentState.Idle              =&gt; <span class='func'>wait</span>(),
+  AgentState.Patrolling(route) =&gt; <span class='func'>follow</span>(route),
+  AgentState.Attacking(target) =&gt; <span class='func'>engage</span>(target),
+  AgentState.Dead(cause)       =&gt; <span class='func'>log</span>(cause),
 }
 </code></pre>
 <p>Use <code>_</code> as a wildcard to cover remaining cases:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> value {
-  <span class='kw'>Some</span>(v) => <span class='func'>process</span>(v),
-  _       => {}  <span class='cm'>// handle all other cases</span>
+  <span class='kw'>Some</span>(v) =&gt; <span class='func'>process</span>(v),
+  _       =&gt; {}  <span class='cm'>// handle all other cases</span>
 }
 </code></pre>
 <h2>Option Type</h2>
@@ -163,8 +164,8 @@
 
 <span class='cm'>// Pattern <span class='kw'>match</span></span>
 <span class='kw'>match</span> val {
-  <span class='kw'>Some</span>(n) => <span class='func'><span class='kw'>use</span></span>(n),
-  <span class='kw'>None</span>    => <span class='func'>handle_absent</span>(),
+  <span class='kw'>Some</span>(n) =&gt; <span class='func'><span class='kw'>use</span></span>(n),
+  <span class='kw'>None</span>    =&gt; <span class='func'>handle_absent</span>(),
 }
 
 <span class='cm'>// Propagate <span class='kw'>None</span> with ? (inside a function returning <span class='ty'>Option</span>)</span>
@@ -184,14 +185,14 @@
 <ul>
 <li><code>Result</code> functions can use <code>?</code> on both <code>Result</code> and <code>Option</code> values</li>
 <li><code>Option</code> functions can use <code>?</code> on <code>Option</code> values</li>
-<li>The <code>?</code> operator requires <code>From<SourceError></code> for automatic error conversion at propagation sites</li>
+<li>The <code>?</code> operator requires <code>From&lt;SourceError&gt;</code> for automatic error conversion at propagation sites</li>
 <li><code>?</code> cannot appear outside a function that returns <code>Result</code> or <code>Option</code></li>
 </ul>
 <h2>Error Messages</h2>
 <p>When an unhandled error path exists, the compiler provides a clear error:</p>
 <pre><code>
 error[E0401]: non-exhaustive <span class='kw'>match</span>
-  --> src/main.xi:<span class='num'>12</span>:<span class='num'>3</span>
+  --&gt; src/main.xi:<span class='num'>12</span>:<span class='num'>3</span>
    |
 <span class='num'>12</span> |   <span class='kw'>match</span> <span class='kw'>result</span> {
    |         ^^^^^^ missing arm: <span class='kw'>Err</span>(_)
@@ -205,22 +206,41 @@ error[E0401]: non-exhaustive <span class='kw'>match</span>
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

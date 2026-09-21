@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -162,7 +163,7 @@
 </tr>
 <tr>
 <td>Rust</td>
-<td><code>Option<T></code> -- compiler enforces handling</td>
+<td><code>Option&lt;T&gt;</code> -- compiler enforces handling</td>
 </tr>
 <tr>
 <td><strong>XIOM</strong></td>
@@ -175,8 +176,8 @@
 
 <span class='cm'>// Instead of:  <span class='func'><span class='kw'>if</span></span>(name != null) { <span class='func'><span class='kw'>use</span></span>(name); }</span>
 <span class='kw'>match</span> name {
-  <span class='kw'>Some</span>(n) => io.<span class='func'>println</span>(<span class='str'>Hello, </span> + n),
-  <span class='kw'>None</span>    => io.<span class='func'>println</span>(<span class='str'>no name</span>),
+  <span class='kw'>Some</span>(n) =&gt; io.<span class='func'>println</span>(<span class='str'>Hello, </span> + n),
+  <span class='kw'>None</span>    =&gt; io.<span class='func'>println</span>(<span class='str'>no name</span>),
 };
 </code></pre>
 <p>You cannot accidentally use <code>None</code> as a value. The compiler rejects it.</p>
@@ -202,7 +203,7 @@
 </tr>
 <tr>
 <td>Rust</td>
-<td><code>Result<T, E></code> + <code>?</code> -- explicit, clean</td>
+<td><code>Result&lt;T, E&gt;</code> + <code>?</code> -- explicit, clean</td>
 </tr>
 <tr>
 <td><strong>XIOM</strong></td>
@@ -211,7 +212,7 @@
 </table>
 <pre class="language-xiom"><code>
 <span class='cm'>// Instead of:  throw new IOException(<span class='str'>file not found</span>);</span>
-<span class='kw'>fn</span> <span class='func'>read_config</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[Config, <span class='ty'>Str</span>] {
+<span class='kw'>fn</span> <span class='func'>read_config</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[Config, <span class='ty'>Str</span>] {
   <span class='kw'>let</span> file = io.<span class='func'>read_file</span>(path)?;    <span class='cm'>// ? returns the error immediately</span>
   <span class='kw'>let</span> config = <span class='func'>parse</span>(file)?;
   <span class='kw'>return</span> <span class='kw'>Ok</span>(config);
@@ -219,8 +220,8 @@
 
 <span class='cm'>// At the call site -- must handle both cases</span>
 <span class='kw'>match</span> <span class='func'>read_config</span>(<span class='str'>config.json</span>) {
-  <span class='kw'>Ok</span>(c)  => <span class='func'><span class='kw'>use</span></span>(c),
-  <span class='kw'>Err</span>(e) => io.<span class='func'>println</span>(<span class='str'>error: </span> + e),
+  <span class='kw'>Ok</span>(c)  =&gt; <span class='func'><span class='kw'>use</span></span>(c),
+  <span class='kw'>Err</span>(e) =&gt; io.<span class='func'>println</span>(<span class='str'>error: </span> + e),
 };
 </code></pre>
 <p>The <code>?</code> operator is <code>try!</code> from Rust, <code>try</code> from Zig. It returns <code>Err(...)</code> immediately if the value is an error. Clean propagation without invisible control flow.</p>
@@ -258,9 +259,9 @@
 <span class='kw'>let</span> b = a;       <span class='cm'>// a MOVED to b -- a <span class='kw'>is</span> now invalid</span>
 <span class='cm'>// a.<span class='func'>push</span>(<span class='num'>1</span>);    // COMPILE ERROR: a was moved</span>
 
-<span class='cm'>// Borrow temporarily with & (read) or &<span class='func'>mut</span>(write)</span>
-<span class='func'>read_only</span>(&b);   <span class='cm'>// b <span class='kw'>is</span> borrowed -- still valid after</span>
-<span class='func'>mutate</span>(&mut b);  <span class='cm'>// exclusive write borrow</span>
+<span class='cm'>// Borrow temporarily with &amp; (read) or &amp;<span class='func'>mut</span>(write)</span>
+<span class='func'>read_only</span>(&amp;b);   <span class='cm'>// b <span class='kw'>is</span> borrowed -- still valid after</span>
+<span class='func'>mutate</span>(&amp;mut b);  <span class='cm'>// exclusive write borrow</span>
 
 <span class='cm'>// <span class='ty'>Clone</span> to duplicate</span>
 <span class='kw'>let</span> c = b.<span class='func'>clone</span>();  <span class='cm'>// explicit copy -- both valid</span>
@@ -305,7 +306,7 @@
 </tr>
 <tr>
 <td>Constructor</td>
-<td><code>fn TypeName.new() -> Type</code> method</td>
+<td><code>fn TypeName.new() -&gt; Type</code> method</td>
 </tr>
 <tr>
 <td><code>this</code> / <code>self</code></td>
@@ -327,7 +328,7 @@
   y: <span class='ty'>Float64</span>;
 } <span class='kw'>derive</span>[<span class='ty'>Eq</span>, <span class='ty'>Clone</span>, <span class='ty'>Display</span>]  <span class='cm'>// auto-generate equality, clone, to-string</span>
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>distance</span>(other: &<span class='ty'>Point</span>) -> <span class='ty'>Float64</span> {
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>distance</span>(other: &amp;<span class='ty'>Point</span>) -&gt; <span class='ty'>Float64</span> {
   <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> implicit -- x means <span class='kw'>self</span>.x</span>
   <span class='kw'>let</span> dx = x - other.x;
   <span class='kw'>let</span> dy = y - other.y;
@@ -340,7 +341,7 @@
 <pre class="language-xiom"><code>
 <span class='cm'>// Define what <span class='str'>comparable</span> means</span>
 <span class='kw'>interface</span> <span class='ty'>Comparable</span> {
-  <span class='kw'>fn</span> <span class='func'>compare</span>(other: &<span class='ty'>Self</span>) -> <span class='ty'>Int</span>;  <span class='cm'>// -<span class='num'>1</span>, <span class='num'>0</span>, <span class='num'>1</span></span>
+  <span class='kw'>fn</span> <span class='func'>compare</span>(other: &amp;<span class='ty'>Self</span>) -&gt; <span class='ty'>Int</span>;  <span class='cm'>// -<span class='num'>1</span>, <span class='num'>0</span>, <span class='num'>1</span></span>
 }
 
 <span class='cm'>// Create two completely unrelated types</span>
@@ -348,12 +349,12 @@
 <span class='kw'>type</span> Temperature = { kelvin: <span class='ty'>Float64</span>; }
 
 <span class='cm'>// Implement compare <span class='kw'>for</span> each -- NO <span class='str'>implements</span> keyword needed</span>
-<span class='kw'>fn</span> <span class='ty'>Score</span>.<span class='func'>compare</span>(other: &<span class='ty'>Score</span>) -> <span class='ty'>Int</span> { <span class='kw'>return</span> value - other.value; }
-<span class='kw'>fn</span> Temperature.<span class='func'>compare</span>(other: &Temperature) -> <span class='ty'>Int</span> { ... }
+<span class='kw'>fn</span> <span class='ty'>Score</span>.<span class='func'>compare</span>(other: &amp;<span class='ty'>Score</span>) -&gt; <span class='ty'>Int</span> { <span class='kw'>return</span> value - other.value; }
+<span class='kw'>fn</span> Temperature.<span class='func'>compare</span>(other: &amp;Temperature) -&gt; <span class='ty'>Int</span> { ... }
 
 <span class='cm'>// A generic function that works with ANY comparable <span class='kw'>type</span></span>
-<span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -> T {
-  <span class='kw'>if</span> a.<span class='func'>compare</span>(&b) > <span class='num'>0</span> { <span class='kw'>return</span> a; }
+<span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -&gt; T {
+  <span class='kw'>if</span> a.<span class='func'>compare</span>(&amp;b) &gt; <span class='num'>0</span> { <span class='kw'>return</span> a; }
   <span class='kw'>return</span> b;
 }
 
@@ -365,7 +366,7 @@
 <h2>6. Contracts -- In the Language, Not in Comments</h2>
 <p>No mainstream language ships contracts as part of its core syntax. Design by Contract has a long lineage -- Eiffel had it in 1986, and Ada 2012/SPARK, Dafny and Frama-C pushed it further with static verification. XIOM's bet is packaging: contracts in the core language of a systems compiler, enforced at runtime by default and available to verification tooling for supported properties. The website's <a href="https://xiom-lang.org/prior-art.html">Prior art and trade-offs</a> page covers the comparison.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
+<span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>
   <span class='kw'>requires</span>: b != <span class='num'>0.0</span>           <span class='cm'>// PRE-CONDITION: caller must guarantee this</span>
   <span class='kw'>ensures</span>:  <span class='kw'>result</span> * b == a    <span class='cm'>// POST-CONDITION: implementation must guarantee this</span>
 {
@@ -375,8 +376,8 @@
 <span class='kw'>type</span> <span class='ty'>Health</span> = {
   current: <span class='ty'>Int</span>;
   maximum: <span class='ty'>Int</span>;
-  <span class='kw'>invariant</span>: current >= <span class='num'>0</span>;      <span class='cm'>// TYPE INVARIANT: always <span class='kw'>true</span></span>
-  <span class='kw'>invariant</span>: current <= maximum;
+  <span class='kw'>invariant</span>: current &gt;= <span class='num'>0</span>;      <span class='cm'>// TYPE INVARIANT: always <span class='kw'>true</span></span>
+  <span class='kw'>invariant</span>: current &lt;= maximum;
 }
 </code></pre>
 <table>
@@ -438,11 +439,11 @@
   email: <span class='ty'>Str</span>;
 } <span class='kw'>derive</span>[<span class='ty'>Clone</span>]
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> User.<span class='func'>validate</span>() -> <span class='ty'>Bool</span> {  <span class='cm'>// visible outside</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> User.<span class='func'>validate</span>() -&gt; <span class='ty'>Bool</span> {  <span class='cm'>// visible outside</span>
   <span class='kw'>return</span> email.<span class='func'>contains</span>(<span class='str'>@</span>);
 }
 
-<span class='kw'>fn</span> <span class='func'>hash_email</span>(user: &User) -> <span class='ty'>Int</span> {  <span class='cm'>// PRIVATE -- only visible <span class='kw'>in</span> this <span class='kw'>module</span></span>
+<span class='kw'>fn</span> <span class='func'>hash_email</span>(user: &amp;User) -&gt; <span class='ty'>Int</span> {  <span class='cm'>// PRIVATE -- only visible <span class='kw'>in</span> this <span class='kw'>module</span></span>
   <span class='cm'>// ...</span>
 }
 </code></pre>
@@ -476,9 +477,9 @@
 </tr>
 </table>
 <pre class="language-xiom"><code>
-<span class='cm'>// Instead of:  template<typename T> T <span class='func'>max</span>(T a, T b) { <span class='kw'>return</span> a > b ? a : b; }</span>
-<span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -> T {
-  <span class='kw'>if</span> a > b { <span class='kw'>return</span> a; }
+<span class='cm'>// Instead of:  template&lt;typename T&gt; T <span class='func'>max</span>(T a, T b) { <span class='kw'>return</span> a &gt; b ? a : b; }</span>
+<span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -&gt; T {
+  <span class='kw'>if</span> a &gt; b { <span class='kw'>return</span> a; }
   <span class='kw'>return</span> b;
 }
 
@@ -493,16 +494,16 @@
 <pre class="language-xiom"><code>
 <span class='cm'>// Instead of:  <span class='func'>switch</span>(value) { case <span class='num'>1</span>: ... break; default: ... }</span>
 <span class='kw'>match</span> value {
-  <span class='kw'>Some</span>(v) => io.<span class='func'>println</span>(<span class='str'>got </span> + v.<span class='func'>to_str</span>()),
-  <span class='kw'>None</span>    => io.<span class='func'>println</span>(<span class='str'>nothing</span>),
+  <span class='kw'>Some</span>(v) =&gt; io.<span class='func'>println</span>(<span class='str'>got </span> + v.<span class='func'>to_str</span>()),
+  <span class='kw'>None</span>    =&gt; io.<span class='func'>println</span>(<span class='str'>nothing</span>),
 };
 
 <span class='cm'>// Instead of:  <span class='func'><span class='kw'>if</span></span>(state == IDLE) ... <span class='kw'>else</span> <span class='func'><span class='kw'>if</span></span>(state == ATTACKING) ...</span>
 <span class='kw'>match</span> state {
-  AgentState.Idle              => <span class='func'>wait</span>(),
-  AgentState.Patrolling(route) => <span class='func'>follow</span>(route),
-  AgentState.Attacking(target) => <span class='func'>engage</span>(target),
-  AgentState.Dead(cause)       => <span class='func'>log</span>(cause),
+  AgentState.Idle              =&gt; <span class='func'>wait</span>(),
+  AgentState.Patrolling(route) =&gt; <span class='func'>follow</span>(route),
+  AgentState.Attacking(target) =&gt; <span class='func'>engage</span>(target),
+  AgentState.Dead(cause)       =&gt; <span class='func'>log</span>(cause),
 };
 </code></pre>
 <p>The compiler forces you to handle <strong>every</strong> variant. Missing a case is a compile error. This eliminates an entire class of runtime bugs.</p>
@@ -512,20 +513,20 @@
 <span class='kw'>use</span> xiom.<span class='kw'>async</span>;
 
 <span class='cm'>// Instead of:  <span class='kw'>async</span> function <span class='func'>fetch</span>() { <span class='kw'>const</span> r = <span class='kw'>await</span> http.<span class='func'>get</span>(url); }</span>
-<span class='kw'>async</span> <span class='kw'>fn</span> <span class='func'>fetch</span>(url: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>NetError</span>] {
+<span class='kw'>async</span> <span class='kw'>fn</span> <span class='func'>fetch</span>(url: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>NetError</span>] {
   <span class='kw'>let</span> response = <span class='kw'>await</span> net.<span class='func'>http_get</span>(url)?;
   <span class='kw'>return</span> <span class='kw'>Ok</span>(response.body);
 }
 
-<span class='cm'>// Instead of:  new Thread(() -> { channel.<span class='func'>send</span>(<span class='func'>compute</span>()); }).<span class='func'>start</span>();</span>
+<span class='cm'>// Instead of:  new Thread(() -&gt; { channel.<span class='func'>send</span>(<span class='func'>compute</span>()); }).<span class='func'>start</span>();</span>
 <span class='func'><span class='kw'>let</span></span>(tx, rx) = <span class='ty'>Channel</span>.bounded[<span class='ty'>Int</span>](<span class='num'>32</span>);
 <span class='kw'>spawn</span> {
   tx.<span class='func'>send</span>(<span class='func'>expensive_computation</span>());
 };
 
 <span class='kw'>match</span> rx.<span class='func'>recv</span>() {
-  <span class='kw'>Ok</span>(value) => <span class='func'><span class='kw'>use</span></span>(value),
-  <span class='kw'>Err</span>(_)    => io.<span class='func'>println</span>(<span class='str'>channel closed</span>),
+  <span class='kw'>Ok</span>(value) =&gt; <span class='func'><span class='kw'>use</span></span>(value),
+  <span class='kw'>Err</span>(_)    =&gt; io.<span class='func'>println</span>(<span class='str'>channel closed</span>),
 };
 </code></pre>
 <table>
@@ -546,7 +547,7 @@
 <td>Future (implicit)</td>
 </tr>
 <tr>
-<td>C# <code>Task</code> / <code>Task<T></code></td>
+<td>C# <code>Task</code> / <code>Task&lt;T&gt;</code></td>
 <td>Future (implicit)</td>
 </tr>
 <tr>
@@ -566,20 +567,20 @@
 <span class='kw'>let</span> size = <span class='kw'>comptime</span> <span class='func'>expensive_computation</span>();
 
 <span class='cm'>// Generics are just <span class='kw'>comptime</span> <span class='kw'>type</span> parameters</span>
-<span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -> T { ... }
+<span class='kw'>fn</span> max[T: <span class='ty'>Comparable</span>](a: T, b: T) -&gt; T { ... }
 </code></pre>
 <p><code>comptime</code> is Zig's model -- any expression can be marked compile-time. This is how generics, reflection, and specialization all work. One mechanism.</p>
 <hr>
 <h2>12. C FFI -- Call Any C Library</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>extern</span> <span class='str'>C</span> {
-  <span class='kw'>fn</span> <span class='func'>malloc</span>(size: <span class='ty'>UInt</span>) -> *<span class='ty'>UInt8</span>;
+  <span class='kw'>fn</span> <span class='func'>malloc</span>(size: <span class='ty'>UInt</span>) -&gt; *<span class='ty'>UInt8</span>;
   <span class='kw'>fn</span> <span class='func'>free</span>(ptr: *<span class='ty'>UInt8</span>);
-  <span class='kw'>fn</span> <span class='func'>printf</span>(format: *<span class='ty'>UInt8</span>, ...) -> <span class='ty'>Int32</span>;
+  <span class='kw'>fn</span> <span class='func'>printf</span>(format: *<span class='ty'>UInt8</span>, ...) -&gt; <span class='ty'>Int32</span>;
 }
 
-<span class='kw'>fn</span> <span class='func'>alloc</span>(size: <span class='ty'>UInt</span>) -> *<span class='ty'>UInt8</span>
-  <span class='kw'>requires</span>: size > <span class='num'>0</span>
+<span class='kw'>fn</span> <span class='func'>alloc</span>(size: <span class='ty'>UInt</span>) -&gt; *<span class='ty'>UInt8</span>
+  <span class='kw'>requires</span>: size &gt; <span class='num'>0</span>
 {
   <span class='kw'>unsafe</span> { <span class='kw'>return</span> <span class='func'>malloc</span>(size); }
 }
@@ -602,7 +603,7 @@
 <td><code>null</code></td>
 <td><code>nullptr</code></td>
 <td><code>None</code></td>
-<td><code>Option<T></code></td>
+<td><code>Option&lt;T&gt;</code></td>
 <td><code>nil</code></td>
 <td><strong><code>Option[T]</code></strong></td>
 </tr>
@@ -611,7 +612,7 @@
 <td>exceptions</td>
 <td>exceptions</td>
 <td>exceptions</td>
-<td><code>Result<T,E></code></td>
+<td><code>Result&lt;T,E&gt;</code></td>
 <td><code>if err != nil</code></td>
 <td><strong><code>Result[T,E]</code> + <code>?</code></strong></td>
 </tr>
@@ -653,10 +654,10 @@
 </tr>
 <tr>
 <td>Generics</td>
-<td><code><T></code></td>
-<td><code>template<T></code></td>
+<td><code>&lt;T&gt;</code></td>
+<td><code>template&lt;T&gt;</code></td>
 <td>duck</td>
-<td><code><T></code></td>
+<td><code>&lt;T&gt;</code></td>
 <td><code>[T]</code></td>
 <td><strong><code>[T: Bound]</code></strong></td>
 </tr>
@@ -761,22 +762,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

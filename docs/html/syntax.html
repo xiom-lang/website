@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -103,7 +104,7 @@
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Syntax Reference</h1>
-      <blockquote><p><strong>Quick look:</strong> <code>let x = 42;</code> - <code>fn name(args) -> Type { ... }</code> - <code>if/elif/else</code> - <code>match x { Arm => ..., }</code> - <code>;</code> on every statement</p></blockquote>
+      <blockquote><p><strong>Quick look:</strong> <code>let x = 42;</code> - <code>fn name(args) -&gt; Type { ... }</code> - <code>if/elif/else</code> - <code>match x { Arm =&gt; ..., }</code> - <code>;</code> on every statement</p></blockquote>
 <h2>Variables</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>;           <span class='cm'>// immutable binding</span>
@@ -122,7 +123,7 @@
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
 
-<span class='kw'>fn</span> <span class='func'>add</span>(a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>) -> <span class='ty'>Int</span> {
+<span class='kw'>fn</span> <span class='func'>add</span>(a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span> {
   <span class='kw'>return</span> a + b;
 }
 
@@ -132,7 +133,7 @@
 }
 
 <span class='cm'>// With contracts</span>
-<span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -> <span class='ty'>Float64</span>
+<span class='kw'>fn</span> <span class='func'>divide</span>(a: <span class='ty'>Float64</span>, b: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Float64</span>
   <span class='kw'>requires</span>: b != <span class='num'>0.0</span>
   <span class='kw'>ensures</span>:  <span class='kw'>result</span> * b == a
 {
@@ -150,26 +151,26 @@
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ty'>Vec3</span> = { x: <span class='ty'>Float32</span>; y: <span class='ty'>Float32</span>; z: <span class='ty'>Float32</span>; }
 
 <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> implicit -- fields accessed directly</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(other: &<span class='ty'>Vec3</span>) -> <span class='ty'>Float32</span> {
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>dot</span>(other: &amp;<span class='ty'>Vec3</span>) -&gt; <span class='ty'>Float32</span> {
   <span class='kw'>return</span> x * other.x + y * other.y + z * other.z;
 }
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ty'>Vec3</span>.<span class='func'>set_x</span>(value: <span class='ty'>Float32</span>) {
-  x = value;   <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> &mut <span class='ty'>Vec3</span> -- mutation detected</span>
+  x = value;   <span class='cm'>// <span class='kw'>self</span> <span class='kw'>is</span> &amp;mut <span class='ty'>Vec3</span> -- mutation detected</span>
 }
 </code></pre>
 <ul>
 <li>Methods use <code>TypeName.methodName</code> syntax.</li>
 <li><code>self</code> is synthesized implicitly by the compiler.</li>
-<li>The compiler infers <code>&Self</code> vs <code>&mut Self</code> from the method body.</li>
-<li>If a field is mutated anywhere, the receiver is <code>&mut Self</code>.</li>
+<li>The compiler infers <code>&amp;Self</code> vs <code>&amp;mut Self</code> from the method body.</li>
+<li>If a field is mutated anywhere, the receiver is <code>&amp;mut Self</code>.</li>
 </ul>
 <h2>Control Flow</h2>
 <h3>If / Elif / Else</h3>
 <pre class="language-xiom"><code>
-<span class='kw'>if</span> x > <span class='num'>0</span> {
+<span class='kw'>if</span> x &gt; <span class='num'>0</span> {
   <span class='kw'>return</span> <span class='num'>1</span>;
-} <span class='kw'>elif</span> x < <span class='num'>0</span> {
+} <span class='kw'>elif</span> x &lt; <span class='num'>0</span> {
   <span class='kw'>return</span> -<span class='num'>1</span>;
 } <span class='kw'>else</span> {
   <span class='kw'>return</span> <span class='num'>0</span>;
@@ -177,7 +178,7 @@
 </code></pre>
 <h3>While</h3>
 <pre class="language-xiom"><code>
-<span class='kw'>while</span> count > <span class='num'>0</span> {
+<span class='kw'>while</span> count &gt; <span class='num'>0</span> {
   count = count - <span class='num'>1</span>;
 }
 </code></pre>
@@ -190,15 +191,15 @@
 <h3>Match</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> value {
-  <span class='kw'>Some</span>(v) => <span class='func'>process</span>(v),
-  <span class='kw'>None</span>    => <span class='func'>handle_absent</span>(),
+  <span class='kw'>Some</span>(v) =&gt; <span class='func'>process</span>(v),
+  <span class='kw'>None</span>    =&gt; <span class='func'>handle_absent</span>(),
 }
 
 <span class='kw'>match</span> state {
-  AgentState.Idle              => <span class='func'>wait</span>(),
-  AgentState.Patrolling(route) => <span class='func'>follow</span>(route),
-  AgentState.Attacking(target) => <span class='func'>engage</span>(target),
-  AgentState.Dead(cause)       => <span class='func'>log</span>(cause),
+  AgentState.Idle              =&gt; <span class='func'>wait</span>(),
+  AgentState.Patrolling(route) =&gt; <span class='func'>follow</span>(route),
+  AgentState.Attacking(target) =&gt; <span class='func'>engage</span>(target),
+  AgentState.Dead(cause)       =&gt; <span class='func'>log</span>(cause),
 }
 </code></pre>
 <ul>
@@ -225,12 +226,12 @@ a + b   a - b   a * b   a / b   a % b
 </code></pre>
 <h3>Comparison</h3>
 <pre class="language-xiom"><code>
-a == b   a != b   a < b   a > b   a <= b   a >= b
+a == b   a != b   a &lt; b   a &gt; b   a &lt;= b   a &gt;= b
 </code></pre>
 <h3>Logical</h3>
 <pre class="language-xiom"><code>
 !a          <span class='cm'>// not</span>
-a && b      <span class='cm'>// and</span>
+a &amp;&amp; b      <span class='cm'>// and</span>
 a || b      <span class='cm'>// or</span>
 </code></pre>
 <h3>Struct Literals</h3>
@@ -256,7 +257,7 @@ a || b      <span class='cm'>// or</span>
 <h3>Closures</h3>
 <pre class="language-xiom"><code>
 <span class='cm'>// <span class='func'><span class='kw'>fn</span></span>(params) { body } -- closure expression</span>
-<span class='kw'>let</span> doubler = <span class='func'><span class='kw'>fn</span></span>(x: <span class='ty'>Int</span>) -> <span class='ty'>Int</span> { <span class='kw'>return</span> x * <span class='num'>2</span>; };
+<span class='kw'>let</span> doubler = <span class='func'><span class='kw'>fn</span></span>(x: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span> { <span class='kw'>return</span> x * <span class='num'>2</span>; };
 
 <span class='cm'>// |params| body -- pipe closure</span>
 <span class='kw'>let</span> tripler = |x| x * <span class='num'>3</span>;
@@ -267,8 +268,8 @@ a || b      <span class='cm'>// or</span>
 <span class='kw'>let</span> f = <span class='func'>open</span>(path)?;
 
 <span class='cm'>// Reference creation</span>
-<span class='kw'>let</span> r = &x;
-<span class='kw'>let</span> rm = &mut x;
+<span class='kw'>let</span> r = &amp;x;
+<span class='kw'>let</span> rm = &amp;mut x;
 
 <span class='cm'>// <span class='ty'>Option</span> constructors</span>
 <span class='kw'>Some</span>(value)
@@ -302,7 +303,7 @@ items.<span class='func'>len</span>()@pre
 </tr>
 <tr>
 <td>2</td>
-<td><code>=></code> (implication)</td>
+<td><code>=&gt;</code> (implication)</td>
 </tr>
 <tr>
 <td>3</td>
@@ -312,7 +313,7 @@ items.<span class='func'>len</span>()@pre
 </tr>
 <tr>
 <td>4</td>
-<td><code>&&</code> (logical and)</td>
+<td><code>&amp;&amp;</code> (logical and)</td>
 </tr>
 <tr>
 <td>5</td>
@@ -320,7 +321,7 @@ items.<span class='func'>len</span>()@pre
 </tr>
 <tr>
 <td>6</td>
-<td><code>==</code> <code>!=</code> <code><</code> <code>></code> <code><=</code> <code>>=</code></td>
+<td><code>==</code> <code>!=</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
 </tr>
 <tr>
 <td>7</td>
@@ -332,7 +333,7 @@ items.<span class='func'>len</span>()@pre
 </tr>
 <tr>
 <td>9</td>
-<td><code>!</code> <code>-</code> (unary) <code>&</code> <code>&mut</code></td>
+<td><code>!</code> <code>-</code> (unary) <code>&amp;</code> <code>&amp;mut</code></td>
 </tr>
 <tr>
 <td>10 (highest)</td>
@@ -365,22 +366,41 @@ items.<span class='func'>len</span>()@pre
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

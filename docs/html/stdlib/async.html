@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -126,12 +127,12 @@
 <h3><code>Channel.bounded(capacity)</code></h3>
 <p>Creates a new bounded channel with the given buffer capacity. The channel can hold at most <code>capacity</code> messages before <code>send</code> blocks.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='ty'>Channel</span>.bounded[T](capacity: <span class='ty'>Int</span>) -> <span class='ty'>Channel</span>[T]
+<span class='kw'>fn</span> <span class='ty'>Channel</span>.bounded[T](capacity: <span class='ty'>Int</span>) -&gt; <span class='ty'>Channel</span>[T]
 </code></pre>
 <h3><code>Channel.unbounded()</code></h3>
 <p>Creates a new unbounded channel with no limit on buffer size. <code>send</code> never blocks.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='ty'>Channel</span>.unbounded[T]() -> <span class='ty'>Channel</span>[T]
+<span class='kw'>fn</span> <span class='ty'>Channel</span>.unbounded[T]() -&gt; <span class='ty'>Channel</span>[T]
 </code></pre>
 <h3><code>Channel.send(value)</code></h3>
 <p>Sends a value into the channel. For bounded channels, this blocks if the buffer is full. For unbounded channels, this always succeeds immediately.</p>
@@ -141,12 +142,12 @@
 <h3><code>Channel.recv()</code></h3>
 <p>Receives a value from the channel, blocking the current task until a message is available.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='ty'>Channel</span>.recv[T]() -> T
+<span class='kw'>fn</span> <span class='ty'>Channel</span>.recv[T]() -&gt; T
 </code></pre>
 <h3><code>Channel.try_recv()</code></h3>
 <p>Attempts to receive a value without blocking. Returns <code>Some(value)</code> if a message is available, or <code>None</code> if the channel is empty.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='ty'>Channel</span>.try_recv[T]() -> <span class='ty'>Option</span>[T]
+<span class='kw'>fn</span> <span class='ty'>Channel</span>.try_recv[T]() -&gt; <span class='ty'>Option</span>[T]
 </code></pre>
 <h3><code>Channel.close()</code></h3>
 <p>Closes the channel, preventing further sends. Outstanding messages can still be received. Once the buffer is drained, <code>recv</code> returns an error or signals the end of the stream.</p>
@@ -160,22 +161,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

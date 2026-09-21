@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -113,7 +114,7 @@
 <p>The trait for types that can be formatted as human-readable strings.</p>
 <pre><code>
 <span class='kw'>pub</span> <span class='kw'>interface</span> <span class='ty'>Display</span> {
-    <span class='kw'>fn</span> <span class='func'>fmt</span>(<span class='kw'>self</span>, f: &mut Formatter) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
+    <span class='kw'>fn</span> <span class='func'>fmt</span>(<span class='kw'>self</span>, f: &amp;mut Formatter) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
 }
 </code></pre>
 <h3><code>Display.fmt(self, f)</code></h3>
@@ -128,32 +129,32 @@
 <h3><code>Formatter.new()</code></h3>
 <p>Creates a new empty <code>Formatter</code> with default settings.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>new</span>() -> Formatter;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>new</span>() -&gt; Formatter;
 </code></pre>
 <h3><code>Formatter.write_str(self, s)</code></h3>
 <p>Writes a string to the formatter's buffer.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>write_str</span>(<span class='kw'>self</span>, s: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
+<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>write_str</span>(<span class='kw'>self</span>, s: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
 </code></pre>
 <h3><code>Formatter.write_int(self, n)</code></h3>
 <p>Writes an integer to the formatter's buffer.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>write_int</span>(<span class='kw'>self</span>, n: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
+<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>write_int</span>(<span class='kw'>self</span>, n: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
 </code></pre>
 <h3><code>Formatter.write_float(self, f)</code></h3>
 <p>Writes a float to the formatter's buffer.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>write_float</span>(<span class='kw'>self</span>, f: <span class='ty'>Float64</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
+<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>write_float</span>(<span class='kw'>self</span>, f: <span class='ty'>Float64</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
 </code></pre>
 <h3><code>Formatter.write_bool(self, b)</code></h3>
 <p>Writes a boolean (<code>"true"</code> or <code>"false"</code>) to the formatter's buffer.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>write_bool</span>(<span class='kw'>self</span>, b: <span class='ty'>Bool</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
+<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>write_bool</span>(<span class='kw'>self</span>, b: <span class='ty'>Bool</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, FmtError];
 </code></pre>
 <h3><code>Formatter.finish(self)</code></h3>
 <p>Finalizes formatting and returns the accumulated string.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>finish</span>(<span class='kw'>self</span>) -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Formatter.<span class='func'>finish</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h2>FmtError</h2>
 <h3><code>FmtError</code></h3>
@@ -168,22 +169,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

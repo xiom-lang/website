@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -112,17 +113,17 @@
 <h3><code>swap(a, b)</code></h3>
 <p>Swaps the values at two mutable references without copying intermediate state.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> swap[T](a: &mut T, b: &mut T);
+<span class='kw'>pub</span> <span class='kw'>fn</span> swap[T](a: &amp;mut T, b: &amp;mut T);
 </code></pre>
 <h3><code>replace(dest, src)</code></h3>
 <p>Replaces the value at <code>dest</code> with <code>src</code>, returning the old value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> replace[T](dest: &mut T, src: T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> replace[T](dest: &amp;mut T, src: T) -&gt; T;
 </code></pre>
 <h3><code>take(dest)</code></h3>
 <p>Replaces the value at <code>dest</code> with the default value of <code>T</code>, returning the original value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> take[T: Default](dest: &mut T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> take[T: Default](dest: &amp;mut T) -&gt; T;
 </code></pre>
 <h3><code>drop(value)</code></h3>
 <p>Explicitly drops a value, running its destructor immediately.</p>
@@ -133,34 +134,34 @@
 <h3><code>size_of()</code></h3>
 <p>Returns the size in bytes of type <code>T</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> size_of[T]() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> size_of[T]() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>align_of()</code></h3>
 <p>Returns the alignment in bytes required for type <code>T</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> align_of[T]() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> align_of[T]() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>size_of_val(value)</code></h3>
 <p>Returns the size in bytes of the value <code>value</code>. For dynamically sized types, this returns the runtime size.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> size_of_val[T](value: &T) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> size_of_val[T](value: &amp;T) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>min_align_of_val(value)</code></h3>
 <p>Returns the minimum alignment in bytes required for the value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> min_align_of_val[T](value: &T) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> min_align_of_val[T](value: &amp;T) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h2>Zeroed Memory</h2>
 <h3><code>zeroed()</code></h3>
 <p>Returns a value of type <code>T</code> with all bytes set to zero. Safe only when the all-zeroes bit pattern is a valid representation of <code>T</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> zeroed[T]() -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> zeroed[T]() -&gt; T;
 </code></pre>
 <h2>Uninitialized Memory</h2>
 <h3><code>uninitialized()</code></h3>
 <p>Returns an uninitialized value of type <code>T</code>. Unsafe: reading the value before writing valid data is undefined behavior.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> uninitialized[T]() -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> uninitialized[T]() -&gt; T;
 </code></pre>
 <h2>ManuallyDrop</h2>
 <h3><code>ManuallyDrop[T]</code></h3>
@@ -171,12 +172,12 @@
 <h3><code>ManuallyDrop.new(value)</code></h3>
 <p>Wraps a value in <code>ManuallyDrop</code>, suppressing its destructor.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> ManuallyDrop.new[T](value: T) -> ManuallyDrop[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> ManuallyDrop.new[T](value: T) -&gt; ManuallyDrop[T];
 </code></pre>
 <h3><code>ManuallyDrop.into_inner(self)</code></h3>
 <p>Extracts the inner value, enabling its destructor again.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> ManuallyDrop.into_inner[T](<span class='kw'>self</span>) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> ManuallyDrop.into_inner[T](<span class='kw'>self</span>) -&gt; T;
 </code></pre>
     </main>
 
@@ -185,22 +186,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

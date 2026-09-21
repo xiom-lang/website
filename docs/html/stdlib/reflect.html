@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -117,14 +118,14 @@
 <h3><code>TypeId.of()</code></h3>
 <p>Returns the <code>TypeId</code> for a given type.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> TypeId.of[T]() -> TypeId;
+<span class='kw'>pub</span> <span class='kw'>fn</span> TypeId.of[T]() -&gt; TypeId;
 </code></pre>
 <h2>Any Interface</h2>
 <h3><code>Any</code></h3>
 <p>The trait for types that support runtime type identification.</p>
 <pre><code>
 <span class='kw'>pub</span> <span class='kw'>interface</span> Any {
-    <span class='kw'>fn</span> <span class='func'>type_id</span>(<span class='kw'>self</span>) -> TypeId;
+    <span class='kw'>fn</span> <span class='func'>type_id</span>(<span class='kw'>self</span>) -&gt; TypeId;
 }
 </code></pre>
 <h3><code>Any.type_id(self)</code></h3>
@@ -133,28 +134,28 @@
 <h3><code>type_name()</code></h3>
 <p>Returns the name of type <code>T</code> as a string.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> type_name[T]() -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> type_name[T]() -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h3><code>type_size()</code></h3>
 <p>Returns the size in bytes of type <code>T</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> type_size[T]() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> type_size[T]() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>type_align()</code></h3>
 <p>Returns the alignment in bytes of type <code>T</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> type_align[T]() -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> type_align[T]() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h2>Downcasting</h2>
 <h3>`downcast_ref(value, T)|</h3>
 <p>Attempts to downcast a <code>dyn Any</code> reference to a concrete type <code>T</code>. Returns <code>None</code> if the type does not match.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> downcast_ref[T: Any](value: &dyn Any) -> <span class='ty'>Option</span><&T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> downcast_ref[T: Any](value: &amp;dyn Any) -&gt; <span class='ty'>Option</span>&lt;&amp;T&gt;;
 </code></pre>
 <h3>`downcast_mut(value, T)|</h3>
 <p>Attempts to downcast a <code>dyn Any</code> mutable reference to a concrete type <code>T</code>. Returns <code>None</code> if the type does not match.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> downcast_mut[T: Any](value: &mut dyn Any) -> <span class='ty'>Option</span><&mut T>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> downcast_mut[T: Any](value: &amp;mut dyn Any) -&gt; <span class='ty'>Option</span>&lt;&amp;mut T&gt;;
 </code></pre>
 <h2>TypeInfo</h2>
 <h3><code>TypeInfo</code></h3>
@@ -165,9 +166,9 @@
     size: <span class='ty'>Int</span>;
     align: <span class='ty'>Int</span>;
     kind: <span class='ty'>Int</span>;
-    fields: <span class='ty'>Vec</span><FieldInfo>;
-    variants: <span class='ty'>Vec</span><<span class='ty'>Str</span>>;
-    derives: <span class='ty'>Vec</span><<span class='ty'>Str</span>>;
+    fields: <span class='ty'>Vec</span>&lt;FieldInfo&gt;;
+    variants: <span class='ty'>Vec</span>&lt;<span class='ty'>Str</span>&gt;;
+    derives: <span class='ty'>Vec</span>&lt;<span class='ty'>Str</span>&gt;;
 } <span class='kw'>derive</span>[<span class='ty'>Clone</span>]
 </code></pre>
 <p><code>kind</code> values: <code>0</code> = primitive, <code>1</code> = struct, <code>2</code> = enum, <code>3</code> = interface.</p>
@@ -183,17 +184,17 @@
 <h3><code>reflect_type()</code></h3>
 <p>Returns the full <code>TypeInfo</code> for type <code>T</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> reflect_type[T]() -> TypeInfo;
+<span class='kw'>pub</span> <span class='kw'>fn</span> reflect_type[T]() -&gt; TypeInfo;
 </code></pre>
 <h3>`type_info_by_name(name)|</h3>
 <p>Looks up a type by name and returns its <code>TypeInfo</code>, or <code>None</code> if the type is not found.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>type_info_by_name</span>(name: <span class='ty'>Str</span>) -> <span class='ty'>Option</span><TypeInfo>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>type_info_by_name</span>(name: <span class='ty'>Str</span>) -&gt; <span class='ty'>Option</span>&lt;TypeInfo&gt;;
 </code></pre>
 <h3><code>all_types()</code></h3>
 <p>Returns <code>TypeInfo</code> for all types defined in the current package.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>all_types</span>() -> <span class='ty'>Vec</span><TypeInfo>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>all_types</span>() -&gt; <span class='ty'>Vec</span>&lt;TypeInfo&gt;;
 </code></pre>
     </main>
 
@@ -202,22 +203,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

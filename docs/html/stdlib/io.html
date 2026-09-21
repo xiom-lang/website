@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -156,69 +157,69 @@
 <h3><code>read_line()</code></h3>
 <p>Reads a single line from standard input. The trailing newline is stripped.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>read_line</span>() -> <span class='ty'>Str</span>;
+<span class='kw'>fn</span> <span class='func'>read_line</span>() -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h3><code>read_int()</code></h3>
 <p>Reads a line from standard input and attempts to parse it as an <code>Int</code>. Returns <code>Ok(Int)</code> on success or <code>Err(Str)</code> if the input is not a valid integer.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>read_int</span>() -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>Str</span>];
+<span class='kw'>fn</span> <span class='func'>read_int</span>() -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>Str</span>];
 </code></pre>
 <h3><code>read_float()</code></h3>
 <p>Reads a line from standard input and attempts to parse it as a <code>Float64</code>. Returns <code>Ok(Float64)</code> on success or <code>Err(Str)</code> if the input is not a valid floating-point number.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>read_float</span>() -> <span class='ty'>Result</span>[<span class='ty'>Float64</span>, <span class='ty'>Str</span>];
+<span class='kw'>fn</span> <span class='func'>read_float</span>() -&gt; <span class='ty'>Result</span>[<span class='ty'>Float64</span>, <span class='ty'>Str</span>];
 </code></pre>
 <hr>
 <h2>File System</h2>
 <h3><code>read_file(path)</code></h3>
 <p>Reads the entire contents of the file at <code>path</code> into a <code>Str</code>. Returns <code>Ok(content)</code> on success or <code>Err(IOError)</code> if the file cannot be read.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>read_file</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>read_file</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <h3><code>write_file(path, content)</code></h3>
 <p>Writes <code>content</code> to the file at <code>path</code>, replacing the file if it already exists. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>write_file</span>(path: <span class='ty'>Str</span>, content: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>write_file</span>(path: <span class='ty'>Str</span>, content: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <h3><code>append_file(path, content)</code></h3>
 <p>Appends <code>content</code> to the end of the file at <code>path</code>, creating the file if it does not exist. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>append_file</span>(path: <span class='ty'>Str</span>, content: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>append_file</span>(path: <span class='ty'>Str</span>, content: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <h3><code>file_exists(path)</code></h3>
 <p>Returns true if a file or directory exists at <code>path</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>file_exists</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>file_exists</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>is_dir(path)</code></h3>
 <p>Returns true if the path points to an existing directory.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>is_dir</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>is_dir</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>create_dir(path)</code></h3>
 <p>Creates a new directory at <code>path</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>create_dir</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>create_dir</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <h3><code>list_dir(path)</code></h3>
 <p>Lists the entries in the directory at <code>path</code>. Returns <code>Ok(entries)</code> where entries is a <code>Vec[Str]</code> of file/directory names, or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>list_dir</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>Str</span>], <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>list_dir</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Vec</span>[<span class='ty'>Str</span>], <span class='ty'>IOError</span>];
 </code></pre>
 <h3><code>remove_file(path)</code></h3>
 <p>Deletes the file at <code>path</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>remove_file</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>remove_file</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <h3><code>copy_file(src, dst)</code></h3>
 <p>Copies the file from <code>src</code> to <code>dst</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>copy_file</span>(src: <span class='ty'>Str</span>, dst: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>copy_file</span>(src: <span class='ty'>Str</span>, dst: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <h3><code>rename(src, dst)</code></h3>
 <p>Renames (moves) a file or directory from <code>src</code> to <code>dst</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>rename</span>(src: <span class='ty'>Str</span>, dst: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>rename</span>(src: <span class='ty'>Str</span>, dst: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <hr>
 <h2>Process</h2>
@@ -230,19 +231,19 @@
 <h3><code>args()</code></h3>
 <p>Returns the command-line arguments passed to the program as a <code>Vec[Str]</code>. The first element is the program name.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>args</span>() -> <span class='ty'>Vec</span>[<span class='ty'>Str</span>];
+<span class='kw'>fn</span> <span class='func'>args</span>() -&gt; <span class='ty'>Vec</span>[<span class='ty'>Str</span>];
 </code></pre>
 <h3><code>env_var(name)</code></h3>
 <p>Retrieves the value of the environment variable <code>name</code>. Returns <code>Some(value)</code> if set or <code>None</code> if undefined.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>env_var</span>(name: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Str</span>];
+<span class='kw'>fn</span> <span class='func'>env_var</span>(name: <span class='ty'>Str</span>) -&gt; <span class='ty'>Option</span>[<span class='ty'>Str</span>];
 </code></pre>
 <hr>
 <h2>Time</h2>
 <h3><code>time_now()</code></h3>
 <p>Returns the current time as a Unix timestamp (seconds since January 1, 1970 UTC).</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>time_now</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>fn</span> <span class='func'>time_now</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>sleep(ms)</code></h3>
 <p>Suspends execution for at least <code>ms</code> milliseconds.</p>
@@ -254,17 +255,17 @@
 <h3><code>stdin()</code></h3>
 <p>Returns the file descriptor for standard input (typically 0).</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>stdin</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>fn</span> <span class='func'>stdin</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>stdout()</code></h3>
 <p>Returns the file descriptor for standard output (typically 1).</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>stdout</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>fn</span> <span class='func'>stdout</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>stderr()</code></h3>
 <p>Returns the file descriptor for standard error (typically 2).</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>stderr</span>() -> <span class='ty'>Int</span>;
+<span class='kw'>fn</span> <span class='func'>stderr</span>() -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>print_line(s)</code></h3>
 <p>Writes <code>s</code> followed by a newline to standard output. Equivalent to <code>println</code> but may use a lower-level path.</p>
@@ -277,10 +278,10 @@
 <p>Provides byte-level reading from a source. The source is typically a file descriptor or a <code>Cursor</code>.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> Read {
-  <span class='kw'>fn</span> <span class='func'>read</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
-  <span class='kw'>fn</span> <span class='func'>read_to_end</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
-  <span class='kw'>fn</span> <span class='func'>read_to_string</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>IOError</span>];
-  <span class='kw'>fn</span> <span class='func'>read_exact</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>read</span>(<span class='kw'>self</span>, buf: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>read_to_end</span>(<span class='kw'>self</span>, buf: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>read_to_string</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Str</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>read_exact</span>(<span class='kw'>self</span>, buf: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 }
 </code></pre>
 <table>
@@ -309,9 +310,9 @@
 <p>Provides byte-level writing to a sink.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> Write {
-  <span class='kw'>fn</span> <span class='func'>write</span>(<span class='kw'>self</span>, buf: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
-  <span class='kw'>fn</span> <span class='func'>write_all</span>(<span class='kw'>self</span>, buf: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
-  <span class='kw'>fn</span> <span class='func'>flush</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>write</span>(<span class='kw'>self</span>, buf: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>write_all</span>(<span class='kw'>self</span>, buf: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>flush</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 }
 </code></pre>
 <table>
@@ -336,8 +337,8 @@
 <p>Provides the ability to reposition a byte-oriented stream.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>interface</span> Seek {
-  <span class='kw'>fn</span> <span class='func'>seek</span>(<span class='kw'>self</span>, pos: SeekFrom) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
-  <span class='kw'>fn</span> <span class='func'>stream_position</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>seek</span>(<span class='kw'>self</span>, pos: SeekFrom) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+  <span class='kw'>fn</span> <span class='func'>stream_position</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
 }
 </code></pre>
 <table>
@@ -364,17 +365,17 @@
 <h4><code>BufReader.new(reader)</code></h4>
 <p>Creates a new <code>BufReader</code> wrapping the given file descriptor.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> BufReader.<span class='func'>new</span>(reader: <span class='ty'>Int</span>) -> BufReader;
+<span class='kw'>fn</span> BufReader.<span class='func'>new</span>(reader: <span class='ty'>Int</span>) -&gt; BufReader;
 </code></pre>
 <h4><code>BufReader.read_line(buf)</code></h4>
 <p>Reads a line (up to and including the newline) into <code>buf</code>. Returns the number of bytes read, or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> BufReader.<span class='func'>read_line</span>(<span class='kw'>self</span>, buf: &mut <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> BufReader.<span class='func'>read_line</span>(<span class='kw'>self</span>, buf: &amp;mut <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Int</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <h4><code>BufReader.lines()</code></h4>
 <p>Reads all remaining lines from the buffered reader and returns them as a <code>Vec[Str]</code>. Each string has the trailing newline stripped.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> BufReader.<span class='func'>lines</span>(<span class='kw'>self</span>) -> <span class='ty'>Vec</span>[<span class='ty'>Str</span>];
+<span class='kw'>fn</span> BufReader.<span class='func'>lines</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Vec</span>[<span class='ty'>Str</span>];
 </code></pre>
 <h3><code>BufWriter</code></h3>
 <p>A buffered writer that wraps a raw file descriptor, accumulating writes in an internal buffer and flushing on overflow or explicit <code>flush()</code>.</p>
@@ -384,7 +385,7 @@
 <h4><code>BufWriter.new(writer)</code></h4>
 <p>Creates a new <code>BufWriter</code> wrapping the given file descriptor.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> BufWriter.<span class='func'>new</span>(writer: <span class='ty'>Int</span>) -> BufWriter;
+<span class='kw'>fn</span> BufWriter.<span class='func'>new</span>(writer: <span class='ty'>Int</span>) -&gt; BufWriter;
 </code></pre>
 <hr>
 <h2>File Metadata</h2>
@@ -432,12 +433,12 @@
 <h3><code>metadata(path)</code></h3>
 <p>Retrieves metadata for the file or directory at <code>path</code>. Returns <code>Ok(Metadata)</code> or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>metadata</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Result</span>[Metadata, <span class='ty'>IOError</span>>;
+<span class='kw'>fn</span> <span class='func'>metadata</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Result</span>[Metadata, <span class='ty'>IOError</span>&gt;;
 </code></pre>
 <h3><code>set_permissions(path, perm)</code></h3>
 <p>Sets the permission bits of the file or directory at <code>path</code>. Returns <code>Ok(())</code> on success or <code>Err(IOError)</code>.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>set_permissions</span>(path: <span class='ty'>Str</span>, perm: <span class='ty'>Int</span>) -> <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
+<span class='kw'>fn</span> <span class='func'>set_permissions</span>(path: <span class='ty'>Str</span>, perm: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>[<span class='ty'>Unit</span>, <span class='ty'>IOError</span>];
 </code></pre>
 <hr>
 <h2>Memory I/O</h2>
@@ -449,39 +450,39 @@
 <h4><code>Cursor.new(data)</code></h4>
 <p>Creates a new <code>Cursor</code> initialized with the given byte data, positioned at the start.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> Cursor.<span class='func'>new</span>(data: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> Cursor;
+<span class='kw'>fn</span> Cursor.<span class='func'>new</span>(data: <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; Cursor;
 </code></pre>
 <h4><code>Cursor.into_inner()</code></h4>
 <p>Consumes the <code>Cursor</code> and returns the underlying byte buffer.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> Cursor.<span class='func'>into_inner</span>(<span class='kw'>self</span>) -> <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>];
+<span class='kw'>fn</span> Cursor.<span class='func'>into_inner</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Vec</span>[<span class='ty'>UInt8</span>];
 </code></pre>
 <hr>
 <h2>Path Operations</h2>
 <h3><code>join_paths(base, child)</code></h3>
 <p>Joins two path components using the platform-specific separator. Returns a single combined path string.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>join_paths</span>(base: <span class='ty'>Str</span>, child: <span class='ty'>Str</span>) -> <span class='ty'>Str</span>;
+<span class='kw'>fn</span> <span class='func'>join_paths</span>(base: <span class='ty'>Str</span>, child: <span class='ty'>Str</span>) -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h3><code>parent_path(path)</code></h3>
 <p>Returns the parent directory of <code>path</code>, or <code>None</code> if there is no parent (e.g., the root).</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>parent_path</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Str</span>];
+<span class='kw'>fn</span> <span class='func'>parent_path</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Option</span>[<span class='ty'>Str</span>];
 </code></pre>
 <h3><code>file_name(path)</code></h3>
 <p>Returns the file or directory name component of <code>path</code> (the last segment), or <code>None</code> if the path ends with <code>..</code> or is the root.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>file_name</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Str</span>];
+<span class='kw'>fn</span> <span class='func'>file_name</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Option</span>[<span class='ty'>Str</span>];
 </code></pre>
 <h3><code>extension(path)</code></h3>
 <p>Returns the file extension (the part after the last <code>.</code>), or <code>None</code> if the path has no extension.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>extension</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Option</span>[<span class='ty'>Str</span>];
+<span class='kw'>fn</span> <span class='func'>extension</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Option</span>[<span class='ty'>Str</span>];
 </code></pre>
 <h3><code>is_absolute(path)</code></h3>
 <p>Returns true if <code>path</code> is an absolute path (platform-specific: starts with <code>/</code> on Unix, or a drive letter on Windows).</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>is_absolute</span>(path: <span class='ty'>Str</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>is_absolute</span>(path: <span class='ty'>Str</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
     </main>
 
@@ -490,22 +491,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

@@ -101,16 +101,12 @@ XIOM's ecosystem is organized across three tiers: first-party, first-party FFI b
 
 For the planned package ecosystem, see [Ecosystem & Packages](https://xiom-lang.org/ecosystem.html).
 
-## Milestones
+## Evolution
 
-| Phase | Version | Status |
-|-------|---------|--------|
-| Phase 0 | v0.1.0 "Pipeline" | Released -- working pipeline |
-| Phase 1 | v0.2.0 "Guardian" | Released -- full language surface |
-| Phase 2 | v0.4.0 | Released -- differential IR correctness |
-| Phase 2C | v0.11.0 | Released -- toolchain and library milestones |
-| Phase 2C+ | v0.50.0 | Released -- expanded stdlib, scripting, JIT, contracts |
-| Phase 8B | v0.51.0 | Released -- production hardening, M1-M12 complete |
-| Releases | v0.52 and later | Shipped -- scripting, JIT, AI diagnostics, sandbox audit, compiler/stdlib split |
+XIOM's phases and release milestones are tracked on the website, not repeated here, so this guide always describes the language as it is today:
 
-The current release is tracked on the [versions page](https://xiom-lang.org/versions.html); this table lists earlier milestones. Self-hosting gates are cleared, but no self-hosted release has shipped yet.
+- [History](https://xiom-lang.org/history.html) -- how the compiler and language evolved.
+- [Versions](https://xiom-lang.org/versions.html) -- every published release, read from the download mirror.
+- [Roadmap](https://xiom-lang.org/roadmap.html) -- current status and what is next.
+
+The current release is always the tag published on the mirror. Self-hosting gates are cleared, but no self-hosted release has shipped yet.

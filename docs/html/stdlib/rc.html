@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -117,42 +118,42 @@
 <h3><code>Rc.new(value)</code></h3>
 <p>Creates a new <code>Rc</code> wrapping the given value, initializing the strong count to 1.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.new[T](value: T) -> Rc[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.new[T](value: T) -&gt; Rc[T];
 </code></pre>
 <h3><code>Rc.clone(self)</code></h3>
 <p>Clones the <code>Rc</code>, incrementing the strong reference count.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.clone[T](<span class='kw'>self</span>) -> Rc[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.clone[T](<span class='kw'>self</span>) -&gt; Rc[T];
 </code></pre>
 <h3><code>Rc.strong_count(self)</code></h3>
 <p>Returns the current strong reference count.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.strong_count[T](<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.strong_count[T](<span class='kw'>self</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>Rc.weak_count(self)</code></h3>
 <p>Returns the current weak reference count.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.weak_count[T](<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.weak_count[T](<span class='kw'>self</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <h3><code>Rc.get(self)</code></h3>
 <p>Returns a shared reference to the inner value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.get[T](<span class='kw'>self</span>) -> &T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.get[T](<span class='kw'>self</span>) -&gt; &amp;T;
 </code></pre>
 <h3><code>Rc.ptr_eq(self, other)</code></h3>
 <p>Returns <code>true</code> if two <code>Rc</code> pointers point to the same allocation.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.ptr_eq[T, U](<span class='kw'>self</span>, other: &Rc[U]) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.ptr_eq[T, U](<span class='kw'>self</span>, other: &amp;Rc[U]) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Rc.downgrade(self)</code></h3>
 <p>Creates a <code>Weak</code> reference from this <code>Rc</code>, without increasing the strong count.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.downgrade[T](<span class='kw'>self</span>) -> Weak[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.downgrade[T](<span class='kw'>self</span>) -&gt; Weak[T];
 </code></pre>
 <h3><code>Rc.unwrap_or_clone(self)</code></h3>
 <p>Returns the inner value if the <code>Rc</code> has exactly one strong reference; otherwise clones the value.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.unwrap_or_clone[T: <span class='ty'>Clone</span>](<span class='kw'>self</span>) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Rc.unwrap_or_clone[T: <span class='ty'>Clone</span>](<span class='kw'>self</span>) -&gt; T;
 </code></pre>
 <h2>Weak</h2>
 <h3><code>Weak[T]</code></h3>
@@ -163,12 +164,12 @@
 <h3><code>Weak.upgrade(self)</code></h3>
 <p>Attempts to upgrade the <code>Weak</code> reference to an <code>Rc</code>. Returns <code>None</code> if the inner value has been deallocated.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Weak.upgrade[T](<span class='kw'>self</span>) -> <span class='ty'>Option</span><Rc[T]>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Weak.upgrade[T](<span class='kw'>self</span>) -&gt; <span class='ty'>Option</span>&lt;Rc[T]&gt;;
 </code></pre>
 <h3><code>Weak.strong_count(self)</code></h3>
 <p>Returns the strong reference count of the pointed-to allocation, or 0 if the value has been deallocated.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Weak.strong_count[T](<span class='kw'>self</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Weak.strong_count[T](<span class='kw'>self</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
     </main>
 
@@ -177,22 +178,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

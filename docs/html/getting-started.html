@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -122,20 +123,20 @@ cargo test          # <span class='num'>1041</span> tests should pass
 <pre class="language-bash"><code>
 # Using standalone <span class='func'>binary</span>(after build)
 xiom doctor
-# -> Checks: clang [OK]  opt [OK]  nasm [OK]
+# -&gt; Checks: clang [OK]  opt [OK]  nasm [OK]
 
 # Using <span class='func'>cargo</span>(development)
 cargo run -p xiom -- doctor
-# -> Checks: clang [OK]  opt [OK]  nasm [OK]
+# -&gt; Checks: clang [OK]  opt [OK]  nasm [OK]
 </code></pre>
 <h2>Your First Program</h2>
 <p>Create a file <code>hello.xi</code>:</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>add</span>(a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>) -> <span class='ty'>Int</span> {
+<span class='kw'>fn</span> <span class='func'>add</span>(a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span> {
   <span class='kw'>return</span> a + b;
 }
 
-<span class='kw'>fn</span> <span class='func'>main</span>() -> <span class='ty'>Int</span> {
+<span class='kw'>fn</span> <span class='func'>main</span>() -&gt; <span class='ty'>Int</span> {
   <span class='kw'>return</span> <span class='func'>add</span>(<span class='num'>10</span>, <span class='num'>20</span>);
 }
 </code></pre>
@@ -149,11 +150,11 @@ xiom -o hello.exe hello.xi
 
 # Compile and <span class='func'>run</span>(prints exit code)
 xiom --run hello.xi
-# -> exit code: <span class='num'>30</span>
+# -&gt; exit code: <span class='num'>30</span>
 
 # Compile to WASM
 xiom --target wasm -o hello.wasm hello.xi
-# -> wasm size: <span class='num'>618</span> bytes
+# -&gt; wasm size: <span class='num'>618</span> bytes
 
 # Development via cargo
 cargo run -p xiom -- --emit-ir hello.xi
@@ -170,23 +171,23 @@ cargo run -p xiom -- --target wasm -o hello.wasm hello.xi
 <th>Description</th>
 </tr>
 <tr>
-<td><code><source.xi></code></td>
+<td><code>&lt;source.xi&gt;</code></td>
 <td>Print LLVM IR to stdout</td>
 </tr>
 <tr>
-<td><code>--emit-ir <source.xi></code></td>
+<td><code>--emit-ir &lt;source.xi&gt;</code></td>
 <td>Print LLVM IR to stdout</td>
 </tr>
 <tr>
-<td><code>-o <output> <source.xi></code></td>
+<td><code>-o &lt;output&gt; &lt;source.xi&gt;</code></td>
 <td>Compile to native binary</td>
 </tr>
 <tr>
-<td><code>--run <source.xi></code></td>
+<td><code>--run &lt;source.xi&gt;</code></td>
 <td>Compile and run, print exit code</td>
 </tr>
 <tr>
-<td><code>--target wasm -o <out.wasm> <source.xi></code></td>
+<td><code>--target wasm -o &lt;out.wasm&gt; &lt;source.xi&gt;</code></td>
 <td>Compile to WASM</td>
 </tr>
 <tr>
@@ -244,22 +245,41 @@ XIOM/
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

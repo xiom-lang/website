@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -117,51 +118,51 @@
 <h3><code>Ordering.reverse(self)</code></h3>
 <p>Reverses the ordering: <code>Less</code> becomes <code>Greater</code> and vice versa; <code>Equal</code> stays <code>Equal</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Ordering.<span class='func'>reverse</span>(<span class='kw'>self</span>) -> Ordering;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Ordering.<span class='func'>reverse</span>(<span class='kw'>self</span>) -&gt; Ordering;
 </code></pre>
 <h3><code>Ordering.then(self, other)</code></h3>
 <p>Chains orderings: returns <code>self</code> if not <code>Equal</code>, otherwise returns <code>other</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Ordering.<span class='func'>then</span>(<span class='kw'>self</span>, other: Ordering) -> Ordering;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Ordering.<span class='func'>then</span>(<span class='kw'>self</span>, other: Ordering) -&gt; Ordering;
 </code></pre>
 <h3><code>Ordering.then_with(self, f)</code></h3>
 <p>Chains orderings with a lazy fallback: returns <code>self</code> if not <code>Equal</code>, otherwise calls <code>f</code> and returns its result.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Ordering.<span class='func'>then_with</span>(<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>() -> Ordering) -> Ordering;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Ordering.<span class='func'>then_with</span>(<span class='kw'>self</span>, f: <span class='func'><span class='kw'>fn</span></span>() -&gt; Ordering) -&gt; Ordering;
 </code></pre>
 <h2>Comparison Functions</h2>
 <h3><code>min(a, b)</code></h3>
 <p>Returns the smaller of <code>a</code> and <code>b</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> min[T: <span class='ty'>Ord</span>](a: T, b: T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> min[T: <span class='ty'>Ord</span>](a: T, b: T) -&gt; T;
 </code></pre>
 <h3><code>max(a, b)</code></h3>
 <p>Returns the larger of <code>a</code> and <code>b</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> max[T: <span class='ty'>Ord</span>](a: T, b: T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> max[T: <span class='ty'>Ord</span>](a: T, b: T) -&gt; T;
 </code></pre>
 <h3><code>clamp(value, min_val, max_val)</code></h3>
 <p>Clamps <code>value</code> to the range <code>[min_val, max_val]</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> clamp[T: <span class='ty'>Ord</span>](value: T, min_val: T, max_val: T) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> clamp[T: <span class='ty'>Ord</span>](value: T, min_val: T, max_val: T) -&gt; T;
 </code></pre>
 <h3><code>min_by(a, b, compare)</code></h3>
 <p>Returns the smaller of <code>a</code> and <code>b</code> using a custom comparison function.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> min_by[T](a: T, b: T, compare: <span class='func'><span class='kw'>fn</span></span>(&T, &T) -> Ordering) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> min_by[T](a: T, b: T, compare: <span class='func'><span class='kw'>fn</span></span>(&amp;T, &amp;T) -&gt; Ordering) -&gt; T;
 </code></pre>
 <h3><code>max_by(a, b, compare)</code></h3>
 <p>Returns the larger of <code>a</code> and <code>b</code> using a custom comparison function.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> max_by[T](a: T, b: T, compare: <span class='func'><span class='kw'>fn</span></span>(&T, &T) -> Ordering) -> T;
+<span class='kw'>pub</span> <span class='kw'>fn</span> max_by[T](a: T, b: T, compare: <span class='func'><span class='kw'>fn</span></span>(&amp;T, &amp;T) -&gt; Ordering) -&gt; T;
 </code></pre>
 <h2>Traits</h2>
 <h3><code>PartialEq[Rhs]</code></h3>
 <p>Trait for types that support partial equality comparison.</p>
 <pre><code>
 <span class='kw'>pub</span> <span class='kw'>interface</span> PartialEq[Rhs: <span class='ty'>Self</span>] {
-    <span class='kw'>fn</span> <span class='func'>eq</span>(<span class='kw'>self</span>, other: &Rhs) -> <span class='ty'>Bool</span>;
-    <span class='kw'>fn</span> <span class='func'>ne</span>(<span class='kw'>self</span>, other: &Rhs) -> <span class='ty'>Bool</span>;
+    <span class='kw'>fn</span> <span class='func'>eq</span>(<span class='kw'>self</span>, other: &amp;Rhs) -&gt; <span class='ty'>Bool</span>;
+    <span class='kw'>fn</span> <span class='func'>ne</span>(<span class='kw'>self</span>, other: &amp;Rhs) -&gt; <span class='ty'>Bool</span>;
 }
 </code></pre>
 <h3><code>PartialEq.eq(self, other)</code></h3>
@@ -172,11 +173,11 @@
 <p>Trait for types that support partial ordering comparison (types that may not always be comparable, such as floats with NaN).</p>
 <pre><code>
 <span class='kw'>pub</span> <span class='kw'>interface</span> PartialOrd[Rhs: <span class='ty'>Self</span>] {
-    <span class='kw'>fn</span> <span class='func'>partial_cmp</span>(<span class='kw'>self</span>, other: &Rhs) -> <span class='ty'>Option</span>[Ordering];
-    <span class='kw'>fn</span> <span class='func'>lt</span>(<span class='kw'>self</span>, other: &Rhs) -> <span class='ty'>Bool</span>;
-    <span class='kw'>fn</span> <span class='func'>le</span>(<span class='kw'>self</span>, other: &Rhs) -> <span class='ty'>Bool</span>;
-    <span class='kw'>fn</span> <span class='func'>gt</span>(<span class='kw'>self</span>, other: &Rhs) -> <span class='ty'>Bool</span>;
-    <span class='kw'>fn</span> <span class='func'>ge</span>(<span class='kw'>self</span>, other: &Rhs) -> <span class='ty'>Bool</span>;
+    <span class='kw'>fn</span> <span class='func'>partial_cmp</span>(<span class='kw'>self</span>, other: &amp;Rhs) -&gt; <span class='ty'>Option</span>[Ordering];
+    <span class='kw'>fn</span> <span class='func'>lt</span>(<span class='kw'>self</span>, other: &amp;Rhs) -&gt; <span class='ty'>Bool</span>;
+    <span class='kw'>fn</span> <span class='func'>le</span>(<span class='kw'>self</span>, other: &amp;Rhs) -&gt; <span class='ty'>Bool</span>;
+    <span class='kw'>fn</span> <span class='func'>gt</span>(<span class='kw'>self</span>, other: &amp;Rhs) -&gt; <span class='ty'>Bool</span>;
+    <span class='kw'>fn</span> <span class='func'>ge</span>(<span class='kw'>self</span>, other: &amp;Rhs) -&gt; <span class='ty'>Bool</span>;
 }
 </code></pre>
 <h3><code>PartialOrd.partial_cmp(self, other)</code></h3>
@@ -198,7 +199,7 @@
 <h3><code>Reverse.new(value)</code></h3>
 <p>Creates a new <code>Reverse</code> wrapper that reverses the ordering of <code>value</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Reverse.new[T](value: T) -> Reverse[T];
+<span class='kw'>pub</span> <span class='kw'>fn</span> Reverse.new[T](value: T) -&gt; Reverse[T];
 </code></pre>
     </main>
 
@@ -207,22 +208,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

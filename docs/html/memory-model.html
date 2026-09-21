@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -120,11 +121,11 @@
 <td>A value is freed when its owning binding leaves scope. No GC, no manual free.</td>
 </tr>
 <tr>
-<td><strong>Read Borrow (<code>&T</code>)</strong></td>
+<td><strong>Read Borrow (<code>&amp;T</code>)</strong></td>
 <td>Multiple simultaneous read borrows allowed. No mutation during active read borrows.</td>
 </tr>
 <tr>
-<td><strong>Write Borrow (<code>&mut T</code>)</strong></td>
+<td><strong>Write Borrow (<code>&amp;mut T</code>)</strong></td>
 <td>Exactly one write borrow at a time. No other borrows active simultaneously.</td>
 </tr>
 <tr>
@@ -140,14 +141,14 @@
 <p>Borrows expire at the end of the block or statement they are created in. You can see when a borrow ends by looking at the braces.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>consume</span>(data: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }          <span class='cm'>// takes ownership</span>
-<span class='kw'>fn</span> <span class='func'>read_only</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }       <span class='cm'>// read borrow</span>
-<span class='kw'>fn</span> <span class='func'>mutate</span>(data: &mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }      <span class='cm'>// write borrow</span>
+<span class='kw'>fn</span> <span class='func'>read_only</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }       <span class='cm'>// read borrow</span>
+<span class='kw'>fn</span> <span class='func'>mutate</span>(data: &amp;mut <span class='ty'>Vec</span>[<span class='ty'>Int</span>]) { }      <span class='cm'>// write borrow</span>
 
 <span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>read_only</span>(&v);        <span class='cm'>// borrow, v still valid</span>
-<span class='func'>mutate</span>(&mut v);       <span class='cm'>// write borrow, v still valid  </span>
+<span class='func'>read_only</span>(&amp;v);        <span class='cm'>// borrow, v still valid</span>
+<span class='func'>mutate</span>(&amp;mut v);       <span class='cm'>// write borrow, v still valid  </span>
 <span class='func'>consume</span>(v);           <span class='cm'>// move -- v no longer usable here</span>
-<span class='cm'>// <span class='func'>read_only</span>(&v)     // COMPILE ERROR: v was moved</span>
+<span class='cm'>// <span class='func'>read_only</span>(&amp;v)     // COMPILE ERROR: v was moved</span>
 </code></pre>
 <h2>What the Model Cannot Handle</h2>
 <p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
@@ -178,13 +179,13 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 </code></pre>
 <p>Use borrows when you don't need ownership:</p>
 <pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>inspect</span>(v: &<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
+<span class='kw'>fn</span> <span class='func'>inspect</span>(v: &amp;<span class='ty'>Vec</span>[<span class='ty'>Int</span>]) {
   <span class='cm'>// read-only access -- caller retains ownership</span>
 }
 
 <span class='kw'>let</span> data = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];
-<span class='func'>inspect</span>(&data);       <span class='cm'>// borrow -- data still valid</span>
-<span class='func'>inspect</span>(&data);       <span class='cm'>// can borrow again</span>
+<span class='func'>inspect</span>(&amp;data);       <span class='cm'>// borrow -- data still valid</span>
+<span class='func'>inspect</span>(&amp;data);       <span class='cm'>// can borrow again</span>
 </code></pre>
 <h2>Unsafe Blocks</h2>
 <p>Raw pointer arithmetic and C interop that cannot be verified by the compiler are permitted only inside explicit <code>unsafe { }</code> blocks.</p>
@@ -235,22 +236,41 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

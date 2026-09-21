@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -123,113 +124,113 @@
 <h3><code>Path.new(s)</code></h3>
 <p>Creates a <code>Path</code> from a string.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>new</span>(s: <span class='ty'>Str</span>) -> Path;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>new</span>(s: <span class='ty'>Str</span>) -&gt; Path;
 </code></pre>
 <h3><code>PathBuf.new()</code></h3>
 <p>Creates an empty <code>PathBuf</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> PathBuf.<span class='func'>new</span>() -> PathBuf;
+<span class='kw'>pub</span> <span class='kw'>fn</span> PathBuf.<span class='func'>new</span>() -&gt; PathBuf;
 </code></pre>
 <h3><code>PathBuf.from(s)</code></h3>
 <p>Creates a <code>PathBuf</code> from a string.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> PathBuf.<span class='func'>from</span>(s: <span class='ty'>Str</span>) -> PathBuf;
+<span class='kw'>pub</span> <span class='kw'>fn</span> PathBuf.<span class='func'>from</span>(s: <span class='ty'>Str</span>) -&gt; PathBuf;
 </code></pre>
 <h2>Path Operations</h2>
 <h3><code>Path.parent(self)</code></h3>
 <p>Returns the parent directory of the path, or <code>None</code> if there is no parent.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>parent</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span><Path>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>parent</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Option</span>&lt;Path&gt;;
 </code></pre>
 <h3><code>Path.file_name(self)</code></h3>
 <p>Returns the file name component of the path.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>file_name</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span><<span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>file_name</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Option</span>&lt;<span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>Path.extension(self)</code></h3>
 <p>Returns the file extension (the part after the last <code>.</code>).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>extension</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span><<span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>extension</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Option</span>&lt;<span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>Path.file_stem(self)</code></h3>
 <p>Returns the file name without the extension.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>file_stem</span>(<span class='kw'>self</span>) -> <span class='ty'>Option</span><<span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>file_stem</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Option</span>&lt;<span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>Path.is_absolute(self)</code></h3>
 <p>Returns <code>true</code> if the path is absolute.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>is_absolute</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>is_absolute</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Path.is_relative(self)</code></h3>
 <p>Returns <code>true</code> if the path is relative.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>is_relative</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>is_relative</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Path.has_root(self)</code></h3>
 <p>Returns <code>true</code> if the path has a root component.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>has_root</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>has_root</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Path.components(self)</code></h3>
 <p>Splits the path into its individual components.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>components</span>(<span class='kw'>self</span>) -> <span class='ty'>Vec</span><<span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>components</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Vec</span>&lt;<span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>Path.to_str(self)</code></h3>
 <p>Returns the path as a string.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>to_str</span>(<span class='kw'>self</span>) -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>to_str</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Str</span>;
 </code></pre>
 <h3><code>Path.join(self, child)</code></h3>
 <p>Joins the path with a child path component, producing a <code>PathBuf</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>join</span>(<span class='kw'>self</span>, child: <span class='ty'>Str</span>) -> PathBuf;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>join</span>(<span class='kw'>self</span>, child: <span class='ty'>Str</span>) -&gt; PathBuf;
 </code></pre>
 <h3><code>Path.with_extension(self, ext)</code></h3>
 <p>Replaces the file extension with a new one, returning a <code>PathBuf</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>with_extension</span>(<span class='kw'>self</span>, ext: <span class='ty'>Str</span>) -> PathBuf;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>with_extension</span>(<span class='kw'>self</span>, ext: <span class='ty'>Str</span>) -&gt; PathBuf;
 </code></pre>
 <h3><code>Path.with_file_name(self, name)</code></h3>
 <p>Replaces the file name with a new one, returning a <code>PathBuf</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>with_file_name</span>(<span class='kw'>self</span>, name: <span class='ty'>Str</span>) -> PathBuf;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>with_file_name</span>(<span class='kw'>self</span>, name: <span class='ty'>Str</span>) -&gt; PathBuf;
 </code></pre>
 <h3><code>Path.exists(self)</code></h3>
 <p>Returns <code>true</code> if the path points to an existing filesystem entry.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>exists</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>exists</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Path.is_file(self)</code></h3>
 <p>Returns <code>true</code> if the path points to a regular file.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>is_file</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>is_file</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Path.is_dir(self)</code></h3>
 <p>Returns <code>true</code> if the path points to a directory.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>is_dir</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>is_dir</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Path.metadata(self)</code></h3>
 <p>Returns the filesystem metadata for the path.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>metadata</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span><Metadata, <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>metadata</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Result</span>&lt;Metadata, <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>Path.canonicalize(self)</code></h3>
 <p>Resolves the path to its canonical, absolute form.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>canonicalize</span>(<span class='kw'>self</span>) -> <span class='ty'>Result</span><PathBuf, <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>canonicalize</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Result</span>&lt;PathBuf, <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>Path.starts_with(self, base)</code></h3>
 <p>Returns <code>true</code> if the path starts with the given base path.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>starts_with</span>(<span class='kw'>self</span>, base: &Path) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>starts_with</span>(<span class='kw'>self</span>, base: &amp;Path) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>Path.ends_with(self, child)</code></h3>
 <p>Returns <code>true</code> if the path ends with the given child path.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>ends_with</span>(<span class='kw'>self</span>, child: &Path) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> Path.<span class='func'>ends_with</span>(<span class='kw'>self</span>, child: &amp;Path) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h2>PathBuf Operations</h2>
 <h3><code>PathBuf.push(self, component)</code></h3>
@@ -240,12 +241,12 @@
 <h3><code>PathBuf.pop(self)</code></h3>
 <p>Removes the last path component. Returns <code>false</code> if the buffer was empty.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> PathBuf.<span class='func'>pop</span>(<span class='kw'>self</span>) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> PathBuf.<span class='func'>pop</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>PathBuf.as_path(self)</code></h3>
 <p>Returns a borrowed <code>Path</code> from the buffer.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> PathBuf.<span class='func'>as_path</span>(<span class='kw'>self</span>) -> Path;
+<span class='kw'>pub</span> <span class='kw'>fn</span> PathBuf.<span class='func'>as_path</span>(<span class='kw'>self</span>) -&gt; Path;
 </code></pre>
 <h3><code>PathBuf.clear(self)</code></h3>
 <p>Clears the path buffer to an empty string.</p>
@@ -256,7 +257,7 @@
 <h3><code>path_separator()</code></h3>
 <p>Returns the platform-specific path separator (<code>/</code> or <code>\</code>).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>path_separator</span>() -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>path_separator</span>() -&gt; <span class='ty'>Str</span>;
 </code></pre>
     </main>
 
@@ -265,22 +266,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

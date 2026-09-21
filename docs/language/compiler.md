@@ -328,20 +328,22 @@ xiom [flags] <source.xi>
 
 ## Language Features
 
-| Feature | Status | Since |
-|---------|--------|-------|
-| `move` keyword (spawn captures) | `spawn move { ... }` | v0.56 |
-| Overflow checks ON by default | `--overflow-checks` default true | v0.56 |
-| Parallel codegen | `--parallel-codegen` | v0.56 |
-| DWARF debug info | `--debug` / `-g` | v0.56 |
-| Thread-local recursion counter | `@xiom_recursion_counter thread_local` | v0.56 |
-| Send/Sync enforcement | Auto-derived, spawn capture check | v0.56 |
-| Spawn move semantics | Capture analysis + env forwarding | v0.56 |
-| Unsafe confinement | Confined `unsafe` transactions, guard heap, fault trapping | v0.57 |
-| Debug intrinsics | `assert`, `dbg!`, `todo!`, `unimplemented!`, `debugger;` | v0.58 |
-| Secure numeric policy | `Int` / `Float64` mixing requires explicit `as` | v0.58 |
-| Labeled loops | `@label: while` / `break @label;` | v0.58 |
-| Release-stripped contracts | `--runtime-contracts` retains them | v0.58 |
+| Feature | Surface |
+|---------|---------|
+| `move` keyword (spawn captures) | `spawn move { ... }` |
+| Overflow checks ON by default | `--overflow-checks` default true |
+| Parallel codegen | `--parallel-codegen` |
+| DWARF debug info | `--debug` / `-g` |
+| Thread-local recursion counter | `@xiom_recursion_counter thread_local` |
+| Send/Sync enforcement | Auto-derived, spawn capture check |
+| Spawn move semantics | Capture analysis + env forwarding |
+| Unsafe confinement | Confined `unsafe` transactions, guard heap, fault trapping |
+| Debug intrinsics | `assert`, `dbg!`, `todo!`, `unimplemented!`, `debugger;` |
+| Secure numeric policy | `Int` / `Float64` mixing requires explicit `as` |
+| Labeled loops | `@label: while` / `break @label;` |
+| Release-stripped contracts | `--runtime-contracts` retains them |
+
+When each surface landed is part of the release history, tracked on the website's [History](https://xiom-lang.org/history.html) page.
 
 ## Selfhost Gate Status
 

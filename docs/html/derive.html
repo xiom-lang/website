@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -143,9 +144,9 @@
 } <span class='kw'>derive</span>[<span class='ty'>Eq</span>, <span class='ty'>Clone</span>, <span class='ty'>Display</span>]
 
 <span class='cm'>// Compiler generates:</span>
-<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>eq</span>(other: &<span class='ty'>Point</span>) -> <span class='ty'>Bool</span>     -- x == x && y == y</span>
-<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>clone</span>() -> <span class='ty'>Point</span>              -- deep copy of both fields</span>
-<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>to_str</span>() -> <span class='ty'>Str</span>               -- <span class='str'><span class='ty'>Point</span>{ x: <span class='num'>1.0</span>, y: <span class='num'>2.0</span> }</span></span>
+<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>eq</span>(other: &amp;<span class='ty'>Point</span>) -&gt; <span class='ty'>Bool</span>     -- x == x &amp;&amp; y == y</span>
+<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>clone</span>() -&gt; <span class='ty'>Point</span>              -- deep copy of both fields</span>
+<span class='cm'>//   <span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>to_str</span>() -&gt; <span class='ty'>Str</span>               -- <span class='str'><span class='ty'>Point</span>{ x: <span class='num'>1.0</span>, y: <span class='num'>2.0</span> }</span></span>
 </code></pre>
 <h2>Invariant Restriction</h2>
 <p>Types with <code>invariant</code> clauses cannot derive <code>Eq</code>, <code>Hash</code>, or <code>Ord</code>. Invariants make structural equality semantically ambiguous -- two values with different internal state may both satisfy the same invariant. <code>Clone</code> and <code>Display</code> remain available.</p>
@@ -153,8 +154,8 @@
 <span class='kw'>type</span> <span class='ty'>Health</span> = {
   current: <span class='ty'>Int</span>;
   maximum: <span class='ty'>Int</span>;
-  <span class='kw'>invariant</span>: current >= <span class='num'>0</span>;
-  <span class='kw'>invariant</span>: current <= maximum;
+  <span class='kw'>invariant</span>: current &gt;= <span class='num'>0</span>;
+  <span class='kw'>invariant</span>: current &lt;= maximum;
 } <span class='kw'>derive</span>[<span class='ty'>Clone</span>, <span class='ty'>Display</span>]
 <span class='cm'>// <span class='ty'>Eq</span>, <span class='ty'>Hash</span>, <span class='ty'>Ord</span> are rejected -- invariants make equality/hashing ambiguous</span>
 </code></pre>
@@ -199,15 +200,15 @@ store double %<span class='kw'>self</span>.x, double* %x_ptr
 <h3>Ord</h3>
 <pre class="language-llvm"><code>
 ; Lexicographic field-by-field comparison with branch dispatch
-; Compare field <span class='num'>0</span> -> <span class='kw'>if</span> not equal, <span class='kw'>return</span>; <span class='kw'>else</span> compare field <span class='num'>1</span>...
+; Compare field <span class='num'>0</span> -&gt; <span class='kw'>if</span> not equal, <span class='kw'>return</span>; <span class='kw'>else</span> compare field <span class='num'>1</span>...
 </code></pre>
 <h2>Custom Implementations</h2>
 <p>You can always write a manual implementation instead of using <code>derive</code>:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>type</span> <span class='ty'>Point</span> = { x: <span class='ty'>Float64</span>; y: <span class='ty'>Float64</span> }
 
-<span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>eq</span>(other: &<span class='ty'>Point</span>) -> <span class='ty'>Bool</span> {
-  <span class='kw'>return</span> x == other.x && y == other.y;
+<span class='kw'>fn</span> <span class='ty'>Point</span>.<span class='func'>eq</span>(other: &amp;<span class='ty'>Point</span>) -&gt; <span class='ty'>Bool</span> {
+  <span class='kw'>return</span> x == other.x &amp;&amp; y == other.y;
 }
 </code></pre>
 <p>Manual implementations take precedence over derived ones. This is useful when the structural definition doesn't match the semantic definition (e.g., a type that should compare only a subset of fields).</p>
@@ -218,22 +219,41 @@ store double %<span class='kw'>self</span>.x, double* %x_ptr
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

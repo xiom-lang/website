@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -135,32 +136,32 @@
 <h3><code>simd_supported()</code></h3>
 <p>Returns <code>true</code> if at least one SIMD ISA extension is available.</p>
 <pre><code>
-<span class='kw'>fn</span> <span class='func'>simd_supported</span>() -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>simd_supported</span>() -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>has_sse()</code></h3>
 <p>Returns <code>true</code> if SSE (128-bit float) is available on x86_64.</p>
 <pre><code>
-<span class='kw'>fn</span> <span class='func'>has_sse</span>() -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>has_sse</span>() -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>has_avx()</code></h3>
 <p>Returns <code>true</code> if AVX (256-bit float) is available on x86_64.</p>
 <pre><code>
-<span class='kw'>fn</span> <span class='func'>has_avx</span>() -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>has_avx</span>() -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>has_avx2()</code></h3>
 <p>Returns <code>true</code> if AVX2 (256-bit integer) is available on x86_64.</p>
 <pre><code>
-<span class='kw'>fn</span> <span class='func'>has_avx2</span>() -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>has_avx2</span>() -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>has_avx512()</code></h3>
 <p>Returns <code>true</code> if AVX-512F (512-bit) is available on x86_64.</p>
 <pre><code>
-<span class='kw'>fn</span> <span class='func'>has_avx512</span>() -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>has_avx512</span>() -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3><code>has_neon()</code></h3>
 <p>Returns <code>true</code> if NEON (128-bit) is available on ARM64.</p>
 <pre><code>
-<span class='kw'>fn</span> <span class='func'>has_neon</span>() -> <span class='ty'>Bool</span>;
+<span class='kw'>fn</span> <span class='func'>has_neon</span>() -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <hr>
 <h2>128-bit Vector Types (SSE / NEON)</h2>
@@ -168,76 +169,76 @@
 <h4>Constructors</h4>
 <p>##### <code>Vec4f.new(x, y, z, w)</code> Creates a new <code>Vec4f</code> from four scalar values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>new</span>(x: <span class='ty'>Float32</span>, y: <span class='ty'>Float32</span>, z: <span class='ty'>Float32</span>, w: <span class='ty'>Float32</span>) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>new</span>(x: <span class='ty'>Float32</span>, y: <span class='ty'>Float32</span>, z: <span class='ty'>Float32</span>, w: <span class='ty'>Float32</span>) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.splat(value)</code> Creates a new <code>Vec4f</code> with all lanes set to the given scalar value.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>splat</span>(value: <span class='ty'>Float32</span>) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>splat</span>(value: <span class='ty'>Float32</span>) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.zero()</code> Creates a new <code>Vec4f</code> with all lanes set to 0.0.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>zero</span>() -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>zero</span>() -&gt; Vec4f;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec4f.add(self, other)</code> Element-wise addition. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec4f) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.sub(self, other)</code> Element-wise subtraction. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec4f) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.mul(self, other)</code> Element-wise multiplication. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec4f) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.div(self, other)</code> Element-wise division. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>div</span>(<span class='kw'>self</span>, other: Vec4f) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>div</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.sqrt(self)</code> Element-wise square root. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>sqrt</span>(<span class='kw'>self</span>) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>sqrt</span>(<span class='kw'>self</span>) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.dot(self, other)</code> Computes the dot product of <code>self</code> and <code>other</code> across all 4 lanes. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>dot</span>(<span class='kw'>self</span>, other: Vec4f) -> <span class='ty'>Float32</span>;
+<span class='kw'>fn</span> Vec4f.<span class='func'>dot</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; <span class='ty'>Float32</span>;
 </code></pre>
 <p>##### <code>Vec4f.min(self, other)</code> Element-wise minimum. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>min</span>(<span class='kw'>self</span>, other: Vec4f) -> <span class='ty'>Float32</span>;
+<span class='kw'>fn</span> Vec4f.<span class='func'>min</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; <span class='ty'>Float32</span>;
 </code></pre>
 <p>##### <code>Vec4f.max(self, other)</code> Element-wise maximum. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>max</span>(<span class='kw'>self</span>, other: Vec4f) -> <span class='ty'>Float32</span>;
+<span class='kw'>fn</span> Vec4f.<span class='func'>max</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; <span class='ty'>Float32</span>;
 </code></pre>
 <p>##### <code>Vec4f.get(self, index)</code> Extracts the value at lane <code>index</code> (0-3).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Float32</span>;
+<span class='kw'>fn</span> Vec4f.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Float32</span>;
 </code></pre>
 <p>##### <code>Vec4f.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-3) to <code>value</code>. Returns a new <code>Vec4f</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float32</span>) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float32</span>) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.len(self)</code> Returns the vector magnitude (Euclidean norm).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>len</span>(<span class='kw'>self</span>) -> <span class='ty'>Float32</span>;
+<span class='kw'>fn</span> Vec4f.<span class='func'>len</span>(<span class='kw'>self</span>) -&gt; <span class='ty'>Float32</span>;
 </code></pre>
 <p>##### <code>Vec4f.normalize(self)</code> Returns the unit vector in the same direction.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>normalize</span>(<span class='kw'>self</span>) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>normalize</span>(<span class='kw'>self</span>) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.cross3(self, other)</code> Computes the 3D cross product using lanes x, y, z (w is set to 0).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>cross3</span>(<span class='kw'>self</span>, other: Vec4f) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>cross3</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.add_scalar(self, value)</code> Scalar fallback: adds a scalar to each lane. No SIMD acceleration.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>add_scalar</span>(<span class='kw'>self</span>, value: <span class='ty'>Float32</span>) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>add_scalar</span>(<span class='kw'>self</span>, value: <span class='ty'>Float32</span>) -&gt; Vec4f;
 </code></pre>
 <p>##### <code>Vec4f.mul_scalar(self, value)</code> Scalar fallback: multiplies each lane by a scalar. No SIMD acceleration.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4f.<span class='func'>mul_scalar</span>(<span class='kw'>self</span>, value: <span class='ty'>Float32</span>) -> Vec4f;
+<span class='kw'>fn</span> Vec4f.<span class='func'>mul_scalar</span>(<span class='kw'>self</span>, value: <span class='ty'>Float32</span>) -&gt; Vec4f;
 </code></pre>
 <h4>Usage Example</h4>
 <pre><code>
@@ -264,40 +265,40 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec2d.new(x, y)</code> Creates a new <code>Vec2d</code> from two scalar values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>new</span>(x: <span class='ty'>Float64</span>, y: <span class='ty'>Float64</span>) -> Vec2d;
+<span class='kw'>fn</span> Vec2d.<span class='func'>new</span>(x: <span class='ty'>Float64</span>, y: <span class='ty'>Float64</span>) -&gt; Vec2d;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec2d.add(self, other)</code> Element-wise addition. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec2d) -> Vec2d;
+<span class='kw'>fn</span> Vec2d.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec2d) -&gt; Vec2d;
 </code></pre>
 <p>##### <code>Vec2d.sub(self, other)</code> Element-wise subtraction. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec2d) -> Vec2d;
+<span class='kw'>fn</span> Vec2d.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec2d) -&gt; Vec2d;
 </code></pre>
 <p>##### <code>Vec2d.mul(self, other)</code> Element-wise multiplication. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec2d) -> Vec2d;
+<span class='kw'>fn</span> Vec2d.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec2d) -&gt; Vec2d;
 </code></pre>
 <p>##### <code>Vec2d.div(self, other)</code> Element-wise division. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>div</span>(<span class='kw'>self</span>, other: Vec2d) -> Vec2d;
+<span class='kw'>fn</span> Vec2d.<span class='func'>div</span>(<span class='kw'>self</span>, other: Vec2d) -&gt; Vec2d;
 </code></pre>
 <p>##### <code>Vec2d.sqrt(self)</code> Element-wise square root. SIMD-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>sqrt</span>(<span class='kw'>self</span>) -> Vec2d;
+<span class='kw'>fn</span> Vec2d.<span class='func'>sqrt</span>(<span class='kw'>self</span>) -&gt; Vec2d;
 </code></pre>
 <p>##### <code>Vec2d.dot(self, other)</code> Computes the dot product of <code>self</code> and <code>other</code> across both lanes.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>dot</span>(<span class='kw'>self</span>, other: Vec2d) -> <span class='ty'>Float64</span>;
+<span class='kw'>fn</span> Vec2d.<span class='func'>dot</span>(<span class='kw'>self</span>, other: Vec2d) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <p>##### <code>Vec2d.get(self, index)</code> Extracts the value at lane <code>index</code> (0-1).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>fn</span> Vec2d.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <p>##### <code>Vec2d.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-1) to <code>value</code>. Returns a new <code>Vec2d</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec2d.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float64</span>) -> Vec2d;
+<span class='kw'>fn</span> Vec2d.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float64</span>) -&gt; Vec2d;
 </code></pre>
 <hr>
 <h3>Vec4i -- 4 x Int32</h3>
@@ -305,28 +306,28 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec4i.new(v0, v1, v2, v3)</code> Creates a new <code>Vec4i</code> from four integer values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4i.<span class='func'>new</span>(v0: <span class='ty'>Int</span>, v1: <span class='ty'>Int</span>, v2: <span class='ty'>Int</span>, v3: <span class='ty'>Int</span>) -> Vec4i;
+<span class='kw'>fn</span> Vec4i.<span class='func'>new</span>(v0: <span class='ty'>Int</span>, v1: <span class='ty'>Int</span>, v2: <span class='ty'>Int</span>, v3: <span class='ty'>Int</span>) -&gt; Vec4i;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec4i.add(self, other)</code> Element-wise addition.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4i.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec4i) -> Vec4i;
+<span class='kw'>fn</span> Vec4i.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec4i) -&gt; Vec4i;
 </code></pre>
 <p>##### <code>Vec4i.sub(self, other)</code> Element-wise subtraction.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4i.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec4i) -> Vec4i;
+<span class='kw'>fn</span> Vec4i.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec4i) -&gt; Vec4i;
 </code></pre>
 <p>##### <code>Vec4i.mul(self, other)</code> Element-wise multiplication.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4i.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec4i) -> Vec4i;
+<span class='kw'>fn</span> Vec4i.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec4i) -&gt; Vec4i;
 </code></pre>
 <p>##### <code>Vec4i.get(self, index)</code> Extracts the value at lane <code>index</code> (0-3).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4i.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>fn</span> Vec4i.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <p>##### <code>Vec4i.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-3) to <code>value</code>. Returns a new <code>Vec4i</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4i.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Int</span>) -> Vec4i;
+<span class='kw'>fn</span> Vec4i.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Int</span>) -&gt; Vec4i;
 </code></pre>
 <hr>
 <h3>Vec8s -- 8 x Int16</h3>
@@ -334,24 +335,24 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec8s.new(v0..v7)</code> Creates a new <code>Vec8s</code> from eight integer values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8s.<span class='func'>new</span>(v0: <span class='ty'>Int</span>, v1: <span class='ty'>Int</span>, v2: <span class='ty'>Int</span>, v3: <span class='ty'>Int</span>, v4: <span class='ty'>Int</span>, v5: <span class='ty'>Int</span>, v6: <span class='ty'>Int</span>, v7: <span class='ty'>Int</span>) -> Vec8s;
+<span class='kw'>fn</span> Vec8s.<span class='func'>new</span>(v0: <span class='ty'>Int</span>, v1: <span class='ty'>Int</span>, v2: <span class='ty'>Int</span>, v3: <span class='ty'>Int</span>, v4: <span class='ty'>Int</span>, v5: <span class='ty'>Int</span>, v6: <span class='ty'>Int</span>, v7: <span class='ty'>Int</span>) -&gt; Vec8s;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec8s.add(self, other)</code> Element-wise addition.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8s.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec8s) -> Vec8s;
+<span class='kw'>fn</span> Vec8s.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec8s) -&gt; Vec8s;
 </code></pre>
 <p>##### <code>Vec8s.sub(self, other)</code> Element-wise subtraction.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8s.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec8s) -> Vec8s;
+<span class='kw'>fn</span> Vec8s.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec8s) -&gt; Vec8s;
 </code></pre>
 <p>##### <code>Vec8s.get(self, index)</code> Extracts the value at lane <code>index</code> (0-7).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8s.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>fn</span> Vec8s.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <p>##### <code>Vec8s.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-7) to <code>value</code>. Returns a new <code>Vec8s</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8s.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Int</span>) -> Vec8s;
+<span class='kw'>fn</span> Vec8s.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Int</span>) -&gt; Vec8s;
 </code></pre>
 <hr>
 <h3>Vec16b -- 16 x Int8</h3>
@@ -359,24 +360,24 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec16b.new(v0..v15)</code> Creates a new <code>Vec16b</code> from sixteen integer values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16b.<span class='func'>new</span>(v0: <span class='ty'>Int</span>, v1: <span class='ty'>Int</span>, v2: <span class='ty'>Int</span>, v3: <span class='ty'>Int</span>, v4: <span class='ty'>Int</span>, v5: <span class='ty'>Int</span>, v6: <span class='ty'>Int</span>, v7: <span class='ty'>Int</span>, v8: <span class='ty'>Int</span>, v9: <span class='ty'>Int</span>, v10: <span class='ty'>Int</span>, v11: <span class='ty'>Int</span>, v12: <span class='ty'>Int</span>, v13: <span class='ty'>Int</span>, v14: <span class='ty'>Int</span>, v15: <span class='ty'>Int</span>) -> Vec16b;
+<span class='kw'>fn</span> Vec16b.<span class='func'>new</span>(v0: <span class='ty'>Int</span>, v1: <span class='ty'>Int</span>, v2: <span class='ty'>Int</span>, v3: <span class='ty'>Int</span>, v4: <span class='ty'>Int</span>, v5: <span class='ty'>Int</span>, v6: <span class='ty'>Int</span>, v7: <span class='ty'>Int</span>, v8: <span class='ty'>Int</span>, v9: <span class='ty'>Int</span>, v10: <span class='ty'>Int</span>, v11: <span class='ty'>Int</span>, v12: <span class='ty'>Int</span>, v13: <span class='ty'>Int</span>, v14: <span class='ty'>Int</span>, v15: <span class='ty'>Int</span>) -&gt; Vec16b;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec16b.add(self, other)</code> Element-wise addition.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16b.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec16b) -> Vec16b;
+<span class='kw'>fn</span> Vec16b.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec16b) -&gt; Vec16b;
 </code></pre>
 <p>##### <code>Vec16b.sub(self, other)</code> Element-wise subtraction.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16b.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec16b) -> Vec16b;
+<span class='kw'>fn</span> Vec16b.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec16b) -&gt; Vec16b;
 </code></pre>
 <p>##### <code>Vec16b.get(self, index)</code> Extracts the value at lane <code>index</code> (0-15).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16b.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>fn</span> Vec16b.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <p>##### <code>Vec16b.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-15) to <code>value</code>. Returns a new <code>Vec16b</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16b.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Int</span>) -> Vec16b;
+<span class='kw'>fn</span> Vec16b.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Int</span>) -&gt; Vec16b;
 </code></pre>
 <hr>
 <h2>256-bit Vector Types (AVX / AVX2)</h2>
@@ -384,24 +385,24 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec8f.new(v0..v7)</code> Creates a new <code>Vec8f</code> from eight scalar values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8f.<span class='func'>new</span>(v0: <span class='ty'>Float32</span>, v1: <span class='ty'>Float32</span>, v2: <span class='ty'>Float32</span>, v3: <span class='ty'>Float32</span>, v4: <span class='ty'>Float32</span>, v5: <span class='ty'>Float32</span>, v6: <span class='ty'>Float32</span>, v7: <span class='ty'>Float32</span>) -> Vec8f;
+<span class='kw'>fn</span> Vec8f.<span class='func'>new</span>(v0: <span class='ty'>Float32</span>, v1: <span class='ty'>Float32</span>, v2: <span class='ty'>Float32</span>, v3: <span class='ty'>Float32</span>, v4: <span class='ty'>Float32</span>, v5: <span class='ty'>Float32</span>, v6: <span class='ty'>Float32</span>, v7: <span class='ty'>Float32</span>) -&gt; Vec8f;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec8f.add(self, other)</code> Element-wise addition. AVX-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8f.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec8f) -> Vec8f;
+<span class='kw'>fn</span> Vec8f.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec8f) -&gt; Vec8f;
 </code></pre>
 <p>##### <code>Vec8f.mul(self, other)</code> Element-wise multiplication. AVX-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8f.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec8f) -> Vec8f;
+<span class='kw'>fn</span> Vec8f.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec8f) -&gt; Vec8f;
 </code></pre>
 <p>##### <code>Vec8f.get(self, index)</code> Extracts the value at lane <code>index</code> (0-7).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8f.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Float32</span>;
+<span class='kw'>fn</span> Vec8f.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Float32</span>;
 </code></pre>
 <p>##### <code>Vec8f.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-7) to <code>value</code>. Returns a new <code>Vec8f</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8f.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float32</span>) -> Vec8f;
+<span class='kw'>fn</span> Vec8f.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float32</span>) -&gt; Vec8f;
 </code></pre>
 <hr>
 <h3>Vec4d -- 4 x Float64</h3>
@@ -409,24 +410,24 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec4d.new(v0, v1, v2, v3)</code> Creates a new <code>Vec4d</code> from four scalar values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4d.<span class='func'>new</span>(v0: <span class='ty'>Float64</span>, v1: <span class='ty'>Float64</span>, v2: <span class='ty'>Float64</span>, v3: <span class='ty'>Float64</span>) -> Vec4d;
+<span class='kw'>fn</span> Vec4d.<span class='func'>new</span>(v0: <span class='ty'>Float64</span>, v1: <span class='ty'>Float64</span>, v2: <span class='ty'>Float64</span>, v3: <span class='ty'>Float64</span>) -&gt; Vec4d;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec4d.add(self, other)</code> Element-wise addition.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4d.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec4d) -> Vec4d;
+<span class='kw'>fn</span> Vec4d.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec4d) -&gt; Vec4d;
 </code></pre>
 <p>##### <code>Vec4d.mul(self, other)</code> Element-wise multiplication.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4d.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec4d) -> Vec4d;
+<span class='kw'>fn</span> Vec4d.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec4d) -&gt; Vec4d;
 </code></pre>
 <p>##### <code>Vec4d.get(self, index)</code> Extracts the value at lane <code>index</code> (0-3).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4d.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>fn</span> Vec4d.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <p>##### <code>Vec4d.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-3) to <code>value</code>. Returns a new <code>Vec4d</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec4d.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float64</span>) -> Vec4d;
+<span class='kw'>fn</span> Vec4d.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float64</span>) -&gt; Vec4d;
 </code></pre>
 <hr>
 <h3>Vec8i -- 8 x Int32</h3>
@@ -434,24 +435,24 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec8i.new(v0..v7)</code> Creates a new <code>Vec8i</code> from eight integer values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8i.<span class='func'>new</span>(v0: <span class='ty'>Int</span>, v1: <span class='ty'>Int</span>, v2: <span class='ty'>Int</span>, v3: <span class='ty'>Int</span>, v4: <span class='ty'>Int</span>, v5: <span class='ty'>Int</span>, v6: <span class='ty'>Int</span>, v7: <span class='ty'>Int</span>) -> Vec8i;
+<span class='kw'>fn</span> Vec8i.<span class='func'>new</span>(v0: <span class='ty'>Int</span>, v1: <span class='ty'>Int</span>, v2: <span class='ty'>Int</span>, v3: <span class='ty'>Int</span>, v4: <span class='ty'>Int</span>, v5: <span class='ty'>Int</span>, v6: <span class='ty'>Int</span>, v7: <span class='ty'>Int</span>) -&gt; Vec8i;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec8i.add(self, other)</code> Element-wise addition.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8i.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec8i) -> Vec8i;
+<span class='kw'>fn</span> Vec8i.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec8i) -&gt; Vec8i;
 </code></pre>
 <p>##### <code>Vec8i.sub(self, other)</code> Element-wise subtraction.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8i.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec8i) -> Vec8i;
+<span class='kw'>fn</span> Vec8i.<span class='func'>sub</span>(<span class='kw'>self</span>, other: Vec8i) -&gt; Vec8i;
 </code></pre>
 <p>##### <code>Vec8i.get(self, index)</code> Extracts the value at lane <code>index</code> (0-7).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8i.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Int</span>;
+<span class='kw'>fn</span> Vec8i.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span>;
 </code></pre>
 <p>##### <code>Vec8i.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-7) to <code>value</code>. Returns a new <code>Vec8i</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8i.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Int</span>) -> Vec8i;
+<span class='kw'>fn</span> Vec8i.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Int</span>) -&gt; Vec8i;
 </code></pre>
 <hr>
 <h2>512-bit Vector Types (AVX-512)</h2>
@@ -460,24 +461,24 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec16f.new(v0..v15)</code> Creates a new <code>Vec16f</code> from sixteen scalar values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16f.<span class='func'>new</span>(v0: <span class='ty'>Float32</span>, v1: <span class='ty'>Float32</span>, v2: <span class='ty'>Float32</span>, v3: <span class='ty'>Float32</span>, v4: <span class='ty'>Float32</span>, v5: <span class='ty'>Float32</span>, v6: <span class='ty'>Float32</span>, v7: <span class='ty'>Float32</span>, v8: <span class='ty'>Float32</span>, v9: <span class='ty'>Float32</span>, v10: <span class='ty'>Float32</span>, v11: <span class='ty'>Float32</span>, v12: <span class='ty'>Float32</span>, v13: <span class='ty'>Float32</span>, v14: <span class='ty'>Float32</span>, v15: <span class='ty'>Float32</span>) -> Vec16f;
+<span class='kw'>fn</span> Vec16f.<span class='func'>new</span>(v0: <span class='ty'>Float32</span>, v1: <span class='ty'>Float32</span>, v2: <span class='ty'>Float32</span>, v3: <span class='ty'>Float32</span>, v4: <span class='ty'>Float32</span>, v5: <span class='ty'>Float32</span>, v6: <span class='ty'>Float32</span>, v7: <span class='ty'>Float32</span>, v8: <span class='ty'>Float32</span>, v9: <span class='ty'>Float32</span>, v10: <span class='ty'>Float32</span>, v11: <span class='ty'>Float32</span>, v12: <span class='ty'>Float32</span>, v13: <span class='ty'>Float32</span>, v14: <span class='ty'>Float32</span>, v15: <span class='ty'>Float32</span>) -&gt; Vec16f;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec16f.add(self, other)</code> Element-wise addition. AVX-512-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16f.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec16f) -> Vec16f;
+<span class='kw'>fn</span> Vec16f.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec16f) -&gt; Vec16f;
 </code></pre>
 <p>##### <code>Vec16f.mul(self, other)</code> Element-wise multiplication. AVX-512-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16f.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec16f) -> Vec16f;
+<span class='kw'>fn</span> Vec16f.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec16f) -&gt; Vec16f;
 </code></pre>
 <p>##### <code>Vec16f.get(self, index)</code> Extracts the value at lane <code>index</code> (0-15).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16f.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Float32</span>;
+<span class='kw'>fn</span> Vec16f.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Float32</span>;
 </code></pre>
 <p>##### <code>Vec16f.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-15) to <code>value</code>. Returns a new <code>Vec16f</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec16f.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float32</span>) -> Vec16f;
+<span class='kw'>fn</span> Vec16f.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float32</span>) -&gt; Vec16f;
 </code></pre>
 <hr>
 <h3>Vec8d -- 8 x Float64</h3>
@@ -485,30 +486,30 @@
 <h4>Constructor</h4>
 <p>##### <code>Vec8d.new(v0..v7)</code> Creates a new <code>Vec8d</code> from eight scalar values.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8d.<span class='func'>new</span>(v0: <span class='ty'>Float64</span>, v1: <span class='ty'>Float64</span>, v2: <span class='ty'>Float64</span>, v3: <span class='ty'>Float64</span>, v4: <span class='ty'>Float64</span>, v5: <span class='ty'>Float64</span>, v6: <span class='ty'>Float64</span>, v7: <span class='ty'>Float64</span>) -> Vec8d;
+<span class='kw'>fn</span> Vec8d.<span class='func'>new</span>(v0: <span class='ty'>Float64</span>, v1: <span class='ty'>Float64</span>, v2: <span class='ty'>Float64</span>, v3: <span class='ty'>Float64</span>, v4: <span class='ty'>Float64</span>, v5: <span class='ty'>Float64</span>, v6: <span class='ty'>Float64</span>, v7: <span class='ty'>Float64</span>) -&gt; Vec8d;
 </code></pre>
 <h4>Operations</h4>
 <p>##### <code>Vec8d.add(self, other)</code> Element-wise addition. AVX-512-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8d.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec8d) -> Vec8d;
+<span class='kw'>fn</span> Vec8d.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec8d) -&gt; Vec8d;
 </code></pre>
 <p>##### <code>Vec8d.mul(self, other)</code> Element-wise multiplication. AVX-512-accelerated when available.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8d.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec8d) -> Vec8d;
+<span class='kw'>fn</span> Vec8d.<span class='func'>mul</span>(<span class='kw'>self</span>, other: Vec8d) -&gt; Vec8d;
 </code></pre>
 <p>##### <code>Vec8d.get(self, index)</code> Extracts the value at lane <code>index</code> (0-7).</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8d.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>fn</span> Vec8d.<span class='func'>get</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <p>##### <code>Vec8d.set(self, index, value)</code> Sets the value at lane <code>index</code> (0-7) to <code>value</code>. Returns a new <code>Vec8d</code>.</p>
 <pre><code>
-<span class='kw'>fn</span> Vec8d.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float64</span>) -> Vec8d;
+<span class='kw'>fn</span> Vec8d.<span class='func'>set</span>(<span class='kw'>self</span>, index: <span class='ty'>Int</span>, value: <span class='ty'>Float64</span>) -&gt; Vec8d;
 </code></pre>
 <hr>
 <h2>Contracts</h2>
 <p>All SIMD operations that call C FFI are guarded by contracts requiring that SIMD is supported on the target hardware:</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> Vec4f.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec4f) -> Vec4f
+<span class='kw'>pub</span> <span class='kw'>fn</span> Vec4f.<span class='func'>add</span>(<span class='kw'>self</span>, other: Vec4f) -&gt; Vec4f
   <span class='kw'>requires</span>: <span class='func'>simd_supported</span>()
 {
   <span class='cm'>// Hardware-accelerated via SSE/NEON</span>
@@ -529,8 +530,8 @@
 |  xiom_simd_f32x4_add, etc.       |
 |----------------------------------|
 |  simd_runtime.<span class='func'>c</span>(<span class='num'>402</span> lines)      |
-|  x86_64: <x86intrin.h> SSE/AVX   |
-|  ARM64:  <arm_neon.h> NEON       |
+|  x86_64: &lt;x86intrin.h&gt; SSE/AVX   |
+|  ARM64:  &lt;arm_neon.h&gt; NEON       |
 |  Scalar: portable C fallback     |
 |  CPUID feature detection         |
 `----------------------------------+
@@ -542,22 +543,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>

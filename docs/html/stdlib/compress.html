@@ -19,6 +19,7 @@
       <a href="https://xiom-lang.org/spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="https://xiom-lang.org/why.html">Why</a>
+      <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
       <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
@@ -113,8 +114,8 @@
 <p>The trait for types that can compress and decompress data.</p>
 <pre><code>
 <span class='kw'>pub</span> <span class='kw'>interface</span> Compressor {
-    <span class='kw'>fn</span> <span class='func'>compress</span>(<span class='kw'>self</span>, data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
-    <span class='kw'>fn</span> <span class='func'>decompress</span>(<span class='kw'>self</span>, data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+    <span class='kw'>fn</span> <span class='func'>compress</span>(<span class='kw'>self</span>, data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
+    <span class='kw'>fn</span> <span class='func'>decompress</span>(<span class='kw'>self</span>, data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 }
 </code></pre>
 <h3><code>Compressor.compress(self, data)</code></h3>
@@ -130,113 +131,113 @@
 <h3><code>GzipCompressor.new()</code></h3>
 <p>Creates a new <code>GzipCompressor</code> with default compression level.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> GzipCompressor.<span class='func'>new</span>() -> GzipCompressor;
+<span class='kw'>pub</span> <span class='kw'>fn</span> GzipCompressor.<span class='func'>new</span>() -&gt; GzipCompressor;
 </code></pre>
 <h3><code>GzipCompressor.with_level(level)</code></h3>
 <p>Creates a new <code>GzipCompressor</code> with a specific compression level (0-9).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> GzipCompressor.<span class='func'>with_level</span>(level: <span class='ty'>Int</span>) -> GzipCompressor;
+<span class='kw'>pub</span> <span class='kw'>fn</span> GzipCompressor.<span class='func'>with_level</span>(level: <span class='ty'>Int</span>) -&gt; GzipCompressor;
 </code></pre>
 <h3><code>gzip_compress(data)</code></h3>
 <p>Compresses data using gzip with default level.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>gzip_compress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>gzip_compress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>gzip_decompress(data)</code></h3>
 <p>Decompresses gzip-compressed data.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>gzip_decompress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>gzip_decompress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>gzip_compress_level(data, level)</code></h3>
 <p>Compresses data using gzip with a specific compression level (0-9).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>gzip_compress_level</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], level: <span class='ty'>Int</span>) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>gzip_compress_level</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], level: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h2>Deflate</h2>
 <h3><code>deflate_compress(data)</code></h3>
 <p>Compresses data using Deflate with default level.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>deflate_compress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>deflate_compress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>deflate_decompress(data)</code></h3>
 <p>Decompresses Deflate-compressed data.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>deflate_decompress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>deflate_decompress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>deflate_compress_level(data, level)</code></h3>
 <p>Compresses data using Deflate with a specific compression level.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>deflate_compress_level</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], level: <span class='ty'>Int</span>) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>deflate_compress_level</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], level: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h2>Zlib</h2>
 <h3><code>zlib_compress(data)</code></h3>
 <p>Compresses data using Zlib with default level.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>zlib_compress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>zlib_compress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>zlib_decompress(data)</code></h3>
 <p>Decompresses Zlib-compressed data.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>zlib_decompress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>zlib_decompress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>zlib_compress_level(data, level)</code></h3>
 <p>Compresses data using Zlib with a specific compression level.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>zlib_compress_level</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], level: <span class='ty'>Int</span>) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>zlib_compress_level</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], level: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h2>Brotli</h2>
 <h3><code>brotli_compress(data)</code></h3>
 <p>Compresses data using Brotli with default quality.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>brotli_compress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>brotli_compress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>brotli_decompress(data)</code></h3>
 <p>Decompresses Brotli-compressed data.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>brotli_decompress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>brotli_decompress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>brotli_compress_level(data, quality)</code></h3>
 <p>Compresses data using Brotli with a specific quality level (0-11).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>brotli_compress_level</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], quality: <span class='ty'>Int</span>) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>brotli_compress_level</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], quality: <span class='ty'>Int</span>) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h2>LZ4</h2>
 <h3><code>lz4_compress(data)</code></h3>
 <p>Compresses data using LZ4 (very fast, moderate compression ratio).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>lz4_compress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>lz4_compress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>lz4_decompress(data)</code></h3>
 <p>Decompresses LZ4-compressed data.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>lz4_decompress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>lz4_decompress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h2>Snappy</h2>
 <h3><code>snappy_compress(data)</code></h3>
 <p>Compresses data using Snappy (Google's fast compression algorithm).</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>snappy_compress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>snappy_compress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h3><code>snappy_decompress(data)</code></h3>
 <p>Decompresses Snappy-compressed data.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>snappy_decompress</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Result</span><<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>snappy_decompress</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Result</span>&lt;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>], <span class='ty'>Str</span>&gt;;
 </code></pre>
 <h2>Utility</h2>
 <h3><code>compression_ratio(original, compressed)</code></h3>
 <p>Calculates the compression ratio as <code>original / compressed</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>compression_ratio</span>(original: <span class='ty'>Int</span>, compressed: <span class='ty'>Int</span>) -> <span class='ty'>Float64</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>compression_ratio</span>(original: <span class='ty'>Int</span>, compressed: <span class='ty'>Int</span>) -&gt; <span class='ty'>Float64</span>;
 </code></pre>
 <h3><code>is_compressed(data)</code></h3>
 <p>Heuristically determines whether the data appears to be compressed.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>is_compressed</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Bool</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>is_compressed</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Bool</span>;
 </code></pre>
 <h3>`detect_format(data)|</h3>
 <p>Detects the compression format from the data's magic bytes. Returns <code>"gzip"</code>, <code>"zlib"</code>, <code>"brotli"</code>, or <code>"unknown"</code>.</p>
 <pre><code>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>detect_format</span>(data: &<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -> <span class='ty'>Str</span>;
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='func'>detect_format</span>(data: &amp;<span class='ty'>Vec</span>[<span class='ty'>UInt8</span>]) -&gt; <span class='ty'>Str</span>;
 </code></pre>
     </main>
 
@@ -245,22 +246,41 @@
 
 <footer>
   <div class="wrap">
-    <p>xiom latest - <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
-    <div class="legal">
-      <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <img src="../" alt="xiom">
+          xiom
+        </a>
+        <p>Dual-licensed <a href="https://xiom-lang.org/LICENSE-MIT" style="color:var(--signal);">MIT</a> or <a href="https://xiom-lang.org/LICENSE-APACHE" style="color:var(--signal);">Apache-2.0</a>, at your option.</p>
+        <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Language</h4>
+        <a href="https://xiom-lang.org/spec.html">Specification</a>
+        <a href="https://xiom-lang.org/why.html">Why XIOM</a>
+        <a href="https://xiom-lang.org/prior-art.html">Prior art</a>
+        <a href="https://xiom-lang.org/roadmap.html">Roadmap</a>
+        <a href="https://xiom-lang.org/history.html">History</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://docs.xiom-lang.org/">Documentation</a>
+        <a href="https://playground.xiom-lang.org">Playground</a>
+        <a href="https://registry.xiom-lang.org">Registry</a>
+        <a href="https://xiom-lang.org/versions.html">Versions</a>
+        <a href="https://xiom-lang.org/download.html">Download</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="https://github.com/xiom-lang">GitHub</a>
+        <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
+        <a href="https://xiom-lang.org/terms.html">Terms of Use</a>
+        <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
       <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors.</p>
-      <p>An independent project by <a href="https://github.com/Lefteris-Notas" style="color:var(--signal);">Lefteris Notas</a>.</p>
-      <p><a href="https://xiom-lang.org/terms.html" style="color:var(--signal);">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html" style="color:var(--signal);">Privacy Policy</a></p>
-    </div>
-    <div class="foot-links social">
-      <a href="https://github.com/xiom-lang">GitHub</a>
-      <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
-    </div>
-    <div class="foot-links">
-      <a href="https://xiom-lang.org/spec.html">Spec</a>
-      <a href="https://docs.xiom-lang.org/">Docs</a>
-      <a href="https://xiom-lang.org/ecosystem.html">Ecosystem</a>
-      <a href="https://xiom-lang.org/download.html">Download</a>
     </div>
   </div>
 </footer>
