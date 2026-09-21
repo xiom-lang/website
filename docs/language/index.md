@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 | [Error Handling](error-handling.md) | Result, Option, ? operator, match exhaustion |
 | [Modules](modules.md) | module/use/pub, visibility, packages, method declarations |
 | [Generics](generics.md) | Comptime monomorphisation, inline type constraints, interface bounds |
-| [Pattern Matching](pattern-matching.md) | match, if let, while let, destructuring |
+| [Pattern Matching](pattern-matching.md) | match, while let, destructuring, `is` tests |
 | [Derive](derive.md) | Compiler-generated Eq, Clone, Display, Hash, Ord |
 | [C FFI](ffi.md) | Zero-cost C interoperability, extern blocks, unsafe |
 | [Compiler](compiler.md) | Pipeline overview, CLI flags, build targets, WASM |

@@ -104,40 +104,40 @@
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Pattern Matching</h1>
-      <p>XIOM supports structural pattern matching on enums, tuples, and literals via <code>match</code>, <code>if let</code>, and <code>while let</code>.</p>
+      <p>XIOM supports structural pattern matching on enums, tuples, and literals via <code>match</code> and <code>while let</code>, plus the <code>is</code> test for variant checks without binding.</p>
 <hr>
 <h2><code>match</code> Expression</h2>
 <p>The <code>match</code> expression is the primary pattern matching construct. It must be exhaustive -- every variant must be covered.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> value {
-  <span class='kw'>Some</span>(v) =&gt; io.<span class='func'>println</span>(v);
-  <span class='kw'>None</span> =&gt; io.<span class='func'>println</span>(<span class='str'>nothing</span>);
+  <span class='kw'>Some</span>(v) =&gt; io.<span class='func'>println</span>(v),
+  <span class='kw'>None</span> =&gt; io.<span class='func'>println</span>(<span class='str'>nothing</span>),
 }
 </code></pre>
 <h3>Multi-line Arms with Braces</h3>
-<p>When an arm requires multiple statements, use braces:</p>
+<p>When an arm requires multiple statements, use braces. Block arms need no separator:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> <span class='kw'>result</span> {
   <span class='kw'>Ok</span>(data) =&gt; {
     <span class='func'>process</span>(data);
     <span class='kw'>return</span> data.<span class='func'>len</span>();
-  };
+  }
   <span class='kw'>Err</span>(e) =&gt; {
     io.<span class='func'>println</span>(<span class='str'>error: </span> + e.message);
     <span class='kw'>return</span> <span class='num'>0</span>;
-  };
+  }
 }
 </code></pre>
 <h3>Match on Integers</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>grade</span>(score: <span class='ty'>Int</span>) -&gt; <span class='ty'>Str</span> {
   <span class='kw'>match</span> score {
-    <span class='num'>0</span> | <span class='num'>1</span> | <span class='num'>2</span> =&gt; <span class='kw'>return</span> <span class='str'>F</span>;
-    <span class='num'>3</span> | <span class='num'>4</span> =&gt; <span class='kw'>return</span> <span class='str'>D</span>;
-    <span class='num'>5</span> | <span class='num'>6</span> =&gt; <span class='kw'>return</span> <span class='str'>C</span>;
-    <span class='num'>7</span> | <span class='num'>8</span> =&gt; <span class='kw'>return</span> <span class='str'>B</span>;
-    <span class='num'>9</span> | <span class='num'>10</span> =&gt; <span class='kw'>return</span> <span class='str'>A</span>;
-    _ =&gt; <span class='kw'>return</span> <span class='str'>invalid</span>;
+    <span class='num'>0</span> | <span class='num'>1</span> | <span class='num'>2</span> =&gt; { <span class='kw'>return</span> <span class='str'>F</span>; }
+    <span class='num'>3</span> | <span class='num'>4</span> =&gt; { <span class='kw'>return</span> <span class='str'>D</span>; }
+    <span class='num'>5</span> | <span class='num'>6</span> =&gt; { <span class='kw'>return</span> <span class='str'>C</span>; }
+    <span class='num'>7</span> | <span class='num'>8</span> =&gt; { <span class='kw'>return</span> <span class='str'>B</span>; }
+    <span class='num'>9</span> | <span class='num'>10</span> =&gt; { <span class='kw'>return</span> <span class='str'>A</span>; }
+    _ =&gt; { <span class='kw'>return</span> <span class='str'>invalid</span>; }
   }
 }
 </code></pre>
@@ -145,10 +145,10 @@
 <pre class="language-xiom"><code>
 <span class='kw'>fn</span> <span class='func'>command</span>(cmd: <span class='ty'>Str</span>) {
   <span class='kw'>match</span> cmd {
-    <span class='str'>start</span> =&gt; { io.<span class='func'>println</span>(<span class='str'>starting...</span>); };
-    <span class='str'>stop</span> =&gt; { io.<span class='func'>println</span>(<span class='str'>stopping...</span>); };
-    <span class='str'>restart</span> =&gt; { io.<span class='func'>println</span>(<span class='str'>restarting...</span>); };
-    _ =&gt; { io.<span class='func'>println</span>(<span class='str'>unknown command</span>); };
+    <span class='str'>start</span> =&gt; { io.<span class='func'>println</span>(<span class='str'>starting...</span>); }
+    <span class='str'>stop</span> =&gt; { io.<span class='func'>println</span>(<span class='str'>stopping...</span>); }
+    <span class='str'>restart</span> =&gt; { io.<span class='func'>println</span>(<span class='str'>restarting...</span>); }
+    _ =&gt; { io.<span class='func'>println</span>(<span class='str'>unknown command</span>); }
   }
 }
 </code></pre>
@@ -158,46 +158,46 @@
 <p>Match exact values: integers, strings, characters, booleans.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> x {
-  <span class='num'>0</span> =&gt; <span class='str'>zero</span>;
-  <span class='num'>1</span> =&gt; <span class='str'>one</span>;
-  _ =&gt; <span class='str'>other</span>;
+  <span class='num'>0</span> =&gt; <span class='str'>zero</span>,
+  <span class='num'>1</span> =&gt; <span class='str'>one</span>,
+  _ =&gt; <span class='str'>other</span>,
 }
 </code></pre>
 <h3>Enum Variant Patterns</h3>
 <p>Match enum constructors, optionally binding inner data.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> option {
-  <span class='kw'>Some</span>(v) =&gt; v;        <span class='cm'>// binds `v` to the inner value</span>
-  <span class='kw'>None</span> =&gt; default;
+  <span class='kw'>Some</span>(v) =&gt; v,        <span class='cm'>// binds `v` to the inner value</span>
+  <span class='kw'>None</span> =&gt; default,
 }
 </code></pre>
 <h3>Struct Patterns</h3>
 <p>Destructure structs by field:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> point {
-  <span class='ty'>Point</span>{x: <span class='num'>0</span>, y: <span class='num'>0</span>} =&gt; <span class='str'>origin</span>;
+  <span class='ty'>Point</span>{x: <span class='num'>0</span>, y: <span class='num'>0</span>} =&gt; <span class='str'>origin</span>,
   <span class='ty'>Point</span>{x, y} =&gt; {
     <span class='cm'>// x and y are bound to the fields</span>
     <span class='str'>somewhere</span>;
-  };
+  }
 }
 </code></pre>
 <h3>OR Patterns</h3>
 <p>Match any of several alternatives with <code>|</code>:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> code {
-  <span class='num'>200</span> | <span class='num'>201</span> | <span class='num'>204</span> =&gt; <span class='str'>success</span>;
-  <span class='num'>400</span> | <span class='num'>404</span> =&gt; <span class='str'>client error</span>;
-  <span class='num'>500</span> | <span class='num'>502</span> | <span class='num'>503</span> =&gt; <span class='str'>server error</span>;
-  _ =&gt; <span class='str'>unknown</span>;
+  <span class='num'>200</span> | <span class='num'>201</span> | <span class='num'>204</span> =&gt; <span class='str'>success</span>,
+  <span class='num'>400</span> | <span class='num'>404</span> =&gt; <span class='str'>client error</span>,
+  <span class='num'>500</span> | <span class='num'>502</span> | <span class='num'>503</span> =&gt; <span class='str'>server error</span>,
+  _ =&gt; <span class='str'>unknown</span>,
 }
 </code></pre>
 <h3>Wildcard Pattern <code>_</code></h3>
 <p>Matches anything, discarding the value:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> <span class='kw'>result</span> {
-  <span class='kw'>Ok</span>(v) =&gt; v;
-  _ =&gt; default;
+  <span class='kw'>Ok</span>(v) =&gt; v,
+  _ =&gt; default,
 }
 </code></pre>
 <h3>Binding Pattern <code>is</code></h3>
@@ -208,26 +208,26 @@
 }
 </code></pre>
 <hr>
-<h2><code>if let</code> -- Conditional Destructuring</h2>
-<p>Binds variables only if the pattern matches:</p>
+<h2>Conditional Handling Without <code>if let</code></h2>
+<p><code>if let</code> is not implemented by the current compiler. Two supported forms cover the same cases.</p>
+<p>Test the variant without binding:</p>
 <pre class="language-xiom"><code>
-<span class='kw'>if</span> <span class='kw'>let</span> <span class='kw'>Some</span>(v) = maybe_value {
-  <span class='cm'>// `v` <span class='kw'>is</span> bound here</span>
-  io.<span class='func'>println</span>(v);
+<span class='kw'>if</span> value <span class='kw'>is</span> <span class='kw'>Some</span> {
+  io.<span class='func'>println</span>(<span class='str'>value <span class='kw'>is</span> <span class='kw'>Some</span></span>);
 }
 </code></pre>
-<p>With else branch:</p>
+<p>Bind with <code>match</code>:</p>
 <pre class="language-xiom"><code>
-<span class='kw'>if</span> <span class='kw'>let</span> <span class='kw'>Some</span>(user) = <span class='func'>find_user</span>(id) {
-  io.<span class='func'>println</span>(<span class='str'>Found: </span> + user.name);
-} <span class='kw'>else</span> {
-  io.<span class='func'>println</span>(<span class='str'>User not found</span>);
+<span class='kw'>match</span> <span class='func'>find_user</span>(id) {
+  <span class='kw'>Some</span>(user) =&gt; io.<span class='func'>println</span>(<span class='str'>Found: </span> + user.name),
+  <span class='kw'>None</span> =&gt; io.<span class='func'>println</span>(<span class='str'>User not found</span>),
 }
 </code></pre>
-<p>Nested patterns:</p>
+<p>Nested patterns work the same way in <code>match</code>:</p>
 <pre class="language-xiom"><code>
-<span class='kw'>if</span> <span class='kw'>let</span> <span class='kw'>Ok</span>(<span class='kw'>Some</span>(data)) = <span class='func'>parse_and_lookup</span>() {
-  <span class='func'>process</span>(data);
+<span class='kw'>match</span> <span class='func'>parse_and_lookup</span>() {
+  <span class='kw'>Ok</span>(<span class='kw'>Some</span>(data)) =&gt; <span class='func'>process</span>(data),
+  _ =&gt; {},
 }
 </code></pre>
 <hr>
@@ -254,8 +254,8 @@
 
 <span class='cm'>// Expands to:</span>
 <span class='kw'>let</span> file = <span class='kw'>match</span> io.<span class='func'>read_file</span>(path) {
-  <span class='kw'>Ok</span>(f) =&gt; f;
-  <span class='kw'>Err</span>(e) =&gt; <span class='kw'>return</span> <span class='kw'>Err</span>(e.<span class='func'>into</span>());
+  <span class='kw'>Ok</span>(f) =&gt; f,
+  <span class='kw'>Err</span>(e) =&gt; <span class='kw'>return</span> <span class='kw'>Err</span>(e.<span class='func'>into</span>()),
 };
 </code></pre>
 <p>Works with both <code>Result</code> and <code>Option</code>:</p>
@@ -271,16 +271,16 @@
 <pre class="language-xiom"><code>
 <span class='cm'>// ERROR: missing Pattern Green</span>
 <span class='kw'>match</span> color {
-  Color.Red =&gt; { ... };
-  Color.Blue =&gt; { ... };
+  Color.Red =&gt; { ... }
+  Color.Blue =&gt; { ... }
   <span class='cm'>// Color.Green <span class='kw'>is</span> not covered!</span>
 }
 </code></pre>
 <p>Use <code>_</code> as a catch-all to satisfy exhaustiveness:</p>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> color {
-  Color.Red =&gt; { ... };
-  _ =&gt; { ... };          <span class='cm'>// catches remaining variants</span>
+  Color.Red =&gt; { ... }
+  _ =&gt; { ... }          <span class='cm'>// catches remaining variants</span>
 }
 </code></pre>
 <hr>
@@ -291,9 +291,9 @@
   <span class='kw'>Some</span>(v) =&gt; {
     <span class='kw'>if</span> v &gt; <span class='num'>0</span> {
       <span class='cm'>// guarded logic here</span>
-    };
-  };
-  <span class='kw'>None</span> =&gt; {};
+    }
+  }
+  <span class='kw'>None</span> =&gt; {}
 }
 </code></pre>
 <hr>

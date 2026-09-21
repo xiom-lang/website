@@ -152,8 +152,8 @@ if x > 0 {
 
 ```xiom
 match value {
-  Some(v) => io.println(v);
-  None => io.println("nothing");
+  Some(v) => io.println(v),
+  None => io.println("nothing"),
 }
 ```
 
@@ -164,20 +164,21 @@ match result {
   Ok(data) => {
     process(data);
     return data;
-  };
+  }
   Err(e) => {
     io.println(e.message);
     return defaultValue;
-  };
+  }
 }
 ```
 
-### `if let` / `while let`
+### `while let`
 
 ```xiom
-if let Some(v) = maybe_val { use(v); }
 while let Some(item) = iter.next() { process(item); }
 ```
+
+`if let` is not implemented by the current compiler. Use `match`, or test a variant with `if value is Variant` when no binding is needed.
 
 ### `while` loop
 
@@ -214,6 +215,19 @@ while i < 100 {
   if i % 2 == 0 { continue; };
   if i > 50 { break; };
   io.println(i);
+}
+```
+
+Loops can carry a label; `break @label;` and `continue @label;` target the labeled loop instead of the innermost one:
+
+```xiom
+@outer: while i < 10 {
+  var j = 0;
+  while j < 10 {
+    j = j + 1;
+    if j > 5 { break @outer; }
+  }
+  i = i + 1;
 }
 ```
 

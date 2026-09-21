@@ -321,6 +321,24 @@ Remaining:
     `compiler.md` "Since" column, and the `index.md` milestones table now
     point at History/Versions. MkDocs code chrome restyled; mobile pass on
     nav, footer and code sizing.
+12. **Syntax audit against the compiler (done 2026-09-21)**: every documented
+    construct was type-checked with the local compiler build (v0.61.0,
+    `--check`, 80+ probes). Verified and now documented: labeled loops
+    (`@label:`, `break @label;`), `loop`, compound assignment, `defer`,
+    `const` declarations and blocks, `unsafe`/`asm` rules, `while let`,
+    `is` tests, `@pre`, never type, `as` casts, `Float128`
+    conversion-only, and 128-bit integer literals. Corrections landed:
+    `if let` is NOT implemented (guides and AI_CONTEXT now say so and show
+    `match` / `if value is Variant`), there is no range expression, the
+    `Byte` alias is not accepted by the compiler (use `UInt8`), `\u{...}`
+    is a string-only escape (`'\u{1F600}'` is a lexer error), statements
+    require semicolons (AI_CONTEXT 2.1 examples fixed), match arms
+    canonically end with `,` (block arms need no separator), and turbofish
+    compiles but is not canonical. `check_syntax.py` gained rules for
+    `if let` and the `Byte` type name, and its turbofish message now says
+    "accepted but not canonical". Compiler-lane discrepancies to report:
+    the spec's `Byte` alias is not implemented, and `if let` appears in the
+    spec/older material only.
 
 ## Rules
 
@@ -371,7 +389,11 @@ not unique to XIOM). The snippet syntax lint is live in `docs.yml`
 (`docs/check_syntax.py`) and the current corpus is clean. The UI/UX pass
 landed on 2026-09-21: rebuilt footer and Prior art nav item across the site
 and the generated docs, a new History page, styled code blocks, and version
-teaching removed from the user guides.
+teaching removed from the user guides. All guide syntax was audited against
+a local v0.61.0 compiler build on 2026-09-21 (see item 12): `if let`, range
+expressions and the `Byte` alias are not implemented and the docs no longer
+claim them; labeled loops, `loop`, `defer`, `const` blocks, `while let` and
+the numeric widths/casts are now documented and probe-verified.
 
 Next, in order:
 1. Draft "XIOM for game developers" once the owner provides engine facts
@@ -384,6 +406,12 @@ Next, in order:
 3. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
+4. Incoming peer requests (owner decision, not started): the registry session
+   asks for an "Editor support" block on the install page (xiom-lsp/xiom-dbg
+   ship in the archives, VS Code Marketplace/Open VSX links once published,
+   editors/README.md matrix for other editors, toolchain-first prerequisite);
+   the .github session asks for a Contributing hub page plus nav/footer links
+   and a docs/contributing.md, committed with `git commit -s` (DCO check).
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS installer support

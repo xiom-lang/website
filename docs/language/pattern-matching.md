@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 # Pattern Matching
 
-XIOM supports structural pattern matching on enums, tuples, and literals via `match`, `if let`, and `while let`.
+XIOM supports structural pattern matching on enums, tuples, and literals via `match` and `while let`, plus the `is` test for variant checks without binding.
 
 ---
 
@@ -14,25 +14,25 @@ The `match` expression is the primary pattern matching construct. It must be exh
 
 ```xiom
 match value {
-  Some(v) => io.println(v);
-  None => io.println("nothing");
+  Some(v) => io.println(v),
+  None => io.println("nothing"),
 }
 ```
 
 ### Multi-line Arms with Braces
 
-When an arm requires multiple statements, use braces:
+When an arm requires multiple statements, use braces. Block arms need no separator:
 
 ```xiom
 match result {
   Ok(data) => {
     process(data);
     return data.len();
-  };
+  }
   Err(e) => {
     io.println("error: " + e.message);
     return 0;
-  };
+  }
 }
 ```
 
@@ -41,12 +41,12 @@ match result {
 ```xiom
 fn grade(score: Int) -> Str {
   match score {
-    0 | 1 | 2 => return "F";
-    3 | 4 => return "D";
-    5 | 6 => return "C";
-    7 | 8 => return "B";
-    9 | 10 => return "A";
-    _ => return "invalid";
+    0 | 1 | 2 => { return "F"; }
+    3 | 4 => { return "D"; }
+    5 | 6 => { return "C"; }
+    7 | 8 => { return "B"; }
+    9 | 10 => { return "A"; }
+    _ => { return "invalid"; }
   }
 }
 ```
@@ -56,10 +56,10 @@ fn grade(score: Int) -> Str {
 ```xiom
 fn command(cmd: Str) {
   match cmd {
-    "start" => { io.println("starting..."); };
-    "stop" => { io.println("stopping..."); };
-    "restart" => { io.println("restarting..."); };
-    _ => { io.println("unknown command"); };
+    "start" => { io.println("starting..."); }
+    "stop" => { io.println("stopping..."); }
+    "restart" => { io.println("restarting..."); }
+    _ => { io.println("unknown command"); }
   }
 }
 ```
@@ -74,9 +74,9 @@ Match exact values: integers, strings, characters, booleans.
 
 ```xiom
 match x {
-  0 => "zero";
-  1 => "one";
-  _ => "other";
+  0 => "zero",
+  1 => "one",
+  _ => "other",
 }
 ```
 
@@ -86,8 +86,8 @@ Match enum constructors, optionally binding inner data.
 
 ```xiom
 match option {
-  Some(v) => v;        // binds `v` to the inner value
-  None => default;
+  Some(v) => v,        // binds `v` to the inner value
+  None => default,
 }
 ```
 
@@ -97,11 +97,11 @@ Destructure structs by field:
 
 ```xiom
 match point {
-  Point{x: 0, y: 0} => "origin";
+  Point{x: 0, y: 0} => "origin",
   Point{x, y} => {
     // x and y are bound to the fields
     "somewhere";
-  };
+  }
 }
 ```
 
@@ -111,10 +111,10 @@ Match any of several alternatives with `|`:
 
 ```xiom
 match code {
-  200 | 201 | 204 => "success";
-  400 | 404 => "client error";
-  500 | 502 | 503 => "server error";
-  _ => "unknown";
+  200 | 201 | 204 => "success",
+  400 | 404 => "client error",
+  500 | 502 | 503 => "server error",
+  _ => "unknown",
 }
 ```
 
@@ -124,8 +124,8 @@ Matches anything, discarding the value:
 
 ```xiom
 match result {
-  Ok(v) => v;
-  _ => default;
+  Ok(v) => v,
+  _ => default,
 }
 ```
 
@@ -141,32 +141,33 @@ if value is Some {
 
 ---
 
-## `if let` -- Conditional Destructuring
+## Conditional Handling Without `if let`
 
-Binds variables only if the pattern matches:
+`if let` is not implemented by the current compiler. Two supported forms cover the same cases.
+
+Test the variant without binding:
 
 ```xiom
-if let Some(v) = maybe_value {
-  // `v` is bound here
-  io.println(v);
+if value is Some {
+  io.println("value is Some");
 }
 ```
 
-With else branch:
+Bind with `match`:
 
 ```xiom
-if let Some(user) = find_user(id) {
-  io.println("Found: " + user.name);
-} else {
-  io.println("User not found");
+match find_user(id) {
+  Some(user) => io.println("Found: " + user.name),
+  None => io.println("User not found"),
 }
 ```
 
-Nested patterns:
+Nested patterns work the same way in `match`:
 
 ```xiom
-if let Ok(Some(data)) = parse_and_lookup() {
-  process(data);
+match parse_and_lookup() {
+  Ok(Some(data)) => process(data),
+  _ => {},
 }
 ```
 
@@ -203,8 +204,8 @@ let file = io.read_file(path)?;
 
 // Expands to:
 let file = match io.read_file(path) {
-  Ok(f) => f;
-  Err(e) => return Err(e.into());
+  Ok(f) => f,
+  Err(e) => return Err(e.into()),
 };
 ```
 
@@ -226,8 +227,8 @@ The compiler checks that `match` expressions cover all possible cases. If a vari
 ```xiom
 // ERROR: missing Pattern Green
 match color {
-  Color.Red => { ... };
-  Color.Blue => { ... };
+  Color.Red => { ... }
+  Color.Blue => { ... }
   // Color.Green is not covered!
 }
 ```
@@ -236,8 +237,8 @@ Use `_` as a catch-all to satisfy exhaustiveness:
 
 ```xiom
 match color {
-  Color.Red => { ... };
-  _ => { ... };          // catches remaining variants
+  Color.Red => { ... }
+  _ => { ... }          // catches remaining variants
 }
 ```
 
@@ -252,9 +253,9 @@ match value {
   Some(v) => {
     if v > 0 {
       // guarded logic here
-    };
-  };
-  None => {};
+    }
+  }
+  None => {}
 }
 ```
 

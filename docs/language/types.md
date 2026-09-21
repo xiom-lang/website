@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 | `Int64` | 64 bits | Signed double word. |
 | `Int128` | 128 bits | Signed 128-bit integer. Integer literals beyond 64 bits are supported. |
 | `UInt` | Platform (64-bit) | Unsigned. Use for sizes and indices. |
-| `UInt8` | 8 bits | Byte. Alias: `Byte`. |
+| `UInt8` | 8 bits | Unsigned byte. Use `UInt8` in source: the `Byte` alias name is not accepted by the current compiler. |
 | `UInt16` | 16 bits | |
 | `UInt32` | 32 bits | |
 | `UInt64` | 64 bits | |
@@ -51,6 +51,21 @@ let f = 3.14;        // inferred: Float64
 let s = "hello";     // inferred: Str
 let v = [1, 2, 3];   // inferred: Vec[Int]
 let t = (1, true);   // inferred: (Int, Bool)
+```
+
+## Numeric Literals and Casts
+
+- An integer literal binds to an annotated built-in integer width: `let x: Int8 = 1;`, `let n: UInt = 100;` and `let b: UInt8 = 1;` are all valid.
+- Integer literals beyond 64 bits are supported with `Int128` and `UInt128`.
+- Mixing `Int` and `Float64` in arithmetic, comparisons or typed bindings requires an explicit `as`. An integer literal alone may adopt the float type: `1 + 2.5` is valid.
+- Same-family widening is automatic (`Int8 + Int` becomes `Int`, `Float32 + Float64` becomes `Float64`); narrowing always needs `as`: `1 as Int8`, `200 as UInt8`.
+- `Float128` has no literal form. Produce it by conversion: `let q = 1.0 as Float128;`. Binding a plain `Float64` value to `Float128` is a compile error.
+
+```xiom
+let a: Int8 = 1;              // integer literal adopts the annotated width
+let n = 1 as Float64 + 2.5;   // explicit mixed-family conversion
+let q = 1.0 as Float128;      // Float128 comes from conversion only
+let b: UInt8 = 200;           // UInt8 accepts a literal in range
 ```
 
 ## Structs

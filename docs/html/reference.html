@@ -304,8 +304,8 @@
 <h3><code>match</code> -- Pattern matching</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>match</span> value {
-  <span class='kw'>Some</span>(v) =&gt; io.<span class='func'>println</span>(v);
-  <span class='kw'>None</span> =&gt; io.<span class='func'>println</span>(<span class='str'>nothing</span>);
+  <span class='kw'>Some</span>(v) =&gt; io.<span class='func'>println</span>(v),
+  <span class='kw'>None</span> =&gt; io.<span class='func'>println</span>(<span class='str'>nothing</span>),
 }
 </code></pre>
 <p>Multi-line arms use braces:</p>
@@ -314,18 +314,18 @@
   <span class='kw'>Ok</span>(data) =&gt; {
     <span class='func'>process</span>(data);
     <span class='kw'>return</span> data;
-  };
+  }
   <span class='kw'>Err</span>(e) =&gt; {
     io.<span class='func'>println</span>(e.message);
     <span class='kw'>return</span> defaultValue;
-  };
+  }
 }
 </code></pre>
-<h3><code>if let</code> / <code>while let</code></h3>
+<h3><code>while let</code></h3>
 <pre class="language-xiom"><code>
-<span class='kw'>if</span> <span class='kw'>let</span> <span class='kw'>Some</span>(v) = maybe_val { <span class='func'><span class='kw'>use</span></span>(v); }
 <span class='kw'>while</span> <span class='kw'>let</span> <span class='kw'>Some</span>(item) = iter.<span class='func'>next</span>() { <span class='func'>process</span>(item); }
 </code></pre>
+<p><code>if let</code> is not implemented by the current compiler. Use <code>match</code>, or test a variant with <code>if value is Variant</code> when no binding is needed.</p>
 <h3><code>while</code> loop</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>var</span> i = <span class='num'>0</span>;
@@ -354,6 +354,17 @@ loop {
   <span class='kw'>if</span> i % <span class='num'>2</span> == <span class='num'>0</span> { continue; };
   <span class='kw'>if</span> i &gt; <span class='num'>50</span> { break; };
   io.<span class='func'>println</span>(i);
+}
+</code></pre>
+<p>Loops can carry a label; <code>break @label;</code> and <code>continue @label;</code> target the labeled loop instead of the innermost one:</p>
+<pre class="language-xiom"><code>
+@outer: <span class='kw'>while</span> i &lt; <span class='num'>10</span> {
+  <span class='kw'>var</span> j = <span class='num'>0</span>;
+  <span class='kw'>while</span> j &lt; <span class='num'>10</span> {
+    j = j + <span class='num'>1</span>;
+    <span class='kw'>if</span> j &gt; <span class='num'>5</span> { break @outer; }
+  }
+  i = i + <span class='num'>1</span>;
 }
 </code></pre>
 <hr>

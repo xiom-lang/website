@@ -91,11 +91,44 @@ while count > 0 {
 }
 ```
 
+### While Let
+
+`while let` repeats while a pattern matches. `if let` is not implemented; use `match` or `if value is Variant` instead.
+
+```xiom
+var iter = make_iterator();
+while let Some(item) = iter.next() {
+  process(item);
+}
+```
+
 ### For
 
 ```xiom
 for item in items {
   process(item);
+}
+```
+
+Iteration works over arrays and `Vec[T]` values. There is no range expression: iterate the collection, or use a counter with `while`.
+
+### Loop, Break, Continue
+
+`loop { ... }` repeats until a `break`. A label targets an outer loop.
+
+```xiom
+loop {
+  if done { break; }
+}
+
+@outer: while i < 10 {
+  var j = 0;
+  while j < 10 {
+    j = j + 1;
+    if j > 5 { break @outer; }       // exits the OUTER loop
+    if j == 2 { continue @outer; }   // continues the OUTER loop
+  }
+  i = i + 1;
 }
 ```
 
@@ -117,7 +150,7 @@ match state {
 
 - Every `match` must cover all cases. Non-exhaustive matches are compile errors.
 - Use `_` as a wildcard to cover remaining cases.
-- Match arms can be blocks or expressions.
+- Single-expression arms end with `,`; block arms need no separator.
 
 ## Expressions
 
@@ -129,16 +162,20 @@ match state {
 3.14            // Float64
 true | false    // Bool
 "hello"         // Str
-'A'             // Char
-\n \t \\ \"     // Escape sequences
-\u{1F600}       // Unicode codepoint
+'A'             // Char -- single quotes, one Unicode scalar value
+"line\nnext"    // Str escapes: \n  \t  \\  \"  \u{...}
+"\u{1F600}"     // Unicode codepoint escape (Str only)
 ```
+
+`\n`, `\t`, `\\` and `\"` work in both strings and character literals. `\u{...}` is a string-only escape: `'\u{1F600}'` is a lexer error, so write the codepoint as a string when needed.
 
 ### Arithmetic
 
 ```xiom
 a + b   a - b   a * b   a / b   a % b
 -a      // negation
+
+x += 1;   x -= 2;   x *= 3;   x /= 4;   x %= 5;   // compound assignment
 ```
 
 ### Comparison
@@ -212,7 +249,7 @@ Ok(value)
 Err(error)
 
 // Await (async)
-await fetch(url)
+await fetch(url);
 
 // Comptime evaluation
 comptime expensive_computation()
@@ -222,6 +259,28 @@ x is Some
 
 // Pre-state reference (in contracts)
 items.len()@pre
+
+// Compile-time constant block and constant declaration
+const { 40 + 2 }
+const LIMIT: Int = 10;
+
+// defer -- runs when the enclosing scope exits
+defer { cleanup(); }
+defer io.println("done");
+
+// Never type -- a diverging function body
+fn abort() -> ! { loop { } }
+
+// Unsafe -- confined block; required for asm and raw pointer operations
+unsafe { asm("nop"); }
+
+// Debug intrinsics -- release builds strip them; --keep-debug-checks retains
+assert(condition);
+assert(condition, "message");
+let checked = dbg!(expression);
+todo!();
+unimplemented!();
+debugger;
 ```
 
 ## Operators (Precedence)
@@ -252,8 +311,8 @@ items.len()@pre
 
 ```
 let  var  const  fn  return
-if  elif  else  match  while  for  in
-spawn  async  await  comptime
+if  elif  else  match  while  for  in  loop  break  continue
+spawn  async  await  comptime  defer  asm  move
 module  use  pub  as
 type  enum  interface  derive
 requires  ensures  invariant

@@ -97,6 +97,14 @@ unsafe {
 
 The `unsafe` keyword is a declaration that the programmer takes responsibility for memory safety inside that scope. Unsafe blocks are visible in code review and audits. They cannot be hidden.
 
+Three rules matter when writing them:
+
+- Inline assembly (`asm("...")`) is only allowed inside an `unsafe` block.
+- A function whose entire body is a single `unsafe` block must declare `requires:` (the pre-entry contract); the compiler rejects it otherwise.
+- Safe functions cannot return a raw pointer (`*T`), and calling an `extern "C"` function from safe code is an error unless that function declares contracts.
+
+The [compiler guide](compiler.md) lists the full confinement model and the [C FFI guide](ffi.md) shows the sanctioned wrapper patterns.
+
 ## Differences from Rust
 
 | | XIOM | Rust |

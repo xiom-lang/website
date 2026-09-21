@@ -182,10 +182,36 @@
   count = count - <span class='num'>1</span>;
 }
 </code></pre>
+<h3>While Let</h3>
+<p><code>while let</code> repeats while a pattern matches. <code>if let</code> is not implemented; use <code>match</code> or <code>if value is Variant</code> instead.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>var</span> iter = <span class='func'>make_iterator</span>();
+<span class='kw'>while</span> <span class='kw'>let</span> <span class='kw'>Some</span>(item) = iter.<span class='func'>next</span>() {
+  <span class='func'>process</span>(item);
+}
+</code></pre>
 <h3>For</h3>
 <pre class="language-xiom"><code>
 <span class='kw'>for</span> item <span class='kw'>in</span> items {
   <span class='func'>process</span>(item);
+}
+</code></pre>
+<p>Iteration works over arrays and <code>Vec[T]</code> values. There is no range expression: iterate the collection, or use a counter with <code>while</code>.</p>
+<h3>Loop, Break, Continue</h3>
+<p><code>loop { ... }</code> repeats until a <code>break</code>. A label targets an outer loop.</p>
+<pre class="language-xiom"><code>
+loop {
+  <span class='kw'>if</span> done { break; }
+}
+
+@outer: <span class='kw'>while</span> i &lt; <span class='num'>10</span> {
+  <span class='kw'>var</span> j = <span class='num'>0</span>;
+  <span class='kw'>while</span> j &lt; <span class='num'>10</span> {
+    j = j + <span class='num'>1</span>;
+    <span class='kw'>if</span> j &gt; <span class='num'>5</span> { break @outer; }       <span class='cm'>// exits the OUTER loop</span>
+    <span class='kw'>if</span> j == <span class='num'>2</span> { continue @outer; }   <span class='cm'>// continues the OUTER loop</span>
+  }
+  i = i + <span class='num'>1</span>;
 }
 </code></pre>
 <h3>Match</h3>
@@ -205,7 +231,7 @@
 <ul>
 <li>Every <code>match</code> must cover all cases. Non-exhaustive matches are compile errors.</li>
 <li>Use <code>_</code> as a wildcard to cover remaining cases.</li>
-<li>Match arms can be blocks or expressions.</li>
+<li>Single-expression arms end with <code>,</code>; block arms need no separator.</li>
 </ul>
 <h2>Expressions</h2>
 <h3>Literals</h3>
@@ -215,14 +241,17 @@
 <span class='num'>3.14</span>            <span class='cm'>// <span class='ty'>Float64</span></span>
 <span class='kw'>true</span> | <span class='kw'>false</span>    <span class='cm'>// <span class='ty'>Bool</span></span>
 <span class='str'>hello</span>         <span class='cm'>// <span class='ty'>Str</span></span>
-'A'             <span class='cm'>// <span class='ty'>Char</span></span>
-\n \t \\ \"     <span class='cm'>// Escape sequences</span>
-\u{1F600}       <span class='cm'>// Unicode codepoint</span>
+'A'             <span class='cm'>// <span class='ty'>Char</span> -- single quotes, one Unicode scalar value</span>
+<span class='str'>line\nnext</span>    <span class='cm'>// <span class='ty'>Str</span> escapes: \n  \t  \\  \"  \u{...}</span>
+<span class='str'>\u{1F600}</span>     <span class='cm'>// Unicode codepoint <span class='func'>escape</span>(<span class='ty'>Str</span> only)</span>
 </code></pre>
+<p><code>\n</code>, <code>\t</code>, <code>\\</code> and <code>\"</code> work in both strings and character literals. <code>\u{...}</code> is a string-only escape: <code>'\u{1F600}'</code> is a lexer error, so write the codepoint as a string when needed.</p>
 <h3>Arithmetic</h3>
 <pre class="language-xiom"><code>
 a + b   a - b   a * b   a / b   a % b
 -a      <span class='cm'>// negation</span>
+
+x += <span class='num'>1</span>;   x -= <span class='num'>2</span>;   x *= <span class='num'>3</span>;   x /= <span class='num'>4</span>;   x %= <span class='num'>5</span>;   <span class='cm'>// compound assignment</span>
 </code></pre>
 <h3>Comparison</h3>
 <pre class="language-xiom"><code>
@@ -280,7 +309,7 @@ a || b      <span class='cm'>// or</span>
 <span class='kw'>Err</span>(error)
 
 <span class='cm'>// Await (<span class='kw'>async</span>)</span>
-<span class='kw'>await</span> <span class='func'>fetch</span>(url)
+<span class='kw'>await</span> <span class='func'>fetch</span>(url);
 
 <span class='cm'>// Comptime evaluation</span>
 <span class='kw'>comptime</span> <span class='func'>expensive_computation</span>()
@@ -290,6 +319,28 @@ x <span class='kw'>is</span> <span class='kw'>Some</span>
 
 <span class='cm'>// Pre-state <span class='func'>reference</span>(<span class='kw'>in</span> contracts)</span>
 items.<span class='func'>len</span>()@pre
+
+<span class='cm'>// Compile-time constant block and constant declaration</span>
+<span class='kw'>const</span> { <span class='num'>40</span> + <span class='num'>2</span> }
+<span class='kw'>const</span> LIMIT: <span class='ty'>Int</span> = <span class='num'>10</span>;
+
+<span class='cm'>// defer -- runs when the enclosing scope exits</span>
+defer { <span class='func'>cleanup</span>(); }
+defer io.<span class='func'>println</span>(<span class='str'>done</span>);
+
+<span class='cm'>// Never <span class='kw'>type</span> -- a diverging function body</span>
+<span class='kw'>fn</span> <span class='func'>abort</span>() -&gt; ! { loop { } }
+
+<span class='cm'>// Unsafe -- confined block; required <span class='kw'>for</span> asm and raw pointer operations</span>
+<span class='kw'>unsafe</span> { <span class='func'>asm</span>(<span class='str'>nop</span>); }
+
+<span class='cm'>// Debug intrinsics -- release builds strip them; --keep-debug-checks retains</span>
+<span class='func'>assert</span>(condition);
+<span class='func'>assert</span>(condition, <span class='str'>message</span>);
+<span class='kw'>let</span> checked = dbg!(expression);
+todo!();
+unimplemented!();
+debugger;
 </code></pre>
 <h2>Operators (Precedence)</h2>
 <table>
@@ -350,8 +401,8 @@ items.<span class='func'>len</span>()@pre
 <h2>Keywords</h2>
 <pre><code>
 <span class='kw'>let</span>  <span class='kw'>var</span>  <span class='kw'>const</span>  <span class='kw'>fn</span>  <span class='kw'>return</span>
-<span class='kw'>if</span>  <span class='kw'>elif</span>  <span class='kw'>else</span>  <span class='kw'>match</span>  <span class='kw'>while</span>  <span class='kw'>for</span>  <span class='kw'>in</span>
-<span class='kw'>spawn</span>  <span class='kw'>async</span>  <span class='kw'>await</span>  <span class='kw'>comptime</span>
+<span class='kw'>if</span>  <span class='kw'>elif</span>  <span class='kw'>else</span>  <span class='kw'>match</span>  <span class='kw'>while</span>  <span class='kw'>for</span>  <span class='kw'>in</span>  loop  break  continue
+<span class='kw'>spawn</span>  <span class='kw'>async</span>  <span class='kw'>await</span>  <span class='kw'>comptime</span>  defer  asm  move
 <span class='kw'>module</span>  <span class='kw'>use</span>  <span class='kw'>pub</span>  <span class='kw'>as</span>
 <span class='kw'>type</span>  <span class='kw'>enum</span>  <span class='kw'>interface</span>  <span class='kw'>derive</span>
 <span class='kw'>requires</span>  <span class='kw'>ensures</span>  <span class='kw'>invariant</span>

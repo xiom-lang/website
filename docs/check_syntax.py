@@ -10,7 +10,10 @@ the hand-written site pages:
   1. Contract clauses use a colon -- `requires:`, `ensures:`, `invariant:`.
   2. `use` declarations end with a semicolon.
   3. Generics use square brackets -- `Vec[Int]`, `fn max[T: Ord]` -- never
-     angle brackets such as `Vec<Int>` or `fn max<T>`.
+     angle brackets such as `Vec<Int>` or `fn max<T>`. Turbofish compiles
+     but is not canonical, so it is reported too.
+  4. Syntax the compiler does not implement: `if let` (use `match` or
+     `if value is Variant`) and the `Byte` type name (use `UInt8`).
 
 Usage:
   python docs/check_syntax.py docs/language docs/AI_CONTEXT.md xiom-website
@@ -36,6 +39,11 @@ USE_RE = re.compile(r"^(?:pub\s+)?use\s+\S")
 # (`parse::<Int>`) is the same drift and gets a clearer message.
 ANGLE_RE = re.compile(r"<[A-Z][A-Za-z0-9_]*(?:\s*,\s*[A-Z][A-Za-z0-9_]*)*>")
 TURBOFISH_RE = re.compile(r"::\s*<")
+
+# Rule 4 -- syntax the compiler does not implement. `if let` is documented
+# nowhere, but older material used it; Byte is not accepted as a type name.
+IF_LET_RE = re.compile(r"\bif\s+let\b")
+BYTE_TYPE_RE = re.compile(r"(?::\s*Byte\b|\bas\s+Byte\b)")
 
 # A block may opt out with a `syntax-lint: allow` marker in its first lines
 # (for deliberate counter-examples in documentation).
@@ -108,7 +116,7 @@ def check_block(text):
             findings.append(
                 (
                     offset,
-                    "turbofish is not XIOM syntax (use name[Type], "
+                    "turbofish is accepted but not canonical (write name[Type], "
                     "for example parse[Int])",
                 )
             )
@@ -121,6 +129,17 @@ def check_block(text):
                         "(use square brackets)".format(match.group(0)),
                     )
                 )
+        if IF_LET_RE.search(code):
+            findings.append(
+                (
+                    offset,
+                    "if let is not implemented (use match or `if value is Variant`)",
+                )
+            )
+        if BYTE_TYPE_RE.search(code):
+            findings.append(
+                (offset, "the Byte alias is not accepted by the compiler (use UInt8)")
+            )
     return findings
 
 

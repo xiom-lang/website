@@ -164,10 +164,10 @@ Pipeline: .xi -&gt; Lexer -&gt; Parser -&gt; Type Checker -&gt; Borrow Checker -
 <blockquote><p>to ensure code works in all compilation modes.</p></blockquote>
 <h3>2.1 Variables</h3>
 <pre class="language-xiom"><code>
-<span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>           <span class='cm'>// immutable -- cannot be reassigned</span>
-<span class='kw'>var</span> y: <span class='ty'>Float64</span> = <span class='num'>3.14</span>     <span class='cm'>// mutable -- can be reassigned with =</span>
-<span class='kw'>let</span> name = <span class='str'>XIOM</span>        <span class='cm'>// <span class='kw'>type</span> inferred -- <span class='ty'>Str</span></span>
-<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>]         <span class='cm'>// <span class='kw'>type</span> inferred -- <span class='ty'>Vec</span>[<span class='ty'>Int</span>]</span>
+<span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>;          <span class='cm'>// immutable -- cannot be reassigned</span>
+<span class='kw'>var</span> y: <span class='ty'>Float64</span> = <span class='num'>3.14</span>;    <span class='cm'>// mutable -- can be reassigned with =</span>
+<span class='kw'>let</span> name = <span class='str'>XIOM</span>;       <span class='cm'>// <span class='kw'>type</span> inferred -- <span class='ty'>Str</span></span>
+<span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];        <span class='cm'>// <span class='kw'>type</span> inferred -- <span class='ty'>Vec</span>[<span class='ty'>Int</span>]</span>
 </code></pre>
 <p><strong>Rules:</strong></p>
 <ul>
@@ -256,8 +256,8 @@ Pipeline: .xi -&gt; Lexer -&gt; Parser -&gt; Type Checker -&gt; Borrow Checker -
   AgentState.Patrolling(route) =&gt; <span class='func'>follow</span>(route),
 }
 
-<span class='cm'>// <span class='kw'>if</span> <span class='kw'>let</span> -- desugars to <span class='kw'>match</span></span>
-<span class='kw'>if</span> <span class='kw'>let</span> <span class='kw'>Some</span>(v) = maybe_val { <span class='func'><span class='kw'>use</span></span>(v); } <span class='kw'>else</span> { <span class='func'>fallback</span>(); }
+<span class='cm'>// <span class='kw'>if</span> <span class='kw'>let</span> <span class='kw'>is</span> NOT implemented -- test with `<span class='kw'>is</span>` or <span class='kw'>use</span> <span class='kw'>match</span>:</span>
+<span class='kw'>if</span> maybe_val <span class='kw'>is</span> <span class='kw'>Some</span> { <span class='func'>handle</span>(); }
 
 <span class='cm'>// <span class='kw'>while</span> <span class='kw'>let</span> -- desugars to <span class='kw'>while</span> <span class='kw'>true</span> + <span class='kw'>match</span></span>
 <span class='kw'>while</span> <span class='kw'>let</span> <span class='kw'>Some</span>(v) = <span class='func'>next</span>() { <span class='func'>process</span>(v); }
@@ -268,11 +268,17 @@ Pipeline: .xi -&gt; Lexer -&gt; Parser -&gt; Type Checker -&gt; Borrow Checker -
 </ul>
 <p>desugared form of <code>elif</code> (a following <code>if</code> after <code>else</code> chains as an <code>elif</code>;   the resulting AST is identical).</p>
 <ul>
+<li><code>if let</code> is not implemented by the current compiler. Use <code>match</code>, or test the</li>
+</ul>
+<p>variant with <code>if value is Variant</code> when no binding is needed. <code>while let</code> is   implemented and desugars to <code>while true</code> plus <code>match</code>.</p>
+<ul>
 <li><code>match</code> arms use <code>=&gt;</code> not <code>:</code>.</li>
 <li>Every <code>match</code> must cover ALL cases. Non-exhaustive = compile error.</li>
 <li>Wildcard is <code>_</code>, not <code>default</code> or <code>otherwise</code>.</li>
-<li>Match arms that are blocks need no separator. Single-expression arms end with <code>,</code>.</li>
+<li>Single-expression match arms end with <code>,</code>; block arms need no separator.</li>
+<li><code>loop { ... }</code> repeats until <code>break;</code>. <code>break</code> / <code>continue</code> target the</li>
 </ul>
+<p>innermost loop, or a labeled loop with <code>break @label;</code> / <code>continue @label;</code>.</p>
 <p><strong>Labeled loops:</strong> loops may carry a label for <code>break</code>/<code>continue</code> targeting (Rust-style):</p>
 <pre class="language-xiom"><code>
 @outer: <span class='kw'>while</span> i &lt; <span class='num'>10</span> {
@@ -353,9 +359,9 @@ type_id[<span class='ty'>Int</span>]()               <span class='cm'>// FNV-1a 
 field_offset[<span class='ty'>Point</span>](<span class='str'>x</span>)     <span class='cm'>// field byte <span class='func'>offset</span>(compile-time)</span>
 is_signed[<span class='ty'>Int</span>]()             <span class='cm'>// <span class='ty'>Bool</span>: <span class='kw'>is</span> <span class='kw'>type</span> signed? (compile-time)</span>
 
-<span class='cm'>// Inline <span class='func'>assembly</span>(Intel syntax, GCC-style constraints)</span>
-<span class='func'>asm</span>(<span class='str'>nop</span>);
-<span class='func'>asm</span>(<span class='str'>mov $<span class='num'>0</span>, $<span class='num'>1</span></span> : <span class='str'>=r</span>(<span class='kw'>result</span>) : <span class='str'>r</span>(input));
+<span class='cm'>// Inline <span class='func'>assembly</span>(Intel syntax, GCC-style constraints) -- <span class='kw'>requires</span> `<span class='kw'>unsafe</span>`</span>
+<span class='kw'>unsafe</span> { <span class='func'>asm</span>(<span class='str'>nop</span>); }
+<span class='kw'>unsafe</span> { <span class='func'>asm</span>(<span class='str'>mov $<span class='num'>0</span>, $<span class='num'>1</span></span> : <span class='str'>=r</span>(<span class='kw'>result</span>) : <span class='str'>r</span>(input)); }
 
 <span class='cm'>// defer -- guaranteed scope-exit execution</span>
 defer { <span class='func'>cleanup</span>(); }
@@ -424,7 +430,7 @@ defer io.<span class='func'>println</span>(<span class='str'>done</span>);
 <h3>2.7 Keywords (Complete List)</h3>
 <pre><code>
 <span class='kw'>let</span>  <span class='kw'>var</span>  <span class='kw'>const</span>  <span class='kw'>fn</span>  <span class='kw'>return</span>
-<span class='kw'>if</span>  <span class='kw'>elif</span>  <span class='kw'>else</span>  <span class='kw'>match</span>  <span class='kw'>while</span>  <span class='kw'>for</span>  <span class='kw'>in</span>
+<span class='kw'>if</span>  <span class='kw'>elif</span>  <span class='kw'>else</span>  <span class='kw'>match</span>  <span class='kw'>while</span>  <span class='kw'>for</span>  <span class='kw'>in</span>  loop  break  continue
 <span class='kw'>spawn</span>  <span class='kw'>async</span>  <span class='kw'>await</span>  <span class='kw'>comptime</span>  defer  asm  move
 <span class='kw'>module</span>  <span class='kw'>use</span>  <span class='kw'>pub</span>  <span class='kw'>as</span>
 <span class='kw'>type</span>  <span class='kw'>enum</span>  <span class='kw'>interface</span>  <span class='kw'>derive</span>
@@ -477,13 +483,13 @@ debugger;                     <span class='cm'>// statement: break into the atta
 <td><code>42</code></td>
 </tr>
 <tr>
-<td><code>Int8</code>-<code>Int64</code></td>
-<td>8-64 bits</td>
+<td><code>Int8</code>-<code>Int128</code></td>
+<td>8-128 bits</td>
 <td><code>let x: Int32 = 1;</code></td>
 </tr>
 <tr>
-<td><code>UInt</code>-<code>UInt64</code></td>
-<td>8-64 bits unsigned</td>
+<td><code>UInt8</code>-<code>UInt128</code></td>
+<td>8-128 bits unsigned</td>
 <td><code>let n: UInt = 100;</code></td>
 </tr>
 <tr>
@@ -495,6 +501,11 @@ debugger;                     <span class='cm'>// statement: break into the atta
 <td><code>Float64</code></td>
 <td>IEEE 754 double</td>
 <td><code>3.14</code> (default)</td>
+</tr>
+<tr>
+<td><code>Float128</code></td>
+<td>IEEE 754 binary128</td>
+<td><code>let q = 1.0 as Float128;</code> -- no literal suffix, convert with <code>as</code></td>
 </tr>
 <tr>
 <td><code>Char</code></td>
@@ -526,6 +537,10 @@ debugger;                     <span class='cm'>// statement: break into the atta
 <li><strong>Int literals may adopt the float type</strong> of the other operand:</li>
 </ul>
 <p><code>1 + 2.5</code> is valid -- the literal <code>1</code> adopts <code>Float64</code>.</p>
+<ul>
+<li><strong>Int literals bind to an annotated built-in integer width</strong>:</li>
+</ul>
+<p><code>let x: Int8 = 1;</code>, <code>let n: UInt = 100;</code> and <code>let b: UInt8 = 1;</code> are valid.   The <code>Byte</code> alias name is NOT accepted by the current compiler -- use <code>UInt8</code>.</p>
 <ul>
 <li><strong>Same-family widening stays automatic</strong>: <code>Int8 + Int</code> widens to <code>Int</code></li>
 </ul>

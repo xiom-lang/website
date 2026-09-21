@@ -154,7 +154,7 @@
 <tr>
 <td><code>UInt8</code></td>
 <td>8 bits</td>
-<td>Byte. Alias: <code>Byte</code>.</td>
+<td>Unsigned byte. Use <code>UInt8</code> in source: the <code>Byte</code> alias name is not accepted by the current compiler.</td>
 </tr>
 <tr>
 <td><code>UInt16</code></td>
@@ -253,6 +253,20 @@
 <span class='kw'>let</span> s = <span class='str'>hello</span>;     <span class='cm'>// inferred: <span class='ty'>Str</span></span>
 <span class='kw'>let</span> v = [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>];   <span class='cm'>// inferred: <span class='ty'>Vec</span>[<span class='ty'>Int</span>]</span>
 <span class='kw'>let</span> t = (<span class='num'>1</span>, <span class='kw'>true</span>);   <span class='cm'>// inferred: (<span class='ty'>Int</span>, <span class='ty'>Bool</span>)</span>
+</code></pre>
+<h2>Numeric Literals and Casts</h2>
+<ul>
+<li>An integer literal binds to an annotated built-in integer width: <code>let x: Int8 = 1;</code>, <code>let n: UInt = 100;</code> and <code>let b: UInt8 = 1;</code> are all valid.</li>
+<li>Integer literals beyond 64 bits are supported with <code>Int128</code> and <code>UInt128</code>.</li>
+<li>Mixing <code>Int</code> and <code>Float64</code> in arithmetic, comparisons or typed bindings requires an explicit <code>as</code>. An integer literal alone may adopt the float type: <code>1 + 2.5</code> is valid.</li>
+<li>Same-family widening is automatic (<code>Int8 + Int</code> becomes <code>Int</code>, <code>Float32 + Float64</code> becomes <code>Float64</code>); narrowing always needs <code>as</code>: <code>1 as Int8</code>, <code>200 as UInt8</code>.</li>
+<li><code>Float128</code> has no literal form. Produce it by conversion: <code>let q = 1.0 as Float128;</code>. Binding a plain <code>Float64</code> value to <code>Float128</code> is a compile error.</li>
+</ul>
+<pre class="language-xiom"><code>
+<span class='kw'>let</span> a: <span class='ty'>Int8</span> = <span class='num'>1</span>;              <span class='cm'>// integer literal adopts the annotated width</span>
+<span class='kw'>let</span> n = <span class='num'>1</span> <span class='kw'>as</span> <span class='ty'>Float64</span> + <span class='num'>2.5</span>;   <span class='cm'>// explicit mixed-family conversion</span>
+<span class='kw'>let</span> q = <span class='num'>1.0</span> <span class='kw'>as</span> Float128;      <span class='cm'>// Float128 comes from conversion only</span>
+<span class='kw'>let</span> b: <span class='ty'>UInt8</span> = <span class='num'>200</span>;           <span class='cm'>// <span class='ty'>UInt8</span> accepts a literal <span class='kw'>in</span> range</span>
 </code></pre>
 <h2>Structs</h2>
 <pre class="language-xiom"><code>

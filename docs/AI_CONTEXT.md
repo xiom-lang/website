@@ -66,10 +66,10 @@ Pipeline: .xi -> Lexer -> Parser -> Type Checker -> Borrow Checker -> LLVM IR ->
 ### 2.1 Variables
 
 ```xiom
-let x: Int = 42           // immutable -- cannot be reassigned
-var y: Float64 = 3.14     // mutable -- can be reassigned with =
-let name = "XIOM"        // type inferred -- Str
-let v = [1, 2, 3]         // type inferred -- Vec[Int]
+let x: Int = 42;          // immutable -- cannot be reassigned
+var y: Float64 = 3.14;    // mutable -- can be reassigned with =
+let name = "XIOM";       // type inferred -- Str
+let v = [1, 2, 3];        // type inferred -- Vec[Int]
 ```
 
 **Rules:**
@@ -161,8 +161,8 @@ match state {
   AgentState.Patrolling(route) => follow(route),
 }
 
-// if let -- desugars to match
-if let Some(v) = maybe_val { use(v); } else { fallback(); }
+// if let is NOT implemented -- test with `is` or use match:
+if maybe_val is Some { handle(); }
 
 // while let -- desugars to while true + match
 while let Some(v) = next() { process(v); }
@@ -172,10 +172,15 @@ while let Some(v) = next() { process(v); }
 - `if` / `elif` / `else` -- canonical spelling; `else if` is ALSO accepted as a
   desugared form of `elif` (a following `if` after `else` chains as an `elif`;
   the resulting AST is identical).
+- `if let` is not implemented by the current compiler. Use `match`, or test the
+  variant with `if value is Variant` when no binding is needed. `while let` is
+  implemented and desugars to `while true` plus `match`.
 - `match` arms use `=>` not `:`.
 - Every `match` must cover ALL cases. Non-exhaustive = compile error.
 - Wildcard is `_`, not `default` or `otherwise`.
-- Match arms that are blocks need no separator. Single-expression arms end with `,`.
+- Single-expression match arms end with `,`; block arms need no separator.
+- `loop { ... }` repeats until `break;`. `break` / `continue` target the
+  innermost loop, or a labeled loop with `break @label;` / `continue @label;`.
 
 **Labeled loops:** loops may carry a label for `break`/`continue`
 targeting (Rust-style):
@@ -264,9 +269,9 @@ type_id[Int]()               // FNV-1a type hash (compile-time)
 field_offset[Point]("x")     // field byte offset (compile-time)
 is_signed[Int]()             // Bool: is type signed? (compile-time)
 
-// Inline assembly (Intel syntax, GCC-style constraints)
-asm("nop");
-asm("mov $0, $1" : "=r"(result) : "r"(input));
+// Inline assembly (Intel syntax, GCC-style constraints) -- requires `unsafe`
+unsafe { asm("nop"); }
+unsafe { asm("mov $0, $1" : "=r"(result) : "r"(input)); }
 
 // defer -- guaranteed scope-exit execution
 defer { cleanup(); }
@@ -303,7 +308,7 @@ let a = align_of[Float64]();
 
 ```
 let  var  const  fn  return
-if  elif  else  match  while  for  in
+if  elif  else  match  while  for  in  loop  break  continue
 spawn  async  await  comptime  defer  asm  move
 module  use  pub  as
 type  enum  interface  derive
@@ -353,10 +358,11 @@ and inline `[T: Interface]` constraints instead.
 |------|-------|---------|
 | `Bool` | 1 bit | `true`, `false` |
 | `Int` | 64-bit signed | `42` |
-| `Int8`-`Int64` | 8-64 bits | `let x: Int32 = 1;` |
-| `UInt`-`UInt64` | 8-64 bits unsigned | `let n: UInt = 100;` |
+| `Int8`-`Int128` | 8-128 bits | `let x: Int32 = 1;` |
+| `UInt8`-`UInt128` | 8-128 bits unsigned | `let n: UInt = 100;` |
 | `Float32` | IEEE 754 single | `let f: Float32 = 1.0;` |
 | `Float64` | IEEE 754 double | `3.14` (default) |
+| `Float128` | IEEE 754 binary128 | `let q = 1.0 as Float128;` -- no literal suffix, convert with `as` |
 | `Char` | 32-bit Unicode | `'A'`, `'lambda'` |
 | `Str` | UTF-8 slice | `"hello"` |
 | `Unit` | `()` | Void return, empty tuple |
@@ -370,6 +376,9 @@ and inline `[T: Interface]` constraints instead.
   `x + y as Int`.
 - **Int literals may adopt the float type** of the other operand:
   `1 + 2.5` is valid -- the literal `1` adopts `Float64`.
+- **Int literals bind to an annotated built-in integer width**:
+  `let x: Int8 = 1;`, `let n: UInt = 100;` and `let b: UInt8 = 1;` are valid.
+  The `Byte` alias name is NOT accepted by the current compiler -- use `UInt8`.
 - **Same-family widening stays automatic**: `Int8 + Int` widens to `Int`
   (and to `Int64`/`Int128`/`UInt` per the widest operand); `Float32 + Float64`
   widens to `Float64`. No cast needed within a family.

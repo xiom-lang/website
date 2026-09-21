@@ -196,6 +196,13 @@ a.<span class='func'>push</span>(<span class='num'>1</span>);
 }
 </code></pre>
 <p>The <code>unsafe</code> keyword is a declaration that the programmer takes responsibility for memory safety inside that scope. Unsafe blocks are visible in code review and audits. They cannot be hidden.</p>
+<p>Three rules matter when writing them:</p>
+<ul>
+<li>Inline assembly (<code>asm("...")</code>) is only allowed inside an <code>unsafe</code> block.</li>
+<li>A function whose entire body is a single <code>unsafe</code> block must declare <code>requires:</code> (the pre-entry contract); the compiler rejects it otherwise.</li>
+<li>Safe functions cannot return a raw pointer (<code>*T</code>), and calling an <code>extern "C"</code> function from safe code is an error unless that function declares contracts.</li>
+</ul>
+<p>The <a href="compiler.html">compiler guide</a> lists the full confinement model and the <a href="ffi.html">C FFI guide</a> shows the sanctioned wrapper patterns.</p>
 <h2>Differences from Rust</h2>
 <table>
 <tr>
