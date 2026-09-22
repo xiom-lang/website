@@ -148,7 +148,7 @@ match state {
 }
 ```
 
-- Every `match` must cover all cases. Non-exhaustive matches are compile errors.
+- Every `match` must cover all cases. The current compiler does not reject every non-exhaustive match yet, so write the arms yourself and do not rely on the checker to catch a gap.
 - Use `_` as a wildcard to cover remaining cases.
 - Single-expression arms end with `,`; block arms need no separator.
 

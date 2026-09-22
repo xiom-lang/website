@@ -52,6 +52,9 @@ Pipeline: .xi -> Lexer -> Parser -> Type Checker -> Borrow Checker -> LLVM IR ->
 - No operator overloading. No hidden constructors.
 - No preprocessor, macros, or templates. Only `comptime`.
 - No lifetime annotations. Borrow scope is lexical (visible by braces).
+- References are second-class: never return a borrow from a function or store
+  one in a struct field. The borrow checker reports violations as E001; the
+  return case is a warning today, so never rely on the build to stop you.
 
 ---
 
@@ -176,7 +179,9 @@ while let Some(v) = next() { process(v); }
   variant with `if value is Variant` when no binding is needed. `while let` is
   implemented and desugars to `while true` plus `match`.
 - `match` arms use `=>` not `:`.
-- Every `match` must cover ALL cases. Non-exhaustive = compile error.
+- Every `match` must cover ALL cases (specification). The current compiler does
+  not reject every non-exhaustive match yet, so write exhaustive matches and do
+  not rely on the checker to catch a gap.
 - Wildcard is `_`, not `default` or `otherwise`.
 - Single-expression match arms end with `,`; block arms need no separator.
 - `loop { ... }` repeats until `break;`. `break` / `continue` target the

@@ -105,6 +105,13 @@
         <div style="margin-top:20px;"></div>
         <a href="error_codes/index.html" style="color:var(--paper);font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Error Codes</a>
         <a href="error_codes/index.html" style="color:var(--muted);">Overview</a>
+        <a href="error_codes/C001.html" style="color:var(--muted);">C001</a>
+        <a href="error_codes/E001.html" style="color:var(--muted);">E001</a>
+        <a href="error_codes/L001.html" style="color:var(--muted);">L001</a>
+        <a href="error_codes/P001.html" style="color:var(--muted);">P001</a>
+        <a href="error_codes/T001.html" style="color:var(--muted);">T001</a>
+        <a href="error_codes/W000.html" style="color:var(--muted);">W000</a>
+        <a href="error_codes/W001.html" style="color:var(--muted);">W001</a>
         <a href="error_codes/X0010.html" style="color:var(--muted);">X0010</a>
         <a href="error_codes/X0011.html" style="color:var(--muted);">X0011</a>
         <a href="error_codes/X0100.html" style="color:var(--muted);">X0100</a>
@@ -115,7 +122,7 @@
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Memory Model</h1>
       <p>XIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
-<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are compile errors, and patterns that need escaping borrows use owned values instead.</p>
+<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are ruled out by the model, and patterns that need escaping borrows use owned values instead. The borrow checker runs during compilation and reports violations with code E001; some cases are warnings rather than hard errors today, so treat every E001 as an error you must fix.</p>
 <h2>Ownership Rules</h2>
 <table>
 <tr>
@@ -161,7 +168,7 @@
 <span class='cm'>// <span class='func'>read_only</span>(&amp;v)     // COMPILE ERROR: v was moved</span>
 </code></pre>
 <h2>What the Model Cannot Handle</h2>
-<p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
+<p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions (the compiler reports the return case as an E001 warning today). These patterns require owned types or explicit cloning.</p>
 <p>This is a constraint, not a bug -- it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
 <h2>Clone</h2>
 <p>Use <code>.clone()</code> to explicitly duplicate a value:</p>

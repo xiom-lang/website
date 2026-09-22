@@ -105,6 +105,13 @@
         <div style="margin-top:20px;"></div>
         <a href="../error_codes/index.html" style="color:var(--paper);font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Error Codes</a>
         <a href="../error_codes/index.html" style="color:var(--signal);font-weight:500;">Overview</a>
+        <a href="../error_codes/C001.html" style="color:var(--muted);">C001</a>
+        <a href="../error_codes/E001.html" style="color:var(--muted);">E001</a>
+        <a href="../error_codes/L001.html" style="color:var(--muted);">L001</a>
+        <a href="../error_codes/P001.html" style="color:var(--muted);">P001</a>
+        <a href="../error_codes/T001.html" style="color:var(--muted);">T001</a>
+        <a href="../error_codes/W000.html" style="color:var(--muted);">W000</a>
+        <a href="../error_codes/W001.html" style="color:var(--muted);">W001</a>
         <a href="../error_codes/X0010.html" style="color:var(--muted);">X0010</a>
         <a href="../error_codes/X0011.html" style="color:var(--muted);">X0011</a>
         <a href="../error_codes/X0100.html" style="color:var(--muted);">X0100</a>
@@ -114,112 +121,72 @@
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
       <h1 style="font-size:36px;margin-bottom:24px;">XIOM Error Codes -- Reference</h1>
-      <p>Each XIOM diagnostic carries a code in the format <code>XNNNN</code>. Codes are stable -- once assigned, they are never deleted or reassigned. The same pages are published on the documentation site: https://docs.xiom-lang.org/latest/error-codes/</p>
-<h2>Index</h2>
+      <p>Each XIOM diagnostic carries a code. Codes are stable: once assigned they are never deleted or reassigned. The same pages are published on the documentation site: https://docs.xiom-lang.org/latest/error-codes/</p>
+<h2>Emitted codes</h2>
 <table>
 <tr>
 <th>Code</th>
-<th>Category</th>
-<th>Title</th>
+<th>Stage</th>
+<th>Meaning</th>
 <th>Doc</th>
 </tr>
 <tr>
-<td>X0001</td>
+<td>L001</td>
+<td>Lexer</td>
+<td>Source cannot be tokenized (bad literal, bad escape)</td>
+<td><a href="L001.html">L001</a></td>
+</tr>
+<tr>
+<td>P001</td>
 <td>Parser</td>
-<td>Unexpected token</td>
-<td>pending</td>
+<td>Grammar error, messages shaped <code>expected X, found Y</code></td>
+<td><a href="P001.html">P001</a></td>
 </tr>
 <tr>
-<td>X0002</td>
-<td>Parser</td>
-<td>Unclosed delimiter</td>
-<td>pending</td>
+<td>T001</td>
+<td>Type checker</td>
+<td>Type and semantic errors (umbrella code)</td>
+<td><a href="T001.html">T001</a></td>
 </tr>
 <tr>
-<td>X0003</td>
-<td>Parser</td>
-<td>Expression nesting too deep</td>
-<td>pending</td>
+<td>E001</td>
+<td>Borrow checker</td>
+<td>Ownership / borrow rule violation</td>
+<td><a href="E001.html">E001</a></td>
 </tr>
 <tr>
-<td>X0010</td>
+<td>C001</td>
+<td>Codegen</td>
+<td>Internal code generation failure</td>
+<td><a href="C001.html">C001</a></td>
+</tr>
+<tr>
+<td>W000</td>
 <td>Checker</td>
-<td>Type mismatch</td>
-<td><a href="X0010.html">X0010</a></td>
+<td>Non-fatal checker warning</td>
+<td><a href="W000.html">W000</a></td>
 </tr>
 <tr>
-<td>X0011</td>
-<td>Checker</td>
-<td>Undefined variable</td>
-<td><a href="X0011.html">X0011</a></td>
-</tr>
-<tr>
-<td>X0012</td>
-<td>Checker</td>
-<td>Method not found</td>
-<td>pending</td>
-</tr>
-<tr>
-<td>X0013</td>
-<td>Checker</td>
-<td>Field not found</td>
-<td>pending</td>
-</tr>
-<tr>
-<td>X0014</td>
-<td>Checker</td>
-<td>If condition must be Bool</td>
-<td>pending</td>
-</tr>
-<tr>
-<td>X0015</td>
-<td>Checker</td>
-<td>Cannot negate non-bool type</td>
-<td>pending</td>
-</tr>
-<tr>
-<td>X0100</td>
-<td>Contracts</td>
-<td>Contract requires clause violated</td>
-<td><a href="X0100.html">X0100</a></td>
-</tr>
-<tr>
-<td>X0101</td>
-<td>Contracts</td>
-<td>Contract ensures clause not proven</td>
-<td>pending</td>
-</tr>
-<tr>
-<td>X0102</td>
-<td>Contracts</td>
-<td>Invariant broken after mutation</td>
-<td>pending</td>
-</tr>
-<tr>
-<td>X7000</td>
-<td>Contracts</td>
-<td>Contract violation (reserved block)</td>
-<td>pending</td>
-</tr>
-<tr>
-<td>X7999</td>
-<td>Contracts</td>
-<td>Contract diagnostic ceiling</td>
-<td>pending</td>
+<td>W001</td>
+<td>Catalog</td>
+<td>Module name collision</td>
+<td><a href="W001.html">W001</a></td>
 </tr>
 </table>
-<p>Only the rows with a link have a page today; the rest are reserved and tracked in this index. Compiler diagnostics also carry the code in <code>--diagnostics=json</code> output, so tooling can map a message to a row here.</p>
+<p>Codes appear in CLI output as <code>error[CODE]: line:col: message</code> and in <code>--diagnostics=json</code> output as the <code>code</code> field of each diagnostic.</p>
+<h2>Reserved codes (not emitted)</h2>
+<p>The X family below was reserved in an early design and is <strong>not emitted by the current compiler</strong>. The numbers stay reserved so they can never be reused. The pages are kept for continuity: <a href="X0010.html">X0010</a> type mismatch, <a href="X0011.html">X0011</a> undefined variable, <a href="X0100.html">X0100</a> contract requires violation. Those situations are reported as <code>T001</code> today, and a runtime contract trap prints <code>Contract violation: requires: ...</code> without a code.</p>
 <h2>Writing a new error code</h2>
 <ul>
 <li>Create <code>docs/error_codes/{CODE}.md</code> in the website repository</li>
-<li>Include: short description, bad example (compiling), fix, notes</li>
-<li>Add the row and the link to this index</li>
+<li>Include: short description, an example, fix, notes</li>
+<li>Add the row and link to the emitted table above</li>
 <li>Codes are never deleted -- mark deprecated codes as such</li>
 </ul>
 <h2>Using <code>--explain</code></h2>
 <pre class="language-bash"><code>
-xiom --explain X0010
-# Prints docs/error_codes/X0010.md when that directory <span class='kw'>is</span> present <span class='kw'>in</span> the
+xiom --explain T001
+# Prints docs/error_codes/T001.md when that directory <span class='kw'>is</span> present <span class='kw'>in</span> the
 # current working directory, then a pointer to this index.
 </code></pre>
 <p><code>--explain</code> resolves the file relative to the current directory, so it works inside a checkout that carries <code>docs/error_codes/</code>. Installed toolchains do not ship the reference yet; use the published pages above in that case.</p>

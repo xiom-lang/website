@@ -105,6 +105,13 @@
         <div style="margin-top:20px;"></div>
         <a href="error_codes/index.html" style="color:var(--paper);font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Error Codes</a>
         <a href="error_codes/index.html" style="color:var(--muted);">Overview</a>
+        <a href="error_codes/C001.html" style="color:var(--muted);">C001</a>
+        <a href="error_codes/E001.html" style="color:var(--muted);">E001</a>
+        <a href="error_codes/L001.html" style="color:var(--muted);">L001</a>
+        <a href="error_codes/P001.html" style="color:var(--muted);">P001</a>
+        <a href="error_codes/T001.html" style="color:var(--muted);">T001</a>
+        <a href="error_codes/W000.html" style="color:var(--muted);">W000</a>
+        <a href="error_codes/W001.html" style="color:var(--muted);">W001</a>
         <a href="error_codes/X0010.html" style="color:var(--muted);">X0010</a>
         <a href="error_codes/X0011.html" style="color:var(--muted);">X0011</a>
         <a href="error_codes/X0100.html" style="color:var(--muted);">X0100</a>
@@ -164,7 +171,9 @@ Pipeline: .xi -&gt; Lexer -&gt; Parser -&gt; Type Checker -&gt; Borrow Checker -
 <li>No operator overloading. No hidden constructors.</li>
 <li>No preprocessor, macros, or templates. Only <code>comptime</code>.</li>
 <li>No lifetime annotations. Borrow scope is lexical (visible by braces).</li>
+<li>References are second-class: never return a borrow from a function or store</li>
 </ul>
+<p>one in a struct field. The borrow checker reports violations as E001; the   return case is a warning today, so never rely on the build to stop you.</p>
 <hr>
 <h2>2. Complete Syntax Rules</h2>
 <blockquote><p><strong>Import rules:</strong> All examples below include explicit <code>use xiom.io;</code> declarations.</p></blockquote>
@@ -283,7 +292,10 @@ Pipeline: .xi -&gt; Lexer -&gt; Parser -&gt; Type Checker -&gt; Borrow Checker -
 <p>variant with <code>if value is Variant</code> when no binding is needed. <code>while let</code> is   implemented and desugars to <code>while true</code> plus <code>match</code>.</p>
 <ul>
 <li><code>match</code> arms use <code>=&gt;</code> not <code>:</code>.</li>
-<li>Every <code>match</code> must cover ALL cases. Non-exhaustive = compile error.</li>
+<li>Every <code>match</code> must cover ALL cases (specification). The current compiler does</li>
+</ul>
+<p>not reject every non-exhaustive match yet, so write exhaustive matches and do   not rely on the checker to catch a gap.</p>
+<ul>
 <li>Wildcard is <code>_</code>, not <code>default</code> or <code>otherwise</code>.</li>
 <li>Single-expression match arms end with <code>,</code>; block arms need no separator.</li>
 <li><code>loop { ... }</code> repeats until <code>break;</code>. <code>break</code> / <code>continue</code> target the</li>

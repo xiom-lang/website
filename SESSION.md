@@ -413,30 +413,45 @@ Remaining:
     type-checks and `xiom dbg --version` dispatches to `xiom-dbg v0.61.0`.
     Wired into both docs navs and the guide index, linked from `compiler.md`
     and `getting-started.md`.
-19. **Error-code reference published (done 2026-09-21)**: the compiler already
-    emits stable codes (`X0010` type mismatch, `X0100` contract violation),
-    `--diagnostics=json` carries `error_code`, and `xiom --explain <code>`
-    prints `docs/error_codes/{code}.md` from the current directory. The
-    website repo already held that directory (index + X0010/X0011/X0100), but
-    nothing published it. Both builders now render `docs/error_codes/*.md`:
-    standalone pages at `docs/html/error_codes/` (README becomes the index)
-    with a sidebar "Error Codes" section, and MkDocs pages under
-    `error-codes/` with a nav section. The index gained a Doc column
-    (linked vs pending), `compiler.md` points at the reference, and the syntax
-    lint now also scans `docs/error_codes` in both workflows.
+19. **Error-code reference published and corrected (done 2026-09-21)**: the
+    compiler emits `L001` (lexer), `P001` (parser), `T001` (type checker),
+    `E001` (borrow checker), `C001` (codegen), `W000` (checker warnings) and
+    `W001` (catalog collisions); `--diagnostics=json` carries the code, and
+    `xiom --explain <code>` prints `docs/error_codes/{code}.md` from the
+    current directory. The old index listed an X family that the compiler does
+    not emit, so the reference was rewritten: new pages for all seven emitted
+    codes with verified examples (probed against v0.61.0), the X pages kept
+    with a "reserved, not emitted" banner, and README/index and `--explain`
+    examples updated. Both builders render `docs/error_codes/*.md`
+    (standalone `docs/html/error_codes/` with a sidebar section, MkDocs
+    `error-codes/` with a nav section); the syntax lint scans them too.
+20. **Docs honesty softens from the probes (done 2026-09-21)**: the probes
+    showed that non-exhaustive `match` is not rejected (T001 passes) and that
+    returning a borrow is `warning[E001]` during compilation, not a hard
+    error. `syntax.md`, `pattern-matching.md`, `memory-model.md` and
+    `AI_CONTEXT.md` now state the rule, the current behaviour and the E001/W000
+    codes instead of claiming the compiler enforces them.
 
 ## Cross-lane notes
 
-Error-code reference gaps (compiler lane, found 2026-09-21): the published
-index documents the X family (14 rows, 3 with pages), but real compiler
-errors also carry T codes (`error[T001]`, `error[T007]`), P codes
-(`error[P001]`) and C/E codes appear in the source. The index says codes are
-`XNNNN` and stable, so the families need reconciling in one registry. Also,
-`--explain` resolves `docs/error_codes/{code}.md` from the current working
-directory, and release archives do not ship that directory, so installed
-users cannot use `--explain`; either ship the reference inside the archive or
-embed the text in the binary. The website publishes whatever is in
-`docs/error_codes/` automatically.
+Error-code follow-ups (compiler lane, 2026-09-21): the website reference now
+documents the codes the compiler actually emits (L001, P001, T001, E001, C001,
+W000, W001) and reserves the X family as never-emitted. What remains on the
+compiler side: (a) non-exhaustive `match` is not rejected and W000 did not
+reproduce for it under `--check`, while the specification requires
+exhaustiveness -- enforcement or a reliable warning is missing; (b)
+`warning[E001]` for returning a borrow lets the build succeed -- decide
+whether default builds should fail; (c) `--explain` resolves
+`docs/error_codes/{code}.md` from the current directory and archives do not
+ship it, so installed users cannot use it -- ship the directory or embed the
+text; (d) the stale archive README below.
+
+Debugger symbol surface (compiler lane, question 2026-09-22): XIOM has no
+symbol-control attributes today (`#[no_mangle]`, `#[export_name]`,
+`#[inline(never)]`). Debugging works through `-g` DWARF plus the `debugger;`,
+`assert` and `dbg!` intrinsics, so nothing is missing for the normal workflow.
+If C-calling-XIOM embedding or stepping through optimized builds becomes a
+supported workflow, those attributes are the gap to fill.
 
 Release archives (v0.60.1) ship a stale `README.md` inside the package: it
 names the XIOM Foundation as copyright holder, points at

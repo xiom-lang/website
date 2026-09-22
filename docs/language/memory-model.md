@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 XIOM uses **ownership semantics** for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.
 
-The model uses **lexical scope borrowing** -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are compile errors, and patterns that need escaping borrows use owned values instead.
+The model uses **lexical scope borrowing** -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are ruled out by the model, and patterns that need escaping borrows use owned values instead. The borrow checker runs during compilation and reports violations with code E001; some cases are warnings rather than hard errors today, so treat every E001 as an error you must fix.
 
 ## Ownership Rules
 
@@ -37,7 +37,7 @@ consume(v);           // move -- v no longer usable here
 
 ## What the Model Cannot Handle
 
-Borrows **cannot** be stored in struct fields. Borrows **cannot** be returned from functions. These patterns require owned types or explicit cloning.
+Borrows **cannot** be stored in struct fields. Borrows **cannot** be returned from functions (the compiler reports the return case as an E001 warning today). These patterns require owned types or explicit cloning.
 
 This is a constraint, not a bug -- it is the design. Patterns that require escaping borrows are solved with owned types instead.
 

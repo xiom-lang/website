@@ -10,7 +10,7 @@ XIOM supports structural pattern matching on enums, tuples, and literals via `ma
 
 ## `match` Expression
 
-The `match` expression is the primary pattern matching construct. It must be exhaustive -- every variant must be covered.
+The language requires a `match` to be exhaustive -- every variant must be covered. The current compiler does not reject every non-exhaustive match yet, so write the missing arms; a clean build is not proof of exhaustiveness.
 
 ```xiom
 match value {
@@ -222,7 +222,7 @@ fn lookup(key: Str) -> Option[Int] {
 
 ## Exhaustiveness
 
-The compiler checks that `match` expressions cover all possible cases. If a variant is missing, compilation fails with a type error:
+The language specifies that `match` expressions cover all possible cases. If a variant is missing, that is a defect and reported as a warning ([W000](https://docs.xiom-lang.org/latest/error-codes/W000/)) where the checker detects it; the current compiler does not reject every non-exhaustive match, so do not rely on the build to fail:
 
 ```xiom
 // ERROR: missing Pattern Green
