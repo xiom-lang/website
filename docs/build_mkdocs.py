@@ -207,6 +207,21 @@ def main():
     if not copy_api(args, stage):
         return 1
 
+    # The generated API index is the page users see as "Standard Library API".
+    # Surface the verification scope there too: the hand-written guide pages
+    # that carry it (api.md, stdlib.md) are excluded from the MkDocs staging.
+    api_index = stage / "api" / "index.md"
+    if api_index.is_file():
+        text = api_index.read_text(encoding="utf-8")
+        if "**Verification scope:**" not in text:
+            note = (
+                "> **Verification scope:** contracts are what the verifier "
+                "reasons about; the implementations, including the "
+                "NASM-accelerated runtime paths, are assumed to honor them. "
+                "See the [contracts guide](../contracts.md).\n\n"
+            )
+            write_text(api_index, note + text)
+
     # SUMMARY.md drives the navigation via mkdocs-literate-nav.
     nav_lines = ["* [xiom-lang.org](https://xiom-lang.org/)"]
     for name, title in NAV:
