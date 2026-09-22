@@ -477,6 +477,18 @@ Remaining:
     4.2:1, comment 4.2:1) and now use #3F4BD1/#00695C/#9A5B00/#256B2A/#6A4FBF/
     #555C6B (4.7-5.8:1). The standalone docs palette mirrors the dark comment
     change (#A6ADBC on #111217, 8:1).
+25. **Module count and archive contents verified (done 2026-09-22)**: the
+    canonical count is **44 top-level stdlib modules** -- confirmed by the
+    GitHub API for `xiom-lang/stdlib` `xiom/` on main and by the local
+    checkout; the generated API builds 44 module pages plus an index, and the
+    517 `.xi` files are the submodule sources. The number "60" that circulates
+    in stdlib docs (`VERIFICATION_BASELINE.md`, `stdlib_session.md`) is a
+    probe-scan namespace count, not the module list. Fixed the one stale
+    claim (`index.md` said 40). The v0.61.1 Windows archive was downloaded and
+    inspected: `bin/` contains xiom, xiom-dbg, xiom-doc, xiom-ffigen, xiom-fmt,
+    xiom-lsp, xiom-mcp, xiom-pkg, xiom-verify, z3 plus the VC runtime DLLs --
+    so the homepage "Companion tools" box now lists the MCP server and the
+    pinned z3 too.
 
 ## Cross-lane notes
 

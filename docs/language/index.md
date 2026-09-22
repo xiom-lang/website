@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 | [C FFI](ffi.md) | Zero-cost C interoperability, extern blocks, unsafe |
 | [Compiler](compiler.md) | Pipeline overview, CLI flags, build targets, WASM |
 | [Debugging](debugger.md) | Source-level debugging with xiom-dbg: DAP clients, breakpoints, contract traps |
-| [Standard Library](stdlib.md) | Complete API reference for all 40 stdlib modules |
+| [Standard Library](stdlib.md) | Complete API reference for all 44 stdlib modules |
 | [Contributing](contributing.md) | Contribution path, licensing and DCO sign-off, where things live |
 | [AI Coding Reference](../AI_CONTEXT.md) | Single-file AI prompt -- inject into any LLM to enable XIOM code generation |
 
