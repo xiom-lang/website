@@ -1055,7 +1055,21 @@ footer p {
 
 .hero-index-grid {
   align-items: center;
-  gap: var(--space-xl);
+  gap: clamp(24px, 4vw, 64px);
+}
+
+.hero-index-masthead {
+  justify-self: start;
+}
+
+/* The copy sits over the artwork, so it gets a restrained glass surface:
+   enough contrast for a paragraph and buttons, still shows the image. */
+.hero-index-content {
+  background: rgba(8, 10, 16, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  padding: clamp(22px, 2.4vw, 34px);
+  backdrop-filter: blur(8px);
 }
 
 /* The proof block below the hero: code panel beside a short explanation,
@@ -1080,10 +1094,6 @@ footer p {
   max-width: 480px;
 }
 
-.hero-index-copy {
-  max-width: 600px;
-}
-
 .hero-index .xiom-brand {
   font-size: clamp(32px, 3.2vw, 58px);
 }
@@ -1099,7 +1109,7 @@ footer p {
 }
 
 .hero-index .hero-headline {
-  margin: 26px 0 var(--space-md);
+  margin: 0 0 var(--space-md);
   font-size: clamp(28px, 3vw, 42px);
 }
 
@@ -1213,6 +1223,26 @@ footer p {
     from { transform: scale(1.02); }
     to { transform: scale(1); }
   }
+
+  /* Index hero entrances: the masthead slides like the banner text, the copy
+     panel rises a beat later. */
+  .hero-index-masthead {
+    animation: mastheadIn 900ms ease-out both;
+  }
+
+  @keyframes mastheadIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-index-content {
+    animation: heroRise 900ms ease-out 120ms both;
+  }
+
+  @keyframes heroRise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 }
 
 @media (max-width: 1180px) {
@@ -1234,7 +1264,7 @@ footer p {
       rgba(5, 8, 15, 0.94) 100%);
   }
   .hero-index-inner { padding: 44px 0 40px; }
-  .hero-index-copy { max-width: none; }
+  .hero-index-content { padding: 20px; }
   .hero-index .hero-headline { font-size: 28px; }
   .hero-proof { padding: 40px 0; }
   .xiom-brand { font-size: clamp(22px, 4.6vw, 34px); letter-spacing: 0.22em; }
