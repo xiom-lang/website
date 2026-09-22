@@ -623,9 +623,17 @@ uses on six pages (CSS in `xiom-website/style.css`, "Page banners" section):
 ```
 
 Key values: brand #F3F7FF, weight 300, tracking 0.28em; section #69B8FF,
-tracking 0.36em; accent gradient #66FFF1 -> #4CC8FF with a restrained glow;
-text at left 7%/top 50%. Keep the h1 semantic (brand span aria-hidden) and
-the image alt empty.
+tracking 0.36em; accent gradient #66FFF1 -> #4CC8FF with a restrained glow.
+The block is centred inside the artwork's open left area: `left: 22%;
+top: 50%; transform: translate(-50%, -50%)`, with centred text, so it never
+reaches into the subject on the right. Keep the h1 semantic (brand span
+aria-hidden) and the image alt empty.
+
+Important for sites with buttons in the hero (playground, registry): do not
+stack CTAs into the left area under the banner text. Either move the CTA row
+below the banner as a normal section, or centre it directly under the banner
+image; the banner itself stays wordmark + section + accent (+ at most one
+short tagline).
 
 ### Registry lane: banner header
 

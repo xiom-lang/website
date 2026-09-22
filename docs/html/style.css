@@ -963,13 +963,16 @@ footer p {
 
 .xiom-banner-text {
   position: absolute;
-  left: 7%;
+  /* Centred inside the artwork's open left area (~45% of the frame), not the
+     full frame, so the block never reaches into the subject on the right. */
+  left: 22%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   z-index: 5;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   white-space: nowrap;
 }
 
@@ -1094,8 +1097,8 @@ footer p {
   }
 
   @keyframes xiomFadeIn {
-    from { opacity: 0; transform: translate(-12px, -50%); }
-    to { opacity: 1; transform: translate(0, -50%); }
+    from { opacity: 0; transform: translate(calc(-50% - 12px), -50%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
   }
 
   /* A restrained settle instead of parallax: the art never moves with the
@@ -1120,7 +1123,7 @@ footer p {
 
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .eco-grid--visual { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .xiom-banner-text { left: 6%; }
+  .xiom-banner-text { left: 20%; }
   .xiom-brand { font-size: clamp(22px, 4.6vw, 34px); letter-spacing: 0.22em; }
   .xiom-section { margin-top: 9px; font-size: clamp(8px, 1.9vw, 12px); letter-spacing: 0.26em; }
   .xiom-section.long-title { font-size: clamp(7px, 1.6vw, 11px); letter-spacing: 0.18em; }
