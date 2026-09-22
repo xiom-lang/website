@@ -2426,6 +2426,118 @@
   
   
     <li class="md-nav__item">
+      <a href="../error-codes/C001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/E001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/L001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    L001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/P001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    P001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../error-codes/" class="md-nav__link">
         
   
@@ -2434,6 +2546,90 @@
     
   
     Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/T001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    T001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/W000/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W000
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/W001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W001
   
 
     
@@ -2815,7 +3011,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <p>XIOM supports structural pattern matching on enums, tuples, and literals via <code>match</code> and <code>while let</code>, plus the <code>is</code> test for variant checks without binding.</p>
 <hr />
 <h2 id="match-expression"><code>match</code> Expression<a class="headerlink" href="#match-expression" title="Permanent link">&para;</a></h2>
-<p>The <code>match</code> expression is the primary pattern matching construct. It must be exhaustive -- every variant must be covered.</p>
+<p>The language requires a <code>match</code> to be exhaustive -- every variant must be covered. The current compiler does not reject every non-exhaustive match yet, so write the missing arms; a clean build is not proof of exhaustiveness.</p>
 <div class="highlight"><pre><span></span><code><span class="k">match</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
 <span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"nothing"</span><span class="p">),</span>
@@ -2958,7 +3154,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </code></pre></div>
 <hr />
 <h2 id="exhaustiveness">Exhaustiveness<a class="headerlink" href="#exhaustiveness" title="Permanent link">&para;</a></h2>
-<p>The compiler checks that <code>match</code> expressions cover all possible cases. If a variant is missing, compilation fails with a type error:</p>
+<p>The language specifies that <code>match</code> expressions cover all possible cases. If a variant is missing, that is a defect and reported as a warning (<a href="https://docs.xiom-lang.org/latest/error-codes/W000/">W000</a>) where the checker detects it; the current compiler does not reject every non-exhaustive match, so do not rely on the build to fail:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// ERROR: missing Pattern Green</span>
 <span class="k">match</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nc">Color</span><span class="p">.</span><span class="nc">Red</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>

@@ -2304,6 +2304,118 @@
   
   
     <li class="md-nav__item">
+      <a href="../error-codes/C001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/E001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/L001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    L001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/P001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    P001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../error-codes/" class="md-nav__link">
         
   
@@ -2312,6 +2424,90 @@
     
   
     Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/T001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    T001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/W000/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W000
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/W001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W001
   
 
     
@@ -2569,7 +2765,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 <h1 id="memory-model">Memory Model<a class="headerlink" href="#memory-model" title="Permanent link">&para;</a></h1>
 <p>XIOM uses <strong>ownership semantics</strong> for memory management. There is no garbage collector. Memory is freed when the owning binding leaves its scope.</p>
-<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are compile errors, and patterns that need escaping borrows use owned values instead.</p>
+<p>The model uses <strong>lexical scope borrowing</strong> -- simpler than Rust's lifetime system: borrow validity follows scope nesting, use-after-free and double-free are ruled out by the model, and patterns that need escaping borrows use owned values instead. The borrow checker runs during compilation and reports violations with code E001; some cases are warnings rather than hard errors today, so treat every E001 as an error you must fix.</p>
 <h2 id="ownership-rules">Ownership Rules<a class="headerlink" href="#ownership-rules" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2618,7 +2814,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <span class="c1">// read_only(&amp;v)     // COMPILE ERROR: v was moved</span>
 </code></pre></div>
 <h2 id="what-the-model-cannot-handle">What the Model Cannot Handle<a class="headerlink" href="#what-the-model-cannot-handle" title="Permanent link">&para;</a></h2>
-<p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions. These patterns require owned types or explicit cloning.</p>
+<p>Borrows <strong>cannot</strong> be stored in struct fields. Borrows <strong>cannot</strong> be returned from functions (the compiler reports the return case as an E001 warning today). These patterns require owned types or explicit cloning.</p>
 <p>This is a constraint, not a bug -- it is the design. Patterns that require escaping borrows are solved with owned types instead.</p>
 <h2 id="clone">Clone<a class="headerlink" href="#clone" title="Permanent link">&para;</a></h2>
 <p>Use <code>.clone()</code> to explicitly duplicate a value:</p>
