@@ -492,6 +492,21 @@ Remaining:
 
 ## Cross-lane notes
 
+Per-release test counts (compiler lane, asked 2026-09-22): the versions page
+can only show verification numbers per tag if the release metadata carries
+them -- today neither the mirror (`releases/index.json` has tag + published
+only) nor the GitHub release bodies include counts. Suggested shape, additive
+so old clients ignore it:
+
+    {"tag":"v0.61.1","published":"...","verification":{
+      "e2e":2345,"checker":195,"feature":510,"robustness":63,"fuzz":24,
+      "perf":2,"formatter":86,"lsp":45,"stdlib_corpus":949}}
+
+Once that exists, the versions page renders a checks column per release and
+the roadmap table can become a live summary. Current static numbers live on
+the roadmap page: 3,263 compiler gate cases + 949 stdlib corpus programs =
+4,212 checks, labelled with what each unit counts.
+
 Compiler context file corrections (compiler lane, found 2026-09-22): the
 root `AI_CONTEXT.md` (shipped as `lib/AI_CONTEXT.md`, served by
 `xiom_workflow_guide {topic:"context"}`) maps diagnostics as "X contract",
