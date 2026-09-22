@@ -94,7 +94,9 @@ fn filter_positive(items: &Vec[Int]) -> Vec[Int]
 | **`--release`** | Strips guards unless `--runtime-contracts` forces them. |
 | **Exported obligations (`--verify`)** | Writes SMT-LIB proof obligations and makes no proof claim. |
 | **Checked (`xiom-verify --check`)** | Runs the bundled z3 over the exported obligations and returns Proven, Violated or UNKNOWN. Only `unsat` counts as proved. |
-| **Contradictory** | Compile error. The specification is logically impossible to satisfy. |
+
+Contradiction detection is specified but not implemented in the current
+compiler: a logically impossible `requires` is not rejected at compile time.
 
 ## Verification Scope and the Trusted Base
 

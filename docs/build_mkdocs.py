@@ -155,6 +155,10 @@ def main():
     parser.add_argument("--stdlib", default=None, help="path to a stdlib checkout")
     parser.add_argument("--xiom-doc", default=None, help="path to the xiom-doc binary")
     parser.add_argument("--api-dir", default=None, help="prebuilt API pages to copy")
+    parser.add_argument("--toolchain-context", default=None,
+                        help="path to the compiler repo's AI_CONTEXT.md (toolchain context)")
+    parser.add_argument("--post-release-plan", default=None,
+                        help="path to the compiler repo's docs/POST_RELEASE_PLAN.md")
     parser.add_argument("--tag", default="latest", help="release tag stamped into pages")
     parser.add_argument("--stage", default=str(DEFAULT_STAGE), help="staging directory")
     parser.add_argument("--legacy-from", default=str(DEFAULT_LEGACY),
@@ -176,6 +180,28 @@ def main():
 
     if AI_CONTEXT.is_file():
         write_text(stage / "AI_CONTEXT.md", rewrite_links(AI_CONTEXT.read_text(encoding="utf-8")))
+
+    # Canonical toolchain context: the compiler repo's root AI_CONTEXT.md ships
+    # in every release archive as lib/AI_CONTEXT.md and is served by xiom-mcp.
+    # When the compiler checkout is available, publish it as a docs page so the
+    # site describes the same toolchain the archives carry.
+    toolchain_context = False
+    if args.toolchain_context:
+        source = Path(args.toolchain_context)
+        if source.is_file():
+            write_text(stage / "toolchain-context.md", source.read_text(encoding="utf-8"))
+            toolchain_context = True
+        else:
+            print("  [warn] toolchain context not found: {0}".format(source))
+
+    post_release_plan = False
+    if args.post_release_plan:
+        source = Path(args.post_release_plan)
+        if source.is_file():
+            write_text(stage / "post-release-plan.md", source.read_text(encoding="utf-8"))
+            post_release_plan = True
+        else:
+            print("  [warn] post-release plan not found: {0}".format(source))
 
     # Error-code reference (docs/error_codes/): published under error-codes/,
     # with README.md becoming the section index.
@@ -246,6 +272,12 @@ def main():
             stem = name[:-3]
             title = "Overview" if stem == "index" else stem
             nav_lines.append("    * [{0}](error-codes/{1})".format(title, name))
+    if toolchain_context or post_release_plan:
+        nav_lines.append("* Project")
+        if toolchain_context:
+            nav_lines.append("    * [Toolchain Context](toolchain-context.md)")
+        if post_release_plan:
+            nav_lines.append("    * [Post-release Plan](post-release-plan.md)")
     nav_lines.append("* [AI Coding Reference](AI_CONTEXT.md)")
     write_text(stage / "SUMMARY.md", "\n".join(nav_lines) + "\n")
 

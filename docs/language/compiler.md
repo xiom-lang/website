@@ -180,10 +180,35 @@ hosts. `xiom --help-ai` prints the full guide from the compiler itself, and
 ### MCP server and companion tools
 
 `xiom-mcp` is a Model Context Protocol server (stdio, JSON-RPC 2.0) that
-lets AI agents compile-check XIOM code, read the language and workflow
-guides, query the standard library reference, and search package metadata in
-the registry (`search_packages`, `package_info`, read-only) as tools. Register
-it in any MCP-capable client:
+lets AI agents work with XIOM as tools. It exposes sixteen tools:
+
+| Tool | What it does |
+|------|--------------|
+| `compile_and_analyze` | Compile a source file, return structured diagnostics |
+| `compile_and_fix` | Compile, then run `ai_diagnose` on the errors in one shot |
+| `check_xiom_syntax` | Parse-only check for a fast syntax feedback loop |
+| `format_xiom_code` | Format source with `xiom-fmt` |
+| `explain_error_code` | Full reference for an error code (for example `T001`) |
+| `get_contract_signature` | requires/ensures/invariants for project code |
+| `verify_contracts` | Run `xiom-verify`: Z3 results and counterexamples |
+| `audit_safety_sandbox` | Enumerate and score `unsafe` blocks |
+| `ai_diagnose` | Send diagnostics to a model for a fix suggestion |
+| `hot_reload_watch` | Compile to a shared library and watch for changes |
+| `xiom_cheatsheet` | Canonical patterns and idioms |
+| `xiom_stdlib_reference` | Live-parsed stdlib modules with contracts |
+| `xiom_language_guide` | Language semantics by topic (types, ownership, contracts) |
+| `xiom_workflow_guide` | Toolchain operations; topic `context` returns the canonical context file |
+| `search_packages` | Registry search (read-only, no token) |
+| `package_info` | Registry metadata for one package (read-only, no token) |
+
+The canonical CLI, registry and limitations context that ships inside every
+release (`lib/AI_CONTEXT.md`) is also published on the documentation site as
+[Toolchain Context](https://docs.xiom-lang.org/latest/toolchain-context/).
+Toolchain updates are manual today: `xiom update` is retired because it used
+an unverified channel, and the [Post-release Plan](https://docs.xiom-lang.org/latest/post-release-plan/)
+specifies the verified updater that will replace it.
+
+Register the server in any MCP-capable client:
 
 ```json
 {

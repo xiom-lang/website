@@ -319,7 +319,79 @@ xiom --ai source.xi
 </code></pre>
 <p>Environment variables override the file and command-line flags override the environment: <code>XIOM_AI_KEY</code>, <code>XIOM_AI_ENDPOINT</code>, <code>XIOM_AI_MODEL</code>, <code>XIOM_AI_PROVIDER</code>, <code>XIOM_AI_TIMEOUT</code>, <code>XIOM_AI_MAX_TOKENS</code> and <code>XIOM_AI_ALLOW_HTTP</code>. To change a key later, edit that file or export <code>XIOM_AI_KEY</code> again. Keys are refused over plaintext <code>http://</code> to non-local hosts. <code>xiom --help-ai</code> prints the full guide from the compiler itself, and <a href="getting-started.html">Getting Started</a> walks through first-time setup.</p>
 <h3>MCP server and companion tools</h3>
-<p><code>xiom-mcp</code> is a Model Context Protocol server (stdio, JSON-RPC 2.0) that lets AI agents compile-check XIOM code, read the language and workflow guides, query the standard library reference, and search package metadata in the registry (<code>search_packages</code>, <code>package_info</code>, read-only) as tools. Register it in any MCP-capable client:</p>
+<p><code>xiom-mcp</code> is a Model Context Protocol server (stdio, JSON-RPC 2.0) that lets AI agents work with XIOM as tools. It exposes sixteen tools:</p>
+<table>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+<tr>
+<td><code>compile_and_analyze</code></td>
+<td>Compile a source file, return structured diagnostics</td>
+</tr>
+<tr>
+<td><code>compile_and_fix</code></td>
+<td>Compile, then run <code>ai_diagnose</code> on the errors in one shot</td>
+</tr>
+<tr>
+<td><code>check_xiom_syntax</code></td>
+<td>Parse-only check for a fast syntax feedback loop</td>
+</tr>
+<tr>
+<td><code>format_xiom_code</code></td>
+<td>Format source with <code>xiom-fmt</code></td>
+</tr>
+<tr>
+<td><code>explain_error_code</code></td>
+<td>Full reference for an error code (for example <code>T001</code>)</td>
+</tr>
+<tr>
+<td><code>get_contract_signature</code></td>
+<td>requires/ensures/invariants for project code</td>
+</tr>
+<tr>
+<td><code>verify_contracts</code></td>
+<td>Run <code>xiom-verify</code>: Z3 results and counterexamples</td>
+</tr>
+<tr>
+<td><code>audit_safety_sandbox</code></td>
+<td>Enumerate and score <code>unsafe</code> blocks</td>
+</tr>
+<tr>
+<td><code>ai_diagnose</code></td>
+<td>Send diagnostics to a model for a fix suggestion</td>
+</tr>
+<tr>
+<td><code>hot_reload_watch</code></td>
+<td>Compile to a shared library and watch for changes</td>
+</tr>
+<tr>
+<td><code>xiom_cheatsheet</code></td>
+<td>Canonical patterns and idioms</td>
+</tr>
+<tr>
+<td><code>xiom_stdlib_reference</code></td>
+<td>Live-parsed stdlib modules with contracts</td>
+</tr>
+<tr>
+<td><code>xiom_language_guide</code></td>
+<td>Language semantics by topic (types, ownership, contracts)</td>
+</tr>
+<tr>
+<td><code>xiom_workflow_guide</code></td>
+<td>Toolchain operations; topic <code>context</code> returns the canonical context file</td>
+</tr>
+<tr>
+<td><code>search_packages</code></td>
+<td>Registry search (read-only, no token)</td>
+</tr>
+<tr>
+<td><code>package_info</code></td>
+<td>Registry metadata for one package (read-only, no token)</td>
+</tr>
+</table>
+<p>The canonical CLI, registry and limitations context that ships inside every release (<code>lib/AI_CONTEXT.md</code>) is also published on the documentation site as <a href="https://docs.xiom-lang.org/latest/toolchain-context/">Toolchain Context</a>. Toolchain updates are manual today: <code>xiom update</code> is retired because it used an unverified channel, and the <a href="https://docs.xiom-lang.org/latest/post-release-plan/">Post-release Plan</a> specifies the verified updater that will replace it.</p>
+<p>Register the server in any MCP-capable client:</p>
 <pre class="language-json"><code>
 {
   <span class='str'>mcpServers</span>: {

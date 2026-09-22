@@ -456,8 +456,33 @@ Remaining:
     (403). A 65-URL external scan is clean except reserved/blocked hosts
     (example.com placeholder, api.deepseek.com 401, LinkedIn bot 999, a
     `https://...` in a code comment).
+23. **Compiler-lane docs rendered (done 2026-09-22)**: the docs site now
+    publishes the compiler repo's canonical `AI_CONTEXT.md` as "Toolchain
+    Context" and `docs/POST_RELEASE_PLAN.md` as "Post-release Plan" under a
+    Project nav section, staged at build time from the compiler checkout
+    (`--toolchain-context`, `--post-release-plan`; docs-versioned passes
+    `.deps/xiom/...`), so the site describes the same toolchain the archives
+    carry. `compiler.md` gained a 16-tool MCP table (names and one-liners from
+    `crates/xiom-mcp`) plus pointers to both pages and the updater note. The
+    contracts "Contradictory = compile error" row was removed after probing:
+    contradictory `requires` and impossible invariants compile today.
 
 ## Cross-lane notes
+
+Compiler context file corrections (compiler lane, found 2026-09-22): the
+root `AI_CONTEXT.md` (shipped as `lib/AI_CONTEXT.md`, served by
+`xiom_workflow_guide {topic:"context"}`) maps diagnostics as "X contract",
+but the compiler emits no X codes. Re-probed v0.61.1: a runtime `requires`
+violation prints `contract violated: requires at 2:13` with no code;
+contract-related compile cases return `T001`; `--diagnostics=json` carries
+L/P/T/E/C codes only. The MCP `explain_error_code` description still uses
+`X0100` as its example, and the website's `docs/error_codes/` reference
+documents the real L/P/T/E/C/W families with X marked reserved. Ask the
+compiler lane to update the canonical file and the MCP example. Also probed
+and confirmed: contradictory `requires` clauses and impossible type
+invariants are not rejected today, so the contracts guide no longer claims
+"Contradictory = compile error"; either implement contradiction detection or
+keep the docs as they now read.
 
 Mirror lag blocks the four-platform docs (owner/compiler lane, found
 2026-09-22): the GitHub release v0.61.1 (published 07:22 UTC) carries
