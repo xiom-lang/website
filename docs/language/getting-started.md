@@ -219,9 +219,11 @@ from `XIOM_HOME`.
 
 ## Editor Support
 
-- **VS Code** -- an extension (language server, diagnostics, formatting) is
-  being published to the Marketplace and Open VSX; until the listing is live,
-  the client sources are in the toolchain repository.
+- **VS Code** -- install the **XIOM Toolchain** extension (0.12.0) from the
+  [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=xiom-lang.xiom)
+  or [Open VSX](https://open-vsx.org/extension/xiom-lang/xiom); it requires
+  toolchain v0.61.0 or newer and resolves `xiom-lsp` and `xiom-dbg` from the
+  installed toolchain.
 - **Language server (`xiom-lsp`)** and **debugger (`xiom-dbg`)** ship in recent
   releases and work with any LSP/DAP client; the [Debugging guide](debugger.md)
   covers compiling with `-g`, editor launch configs and the JSON API.

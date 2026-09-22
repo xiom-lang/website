@@ -45,7 +45,12 @@ VS Code (`launch.json`), with the XIOM extension installed:
 }
 ```
 
-The VS Code extension is being published to the Marketplace and Open VSX; until the listing is live, the client sources are in the toolchain repository. Neovim (`nvim-dap`) and Emacs (`dape`) are wired in the support matrix at [editors/README.md](https://github.com/xiom-lang/xiom/blob/main/editors/README.md).
+Install the **XIOM Toolchain** extension (0.12.0, requires toolchain v0.61.0
+or newer) from the
+[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=xiom-lang.xiom)
+or [Open VSX](https://open-vsx.org/extension/xiom-lang/xiom); it resolves
+`xiom-dbg` from the installed toolchain. Neovim (`nvim-dap`) and Emacs (`dape`)
+are wired in the support matrix at [editors/README.md](https://github.com/xiom-lang/xiom/blob/main/editors/README.md).
 
 `contractTraps: true` makes a failing `requires`, `ensures` or `invariant` stop the debugger like an exception, with the clause and location.
 

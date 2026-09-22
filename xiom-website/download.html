@@ -149,6 +149,16 @@ curl -fsSL https://xiom-lang.org/install.sh | sh -s -- --version &lt;tag&gt;</co
   </div>
 
   <div class="content-section">
+    <h2>Editor Support</h2>
+    <p>Install the toolchain first (above); the editor integration resolves <code>xiom-lsp</code> and <code>xiom-dbg</code> from that install at runtime and never bundles platform binaries. The VS Code extension requires toolchain <strong>v0.61.0 or newer</strong>.</p>
+    <ul>
+      <li><strong>VS Code</strong> -- install <strong>XIOM Toolchain</strong> (extension 0.12.0) from the <a href="https://marketplace.visualstudio.com/items?itemName=xiom-lang.xiom" style="color:var(--signal);">Visual Studio Marketplace</a> or <a href="https://open-vsx.org/extension/xiom-lang/xiom" style="color:var(--signal);">Open VSX</a>. It adds diagnostics, hover, completion, references, rename, formatting and DAP debugging. On first run it checks that <code>xiom</code>, <code>xiom-lsp</code> and <code>xiom-dbg</code> are available and tells you when they are missing.</li>
+      <li><strong>Other editors</strong> -- Neovim, JetBrains, Helix, Sublime and Emacs integrate through their LSP/DAP clients; the support matrix is in <a href="https://github.com/xiom-lang/xiom/blob/main/editors/README.md" style="color:var(--signal);">editors/README.md</a> (Zed planned).</li>
+      <li><strong>AI agents</strong> -- the bundled <code>xiom-mcp</code> server lets MCP-capable agents compile-check code and query the standard library and the package registry; see the <a href="https://docs.xiom-lang.org/latest/compiler/" style="color:var(--signal);">compiler guide</a>.</li>
+    </ul>
+  </div>
+
+  <div class="content-section">
     <h2>AI-assisted errors (--ai)</h2>
     <p><code>--ai</code> asks a model to explain compilation errors and writes the hints to <code>.xiom_ai.json</code>; source files are never modified. Local Ollama needs no key: <code>ollama pull codellama</code>, then <code>xiom --ai --ai-local source.xi</code>. For a cloud key, create <code>.xiom_ai_config.json</code> in your project or in the install directory (<code>%LOCALAPPDATA%\xiom</code> on Windows, <code>~/.local/share/xiom</code> on Linux/macOS); the project file wins, then the install directory, then your home directory.</p>
     <pre><code>{ "provider": "deepseek", "endpoint": "https://api.deepseek.com", "api_key": "sk-your-key-here", "model": "deepseek-chat" }</code></pre>
