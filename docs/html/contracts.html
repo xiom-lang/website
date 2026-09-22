@@ -178,10 +178,10 @@
   <span class='kw'>invariant</span>: maximum &gt; <span class='num'>0</span>;
 }
 
-<span class='cm'>// The compiler rejects any code that could violate these invariants.</span>
-<span class='cm'>// No runtime crash -- compile error.</span>
+<span class='cm'>// Invariants remain part of the <span class='kw'>type</span> contract.</span>
+<span class='cm'>// Enforcement coverage <span class='kw'>in</span> the current compiler <span class='kw'>is</span> partial.</span>
 </code></pre>
-<p>The compiler guarantees these invariants hold after every mutation. Any code path that could violate them is a compile error.</p>
+<p>Invariants are intended to hold after every mutation. The current compiler does not reject every code path that could violate one, and runtime invariant checking is not applied on every mutation path yet; treat invariants as binding and test the paths that matter.</p>
 <h2>Contract Collection Methods</h2>
 <p>To reduce verbosity, the standard library provides contract-focused methods on collections:</p>
 <table>

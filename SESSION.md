@@ -507,6 +507,19 @@ invariants are not rejected today, so the contracts guide no longer claims
 "Contradictory = compile error"; either implement contradiction detection or
 keep the docs as they now read.
 
+Specification wording (compiler lane, 2026-09-22): the authoritative
+`specs/XIOM_Language_Spec.md` still contains statements the reviewer wants
+gone -- "no runtime" (line 43), "Static (Phase 3)" (line 538) and
+"No runtime crash -- compile error" (line 497). The website spec page now
+labels Revision 0.3 as the core-language reference, states that self-hosting
+gates are cleared with no self-hosted release, and describes contracts as
+runtime guards plus an export path rather than a proof. When the compiler
+lane publishes the next revision, update `specs/` and the page together.
+Also probed and confirmed: a direct field assignment that violates a type
+invariant compiles and does not trap at runtime today, so the specification
+row and `contracts.md` now say invariant enforcement coverage is partial
+instead of claiming the compiler rejects such paths.
+
 Mirror lag blocks the four-platform docs (owner/compiler lane, found
 2026-09-22): the GitHub release v0.61.1 (published 07:22 UTC) carries
 linux-x64, windows-x64, macos-x64 and macos-arm64 archives plus the
@@ -705,7 +718,10 @@ Next, in order:
    research paper; when the owner says it is public, add a "Reproducible
    evidence" page (task definition, generated source, compiler output,
    runtime results, contract configuration, tool interactions, tokens,
-   environment, sessions) and link it from the Why page.
+   environment, sessions) and link it from the Why page. Until then the
+   homepage carries an "AI benchmark -- in preparation" card listing the
+   measured dimensions and the three context conditions (no context,
+   retrieved docs, MCP tools), with no results or numbers claimed.
 3. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).

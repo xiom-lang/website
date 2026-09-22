@@ -51,11 +51,11 @@ type Health = {
   invariant: maximum > 0;
 }
 
-// The compiler rejects any code that could violate these invariants.
-// No runtime crash -- compile error.
+// Invariants remain part of the type contract.
+// Enforcement coverage in the current compiler is partial.
 ```
 
-The compiler guarantees these invariants hold after every mutation. Any code path that could violate them is a compile error.
+Invariants are intended to hold after every mutation. The current compiler does not reject every code path that could violate one, and runtime invariant checking is not applied on every mutation path yet; treat invariants as binding and test the paths that matter.
 
 ## Contract Collection Methods
 
