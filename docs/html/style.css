@@ -1024,30 +1024,94 @@ footer p {
     0 0 16px rgba(76, 180, 255, 0.2);
 }
 
-/* Index masthead: a touch more centred and larger than the section banners,
-   centred on the dark open area of the hero artwork. */
-.xiom-banner-text--index {
-  left: 28%;
+/* Index hero: the artwork as a background with a directional scrim, and the
+   full intro (masthead, headline, copy, CTAs and the code panel) as a
+   two-column overlay. The scrim keeps text contrast without dimming the
+   subject on the right. */
+.hero-index {
+  position: relative;
+  background: #05080f url("img/hero.webp") center right / cover no-repeat;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
 }
 
-.xiom-banner-text--index .xiom-brand {
-  font-size: clamp(36px, 3.6vw, 66px);
-  letter-spacing: 0.3em;
+.hero-index::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    rgba(5, 8, 15, 0.95) 0%,
+    rgba(5, 8, 15, 0.86) 40%,
+    rgba(5, 8, 15, 0.46) 66%,
+    rgba(5, 8, 15, 0.2) 100%);
+  pointer-events: none;
 }
 
-.xiom-banner-text--index .xiom-section {
-  font-size: clamp(11px, 0.95vw, 17px);
+.hero-index-inner {
+  position: relative;
+  z-index: 1;
+  padding: clamp(56px, 6vw, 96px) 0 clamp(48px, 5vw, 80px);
 }
 
-.xiom-banner-text--index .xiom-accent {
+.hero-index-grid {
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+/* The proof block below the hero: code panel beside a short explanation,
+   on the page surface where code contrast is guaranteed. */
+.hero-proof {
+  padding: clamp(48px, 5vw, 72px) 0;
+}
+
+.hero-proof-grid {
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.hero-proof-title {
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.3;
+  margin: 0 0 12px;
+}
+
+.hero-proof-text {
+  color: var(--paper-dim);
+  max-width: 480px;
+}
+
+.hero-index-copy {
+  max-width: 600px;
+}
+
+.hero-index .xiom-brand {
+  font-size: clamp(32px, 3.2vw, 58px);
+}
+
+.hero-index .xiom-section {
+  margin-top: 12px;
+  font-size: clamp(11px, 0.95vw, 16px);
+}
+
+.hero-index .xiom-accent {
   width: 56px;
   margin-top: 20px;
 }
 
-/* Intro block below the index masthead: keep the two-column hero content,
-   drop the blueprint wash and the oversized top padding. */
-.hero--intro {
-  padding: 48px 0 8px;
+.hero-index .hero-headline {
+  margin: 26px 0 var(--space-md);
+  font-size: clamp(28px, 3vw, 42px);
+}
+
+.hero-index .lede {
+  color: var(--paper-dim);
+  max-width: 520px;
+}
+
+.hero-index-links {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 18px 0 0;
 }
 
 .hero-headline {
@@ -1162,12 +1226,17 @@ footer p {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .eco-grid--visual { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .xiom-banner-text { left: 20%; }
-  .xiom-banner-text--index { left: 26%; }
-  .xiom-banner-text--index .xiom-brand { font-size: clamp(26px, 5.2vw, 42px); letter-spacing: 0.26em; }
-  .xiom-banner-text--index .xiom-section { font-size: clamp(9px, 2.1vw, 13px); }
-  .xiom-banner-text--index .xiom-accent { width: 40px; margin-top: 12px; }
-  .hero--intro { padding: 36px 0 8px; }
-  .hero-headline { font-size: 30px; }
+  .hero-index { background-position: 62% center; }
+  .hero-index::before {
+    background: linear-gradient(180deg,
+      rgba(5, 8, 15, 0.9) 0%,
+      rgba(5, 8, 15, 0.82) 45%,
+      rgba(5, 8, 15, 0.94) 100%);
+  }
+  .hero-index-inner { padding: 44px 0 40px; }
+  .hero-index-copy { max-width: none; }
+  .hero-index .hero-headline { font-size: 28px; }
+  .hero-proof { padding: 40px 0; }
   .xiom-brand { font-size: clamp(22px, 4.6vw, 34px); letter-spacing: 0.22em; }
   .xiom-section { margin-top: 9px; font-size: clamp(8px, 1.9vw, 12px); letter-spacing: 0.26em; }
   .xiom-section.long-title { font-size: clamp(7px, 1.6vw, 11px); letter-spacing: 0.18em; }
