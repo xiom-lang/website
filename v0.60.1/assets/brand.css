@@ -20,8 +20,11 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   --md-default-fg-color: #DDE1E8;
   --md-default-fg-color--light: #C3C8D1;
   --md-default-fg-color--lighter: #99A0AD;
-  --md-code-bg-color: #15181E;
-  --md-code-fg-color: #DDE1E8;
+  /* Code surfaces sit one step above the page so inline chips and blocks are
+     distinguishable. Measured WCAG ratios on #1A1E26: body 13.5:1, comments
+     7.4:1, every token >= 6:1. */
+  --md-code-bg-color: #1A1E26;
+  --md-code-fg-color: #E3E7EE;
   --md-typeset-a-color: #8A93FF;
 }
 
@@ -49,35 +52,52 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   background-color: #3F4BD1;
 }
 
-/* Typography: stronger headings, comfortable table and code sizes */
+/* Typography: one type scale for guide pages and generated API pages, so a
+   module listing and a guide read at the same sizes. */
 .md-typeset h1 {
   color: var(--md-default-fg-color);
+  font-size: 1.8rem;
+  line-height: 1.25;
   font-weight: 650;
 }
 
-.md-typeset h2,
-.md-typeset h3 {
+.md-typeset h2 {
+  font-size: 1.35rem;
+  line-height: 1.3;
   font-weight: 650;
+}
+
+.md-typeset h3 {
+  font-size: 1.1rem;
+  line-height: 1.35;
+  font-weight: 650;
+}
+
+.md-typeset h4 {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  font-weight: 600;
 }
 
 .md-typeset table:not([class]) {
-  font-size: 0.875em;
+  font-size: 0.8rem;
 }
 
 .md-typeset code {
-  font-size: 0.8125em;
+  font-size: 0.82em;
 }
 
 .md-typeset pre > code {
-  font-size: 0.8125em;
+  font-size: 0.8rem;
 }
 
-/* Declaration headings (API signatures) are code; keep them from towering */
+/* Signature code inside headings uses one size everywhere (it used to be
+   three different sizes for h1/h2/h4 code). */
 .md-typeset h1 code,
 .md-typeset h2 code,
 .md-typeset h3 code,
 .md-typeset h4 code {
-  font-size: 0.72em;
+  font-size: 0.92em;
 }
 
 /* Table of contents: compact, tidy, code-free */
@@ -119,23 +139,19 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   color: inherit;
 }
 
-/* API module pages: declarations are H4, so pages containing them (guides
-   have no H4) get file-section dividers and readable declaration rows. */
-.md-typeset h4 {
-  margin: 1.9em 0 0.4em;
-  padding-top: 1.1em;
+/* Generated API pages only (guides have no H4): declaration rows, module
+   purpose and field tables sit on one consistent scale. Scoped to :has(h4)
+   so guide callouts keep their Material quote styling. */
+.md-typeset:has(h4) h4 {
+  margin: 1.6em 0 0.35em;
+  padding-top: 0.9em;
   border-top: 1px solid var(--md-default-fg-color--lightest);
-  font-weight: 600;
   color: var(--md-default-fg-color);
 }
 
-.md-typeset h4 code {
-  font-size: 0.84em;
-}
-
-/* Doc prose directly under a declaration reads as text, not a quote */
-.md-typeset h4 + blockquote {
-  margin: 0 0 0.9em;
+.md-typeset:has(h4) h4 + blockquote,
+.md-typeset:has(h4) h1 + blockquote {
+  margin: 0 0 0.8em;
   padding: 0;
   border: 0;
   color: var(--md-default-fg-color--light);
@@ -144,16 +160,14 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 }
 
 .md-typeset:has(h4) h2 {
-  margin-top: 2.2em;
-  padding-top: 1em;
+  margin-top: 2rem;
+  padding-top: 0.9em;
   border-top: 1px solid var(--md-default-fg-color--lightest);
 }
 
-.md-typeset:has(h4) h2 code {
-  font-size: 0.85em;
-}
-
-.md-typeset:has(h4) ul li {
+.md-typeset:has(h4) ul li,
+.md-typeset:has(h4) ol li,
+.md-typeset:has(h4) table:not([class]) {
   font-size: 0.8rem;
   line-height: 1.65;
 }
@@ -205,23 +219,25 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 /* XIOM token colours (docs/xiom_lexer.py). Material maps Pygments token
    classes onto these variables; matching the standalone docs palette keeps
-   the two documentation builds visually consistent. */
+   the two documentation builds visually consistent. Values are picked so
+   every token clears WCAG AA (4.5:1) on its code background: light values are
+   measured on #EDEFF3, dark values on #1A1E26. */
 [data-md-color-scheme="default"] {
-  --md-code-hl-keyword-color: #5c6bc0;
-  --md-code-hl-function-color: #00796b;
-  --md-code-hl-constant-color: #b26a00;
-  --md-code-hl-string-color: #2e7d32;
-  --md-code-hl-number-color: #6a4fbf;
-  --md-code-hl-comment-color: #6b7280;
+  --md-code-hl-keyword-color: #3f4bd1;   /* 5.8:1 */
+  --md-code-hl-function-color: #00695c;  /* 5.8:1 */
+  --md-code-hl-constant-color: #9a5b00;  /* 4.7:1 */
+  --md-code-hl-string-color: #256b2a;    /* 5.7:1 */
+  --md-code-hl-number-color: #6a4fbf;    /* 5.2:1 */
+  --md-code-hl-comment-color: #555c6b;   /* 5.8:1 */
 }
 
 [data-md-color-scheme="slate"] {
-  --md-code-hl-keyword-color: #8a93ff;
-  --md-code-hl-function-color: #4fd1c5;
-  --md-code-hl-constant-color: #f0b445;
-  --md-code-hl-string-color: #34d399;
-  --md-code-hl-number-color: #c4b5fd;
-  --md-code-hl-comment-color: #7a7f8c;
+  --md-code-hl-keyword-color: #8a93ff;   /* 6.1:1 */
+  --md-code-hl-function-color: #4fd1c5;  /* 9.0:1 */
+  --md-code-hl-constant-color: #f0b445;  /* 9.0:1 */
+  --md-code-hl-string-color: #34d399;    /* 8.7:1 */
+  --md-code-hl-number-color: #c4b5fd;    /* 9.0:1 */
+  --md-code-hl-comment-color: #a6adbc;   /* 7.4:1 */
 }
 
 /* The owner asked to drop the skip-to-content affordance. */
