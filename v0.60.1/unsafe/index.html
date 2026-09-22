@@ -622,6 +622,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#runtime-assembly-is-not-user-unsafe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Assembly Is Not User Unsafe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2754,6 +2765,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#runtime-assembly-is-not-user-unsafe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Assembly Is Not User Unsafe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2940,6 +2962,13 @@ xiom --sandbox-report=json file.xi  # machine-readable report
 <li>Contracts: they still run (unless stripped) inside and outside unsafe blocks.</li>
 <li>Review expectations: an unsafe block is the place to document the invariant the compiler cannot see.</li>
 </ul>
+<h2 id="runtime-assembly-is-not-user-unsafe">Runtime Assembly Is Not User Unsafe<a class="headerlink" href="#runtime-assembly-is-not-user-unsafe" title="Permanent link">&para;</a></h2>
+<p>The toolchain ships hand-written x86_64 assembly for some runtime hot paths
+(crypto primitives, bulk memory operations, context switching). That code
+belongs to the trusted runtime, not to the <code>unsafe</code> blocks described here: the
+confinement model on this page does not apply to it, and the contract verifier
+treats it as an implementation of a contract rather than something it proves.
+The <a href="../contracts/">contracts guide</a> states the boundary in full.</p>
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../memory-model/">Memory Model</a> -- ownership, borrowing, and where unsafe fits</li>

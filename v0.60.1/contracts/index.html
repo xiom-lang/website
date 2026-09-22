@@ -627,6 +627,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#verification-scope-and-the-trusted-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification Scope and the Trusted Base
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#runtime-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2721,6 +2732,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#verification-scope-and-the-trusted-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification Scope and the Trusted Base
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#runtime-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2886,15 +2908,23 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <tbody>
 <tr>
 <td><strong>Runtime guard (default)</strong></td>
-<td>Inserted when static proof fails or is unavailable. Panics with a clear message on violation.</td>
+<td>Contracts compile to checks that trap on violation. This is the default enforcement.</td>
 </tr>
 <tr>
-<td><strong>Static (Phase 3)</strong></td>
-<td>Compiler attempts Z3 SMT proof. Zero runtime cost if proven.</td>
+<td><strong><code>--no-contracts</code></strong></td>
+<td>Removes the guards at compile time.</td>
 </tr>
 <tr>
-<td><strong>Disabled (<code>--no-contracts</code>)</strong></td>
-<td>Strips all contracts in release builds when explicitly requested. Opt-in only.</td>
+<td><strong><code>--release</code></strong></td>
+<td>Strips guards unless <code>--runtime-contracts</code> forces them.</td>
+</tr>
+<tr>
+<td><strong>Exported obligations (<code>--verify</code>)</strong></td>
+<td>Writes SMT-LIB proof obligations and makes no proof claim.</td>
+</tr>
+<tr>
+<td><strong>Checked (<code>xiom-verify --check</code>)</strong></td>
+<td>Runs the bundled z3 over the exported obligations and returns Proven, Violated or UNKNOWN. Only <code>unsat</code> counts as proved.</td>
 </tr>
 <tr>
 <td><strong>Contradictory</strong></td>
@@ -2902,6 +2932,30 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </tr>
 </tbody>
 </table>
+<h2 id="verification-scope-and-the-trusted-base">Verification Scope and the Trusted Base<a class="headerlink" href="#verification-scope-and-the-trusted-base" title="Permanent link">&para;</a></h2>
+<p>The verifier reasons about contracts, not about implementations. When it
+proves one of your functions, it has discharged the obligations that follow
+from the contracts of the functions that function calls; it has not inspected
+the bodies of those functions. That boundary matters for the standard library:</p>
+<ul>
+<li>Standard library functions carry contracts and are enforced like any other
+  code, but the verifier treats their <code>ensures</code> clauses as assumptions it may
+  use when reasoning about a caller.</li>
+<li>Some standard library hot paths are implemented in hand-written x86_64
+  assembly - crypto primitives, bulk memory operations and context switching -
+  with portable equivalents used when the assembly paths are not built in
+  (the toolchain compiles the runtime without them when NASM is unavailable;
+  see the toolchain's <code>xiom doctor</code> output). Those implementations sit inside
+  the trusted base: the verifier does not prove assembly.</li>
+<li>Equivalence between accelerated and portable paths is an engineering
+  property kept by testing the same inputs through both, not something the
+  solver establishes.</li>
+</ul>
+<p>So a proof carries one assumption: that the standard library honors its
+contracts. Where a function is accelerated is an implementation detail; the
+contract is the interface, and the contract is what gets verified. The
+repository audits that track which symbols are assembly-backed live in the
+standard library, not on this page.</p>
 <h2 id="runtime-behavior">Runtime Behavior<a class="headerlink" href="#runtime-behavior" title="Permanent link">&para;</a></h2>
 <p>When a contract is violated at runtime, the compiler emits:</p>
 <div class="highlight"><pre><span></span><code>contract violated: requires b != 0.0 at divide:2
@@ -2920,8 +2974,8 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <p>Contracts are machine-readable intent. When AI generates code:</p>
 <ol>
 <li>AI writes a function with stated intent (<code>requires</code> and <code>ensures</code>)</li>
-<li>The compiler checks the implementation against that intent</li>
-<li>Violations are caught at compile time or the first test run</li>
+<li>The toolchain enforces the contract at runtime and exports supported obligations to the verifier</li>
+<li>Violations surface on the first run that exercises them; proven obligations are reported per the verdict rules above</li>
 <li>The contract is machine-readable, so the AI itself can reason about it when composing functions</li>
 </ol>
 <p>This is not about making AI better at writing code. It is about making the output <strong>verifiable by construction</strong> rather than by human review.</p>
