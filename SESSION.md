@@ -466,6 +466,17 @@ Remaining:
     `crates/xiom-mcp`) plus pointers to both pages and the updater note. The
     contracts "Contradictory = compile error" row was removed after probing:
     contradictory `requires` and impossible invariants compile today.
+24. **Docs design pass (done 2026-09-22)**: MkDocs type scale unified so
+    guides and generated API pages share heading, table, code and list sizes
+    (removed three different heading-code sizes and the unscoped H4 rules;
+    API refinements now scope to `:has(h4)`, which guides never match).
+    Contrast measured with WCAG ratios and fixed in both schemes: dark code
+    background lifted to #1A1E26 (chips/blocks now distinguishable from the
+    page), dark comments #7A7F8C -> #A6ADBC (4.2:1 -> 7.4:1); light tokens
+    were actually below AA on the code background (constant 3.7:1, keyword
+    4.2:1, comment 4.2:1) and now use #3F4BD1/#00695C/#9A5B00/#256B2A/#6A4FBF/
+    #555C6B (4.7-5.8:1). The standalone docs palette mirrors the dark comment
+    change (#A6ADBC on #111217, 8:1).
 
 ## Cross-lane notes
 
