@@ -2888,7 +2888,7 @@ Flags: <code>--opt-level N</code> (<code>-O0..-O3</code>), <code>--no-contracts<
 <code>--dump-contracts</code>, <code>--explain CODE</code>, <code>--sandbox[=strict]</code>,
 <code>--sandbox-report=json</code>, <code>--timeout SECS</code>, <code>-l LIB</code>, <code>-L PATH</code>,
 <code>--c-source FILE.c</code>.</p>
-<p>Scripts (<code>xiom run</code> — implicit <code>fn main()</code>, top-level statements allowed):
+<p>Scripts (<code>xiom run</code> -- implicit <code>fn main()</code>, top-level statements allowed):
 <div class="highlight"><pre><span></span><code>xiom run script.xi               # execute
 xiom run -e "io.println(\"hi\")" # inline expression
 echo "..." | xiom run -          # stdin
@@ -2900,8 +2900,8 @@ The script cache is content-hash keyed (source + compiler build identity +
 effective opt level) in <code>$HOME/.xiom/jit</code>, with a <code>$TMPDIR/xiom_jit</code> fallback
 when HOME is unset or unwritable.</p>
 <p>Other: <code>xiom doc</code>, <code>xiom graph[=mermaid]</code>, <code>xiom --standalone script.xi -o out</code>,
-<code>xiom new NAME</code>, <code>xiom init</code>, <code>xiom install</code> (deprecated → <code>xiom pkg install</code>),
-<code>xiom update</code> (RETIRED — it used an unverified channel; a verified updater is
+<code>xiom new NAME</code>, <code>xiom init</code>, <code>xiom install</code> (deprecated -&gt; <code>xiom pkg install</code>),
+<code>xiom update</code> (RETIRED -- it used an unverified channel; a verified updater is
 planned, see <code>docs/POST_RELEASE_PLAN.md</code>).</p>
 <h2 id="packages-and-the-registry">Packages and the registry<a class="headerlink" href="#packages-and-the-registry" title="Permanent link">&para;</a></h2>
 <p>Manifest <code>package.xi</code> at the project root:
@@ -2938,10 +2938,10 @@ xiom pkg lock
   destructuring, <code>unwrap</code> / <code>unwrap_or</code> / <code>expect</code>. Tuple payloads through <code>?</code>
   are supported.</li>
 <li>Generics: functions/types with bounds; interfaces via
-  <code>impl Trait[Type] { ... }</code> (methods are STATIC there — <code>self</code> is the impl
+  <code>impl Trait[Type] { ... }</code> (methods are STATIC there -- <code>self</code> is the impl
   type). Calls on interface-typed VALUES with aggregate arguments are NOT
   implemented and are rejected loudly; function-value identity (<code>f == g</code> for
-  named functions) is unspecified — do not rely on it.</li>
+  named functions) is unspecified -- do not rely on it.</li>
 <li>Modules: <code>module a.b.c</code>, <code>use a.b;</code>, <code>pub</code> exports; the stdlib resolves as
   <code>xiom.&lt;module&gt;</code> from the bundled <code>lib/</code>.</li>
 <li>Unsafe/FFI: <code>unsafe { ... }</code>, <code>extern "C"</code> with confinement gates
@@ -2958,13 +2958,13 @@ xiom pkg lock
 <code>xiom_language_guide</code>, <code>xiom_workflow_guide</code>, <code>search_packages</code>,
 <code>package_info</code>.</p>
 <ul>
-<li><code>xiom_stdlib_reference {module?}</code> — live-parses the bundled stdlib: module
+<li><code>xiom_stdlib_reference {module?}</code> -- live-parses the bundled stdlib: module
   list, then public signatures <strong>with contracts</strong>.</li>
-<li><code>get_contract_signature {file, function_name?}</code> — requires/ensures/
+<li><code>get_contract_signature {file, function_name?}</code> -- requires/ensures/
   invariants for project code.</li>
-<li><code>verify_contracts {file, check?}</code> — Z3 proof results + counterexamples
+<li><code>verify_contracts {file, check?}</code> -- Z3 proof results + counterexamples
   (needs <code>z3</code>; it is bundled in <code>bin/</code>).</li>
-<li><code>search_packages</code> / <code>package_info</code> — registry search/info (read-only, no
+<li><code>search_packages</code> / <code>package_info</code> -- registry search/info (read-only, no
   token); staging-verified.</li>
 <li>Guide topics: <code>xiom_language_guide {topic}</code> and
   <code>xiom_workflow_guide {topic}</code>; use topic <strong><code>context</code></strong> for this file.</li>
@@ -2973,7 +2973,7 @@ xiom pkg lock
 <ul>
 <li>Interface value-receiver ABI not implemented (loud compile error).</li>
 <li>Named function values are not first-class; identity is unspecified.</li>
-<li>Generic <code>T.to_str()</code> conversion dispatch prints invalid values — use a
+<li>Generic <code>T.to_str()</code> conversion dispatch prints invalid values -- use a
   concrete type or <code>fmt.format1</code>.</li>
 <li><code>xiom update</code> retired; toolchain updates are manual until the verified
   updater lands (<code>docs/POST_RELEASE_PLAN.md</code>).</li>
