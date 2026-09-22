@@ -1048,6 +1048,38 @@ footer p {
   color: var(--signal);
 }
 
+/* Tagline placement: inside the hero on wide screens, below the banner on
+   small ones. Both copies carry display:none by default, so exactly one is in
+   the accessibility tree per viewport and nothing is announced twice. */
+.page-banner-tagline--inline,
+.page-banner-tagline--flow {
+  display: none;
+}
+
+@media (min-width: 861px) {
+  .page-banner-tagline--inline {
+    display: block;
+    margin: 18px 0 0;
+    max-width: 30ch;
+    white-space: normal;
+    font-size: clamp(15px, 1.1vw, 21px);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: 0;
+    color: #dde1e8;
+  }
+
+  .page-banner-tagline--inline em {
+    color: #8a93ff;
+  }
+}
+
+@media (max-width: 860px) {
+  .page-banner-tagline--flow {
+    display: block;
+  }
+}
+
 .page-banner-lede {
   color: var(--muted);
   font-size: 15.5px;
@@ -1064,6 +1096,17 @@ footer p {
   @keyframes xiomFadeIn {
     from { opacity: 0; transform: translate(-12px, -50%); }
     to { opacity: 1; transform: translate(0, -50%); }
+  }
+
+  /* A restrained settle instead of parallax: the art never moves with the
+     scroll, it just eases from 102% to 100% once on load. */
+  .page-banner img {
+    animation: bannerSettle 1200ms ease-out both;
+  }
+
+  @keyframes bannerSettle {
+    from { transform: scale(1.02); }
+    to { transform: scale(1); }
   }
 }
 
