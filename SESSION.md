@@ -584,32 +584,28 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-09-21): HEAD 6723640. Copyright notices across the repo read
+State (2026-09-22): HEAD 958cdaa. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
 rewritten around intent -> enforcement -> AI, spec page labelled Revision
 0.3 for the core language, 128-bit primitives documented, module purpose
 lines rendered, syntax examples aligned to requires:/ensures: colons and
-use semicolons). Module purposes come from stdlib primary files; the driver
-prefers "// Purpose:" lines. The "Prior art and trade-offs" page is live
-(prior-art.html) and linked from spec section 8, the Why page and the
-homepage why-section; C# rows were added to the Concepts page and the
-docs wording now matches the page (no "same safety as Rust", contracts are
-not unique to XIOM). The snippet syntax lint is live in `docs.yml`
-(`docs/check_syntax.py`) and the current corpus is clean. The UI/UX pass
-landed on 2026-09-21: rebuilt footer and Prior art nav item across the site
-and the generated docs, a new History page, styled code blocks, and version
-teaching removed from the user guides. All guide syntax was audited against
-a local v0.61.0 compiler build on 2026-09-21 (see item 12): `if let`, range
-expressions and the `Byte` alias are not implemented and the docs no longer
-claim them; labeled loops, `loop`, `defer`, `const` blocks, `while let` and
-the numeric widths/casts are now documented and probe-verified. The unsafe
-guide and the Contributing hub landed on 2026-09-21 (items 12-13); commits
-now carry `-s` sign-off. The social row (eight inline SVG icons) is in the
-footer of every page and the generated docs; `docs/wikipedia-draft.md` is a
-planning/fact sheet only (Wikipedia prohibits LLM-written article text) and
-`docs/marketplace-publisher.md` holds the marketplace copy.
+use semicolons). The snippet syntax lint runs in `docs.yml` and
+`docs-versioned.yml` and the corpus is clean. Since then: the Prior art
+page, History page, unsafe guide, Contributing hub, error-code reference
+(L001/P001/T001/E001/C001/W000/W001, X family reserved), debugger guide,
+MkDocs XIOM highlighting, version-teaching removal, footer/social rebuild,
+a full mobile pass, the editor-support block (XIOM Toolchain 0.12.0, both
+listings live), the verification trust-boundary section, and an
+external-link fix (absolute GitHub `.md` URLs are no longer rewritten to
+`.html`). All guide syntax was audited against a local v0.61.0 compiler
+build: `if let`, range expressions and the `Byte` alias are not implemented
+and the docs no longer claim them; labeled loops, `loop`, `defer`, `const`
+blocks, `while let` and the numeric widths/casts are documented and
+probe-verified. Commits carry `-s` sign-off. The publishing files
+(`docs/wikipedia-draft.md` planning sheet, `docs/marketplace-publisher.md`
+copy) live in docs/ and are not built into the site.
 
 Next, in order:
 1. Draft "XIOM for game developers" once the owner provides engine facts
