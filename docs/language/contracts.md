@@ -89,10 +89,38 @@ fn filter_positive(items: &Vec[Int]) -> Vec[Int]
 
 | Mode | Behavior |
 |------|----------|
-| **Runtime guard (default)** | Inserted when static proof fails or is unavailable. Panics with a clear message on violation. |
-| **Static (Phase 3)** | Compiler attempts Z3 SMT proof. Zero runtime cost if proven. |
-| **Disabled (`--no-contracts`)** | Strips all contracts in release builds when explicitly requested. Opt-in only. |
+| **Runtime guard (default)** | Contracts compile to checks that trap on violation. This is the default enforcement. |
+| **`--no-contracts`** | Removes the guards at compile time. |
+| **`--release`** | Strips guards unless `--runtime-contracts` forces them. |
+| **Exported obligations (`--verify`)** | Writes SMT-LIB proof obligations and makes no proof claim. |
+| **Checked (`xiom-verify --check`)** | Runs the bundled z3 over the exported obligations and returns Proven, Violated or UNKNOWN. Only `unsat` counts as proved. |
 | **Contradictory** | Compile error. The specification is logically impossible to satisfy. |
+
+## Verification Scope and the Trusted Base
+
+The verifier reasons about contracts, not about implementations. When it
+proves one of your functions, it has discharged the obligations that follow
+from the contracts of the functions that function calls; it has not inspected
+the bodies of those functions. That boundary matters for the standard library:
+
+- Standard library functions carry contracts and are enforced like any other
+  code, but the verifier treats their `ensures` clauses as assumptions it may
+  use when reasoning about a caller.
+- Some standard library hot paths are implemented in hand-written x86_64
+  assembly - crypto primitives, bulk memory operations and context switching -
+  with portable equivalents used when the assembly paths are not built in
+  (the toolchain compiles the runtime without them when NASM is unavailable;
+  see the toolchain's `xiom doctor` output). Those implementations sit inside
+  the trusted base: the verifier does not prove assembly.
+- Equivalence between accelerated and portable paths is an engineering
+  property kept by testing the same inputs through both, not something the
+  solver establishes.
+
+So a proof carries one assumption: that the standard library honors its
+contracts. Where a function is accelerated is an implementation detail; the
+contract is the interface, and the contract is what gets verified. The
+repository audits that track which symbols are assembly-backed live in the
+standard library, not on this page.
 
 ## Runtime Behavior
 
@@ -121,8 +149,8 @@ Enable structured diagnostics with `--diagnostics=json` for machine-readable out
 Contracts are machine-readable intent. When AI generates code:
 
 1. AI writes a function with stated intent (`requires` and `ensures`)
-2. The compiler checks the implementation against that intent
-3. Violations are caught at compile time or the first test run
+2. The toolchain enforces the contract at runtime and exports supported obligations to the verifier
+3. Violations surface on the first run that exercises them; proven obligations are reported per the verdict rules above
 4. The contract is machine-readable, so the AI itself can reason about it when composing functions
 
 This is not about making AI better at writing code. It is about making the output **verifiable by construction** rather than by human review.

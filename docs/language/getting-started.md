@@ -16,8 +16,9 @@ Release installs need one external tool; everything else is optional:
   - Fedora: `sudo dnf install clang`
 - **NASM 2.15 or newer (recommended).** Source builds with the `nasm` feature
   use it to assemble the hardware-accelerated runtime (crypto, memory, context
-  switching); released binaries fall back to the C runtime when it is absent.
-  `xiom doctor` reports whether it was found.
+  switching). Without NASM the toolchain compiles the runtime without those
+  assembly paths; `xiom doctor` reports whether it was found. The contracts
+  guide documents how this affects the verification boundary.
   - Windows: `winget install NASM.NASM`
   - macOS: `brew install nasm`
   - Debian/Ubuntu: `sudo apt install nasm`

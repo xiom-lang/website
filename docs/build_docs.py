@@ -58,7 +58,10 @@ def md_to_html(text: str) -> str:
 
     def link_repl(m):
         text, url = m.group(1), m.group(2)
-        url = re.sub(r'\.md(?=#|$)', '.html', url)
+        # Only rewrite relative document links; absolute URLs (GitHub blob
+        # links ending in .md, external docs, mailto:) must stay untouched.
+        if not re.match(r'[a-zA-Z][a-zA-Z0-9+.-]*:', url) and not url.startswith('//'):
+            url = re.sub(r'\.md(?=#|$)', '.html', url)
         # Links written as ../<page> refer to the docs root; built root pages
         # are published flat, so drop the prefix for those.
         if url.startswith('../') and url.rsplit('/', 1)[-1] in ROOT_PAGES:

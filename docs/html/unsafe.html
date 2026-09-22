@@ -271,6 +271,8 @@ xiom --sandbox-report=json file.xi  # machine-readable report
 <li>Contracts: they still run (unless stripped) inside and outside unsafe blocks.</li>
 <li>Review expectations: an unsafe block is the place to document the invariant the compiler cannot see.</li>
 </ul>
+<h2>Runtime Assembly Is Not User Unsafe</h2>
+<p>The toolchain ships hand-written x86_64 assembly for some runtime hot paths (crypto primitives, bulk memory operations, context switching). That code belongs to the trusted runtime, not to the <code>unsafe</code> blocks described here: the confinement model on this page does not apply to it, and the contract verifier treats it as an implementation of a contract rather than something it proves. The <a href="contracts.html">contracts guide</a> states the boundary in full.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="memory-model.html">Memory Model</a> -- ownership, borrowing, and where unsafe fits</li>

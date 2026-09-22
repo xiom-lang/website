@@ -431,8 +431,44 @@ Remaining:
     error. `syntax.md`, `pattern-matching.md`, `memory-model.md` and
     `AI_CONTEXT.md` now state the rule, the current behaviour and the E001/W000
     codes instead of claiming the compiler enforces them.
+21. **Trusted-base boundary documented (done 2026-09-22)**: the contracts page
+    now carries the reviewer's requested "Verification Scope and the Trusted
+    Base" section -- the verifier reasons about contracts, not implementations;
+    stdlib `ensures` clauses are assumptions; the assembly-accelerated hot
+    paths (crypto, bulk memory, context switching) sit inside the trusted base;
+    accelerated/portable equivalence is a testing property, not a proof. The
+    Verification Modes table was rewritten to the settled wording (runtime
+    guards by default, `--verify` export, `xiom-verify --check` with the bundled
+    z3, only `unsat` proves) and the AI section no longer claims compile-time
+    enforcement. `unsafe.md` gained "Runtime Assembly Is Not User Unsafe"; the
+    NASM prerequisite no longer claims an equivalent C fallback.
+22. **Broken external links fixed (done 2026-09-22)**: the standalone docs
+    builder rewrote `.md` to `.html` inside absolute URLs, so every GitHub blob
+    link in the generated pages 404ed (CONTRIBUTING, LICENSING, GOVERNANCE,
+    SECURITY, SUPPORT, CODE_OF_CONDUCT, editors/README, stdlib limitations);
+    `link_repl` now skips URLs with a scheme. The download page's pre-JS
+    fallbacks point at the GitHub release instead of the mirror directory
+    (403). A 65-URL external scan is clean except reserved/blocked hosts
+    (example.com placeholder, api.deepseek.com 401, LinkedIn bot 999, a
+    `https://...` in a code comment).
 
 ## Cross-lane notes
+
+No-NASM crypto stubs (compiler/stdlib lane, found 2026-09-22):
+`stdlib/runtime/xiom_runtime.c` defines, under `-DXIOM_NO_ASM`,
+`xiom_asm_aes128_encrypt_block`, `xiom_asm_aes128_decrypt_block` and
+`xiom_asm_aes128_key_expand` as empty functions, and
+`xiom_asm_constant_time_compare` / `xiom_asm_memcmp_ct` as `return 0`. The mem
+stubs delegate to libc, so those are semantically correct. If the dispatch
+layer can reach the crypto stubs in a no-NASM build, AES silently produces no
+output and the constant-time compares always report equal -- a security hole,
+not just a performance fallback. Please confirm reachability and either
+implement real portable crypto, fail loudly, or document NASM as required for
+the crypto modules. `docs/RUNTIME_SYMBOL_AUDIT.md` shows the dead-symbol trim
+already removed the sha256 stub; these AES/CT entries may be in the same
+family. Related reviewer asks, still open for the stdlib lane: per-symbol
+"NASM-backed" flags in the generated API and published differential-test
+evidence between accelerated and portable paths.
 
 Error-code follow-ups (compiler lane, 2026-09-21): the website reference now
 documents the codes the compiler actually emits (L001, P001, T001, E001, C001,
