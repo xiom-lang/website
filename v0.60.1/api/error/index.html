@@ -2737,6 +2737,9 @@
 <blockquote>
 <p>The symbolized backtrace of an error, if captured (empty otherwise). Complexity: O(frames).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == error_backtrace_depth(e)</code></li>
+</ul>
 <h5 id="fn-error_capture_backtrace-vecstr"><code>fn error_capture_backtrace() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-error_capture_backtrace-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Capture the current stack as symbol strings. The runtime has no stack walking intrinsic yet, so this returns an empty vector (documented). Complexity: O(1).</p>
@@ -2753,10 +2756,16 @@
 <blockquote>
 <p>The raw frame addresses of an error backtrace (empty when none captured). Complexity: O(frames).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
 <h5 id="fn-error_backtrace_symbolizeframes-vecint-vecstr"><code>fn error_backtrace_symbolize(frames: &amp;Vec[Int]) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-error_backtrace_symbolizeframes-vecint-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Symbolize raw frame addresses as <code>0x</code> hex strings. Invalid or negative addresses render as "0x0". Complexity: O(frames).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == frames.len()</code></li>
+</ul>
 <h5 id="fn-error_with_backtracee-bterror-bterror"><code>fn error_with_backtrace(e: BtError) -&gt; BtError</code><a class="headerlink" href="#fn-error_with_backtracee-bterror-bterror" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Capture the current stack and attach it to an error. In this build the captured stack is empty (see <code>error_capture_backtrace</code>), so the returned error carries the same message with empty frames. Complexity: O(1).</p>
@@ -2769,6 +2778,9 @@
 <blockquote>
 <p>The number of frames in an error backtrace. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2800,18 +2812,31 @@
 <blockquote>
 <p>Add <code>message</code> onto the chain and return the new head. The previous chain becomes the new chain's root portion. Complexity: O(len(chain)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>error_chain_len(result) == error_chain_len(e) + 1</code></li>
+</ul>
 <h5 id="fn-error_chain_pope-chainerror-optionchainerror"><code>fn error_chain_pop(e: ChainError) -&gt; Option[ChainError]</code><a class="headerlink" href="#fn-error_chain_pope-chainerror-optionchainerror" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the head, exposing the previous cause. Returns None when the chain has only one message (nothing left beneath the head). Complexity: O(len(chain)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; error_chain_len(e) &gt;= 2</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; error_chain_len(e) &lt;= 1</code></li>
+</ul>
 <h5 id="fn-error_chain_lene-chainerror-int"><code>fn error_chain_len(e: ChainError) -&gt; Int</code><a class="headerlink" href="#fn-error_chain_lene-chainerror-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The number of messages in the chain. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-error_chain_messagese-chainerror-vecstr"><code>fn error_chain_messages(e: ChainError) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-error_chain_messagese-chainerror-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All messages from head to root, newest first. Complexity: O(len(chain)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == error_chain_len(e)</code></li>
+</ul>
 <h5 id="fn-error_chain_roote-chainerror-str"><code>fn error_chain_root(e: ChainError) -&gt; Str</code><a class="headerlink" href="#fn-error_chain_roote-chainerror-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The oldest (root) message. Complexity: O(1).</p>
@@ -2824,6 +2849,9 @@
 <blockquote>
 <p>All nodes from head to root. Node <code>i</code> is the chain whose head is message <code>i</code>, i.e. an ChainError holding messages <code>i..len</code>. Complexity: O(len(chain)^2) total for the sliced copies.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == error_chain_len(e)</code></li>
+</ul>
 <h5 id="fn-error_chain_hase-chainerror-message-str-bool"><code>fn error_chain_has(e: ChainError, message: Str) -&gt; Bool</code><a class="headerlink" href="#fn-error_chain_hase-chainerror-message-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether any node in the chain carries <code>message</code>. Complexity: O(len(chain) * len(message)) for the content comparison.</p>
@@ -2895,6 +2923,9 @@
 <blockquote>
 <p>All context keys of the head layer, in attach order. Complexity: O(head pairs).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == error_context_all(e).len()</code></li>
+</ul>
 <h5 id="fn-error_context_alle-contexterror-vecstr-str"><code>fn error_context_all(e: ContextError) -&gt; Vec[(Str, Str)]</code><a class="headerlink" href="#fn-error_context_alle-contexterror-vecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All context pairs of the head layer; each tuple is (key, value). Complexity: O(head pairs).</p>
@@ -2980,22 +3011,40 @@
 <blockquote>
 <p>Returns the error message unchanged. Identity helper for code clarity. Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == err</code></li>
+</ul>
 <h4 id="fn-make_errormsg-str-str"><code>fn make_error(msg: Str) -&gt; Str</code><a class="headerlink" href="#fn-make_errormsg-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Creates an error message string. Alias for readability at call-sites. Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == msg</code></li>
+</ul>
 <h4 id="fn-error_contextmsg-str-ctx-str-str"><code>fn error_context(msg: Str, ctx: Str) -&gt; Str</code><a class="headerlink" href="#fn-error_contextmsg-str-ctx-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Formats <code>msg</code> with additional context: <code>"msg (context: ctx)"</code>. Complexity: O(len(msg)+len(ctx)). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == msg.len() + ctx.len() + 12</code></li>
+</ul>
 <h4 id="fn-error_joina-str-b-str-str"><code>fn error_join(a: Str, b: Str) -&gt; Str</code><a class="headerlink" href="#fn-error_joina-str-b-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Joins two error messages with <code>": "</code> separator. If <code>a</code> is empty, returns <code>b</code>. If <code>b</code> is empty, returns <code>a</code>. Complexity: O(len(a)+len(b)). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() == 0 =&gt; result == b</code></li>
+<li><strong>Postcondition:</strong> <code>b.len() == 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>a.len() &gt; 0 &amp;&amp; b.len() &gt; 0 =&gt; result.len() == a.len() + b.len() + 2</code></li>
+</ul>
 <h4 id="fn-option_ok_orto-optiont-msg-str-resultt-str"><code>fn option_ok_or[T](o: Option[T], msg: Str) -&gt; Result[T, Str]</code><a class="headerlink" href="#fn-option_ok_orto-optiont-msg-str-resultt-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Converts an <code>Option[T]</code> into a <code>Result[T, Str]</code>. <code>Some(v)</code> ? <code>Ok(v)</code>, <code>None</code> ? <code>Err(msg)</code>. Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>o is Some(_) =&gt; result is Ok(_)</code></li>
+<li><strong>Postcondition:</strong> <code>o is None =&gt; result is Err(_)</code></li>
+</ul>
 <h4 id="type-hardwarefault"><code>type HardwareFault</code><a class="headerlink" href="#type-hardwarefault" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>D2.1 (Unsafe Confinement Phase 5, requirement g): recoverable hardware-fault error returned when an unsafe block traps (SIGSEGV/SIGILL/SIGFPE/...).</p>
