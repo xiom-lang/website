@@ -592,6 +592,36 @@ Same block and CSS in the registry UI footer, same order, labels and
 rel/target rules. Keep the Discord invite wording identical; keep
 registry@xiom-lang.org next to the row for registry-specific contact.
 
+### Playground lane: banner header
+
+The owner supplied a banner image for the playground site:
+`E:\xiom-lang\website\xiom-website\img\playground.webp` (1539x510, textless,
+subject on the right, negative space on the left). Copy it into the
+playground's own assets and use the same header treatment the website now
+uses on six pages (CSS in `xiom-website/style.css`, "Page banners" section):
+
+```html
+<header class="page-banner">
+  <img src="img/playground.webp" alt="" width="1539" height="510">
+  <div class="xiom-banner-text">
+    <h1 class="xiom-heading"><span class="xiom-brand" aria-hidden="true">XIOM</span><span class="xiom-section">PLAYGROUND</span></h1>
+    <span class="xiom-accent" aria-hidden="true"></span>
+  </div>
+</header>
+```
+
+Key values: brand #F3F7FF, weight 300, tracking 0.28em; section #69B8FF,
+tracking 0.36em; accent gradient #66FFF1 -> #4CC8FF with a restrained glow;
+text at left 7%/top 50%. Keep the h1 semantic (brand span aria-hidden) and
+the image alt empty.
+
+### Registry lane: banner header
+
+Same treatment with `E:\xiom-lang\website\xiom-website\img\registry.webp`
+(1539x510) and the section title `REGISTRY`. Copy the CSS block above from
+`xiom-website/style.css`; keep the registry site's existing palette and only
+adopt the banner typography and placement.
+
 ## Rules
 
 - Pure ASCII files only; the org encoding gate rejects mojibake.

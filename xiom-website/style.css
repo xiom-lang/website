@@ -942,6 +942,131 @@ footer p {
    Responsive
    ============================================================ */
 
+/* ============================================================
+   Page banners
+   Full-width artwork with the wordmark and section title overlaid on the
+   left negative space, matching the futuristic thin-tracked treatment.
+   ============================================================ */
+
+.page-banner {
+  position: relative;
+  overflow: hidden;
+  background: #05080f;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.xiom-banner-text {
+  position: absolute;
+  left: 7%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  white-space: nowrap;
+}
+
+.xiom-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+}
+
+.xiom-brand {
+  font-family: var(--font-display, var(--font-body));
+  font-size: clamp(28px, 2.8vw, 52px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #f3f7ff;
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.08),
+    0 0 24px rgba(70, 120, 255, 0.08);
+}
+
+.xiom-section {
+  margin-top: 13px;
+  font-size: clamp(9px, 0.72vw, 14px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: #69b8ff;
+  text-shadow:
+    0 0 8px rgba(80, 150, 255, 0.3),
+    0 0 18px rgba(50, 110, 255, 0.15);
+}
+
+.xiom-section.long-title {
+  letter-spacing: 0.24em;
+  font-size: clamp(8px, 0.65vw, 13px);
+}
+
+.xiom-accent {
+  width: 42px;
+  height: 2px;
+  margin-top: 17px;
+  background: linear-gradient(90deg, #66fff1 0%, #4cc8ff 70%, rgba(76, 200, 255, 0) 100%);
+  box-shadow:
+    0 0 7px rgba(76, 220, 255, 0.55),
+    0 0 16px rgba(76, 180, 255, 0.2);
+}
+
+.page-banner-intro {
+  padding-top: 28px;
+}
+
+.page-banner-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+.page-banner-tagline {
+  color: var(--paper);
+  font-family: var(--font-display, var(--font-body));
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 10px;
+}
+
+.page-banner-tagline em {
+  font-style: normal;
+  color: var(--signal);
+}
+
+.page-banner-lede {
+  color: var(--muted);
+  font-size: 15.5px;
+  line-height: 1.65;
+  max-width: 720px;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .xiom-banner-text {
+    animation: xiomFadeIn 900ms ease-out both;
+  }
+
+  @keyframes xiomFadeIn {
+    from { opacity: 0; transform: translate(-12px, -50%); }
+    to { opacity: 1; transform: translate(0, -50%); }
+  }
+}
+
 @media (max-width: 1180px) {
   .navlinks { gap: 14px; font-size: 13px; }
 }
@@ -952,6 +1077,12 @@ footer p {
 
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .eco-grid--visual { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .xiom-banner-text { left: 6%; }
+  .xiom-brand { font-size: clamp(22px, 4.6vw, 34px); letter-spacing: 0.22em; }
+  .xiom-section { margin-top: 9px; font-size: clamp(8px, 1.9vw, 12px); letter-spacing: 0.26em; }
+  .xiom-section.long-title { font-size: clamp(7px, 1.6vw, 11px); letter-spacing: 0.18em; }
+  .xiom-accent { width: 32px; margin-top: 11px; }
+  .page-banner-intro { padding-top: 22px; }
   .split-label { grid-template-columns: 1fr; gap: 16px; }
   .timeline { flex-direction: column; }
   .phase { border-right: none; border-bottom: 1px solid var(--line); }
