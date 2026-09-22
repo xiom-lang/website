@@ -567,26 +567,23 @@ Next, in order:
 3. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
-4. Editor support block (registry lane update 2026-09-21). Do NOT add the
-   marketplace links until both listings return 200; they 404 today (checked
-   2026-09-21):
+4. Editor support block (registry lane + compiler lane). POSTPONED
+   2026-09-22: Open VSX is live (200), but the Visual Studio Marketplace item
+   was still 404 after ~20 minutes of polling (06:53-10:10 UTC) while the
+   compiler/stdlib sessions resolve publishing issues. A draft of the block
+   was prepared and reverted; nothing is in the tree. Ship when BOTH return
+   200:
    - https://marketplace.visualstudio.com/items?itemName=xiom-lang.xiom
    - https://open-vsx.org/extension/xiom-lang/xiom
-   The publisher (xiom-lang) and the Open VSX namespace exist; VSCE_PAT and
-   OVSX_TOKEN are live repository secrets in xiom-lang/xiom. The compiler
-   lane dry-runs the release workflow next; on tag v0.61.0 it publishes the
-   universal VSIX (extension 0.12.0, xiom-lang.xiom) to both marketplaces.
-   After the tag, confirm each URL returns 200, then ship the block on
-   download.html (install.html is only a redirect to it) as a new "Editor
-   support" section after "One-Line Install" and before "Build from Source":
-   toolchain first (official installer), then the editor integration;
-   xiom-lsp and xiom-dbg ship in the archives; VS Code links for both
-   marketplaces; the MCP tool can query the registry (link the PUBLISHING/
-   USING docs); other editors link to editors/README.md's support matrix
-   (Neovim, JetBrains, Helix, Sublime, Emacs, Zed planned). Nothing
-   website-side blocks the compiler dry run or the tag. Out of scope: the
-   Marketplace verified-publisher badge needs a domain-verification TXT
-   record for xiom-lang.org (owner/DNS action).
+   Then add an "Editor Support" section to download.html (install.html is a
+   redirect) after "One-Line Install": toolchain first (official installer),
+   then the editor integration; VS Code links to both marketplaces; the
+   extension resolves xiom-lsp/xiom-dbg from the installed toolchain; other
+   editors link to editors/README.md's support matrix (Neovim, JetBrains,
+   Helix, Sublime, Emacs, Zed planned); the MCP server can query the registry.
+   Also update the VS Code notes in getting-started.md and debugger.md.
+   Out of scope: the Marketplace verified-publisher badge needs a
+   domain-verification TXT record for xiom-lang.org (owner/DNS action).
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS installer support
