@@ -11,5 +11,6 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 > **Hardware acceleration:** SSE/AVX/NEON SIMD, AES-NI/SHA-NI crypto, libm math.
 > **Real concurrency:** pthreads/Win32 threads, real atomics, mutex, condvar.
 > **Real networking:** BSD/Winsock sockets, TCP/UDP/DNS/HTTP.
+> **Verification scope:** proofs verify your code against these contracts; the implementations, including the NASM-accelerated paths, are assumed to honor them. See the [contracts guide](contracts.md).
 
 [Open Standard Library API ->](api.md)

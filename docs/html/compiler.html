@@ -139,6 +139,31 @@
 </code></pre>
 <h2>Architecture</h2>
 <p>XIOM is a Rust toolchain of 20 crates. It emits LLVM IR as text and hands it to clang for the final binary, so there is no LLVM library dependency and the generated IR is readable by humans. The bootstrap compiler is Rust by design and permanent; self-hosting gates are cleared, but no self-hosted release has shipped yet.</p>
+<h2>Native Toolchain</h2>
+<p>The compiler shells out to a small set of host tools; <code>xiom doctor</code> reports which ones it found:</p>
+<table>
+<tr>
+<th>Tool</th>
+<th>Status</th>
+<th>Used for</th>
+</tr>
+<tr>
+<td><code>clang</code> (LLVM 18 or newer)</td>
+<td>Required</td>
+<td>Assembling and linking every program</td>
+</tr>
+<tr>
+<td><code>opt</code> (LLVM)</td>
+<td>Optional</td>
+<td>IR optimization passes</td>
+</tr>
+<tr>
+<td><code>nasm</code> (2.15 or newer)</td>
+<td>Optional</td>
+<td>Assembling the hardware-accelerated runtime: crypto primitives, bulk memory operations, context switching</td>
+</tr>
+</table>
+<p>When NASM is absent the compiler defines <code>XIOM_NO_ASM</code> and the runtime is built without those assembly paths. That is a verification-relevant choice, not just a performance one: the <a href="contracts.html">contracts guide</a> documents how accelerated runtime code sits inside the trusted base.</p>
 <p>Design decisions that shape everything else:</p>
 <ul>
 <li><strong>Lexical scope borrowing</strong> instead of lifetime annotations: a borrow</li>

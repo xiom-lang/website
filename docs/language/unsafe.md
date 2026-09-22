@@ -126,12 +126,13 @@ xiom --sandbox-report=json file.xi  # machine-readable report
 
 ## Runtime Assembly Is Not User Unsafe
 
-The toolchain ships hand-written x86_64 assembly for some runtime hot paths
-(crypto primitives, bulk memory operations, context switching). That code
-belongs to the trusted runtime, not to the `unsafe` blocks described here: the
-confinement model on this page does not apply to it, and the contract verifier
-treats it as an implementation of a contract rather than something it proves.
-The [contracts guide](contracts.md) states the boundary in full.
+The toolchain ships hand-written x86_64 assembly (assembled with NASM) for
+some runtime hot paths: crypto primitives, bulk memory operations and context
+switching. That code belongs to the trusted runtime, not to the `unsafe`
+blocks described here: the confinement model on this page does not apply to
+it, and the contract verifier treats it as an implementation of a contract
+rather than something it proves. The [contracts guide](contracts.md) states
+the boundary in full.
 
 ## See Also
 

@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 > Beta: the library is still being completed; see the
 > [known limitations](https://github.com/xiom-lang/stdlib/blob/main/docs/STDLIB_BETA_LIMITATIONS.md)
 > for current gaps.
+> **Verification scope:** contracts below are what the verifier reasons about; implementations, including the NASM-accelerated runtime paths, are assumed to honor them. See the [contracts guide](contracts.md).
 
 ---
 

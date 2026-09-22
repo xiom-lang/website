@@ -30,6 +30,22 @@ and the generated IR is readable by humans. The bootstrap compiler is Rust
 by design and permanent; self-hosting gates are cleared, but no
 self-hosted release has shipped yet.
 
+## Native Toolchain
+
+The compiler shells out to a small set of host tools; `xiom doctor` reports
+which ones it found:
+
+| Tool | Status | Used for |
+|------|--------|----------|
+| `clang` (LLVM 18 or newer) | Required | Assembling and linking every program |
+| `opt` (LLVM) | Optional | IR optimization passes |
+| `nasm` (2.15 or newer) | Optional | Assembling the hardware-accelerated runtime: crypto primitives, bulk memory operations, context switching |
+
+When NASM is absent the compiler defines `XIOM_NO_ASM` and the runtime is
+built without those assembly paths. That is a verification-relevant choice,
+not just a performance one: the [contracts guide](contracts.md) documents how
+accelerated runtime code sits inside the trusted base.
+
 Design decisions that shape everything else:
 
 - **Lexical scope borrowing** instead of lifetime annotations: a borrow

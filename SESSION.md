@@ -441,7 +441,12 @@ Remaining:
     guards by default, `--verify` export, `xiom-verify --check` with the bundled
     z3, only `unsat` proves) and the AI section no longer claims compile-time
     enforcement. `unsafe.md` gained "Runtime Assembly Is Not User Unsafe"; the
-    NASM prerequisite no longer claims an equivalent C fallback.
+    NASM prerequisite no longer claims an equivalent C fallback. Follow-up
+    (2026-09-22): `compiler.md` gained a "Native Toolchain" table (clang
+    required; opt and nasm optional; `XIOM_NO_ASM` when NASM is absent), and
+    the stdlib API intros (`api.md`, `stdlib.md`) now state the verification
+    scope and link the contracts guide, so "nasm"/"assembly" searches land on
+    the boundary instead of only the prerequisite list.
 22. **Broken external links fixed (done 2026-09-22)**: the standalone docs
     builder rewrote `.md` to `.html` inside absolute URLs, so every GitHub blob
     link in the generated pages 404ed (CONTRIBUTING, LICENSING, GOVERNANCE,
