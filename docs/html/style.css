@@ -645,10 +645,11 @@ nav .wrap {
   gap: 16px;
 }
 
-/* Category cards with artwork: slightly wider columns so the portrait art
-   reads at a useful size (3 up on desktop, wrapping down on small screens). */
+/* Category cards with artwork: exactly four across on desktop (two rows for
+   the eight directions), two on tablets and one on phones. minmax(0, 1fr)
+   keeps long words from stretching a column. */
 .eco-grid--visual {
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .eco-card img {
@@ -682,6 +683,7 @@ nav .wrap {
 }
 
 .eco-card p {
+  flex: 1 1 auto;
   font-size: 13.5px;
   line-height: 1.6;
   color: var(--muted);
@@ -949,6 +951,7 @@ footer p {
   h2 { font-size: 24px; }
 
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .eco-grid--visual { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .split-label { grid-template-columns: 1fr; gap: 16px; }
   .timeline { flex-direction: column; }
   .phase { border-right: none; border-bottom: 1px solid var(--line); }
@@ -997,6 +1000,7 @@ footer p {
   h2 { font-size: 21px; }
   .wrap { padding: 0 16px; }
   .footer-grid { grid-template-columns: 1fr; }
+  .eco-grid--visual { grid-template-columns: 1fr; }
   .footer-social a { width: 28px; height: 28px; }
   .footer-social svg { width: 13px; height: 13px; }
   .footer-col a { padding: 7px 0; }
