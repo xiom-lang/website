@@ -545,6 +545,17 @@ extension requires v0.61.0+ -- new users cannot install a compatible
 toolchain until the mirror syncs. The macOS rows and the "macOS archives not
 published yet" notes are held back until then.
 
+Mirror lag (owner/VPS action, still broken 2026-09-23): the mirror's
+`latest.json` and `releases/index.json` still report v0.60.1 even though the
+v0.61.1 asset directory exists on the mirror, and GitHub is already at
+v0.61.3. Because installers trusted the mirror, `install.ps1` installed
+v0.60.1. The website lane hardened everything that reads release metadata:
+`install.ps1`, `install.sh`, `download.html` and `versions.html` now consult
+the mirror and the GitHub releases API and use whichever release is newer
+(the pages cache the API lookup for ten minutes to stay inside the anonymous
+rate limit). The mirror sync pipeline itself still needs fixing so the
+canonical source stops lagging.
+
 Release dispatch to the website is broken (owner action, reported 2026-09-22):
 the compiler release workflow's dispatch to xiom-lang/website fails with 403
 because the release token lacks `Contents: read/write` on this repository; the

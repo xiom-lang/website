@@ -352,15 +352,57 @@ cargo test --workspace --lib</code></pre>
     if (meta) meta.textContent = "Could not load release data (offline or API rate limit). Use the links below - they always point to the latest release.";
   }
 
-  fetch(MIRROR, { cache: "no-store" })
-    .then(function (res) { if (!res.ok) throw new Error("mirror " + res.status); return res.json(); })
-    .then(function (data) { applyRelease(fromMirror(data)); })
-    .catch(function () {
-      return fetch(API, { headers: { "Accept": "application/vnd.github+json" } })
-        .then(function (res) { if (!res.ok) throw new Error("api " + res.status); return res.json(); })
-        .then(function (rel) { applyRelease(fromGitHub(rel)); });
-    })
-    .catch(function () { fail(); });
+  function tagParts(tag) {
+    return String(tag || "").replace(/^v/i, "").split(".").map(function (n) { return parseInt(n, 10) || 0; });
+  }
+
+  function newerTag(a, b) {
+    var pa = tagParts(a), pb = tagParts(b), n = Math.max(pa.length, pb.length);
+    for (var i = 0; i < n; i++) {
+      var x = pa[i] || 0, y = pb[i] || 0;
+      if (x !== y) return x > y ? a : b;
+    }
+    return a;
+  }
+
+  function fetchGitHub() {
+    // Cache the lookup for ten minutes so reloads stay inside the anonymous
+    // API rate limit.
+    try {
+      var cached = sessionStorage.getItem("xiom-gh-latest");
+      if (cached) {
+        var parsed = JSON.parse(cached);
+        if (Date.now() - parsed.at < 10 * 60 * 1000) return Promise.resolve(parsed.rel);
+      }
+    } catch (e) { /* storage unavailable */ }
+    return fetch(API, { headers: { "Accept": "application/vnd.github+json" } })
+      .then(function (res) { if (!res.ok) throw new Error("api " + res.status); return res.json(); })
+      .then(function (rel) {
+        try { sessionStorage.setItem("xiom-gh-latest", JSON.stringify({ at: Date.now(), rel: rel })); } catch (e) { /* ignore */ }
+        return rel;
+      });
+  }
+
+  // Mirror and GitHub are both consulted; the newer release wins, so a stale
+  // mirror never pins the page to an old version.
+  Promise.all([
+    fetch(MIRROR, { cache: "no-store" })
+      .then(function (res) { if (!res.ok) throw new Error("mirror " + res.status); return res.json(); })
+      .then(fromMirror)
+      .catch(function () { return null; }),
+    fetchGitHub().then(fromGitHub).catch(function () { return null; })
+  ]).then(function (sources) {
+    var mirror = sources[0], gh = sources[1];
+    if (mirror && gh) {
+      applyRelease(newerTag(mirror.tag, gh.tag) === gh.tag ? gh : mirror);
+    } else if (mirror) {
+      applyRelease(mirror);
+    } else if (gh) {
+      applyRelease(gh);
+    } else {
+      fail();
+    }
+  });
 })();
 </script>
 

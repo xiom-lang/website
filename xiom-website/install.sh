@@ -3,11 +3,12 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 #
 # XIOM toolchain installer for Linux x64 and macOS (x64/arm64).
-# Downloads the latest release from the dl.xiom-lang.org mirror, verifies the
-# SHA256, installs into ${XIOM_HOME:-$HOME/.local/share/xiom}, and links every
-# bin/xiom* tool into ~/.local/bin. z3 stays in the install bin directory,
-# next to the tools that invoke it. Also checks for LLVM/Clang (or the Xcode
-# command line tools on macOS).
+# Uses the dl.xiom-lang.org mirror and the GitHub releases API, picking
+# whichever release is newer, verifies the SHA256, installs into
+# ${XIOM_HOME:-$HOME/.local/share/xiom}, and links every bin/xiom* tool into
+# ~/.local/bin. z3 stays in the install bin directory, next to the tools that
+# invoke it. Also checks for LLVM/Clang (or the Xcode command line tools on
+# macOS).
 #
 # Usage:  curl -fsSL https://xiom-lang.org/install.sh | sh
 #         curl -fsSL https://xiom-lang.org/install.sh | sh -s -- --version v0.60.1
@@ -72,6 +73,29 @@ url_for() {
   grep -o "\"url\": *\"[^\"]*$1\"" "$tmp/latest.json" | head -n 1 | cut -d'"' -f4
 }
 
+gh_url_for() {
+  grep -o "\"browser_download_url\": *\"[^\"]*$1\"" "$tmp/gh.json" | head -n 1 | cut -d'"' -f4
+}
+
+# ver_gt A B -- succeeds when tag A is newer than tag B.
+ver_gt() {
+  va="${1#v}"
+  vb="${2#v}"
+  old_ifs="$IFS"
+  IFS=.
+  set -- $va
+  av1="${1:-0}"; av2="${2:-0}"; av3="${3:-0}"
+  set -- $vb
+  bv1="${1:-0}"; bv2="${2:-0}"; bv3="${3:-0}"
+  IFS="$old_ifs"
+  [ "$av1" -gt "$bv1" ] 2>/dev/null && return 0
+  [ "$av1" -lt "$bv1" ] 2>/dev/null && return 1
+  [ "$av2" -gt "$bv2" ] 2>/dev/null && return 0
+  [ "$av2" -lt "$bv2" ] 2>/dev/null && return 1
+  [ "$av3" -gt "$bv3" ] 2>/dev/null && return 0
+  return 1
+}
+
 if [ -n "$VERSION" ]; then
   tag="$VERSION"
   case "$tag" in v*) ;; *) tag="v$tag" ;; esac
@@ -83,8 +107,30 @@ if [ -n "$VERSION" ]; then
 else
   say "Fetching release metadata from $MIRROR ..."
   curl -fsSL "$MIRROR" -o "$tmp/latest.json" || die "cannot fetch release metadata"
+  mirror_tag="$(grep -o '"tag": *"[^"]*"' "$tmp/latest.json" | head -n 1 | cut -d'"' -f4)"
   asset_url="$(url_for "$OS-$ARCH.tar.gz")"
   sums_url="$(url_for 'SHA256SUMS')"
+
+  # The mirror can lag behind GitHub. Prefer the newer release, and fall back
+  # to GitHub when the mirror has no asset for this platform (macOS).
+  if curl -fsSL -H 'Accept: application/vnd.github+json' -H 'User-Agent: xiom-installer' \
+      'https://api.github.com/repos/xiom-lang/xiom/releases/latest' -o "$tmp/gh.json" 2>/dev/null; then
+    gh_tag="$(grep -o '"tag_name": *"[^"]*"' "$tmp/gh.json" | head -n 1 | cut -d'"' -f4)"
+    gh_asset_url="$(gh_url_for "$OS-$ARCH.tar.gz")"
+    gh_sums_url="$(gh_url_for 'SHA256SUMS')"
+    if [ -n "$gh_asset_url" ] && [ -n "$gh_sums_url" ]; then
+      if [ -z "$asset_url" ]; then
+        say "Mirror has no $OS-$ARCH asset; using GitHub $gh_tag."
+        asset_url="$gh_asset_url"
+        sums_url="$gh_sums_url"
+      elif [ -n "$gh_tag" ] && [ -n "$mirror_tag" ] && ver_gt "$gh_tag" "$mirror_tag"; then
+        say "Mirror reports $mirror_tag; GitHub has $gh_tag -- using GitHub."
+        asset_url="$gh_asset_url"
+        sums_url="$gh_sums_url"
+      fi
+    fi
+  fi
+
   [ -n "$asset_url" ] || die "no $OS-$ARCH asset in the current release (macOS builds ship once enabled)"
   [ -n "$sums_url" ] || die "SHA256SUMS missing from release metadata"
 fi

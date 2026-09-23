@@ -225,26 +225,59 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       });
   }
 
-  // Mirror first: it is the canonical source once it sends CORS headers.
-  // The mirror does not send Access-Control-Allow-Origin (checked 2026-09-21),
-  // so browsers fall through to the GitHub API, which does.
-  fetch(INDEX, { cache: "no-store" })
-    .then(ok)
-    .then(function (data) {
-      var entries = fromMirror(data);
-      if (!entries.length) throw new Error("empty index");
-      render(entries);
-    })
-    .catch(function () {
-      return fetch(API, { headers: { "Accept": "application/vnd.github+json" } })
-        .then(ok)
-        .then(function (releases) {
-          var entries = fromGitHub(releases);
-          if (!entries.length) throw new Error("empty api");
-          render(entries);
-        });
-    })
-    .catch(fail);
+  function tagParts(tag) {
+    return String(tag || "").replace(/^v/i, "").split(".").map(function (n) { return parseInt(n, 10) || 0; });
+  }
+
+  function newerTag(a, b) {
+    var pa = tagParts(a), pb = tagParts(b), n = Math.max(pa.length, pb.length);
+    for (var i = 0; i < n; i++) {
+      var x = pa[i] || 0, y = pb[i] || 0;
+      if (x !== y) return x > y ? a : b;
+    }
+    return a;
+  }
+
+  function fetchGitHub() {
+    // Cache the lookup for ten minutes so reloads stay inside the anonymous
+    // API rate limit.
+    try {
+      var cached = sessionStorage.getItem("xiom-gh-releases");
+      if (cached) {
+        var parsed = JSON.parse(cached);
+        if (Date.now() - parsed.at < 10 * 60 * 1000) return Promise.resolve(parsed.rel);
+      }
+    } catch (e) { /* storage unavailable */ }
+    return fetch(API, { headers: { "Accept": "application/vnd.github+json" } })
+      .then(ok)
+      .then(function (releases) {
+        try { sessionStorage.setItem("xiom-gh-releases", JSON.stringify({ at: Date.now(), rel: releases })); } catch (e) { /* ignore */ }
+        return releases;
+      });
+  }
+
+  // The mirror is canonical, but it can lag behind GitHub; render whichever
+  // source has the newer release so the page never shows a stale list.
+  Promise.all([
+    fetch(INDEX, { cache: "no-store" })
+      .then(ok)
+      .then(fromMirror)
+      .catch(function () { return null; }),
+    fetchGitHub()
+      .then(fromGitHub)
+      .catch(function () { return null; })
+  ]).then(function (sources) {
+    var mirror = sources[0], gh = sources[1];
+    if (mirror && mirror.length && gh && gh.length) {
+      render(newerTag(mirror[0].tag, gh[0].tag) === gh[0].tag ? gh : mirror);
+    } else if (mirror && mirror.length) {
+      render(mirror);
+    } else if (gh && gh.length) {
+      render(gh);
+    } else {
+      fail();
+    }
+  });
 })();
 </script>
 
