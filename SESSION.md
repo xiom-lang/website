@@ -517,6 +517,24 @@ Remaining:
     installed compiler runs. macOS copy updated everywhere (archives ship for
     Intel and Apple Silicon; the "not published yet" caveats and the
     roadmap's "macOS in progress" line are gone).
+28. **Live deploy verified, checksum copy corrected (done 2026-09-24)**: after
+    the 16:23 UTC cron pull, every live file fetched was byte-identical to
+    HEAD (index/download/versions pages, `install.ps1`, `install.sh`,
+    `style.css`, `js/release-notes.js`). `irm
+    https://xiom-lang.org/install.ps1 | iex` printed "Mirror reports v0.60.1;
+    GitHub has v0.61.3 -- using GitHub.", checksum-verified the 21.32 MB
+    Windows archive and installed the nine tools at v0.61.3. Headless Chrome
+    rendered download.html with all four platform rows and versions.html with
+    the three GitHub releases (v0.61.3, v0.61.1, v0.60.1), v0.61.3 current,
+    and the "what's new" toggle showing "No release notes published for this
+    version" (right: the tag predates the notes system). Finding: the SHA256
+    column cannot fill in browsers because neither GitHub release assets nor
+    the mirror send `Access-Control-Allow-Origin`, so it shows "see
+    SHA256SUMS"; the two download.html sentences that claimed the column is
+    always filled now describe the fallback (`d25d652`). The column fills for
+    real if the mirror serves `SHA256SUMS` with ACAO or the compiler lane
+    commits a tag-pinned checksums file (raw.githubusercontent sends ACAO
+    `*`); neither exists today.
 
 ## Cross-lane notes
 
@@ -825,7 +843,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-09-24): HEAD 1bb76b0. Copyright notices across the repo read
+State (2026-09-24): HEAD d25d652. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
@@ -842,36 +860,34 @@ marketplaces), the verification trust-boundary section, the external-link
 fix, the toolchain-context and post-release-plan pages rendered from the
 compiler checkout, the release-notes system (schema v1 in
 `docs/release-notes-schema.md`, `js/release-notes.js`, panels on the
-download and versions pages, fully tested), and installer resilience
-(mirror + GitHub, newer release wins; macOS shipping copy). All guide syntax
-was audited against a local compiler build: `if let`, range expressions and
-the `Byte` alias are not implemented and the docs do not claim them.
+download and versions pages, fully tested), installer resilience
+(mirror + GitHub, newer release wins; macOS shipping copy), and the
+checksum-column copy correction from the live deploy verification. All guide
+syntax was audited against a local compiler build: `if let`, range expressions
+and the `Byte` alias are not implemented and the docs do not claim them.
 Commits carry `-s` sign-off. `docs/wikipedia-draft.md` is a planning sheet
 only and `docs/marketplace-publisher.md` holds the marketplace copy; neither
 is built into the site.
 
+The live deploy was verified on 2026-09-24 (item 28): the installer picks
+GitHub and installs v0.61.3, download.html lists four platforms, versions.html
+reads GitHub, and the notes toggle is honest until the next tag.
+
 Next, in order:
-1. After the owner's VPS pull, verify the live site: `curl -sI
-   https://xiom-lang.org/install.ps1` is 200; `irm
-   https://xiom-lang.org/install.ps1 | iex` reports "GitHub has v0.61.3 --
-   using GitHub" and installs v0.61.3; download.html lists four platforms;
-   versions.html shows the current release from GitHub with a "what's new"
-   toggle that says notes are not published yet (expected until the next
-   tag).
-2. Next tagged release: verify the release-notes render end to end (mirror
+1. Next tagged release: verify the release-notes render end to end (mirror
    first, tag-pinned raw fallback) and that a tag without notes shows only
    the changelog link. The mirror publish of `release.json` and
    `"notes": true` belongs to whoever writes archives to the mirror; the
    website has no credentials for it (recorded in cross-lane notes).
-3. Draft "XIOM for game developers" once the owner provides engine facts
+2. Draft "XIOM for game developers" once the owner provides engine facts
    (C# coverage on the Concepts page landed 2026-09-21).
-4. Benchmark showcase: when the owner says the benchmark repo and paper are
+3. Benchmark showcase: when the owner says the benchmark repo and paper are
    public, add a "Reproducible evidence" page (task definition, generated
    source, compiler output, runtime results, contract configuration, tool
    interactions, tokens, environment, sessions) and link it from the Why
    page; the homepage already carries the "in preparation" card with no
    results claimed.
-5. If the compiler lane publishes a current specification revision, update
+4. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
 
@@ -892,7 +908,10 @@ and both release pages compare mirror and GitHub and use the newer release,
 and release notes fall back to the tag-pinned raw file. Proper fixes:
 regenerate `latest.json`/`index.json` on every tag, add
 `add_header Access-Control-Allow-Origin "https://xiom-lang.org";` for the
-JSON paths, and publish the notes file.
+JSON paths, and publish the notes file. The checksum column would also need
+ACAO on the `SHA256SUMS` files (or a tag-pinned checksums file in the
+compiler repository, read from raw.githubusercontent.com) to fill in
+browsers.
 
 Rules: ASCII-only; never hardcode versions (read mirror JSON); pin GitHub
 Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
