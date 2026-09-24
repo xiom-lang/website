@@ -509,6 +509,24 @@ Remaining:
 
 ## Cross-lane notes
 
+Release-notes mirror publish cannot be a website job (found 2026-09-24): the
+compiler lane's publisher is done (`crates/xiom-release-notes`, convert +
+verify, hard schema validation) and it hands requirement 5 (mirror publish +
+`"notes": true`) to this lane. The website repository has no credentials for
+`dl.xiom-lang.org`: no workflow uses any secret (checked all of
+`.github/workflows/`), there is no mirror script, and the release-dispatch
+PAT is still 403. So the mirror copy must be written by whoever already
+publishes archives to the mirror -- the compiler release pipeline or the
+owner's VPS sync -- as one more file in that same step. Note the reader is
+not blocked meanwhile: `js/release-notes.js` falls back to the tag-pinned
+`raw.githubusercontent.com/xiom-lang/xiom/<tag>/release-notes/<tag>.json`,
+which the compiler lane commits before tagging (its `verify` guarantees
+byte-identity), so the next release renders notes even while the mirror lags.
+Acceptance on the next tag: notes visible on the download and versions pages
+via the raw fallback, and, once the mirror writer adds the file,
+`releases/index.json` carrying `"notes": true` so the pages stop trying for
+older tags.
+
 Registry correlation (confirmed 2026-09-24): the registry stores the
 toolchain pin per package version and serves it as `compiler` on the package
 page; it needs no changes. The stdlib publish pass must pass the pin as
