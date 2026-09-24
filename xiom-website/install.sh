@@ -131,7 +131,7 @@ else
     fi
   fi
 
-  [ -n "$asset_url" ] || die "no $OS-$ARCH asset in the current release (macOS builds ship once enabled)"
+  [ -n "$asset_url" ] || die "no $OS-$ARCH asset in the current release; see the GitHub releases page for available platforms"
   [ -n "$sums_url" ] || die "SHA256SUMS missing from release metadata"
 fi
 asset_name="${asset_url##*/}"

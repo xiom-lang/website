@@ -40,12 +40,11 @@ Linux:
 curl -fsSL https://xiom-lang.org/install.sh | sh
 
 # pin a specific release
-curl -fsSL https://xiom-lang.org/install.sh | sh -s -- --version v0.60.1
+curl -fsSL https://xiom-lang.org/install.sh | sh -s -- --version <tag>
 ```
 
-macOS: the same script detects macOS and arm64 or Intel. Install the Xcode
-command line tools first. macOS archives are not published yet; until the
-release workflow enables them, use the build-from-source path below.
+macOS: the same script detects macOS and arm64 or Intel, and macOS archives
+are published with each release. Install the Xcode command line tools first.
 
 ```bash
 curl -fsSL https://xiom-lang.org/install.sh | sh
