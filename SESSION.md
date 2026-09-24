@@ -670,8 +670,13 @@ Docs refresh automation (done 2026-09-25, owner-approved): the compiler
 release workflow already dispatches `compiler-release` with tag, `stdlib_ref`
 (from STDLIB_VERSION) and `compiler_ref` (release.yml CRB-4b); the 403 is
 only the token, which must cover `xiom-lang/website` with Contents:
-read/write (fine-grained) or classic `repo` scope. Until the owner widens
-`XIOM_RELEASE_TOKEN`, docs no longer wait on it: `docs-versioned.yml` gained
+read/write (fine-grained) or classic `repo` scope. Token mapping (owner,
+2026-09-25): `XIOM_RELEASE_TOKEN` is the org fine-grained token
+`xiom-release-write` (it must gain Contents: read/write on website);
+`XIOM_CROSS_REPO_TOKEN` is `xiom-cross-repo-read` (read-only checkouts, no
+website access needed). The owner added website to `xiom-release-write`;
+confirmation is the dispatch line in the next tagged release. Until the
+token lands, docs no longer wait on it: `docs-versioned.yml` gained
 a weekly schedule (Monday 04:00 UTC) and GitHub-first tag resolution
 (`/releases/latest`, mirror fallback), so the current release is republished
 from main every week. The dispatch remains the release-accurate path (pinned
