@@ -489,6 +489,23 @@ Remaining:
     xiom-lsp, xiom-mcp, xiom-pkg, xiom-verify, z3 plus the VC runtime DLLs --
     so the homepage "Companion tools" box now lists the MCP server and the
     pinned z3 too.
+26. **Release notes ("What's new") system shipped (done 2026-09-24)**: the
+    contract is `docs/release-notes-schema.md` (schema v1): one immutable
+    `release.json` per tag, authored from a strict markdown template,
+    converted and validated at release time, published to
+    `dl.xiom-lang.org/releases/<tag>/release.json` and committed as
+    `release-notes/<tag>.json` before the tag (raw GitHub fallback). The site
+    side is complete: `js/release-notes.js` (validates, fetches mirror then
+    tag-pinned raw, renders with textContent only, 10-minute cache for hits
+    and 60-second cache for misses), a "What's new" panel on `download.html`
+    for the current release, a three-highlight summary on the current-release
+    card in `versions.html`, and a lazy per-row disclosure on older rows with
+    `aria-expanded`; when no valid document exists the pages show only the
+    changelog link. Tested with 20 module tests plus DOM-level integration
+    tests for both pages (mirror hit, raw fallback, invalid documents, cached
+    misses, row expansion, graceful missing-notes state). Relays for the
+    compiler, stdlib and registry lanes are in the paste-ready section
+    below.
 
 ## Cross-lane notes
 
@@ -681,6 +698,54 @@ Same treatment with `E:\xiom-lang\website\xiom-website\img\registry.webp`
 `xiom-website/style.css`; keep the registry site's existing palette and only
 adopt the banner typography and placement.
 
+### Compiler lane: publish release notes on the next tag
+
+The website's "What's new" system is live; the contract is
+`docs/release-notes-schema.md` in `xiom-lang/website` (schema v1). Please
+implement the publisher for the next release:
+
+1. Author `release-notes/<tag>.md` from `release-notes/TEMPLATE.md`: one
+   summary sentence; 1-6 highlights with a `kind:` line
+   (`language`, `compiler`, `stdlib`, `tooling`, `fix`, `security`); a
+   breaking-changes section (write `None.` when there is nothing); optional
+   known issues and docs links. Plain ASCII text, no internal IDs or hashes.
+2. Merge the stdlib fragment `release-notes/<tag>.md` from the checkout
+   pinned by `STDLIB_VERSION`; its highlights become `kind: "stdlib"` unless
+   the fragment sets its own kind.
+3. Convert to `release-notes/<tag>.json` and validate it hard: required
+   fields, length limits, kind enum, and a present `breaking` array. Fail the
+   release on any violation.
+4. Commit the JSON **before** creating the tag -- the site reads
+   `raw.githubusercontent.com/xiom-lang/xiom/<tag>/release-notes/<tag>.json`
+   as the fallback source.
+5. Publish the same file to
+   `dl.xiom-lang.org/releases/<tag>/release.json` and add `"notes": true` to
+   that tag's entry in `releases/index.json`.
+
+No website deploy is needed: the pages fetch notes by tag at runtime. If
+nothing is published, the pages simply link the changelog.
+
+### Stdlib lane: release-notes fragment
+
+The site now renders per-release "What's new" notes (contract:
+`docs/release-notes-schema.md` in `xiom-lang/website`). For the next tag, add
+`release-notes/<tag>.md` to the stdlib repository using the compiler
+template's `###` highlight blocks; the compiler release step merges it from
+the pinned checkout and tags its bullets as `stdlib`. Keep entries
+user-facing (what a user gains -- no wave names, no task IDs), one to two
+sentences each, at most 320 characters. If nothing user-visible ships in the
+release window, say so to the compiler lane so the fragment can be omitted.
+
+### Registry lane: release notes when tagged releases exist
+
+Same contract applies if the registry starts tagged user-facing releases:
+publish `release.json` (schema v1) at a stable URL -- suggest
+`registry.xiom-lang.org/releases/<tag>/release.json` -- and we can render it
+where the website links to registry releases. No action needed for the
+current toolchain notes. Optional but useful: keep the `xiom-std` package
+metadata listing the toolchain tag it is pinned to, so package versions can
+be correlated with toolchain releases.
+
 ## Rules
 
 - Pure ASCII files only; the org encoding gate rejects mojibake.
@@ -751,15 +816,11 @@ Next, in order:
 3. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
-4. Editor support block (DONE 2026-09-22): both listings verified 200
-   (Visual Studio Marketplace and Open VSX) after v0.61.1 shipped. Shipped an
-   "Editor Support" section on download.html after "One-Line Install"
-   (toolchain first; "XIOM Toolchain" extension 0.12.0 on both marketplaces,
-   requires toolchain v0.61.0+; resolves xiom-lsp/xiom-dbg from the install;
-   other editors via editors/README.md; agents via xiom-mcp), and updated the
-   VS Code notes in getting-started.md and debugger.md. Remaining owner/DNS
-   action: the Marketplace verified-publisher badge needs a
-   domain-verification TXT record for xiom-lang.org.
+4. Release notes on the next tag: the compiler lane publishes
+   `release-notes/<tag>.json` per the relay in this file; verify the download
+   and versions pages render it (mirror first, raw fallback), and that a tag
+   without notes shows only the changelog link. No website deploy is needed
+   for notes to appear, but the schema doc and renderer ship with the site.
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS installer support

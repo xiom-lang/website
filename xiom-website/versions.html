@@ -65,11 +65,12 @@ SPDX-License-Identifier: MIT OR Apache-2.0
         <span class="status active">current</span>
       </div>
       <p style="color:var(--paper-dim);margin-top:16px;" id="current-notes">The latest release published on the mirror. See the release notes for compiler details and changes.</p>
-      <div class="btn-group" style="margin-top:12px;">
-        <a class="btn-secondary" href="download.html">download</a>
-        <a class="btn-secondary" id="current-link" href="https://github.com/xiom-lang/xiom/releases/latest">release notes</a>
-      </div>
-    </div>
+          <div class="btn-group" style="margin-top:12px;">
+            <a class="btn-secondary" href="download.html">download</a>
+            <a class="btn-secondary" id="current-link" href="https://github.com/xiom-lang/xiom/releases/latest">release notes</a>
+          </div>
+          <div class="release-notes" id="current-whats-new" hidden></div>
+        </div>
   </div>
 
   <div class="content-section">
@@ -144,6 +145,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   </div>
 </footer>
 
+<script src="js/release-notes.js"></script>
 <script>
 (function () {
   "use strict";
@@ -164,6 +166,15 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     if (date) date.textContent = latest.published ? "released " + latest.published.slice(0, 10) : "";
     if (link) link.href = notesUrl(latest.tag);
 
+    var whatsNew = document.getElementById("current-whats-new");
+    if (whatsNew && window.XIOMReleaseNotes && latest.tag) {
+      window.XIOMReleaseNotes.fetchNotes(latest.tag).then(function (notes) {
+        if (!notes) return;
+        window.XIOMReleaseNotes.render(whatsNew, notes, { limit: 3 });
+        whatsNew.hidden = false;
+      });
+    }
+
     var tbody = document.getElementById("release-rows");
     if (!tbody) return;
     tbody.textContent = "";
@@ -181,6 +192,43 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       anchor.textContent = "release notes";
       anchor.style.color = "var(--signal)";
       notes.appendChild(anchor);
+
+      if (entry.notes !== false && window.XIOMReleaseNotes) {
+        var toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "rn-toggle";
+        toggle.textContent = "what's new";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "What's new in " + entry.tag);
+        var details = null;
+        toggle.addEventListener("click", function () {
+          if (details) {
+            details.hidden = !details.hidden;
+            toggle.setAttribute("aria-expanded", details.hidden ? "false" : "true");
+            return;
+          }
+          details = document.createElement("tr");
+          details.className = "rn-details";
+          var cell = document.createElement("td");
+          cell.colSpan = 3;
+          var box = document.createElement("div");
+          box.className = "release-notes";
+          cell.appendChild(box);
+          details.appendChild(cell);
+          row.parentNode.insertBefore(details, row.nextSibling);
+          toggle.setAttribute("aria-expanded", "true");
+          window.XIOMReleaseNotes.fetchNotes(entry.tag).then(function (releaseNotes) {
+            if (releaseNotes) {
+              window.XIOMReleaseNotes.render(box, releaseNotes);
+            } else {
+              box.textContent = "No release notes published for this version -- see the changelog.";
+              box.className = "release-notes rn-none";
+            }
+          });
+        });
+        notes.appendChild(toggle);
+      }
+
       row.appendChild(version);
       row.appendChild(released);
       row.appendChild(notes);
@@ -212,10 +260,10 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   }
 
   function fromMirror(data) {
-    return (data.releases || []).map(function (entry) {
-      return { tag: entry.tag, published: entry.published };
-    });
-  }
+        return (data.releases || []).map(function (entry) {
+          return { tag: entry.tag, published: entry.published, notes: entry.notes };
+        });
+      }
 
   function fromGitHub(releases) {
     return releases

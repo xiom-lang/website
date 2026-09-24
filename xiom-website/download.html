@@ -66,6 +66,11 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     </p>
   </div>
 
+  <div class="content-section" id="whats-new-section" hidden>
+    <h2>What's new</h2>
+    <div class="release-notes" id="whats-new"></div>
+  </div>
+
   <div class="content-section">
     <h2>Pre-built Binaries</h2>
     <table>
@@ -240,6 +245,7 @@ cargo test --workspace --lib</code></pre>
   </div>
 </footer>
 
+<script src="js/release-notes.js"></script>
 <script>
 (function () {
   "use strict";
@@ -328,6 +334,19 @@ cargo test --workspace --lib</code></pre>
     showAsset(assets, "dl-macos-arm64", "size-macos-arm64", "row-macos-arm64", /macos-arm64\.tar\.gz$/);
     showAsset(assets, "dl-checksums", null, null, /^SHA256SUMS$/);
     loadChecksums(assets);
+
+    if (rel.tag && window.XIOMReleaseNotes) {
+      var section = document.getElementById("whats-new-section");
+      var box = document.getElementById("whats-new");
+      window.XIOMReleaseNotes.fetchNotes(rel.tag).then(function (notes) {
+        if (!notes) {
+          if (section) section.hidden = true;
+          return;
+        }
+        window.XIOMReleaseNotes.render(box, notes);
+        if (section) section.hidden = false;
+      });
+    }
   }
 
   function fromMirror(data) {
