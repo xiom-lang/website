@@ -506,6 +506,17 @@ Remaining:
     misses, row expansion, graceful missing-notes state). Relays for the
     compiler, stdlib and registry lanes are in the paste-ready section
     below.
+27. **Installer resilience and current-release accuracy (done 2026-09-24)**:
+    the mirror still reported v0.60.1 while GitHub was at v0.61.3, so
+    `install.ps1` installed the old release. Both installers and both release
+    pages now consult the mirror and the GitHub releases API and use the
+    newer release (pages cache the API lookup ten minutes); the PowerShell
+    installer also stopped aborting after a successful install when
+    `xiom-pkg --version` wrote to stderr. Verified end to end: the installer
+    downloads v0.61.3, checksum verifies, all nine tools report, and the
+    installed compiler runs. macOS copy updated everywhere (archives ship for
+    Intel and Apple Silicon; the "not published yet" caveats and the
+    roadmap's "macOS in progress" line are gone).
 
 ## Cross-lane notes
 
@@ -814,64 +825,74 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-09-22): HEAD 958cdaa. Copyright notices across the repo read
+State (2026-09-24): HEAD 1bb76b0. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
 rewritten around intent -> enforcement -> AI, spec page labelled Revision
-0.3 for the core language, 128-bit primitives documented, module purpose
-lines rendered, syntax examples aligned to requires:/ensures: colons and
-use semicolons). The snippet syntax lint runs in `docs.yml` and
-`docs-versioned.yml` and the corpus is clean. Since then: the Prior art
-page, History page, unsafe guide, Contributing hub, error-code reference
-(L001/P001/T001/E001/C001/W000/W001, X family reserved), debugger guide,
-MkDocs XIOM highlighting, version-teaching removal, footer/social rebuild,
-a full mobile pass, the editor-support block (XIOM Toolchain 0.12.0, both
-listings live), the verification trust-boundary section, and an
-external-link fix (absolute GitHub `.md` URLs are no longer rewritten to
-`.html`). All guide syntax was audited against a local v0.61.0 compiler
-build: `if let`, range expressions and the `Byte` alias are not implemented
-and the docs no longer claim them; labeled loops, `loop`, `defer`, `const`
-blocks, `while let` and the numeric widths/casts are documented and
-probe-verified. Commits carry `-s` sign-off. The publishing files
-(`docs/wikipedia-draft.md` planning sheet, `docs/marketplace-publisher.md`
-copy) live in docs/ and are not built into the site.
+0.3 for the core language, 128-bit primitives documented, syntax examples
+aligned to canonical colons and semicolons). The snippet syntax lint runs in
+`docs.yml` and `docs-versioned.yml` and the corpus is clean. Landed since the
+last refresh: prior-art and History pages, unsafe guide, Contributing hub,
+error-code reference (L/P/T/E/C/W families, X reserved), debugger guide,
+MkDocs XIOM highlighting, version-teaching removal, footer rebuild with the
+eight social icons (mobile-sized), two-column index hero plus banners on six
+pages, the editor-support block (XIOM Toolchain 0.12.0 on both
+marketplaces), the verification trust-boundary section, the external-link
+fix, the toolchain-context and post-release-plan pages rendered from the
+compiler checkout, the release-notes system (schema v1 in
+`docs/release-notes-schema.md`, `js/release-notes.js`, panels on the
+download and versions pages, fully tested), and installer resilience
+(mirror + GitHub, newer release wins; macOS shipping copy). All guide syntax
+was audited against a local compiler build: `if let`, range expressions and
+the `Byte` alias are not implemented and the docs do not claim them.
+Commits carry `-s` sign-off. `docs/wikipedia-draft.md` is a planning sheet
+only and `docs/marketplace-publisher.md` holds the marketplace copy; neither
+is built into the site.
 
 Next, in order:
-1. Draft "XIOM for game developers" once the owner provides engine facts
+1. After the owner's VPS pull, verify the live site: `curl -sI
+   https://xiom-lang.org/install.ps1` is 200; `irm
+   https://xiom-lang.org/install.ps1 | iex` reports "GitHub has v0.61.3 --
+   using GitHub" and installs v0.61.3; download.html lists four platforms;
+   versions.html shows the current release from GitHub with a "what's new"
+   toggle that says notes are not published yet (expected until the next
+   tag).
+2. Next tagged release: verify the release-notes render end to end (mirror
+   first, tag-pinned raw fallback) and that a tag without notes shows only
+   the changelog link. The mirror publish of `release.json` and
+   `"notes": true` belongs to whoever writes archives to the mirror; the
+   website has no credentials for it (recorded in cross-lane notes).
+3. Draft "XIOM for game developers" once the owner provides engine facts
    (C# coverage on the Concepts page landed 2026-09-21).
-2. Benchmark showcase: the benchmark is a separate private repo plus a
-   research paper; when the owner says it is public, add a "Reproducible
-   evidence" page (task definition, generated source, compiler output,
-   runtime results, contract configuration, tool interactions, tokens,
-   environment, sessions) and link it from the Why page. Until then the
-   homepage carries an "AI benchmark -- in preparation" card listing the
-   measured dimensions and the three context conditions (no context,
-   retrieved docs, MCP tools), with no results or numbers claimed.
-3. If the compiler lane publishes a current specification revision, update
+4. Benchmark showcase: when the owner says the benchmark repo and paper are
+   public, add a "Reproducible evidence" page (task definition, generated
+   source, compiler output, runtime results, contract configuration, tool
+   interactions, tokens, environment, sessions) and link it from the Why
+   page; the homepage already carries the "in preparation" card with no
+   results claimed.
+5. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
-4. Release notes on the next tag: the compiler lane publishes
-   `release-notes/<tag>.json` per the relay in this file; verify the download
-   and versions pages render it (mirror first, raw fallback), and that a tag
-   without notes shows only the changelog link. No website deploy is needed
-   for notes to appear, but the schema doc and renderer ship with the site.
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
-audience framing) per the brief already delivered; macOS installer support
-activates when RELEASE_BUILD_MACOS ships assets; ecosystem/registry doc
-pointers stay deferred until stdlib is 100%.
+audience framing) per the brief already delivered; macOS ships on all
+releases now (Intel and Apple Silicon archives in v0.61.3), so the earlier
+"wait for RELEASE_BUILD_MACOS" note is closed; ecosystem/registry doc
+pointers stay deferred until stdlib is 100%; registry correlation
+(`compiler` pin metadata) waits on the stdlib publish pass.
 
-Mirror CORS (owner/VPS action, found 2026-09-21): `dl.xiom-lang.org` serves
-`latest.json` and `releases/index.json` without
-`Access-Control-Allow-Origin`, so browser `fetch()` from xiom-lang.org is
-blocked; the versions page used to show "could not load mirror data" while
-the download page silently used its GitHub API fallback. Both pages now try
-the mirror first and fall back to `api.github.com/repos/xiom-lang/xiom`
-(which sends CORS), then to static links. Proper fix: add
-`add_header Access-Control-Allow-Origin "https://xiom-lang.org";` (or `*`)
-for the JSON paths in the mirror nginx config; the pages pick the mirror up
-automatically once the header exists.
+Mirror state (owner/VPS and compiler lane, checked 2026-09-24): the mirror
+still serves v0.60.1 in `latest.json`/`releases/index.json` and sends no
+`Access-Control-Allow-Origin`; its archive writer must also publish
+`releases/<tag>/release.json` and set `"notes": true` per the release-notes
+schema. The website cannot write to the mirror (no credentials in any
+workflow). It no longer depends on the mirror being current: the installers
+and both release pages compare mirror and GitHub and use the newer release,
+and release notes fall back to the tag-pinned raw file. Proper fixes:
+regenerate `latest.json`/`index.json` on every tag, add
+`add_header Access-Control-Allow-Origin "https://xiom-lang.org";` for the
+JSON paths, and publish the notes file.
 
 Rules: ASCII-only; never hardcode versions (read mirror JSON); pin GitHub
 Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
