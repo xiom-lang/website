@@ -509,6 +509,18 @@ Remaining:
 
 ## Cross-lane notes
 
+Registry correlation (confirmed 2026-09-24): the registry stores the
+toolchain pin per package version and serves it as `compiler` on the package
+page; it needs no changes. The stdlib publish pass must pass the pin as
+metadata -- `xiom-std@0.61.3` currently has no `compiler` value, so there is
+nothing to correlate yet. The registry's `index.json` lists package names
+only (38 packages), so the field lives in the per-package detail. Deferred
+website idea: when values exist, surface "pinned toolchain" beside
+`xiom-std` where the docs or versions page mention it -- not actionable until
+the stdlib publish pass emits the field. Registry release notes (release.json
+per schema v1 at `registry.xiom-lang.org/releases/<tag>/release.json`) were
+acknowledged and are not applicable today.
+
 Per-release test counts (compiler lane, asked 2026-09-22): the versions page
 can only show verification numbers per tag if the release metadata carries
 them -- today neither the mirror (`releases/index.json` has tag + published
@@ -735,6 +747,11 @@ the pinned checkout and tags its bullets as `stdlib`. Keep entries
 user-facing (what a user gains -- no wave names, no task IDs), one to two
 sentences each, at most 320 characters. If nothing user-visible ships in the
 release window, say so to the compiler lane so the fragment can be omitted.
+
+Also for the next publish: pass the toolchain pin as package metadata on
+`xiom-std` (the field the registry serves as `compiler`, per version). The
+registry already supports it; `xiom-std@0.61.3` has no value yet, so there is
+nothing to correlate until the publish pass emits it.
 
 ### Registry lane: release notes when tagged releases exist
 
