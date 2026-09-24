@@ -218,7 +218,7 @@ page was reframed as a plan (status table, porting plan, direction
 categories) with no unfinished packages or product names, and Registry
 joined the top navigation on every page. Brand illustrations are wired in:
 five story chips on the homepage, three pillar icons on the Why page, and
-`og-card.png` (1200x630) as the social preview everywhere; the footer legal
+`og-card.png` (1200x630) as the social preview everywhere (replaced by `og-card.webp` 2026-09-25, item 29); the footer legal
 block is split into three short lines, docs code is 13px, and the card grids
 use proper gaps and bordered panels. The docs table of contents was tamed:
 API declarations are H4 (anchors kept) with `toc_depth: 3`, so the TOC lists
@@ -535,6 +535,14 @@ Remaining:
     real if the mirror serves `SHA256SUMS` with ACAO or the compiler lane
     commits a tag-pinned checksums file (raw.githubusercontent sends ACAO
     `*`); neither exists today.
+29. **Owner webp art refresh, og-card switched to webp (done 2026-09-25)**:
+    the three pillar icons, the five story chips and the social card were
+    replaced with the owner's higher-quality webp files (the generated ones
+    were too soft). All nine webps are valid VP8 and match their PNG sources'
+    dimensions (icons 355-380 x 343-345, story chips 356-395 x 310-357,
+    og-card 1200x630), so the HTML width/height hints stay correct. All twelve
+    `og:image` meta tags and the homepage CTA banner now use `og-card.webp`;
+    `og-card.jpg` was removed (`1f61a88`, `b762899`).
 
 ## Cross-lane notes
 
@@ -843,7 +851,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-09-24): HEAD d25d652. Copyright notices across the repo read
+State (2026-09-25): HEAD b762899. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
@@ -861,9 +869,10 @@ fix, the toolchain-context and post-release-plan pages rendered from the
 compiler checkout, the release-notes system (schema v1 in
 `docs/release-notes-schema.md`, `js/release-notes.js`, panels on the
 download and versions pages, fully tested), installer resilience
-(mirror + GitHub, newer release wins; macOS shipping copy), and the
-checksum-column copy correction from the live deploy verification. All guide
-syntax was audited against a local compiler build: `if let`, range expressions
+(mirror + GitHub, newer release wins; macOS shipping copy), the
+checksum-column copy correction from the live deploy verification, and the
+owner's webp art refresh including the og-card webp switch. All guide syntax
+was audited against a local compiler build: `if let`, range expressions
 and the `Byte` alias are not implemented and the docs do not claim them.
 Commits carry `-s` sign-off. `docs/wikipedia-draft.md` is a planning sheet
 only and `docs/marketplace-publisher.md` holds the marketplace copy; neither
