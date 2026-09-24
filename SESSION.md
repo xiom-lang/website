@@ -543,6 +543,22 @@ Remaining:
     og-card 1200x630), so the HTML width/height hints stay correct. All twelve
     `og:image` meta tags and the homepage CTA banner now use `og-card.webp`;
     `og-card.jpg` was removed (`1f61a88`, `b762899`).
+30. **Ecosystem status pass and benchmark move (done 2026-09-25)**: the
+    roadmap gained an Ecosystem section with verified statuses -- Registry
+    1.0 live (publish, install, search, sha256 checks, ed25519 signatures
+    and provenance), editor tooling live (the VS Code extension is on the VS
+    Code Marketplace and Open VSX; `release.yml` publishes new extension
+    versions to both and skips toolchain-only releases), playground live,
+    and Registry 2.0 recorded as a direction (GitHub sign-in, review,
+    self-service) per registry SESSION section 15. The live package count is
+    read at page load from `registry.xiom-lang.org/index.json` through
+    `js/registry-count.js` (ACAO `*`; installable = entries with a non-empty
+    `latest`; 37 of 38 today, the yanked probe excluded) on both the roadmap
+    and ecosystem pages, with authored fallback text in the markup. The
+    stale "mirror is v0.60.1; v0.61.0 on main" rows are gone from both
+    pages. The "AI benchmark" card was removed from the homepage and became
+    the "Reproducible evidence (in preparation)" section on the roadmap
+    (`roadmap.html#benchmark`); no results are claimed.
 
 ## Cross-lane notes
 
@@ -851,7 +867,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-09-25): HEAD b762899. Copyright notices across the repo read
+State (2026-09-25): HEAD 7f6b639. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
@@ -870,8 +886,10 @@ compiler checkout, the release-notes system (schema v1 in
 `docs/release-notes-schema.md`, `js/release-notes.js`, panels on the
 download and versions pages, fully tested), installer resilience
 (mirror + GitHub, newer release wins; macOS shipping copy), the
-checksum-column copy correction from the live deploy verification, and the
-owner's webp art refresh including the og-card webp switch. All guide syntax
+checksum-column copy correction from the live deploy verification, the
+owner's webp art refresh including the og-card webp switch, and the
+ecosystem status pass with the live registry package count and the benchmark
+move to the roadmap. All guide syntax
 was audited against a local compiler build: `if let`, range expressions
 and the `Byte` alias are not implemented and the docs do not claim them.
 Commits carry `-s` sign-off. `docs/wikipedia-draft.md` is a planning sheet
@@ -894,8 +912,9 @@ Next, in order:
    public, add a "Reproducible evidence" page (task definition, generated
    source, compiler output, runtime results, contract configuration, tool
    interactions, tokens, environment, sessions) and link it from the Why
-   page; the homepage already carries the "in preparation" card with no
-   results claimed.
+   page; the "in preparation" section now lives on the roadmap
+   (`roadmap.html#benchmark`) with no results claimed, and the homepage card
+   was removed 2026-09-25.
 4. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
