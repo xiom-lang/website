@@ -1,0 +1,3870 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.61.3/api/iter/">
+      
+      
+        <link rel="prev" href="../io/">
+      
+      
+        <link rel="next" href="../log/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../img/xiom-icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>iter - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stdlibiter" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../../img/xiom-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              iter
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../../img/xiom-logo.png" alt="logo">
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://xiom-lang.org/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xiom-lang.org
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unsafe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unsafe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debugger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chainxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chain.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filterxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filter.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foldxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fold.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iterxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        map.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rangexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        range.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zipxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zip.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_23" id="__nav_23_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Error Codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/C001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/E001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/L001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    L001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/P001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    P001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/T001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    T001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/W000/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W000
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/W001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0010/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0010
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0011/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0011
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0100/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0100
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_24" >
+        
+          
+          <label class="md-nav__link" for="__nav_24" id="__nav_24_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../toolchain-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Toolchain Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../post-release-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post-release Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chainxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chain.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filterxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filter.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foldxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fold.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iterxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        map.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rangexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        range.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zipxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zip.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="stdlibiter"><code>stdlib.iter</code><a class="headerlink" href="#stdlibiter" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Iterator Library</strong></p>
+<p>Generated from <code>v0.61.3</code>. 7 source files, 196 documented symbols.</p>
+</blockquote>
+<h2 id="chainxi"><code>chain.xi</code><a class="headerlink" href="#chainxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-iter_foldv-vecint-init-int-f-fnint-int-int-int"><code>fn iter_fold(v: &amp;Vec[Int], init: Int, f: fn(Int, &amp;Int) -&gt; Int) -&gt; Int</code><a class="headerlink" href="#fn-iter_foldv-vecint-init-int-f-fnint-int-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Left fold over v with seed init: acc = f(acc, v[i]) for i in order. Returns the final accumulator. O(n). The combiner takes (acc, element).</p>
+</blockquote>
+<h5 id="fn-iter_fold_rightv-vecint-init-int-f-fnint-int-int-int"><code>fn iter_fold_right(v: &amp;Vec[Int], init: Int, f: fn(Int, &amp;Int) -&gt; Int) -&gt; Int</code><a class="headerlink" href="#fn-iter_fold_rightv-vecint-init-int-f-fnint-int-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Right fold over v with seed init: acc = f(acc, v[i]) visiting elements from the last to the first. Returns the final accumulator. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_reducev-vecint-f-fnint-int-int-optionint"><code>fn iter_reduce(v: &amp;Vec[Int], f: fn(&amp;Int, &amp;Int) -&gt; Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_reducev-vecint-f-fnint-int-int-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Fold using the first element as the seed; None if v is empty. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_sumv-vecint-int"><code>fn iter_sum(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-iter_sumv-vecint-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Sum of all elements of an Int vector. O(n). Empty vector sums to 0.</p>
+</blockquote>
+<h5 id="fn-iter_productv-vecint-int"><code>fn iter_product(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-iter_productv-vecint-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Product of all elements of an Int vector. O(n). Empty vector is 1.</p>
+</blockquote>
+<h5 id="fn-iter_anyv-vecint-pred-fnint-bool-bool"><code>fn iter_any(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-iter_anyv-vecint-pred-fnint-bool-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True if any element satisfies pred. O(n). Short-circuits.</p>
+</blockquote>
+<h5 id="fn-iter_allv-vecint-pred-fnint-bool-bool"><code>fn iter_all(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-iter_allv-vecint-pred-fnint-bool-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True if every element satisfies pred. O(n). Short-circuits.</p>
+</blockquote>
+<h5 id="fn-iter_countv-vecint-int"><code>fn iter_count(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-iter_countv-vecint-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of elements in v. O(1).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == v.len()</code></li>
+</ul>
+<h5 id="fn-iter_count_ifv-vecint-pred-fnint-bool-int"><code>fn iter_count_if(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Int</code><a class="headerlink" href="#fn-iter_count_ifv-vecint-pred-fnint-bool-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of elements satisfying pred. O(n).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= v.len()</code></li>
+</ul>
+<h5 id="fn-iter_nthv-vecint-n-int-optionint"><code>fn iter_nth(v: &amp;Vec[Int], n: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_nthv-vecint-n-int-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Element at index n, or None if out of bounds. O(1).</p>
+</blockquote>
+<h5 id="fn-iter_lastv-vecint-optionint"><code>fn iter_last(v: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_lastv-vecint-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Last element of v, or None if empty. O(1).</p>
+</blockquote>
+<h5 id="fn-iter_positionv-vecint-pred-fnint-bool-optionint"><code>fn iter_position(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_positionv-vecint-pred-fnint-bool-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Index of the first element satisfying pred, or None. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_maxv-vecint-optionint"><code>fn iter_max(v: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_maxv-vecint-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Maximum element of an Int vector, or None if empty. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_minv-vecint-optionint"><code>fn iter_min(v: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_minv-vecint-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Minimum element of an Int vector, or None if empty. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_partitionv-vecint-pred-fnint-bool-vecint-vecint"><code>fn iter_partition(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; (Vec[Int], Vec[Int])</code><a class="headerlink" href="#fn-iter_partitionv-vecint-pred-fnint-bool-vecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Split v into (matching, non-matching) vectors by pred. O(n). The first tuple element holds elements where pred is true, in order.</p>
+</blockquote>
+<h5 id="fn-iter_group_byv-vecint-key-fnint-int-vecvecint"><code>fn iter_group_by(v: &amp;Vec[Int], key: fn(&amp;Int) -&gt; Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-iter_group_byv-vecint-key-fnint-int-vecvecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Split v into contiguous groups of elements sharing an equal key value. Returns a vector of groups in original order. O(n). NOTE: nested Vec[Vec[Int]] element access is unreliable in the current compiler; treat the result as opaque and inspect group lengths only.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="filterxi"><code>filter.xi</code><a class="headerlink" href="#filterxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-iter_filterv-vecint-pred-fnint-bool-vecint"><code>fn iter_filter(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_filterv-vecint-pred-fnint-bool-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>New vector with the elements of v satisfying pred, in order. O(n).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
+<h5 id="fn-iter_filter_mutv-mut-vecint-pred-fnint-bool"><code>fn iter_filter_mut(v: &amp;mut Vec[Int], pred: fn(&amp;Int) -&gt; Bool)</code><a class="headerlink" href="#fn-iter_filter_mutv-mut-vecint-pred-fnint-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Remove in place every element of v not satisfying pred. O(n). Element order is preserved; v is compacted in place.</p>
+</blockquote>
+<h5 id="fn-iter_takev-vecint-n-int-vecint"><code>fn iter_take(v: &amp;Vec[Int], n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_takev-vecint-n-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>First n elements of v (or fewer if v is shorter). O(n). n &lt;= 0 yields an empty vector.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
+<h5 id="fn-iter_skipv-vecint-n-int-vecint"><code>fn iter_skip(v: &amp;Vec[Int], n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_skipv-vecint-n-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>All elements of v after the first n. O(n). n &lt;= 0 returns all of v.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
+<h5 id="fn-iter_take_whilev-vecint-pred-fnint-bool-vecint"><code>fn iter_take_while(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_take_whilev-vecint-pred-fnint-bool-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The leading run of elements for which pred holds. O(n). Short-circuits.</p>
+</blockquote>
+<h5 id="fn-iter_skip_whilev-vecint-pred-fnint-bool-vecint"><code>fn iter_skip_while(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_skip_whilev-vecint-pred-fnint-bool-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Elements of v after the leading run satisfying pred. O(n). Short-circuits.</p>
+</blockquote>
+<h5 id="fn-iter_dedupv-vecint-vecint"><code>fn iter_dedup(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_dedupv-vecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Drop consecutive equal elements from v. O(n). [1,1,2,2,3,1] -&gt; [1,2,3,1].</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
+<h5 id="fn-iter_uniquev-vecint-vecint"><code>fn iter_unique(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_uniquev-vecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Keep the first occurrence of each value, dropping later duplicates. O(n^2).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
+<hr />
+<hr />
+<hr />
+<h2 id="foldxi"><code>fold.xi</code><a class="headerlink" href="#foldxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-iter_fold1v-vecint-f-fnint-int-int-optionint"><code>fn iter_fold1(v: &amp;Vec[Int], f: fn(&amp;Int, &amp;Int) -&gt; Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_fold1v-vecint-f-fnint-int-int-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Fold without a seed using the first element, or None if v is empty. O(n). f(acc, element) returns the next accumulator.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; v.len() &gt; 0</code></li>
+</ul>
+<h5 id="fn-iter_scanv-vecint-init-int-f-fnint-int-int-vecint"><code>fn iter_scan(v: &amp;Vec[Int], init: Int, f: fn(Int, &amp;Int) -&gt; Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_scanv-vecint-init-int-f-fnint-int-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Running-accumulator fold emitting every intermediate state. O(n). The result starts with init, followed by each new accumulator, so it always has v.len() + 1 elements.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == v.len() + 1</code></li>
+</ul>
+<h5 id="fn-iter_findv-vecint-pred-fnint-bool-optionint"><code>fn iter_find(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_findv-vecint-pred-fnint-bool-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>First element satisfying pred, or None. O(n). Short-circuits.</p>
+</blockquote>
+<h5 id="fn-iter_find_mapv-vecint-f-fnint-optionint-optionint"><code>fn iter_find_map(v: &amp;Vec[Int], f: fn(&amp;Int) -&gt; Option[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_find_mapv-vecint-f-fnint-optionint-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>First Some value produced by f over the elements, or None. O(n). Short-circuits on the first Some result.</p>
+</blockquote>
+<h5 id="fn-iter_containsv-vecint-item-int-bool"><code>fn iter_contains(v: &amp;Vec[Int], item: Int) -&gt; Bool</code><a class="headerlink" href="#fn-iter_containsv-vecint-item-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True if item occurs in v. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_position_ofv-vecint-item-int-optionint"><code>fn iter_position_of(v: &amp;Vec[Int], item: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_position_ofv-vecint-item-int-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Index of the first occurrence of item, or None. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_chunksv-vecint-n-int-vecvecint"><code>fn iter_chunks(v: &amp;Vec[Int], n: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-iter_chunksv-vecint-n-int-vecvecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Contiguous non-overlapping chunks of size n; the last chunk may be short. O(n). n &lt;= 0 yields an empty vector. Returns Vec[Vec[Int]]; nested element access is unreliable in the current compiler - treat as opaque.</p>
+</blockquote>
+<h5 id="fn-iter_windowsv-vecint-n-int-vecvecint"><code>fn iter_windows(v: &amp;Vec[Int], n: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-iter_windowsv-vecint-n-int-vecvecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>All contiguous length-n slices of v. O(n * w). Returns Vec[Vec[Int]]; nested element access is unreliable in the current compiler. An empty result means n &lt;= 0 or n &gt; v.len().</p>
+</blockquote>
+<h5 id="fn-iter_cyclev-vecint-n-int-vecint"><code>fn iter_cycle(v: &amp;Vec[Int], n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_cyclev-vecint-n-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>v repeated n times concatenated. O(n * v.len()). n &lt;= 0 yields empty.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &gt;= 0 =&gt; result.len() == v.len() * n</code></li>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; result.len() == 0</code></li>
+</ul>
+<h5 id="fn-iter_repeatitem-int-n-int-vecint"><code>fn iter_repeat(item: Int, n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_repeatitem-int-n-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>item repeated n times. O(n). n &lt;= 0 yields an empty vector.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &gt;= 0 =&gt; result.len() == n</code></li>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; result.len() == 0</code></li>
+</ul>
+<h5 id="fn-iter_reversev-vecint-vecint"><code>fn iter_reverse(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_reversev-vecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Elements of v in reverse order. O(n).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == v.len()</code></li>
+</ul>
+<h5 id="fn-iter_sortv-vecint-vecint"><code>fn iter_sort(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_sortv-vecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Sorted copy of v. O(n log n), stable.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == v.len()</code></li>
+</ul>
+<h5 id="fn-iter_for_eachv-vecint-f-fnint-unit"><code>fn iter_for_each(v: &amp;Vec[Int], f: fn(&amp;Int) -&gt; Unit)</code><a class="headerlink" href="#fn-iter_for_eachv-vecint-f-fnint-unit" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Apply f to each element for side effects. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_cmpa-vecint-b-vecint-int"><code>fn iter_cmp(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-iter_cmpa-vecint-b-vecint-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Lexicographic comparison of a and b: -1, 0, or 1. O(min(len)). A prefix of the other compares smaller.</p>
+</blockquote>
+<h5 id="fn-iter_eqa-vecint-b-vecint-bool"><code>fn iter_eq(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Bool</code><a class="headerlink" href="#fn-iter_eqa-vecint-b-vecint-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Element-wise equality of a and b (lengths must match). O(n).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="iterxi"><code>iter.xi</code><a class="headerlink" href="#iterxi" title="Permanent link">&para;</a></h2>
+<h4 id="type-range"><code>type Range</code><a class="headerlink" href="#type-range" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>=== Range types === Half-open integer range [start, end).</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="type-rangeinclusive"><code>type RangeInclusive</code><a class="headerlink" href="#type-rangeinclusive" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Inclusive integer range [start, end] with cursor state.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>current</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>done</code></td>
+<td><code>Bool</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-rangestart-int-end-int-range"><code>fn range(start: Int, end: Int) -&gt; Range</code><a class="headerlink" href="#fn-rangestart-int-end-int-range" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Create a half-open range [start, end).</p>
+</blockquote>
+<h4 id="fn-range_inclusivestart-int-end-int-rangeinclusive"><code>fn range_inclusive(start: Int, end: Int) -&gt; RangeInclusive</code><a class="headerlink" href="#fn-range_inclusivestart-int-end-int-rangeinclusive" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Create an inclusive range [start, end].</p>
+</blockquote>
+<h4 id="fn-nextself-self-optionint"><code>fn next(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nextself-self-optionint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Yield the next integer; None once <code>start &gt;= end</code>. Consumes from the front.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-lenself-self-int"><code>fn len(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-lenself-self-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Number of integers left in the range.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-containsself-self-x-int-bool"><code>fn contains(self: Self, x: Int) -&gt; Bool</code><a class="headerlink" href="#fn-containsself-self-x-int-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when <code>x</code> is inside [start, end); does not consume the range.</p>
+</blockquote>
+<h4 id="fn-sumself-self-int"><code>fn sum(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-sumself-self-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Sum of the remaining integers (0 for an empty range).</p>
+</blockquote>
+<h4 id="fn-productself-self-int"><code>fn product(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-productself-self-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Product of the remaining integers (1 for an empty range).</p>
+</blockquote>
+<h4 id="fn-nextself-self-optionint_1"><code>fn next(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nextself-self-optionint_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Yield the next integer; None after the inclusive end was reached.</p>
+</blockquote>
+<h4 id="fn-mapuself-self-f-fnint-u-mapiterint-u"><code>fn map[U](self: Self, f: fn(Int) -&gt; U) -&gt; MapIter[Int, U]</code><a class="headerlink" href="#fn-mapuself-self-f-fnint-u-mapiterint-u" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Lazily apply <code>f</code> to each integer in the range.</p>
+</blockquote>
+<h4 id="fn-filterself-self-predicate-fnint-bool-filteriterint"><code>fn filter(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; FilterIter[Int]</code><a class="headerlink" href="#fn-filterself-self-predicate-fnint-bool-filteriterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Lazily keep only integers satisfying <code>predicate</code>.</p>
+</blockquote>
+<h4 id="fn-enumerateself-self-enumerateiterint"><code>fn enumerate(self: Self) -&gt; EnumerateIter[Int]</code><a class="headerlink" href="#fn-enumerateself-self-enumerateiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Pair each integer with its 0-based position.</p>
+</blockquote>
+<h4 id="fn-takeself-self-n-int-takeiterint"><code>fn take(self: Self, n: Int) -&gt; TakeIter[Int]</code><a class="headerlink" href="#fn-takeself-self-n-int-takeiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Yield at most the first <code>n</code> integers.</p>
+</blockquote>
+<h4 id="fn-skipself-self-n-int-skipiterint"><code>fn skip(self: Self, n: Int) -&gt; SkipIter[Int]</code><a class="headerlink" href="#fn-skipself-self-n-int-skipiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Skip the first <code>n</code> integers.</p>
+</blockquote>
+<h4 id="fn-chainself-self-other-range-chainiterint-int"><code>fn chain(self: Self, other: Range) -&gt; ChainIter[Int, Int]</code><a class="headerlink" href="#fn-chainself-self-other-range-chainiterint-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Continue with the integers of <code>other</code> after this range ends.</p>
+</blockquote>
+<h4 id="fn-zipself-self-other-range-zipiterint-int"><code>fn zip(self: Self, other: Range) -&gt; ZipIter[Int, Int]</code><a class="headerlink" href="#fn-zipself-self-other-range-zipiterint-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Pair integers with <code>other</code> until either runs out.</p>
+</blockquote>
+<h4 id="fn-collectself-self-vecint"><code>fn collect(self: Self) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-collectself-self-vecint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Drain the remaining integers into a Vec.</p>
+</blockquote>
+<h4 id="fn-foldbself-self-init-b-f-fnb-int-b-b"><code>fn fold[B](self: Self, init: B, f: fn(B, Int) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldbself-self-init-b-f-fnb-int-b-b" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Fold the remaining integers with <code>f</code>, starting from <code>init</code>.</p>
+</blockquote>
+<h4 id="fn-countself-self-int"><code>fn count(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countself-self-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Number of remaining integers.</p>
+</blockquote>
+<h4 id="fn-maxself-self-optionint"><code>fn max(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-maxself-self-optionint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Largest remaining integer, or None for an empty range.</p>
+</blockquote>
+<h4 id="fn-minself-self-optionint"><code>fn min(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-minself-self-optionint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Smallest remaining integer, or None for an empty range.</p>
+</blockquote>
+<h4 id="fn-findself-self-predicate-fnint-bool-optionint"><code>fn find(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-findself-self-predicate-fnint-bool-optionint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>First remaining integer satisfying <code>predicate</code>, or None.</p>
+</blockquote>
+<h4 id="fn-allself-self-predicate-fnint-bool-bool"><code>fn all(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-allself-self-predicate-fnint-bool-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when every remaining integer satisfies <code>predicate</code>.</p>
+</blockquote>
+<h4 id="fn-anyself-self-predicate-fnint-bool-bool"><code>fn any(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anyself-self-predicate-fnint-bool-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when at least one remaining integer satisfies <code>predicate</code>.</p>
+</blockquote>
+<h4 id="fn-nthself-self-n-int-optionint"><code>fn nth(self: Self, n: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nthself-self-n-int-optionint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Skip to and return the <code>n</code>-th remaining integer (0-based), or None.</p>
+</blockquote>
+<h4 id="fn-lastself-self-optionint"><code>fn last(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lastself-self-optionint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Consume and return the final integer, or None for an empty range.</p>
+</blockquote>
+<h4 id="type-mapiter"><code>type MapIter</code><a class="headerlink" href="#type-mapiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Lazy map iterator, produced by <code>map</code>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
+</tr>
+<tr>
+<td><code>f</code></td>
+<td><code>fn(T) -&gt; U</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="type-filteriter"><code>type FilterIter</code><a class="headerlink" href="#type-filteriter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Lazy filter iterator, produced by <code>filter</code>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
+</tr>
+<tr>
+<td><code>predicate</code></td>
+<td><code>fn(&amp;T) -&gt; Bool</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="type-enumerateiter"><code>type EnumerateIter</code><a class="headerlink" href="#type-enumerateiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Iterator pairing elements with a 0-based index.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
+</tr>
+<tr>
+<td><code>index</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="type-takeiter"><code>type TakeIter</code><a class="headerlink" href="#type-takeiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Iterator yielding at most a fixed number of elements.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
+</tr>
+<tr>
+<td><code>remaining</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="type-skipiter"><code>type SkipIter</code><a class="headerlink" href="#type-skipiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Iterator skipping a fixed number of leading elements.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
+</tr>
+<tr>
+<td><code>to_skip</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="type-chainiter"><code>type ChainIter</code><a class="headerlink" href="#type-chainiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Iterator continuing with a second iterator after the first ends.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
+</tr>
+<tr>
+<td><code>second</code></td>
+<td><code>fn() -&gt; Option[U]</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="type-zipiter"><code>type ZipIter</code><a class="headerlink" href="#type-zipiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Iterator pairing elements of two iterators.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td><code>fn() -&gt; Option[U]</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-nextt-uself-self-optionu"><code>fn next[T, U](self: Self) -&gt; Option[U]</code><a class="headerlink" href="#fn-nextt-uself-self-optionu" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[U]</code>. No source comment yet.</p>
+<h4 id="fn-nexttself-self-optiont"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-nexttself-self-optionint-t"><code>fn next[T](self: Self) -&gt; Option[(Int, T)]</code><a class="headerlink" href="#fn-nexttself-self-optionint-t" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[(Int, T)]</code>. No source comment yet.</p>
+<h4 id="fn-nexttself-self-optiont_1"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-nexttself-self-optiont_2"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-nextt-uself-self-optiont"><code>fn next[T, U](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nextt-uself-self-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-nextt-uself-self-optiont-u"><code>fn next[T, U](self: Self) -&gt; Option[(T, U)]</code><a class="headerlink" href="#fn-nextt-uself-self-optiont-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[(T, U)]</code>. No source comment yet.</p>
+<h4 id="fn-mapt-u-vself-self-f-fnu-v-mapiteru-v"><code>fn map[T, U, V](self: Self, f: fn(U) -&gt; V) -&gt; MapIter[U, V]</code><a class="headerlink" href="#fn-mapt-u-vself-self-f-fnu-v-mapiteru-v" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>f: fn(U) -&gt; V</code>; returns <code>MapIter[U, V]</code>. No source comment yet.</p>
+<h4 id="fn-filtert-uself-self-predicate-fnu-bool-filteriteru"><code>fn filter[T, U](self: Self, predicate: fn(&amp;U) -&gt; Bool) -&gt; FilterIter[U]</code><a class="headerlink" href="#fn-filtert-uself-self-predicate-fnu-bool-filteriteru" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;U) -&gt; Bool</code>; returns <code>FilterIter[U]</code>. No source comment yet.</p>
+<h4 id="fn-enumeratet-uself-self-enumerateiteru"><code>fn enumerate[T, U](self: Self) -&gt; EnumerateIter[U]</code><a class="headerlink" href="#fn-enumeratet-uself-self-enumerateiteru" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>EnumerateIter[U]</code>. No source comment yet.</p>
+<h4 id="fn-taket-uself-self-n-int-takeiteru"><code>fn take[T, U](self: Self, n: Int) -&gt; TakeIter[U]</code><a class="headerlink" href="#fn-taket-uself-self-n-int-takeiteru" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[U]</code>. No source comment yet.</p>
+<h4 id="fn-skipt-uself-self-n-int-skipiteru"><code>fn skip[T, U](self: Self, n: Int) -&gt; SkipIter[U]</code><a class="headerlink" href="#fn-skipt-uself-self-n-int-skipiteru" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>SkipIter[U]</code>. No source comment yet.</p>
+<h4 id="fn-chaint-uself-self-other-range-chainiteru-int"><code>fn chain[T, U](self: Self, other: Range) -&gt; ChainIter[U, Int]</code><a class="headerlink" href="#fn-chaint-uself-self-other-range-chainiteru-int" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>other: Range</code>; returns <code>ChainIter[U, Int]</code>. No source comment yet.</p>
+<h4 id="fn-zipt-uself-self-other-range-zipiteru-int"><code>fn zip[T, U](self: Self, other: Range) -&gt; ZipIter[U, Int]</code><a class="headerlink" href="#fn-zipt-uself-self-other-range-zipiteru-int" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>other: Range</code>; returns <code>ZipIter[U, Int]</code>. No source comment yet.</p>
+<h4 id="fn-collectt-uself-self-vecu"><code>fn collect[T, U](self: Self) -&gt; Vec[U]</code><a class="headerlink" href="#fn-collectt-uself-self-vecu" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[U]</code>. No source comment yet.</p>
+<h4 id="fn-foldt-u-bself-self-init-b-f-fnb-u-b-b"><code>fn fold[T, U, B](self: Self, init: B, f: fn(B, U) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldt-u-bself-self-init-b-f-fnb-u-b-b" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, U) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
+<h4 id="fn-countt-uself-self-int"><code>fn count[T, U](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countt-uself-self-int" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<h4 id="fn-sumt-uself-self-u"><code>fn sum[T, U](self: Self) -&gt; U</code><a class="headerlink" href="#fn-sumt-uself-self-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>U</code>. No source comment yet.</p>
+<h4 id="fn-productt-uself-self-u"><code>fn product[T, U](self: Self) -&gt; U</code><a class="headerlink" href="#fn-productt-uself-self-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>U</code>. No source comment yet.</p>
+<h4 id="fn-maxt-uself-self-optionu"><code>fn max[T, U](self: Self) -&gt; Option[U]</code><a class="headerlink" href="#fn-maxt-uself-self-optionu" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[U]</code>. No source comment yet.</p>
+<h4 id="fn-mint-uself-self-optionu"><code>fn min[T, U](self: Self) -&gt; Option[U]</code><a class="headerlink" href="#fn-mint-uself-self-optionu" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[U]</code>. No source comment yet.</p>
+<h4 id="fn-findt-uself-self-predicate-fnu-bool-optionu"><code>fn find[T, U](self: Self, predicate: fn(&amp;U) -&gt; Bool) -&gt; Option[U]</code><a class="headerlink" href="#fn-findt-uself-self-predicate-fnu-bool-optionu" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;U) -&gt; Bool</code>; returns <code>Option[U]</code>. No source comment yet.</p>
+<h4 id="fn-allt-uself-self-predicate-fnu-bool-bool"><code>fn all[T, U](self: Self, predicate: fn(&amp;U) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-allt-uself-self-predicate-fnu-bool-bool" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;U) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-anyt-uself-self-predicate-fnu-bool-bool"><code>fn any[T, U](self: Self, predicate: fn(&amp;U) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anyt-uself-self-predicate-fnu-bool-bool" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;U) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-ntht-uself-self-n-int-optionu"><code>fn nth[T, U](self: Self, n: Int) -&gt; Option[U]</code><a class="headerlink" href="#fn-ntht-uself-self-n-int-optionu" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[U]</code>. No source comment yet.</p>
+<h4 id="fn-lastt-uself-self-optionu"><code>fn last[T, U](self: Self) -&gt; Option[U]</code><a class="headerlink" href="#fn-lastt-uself-self-optionu" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[U]</code>. No source comment yet.</p>
+<h4 id="fn-mapt-uself-self-f-fnt-u-mapitert-u"><code>fn map[T, U](self: Self, f: fn(T) -&gt; U) -&gt; MapIter[T, U]</code><a class="headerlink" href="#fn-mapt-uself-self-f-fnt-u-mapitert-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>f: fn(T) -&gt; U</code>; returns <code>MapIter[T, U]</code>. No source comment yet.</p>
+<h4 id="fn-filtertself-self-predicate-fnt-bool-filteritert"><code>fn filter[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; FilterIter[T]</code><a class="headerlink" href="#fn-filtertself-self-predicate-fnt-bool-filteritert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>FilterIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-enumeratetself-self-enumerateitert"><code>fn enumerate[T](self: Self) -&gt; EnumerateIter[T]</code><a class="headerlink" href="#fn-enumeratetself-self-enumerateitert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>EnumerateIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-taketself-self-n-int-takeitert"><code>fn take[T](self: Self, n: Int) -&gt; TakeIter[T]</code><a class="headerlink" href="#fn-taketself-self-n-int-takeitert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-skiptself-self-n-int-skipitert"><code>fn skip[T](self: Self, n: Int) -&gt; SkipIter[T]</code><a class="headerlink" href="#fn-skiptself-self-n-int-skipitert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>SkipIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-chaintself-self-other-range-chainitert-int"><code>fn chain[T](self: Self, other: Range) -&gt; ChainIter[T, Int]</code><a class="headerlink" href="#fn-chaintself-self-other-range-chainitert-int" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>other: Range</code>; returns <code>ChainIter[T, Int]</code>. No source comment yet.</p>
+<h4 id="fn-ziptself-self-other-range-zipitert-int"><code>fn zip[T](self: Self, other: Range) -&gt; ZipIter[T, Int]</code><a class="headerlink" href="#fn-ziptself-self-other-range-zipitert-int" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>other: Range</code>; returns <code>ZipIter[T, Int]</code>. No source comment yet.</p>
+<h4 id="fn-collecttself-self-vect"><code>fn collect[T](self: Self) -&gt; Vec[T]</code><a class="headerlink" href="#fn-collecttself-self-vect" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[T]</code>. No source comment yet.</p>
+<h4 id="fn-foldt-bself-self-init-b-f-fnb-t-b-b"><code>fn fold[T, B](self: Self, init: B, f: fn(B, T) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldt-bself-self-init-b-f-fnb-t-b-b" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, T) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
+<h4 id="fn-counttself-self-int"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<h4 id="fn-sumtself-self-t"><code>fn sum[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-sumtself-self-t" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<h4 id="fn-producttself-self-t"><code>fn product[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-producttself-self-t" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<h4 id="fn-maxtself-self-optiont"><code>fn max[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-maxtself-self-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-mintself-self-optiont"><code>fn min[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-mintself-self-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-findtself-self-predicate-fnt-bool-optiont"><code>fn find[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Option[T]</code><a class="headerlink" href="#fn-findtself-self-predicate-fnt-bool-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-alltself-self-predicate-fnt-bool-bool"><code>fn all[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-alltself-self-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-anytself-self-predicate-fnt-bool-bool"><code>fn any[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anytself-self-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-nthtself-self-n-int-optiont"><code>fn nth[T](self: Self, n: Int) -&gt; Option[T]</code><a class="headerlink" href="#fn-nthtself-self-n-int-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-lasttself-self-optiont"><code>fn last[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-lasttself-self-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-mapt-uself-self-f-fnint-t-u-mapiterint-t-u"><code>fn map[T, U](self: Self, f: fn((Int, T)) -&gt; U) -&gt; MapIter[(Int, T), U]</code><a class="headerlink" href="#fn-mapt-uself-self-f-fnint-t-u-mapiterint-t-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>f: fn((Int, T)) -&gt; U</code>; returns <code>MapIter[(Int, T), U]</code>. No source comment yet.</p>
+<h4 id="fn-taketself-self-n-int-takeiterint-t"><code>fn take[T](self: Self, n: Int) -&gt; TakeIter[(Int, T)]</code><a class="headerlink" href="#fn-taketself-self-n-int-takeiterint-t" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[(Int, T)]</code>. No source comment yet.</p>
+<h4 id="fn-collecttself-self-vecint-t"><code>fn collect[T](self: Self) -&gt; Vec[(Int, T)]</code><a class="headerlink" href="#fn-collecttself-self-vecint-t" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[(Int, T)]</code>. No source comment yet.</p>
+<h4 id="fn-counttself-self-int_1"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<h4 id="fn-mapt-uself-self-f-fnt-u-mapitert-u_1"><code>fn map[T, U](self: Self, f: fn(T) -&gt; U) -&gt; MapIter[T, U]</code><a class="headerlink" href="#fn-mapt-uself-self-f-fnt-u-mapitert-u_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>f: fn(T) -&gt; U</code>; returns <code>MapIter[T, U]</code>. No source comment yet.</p>
+<h4 id="fn-filtertself-self-predicate-fnt-bool-filteritert_1"><code>fn filter[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; FilterIter[T]</code><a class="headerlink" href="#fn-filtertself-self-predicate-fnt-bool-filteritert_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>FilterIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-collecttself-self-vect_1"><code>fn collect[T](self: Self) -&gt; Vec[T]</code><a class="headerlink" href="#fn-collecttself-self-vect_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[T]</code>. No source comment yet.</p>
+<h4 id="fn-foldt-bself-self-init-b-f-fnb-t-b-b_1"><code>fn fold[T, B](self: Self, init: B, f: fn(B, T) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldt-bself-self-init-b-f-fnb-t-b-b_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, T) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
+<h4 id="fn-counttself-self-int_2"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<h4 id="fn-sumtself-self-t_1"><code>fn sum[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-sumtself-self-t_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<h4 id="fn-producttself-self-t_1"><code>fn product[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-producttself-self-t_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<h4 id="fn-maxtself-self-optiont_1"><code>fn max[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-maxtself-self-optiont_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-mintself-self-optiont_1"><code>fn min[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-mintself-self-optiont_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-findtself-self-predicate-fnt-bool-optiont_1"><code>fn find[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Option[T]</code><a class="headerlink" href="#fn-findtself-self-predicate-fnt-bool-optiont_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-alltself-self-predicate-fnt-bool-bool_1"><code>fn all[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-alltself-self-predicate-fnt-bool-bool_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-anytself-self-predicate-fnt-bool-bool_1"><code>fn any[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anytself-self-predicate-fnt-bool-bool_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-nthtself-self-n-int-optiont_1"><code>fn nth[T](self: Self, n: Int) -&gt; Option[T]</code><a class="headerlink" href="#fn-nthtself-self-n-int-optiont_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-lasttself-self-optiont_1"><code>fn last[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-lasttself-self-optiont_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-mapt-uself-self-f-fnt-u-mapitert-u_2"><code>fn map[T, U](self: Self, f: fn(T) -&gt; U) -&gt; MapIter[T, U]</code><a class="headerlink" href="#fn-mapt-uself-self-f-fnt-u-mapitert-u_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>f: fn(T) -&gt; U</code>; returns <code>MapIter[T, U]</code>. No source comment yet.</p>
+<h4 id="fn-filtertself-self-predicate-fnt-bool-filteritert_2"><code>fn filter[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; FilterIter[T]</code><a class="headerlink" href="#fn-filtertself-self-predicate-fnt-bool-filteritert_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>FilterIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-collecttself-self-vect_2"><code>fn collect[T](self: Self) -&gt; Vec[T]</code><a class="headerlink" href="#fn-collecttself-self-vect_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[T]</code>. No source comment yet.</p>
+<h4 id="fn-foldt-bself-self-init-b-f-fnb-t-b-b_2"><code>fn fold[T, B](self: Self, init: B, f: fn(B, T) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldt-bself-self-init-b-f-fnb-t-b-b_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, T) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
+<h4 id="fn-counttself-self-int_3"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int_3" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<h4 id="fn-sumtself-self-t_2"><code>fn sum[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-sumtself-self-t_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<h4 id="fn-producttself-self-t_2"><code>fn product[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-producttself-self-t_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<h4 id="fn-maxtself-self-optiont_2"><code>fn max[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-maxtself-self-optiont_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-mintself-self-optiont_2"><code>fn min[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-mintself-self-optiont_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-findtself-self-predicate-fnt-bool-optiont_2"><code>fn find[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Option[T]</code><a class="headerlink" href="#fn-findtself-self-predicate-fnt-bool-optiont_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-alltself-self-predicate-fnt-bool-bool_2"><code>fn all[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-alltself-self-predicate-fnt-bool-bool_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-anytself-self-predicate-fnt-bool-bool_2"><code>fn any[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anytself-self-predicate-fnt-bool-bool_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-nthtself-self-n-int-optiont_2"><code>fn nth[T](self: Self, n: Int) -&gt; Option[T]</code><a class="headerlink" href="#fn-nthtself-self-n-int-optiont_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-lasttself-self-optiont_2"><code>fn last[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-lasttself-self-optiont_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-collectt-uself-self-vect"><code>fn collect[T, U](self: Self) -&gt; Vec[T]</code><a class="headerlink" href="#fn-collectt-uself-self-vect" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[T]</code>. No source comment yet.</p>
+<h4 id="fn-countt-uself-self-int_1"><code>fn count[T, U](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countt-uself-self-int_1" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<h4 id="fn-mapt-u-vself-self-f-fnt-v-mapitert-v"><code>fn map[T, U, V](self: Self, f: fn(T) -&gt; V) -&gt; MapIter[T, V]</code><a class="headerlink" href="#fn-mapt-u-vself-self-f-fnt-v-mapitert-v" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>f: fn(T) -&gt; V</code>; returns <code>MapIter[T, V]</code>. No source comment yet.</p>
+<h4 id="fn-taket-uself-self-n-int-takeitert"><code>fn take[T, U](self: Self, n: Int) -&gt; TakeIter[T]</code><a class="headerlink" href="#fn-taket-uself-self-n-int-takeitert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-findt-uself-self-predicate-fnt-bool-optiont"><code>fn find[T, U](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Option[T]</code><a class="headerlink" href="#fn-findt-uself-self-predicate-fnt-bool-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-allt-uself-self-predicate-fnt-bool-bool"><code>fn all[T, U](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-allt-uself-self-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-anyt-uself-self-predicate-fnt-bool-bool"><code>fn any[T, U](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anyt-uself-self-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-ntht-uself-self-n-int-optiont"><code>fn nth[T, U](self: Self, n: Int) -&gt; Option[T]</code><a class="headerlink" href="#fn-ntht-uself-self-n-int-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-lastt-uself-self-optiont"><code>fn last[T, U](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-lastt-uself-self-optiont" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-collectt-uself-self-vect-u"><code>fn collect[T, U](self: Self) -&gt; Vec[(T, U)]</code><a class="headerlink" href="#fn-collectt-uself-self-vect-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[(T, U)]</code>. No source comment yet.</p>
+<h4 id="fn-countt-uself-self-int_2"><code>fn count[T, U](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countt-uself-self-int_2" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<h4 id="fn-findt-uself-self-predicate-fnt-u-bool-optiont-u"><code>fn find[T, U](self: Self, predicate: fn(&amp;(T, U)) -&gt; Bool) -&gt; Option[(T, U)]</code><a class="headerlink" href="#fn-findt-uself-self-predicate-fnt-u-bool-optiont-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;(T, U)) -&gt; Bool</code>; returns <code>Option[(T, U)]</code>. No source comment yet.</p>
+<h4 id="fn-allt-uself-self-predicate-fnt-u-bool-bool"><code>fn all[T, U](self: Self, predicate: fn(&amp;(T, U)) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-allt-uself-self-predicate-fnt-u-bool-bool" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;(T, U)) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-anyt-uself-self-predicate-fnt-u-bool-bool"><code>fn any[T, U](self: Self, predicate: fn(&amp;(T, U)) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anyt-uself-self-predicate-fnt-u-bool-bool" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;(T, U)) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<h4 id="fn-ntht-uself-self-n-int-optiont-u"><code>fn nth[T, U](self: Self, n: Int) -&gt; Option[(T, U)]</code><a class="headerlink" href="#fn-ntht-uself-self-n-int-optiont-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[(T, U)]</code>. No source comment yet.</p>
+<h4 id="fn-lastt-uself-self-optiont-u"><code>fn last[T, U](self: Self) -&gt; Option[(T, U)]</code><a class="headerlink" href="#fn-lastt-uself-self-optiont-u" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[(T, U)]</code>. No source comment yet.</p>
+<h4 id="type-stepbyiter"><code>type StepByIter</code><a class="headerlink" href="#type-stepbyiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>StepBy -- yields every nth element (1-based step) Iterator taking every <code>step</code>-th element of an underlying iterator.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iter</code></td>
+<td><code>Iterator[T]</code></td>
+</tr>
+<tr>
+<td><code>step</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>first</code></td>
+<td><code>Bool</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-step_bytself-self-step-int-stepbyitert"><code>fn step_by[T](self: Self, step: Int) -&gt; StepByIter[T]</code><a class="headerlink" href="#fn-step_bytself-self-step-int-stepbyitert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>step: Int</code>; returns <code>StepByIter[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Precondition:</strong> <code>step &gt; 0</code></li>
+</ul>
+<h4 id="fn-nexttself-self-optiont_3"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_3" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="type-takewhileiter"><code>type TakeWhileIter</code><a class="headerlink" href="#type-takewhileiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>TakeWhile -- yields elements while predicate is true Iterator yielding elements while a predicate holds.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iter</code></td>
+<td><code>Iterator[T]</code></td>
+</tr>
+<tr>
+<td><code>predicate</code></td>
+<td><code>fn(&amp;T) -&gt; Bool</code></td>
+</tr>
+<tr>
+<td><code>done</code></td>
+<td><code>Bool</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-take_whiletself-self-predicate-fnt-bool-takewhileitert"><code>fn take_while[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; TakeWhileIter[T]</code><a class="headerlink" href="#fn-take_whiletself-self-predicate-fnt-bool-takewhileitert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>TakeWhileIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-nexttself-self-optiont_4"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_4" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.done =&gt; result is None</code></li>
+</ul>
+<h4 id="type-skipwhileiter"><code>type SkipWhileIter</code><a class="headerlink" href="#type-skipwhileiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>SkipWhile -- skips elements while predicate is true, then yields rest Iterator skipping elements while a predicate holds.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iter</code></td>
+<td><code>Iterator[T]</code></td>
+</tr>
+<tr>
+<td><code>predicate</code></td>
+<td><code>fn(&amp;T) -&gt; Bool</code></td>
+</tr>
+<tr>
+<td><code>skipped</code></td>
+<td><code>Bool</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-skip_whiletself-self-predicate-fnt-bool-skipwhileitert"><code>fn skip_while[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; SkipWhileIter[T]</code><a class="headerlink" href="#fn-skip_whiletself-self-predicate-fnt-bool-skipwhileitert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>SkipWhileIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-nexttself-self-optiont_5"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_5" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="type-inspectiter"><code>type InspectIter</code><a class="headerlink" href="#type-inspectiter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Inspect -- calls f on each element for side effects, passes element through Iterator running a side effect on each element.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iter</code></td>
+<td><code>Iterator[T]</code></td>
+</tr>
+<tr>
+<td><code>f</code></td>
+<td><code>fn(&amp;T) -&gt; Unit</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-inspecttself-self-f-fnt-unit-inspectitert"><code>fn inspect[T](self: Self, f: fn(&amp;T) -&gt; Unit) -&gt; InspectIter[T]</code><a class="headerlink" href="#fn-inspecttself-self-f-fnt-unit-inspectitert" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; takes <code>f: fn(&amp;T) -&gt; Unit</code>; returns <code>InspectIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-nexttself-self-optiont_6"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_6" title="Permanent link">&para;</a></h4>
+<p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<h4 id="fn-range_stepstart-int-end-int-step-int-vecint"><code>fn range_step(start: Int, end: Int, step: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-range_stepstart-int-end-int-step-int-vecint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Create a Vec[Int] containing values from start to end advancing by step. Returns empty Vec if step &lt;= 0 or start &gt;= end. O(N). Collect [start, end) stepping by <code>step</code> into a Vec (empty when step &lt;= 0).</p>
+</blockquote>
+<h4 id="fn-repeat_nvalue-int-n-int-vecint"><code>fn repeat_n(value: Int, n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-repeat_nvalue-int-n-int-vecint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Create a Vec[Int] containing <code>value</code> repeated <code>n</code> times. O(N). Returns empty Vec if n &lt;= 0. Vec with <code>value</code> repeated <code>n</code> times (empty when n &lt;= 0).</p>
+</blockquote>
+<hr />
+<hr />
+<h2 id="mapxi"><code>map.xi</code><a class="headerlink" href="#mapxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-iter_mapv-vecint-f-fnint-int-vecint"><code>fn iter_map(v: &amp;Vec[Int], f: fn(&amp;Int) -&gt; Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_mapv-vecint-f-fnint-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Apply f to every element of v, producing a new vector. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_flat_mapv-vecint-f-fnint-vecint-vecint"><code>fn iter_flat_map(v: &amp;Vec[Int], f: fn(&amp;Int) -&gt; Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_flat_mapv-vecint-f-fnint-vecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Apply f to every element, then concatenate the result vectors. O(n + m).</p>
+</blockquote>
+<h5 id="fn-iter_filter_mapv-vecint-f-fnint-optionint-vecint"><code>fn iter_filter_map(v: &amp;Vec[Int], f: fn(&amp;Int) -&gt; Option[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_filter_mapv-vecint-f-fnint-optionint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Keep and unwrap elements where f returns Some. O(n).</p>
+</blockquote>
+<h5 id="fn-iter_enumeratev-vecint-vecint-int"><code>fn iter_enumerate(v: &amp;Vec[Int]) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-iter_enumeratev-vecint-vecint-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>(index, value) tuple for each element of v. O(n). Returns Vec[(Int, Int)].</p>
+</blockquote>
+<h5 id="fn-iter_zipa-vecint-b-vecint-vecint-int"><code>fn iter_zip(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-iter_zipa-vecint-b-vecint-vecint-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>(a[i], b[i]) pairs, truncated to the shorter input. O(min(len)). Returns Vec[(Int, Int)].</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="rangexi"><code>range.xi</code><a class="headerlink" href="#rangexi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-rangestart-int-end-int-vecint"><code>fn range(start: Int, end: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-rangestart-int-end-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Integers in [start, end): start, start+1, ..., end-1. O(n). An empty vector is returned when start &gt;= end.</p>
+</blockquote>
+<h5 id="fn-range_stepstart-int-end-int-step-int-vecint_1"><code>fn range_step(start: Int, end: Int, step: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-range_stepstart-int-end-int-step-int-vecint_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Integers in [start, end) advancing by step. O(n). An empty vector is returned when step &lt;= 0 or start &gt;= end.</p>
+</blockquote>
+<h5 id="fn-range_inclusivestart-int-end-int-vecint"><code>fn range_inclusive(start: Int, end: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-range_inclusivestart-int-end-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Integers in [start, end] inclusive of both endpoints. O(n). An empty vector is returned when start &gt; end.</p>
+</blockquote>
+<h5 id="fn-range_floatstart-float64-end-float64-step-float64-vecfloat64"><code>fn range_float(start: Float64, end: Float64, step: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-range_floatstart-float64-end-float64-step-float64-vecfloat64" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Float64 values in [start, end) advancing by step. O(n). An empty vector is returned when step &lt;= 0 or start &gt;= end. NOTE (BUG 12): element READS of Vec[Float64] are corrupted by the current compiler; consumers must not index the result until that bug is fixed.</p>
+</blockquote>
+<h5 id="fn-range_charstart-char-end-char-vecchar"><code>fn range_char(start: Char, end: Char) -&gt; Vec[Char]</code><a class="headerlink" href="#fn-range_charstart-char-end-char-vecchar" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Characters with code points in [start, end). O(n). An empty vector is returned when start &gt;= end.</p>
+</blockquote>
+<h5 id="fn-range_countn-int-vecint"><code>fn range_count(n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-range_countn-int-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Integers in [0, n). O(n). An empty vector is returned when n &lt;= 0.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="zipxi"><code>zip.xi</code><a class="headerlink" href="#zipxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-iter_zip_longesta-vecint-b-vecint-fill-int-vecint-int"><code>fn iter_zip_longest(a: &amp;Vec[Int], b: &amp;Vec[Int], fill: Int) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-iter_zip_longesta-vecint-b-vecint-fill-int-vecint-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>(a[i], b[i]) pairs padded with fill on the shorter input, iterating to the length of the longer vector. O(max(len)). Returns Vec[(Int, Int)]. fill is the padding value used for whichever side ran out.</p>
+</blockquote>
+<h5 id="fn-iter_chaina-vecint-b-vecint-vecint"><code>fn iter_chain(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_chaina-vecint-b-vecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Concatenate a followed by b. O(a.len() + b.len()).</p>
+</blockquote>
+<h5 id="fn-iter_chain_manyparts-vecvecint-vecint"><code>fn iter_chain_many(parts: &amp;Vec[Vec[Int]]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_chain_manyparts-vecvecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Concatenate a list of vectors in order. O(sum of lengths). NOTE: reading elements of the nested Vec[Vec[Int]] is unreliable in the current compiler; prefer iter_chain for two vectors.</p>
+</blockquote>
+<h5 id="fn-iter_cartesian_producta-vecint-b-vecint-vecint-int"><code>fn iter_cartesian_product(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-iter_cartesian_producta-vecint-b-vecint-vecint-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>All (a[i], b[j]) tuple combinations in row-major order. O(len(a) * len(b)). Returns Vec[(Int, Int)].</p>
+</blockquote>
+<h5 id="fn-iter_interleavea-vecint-b-vecint-vecint"><code>fn iter_interleave(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_interleavea-vecint-b-vecint-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Alternate elements of a and b: a[0], b[0], a[1], b[1], ... The tail of the longer vector is appended after pairing stops. O(n + m).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0. <a href="https://xiom-lang.org/terms.html">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

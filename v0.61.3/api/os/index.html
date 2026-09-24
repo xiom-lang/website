@@ -1,0 +1,5323 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.61.3/api/os/">
+      
+      
+        <link rel="prev" href="../num/">
+      
+      
+        <link rel="next" href="../ptr/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../img/xiom-icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>os - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stdlibos" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../../img/xiom-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              os
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../../img/xiom-logo.png" alt="logo">
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://xiom-lang.org/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xiom-lang.org
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unsafe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unsafe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debugger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#argsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        args.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dirxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dir.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#envxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        env.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#errxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        err.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        event.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        file.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filetypexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filetype.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fs.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fs_ffixi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fs_ffi.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ioctlxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ioctl.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmapxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mmap.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#osxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        os.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pathxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        path.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platformxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        platform.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proc.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proc_ffixi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proc_ffi.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        process.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#signalxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        signal.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sync_ioxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sync_io.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sysinfoxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sysinfo.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#termxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        term.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminalxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        terminal.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unixxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unix.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#winxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        win.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_23" id="__nav_23_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Error Codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/C001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/E001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/L001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    L001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/P001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    P001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/T001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    T001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/W000/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W000
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/W001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0010/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0010
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0011/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0011
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0100/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0100
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_24" >
+        
+          
+          <label class="md-nav__link" for="__nav_24" id="__nav_24_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../toolchain-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Toolchain Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../post-release-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post-release Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#argsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        args.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dirxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dir.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#envxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        env.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#errxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        err.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        event.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        file.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filetypexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filetype.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fs.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fs_ffixi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fs_ffi.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ioctlxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ioctl.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmapxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mmap.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#osxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        os.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pathxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        path.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platformxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        platform.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proc.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proc_ffixi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proc_ffi.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        process.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#signalxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        signal.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sync_ioxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sync_io.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sysinfoxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sysinfo.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#termxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        term.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminalxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        terminal.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unixxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unix.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#winxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        win.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="stdlibos"><code>stdlib.os</code><a class="headerlink" href="#stdlibos" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>OS Library</strong></p>
+<p>Generated from <code>v0.61.3</code>. 24 source files, 377 documented symbols.</p>
+</blockquote>
+<h2 id="argsxi"><code>args.xi</code><a class="headerlink" href="#argsxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-args_raw-vecstr"><code>fn args_raw() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-args_raw-vecstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>All arguments as freshly-owned strings. Index 0 is conventionally the program name when the host provides one. Complexity: O(total bytes).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h5 id="fn-flag_lookupargs-vecstr-flag-str-bool"><code>fn flag_lookup(args: &amp;Vec[Str], flag: Str) -&gt; Bool</code><a class="headerlink" href="#fn-flag_lookupargs-vecstr-flag-str-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True when args contains exactly <code>flag</code>. Complexity: O(n * flag.len()). Pure.</p>
+</blockquote>
+<h5 id="fn-option_valueargs-vecstr-key-str-optionstr"><code>fn option_value(args: &amp;Vec[Str], key: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-option_valueargs-vecstr-key-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Value for <code>key</code>: supports both <code>--key=value</code> and <code>--key value</code>. Later occurrences win (last-one-wins convention, matching most CLI frameworks). Returns None when absent. Complexity: O(n * key.len()). Pure.</p>
+</blockquote>
+<h5 id="fn-positionalsargs-vecstr-vecstr"><code>fn positionals(args: &amp;Vec[Str]) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-positionalsargs-vecstr-vecstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Positional arguments: every entry that does not start with '--' and is not consumed as a spaced-option value of a preceding '--key'. Note this simple scanner treats any '--' entry as a flag/key, never as a negative number or literal. Complexity: O(n). Pure.</p>
+</blockquote>
+<h5 id="fn-args_has_flagflag-str-bool"><code>fn args_has_flag(flag: Str) -&gt; Bool</code><a class="headerlink" href="#fn-args_has_flagflag-str-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Convenience: flag lookup over the process's own arguments.</p>
+</blockquote>
+<h5 id="fn-args_optionkey-str-optionstr"><code>fn args_option(key: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-args_optionkey-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Convenience: option lookup over the process's own arguments.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="dirxi"><code>dir.xi</code><a class="headerlink" href="#dirxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-dir_current-resultstr-str"><code>fn dir_current() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-dir_current-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_current returns the current working directory. Delegates to env.current_dir. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-dir_createpath-str-resultunit-str"><code>fn dir_create(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_createpath-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_create creates a single directory. Delegates to io.create_dir. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-dir_create_allpath-str-resultunit-str"><code>fn dir_create_all(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_create_allpath-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_create_all creates a directory and all missing parents. Delegates to io.create_dir_all. Complexity: O(depth) syscalls.</p>
+</blockquote>
+<h5 id="fn-dir_listpath-str-resultvecstr-str"><code>fn dir_list(path: Str) -&gt; Result[Vec[Str], Str]</code><a class="headerlink" href="#fn-dir_listpath-str-resultvecstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_list returns the names of entries in a directory. Delegates to io.list_dir. Complexity: O(n) syscalls.</p>
+</blockquote>
+<h5 id="fn-dir_existspath-str-bool"><code>fn dir_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_existspath-str-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_exists returns true if path exists and is a directory. Delegates to io.is_dir. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-dir_removepath-str-resultunit-str"><code>fn dir_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_removepath-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_remove removes an empty directory. Delegates to io.remove_file (which handles both files and dirs via the C runtime). Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-dir_temp-str"><code>fn dir_temp() -&gt; Str</code><a class="headerlink" href="#fn-dir_temp-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_temp returns the system temporary directory. Delegates to env.temp_dir. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-dir_home-optionstr"><code>fn dir_home() -&gt; Option[Str]</code><a class="headerlink" href="#fn-dir_home-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_home returns the current user's home directory, if known. Delegates to env.home_dir. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-dir_is_emptypath-str-bool"><code>fn dir_is_empty(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_is_emptypath-str-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_is_empty returns true if a directory contains no entries. Complexity: O(n) syscalls.</p>
+</blockquote>
+<h5 id="fn-dir_joina-str-b-str-str"><code>fn dir_join(a: Str, b: Str) -&gt; Str</code><a class="headerlink" href="#fn-dir_joina-str-b-str-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_join joins two path components with the OS separator. Delegates to io.join_paths. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-dir_parentpath-str-optionstr"><code>fn dir_parent(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-dir_parentpath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>dir_parent returns the parent directory of path, or None if there is none. Delegates to fs.fs_parent_dir. Complexity: O(n).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="envxi"><code>env.xi</code><a class="headerlink" href="#envxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-get_varname-str-resultstr-str"><code>fn get_var(name: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-get_varname-str-resultstr-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Environment variable value; Err with a message when unset.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-var_optname-str-optionstr"><code>fn var_opt(name: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-var_optname-str-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Environment variable value, or None when unset.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-set_varname-str-value-str"><code>fn set_var(name: Str, value: Str)</code><a class="headerlink" href="#fn-set_varname-str-value-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Set an environment variable (overwrites; portable runtime shim).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-remove_varname-str"><code>fn remove_var(name: Str)</code><a class="headerlink" href="#fn-remove_varname-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Remove an environment variable.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-vars-vecstr-str"><code>fn vars() -&gt; Vec[(Str, Str)]</code><a class="headerlink" href="#fn-vars-vecstr-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>All environment variables as (name, value) pairs.</p>
+</blockquote>
+<h4 id="fn-args-vecstr"><code>fn args() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-args-vecstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Process arguments (UTF-8, lossy).</p>
+</blockquote>
+<h4 id="fn-args_os-vecstr"><code>fn args_os() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-args_os-vecstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Process arguments (OS-native strings; same representation here).</p>
+</blockquote>
+<h4 id="fn-current_exe-resultstr-str"><code>fn current_exe() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-current_exe-resultstr-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Path of the running executable, or Err with the OS message.</p>
+</blockquote>
+<h4 id="fn-current_dir-resultstr-str"><code>fn current_dir() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-current_dir-resultstr-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Process working directory, or Err with the OS message.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-set_current_dirpath-str-resultunit-str"><code>fn set_current_dir(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-set_current_dirpath-str-resultunit-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Change the working directory, or Err with the OS message.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-temp_dir-str"><code>fn temp_dir() -&gt; Str</code><a class="headerlink" href="#fn-temp_dir-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Platform temporary directory.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-home_dir-optionstr"><code>fn home_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-home_dir-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>User home directory, or None when it cannot be resolved.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-data_dir-optionstr"><code>fn data_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-data_dir-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Per-user data directory, or None.</p>
+</blockquote>
+<h4 id="fn-cache_dir-optionstr"><code>fn cache_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-cache_dir-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Per-user cache directory, or None.</p>
+</blockquote>
+<h4 id="fn-config_dir-optionstr"><code>fn config_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-config_dir-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Per-user configuration directory, or None.</p>
+</blockquote>
+<h4 id="fn-executable_dir-optionstr"><code>fn executable_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-executable_dir-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Directory containing the running executable, or None.</p>
+</blockquote>
+<h4 id="fn-join_pathsa-str-b-str-str"><code>fn join_paths(a: Str, b: Str) -&gt; Str</code><a class="headerlink" href="#fn-join_pathsa-str-b-str-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Join two path fragments with the platform separator.</p>
+</blockquote>
+<h4 id="fn-path_separator-str"><code>fn path_separator() -&gt; Str</code><a class="headerlink" href="#fn-path_separator-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Platform path separator ("/" or "\").</p>
+</blockquote>
+<h4 id="fn-var_orname-str-default-str-str"><code>fn var_or(name: Str, default: Str) -&gt; Str</code><a class="headerlink" href="#fn-var_orname-str-default-str-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>var_or returns the value of the environment variable name, or default if the variable is not set. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-has_varname-str-bool"><code>fn has_var(name: Str) -&gt; Bool</code><a class="headerlink" href="#fn-has_varname-str-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>has_var returns true if the environment variable name is set. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-all_var_names-vecstr"><code>fn all_var_names() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-all_var_names-vecstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>all_var_names returns an empty vector on all platforms -- the Xiom runtime does not support iterating over environment variables via the C standard library.</p>
+</blockquote>
+<h4 id="fn-all_var_values-vecstr"><code>fn all_var_values() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-all_var_values-vecstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>all_var_values returns an empty vector on all platforms -- see all_var_names for rationale.</p>
+</blockquote>
+<h4 id="fn-set_var_if_absentname-str-value-str"><code>fn set_var_if_absent(name: Str, value: Str)</code><a class="headerlink" href="#fn-set_var_if_absentname-str-value-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>set_var_if_absent sets name to value only if name is not already set. Complexity: O(1).  WARNING: setenv is not available on Windows MSVC.</p>
+</blockquote>
+<h4 id="fn-clear_varname-str"><code>fn clear_var(name: Str)</code><a class="headerlink" href="#fn-clear_varname-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>clear_var removes the environment variable name. Alias for remove_var.  Same Windows caveat.</p>
+</blockquote>
+<h4 id="fn-args_len-int"><code>fn args_len() -&gt; Int</code><a class="headerlink" href="#fn-args_len-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>args_len returns the number of command-line arguments. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-arg_ati-int-optionstr"><code>fn arg_at(i: Int) -&gt; Option[Str]</code><a class="headerlink" href="#fn-arg_ati-int-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>arg_at returns the i-th command-line argument, or None if i is out of bounds.  Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-arg_containss-str-bool"><code>fn arg_contains(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-arg_containss-str-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>arg_contains returns true if any command-line argument equals s. Complexity: O(n) where n = arg count.</p>
+</blockquote>
+<h4 id="fn-current_dir_str-str"><code>fn current_dir_str() -&gt; Str</code><a class="headerlink" href="#fn-current_dir_str-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>current_dir_str returns the current working directory as a Str, or "." if the OS call fails.  Wraps getcwd directly. Complexity: O(1).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<hr />
+<hr />
+<h2 id="errxi"><code>err.xi</code><a class="headerlink" href="#errxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-errno-int"><code>fn errno() -&gt; Int</code><a class="headerlink" href="#fn-errno-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the current errno value. NOT IMPLEMENTED: the runtime does not expose errno(). Returns 0. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-errno_namecode-int-str"><code>fn errno_name(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-errno_namecode-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the symbolic name for an errno code. Parameters: code -- the errno number. Returns: the symbolic name (e.g. "ENOENT"), or "EUNKNOWN". Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-strerrorcode-int-str"><code>fn strerror(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-strerrorcode-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the human-readable message for an errno code. Parameters: code -- the errno number. Returns: the descriptive message, or "unknown error". Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-perrormsg-str-unit"><code>fn perror(msg: Str) -&gt; Unit</code><a class="headerlink" href="#fn-perrormsg-str-unit" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Print msg plus the current errno message. Parameters: msg -- the prefix message. Returns: Unit. Prints "msg: <errno message>" (stdout; the runtime exposes no stderr writer). Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-errno_message-str"><code>fn errno_message() -&gt; Str</code><a class="headerlink" href="#fn-errno_message-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the message for the current errno value. Returns: strerror(errno()). Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-errno_setcode-int-unit"><code>fn errno_set(code: Int) -&gt; Unit</code><a class="headerlink" href="#fn-errno_setcode-int-unit" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Set the errno value. NOT IMPLEMENTED: the runtime does not expose errno(). No-op.</p>
+</blockquote>
+<h5 id="fn-backtrace-vecstr"><code>fn backtrace() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-backtrace-vecstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Capture the current call stack as formatted frame strings. NOT IMPLEMENTED: the runtime does not expose a backtrace API. Returns an empty vector. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-backtrace_symbolsframes-vecint-vecstr"><code>fn backtrace_symbols(frames: &amp;Vec[Int]) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-backtrace_symbolsframes-vecint-vecstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Resolve raw frame addresses to symbols. NOT IMPLEMENTED: the runtime does not expose a symbolizer. Returns an empty vector. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-demanglesymbol-str-str"><code>fn demangle(symbol: Str) -&gt; Str</code><a class="headerlink" href="#fn-demanglesymbol-str-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Demangle a compiler-mangled symbol name. NOT IMPLEMENTED: no demangler is available. Returns the symbol unchanged. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-last_error-str"><code>fn last_error() -&gt; Str</code><a class="headerlink" href="#fn-last_error-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the most recently captured error string. NOT IMPLEMENTED: no error capture is wired in. Returns "". Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-errno_to_stringcode-int-str"><code>fn errno_to_string(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-errno_to_stringcode-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Format an errno code as "name (code): message". Parameters: code -- the errno number. Returns: the formatted string. Complexity: O(1). Pure.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="eventxi"><code>event.xi</code><a class="headerlink" href="#eventxi" title="Permanent link">&para;</a></h2>
+<h5 id="type-epollevent"><code>type EpollEvent</code><a class="headerlink" href="#type-epollevent" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>struct EpollEvent { events: UInt32, data: UInt64 } - one epoll readiness event; layout matches struct epoll_event.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>events</code></td>
+<td><code>UInt32</code></td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td><code>UInt64</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="type-kevent"><code>type KEvent</code><a class="headerlink" href="#type-kevent" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>struct KEvent { ident: UInt64, filter: Int16, flags: UInt16, fflags: UInt32, data: Int64 } - one kqueue event; layout matches struct kevent.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ident</code></td>
+<td><code>UInt64</code></td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td><code>Int16</code></td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td><code>UInt16</code></td>
+</tr>
+<tr>
+<td><code>fflags</code></td>
+<td><code>UInt32</code></td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td><code>Int64</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="type-pollfd"><code>type PollFd</code><a class="headerlink" href="#type-pollfd" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>struct PollFd { fd: Int, events: Int16, revents: Int16 } - one poll descriptor; layout matches struct pollfd.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fd</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>events</code></td>
+<td><code>Int16</code></td>
+</tr>
+<tr>
+<td><code>revents</code></td>
+<td><code>Int16</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="fn-epoll_create-resultint-str"><code>fn epoll_create() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-epoll_create-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Create an epoll instance and return its fd. NOT IMPLEMENTED: requires the epoll syscall (Linux-only; not exposed by the pure stdlib). Returns: Err("epoll_create: epoll is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-epoll_addep-int-fd-int-events-int-resultunit-str"><code>fn epoll_add(ep: Int, fd: Int, events: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-epoll_addep-int-fd-int-events-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Register fd with the epoll instance. NOT IMPLEMENTED: requires the epoll syscall (see epoll_create). Returns: Err("epoll_add: epoll is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-epoll_modep-int-fd-int-events-int-resultunit-str"><code>fn epoll_mod(ep: Int, fd: Int, events: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-epoll_modep-int-fd-int-events-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Change the event mask for fd. NOT IMPLEMENTED: requires the epoll syscall (see epoll_create). Returns: Err("epoll_mod: epoll is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-epoll_delep-int-fd-int-resultunit-str"><code>fn epoll_del(ep: Int, fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-epoll_delep-int-fd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Remove fd from the epoll instance. NOT IMPLEMENTED: requires the epoll syscall (see epoll_create). Returns: Err("epoll_del: epoll is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-epoll_waitep-int-max_events-int-timeout_ms-int-resultvecepollevent-str"><code>fn epoll_wait(ep: Int, max_events: Int, timeout_ms: Int) -&gt; Result[Vec[EpollEvent], Str]</code><a class="headerlink" href="#fn-epoll_waitep-int-max_events-int-timeout_ms-int-resultvecepollevent-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Wait for and return ready events. NOT IMPLEMENTED: requires the epoll syscall (see epoll_create). Returns: Err("epoll_wait: epoll is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-epoll_closeep-int-unit"><code>fn epoll_close(ep: Int) -&gt; Unit</code><a class="headerlink" href="#fn-epoll_closeep-int-unit" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Close the epoll fd. NO-OP: no epoll instances exist in the pure stdlib.</p>
+</blockquote>
+<h5 id="fn-kqueue_create-resultint-str"><code>fn kqueue_create() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-kqueue_create-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Create a kqueue and return its fd. NOT IMPLEMENTED: requires the kqueue syscall (BSD/macOS-only; not exposed by the pure stdlib). Returns: Err("kqueue_create: kqueue is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-kqueue_add_readkq-int-fd-int-unit"><code>fn kqueue_add_read(kq: Int, fd: Int) -&gt; Unit</code><a class="headerlink" href="#fn-kqueue_add_readkq-int-fd-int-unit" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Register fd for EVFILT_READ events. NO-OP: no kqueue instances exist in the pure stdlib.</p>
+</blockquote>
+<h5 id="fn-kqueue_add_writekq-int-fd-int-unit"><code>fn kqueue_add_write(kq: Int, fd: Int) -&gt; Unit</code><a class="headerlink" href="#fn-kqueue_add_writekq-int-fd-int-unit" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Register fd for EVFILT_WRITE events. NO-OP: no kqueue instances exist in the pure stdlib.</p>
+</blockquote>
+<h5 id="fn-kqueue_waitkq-int-timeout_ms-int-resultveckevent-str"><code>fn kqueue_wait(kq: Int, timeout_ms: Int) -&gt; Result[Vec[KEvent], Str]</code><a class="headerlink" href="#fn-kqueue_waitkq-int-timeout_ms-int-resultveckevent-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Wait for and return kqueue events. NOT IMPLEMENTED: requires the kqueue syscall (see kqueue_create). Returns: Err("kqueue_wait: kqueue is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-kqueue_closekq-int-unit"><code>fn kqueue_close(kq: Int) -&gt; Unit</code><a class="headerlink" href="#fn-kqueue_closekq-int-unit" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Close the kqueue fd. NO-OP: no kqueue instances exist in the pure stdlib.</p>
+</blockquote>
+<h5 id="fn-eventfd_newinit-int-resultint-str"><code>fn eventfd_new(init: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-eventfd_newinit-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Create an eventfd with the given initial counter. NOT IMPLEMENTED: requires the eventfd syscall (Linux-only; not exposed by the pure stdlib). Returns: Err("eventfd_new: eventfd is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-eventfd_readfd-int-resultint-str"><code>fn eventfd_read(fd: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-eventfd_readfd-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Read and reset the eventfd counter. NOT IMPLEMENTED: requires the eventfd syscall (see eventfd_new). Returns: Err("eventfd_read: eventfd is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-eventfd_writefd-int-value-int-resultunit-str"><code>fn eventfd_write(fd: Int, value: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-eventfd_writefd-int-value-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Add value to the eventfd counter, waking readers. NOT IMPLEMENTED: requires the eventfd syscall (see eventfd_new). Returns: Err("eventfd_write: eventfd is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-timerfd_new-resultint-str"><code>fn timerfd_new() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-timerfd_new-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Create a timerfd. NOT IMPLEMENTED: requires the timerfd syscall (Linux-only; not exposed by the pure stdlib). Returns: Err("timerfd_new: timerfd is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-timerfd_setfd-int-ms-int-resultunit-str"><code>fn timerfd_set(fd: Int, ms: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-timerfd_setfd-int-ms-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Arm the timerfd to fire after ms milliseconds. NOT IMPLEMENTED: requires the timerfd syscall (see timerfd_new). Returns: Err("timerfd_set: timerfd is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-signalfd_newsignals-vecint-resultint-str"><code>fn signalfd_new(signals: &amp;Vec[Int]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-signalfd_newsignals-vecint-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Create a signalfd for the given signal numbers. NOT IMPLEMENTED: requires the signalfd syscall (Linux-only; not exposed by the pure stdlib). Returns: Err("signalfd_new: signalfd is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-pollfds-vecpollfd-timeout_ms-int-resultint-str"><code>fn poll(fds: &amp;Vec[PollFd], timeout_ms: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pollfds-vecpollfd-timeout_ms-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Poll the descriptors and update revents; returns the ready count. NOT IMPLEMENTED: requires the poll syscall (not exposed by the pure stdlib). Returns: Err("poll: poll is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-ppollfds-vecpollfd-timeout_ms-int-resultint-str"><code>fn ppoll(fds: &amp;Vec[PollFd], timeout_ms: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-ppollfds-vecpollfd-timeout_ms-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Poll with a millisecond timeout, atomic wrt the signal mask. NOT IMPLEMENTED: requires the ppoll syscall (not exposed by the pure stdlib). Returns: Err("ppoll: ppoll is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-selectread_fds-vecint-write_fds-vecint-timeout_ms-int-resultint-str"><code>fn select(read_fds: &amp;Vec[Int], write_fds: &amp;Vec[Int], timeout_ms: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-selectread_fds-vecint-write_fds-vecint-timeout_ms-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Wait on the given fd sets; returns the ready count. NOT IMPLEMENTED: requires the select syscall (not exposed by the pure stdlib). Returns: Err("select: select is not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-pselectread_fds-vecint-write_fds-vecint-timeout_ms-int-resultint-str"><code>fn pselect(read_fds: &amp;Vec[Int], write_fds: &amp;Vec[Int], timeout_ms: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pselectread_fds-vecint-write_fds-vecint-timeout_ms-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Select with a millisecond timeout, atomic wrt the signal mask. NOT IMPLEMENTED: requires the pselect syscall (not exposed by the pure stdlib). Returns: Err("pselect: pselect is not available in the pure stdlib").</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="filexi"><code>file.xi</code><a class="headerlink" href="#filexi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-file_readpath-str-resultstr-str"><code>fn file_read(path: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-file_readpath-str-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_read reads an entire file as text. Delegates to io.read_file. Complexity: O(n).</p>
+</blockquote>
+<h5 id="fn-file_writepath-str-content-str-resultunit-str"><code>fn file_write(path: Str, content: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_writepath-str-content-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_write writes text to a file, truncating if it exists. Delegates to io.write_file. Complexity: O(n).</p>
+</blockquote>
+<h5 id="fn-file_appendpath-str-content-str-resultunit-str"><code>fn file_append(path: Str, content: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_appendpath-str-content-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_append appends text to a file, creating it if needed. Delegates to io.append_file. Complexity: O(n).</p>
+</blockquote>
+<h5 id="fn-file_existspath-str-bool"><code>fn file_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-file_existspath-str-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_exists returns true if path exists (file or directory). Implemented locally via io.metadata to avoid a same-name delegation. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-file_removepath-str-resultunit-str"><code>fn file_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_removepath-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_remove deletes a file. Delegates to io.remove_file. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-file_copysrc-str-dst-str-resultunit-str"><code>fn file_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_copysrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_copy copies a file from src to dst. Delegates to io.copy_file. Complexity: O(n).</p>
+</blockquote>
+<h5 id="fn-file_renamesrc-str-dst-str-resultunit-str"><code>fn file_rename(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_renamesrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_rename renames (moves) a file or directory. Delegates to io.rename. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-file_sizepath-str-resultint-str"><code>fn file_size(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-file_sizepath-str-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_size returns the size of a file in bytes. Implemented locally via io.metadata. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-file_extensionpath-str-optionstr"><code>fn file_extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_extensionpath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_extension returns the extension of path's file name (text after the last dot), or None. Delegates to fs.fs_extension. Complexity: O(n).</p>
+</blockquote>
+<h5 id="fn-file_stempath-str-optionstr"><code>fn file_stem(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_stempath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_stem returns path without its last extension. Delegates to fs.fs_stem. Complexity: O(n).</p>
+</blockquote>
+<h5 id="fn-file_namepath-str-optionstr"><code>fn file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_namepath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_name returns the file-name portion of path, or None. Delegates to fs.fs_file_name. Complexity: O(n).</p>
+</blockquote>
+<h5 id="fn-file_parentpath-str-optionstr"><code>fn file_parent(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_parentpath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>file_parent returns the directory portion of path, or None. Delegates to fs.fs_parent_dir. Complexity: O(n).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="filetypexi"><code>filetype.xi</code><a class="headerlink" href="#filetypexi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-detect_eoldata-vecuint8-str"><code>fn detect_eol(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_eoldata-vecuint8-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Detect the line ending style. Parameters: data -- the bytes to inspect. Returns: "lf", "crlf", "cr", "mixed" or "none". Complexity: O(n). Pure.</p>
+</blockquote>
+<h5 id="fn-detect_bomdata-vecuint8-str"><code>fn detect_bom(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_bomdata-vecuint8-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Detect and describe the byte-order mark, or "" if absent. Parameters: data -- the bytes to inspect. Returns: "utf-8", "utf-16le", "utf-16be", "utf-32le", "utf-32be" or "". Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-has_utf8_bomdata-vecuint8-bool"><code>fn has_utf8_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf8_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data starts with the UTF-8 BOM. Parameters: data -- the bytes to inspect. Returns: true for the EF BB BF prefix. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-has_utf16le_bomdata-vecuint8-bool"><code>fn has_utf16le_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf16le_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data starts with the UTF-16 LE BOM. Parameters: data -- the bytes to inspect. Returns: true for the FF FE prefix. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-has_utf16be_bomdata-vecuint8-bool"><code>fn has_utf16be_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf16be_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data starts with the UTF-16 BE BOM. Parameters: data -- the bytes to inspect. Returns: true for the FE FF prefix. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-has_utf32le_bomdata-vecuint8-bool"><code>fn has_utf32le_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf32le_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data starts with the UTF-32 LE BOM. Parameters: data -- the bytes to inspect. Returns: true for the FF FE 00 00 prefix. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-has_utf32be_bomdata-vecuint8-bool"><code>fn has_utf32be_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf32be_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data starts with the UTF-32 BE BOM. Parameters: data -- the bytes to inspect. Returns: true for the 00 00 FE FF prefix. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_binarydata-vecuint8-bool"><code>fn is_binary(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_binarydata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Classify data as binary by a control-byte heuristic. Parameters: data -- the bytes to inspect. Returns: true when a NUL byte is present or control bytes exceed 30% of the sampled prefix. Complexity: O(min(n, 1024)). Pure.</p>
+</blockquote>
+<h5 id="fn-is_textdata-vecuint8-bool"><code>fn is_text(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_textdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Classify data as plain text by a control-byte heuristic. Parameters: data -- the bytes to inspect. Returns: true when the data is not classified as binary. Complexity: O(min(n, 1024)). Pure.</p>
+</blockquote>
+<h5 id="fn-detect_encodingdata-vecuint8-str"><code>fn detect_encoding(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_encodingdata-vecuint8-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Guess the character encoding. Parameters: data -- the bytes to inspect. Returns: "utf-8", "utf-16le", "utf-16be", "utf-32le", "utf-32be", "ascii" or "binary". Complexity: O(n). Pure.</p>
+</blockquote>
+<h5 id="fn-magic_numberdata-vecuint8-str"><code>fn magic_number(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-magic_numberdata-vecuint8-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the magic-number hex prefix of data. Parameters: data -- the bytes to inspect. Returns: the lowercase hex of the first up-to-8 bytes ("" for empty input). Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-detect_mimedata-vecuint8-str"><code>fn detect_mime(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_mimedata-vecuint8-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Detect the MIME type by content sniffing. Parameters: data -- the bytes to inspect. Returns: a MIME type guessed from magic bytes and text heuristics. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-mime_from_magicdata-vecuint8-str"><code>fn mime_from_magic(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-mime_from_magicdata-vecuint8-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Detect the MIME type from magic bytes only. Parameters: data -- the bytes to inspect. Returns: the magic-derived MIME type or "application/octet-stream". Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_image_datadata-vecuint8-bool"><code>fn is_image_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_image_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data matches a known image format. Parameters: data -- the bytes to inspect. Returns: true for PNG/JPEG/GIF/BMP/WebP/ICO signatures. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_audio_datadata-vecuint8-bool"><code>fn is_audio_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_audio_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data matches a known audio format. Parameters: data -- the bytes to inspect. Returns: true for WAV/OGG/FLAC/MP3 (ID3) signatures. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_video_datadata-vecuint8-bool"><code>fn is_video_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_video_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data matches a known video container. Parameters: data -- the bytes to inspect. Returns: true for AVI/MP4/MKV/WebM/Ogg signatures. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_pdf_datadata-vecuint8-bool"><code>fn is_pdf_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_pdf_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data looks like a PDF. Parameters: data -- the bytes to inspect. Returns: true for the "%PDF-" header. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_zip_datadata-vecuint8-bool"><code>fn is_zip_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_zip_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data is a ZIP archive. Parameters: data -- the bytes to inspect. Returns: true for the "PK\x03\x04" local-file header. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_gzip_datadata-vecuint8-bool"><code>fn is_gzip_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_gzip_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data is a gzip stream. Parameters: data -- the bytes to inspect. Returns: true for the 1F 8B header. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_elf_datadata-vecuint8-bool"><code>fn is_elf_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_elf_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data is an ELF binary. Parameters: data -- the bytes to inspect. Returns: true for the 7F 45 4C 46 header. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_pe_datadata-vecuint8-bool"><code>fn is_pe_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_pe_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data is a PE/COFF binary. Parameters: data -- the bytes to inspect. Returns: true for the "MZ" DOS header. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-is_macho_datadata-vecuint8-bool"><code>fn is_macho_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_macho_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if data is a Mach-O binary. Parameters: data -- the bytes to inspect. Returns: true for the Mach-O magic numbers. Complexity: O(1). Pure.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="fsxi"><code>fs.xi</code><a class="headerlink" href="#fsxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-fs_file_namepath-str-optionstr"><code>fn fs_file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_file_namepath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_file_name returns the file-name portion of path (after the last '/' or '\'), or None if path is empty or ends in a separator.</p>
+</blockquote>
+<h5 id="fn-fs_parent_dirpath-str-optionstr"><code>fn fs_parent_dir(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_parent_dirpath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_parent_dir returns the directory portion of path (everything before the last '/' or '\'), or None if path has no parent.</p>
+</blockquote>
+<h5 id="fn-fs_extensionpath-str-optionstr"><code>fn fs_extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_extensionpath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_extension returns the extension (text after the last dot in the file name), or None if there is no dot or the dot is leading/trailing. "a/b.tar.gz" -&gt; Some("gz"); "a/b" -&gt; None.</p>
+</blockquote>
+<h5 id="fn-fs_stempath-str-optionstr"><code>fn fs_stem(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_stempath-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_stem returns the path with the last extension stripped, or the path unchanged if it has no extension. "a/b.tar.gz" -&gt; "a/b.tar".</p>
+</blockquote>
+<h5 id="fn-fs_is_hiddenpath-str-bool"><code>fn fs_is_hidden(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_is_hiddenpath-str-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_is_hidden returns true if the file name starts with a dot, except for the special entries "." and "..".</p>
+</blockquote>
+<h5 id="fn-fs_join_partsparts-vecstr-str"><code>fn fs_join_parts(parts: Vec[Str]) -&gt; Str</code><a class="headerlink" href="#fn-fs_join_partsparts-vecstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_join_parts joins the given components with the OS path separator (env.path_separator: "\" on Windows, "/" elsewhere).</p>
+</blockquote>
+<h5 id="fn-fs_normalizepath-str-str"><code>fn fs_normalize(path: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_normalizepath-str-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_normalize collapses duplicate separators and resolves "." and ".." lexically, without touching the filesystem. Leading "/" and "C:\"-style drive prefixes are preserved. "a/b/../c//d/./e" -&gt; "a/c/d/e".</p>
+</blockquote>
+<h5 id="fn-fs_with_extensionpath-str-new_ext-str-str"><code>fn fs_with_extension(path: Str, new_ext: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_with_extensionpath-str-new_ext-str-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_with_extension replaces the extension of path with new_ext, or appends it if path has no extension. "a/b.txt" + "md" -&gt; "a/b.md".</p>
+</blockquote>
+<h5 id="fn-fs_splitpath-str-str-str"><code>fn fs_split(path: Str) -&gt; (Str, Str)</code><a class="headerlink" href="#fn-fs_splitpath-str-str-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_split returns (dir, file) -- the directory and file-name portions.</p>
+</blockquote>
+<h5 id="fn-fs_unique_pathdir-str-name-str-str"><code>fn fs_unique_path(dir: Str, name: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_unique_pathdir-str-name-str-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fs_unique_path returns dir/name if it does not exist, otherwise appends " (1)", " (2)", ... up to a maximum of 1000 attempts.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="fs_ffixi"><code>fs_ffi.xi</code><a class="headerlink" href="#fs_ffixi" title="Permanent link">&para;</a></h2>
+<h5 id="type-mappedfile"><code>type MappedFile</code><a class="headerlink" href="#type-mappedfile" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>struct MappedFile { ptr: Int; length: Int; fd: Int; } - mmap result.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ptr</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>fd</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="fn-symlinktarget-str-link-str-resultunit-str"><code>fn symlink(target: Str, link: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-symlinktarget-str-link-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Create a symbolic link. NOT IMPLEMENTED: requires the symlink syscall. Returns: Err("symlink: symlink syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-readlinkpath-str-resultstr-str"><code>fn readlink(path: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-readlinkpath-str-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Read a symlink target. NOT IMPLEMENTED: requires the readlink syscall. Returns: Err("readlink: readlink syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-is_symlinkpath-str-bool"><code>fn is_symlink(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_symlinkpath-str-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True if path is a symbolic link. NOT IMPLEMENTED: requires lstat. Returns false.</p>
+</blockquote>
+<h5 id="fn-hard_linkold-str-new-str-resultunit-str"><code>fn hard_link(old: Str, new: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-hard_linkold-str-new-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Create a hard link. NOT IMPLEMENTED: requires the link syscall. Returns: Err("hard_link: link syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-chownpath-str-uid-int-gid-int-resultunit-str"><code>fn chown(path: Str, uid: Int, gid: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-chownpath-str-uid-int-gid-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Change owner/group. NOT IMPLEMENTED: requires the chown syscall. Returns: Err("chown: chown syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-chmod_pathpath-str-mode-int-resultunit-str"><code>fn chmod_path(path: Str, mode: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-chmod_pathpath-str-mode-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Change permissions. Delegates to xiom.io.set_permissions. Parameters: path -- the file path; mode -- the permission bits. Returns: Ok(()) on success, Err with the underlying message otherwise. Complexity: O(1). Pure (OS call).</p>
+</blockquote>
+<h5 id="fn-mmappath-str-offset-int-length-int-resultmappedfile-str"><code>fn mmap(path: Str, offset: Int, length: Int) -&gt; Result[MappedFile, Str]</code><a class="headerlink" href="#fn-mmappath-str-offset-int-length-int-resultmappedfile-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Memory-map a file. NOT IMPLEMENTED: requires the mmap syscall. Returns: Err("mmap: mmap syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-munmapm-mappedfile"><code>fn munmap(m: MappedFile)</code><a class="headerlink" href="#fn-munmapm-mappedfile" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Unmap a mapped region. NO-OP: no mappings exist in the pure stdlib.</p>
+</blockquote>
+<h5 id="fn-msyncm-mappedfile-resultunit-str"><code>fn msync(m: MappedFile) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-msyncm-mappedfile-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Flush mapped pages. NOT IMPLEMENTED: requires the msync syscall. Returns: Err("msync: msync syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-madvisem-mappedfile-advice-int-resultunit-str"><code>fn madvise(m: MappedFile, advice: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-madvisem-mappedfile-advice-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Advise the kernel on page use. NOT IMPLEMENTED: requires the madvise syscall. Returns: Err("madvise: madvise syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mlockm-mappedfile-resultunit-str"><code>fn mlock(m: MappedFile) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mlockm-mappedfile-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Lock pages in memory. NOT IMPLEMENTED: requires the mlock syscall. Returns: Err("mlock: mlock syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-munlockm-mappedfile-resultunit-str"><code>fn munlock(m: MappedFile) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-munlockm-mappedfile-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Unlock pages. NOT IMPLEMENTED: requires the munlock syscall. Returns: Err("munlock: munlock syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-dupfd-int-resultint-str"><code>fn dup(fd: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-dupfd-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Duplicate a file descriptor. NOT IMPLEMENTED: requires the dup syscall. Returns: Err("dup: dup syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-dup2old-int-new-int-resultint-str"><code>fn dup2(old: Int, new: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-dup2old-int-new-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Duplicate onto a specific fd. NOT IMPLEMENTED: requires the dup2 syscall. Returns: Err("dup2: dup2 syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-truncatepath-str-length-int-resultunit-str"><code>fn truncate(path: Str, length: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-truncatepath-str-length-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Truncate a file by path. NOT IMPLEMENTED: requires the truncate syscall. Returns: Err("truncate: truncate syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-ftruncatefd-int-length-int-resultunit-str"><code>fn ftruncate(fd: Int, length: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-ftruncatefd-int-length-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Truncate an open file. NOT IMPLEMENTED: requires the ftruncate syscall. Returns: Err("ftruncate: ftruncate syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-fallocatefd-int-offset-int-length-int-resultunit-str"><code>fn fallocate(fd: Int, offset: Int, length: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fallocatefd-int-offset-int-length-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Pre-allocate space. NOT IMPLEMENTED: requires posix_fallocate. Returns: Err("fallocate: posix_fallocate not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-preadfd-int-offset-int-length-int-resultvecuint8-str"><code>fn pread(fd: Int, offset: Int, length: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-preadfd-int-offset-int-length-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Positioned read. NOT IMPLEMENTED: requires the pread syscall. Returns: Err("pread: pread syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-pwritefd-int-offset-int-data-vecuint8-resultint-str"><code>fn pwrite(fd: Int, offset: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pwritefd-int-offset-int-data-vecuint8-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Positioned write. NOT IMPLEMENTED: requires the pwrite syscall. Returns: Err("pwrite: pwrite syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-readvfd-int-buffers-vecvecuint8-resultint-str"><code>fn readv(fd: Int, buffers: &amp;Vec[Vec[UInt8]]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-readvfd-int-buffers-vecvecuint8-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Vectored read. NOT IMPLEMENTED: requires the readv syscall. Returns: Err("readv: readv syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-writevfd-int-buffers-vecvecuint8-resultint-str"><code>fn writev(fd: Int, buffers: &amp;Vec[Vec[UInt8]]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-writevfd-int-buffers-vecvecuint8-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Vectored write. NOT IMPLEMENTED: requires the writev syscall. Returns: Err("writev: writev syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-sendfileout_fd-int-in_fd-int-offset-int-count-int-resultint-str"><code>fn sendfile(out_fd: Int, in_fd: Int, offset: Int, count: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-sendfileout_fd-int-in_fd-int-offset-int-count-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Copy between fds in-kernel. NOT IMPLEMENTED: requires the sendfile syscall. Returns: Err("sendfile: sendfile syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-splicein_fd-int-out_fd-int-count-int-resultint-str"><code>fn splice(in_fd: Int, out_fd: Int, count: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-splicein_fd-int-out_fd-int-count-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Move data between fds without copying. NOT IMPLEMENTED: requires the splice syscall. Returns: Err("splice: splice syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-fsyncfd-int-resultunit-str"><code>fn fsync(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fsyncfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Flush file data and metadata. NOT IMPLEMENTED: requires the fsync syscall. Returns: Err("fsync: fsync syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-fdatasyncfd-int-resultunit-str"><code>fn fdatasync(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fdatasyncfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Flush file data only. NOT IMPLEMENTED: requires the fdatasync syscall. Returns: Err("fdatasync: fdatasync syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mkfifopath-str-mode-int-resultunit-str"><code>fn mkfifo(path: Str, mode: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mkfifopath-str-mode-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Create a named pipe. NOT IMPLEMENTED: requires the mkfifo syscall. Returns: Err("mkfifo: mkfifo syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-fifo_openpath-str-resultint-str"><code>fn fifo_open(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-fifo_openpath-str-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Open a named pipe. NOT IMPLEMENTED: requires the open syscall. Returns: Err("fifo_open: open syscall not available in the pure stdlib").</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="ioctlxi"><code>ioctl.xi</code><a class="headerlink" href="#ioctlxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-ioctlfd-int-request-int-arg-int-resultint-str"><code>fn ioctl(fd: Int, request: Int, arg: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-ioctlfd-int-request-int-arg-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Issue an ioctl request on fd, returning the kernel result. NOT IMPLEMENTED: requires the ioctl syscall. Returns: Err("ioctl: ioctl syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-ioctl_get_winsizefd-int-resultint-int-str"><code>fn ioctl_get_winsize(fd: Int) -&gt; Result[(Int, Int), Str]</code><a class="headerlink" href="#fn-ioctl_get_winsizefd-int-resultint-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Fetch the terminal size as (rows, cols). NOT IMPLEMENTED: requires ioctl(TIOCGWINSZ). Returns: Err("ioctl_get_winsize: TIOCGWINSZ not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-ioctl_set_nonblockfd-int-on-bool-resultunit-str"><code>fn ioctl_set_nonblock(fd: Int, on: Bool) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-ioctl_set_nonblockfd-int-on-bool-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Enable or disable non-blocking mode on fd. NOT IMPLEMENTED: requires fcntl(F_GETFL/F_SETFL). Returns: Err("ioctl_set_nonblock: fcntl not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-ioctl_fionreadfd-int-resultint-str"><code>fn ioctl_fionread(fd: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-ioctl_fionreadfd-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of bytes available for reading on fd. NOT IMPLEMENTED: requires ioctl(FIONREAD). Returns: Err("ioctl_fionread: FIONREAD not available in the pure stdlib").</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="mmapxi"><code>mmap.xi</code><a class="headerlink" href="#mmapxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-mmap_anonymouslength-int-resultint-str"><code>fn mmap_anonymous(length: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-mmap_anonymouslength-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Map a private anonymous region and return its address. NOT IMPLEMENTED: requires the mmap syscall. Returns: Err("mmap_anonymous: mmap not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_filefd-int-offset-int-length-int-resultint-str"><code>fn mmap_file(fd: Int, offset: Int, length: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-mmap_filefd-int-offset-int-length-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Map a read-only view of a file region. NOT IMPLEMENTED: requires the mmap syscall. Returns: Err("mmap_file: mmap not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_writeablefd-int-offset-int-length-int-resultint-str"><code>fn mmap_writeable(fd: Int, offset: Int, length: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-mmap_writeablefd-int-offset-int-length-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Map a writable view of a file region. NOT IMPLEMENTED: requires the mmap syscall. Returns: Err("mmap_writeable: mmap not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_unmapptr-int-length-int-resultunit-str"><code>fn mmap_unmap(ptr: Int, length: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mmap_unmapptr-int-length-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Unmap a previously mapped region. NOT IMPLEMENTED: requires the munmap syscall. Returns: Err("mmap_unmap: munmap not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_syncptr-int-length-int-flags-int-resultunit-str"><code>fn mmap_sync(ptr: Int, length: Int, flags: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mmap_syncptr-int-length-int-flags-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Flush mapped pages back to the backing file. NOT IMPLEMENTED: requires the msync syscall. Returns: Err("mmap_sync: msync not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_adviseptr-int-length-int-advice-int-resultunit-str"><code>fn mmap_advise(ptr: Int, length: Int, advice: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mmap_adviseptr-int-length-int-advice-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Give the kernel usage advice about a mapped region. NOT IMPLEMENTED: requires the madvise syscall. Returns: Err("mmap_advise: madvise not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_protectptr-int-length-int-prot-int-resultunit-str"><code>fn mmap_protect(ptr: Int, length: Int, prot: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mmap_protectptr-int-length-int-prot-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Change the protection flags of a mapped region. NOT IMPLEMENTED: requires the mprotect syscall. Returns: Err("mmap_protect: mprotect not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_lockptr-int-length-int-resultunit-str"><code>fn mmap_lock(ptr: Int, length: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mmap_lockptr-int-length-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Lock mapped pages in memory. NOT IMPLEMENTED: requires the mlock syscall. Returns: Err("mmap_lock: mlock not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_unlockptr-int-length-int-resultunit-str"><code>fn mmap_unlock(ptr: Int, length: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mmap_unlockptr-int-length-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Unlock mapped pages. NOT IMPLEMENTED: requires the munlock syscall. Returns: Err("mmap_unlock: munlock not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_copyptr-int-length-int-vecuint8"><code>fn mmap_copy(ptr: Int, length: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-mmap_copyptr-int-length-int-vecuint8" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Copy length bytes out of a mapped region. NOT IMPLEMENTED: no mappings exist in the pure stdlib. Returns an empty vector.</p>
+</blockquote>
+<h5 id="fn-mmap_writeptr-int-data-vecuint8-resultunit-str"><code>fn mmap_write(ptr: Int, data: &amp;Vec[UInt8]) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mmap_writeptr-int-data-vecuint8-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Copy bytes into a mapped region. NOT IMPLEMENTED: no mappings exist in the pure stdlib. Returns: Err("mmap_write: no mappings available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-mmap_resizeptr-int-old_len-int-new_len-int-resultint-str"><code>fn mmap_resize(ptr: Int, old_len: Int, new_len: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-mmap_resizeptr-int-old_len-int-new_len-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Grow or shrink a mapping and return the new address. NOT IMPLEMENTED: requires mremap. Returns: Err("mmap_resize: mremap not available in the pure stdlib").</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="osxi"><code>os.xi</code><a class="headerlink" href="#osxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-platform-str"><code>fn platform() -&gt; Str</code><a class="headerlink" href="#fn-platform-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>=== Platform &amp; Architecture ===</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-cpu_count-int"><code>fn cpu_count() -&gt; Int</code><a class="headerlink" href="#fn-cpu_count-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Number of logical CPUs.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt; 0</code></li>
+</ul>
+<h4 id="fn-total_memory-int"><code>fn total_memory() -&gt; Int</code><a class="headerlink" href="#fn-total_memory-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Total physical memory in bytes (0 when unknown).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-free_memory-int"><code>fn free_memory() -&gt; Int</code><a class="headerlink" href="#fn-free_memory-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Free physical memory in bytes (0 when unknown).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-env_setname-str-value-str"><code>fn env_set(name: Str, value: Str)</code><a class="headerlink" href="#fn-env_setname-str-value-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Set an environment variable (overwrites; portable shim).</p>
+</blockquote>
+<h4 id="fn-env_unsetname-str"><code>fn env_unset(name: Str)</code><a class="headerlink" href="#fn-env_unsetname-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Remove an environment variable (portable shim).</p>
+</blockquote>
+<h4 id="fn-current_dir-str"><code>fn current_dir() -&gt; Str</code><a class="headerlink" href="#fn-current_dir-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Process working directory ("" on failure).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-set_current_dirpath-str-resultunit-str_1"><code>fn set_current_dir(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-set_current_dirpath-str-resultunit-str_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Change the working directory, or Err with the OS message.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-temp_dir-str_1"><code>fn temp_dir() -&gt; Str</code><a class="headerlink" href="#fn-temp_dir-str_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Platform temporary directory.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-home_dir-optionstr_1"><code>fn home_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-home_dir-optionstr_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>User home directory, or None when it cannot be resolved.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.len() &gt; 0</code></li>
+</ul>
+<h4 id="type-childprocess"><code>type ChildProcess</code><a class="headerlink" href="#type-childprocess" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Spawned child process handle.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pid</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>stdin</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>stdout</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>stderr</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-waitself-self-resultint-str"><code>fn wait(self: Self) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-waitself-self-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Wait for the child; Ok(exit code) or Err with the OS message.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>self.pid &gt; 0</code></li>
+</ul>
+<h4 id="fn-killself-self-resultunit-str"><code>fn kill(self: Self) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-killself-self-resultunit-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Terminate the child; Err when it cannot be killed.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>pid &gt; 0</code></li>
+</ul>
+<h4 id="fn-idself-self-int"><code>fn id(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-idself-self-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>OS process id of the child.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-walk_dirpath-str-callback-fnstr-metadata-unit-resultunit-str"><code>fn walk_dir(path: Str, callback: fn(Str, Metadata) -&gt; Unit) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-walk_dirpath-str-callback-fnstr-metadata-unit-resultunit-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>=== Filesystem Walk ===</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-walk_dir_filteredpath-str-pattern-str-callback-fnstr-metadata-unit-resultunit-str"><code>fn walk_dir_filtered(path: Str, pattern: Str, callback: fn(Str, Metadata) -&gt; Unit) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-walk_dir_filteredpath-str-pattern-str-callback-fnstr-metadata-unit-resultunit-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Walk <code>path</code> calling <code>callback(path, metadata)</code> for entries whose name matches <code>pattern</code>; Err on traversal failure.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+</ul>
+<h4 id="type-filewatcher"><code>type FileWatcher</code><a class="headerlink" href="#type-filewatcher" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>=== File System Watch ===</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>recursive</code></td>
+<td><code>Bool</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-watch_filepath-str-resultfilewatcher-str"><code>fn watch_file(path: Str) -&gt; Result[FileWatcher, Str]</code><a class="headerlink" href="#fn-watch_filepath-str-resultfilewatcher-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Watch a single file for changes, or Err with the OS message.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-watch_dirpath-str-recursive-bool-resultfilewatcher-str"><code>fn watch_dir(path: Str, recursive: Bool) -&gt; Result[FileWatcher, Str]</code><a class="headerlink" href="#fn-watch_dirpath-str-recursive-bool-resultfilewatcher-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Watch a directory (optionally recursive), or Err.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-pollself-self-resultvecfileevent-str"><code>fn poll(self: Self) -&gt; Result[Vec[FileEvent], Str]</code><a class="headerlink" href="#fn-pollself-self-resultvecfileevent-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Non-blocking poll for accumulated events; Err on failure.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+</ul>
+<h4 id="fn-closeself-self"><code>fn close(self: Self)</code><a class="headerlink" href="#fn-closeself-self" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Stop watching and release the watcher.</p>
+</blockquote>
+<h4 id="enum-fileevent"><code>enum FileEvent</code><a class="headerlink" href="#enum-fileevent" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Kind of filesystem change reported by a watcher.</p>
+</blockquote>
+<ul>
+<li><code>Created(path: Str)</code></li>
+<li><code>Modified(path: Str)</code></li>
+<li><code>Deleted(path: Str)</code></li>
+<li><code>Renamed(from: Str, to: Str)</code></li>
+</ul>
+<h4 id="fn-on_signalsignal-int-handler-fnint-unit"><code>fn on_signal(signal: Int, handler: fn(Int) -&gt; Unit)</code><a class="headerlink" href="#fn-on_signalsignal-int-handler-fnint-unit" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>=== Signal Handling ===</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>signal &gt; 0</code></li>
+</ul>
+<h4 id="fn-raise_signalsignal-int"><code>fn raise_signal(signal: Int)</code><a class="headerlink" href="#fn-raise_signalsignal-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Raise a signal in the current process (POSIX; unsupported on Windows).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>signal &gt; 0</code></li>
+</ul>
+<h4 id="type-pipe"><code>type Pipe</code><a class="headerlink" href="#type-pipe" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>=== Pipe ===</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read_fd</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>write_fd</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="fn-create_pipe-resultpipe-str"><code>fn create_pipe() -&gt; Result[Pipe, Str]</code><a class="headerlink" href="#fn-create_pipe-resultpipe-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Create an OS pipe, or Err with the OS message.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.read_fd &gt;= 0 &amp;&amp; result.write_fd &gt;= 0</code></li>
+</ul>
+<h4 id="fn-readself-self-buf-mut-vecuint8-resultint-str"><code>fn read(self: Self, buf: &amp;mut Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-readself-self-buf-mut-vecuint8-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Read into <code>buf</code>; Ok(bytes read, 0 at EOF) or Err.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>self.read_fd &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-writeself-self-data-vecuint8-resultint-str"><code>fn write(self: Self, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-writeself-self-data-vecuint8-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Write bytes; Ok(bytes written) or Err.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>self.write_fd &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-close_readself-self"><code>fn close_read(self: Self)</code><a class="headerlink" href="#fn-close_readself-self" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Close the read end of the pipe.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>self.read_fd &gt;= 0</code></li>
+</ul>
+<h4 id="fn-close_writeself-self"><code>fn close_write(self: Self)</code><a class="headerlink" href="#fn-close_writeself-self" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Close the write end of the pipe.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>self.write_fd &gt;= 0</code></li>
+</ul>
+<h4 id="fn-disk_freepath-str-resultint-str"><code>fn disk_free(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-disk_freepath-str-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>=== Disk Usage ===</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-disk_totalpath-str-resultint-str"><code>fn disk_total(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-disk_totalpath-str-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Total bytes on the filesystem containing <code>path</code>, or Err.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-file_size_bytespath-str-resultint-str"><code>fn file_size_bytes(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-file_size_bytespath-str-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Size of the file in bytes, or Err with the OS message.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-hostname-resultstr-str"><code>fn hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-hostname-resultstr-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>hostname returns the system hostname via gethostname (POSIX) or GetComputerNameA (Windows).  Uses an internal static buffer in the C runtime.  Returns Err on failure.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-os_version_str-str"><code>fn os_version_str() -&gt; Str</code><a class="headerlink" href="#fn-os_version_str-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>os_version_str returns a best-effort OS version string via the xiom_os_version_str runtime intrinsic (GetVersionExA on Windows, uname on POSIX).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-is_unix-bool"><code>fn is_unix() -&gt; Bool</code><a class="headerlink" href="#fn-is_unix-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>is_unix returns true if the platform is linux or macos.</p>
+</blockquote>
+<h4 id="fn-user_name-optionstr"><code>fn user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-user_name-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>user_name returns the current user name by reading the USERNAME (Windows) or USER (Unix) environment variable.</p>
+</blockquote>
+<h4 id="fn-total_memory_mb-int"><code>fn total_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-total_memory_mb-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>total_memory_mb returns total system memory in MiB. Wraps total_memory() / (1024 * 1024).  Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-free_memory_mb-int"><code>fn free_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-free_memory_mb-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>free_memory_mb returns free system memory in MiB. Wraps free_memory() / (1024 * 1024).  Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-page_size-int"><code>fn page_size() -&gt; Int</code><a class="headerlink" href="#fn-page_size-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>page_size returns the system page size in bytes. Returns 4096 -- the runtime does not expose sysconf(_SC_PAGESIZE).</p>
+</blockquote>
+<h4 id="fn-terminal_width-optionint"><code>fn terminal_width() -&gt; Option[Int]</code><a class="headerlink" href="#fn-terminal_width-optionint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>terminal_width returns the terminal width in columns, if detectable. The Xiom runtime does not expose TIOCGWINSZ -- always returns None.</p>
+</blockquote>
+<h4 id="fn-sleep_millisms-int"><code>fn sleep_millis(ms: Int)</code><a class="headerlink" href="#fn-sleep_millisms-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>sleep_millis sleeps for at least the given number of milliseconds. Uses busy-wait; usleep is not available on Windows MSVC.</p>
+</blockquote>
+<h4 id="fn-current_exe_path-optionstr"><code>fn current_exe_path() -&gt; Option[Str]</code><a class="headerlink" href="#fn-current_exe_path-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>current_exe_path returns the path of the currently running executable. Delegates to env.current_exe().  Returns None on failure.</p>
+</blockquote>
+<h4 id="fn-process_id-int"><code>fn process_id() -&gt; Int</code><a class="headerlink" href="#fn-process_id-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>process_id returns the current process ID via the xiom_getpid runtime intrinsic.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-cpu_model-str"><code>fn cpu_model() -&gt; Str</code><a class="headerlink" href="#fn-cpu_model-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>cpu_model returns a human-readable CPU model string. The Xiom runtime does not expose CPUID or /proc/cpuinfo. Always returns "unknown".</p>
+</blockquote>
+<hr />
+<hr />
+<h2 id="pathxi"><code>path.xi</code><a class="headerlink" href="#pathxi" title="Permanent link">&para;</a></h2>
+<h4 id="type-path"><code>type Path</code><a class="headerlink" href="#type-path" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Borrowed path (wraps a Str); construct with <code>Path.new</code>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inner</code></td>
+<td><code>Str</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Derives:</strong> <code>Eq, Clone, Hash, Ord</code></p>
+<h4 id="type-pathbuf"><code>type PathBuf</code><a class="headerlink" href="#type-pathbuf" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Owned, mutable path buffer.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inner</code></td>
+<td><code>Str</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Derives:</strong> <code>Eq, Clone</code></p>
+<h4 id="fn-news-str-path"><code>fn new(s: Str) -&gt; Path</code><a class="headerlink" href="#fn-news-str-path" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Path constructors</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == s</code></li>
+</ul>
+<h4 id="fn-new-pathbuf"><code>fn new() -&gt; PathBuf</code><a class="headerlink" href="#fn-new-pathbuf" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Create an empty PathBuf.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == ""</code></li>
+</ul>
+<h4 id="fn-froms-str-pathbuf"><code>fn from(s: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-froms-str-pathbuf" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Create a PathBuf from a string.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == s</code></li>
+</ul>
+<h4 id="fn-parentself-self-optionpath"><code>fn parent(self: Self) -&gt; Option[Path]</code><a class="headerlink" href="#fn-parentself-self-optionpath" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Path operations</p>
+</blockquote>
+<h4 id="fn-file_nameself-self-optionstr"><code>fn file_name(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_nameself-self-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Final component of the path, or None when there is none.</p>
+</blockquote>
+<h4 id="fn-extensionself-self-optionstr"><code>fn extension(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-extensionself-self-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Extension after the final dot of the file name, or None.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some =&gt; self.inner.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-file_stemself-self-optionstr"><code>fn file_stem(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_stemself-self-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>File name without its final extension, or None.</p>
+</blockquote>
+<h4 id="fn-is_absoluteself-self-bool"><code>fn is_absolute(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_absoluteself-self-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when the path is absolute.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; self.inner.len() &gt;= 1</code></li>
+</ul>
+<h4 id="fn-is_relativeself-self-bool"><code>fn is_relative(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_relativeself-self-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when the path is relative.</p>
+</blockquote>
+<h4 id="fn-has_rootself-self-bool"><code>fn has_root(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-has_rootself-self-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when the path starts at a root component.</p>
+</blockquote>
+<h4 id="fn-componentsself-self-vecstr"><code>fn components(self: Self) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-componentsself-self-vecstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Path components as strings (separators normalized).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
+</ul>
+<h4 id="fn-to_strself-self-str"><code>fn to_str(self: Self) -&gt; Str</code><a class="headerlink" href="#fn-to_strself-self-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>The underlying string.</p>
+</blockquote>
+<h4 id="fn-joinself-self-child-str-pathbuf"><code>fn join(self: Self, child: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-joinself-self-child-str-pathbuf" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Append <code>child</code>, inserting a separator when needed.</p>
+</blockquote>
+<h4 id="fn-with_extensionself-self-ext-str-pathbuf"><code>fn with_extension(self: Self, ext: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-with_extensionself-self-ext-str-pathbuf" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Replace the extension with <code>ext</code>; an existing extension is removed.</p>
+</blockquote>
+<h4 id="fn-with_file_nameself-self-name-str-pathbuf"><code>fn with_file_name(self: Self, name: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-with_file_nameself-self-name-str-pathbuf" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Replace the final component with <code>name</code>.</p>
+</blockquote>
+<h4 id="fn-existsself-self-bool"><code>fn exists(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-existsself-self-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when the path exists on disk.</p>
+</blockquote>
+<h4 id="fn-is_fileself-self-bool"><code>fn is_file(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_fileself-self-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when the path exists and is a regular file.</p>
+</blockquote>
+<h4 id="fn-is_dirself-self-bool"><code>fn is_dir(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_dirself-self-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when the path exists and is a directory.</p>
+</blockquote>
+<h4 id="fn-metadataself-self-resultmetadata-str"><code>fn metadata(self: Self) -&gt; Result[Metadata, Str]</code><a class="headerlink" href="#fn-metadataself-self-resultmetadata-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>File metadata, or Err carrying the OS message.</p>
+</blockquote>
+<h4 id="fn-canonicalizeself-self-resultpathbuf-str"><code>fn canonicalize(self: Self) -&gt; Result[PathBuf, Str]</code><a class="headerlink" href="#fn-canonicalizeself-self-resultpathbuf-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Absolute, symlink-resolved path, or Err carrying the OS message.</p>
+</blockquote>
+<h4 id="fn-starts_withself-self-base-path-bool"><code>fn starts_with(self: Self, base: Path) -&gt; Bool</code><a class="headerlink" href="#fn-starts_withself-self-base-path-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when <code>base</code> is a component-prefix of this path.</p>
+</blockquote>
+<h4 id="fn-ends_withself-self-child-path-bool"><code>fn ends_with(self: Self, child: Path) -&gt; Bool</code><a class="headerlink" href="#fn-ends_withself-self-child-path-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>True when <code>child</code> is a component-suffix of this path.</p>
+</blockquote>
+<h4 id="fn-pushself-self-component-str"><code>fn push(self: Self, component: Str)</code><a class="headerlink" href="#fn-pushself-self-component-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>PathBuf operations NOTE: These take &amp;mut self (the old by-value forms mutated a copy and required callers to capture the return -- the stale "&amp;mut self not supported" note predates the BUG 55 fixes; cell.xi &amp;mut self works).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>component.len() &gt;= 0</code></li>
+</ul>
+<h4 id="fn-popself-self-bool"><code>fn pop(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-popself-self-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Remove the final component; false when the buffer is already empty.</p>
+</blockquote>
+<h4 id="fn-as_pathself-self-path"><code>fn as_path(self: Self) -&gt; Path</code><a class="headerlink" href="#fn-as_pathself-self-path" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Borrow as a <code>Path</code>.</p>
+</blockquote>
+<h4 id="fn-clearself-self"><code>fn clear(self: Self)</code><a class="headerlink" href="#fn-clearself-self" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Empty the buffer.</p>
+</blockquote>
+<h4 id="fn-path_separator-str_1"><code>fn path_separator() -&gt; Str</code><a class="headerlink" href="#fn-path_separator-str_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Utility</p>
+</blockquote>
+<h4 id="fn-path_is_absolute_strp-str-bool"><code>fn path_is_absolute_str(p: Str) -&gt; Bool</code><a class="headerlink" href="#fn-path_is_absolute_strp-str-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>path_is_absolute_str returns true if p starts with '/' or '\'.</p>
+</blockquote>
+<hr />
+<hr />
+<h2 id="platformxi"><code>platform.xi</code><a class="headerlink" href="#platformxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-platform_name-str"><code>fn platform_name() -&gt; Str</code><a class="headerlink" href="#fn-platform_name-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_name returns the OS name ("windows", "linux", "macos", ...). Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-platform_arch-str"><code>fn platform_arch() -&gt; Str</code><a class="headerlink" href="#fn-platform_arch-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_arch returns the target architecture ("x86_64", ...). Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-platform_family-str"><code>fn platform_family() -&gt; Str</code><a class="headerlink" href="#fn-platform_family-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_family returns "unix" or "windows". Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-platform_is_windows-bool"><code>fn platform_is_windows() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_windows-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_is_windows returns true on Windows. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-platform_is_linux-bool"><code>fn platform_is_linux() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_linux-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_is_linux returns true on Linux. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-platform_is_macos-bool"><code>fn platform_is_macos() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_macos-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_is_macos returns true on macOS. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-platform_is_unix-bool"><code>fn platform_is_unix() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_unix-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_is_unix returns true on Linux or macOS. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-platform_hostname-resultstr-str"><code>fn platform_hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-platform_hostname-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_hostname returns the system hostname. Implemented locally via the env.TEMP-free C getenv-free approach: reads the COMPUTERNAME variable (Windows) or HOSTNAME (Unix) as a best effort. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-platform_os_version-str"><code>fn platform_os_version() -&gt; Str</code><a class="headerlink" href="#fn-platform_os_version-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_os_version returns a best-effort OS version string derived from environment constants. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-platform_user_name-optionstr"><code>fn platform_user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-platform_user_name-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>platform_user_name returns the current user name from the USERNAME (Windows) or USER (Unix) environment variable. Complexity: O(1).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="procxi"><code>proc.xi</code><a class="headerlink" href="#procxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-proc_is_runningpid-int-bool"><code>fn proc_is_running(pid: Int) -&gt; Bool</code><a class="headerlink" href="#fn-proc_is_runningpid-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>proc_is_running returns true if the process with the given pid is still alive. Delegates to xiom.process.is_running, which wraps the xiom_process_running runtime intrinsic. Pids must be positive.</p>
+</blockquote>
+<h5 id="fn-proc_exit_code_successcode-int-bool"><code>fn proc_exit_code_success(code: Int) -&gt; Bool</code><a class="headerlink" href="#fn-proc_exit_code_successcode-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>proc_exit_code_success returns true when the exit code indicates success (code == 0).</p>
+</blockquote>
+<h5 id="fn-proc_signal_namesig-int-str"><code>fn proc_signal_name(sig: Int) -&gt; Str</code><a class="headerlink" href="#fn-proc_signal_namesig-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>proc_signal_name maps a POSIX signal number to its conventional name, or returns "SIG" + the number for unknown signals.</p>
+</blockquote>
+<h5 id="fn-proc_status_textcode-int-str"><code>fn proc_status_text(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-proc_status_textcode-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>proc_status_text formats a process exit code as "exit(<code>)". The runtime does not expose wait-status decoding (WIFSIGNALED etc.), so signals cannot be distinguished here.</p>
+</blockquote>
+<h5 id="fn-proc_command_existscmd-str-bool"><code>fn proc_command_exists(cmd: Str) -&gt; Bool</code><a class="headerlink" href="#fn-proc_command_existscmd-str-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>proc_command_exists returns true if the named command can be found on the system PATH. Delegates to xiom.process.command_exists, which runs "where <name>" (Windows) or "which <name>" (Unix) via the shell. Spawning the command itself is not a reliable existence probe, since the system()-based spawn reports the command's exit code rather than a spawn failure.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="proc_ffixi"><code>proc_ffi.xi</code><a class="headerlink" href="#proc_ffixi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-fork-resultint-str"><code>fn fork() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-fork-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Fork the current process (child gets 0). NOT IMPLEMENTED: requires the fork syscall. Returns: Err("fork: fork syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-waitpidpid-int-options-int-resultint-str"><code>fn waitpid(pid: Int, options: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-waitpidpid-int-options-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Wait for a child. NOT IMPLEMENTED: requires the waitpid syscall. Returns: Err("waitpid: waitpid syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-wait-resultint-str"><code>fn wait() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-wait-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Wait for any child. NOT IMPLEMENTED: requires the wait syscall. Returns: Err("wait: wait syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-popencmd-str-mode-str-resultint-str"><code>fn popen(cmd: Str, mode: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-popencmd-str-mode-str-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Open a pipe to/from a command. NOT IMPLEMENTED: requires the popen libc call. Returns: Err("popen: popen not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-pclosepipe-int-resultint-str"><code>fn pclose(pipe: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pclosepipe-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Close a popen pipe and get the status. NOT IMPLEMENTED: requires the pclose libc call. Returns: Err("pclose: pclose not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-posix_spawnpath-str-args-vecstr-resultint-str"><code>fn posix_spawn(path: Str, args: &amp;Vec[Str]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-posix_spawnpath-str-args-vecstr-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Spawn a process by path. NOT IMPLEMENTED: requires posix_spawn. Returns: Err("posix_spawn: posix_spawn not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-posix_spawnpfile-str-args-vecstr-resultint-str"><code>fn posix_spawnp(file: Str, args: &amp;Vec[Str]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-posix_spawnpfile-str-args-vecstr-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Spawn searching PATH. NOT IMPLEMENTED: requires posix_spawnp. Returns: Err("posix_spawnp: posix_spawnp not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-execvpath-str-args-vecstr-resultint-str"><code>fn execv(path: Str, args: &amp;Vec[Str]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-execvpath-str-args-vecstr-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Replace the process image. NOT IMPLEMENTED: requires the execv syscall. Returns: Err("execv: execv syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-execvpfile-str-args-vecstr-resultint-str"><code>fn execvp(file: Str, args: &amp;Vec[Str]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-execvpfile-str-args-vecstr-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Exec searching PATH. NOT IMPLEMENTED: requires the execvp syscall. Returns: Err("execvp: execvp syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-getpid-int"><code>fn getpid() -&gt; Int</code><a class="headerlink" href="#fn-getpid-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Current process id. Delegates to xiom.os.process_id. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-getppid-int"><code>fn getppid() -&gt; Int</code><a class="headerlink" href="#fn-getppid-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Parent process id. NOT IMPLEMENTED: requires the getppid syscall. Returns 0.</p>
+</blockquote>
+<h5 id="fn-getsidpid-int-int"><code>fn getsid(pid: Int) -&gt; Int</code><a class="headerlink" href="#fn-getsidpid-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Session id. NOT IMPLEMENTED: requires the getsid syscall. Returns 0.</p>
+</blockquote>
+<h5 id="fn-killpid-int-sig-int-resultunit-str"><code>fn kill(pid: Int, sig: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-killpid-int-sig-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Send a signal. NOT IMPLEMENTED: requires the kill syscall. Returns: Err("kill: kill syscall not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-raisesig-int-resultunit-str"><code>fn raise(sig: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-raisesig-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Send a signal to the current process. NOT IMPLEMENTED: requires the raise libc call. Returns: Err("raise: raise not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-exit_codestatus-int-int"><code>fn exit_code(status: Int) -&gt; Int</code><a class="headerlink" href="#fn-exit_codestatus-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Extract the exit code from a wait status. Parameters: status -- a wait()/waitpid() status word. Returns: the low 8 bits of the shifted status. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-exit_signalstatus-int-int"><code>fn exit_signal(status: Int) -&gt; Int</code><a class="headerlink" href="#fn-exit_signalstatus-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Extract the terminating signal from a wait status. Parameters: status -- a wait()/waitpid() status word. Returns: the low 7 bits of the status. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-process_statuspid-int-optionint"><code>fn process_status(pid: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-process_statuspid-int-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Poll a process (None if still running). NOT IMPLEMENTED: requires waitpid(WNOHANG). Returns None.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="processxi"><code>process.xi</code><a class="headerlink" href="#processxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-exitcode-int"><code>fn exit(code: Int)</code><a class="headerlink" href="#fn-exitcode-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Terminate the current process with the given exit code. Delegates to xiom.io.exit (which calls the C exit() function). 0 indicates success, non-zero indicates failure.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>code &gt;= 0</code></li>
+</ul>
+<h4 id="fn-get_pid-int"><code>fn get_pid() -&gt; Int</code><a class="headerlink" href="#fn-get_pid-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Return the current process ID (via the xiom_getpid runtime intrinsic).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-sleep_msms-int"><code>fn sleep_ms(ms: Int)</code><a class="headerlink" href="#fn-sleep_msms-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Sleep (block) the current thread for the specified number of milliseconds. Delegates to xiom.thread.sleep_ms which calls xiom_thread_sleep_ms.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>ms &gt;= 0</code></li>
+</ul>
+<h4 id="fn-env_varname-str-optionstr"><code>fn env_var(name: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-env_varname-str-optionstr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Get the value of an environment variable. Returns Some(value) if the variable exists, None otherwise. Delegates to xiom.env.var_opt.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-current_exe_path-optionstr_1"><code>fn current_exe_path() -&gt; Option[Str]</code><a class="headerlink" href="#fn-current_exe_path-optionstr_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Get the full path of the currently running executable. Delegates to xiom.env.current_exe() which reads argv[0]. Returns Some(path) on success, None if the path cannot be determined.</p>
+</blockquote>
+<h4 id="fn-spawn_commandcmd-str-args-vecstr-resultint-str"><code>fn spawn_command(cmd: Str, args: &amp;Vec[Str]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-spawn_commandcmd-str-args-vecstr-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Spawn a command with arguments; Ok(pid) or Err.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>cmd.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-command_existsname-str-bool"><code>fn command_exists(name: Str) -&gt; Bool</code><a class="headerlink" href="#fn-command_existsname-str-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns true if the named command can be found via the system PATH. On Windows: runs "where <name> &gt; nul 2&gt;&amp;1". On Unix: runs "which <name> &gt; /dev/null 2&gt;&amp;1".</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-spawn_blockingcommand-str-resultint-str"><code>fn spawn_blocking(command: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-spawn_blockingcommand-str-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Spawn a command via the OS shell and wait for completion. Returns Ok(exit_code) on success, Err on spawn failure. BLOCKING: the calling thread blocks until the child exits. On Windows: uses cmd.exe /c internally. On POSIX:   uses /bin/sh -c internally.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>command.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-killpid-int-bool"><code>fn kill(pid: Int) -&gt; Bool</code><a class="headerlink" href="#fn-killpid-int-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Terminate a process by PID.  Returns true on success, false if the process could not be killed (doesn't exist, access denied).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>pid &gt; 0</code></li>
+</ul>
+<h4 id="fn-waitpid-int-resultint-str"><code>fn wait(pid: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-waitpid-int-resultint-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Wait for a process to exit and return its exit code. Returns Ok(exit_code) on success, Err if the process doesn't exist or the wait failed. BLOCKING: blocks until the target process terminates.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>pid &gt; 0</code></li>
+</ul>
+<h4 id="fn-is_runningpid-int-bool"><code>fn is_running(pid: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_runningpid-int-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Check whether a process is still running. Returns true if the process exists and is running, false otherwise. May return false for processes owned by other users (access denied).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>pid &gt; 0</code></li>
+</ul>
+<hr />
+<hr />
+<h2 id="signalxi"><code>signal.xi</code><a class="headerlink" href="#signalxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-signal_namenum-int-str"><code>fn signal_name(num: Int) -&gt; Str</code><a class="headerlink" href="#fn-signal_namenum-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>signal_name returns the canonical name for a signal number, or "unknown" for numbers outside the table. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-signal_codename-str-optionint"><code>fn signal_code(name: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-signal_codename-str-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>signal_code returns the signal number for a canonical name, or None. Matching is case-insensitive on the letters. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-signal_is_ignorablenum-int-bool"><code>fn signal_is_ignorable(num: Int) -&gt; Bool</code><a class="headerlink" href="#fn-signal_is_ignorablenum-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>signal_is_ignorable returns true for signals that can be ignored (not SIGKILL or SIGSTOP). Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-signal_is_catchablenum-int-bool"><code>fn signal_is_catchable(num: Int) -&gt; Bool</code><a class="headerlink" href="#fn-signal_is_catchablenum-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>signal_is_catchable returns true for signals a process can install a handler for (not SIGKILL or SIGSTOP). Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-signal_default_actionnum-int-str"><code>fn signal_default_action(num: Int) -&gt; Str</code><a class="headerlink" href="#fn-signal_default_actionnum-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>signal_default_action returns the default disposition ("term", "core", "stop", "cont", "ignore", or "unknown"). Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-signal_raisenum-int-resultunit-str"><code>fn signal_raise(num: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-signal_raisenum-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>signal_raise sends a signal to the current process via the runtime raise() primitive. Complexity: O(1) syscall.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="sync_ioxi"><code>sync_io.xi</code><a class="headerlink" href="#sync_ioxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-read_exactfd-int-buf-mut-vecuint8-resultint-str"><code>fn read_exact(fd: Int, buf: &amp;mut Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-read_exactfd-int-buf-mut-vecuint8-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Fill buf completely or fail. NOT IMPLEMENTED: requires raw fd read syscalls. Returns: Err("read_exact: fd syscalls not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-write_allfd-int-data-vecuint8-resultint-str"><code>fn write_all(fd: Int, data: &amp;Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-write_allfd-int-data-vecuint8-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Write every byte or fail. NOT IMPLEMENTED: requires raw fd write syscalls. Returns: Err("write_all: fd syscalls not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-read_until_eoffd-int-resultvecuint8-str"><code>fn read_until_eof(fd: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-read_until_eoffd-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Read everything until end of file. NOT IMPLEMENTED: requires raw fd read syscalls. Returns: Err("read_until_eof: fd syscalls not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-read_line_bufferedfd-int-resultstr-str"><code>fn read_line_buffered(fd: Int) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-read_line_bufferedfd-int-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Read one line (without trailing newline). NOT IMPLEMENTED: requires raw fd read syscalls. Returns: Err("read_line_buffered: fd syscalls not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-copy_fdsrc-int-dst-int-resultint-str"><code>fn copy_fd(src: Int, dst: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-copy_fdsrc-int-dst-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Copy all bytes between two fds; returns the total copied. NOT IMPLEMENTED: requires raw fd read/write syscalls. Returns: Err("copy_fd: fd syscalls not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-copy_fd_nsrc-int-dst-int-n-int-resultint-str"><code>fn copy_fd_n(src: Int, dst: Int, n: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-copy_fd_nsrc-int-dst-int-n-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Copy up to n bytes between two fds. NOT IMPLEMENTED: requires raw fd read/write syscalls. Returns: Err("copy_fd_n: fd syscalls not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-flush_fdfd-int-resultunit-str"><code>fn flush_fd(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-flush_fdfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Flush userspace buffers for an fd. NOT IMPLEMENTED: requires fflush on an fd stream. Returns: Err("flush_fd: fd flushing not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-sync_fdfd-int-resultunit-str"><code>fn sync_fd(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-sync_fdfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fsync an fd to stable storage. NOT IMPLEMENTED: requires the fsync syscall. Returns: Err("sync_fd: fsync not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-fsync_dirpath-str-resultunit-str"><code>fn fsync_dir(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fsync_dirpath-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>fsync a directory so entry changes are durable. NOT IMPLEMENTED: requires opening the directory and calling fsync. Returns: Err("fsync_dir: fsync not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-file_advisefd-int-offset-int-length-int-advice-int-resultunit-str"><code>fn file_advise(fd: Int, offset: Int, length: Int, advice: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_advisefd-int-offset-int-length-int-advice-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Give access-pattern advice for a file range. NOT IMPLEMENTED: requires posix_fadvise. Returns: Err("file_advise: posix_fadvise not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-file_allocatefd-int-offset-int-length-int-resultunit-str"><code>fn file_allocate(fd: Int, offset: Int, length: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_allocatefd-int-offset-int-length-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Preallocate space for a file range. NOT IMPLEMENTED: requires posix_fallocate. Returns: Err("file_allocate: posix_fallocate not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-file_lockfd-int-resultunit-str"><code>fn file_lock(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_lockfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Take an exclusive advisory lock, blocking. NOT IMPLEMENTED: requires fcntl(F_SETLKW). Returns: Err("file_lock: fcntl locking not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-file_unlockfd-int-resultunit-str"><code>fn file_unlock(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_unlockfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Release an advisory lock. NOT IMPLEMENTED: requires fcntl(F_SETLK). Returns: Err("file_unlock: fcntl locking not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-file_try_lockfd-int-bool"><code>fn file_try_lock(fd: Int) -&gt; Bool</code><a class="headerlink" href="#fn-file_try_lockfd-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Attempt a non-blocking exclusive lock. NOT IMPLEMENTED: requires fcntl(F_SETLK). Returns false.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="sysinfoxi"><code>sysinfo.xi</code><a class="headerlink" href="#sysinfoxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-sysinfo_cpu_count-int"><code>fn sysinfo_cpu_count() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_cpu_count-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_cpu_count returns the number of logical CPUs. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-sysinfo_total_memory-int"><code>fn sysinfo_total_memory() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_total_memory-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_total_memory returns total system memory in bytes. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-sysinfo_free_memory-int"><code>fn sysinfo_free_memory() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_free_memory-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_free_memory returns free system memory in bytes. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-sysinfo_total_memory_mb-int"><code>fn sysinfo_total_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_total_memory_mb-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_total_memory_mb returns total system memory in MiB. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-sysinfo_free_memory_mb-int"><code>fn sysinfo_free_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_free_memory_mb-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_free_memory_mb returns free system memory in MiB. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-sysinfo_page_size-int"><code>fn sysinfo_page_size() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_page_size-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_page_size returns the system page size in bytes (4096 on the supported runtimes). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-sysinfo_hostname-resultstr-str"><code>fn sysinfo_hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-sysinfo_hostname-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_hostname returns the system hostname from the COMPUTERNAME (Windows) or HOSTNAME (Unix) environment variable. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-sysinfo_os_name-str"><code>fn sysinfo_os_name() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_os_name-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_os_name returns the OS name. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-sysinfo_os_version-str"><code>fn sysinfo_os_version() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_os_version-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_os_version returns a best-effort OS version string derived from environment constants. Complexity: O(1). Pure.</p>
+</blockquote>
+<h5 id="fn-sysinfo_process_id-int"><code>fn sysinfo_process_id() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_process_id-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_process_id returns the current process ID. Complexity: O(1) syscall.</p>
+</blockquote>
+<h5 id="fn-sysinfo_user_name-optionstr"><code>fn sysinfo_user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-sysinfo_user_name-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_user_name returns the current user name from the USERNAME (Windows) or USER (Unix) environment variable. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-sysinfo_cpu_model-str"><code>fn sysinfo_cpu_model() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_cpu_model-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>sysinfo_cpu_model returns a CPU model string. The runtime does not expose CPUID; always returns "unknown". Complexity: O(1).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="termxi"><code>term.xi</code><a class="headerlink" href="#termxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-term_is_ttyfd-int-bool"><code>fn term_is_tty(fd: Int) -&gt; Bool</code><a class="headerlink" href="#fn-term_is_ttyfd-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_is_tty returns true if the given file descriptor refers to a terminal. Delegates to xiom.os.terminal.isatty (the runtime does not expose an isatty intrinsic, so that is also false until an FFI exists).</p>
+</blockquote>
+<h5 id="fn-term_clear_screen-str"><code>fn term_clear_screen() -&gt; Str</code><a class="headerlink" href="#fn-term_clear_screen-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_clear_screen returns the ANSI escape sequence that clears the screen and homes the cursor.</p>
+</blockquote>
+<h5 id="fn-term_set_foregroundcolor-int-str"><code>fn term_set_foreground(color: Int) -&gt; Str</code><a class="headerlink" href="#fn-term_set_foregroundcolor-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_set_foreground returns the ANSI 256-color foreground escape for the given color index (0..255).</p>
+</blockquote>
+<h5 id="fn-term_reset-str"><code>fn term_reset() -&gt; Str</code><a class="headerlink" href="#fn-term_reset-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_reset returns the ANSI sequence that resets all attributes.</p>
+</blockquote>
+<h5 id="fn-term_bold-str"><code>fn term_bold() -&gt; Str</code><a class="headerlink" href="#fn-term_bold-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_bold returns the ANSI sequence enabling bold.</p>
+</blockquote>
+<h5 id="fn-term_dim-str"><code>fn term_dim() -&gt; Str</code><a class="headerlink" href="#fn-term_dim-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_dim returns the ANSI sequence enabling dim intensity.</p>
+</blockquote>
+<h5 id="fn-term_underline-str"><code>fn term_underline() -&gt; Str</code><a class="headerlink" href="#fn-term_underline-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_underline returns the ANSI sequence enabling underline.</p>
+</blockquote>
+<h5 id="fn-term_cursor_hide-str"><code>fn term_cursor_hide() -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_hide-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_cursor_hide returns the ANSI sequence that hides the cursor.</p>
+</blockquote>
+<h5 id="fn-term_cursor_show-str"><code>fn term_cursor_show() -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_show-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_cursor_show returns the ANSI sequence that shows the cursor.</p>
+</blockquote>
+<h5 id="fn-term_cursor_moverow-int-col-int-str"><code>fn term_cursor_move(row: Int, col: Int) -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_moverow-int-col-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_cursor_move returns the ANSI sequence that moves the cursor to the given 1-based row and column.</p>
+</blockquote>
+<h5 id="fn-term_width-int"><code>fn term_width() -&gt; Int</code><a class="headerlink" href="#fn-term_width-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>term_width returns the terminal width in columns. Delegates to xiom.os.terminal.terminal_width; the runtime does not expose TIOCGWINSZ/GetConsoleScreenBufferInfo, so 0 means "unknown".</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="terminalxi"><code>terminal.xi</code><a class="headerlink" href="#terminalxi" title="Permanent link">&para;</a></h2>
+<h5 id="type-termios"><code>type Termios</code><a class="headerlink" href="#type-termios" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>struct Termios { c_iflag: UInt32, c_oflag: UInt32, c_cflag: UInt32, c_lflag: UInt32, c_cc: Vec[UInt8] } - terminal attribute struct; layout mirrors struct termios.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>c_iflag</code></td>
+<td><code>UInt32</code></td>
+</tr>
+<tr>
+<td><code>c_oflag</code></td>
+<td><code>UInt32</code></td>
+</tr>
+<tr>
+<td><code>c_cflag</code></td>
+<td><code>UInt32</code></td>
+</tr>
+<tr>
+<td><code>c_lflag</code></td>
+<td><code>UInt32</code></td>
+</tr>
+<tr>
+<td><code>c_cc</code></td>
+<td><code>Vec[UInt8]</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="fn-isattyfd-int-bool"><code>fn isatty(fd: Int) -&gt; Bool</code><a class="headerlink" href="#fn-isattyfd-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return true if fd refers to a terminal. NOT IMPLEMENTED: requires the isatty syscall. Returns false.</p>
+</blockquote>
+<h5 id="fn-tty_namefd-int-resultstr-str"><code>fn tty_name(fd: Int) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-tty_namefd-int-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the name of the tty device for fd. NOT IMPLEMENTED: requires the ttyname syscall. Returns: Err("tty_name: ttyname not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-pty_open-resultint-int-str"><code>fn pty_open() -&gt; Result[(Int, Int), Str]</code><a class="headerlink" href="#fn-pty_open-resultint-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Open a pseudo-terminal pair (master, slave). NOT IMPLEMENTED: requires posix_openpt/grantpt/unlockpt/ptsname. Returns: Err("pty_open: pseudo-terminals not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-pty_closemaster-int-slave-int-unit"><code>fn pty_close(master: Int, slave: Int) -&gt; Unit</code><a class="headerlink" href="#fn-pty_closemaster-int-slave-int-unit" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Close both ends of a pseudo-terminal pair. NO-OP: no pty pairs exist in the pure stdlib.</p>
+</blockquote>
+<h5 id="fn-termios_getfd-int-resulttermios-str"><code>fn termios_get(fd: Int) -&gt; Result[Termios, Str]</code><a class="headerlink" href="#fn-termios_getfd-int-resulttermios-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Read the current termios attributes for fd. NOT IMPLEMENTED: requires tcgetattr. Returns: Err("termios_get: tcgetattr not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-termios_setfd-int-t-termios-resultunit-str"><code>fn termios_set(fd: Int, t: Termios) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-termios_setfd-int-t-termios-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Apply the given termios attributes to fd. NOT IMPLEMENTED: requires tcsetattr. Returns: Err("termios_set: tcsetattr not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-raw_modefd-int-resulttermios-str"><code>fn raw_mode(fd: Int) -&gt; Result[Termios, Str]</code><a class="headerlink" href="#fn-raw_modefd-int-resulttermios-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Enable raw mode; returns the previous attributes. NOT IMPLEMENTED: requires tcgetattr/tcsetattr. Returns: Err("raw_mode: termios not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-restore_modefd-int-t-termios-resultunit-str"><code>fn restore_mode(fd: Int, t: Termios) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-restore_modefd-int-t-termios-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Restore previously saved attributes. NOT IMPLEMENTED: requires tcsetattr. Returns: Err("restore_mode: tcsetattr not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-cbreak_modefd-int-resulttermios-str"><code>fn cbreak_mode(fd: Int) -&gt; Result[Termios, Str]</code><a class="headerlink" href="#fn-cbreak_modefd-int-resulttermios-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Enable cbreak mode; returns the previous attributes. NOT IMPLEMENTED: requires tcgetattr/tcsetattr. Returns: Err("cbreak_mode: termios not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-canonical_modefd-int-resulttermios-str"><code>fn canonical_mode(fd: Int) -&gt; Result[Termios, Str]</code><a class="headerlink" href="#fn-canonical_modefd-int-resulttermios-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Enable canonical (line-buffered) mode; returns the previous attributes. NOT IMPLEMENTED: requires tcgetattr/tcsetattr. Returns: Err("canonical_mode: termios not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-nonblockfd-int-resultunit-str"><code>fn nonblock(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-nonblockfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Set the fd to nonblocking I/O. NOT IMPLEMENTED: requires fcntl(F_GETFL/F_SETFL). Returns: Err("nonblock: fcntl not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-blockingfd-int-resultunit-str"><code>fn blocking(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-blockingfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Clear the nonblocking flag on fd. NOT IMPLEMENTED: requires fcntl(F_GETFL/F_SETFL). Returns: Err("blocking: fcntl not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-winsizefd-int-resultint-int-str"><code>fn winsize(fd: Int) -&gt; Result[(Int, Int), Str]</code><a class="headerlink" href="#fn-winsizefd-int-resultint-int-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the terminal window size as (rows, cols). NOT IMPLEMENTED: requires ioctl(TIOCGWINSZ). Returns: Err("winsize: TIOCGWINSZ not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-set_winsizefd-int-rows-int-cols-int-resultunit-str"><code>fn set_winsize(fd: Int, rows: Int, cols: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-set_winsizefd-int-rows-int-cols-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Set the terminal window size. NOT IMPLEMENTED: requires ioctl(TIOCSWINSZ). Returns: Err("set_winsize: TIOCSWINSZ not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-terminal_width-int"><code>fn terminal_width() -&gt; Int</code><a class="headerlink" href="#fn-terminal_width-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Query the width of the controlling terminal. NOT IMPLEMENTED: no termios query is available. Returns 0.</p>
+</blockquote>
+<h5 id="fn-terminal_height-int"><code>fn terminal_height() -&gt; Int</code><a class="headerlink" href="#fn-terminal_height-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Query the height of the controlling terminal. NOT IMPLEMENTED: no termios query is available. Returns 0.</p>
+</blockquote>
+<h5 id="fn-terminal_titletitle-str-str"><code>fn terminal_title(title: Str) -&gt; Str</code><a class="headerlink" href="#fn-terminal_titletitle-str-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the escape sequence that sets the window title. Parameters: title -- the desired title text. Returns: the "ESC]0;<title>BEL" sequence. Complexity: O(n). Pure.</p>
+</blockquote>
+<h5 id="fn-terminal_bell-str"><code>fn terminal_bell() -&gt; Str</code><a class="headerlink" href="#fn-terminal_bell-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Return the bell escape sequence. Returns: the BEL character "\x07". Complexity: O(1). Pure.</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="unixxi"><code>unix.xi</code><a class="headerlink" href="#unixxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-unix_umaskmask-int-int"><code>fn unix_umask(mask: Int) -&gt; Int</code><a class="headerlink" href="#fn-unix_umaskmask-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Set the file mode creation mask; returns the previous mask. NOT IMPLEMENTED: requires the umask syscall. Returns 0.</p>
+</blockquote>
+<h5 id="fn-unix_uid-int"><code>fn unix_uid() -&gt; Int</code><a class="headerlink" href="#fn-unix_uid-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The real user id of the process. NOT IMPLEMENTED: requires the getuid syscall. Returns 0.</p>
+</blockquote>
+<h5 id="fn-unix_gid-int"><code>fn unix_gid() -&gt; Int</code><a class="headerlink" href="#fn-unix_gid-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The real group id of the process. NOT IMPLEMENTED: requires the getgid syscall. Returns 0.</p>
+</blockquote>
+<h5 id="fn-unix_usernameuid-int-resultstr-str"><code>fn unix_username(uid: Int) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-unix_usernameuid-int-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Resolve a uid to a user name. NOT IMPLEMENTED: requires getpwuid. Returns: Err("unix_username: getpwuid not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-unix_groupnamegid-int-resultstr-str"><code>fn unix_groupname(gid: Int) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-unix_groupnamegid-int-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Resolve a gid to a group name. NOT IMPLEMENTED: requires getgrgid. Returns: Err("unix_groupname: getgrgid not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-unix_home_dir-str"><code>fn unix_home_dir() -&gt; Str</code><a class="headerlink" href="#fn-unix_home_dir-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The current user's home directory. Reads HOME via xiom.env (falls back to ""). Complexity: O(1). Pure (OS call).</p>
+</blockquote>
+<h5 id="fn-unix_hostname-str"><code>fn unix_hostname() -&gt; Str</code><a class="headerlink" href="#fn-unix_hostname-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The system hostname. NOT IMPLEMENTED: requires the gethostname syscall. Returns "".</p>
+</blockquote>
+<h5 id="fn-unix_domainname-str"><code>fn unix_domainname() -&gt; Str</code><a class="headerlink" href="#fn-unix_domainname-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The system NIS/domain name. NOT IMPLEMENTED: requires getdomainname. Returns "".</p>
+</blockquote>
+<h5 id="fn-unix_uptime-int"><code>fn unix_uptime() -&gt; Int</code><a class="headerlink" href="#fn-unix_uptime-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>System uptime in seconds. NOT IMPLEMENTED: requires sysinfo/getboottime. Returns 0.</p>
+</blockquote>
+<h5 id="fn-unix_loadavg-float64-float64-float64"><code>fn unix_loadavg() -&gt; (Float64, Float64, Float64)</code><a class="headerlink" href="#fn-unix_loadavg-float64-float64-float64" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Load averages; the tuple is (1min, 5min, 15min). NOT IMPLEMENTED: requires getloadavg. Returns (0.0, 0.0, 0.0).</p>
+</blockquote>
+<h5 id="fn-unix_sysconfname-int-int"><code>fn unix_sysconf(name: Int) -&gt; Int</code><a class="headerlink" href="#fn-unix_sysconfname-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Query a system configuration value by name. NOT IMPLEMENTED: requires the sysconf syscall. Returns 0.</p>
+</blockquote>
+<h5 id="fn-unix_pathconfpath-str-name-int-int"><code>fn unix_pathconf(path: Str, name: Int) -&gt; Int</code><a class="headerlink" href="#fn-unix_pathconfpath-str-name-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Query a per-path configuration value. NOT IMPLEMENTED: requires the pathconf syscall. Returns 0.</p>
+</blockquote>
+<h5 id="fn-unix_getrlimitresource-int-int-int"><code>fn unix_getrlimit(resource: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-unix_getrlimitresource-int-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Resource limits; the tuple is (soft, hard). NOT IMPLEMENTED: requires getrlimit. Returns (0, 0).</p>
+</blockquote>
+<h5 id="fn-unix_setrlimitresource-int-soft-int-hard-int-resultunit-str"><code>fn unix_setrlimit(resource: Int, soft: Int, hard: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-unix_setrlimitresource-int-soft-int-hard-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Set resource limits. NOT IMPLEMENTED: requires setrlimit. Returns: Err("unix_setrlimit: setrlimit not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-unix_utimepath-str-atime-int-mtime-int-resultunit-str"><code>fn unix_utime(path: Str, atime: Int, mtime: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-unix_utimepath-str-atime-int-mtime-int-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Set a file's access and modification times. NOT IMPLEMENTED: requires the utime syscall. Returns: Err("unix_utime: utime not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-unix_chrootpath-str-resultunit-str"><code>fn unix_chroot(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-unix_chrootpath-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Change the process root directory. NOT IMPLEMENTED: requires the chroot syscall. Returns: Err("unix_chroot: chroot not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-unix_niceinc-int-resultint-str"><code>fn unix_nice(inc: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-unix_niceinc-int-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Adjust process priority; returns the new nice value. NOT IMPLEMENTED: requires the nice syscall. Returns: Err("unix_nice: nice not available in the pure stdlib").</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="winxi"><code>win.xi</code><a class="headerlink" href="#winxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-win_registry_readhive-int-path-str-name-str-resultstr-str"><code>fn win_registry_read(hive: Int, path: Str, name: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-win_registry_readhive-int-path-str-name-str-resultstr-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Read a registry value as a string. NOT IMPLEMENTED: requires the Win32 registry API. Returns: Err("win_registry_read: Win32 registry not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-win_registry_writehive-int-path-str-name-str-value-str-resultunit-str"><code>fn win_registry_write(hive: Int, path: Str, name: Str, value: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-win_registry_writehive-int-path-str-name-str-value-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Write a string registry value. NOT IMPLEMENTED: requires the Win32 registry API. Returns: Err("win_registry_write: Win32 registry not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-win_registry_deletehive-int-path-str-name-str-resultunit-str"><code>fn win_registry_delete(hive: Int, path: Str, name: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-win_registry_deletehive-int-path-str-name-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Delete a registry value. NOT IMPLEMENTED: requires the Win32 registry API. Returns: Err("win_registry_delete: Win32 registry not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-win_environment_varname-str-optionstr"><code>fn win_environment_var(name: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-win_environment_varname-str-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Read a Windows environment variable. Delegates to xiom.env.var_opt. Parameters: name -- the variable name. Returns: Some(value) when set, None otherwise. Complexity: O(1). Pure (OS call).</p>
+</blockquote>
+<h5 id="fn-win_set_environment_varname-str-value-str-resultunit-str"><code>fn win_set_environment_var(name: Str, value: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-win_set_environment_varname-str-value-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Set a Windows environment variable. NOT IMPLEMENTED: the portable setenv path does not link on Windows MSVC, and the Win32 _putenv_s API is not exposed by the pure stdlib. Returns Err. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-win_service_statusname-str-str"><code>fn win_service_status(name: Str) -&gt; Str</code><a class="headerlink" href="#fn-win_service_statusname-str-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The current status of a named Windows service. NOT IMPLEMENTED: requires the Win32 service API. Returns "unknown".</p>
+</blockquote>
+<h5 id="fn-win_service_startname-str-resultunit-str"><code>fn win_service_start(name: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-win_service_startname-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Start a named Windows service. NOT IMPLEMENTED: requires the Win32 service API. Returns: Err("win_service_start: Win32 service API not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-win_service_stopname-str-resultunit-str"><code>fn win_service_stop(name: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-win_service_stopname-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Stop a named Windows service. NOT IMPLEMENTED: requires the Win32 service API. Returns: Err("win_service_stop: Win32 service API not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-win_shell_executeverb-str-file-str-args-str-resultint-str"><code>fn win_shell_execute(verb: Str, file: Str, args: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-win_shell_executeverb-str-file-str-args-str-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>ShellExecute a file with a verb (open, runas, edit). NOT IMPLEMENTED: requires the Win32 ShellExecute API. Returns: Err("win_shell_execute: Win32 ShellExecute not available in the pure stdlib").</p>
+</blockquote>
+<h5 id="fn-win_version-str"><code>fn win_version() -&gt; Str</code><a class="headerlink" href="#fn-win_version-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The Windows version string. Returns the compile-time target OS name (the runtime does not expose GetVersionEx in the pure stdlib). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-win_is_admin-bool"><code>fn win_is_admin() -&gt; Bool</code><a class="headerlink" href="#fn-win_is_admin-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True when the process runs elevated. NOT IMPLEMENTED: requires the Win32 token API. Returns false.</p>
+</blockquote>
+<h5 id="fn-win_username-str"><code>fn win_username() -&gt; Str</code><a class="headerlink" href="#fn-win_username-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The current Windows user name. Reads the USERNAME environment variable, or "" when unset. Complexity: O(1). Pure (OS call).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0. <a href="https://xiom-lang.org/terms.html">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

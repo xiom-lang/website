@@ -1,0 +1,3514 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.61.3/api/bits/">
+      
+      
+        <link rel="prev" href="../bench/">
+      
+      
+        <link rel="next" href="../cell/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../img/xiom-icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>bits - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stdlibbits" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../../img/xiom-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              bits
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../../img/xiom-logo.png" alt="logo">
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://xiom-lang.org/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xiom-lang.org
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unsafe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unsafe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debugger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bitarrayxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bitarray.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitfieldxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bitfield.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bits.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitwisexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bitwise.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endiannessxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        endianness.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#popcountxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        popcount.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rotationxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rotation.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_23" id="__nav_23_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Error Codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/C001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/E001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/L001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    L001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/P001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    P001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/T001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    T001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/W000/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W000
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/W001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0010/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0010
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0011/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0011
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0100/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0100
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_24" >
+        
+          
+          <label class="md-nav__link" for="__nav_24" id="__nav_24_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../toolchain-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Toolchain Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../post-release-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post-release Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bitarrayxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bitarray.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitfieldxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bitfield.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bits.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitwisexi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bitwise.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endiannessxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        endianness.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#popcountxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        popcount.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rotationxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rotation.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="stdlibbits"><code>stdlib.bits</code><a class="headerlink" href="#stdlibbits" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Bit-Level Utilities</strong></p>
+<p>Generated from <code>v0.61.3</code>. 7 source files, 102 documented symbols.</p>
+</blockquote>
+<h2 id="bitarrayxi"><code>bitarray.xi</code><a class="headerlink" href="#bitarrayxi" title="Permanent link">&para;</a></h2>
+<h5 id="type-bitarray"><code>type BitArray</code><a class="headerlink" href="#type-bitarray" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Dynamic array of bits backed by a byte vector. Bit i lives in byte i/8 at bit position 7-(i%8) (MSB-first within each byte), so bit_array_to_bytes yields conventional packed bytes. Out-of-range indices are no-ops / false (never trap). Binary ops yield a result with max(len) bits; missing bits in the shorter operand read as 0.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bits</code></td>
+<td><code>Vec[UInt8]</code></td>
+</tr>
+<tr>
+<td><code>len</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="fn-bit_array_newn-int-bitarray"><code>fn bit_array_new(n: Int) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_newn-int-bitarray" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>BitArray of length n (n &lt; 0 is clamped to 0), all bits cleared. Complexity: O(n/8).</p>
+</blockquote>
+<h5 id="fn-bit_array_setba-mut-bitarray-i-int"><code>fn bit_array_set(ba: &amp;mut BitArray, i: Int)</code><a class="headerlink" href="#fn-bit_array_setba-mut-bitarray-i-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Sets bit i to 1. Out-of-range indices are ignored. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-bit_array_clearba-mut-bitarray-i-int"><code>fn bit_array_clear(ba: &amp;mut BitArray, i: Int)</code><a class="headerlink" href="#fn-bit_array_clearba-mut-bitarray-i-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Clears bit i to 0. Out-of-range indices are ignored. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-bit_array_testba-bitarray-i-int-bool"><code>fn bit_array_test(ba: BitArray, i: Int) -&gt; Bool</code><a class="headerlink" href="#fn-bit_array_testba-bitarray-i-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True iff bit i is set. Out-of-range indices yield false. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-bit_array_flipba-mut-bitarray-i-int"><code>fn bit_array_flip(ba: &amp;mut BitArray, i: Int)</code><a class="headerlink" href="#fn-bit_array_flipba-mut-bitarray-i-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Toggles bit i (0 -&gt; 1, 1 -&gt; 0). Out-of-range indices are ignored. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-bit_array_countba-bitarray-int"><code>fn bit_array_count(ba: BitArray) -&gt; Int</code><a class="headerlink" href="#fn-bit_array_countba-bitarray-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of set bits. Complexity: O(n).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-bit_array_lenba-bitarray-int"><code>fn bit_array_len(ba: BitArray) -&gt; Int</code><a class="headerlink" href="#fn-bit_array_lenba-bitarray-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of bits. Complexity: O(1).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-bit_array_anda-bitarray-b-bitarray-bitarray"><code>fn bit_array_and(a: BitArray, b: BitArray) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_anda-bitarray-b-bitarray-bitarray" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Bitwise AND of two bit arrays; the result has max(a.len, b.len) bits and missing bits read as 0. Complexity: O(max/8).</p>
+</blockquote>
+<h5 id="fn-bit_array_ora-bitarray-b-bitarray-bitarray"><code>fn bit_array_or(a: BitArray, b: BitArray) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_ora-bitarray-b-bitarray-bitarray" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Bitwise OR of two bit arrays; the result has max(a.len, b.len) bits. Complexity: O(max/8).</p>
+</blockquote>
+<h5 id="fn-bit_array_xora-bitarray-b-bitarray-bitarray"><code>fn bit_array_xor(a: BitArray, b: BitArray) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_xora-bitarray-b-bitarray-bitarray" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Bitwise XOR of two bit arrays; the result has max(a.len, b.len) bits and missing bits read as 0. Complexity: O(max/8).</p>
+</blockquote>
+<h5 id="fn-bit_array_notba-bitarray-bitarray"><code>fn bit_array_not(ba: BitArray) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_notba-bitarray-bitarray" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Bitwise complement over ba.len bits; trailing bits beyond len in the last byte are cleared. Complexity: O(n/8).</p>
+</blockquote>
+<h5 id="fn-bit_array_to_bytesba-bitarray-vecuint8"><code>fn bit_array_to_bytes(ba: BitArray) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-bit_array_to_bytesba-bitarray-vecuint8" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Packed byte representation, MSB-first within each byte (bit i of the array is bit 7-(i%8) of byte i/8). Complexity: O(n/8).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="bitfieldxi"><code>bitfield.xi</code><a class="headerlink" href="#bitfieldxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-bitfield_getvalue-int-offset-int-width-int-int"><code>fn bitfield_get(value: Int, offset: Int, width: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_getvalue-int-offset-int-width-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Extracts <code>width</code> bits at <code>offset</code> as an unsigned, right-justified value. Out-of-range requests are clamped: width &lt;= 0 yields 0; the field is truncated at bit 63. Complexity: O(width).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-bitfield_setvalue-int-offset-int-width-int-val-int-int"><code>fn bitfield_set(value: Int, offset: Int, width: Int, val: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_setvalue-int-offset-int-width-int-val-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Inserts <code>val</code> (masked to the field width) into the field at <code>offset</code>, leaving all other bits unchanged. The field is truncated at bit 63. Complexity: O(width).</p>
+</blockquote>
+<h5 id="fn-bitfield_clearvalue-int-offset-int-width-int-int"><code>fn bitfield_clear(value: Int, offset: Int, width: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_clearvalue-int-offset-int-width-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Zeros the <code>width</code> bits at <code>offset</code>, leaving all other bits unchanged. Complexity: O(width).</p>
+</blockquote>
+<h5 id="fn-bitfield_sign_extendvalue-int-width-int-int"><code>fn bitfield_sign_extend(value: Int, width: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_sign_extendvalue-int-width-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Sign-extends a <code>width</code>-bit value: bit width-1 is replicated into all higher bit positions. width &lt;= 0 yields 0; width &gt;= 64 returns value unchanged. Complexity: O(width).</p>
+</blockquote>
+<h5 id="fn-bitfield_maskwidth-int-int"><code>fn bitfield_mask(width: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_maskwidth-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Mask of <code>width</code> low bits set. width &lt;= 0 yields 0; width &gt;= 64 yields -1 (all 64 bits). Complexity: O(1).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>width &gt;= 1 &amp;&amp; width &lt;= 63 =&gt; result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-bitfield_extract_uvalue-int-offset-int-width-int-int"><code>fn bitfield_extract_u(value: Int, offset: Int, width: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_extract_uvalue-int-offset-int-width-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Unsigned field extract, right-justified (alias of bitfield_get). Complexity: O(width).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-bitfield_insertbase-int-value-int-offset-int-width-int-int"><code>fn bitfield_insert(base: Int, value: Int, offset: Int, width: Int) -&gt; Int</code><a class="headerlink" href="#fn-bitfield_insertbase-int-value-int-offset-int-width-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Places <code>value</code> into the field of <code>base</code> at <code>offset</code> (alias of bitfield_set with the arguments in insertion order). Complexity: O(width).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="bitsxi"><code>bits.xi</code><a class="headerlink" href="#bitsxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-bit_getn-int-pos-int-int"><code>fn bit_get(n: Int, pos: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_getn-int-pos-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bit_get -- Returns 1 if the bit at position pos (0 = LSB) is set, 0 otherwise. Position must be in [0, 63] for 64-bit Int.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+</ul>
+<h4 id="fn-bit_setn-int-pos-int-int"><code>fn bit_set(n: Int, pos: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_setn-int-pos-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bit_set -- Returns n with the bit at position pos set to 1.</p>
+</blockquote>
+<h4 id="fn-bit_clearn-int-pos-int-int"><code>fn bit_clear(n: Int, pos: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_clearn-int-pos-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bit_clear -- Returns n with the bit at position pos cleared (set to 0).</p>
+</blockquote>
+<h4 id="fn-bit_togglen-int-pos-int-int"><code>fn bit_toggle(n: Int, pos: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_togglen-int-pos-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bit_toggle -- Flips the bit at position pos: 0-&gt;1, 1-&gt;0.</p>
+</blockquote>
+<h4 id="fn-bit_count_onesn-int-int"><code>fn bit_count_ones(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_count_onesn-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bit_count_ones (popcount) -- Counts set bits (1s) in n. Delegates to xiom.num.count_ones for the canonical implementation.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h4 id="fn-bit_count_zerosn-int-int"><code>fn bit_count_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_count_zerosn-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bit_count_zeros -- Counts cleared bits (0s) in n.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h4 id="fn-popcountn-int-int"><code>fn popcount(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-popcountn-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>popcount -- Alias for bit_count_ones. Hamming weight of the value. Delegates to the built-in counting function.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h4 id="fn-clzn-int-int"><code>fn clz(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-clzn-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>clz -- Count Leading Zeros. Returns the number of consecutive zero bits starting from the most significant bit.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h4 id="fn-ctzn-int-int"><code>fn ctz(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-ctzn-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>ctz -- Count Trailing Zeros. Returns the number of consecutive zero bits starting from the least significant bit.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h4 id="fn-rot_leftn-int-k-int-int"><code>fn rot_left(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rot_leftn-int-k-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>rot_left -- Circularly shifts bits left by k positions. Bits shifted off the MSB reappear at the LSB. Equivalent to xiom.num.rotate_left.</p>
+</blockquote>
+<h4 id="fn-rot_rightn-int-k-int-int"><code>fn rot_right(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rot_rightn-int-k-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>rot_right -- Circularly shifts bits right by k positions. Bits shifted off the LSB reappear at the MSB. Equivalent to xiom.num.rotate_right.</p>
+</blockquote>
+<h4 id="fn-bit_reversen-int-int"><code>fn bit_reverse(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_reversen-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bit_reverse -- Reverses the order of bits in n (mirror). LSB becomes MSB and vice versa.</p>
+</blockquote>
+<h4 id="fn-byte_swap16v-int-int"><code>fn byte_swap16(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-byte_swap16v-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>byte_swap16 -- Swaps the two bytes of a 16-bit value (stored in lower 16 bits of an Int). Returns the byte-swapped result.</p>
+</blockquote>
+<h4 id="fn-byte_swap32v-int-int"><code>fn byte_swap32(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-byte_swap32v-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>byte_swap32 -- Swaps all four bytes of a 32-bit value (stored in lower 32 bits of an Int). Returns the byte-swapped result.</p>
+</blockquote>
+<h4 id="fn-byte_swap64v-int-int"><code>fn byte_swap64(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-byte_swap64v-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>byte_swap64 -- Swaps all eight bytes of a 64-bit value. Returns the fully byte-reversed Int.</p>
+</blockquote>
+<h4 id="fn-get_bit_rangen-int-start-int-len-int-int"><code>fn get_bit_range(n: Int, start: Int, len: Int) -&gt; Int</code><a class="headerlink" href="#fn-get_bit_rangen-int-start-int-len-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>get_bit_range -- Extracts a contiguous range of bits from n as an unsigned value. start is the LSB position of the range, len is the number of bits. Returns the extracted value right-justified. Example: get_bit_range(0b110101, 0, 3) -&gt; 0b101 (bits 0-2)</p>
+</blockquote>
+<h4 id="fn-set_bit_rangen-int-start-int-len-int-value-int-int"><code>fn set_bit_range(n: Int, start: Int, len: Int, value: Int) -&gt; Int</code><a class="headerlink" href="#fn-set_bit_rangen-int-start-int-len-int-value-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>set_bit_range -- Sets a contiguous range of bits in n to the given value. start is the LSB position, len is the bit width. value is right-justified (lower bits only). Returns the modified Int.</p>
+</blockquote>
+<h4 id="fn-is_pow2n-int-bool"><code>fn is_pow2(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_pow2n-int-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>is_pow2 -- Returns true if n &gt; 0 and n is a power of two. Uses the classic bit trick: powers of two have exactly one set bit, so n &amp; (n-1) == 0. NOTE: xiom.num also provides is_power_of_two with identical behavior.</p>
+</blockquote>
+<h4 id="fn-low_nibblen-int-int"><code>fn low_nibble(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-low_nibblen-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>low_nibble -- Extracts the lower 4 bits (nibble) of n. Returns 0-15.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 15</code></li>
+</ul>
+<h4 id="fn-high_nibblen-int-int"><code>fn high_nibble(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-high_nibblen-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>high_nibble -- Extracts bits 4-7 (the high nibble of the low byte). Returns 0-15.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 15</code></li>
+</ul>
+<h4 id="fn-pack_u16_lelow_byte-int-high_byte-int-int"><code>fn pack_u16_le(low_byte: Int, high_byte: Int) -&gt; Int</code><a class="headerlink" href="#fn-pack_u16_lelow_byte-int-high_byte-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>pack_u16_le -- Packs two byte values (0-255) into a 16-bit integer in little-endian order: low_byte at bits 0-7, high_byte at bits 8-15.</p>
+</blockquote>
+<h4 id="fn-pack_u16_behigh_byte-int-low_byte-int-int"><code>fn pack_u16_be(high_byte: Int, low_byte: Int) -&gt; Int</code><a class="headerlink" href="#fn-pack_u16_behigh_byte-int-low_byte-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>pack_u16_be -- Packs two byte values into a 16-bit integer in big-endian order: high_byte at bits 0-7, low_byte at bits 8-15.</p>
+</blockquote>
+<h4 id="fn-pack_u32_leb0-int-b1-int-b2-int-b3-int-int"><code>fn pack_u32_le(b0: Int, b1: Int, b2: Int, b3: Int) -&gt; Int</code><a class="headerlink" href="#fn-pack_u32_leb0-int-b1-int-b2-int-b3-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>pack_u32_le -- Packs four byte values (0-255) into a 32-bit integer in little-endian order: b0 at bits 0-7, b1 at 8-15, b2 at 16-23, b3 at 24-31.</p>
+</blockquote>
+<h4 id="fn-pack_u32_beb0-int-b1-int-b2-int-b3-int-int"><code>fn pack_u32_be(b0: Int, b1: Int, b2: Int, b3: Int) -&gt; Int</code><a class="headerlink" href="#fn-pack_u32_beb0-int-b1-int-b2-int-b3-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>pack_u32_be -- Packs four byte values into a 32-bit integer in big-endian order: b0 at bits 24-31, ... , b3 at bits 0-7.</p>
+</blockquote>
+<h4 id="fn-unpack_u16_levalue-int-int-int"><code>fn unpack_u16_le(value: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-unpack_u16_levalue-int-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>unpack_u16_le -- Unpacks a little-endian 16-bit value into (low_byte, high_byte).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255 &amp;&amp; result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255</code></li>
+</ul>
+<h4 id="fn-unpack_u16_bevalue-int-int-int"><code>fn unpack_u16_be(value: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-unpack_u16_bevalue-int-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>unpack_u16_be -- Unpacks a big-endian 16-bit value into (high_byte, low_byte).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255 &amp;&amp; result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255</code></li>
+</ul>
+<h4 id="fn-unpack_u32_levalue-int-int-int-int-int"><code>fn unpack_u32_le(value: Int) -&gt; (Int, Int, Int, Int)</code><a class="headerlink" href="#fn-unpack_u32_levalue-int-int-int-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>unpack_u32_le -- Unpacks a little-endian 32-bit value into a 4-tuple of bytes (b0=LSB .. b3=MSB).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255 &amp;&amp; result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255 &amp;&amp; result._2 &gt;= 0 &amp;&amp; result._2 &lt;= 255 &amp;&amp; result._3 &gt;= 0 &amp;&amp; result._3 &lt;= 255</code></li>
+</ul>
+<h4 id="fn-unpack_u32_bevalue-int-int-int-int-int"><code>fn unpack_u32_be(value: Int) -&gt; (Int, Int, Int, Int)</code><a class="headerlink" href="#fn-unpack_u32_bevalue-int-int-int-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>unpack_u32_be -- Unpacks a big-endian 32-bit value into a 4-tuple of bytes (b0=MSB .. b3=LSB).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255 &amp;&amp; result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255 &amp;&amp; result._2 &gt;= 0 &amp;&amp; result._2 &lt;= 255 &amp;&amp; result._3 &gt;= 0 &amp;&amp; result._3 &lt;= 255</code></li>
+</ul>
+<hr />
+<hr />
+<h2 id="bitwisexi"><code>bitwise.xi</code><a class="headerlink" href="#bitwisexi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-popcntn-int-int"><code>fn popcnt(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-popcntn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Population count: number of set bits in n. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-clzn-int-int_1"><code>fn clz(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-clzn-int-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Count of consecutive zero bits starting from the most significant bit; 64 for zero. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-ctzn-int-int_1"><code>fn ctz(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-ctzn-int-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Count of consecutive zero bits starting from the least significant bit; 64 for zero. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-bit_reversen-int-int_1"><code>fn bit_reverse(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_reversen-int-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Reverses the bit order of n (bit 0 &lt;-&gt; bit 63). Complexity: O(64).</p>
+</blockquote>
+<h5 id="fn-bit_reverse_byteb_in-int-int"><code>fn bit_reverse_byte(b_in: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_reverse_byteb_in-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Reverses the bit order of a single byte (low 8 bits of the input). Complexity: O(8).</p>
+</blockquote>
+<h5 id="fn-byte_swapv-int-int"><code>fn byte_swap(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-byte_swapv-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Reverses the byte order of v (byte 0 &lt;-&gt; byte 7). Complexity: O(8).</p>
+</blockquote>
+<h5 id="fn-rotate_leftn-int-k-int-int"><code>fn rotate_left(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rotate_leftn-int-k-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Circular left shift by k bits (the shift amount is reduced mod 64). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-rotate_rightn-int-k-int-int"><code>fn rotate_right(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rotate_rightn-int-k-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Circular right shift by k bits (the shift amount is reduced mod 64). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-bit_widthn-int-int"><code>fn bit_width(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_widthn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of bits needed to represent n: 0 for zero, 64 for negative values (the sign bit is counted), otherwise floor(log2 n) + 1. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-bit_lengthn-int-int"><code>fn bit_length(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_lengthn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Alias of bit_width. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-leading_onesn-int-int"><code>fn leading_ones(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-leading_onesn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Count of consecutive 1 bits starting from the most significant bit. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-trailing_onesn-int-int"><code>fn trailing_ones(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-trailing_onesn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Count of consecutive 1 bits starting from the least significant bit. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-bit_parityn-int-int"><code>fn bit_parity(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_parityn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>1 if the population count is odd, else 0. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+</ul>
+<h5 id="fn-bit_scan_forwardn-int-int"><code>fn bit_scan_forward(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_scan_forwardn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Index of the lowest set bit; -1 when n == 0. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 63</code></li>
+</ul>
+<h5 id="fn-bit_scan_reversen-int-int"><code>fn bit_scan_reverse(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_scan_reversen-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Index of the highest set bit; -1 when n == 0. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 63</code></li>
+</ul>
+<h5 id="fn-is_power_of_two_bitn-int-bool"><code>fn is_power_of_two_bit(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_power_of_two_bitn-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True iff n &gt; 0 and n is a power of two (exactly one set bit). Complexity: O(64).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="endiannessxi"><code>endianness.xi</code><a class="headerlink" href="#endiannessxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-is_big_endian-bool"><code>fn is_big_endian() -&gt; Bool</code><a class="headerlink" href="#fn-is_big_endian-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True if the host stores integers big-endian. The supported targets are little-endian, so this returns false. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-is_little_endian-bool"><code>fn is_little_endian() -&gt; Bool</code><a class="headerlink" href="#fn-is_little_endian-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>True if the host stores integers little-endian. The supported targets are little-endian, so this returns true. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-to_bev-int-size-int-int"><code>fn to_be(v: Int, size: Int) -&gt; Int</code><a class="headerlink" href="#fn-to_bev-int-size-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Converts v to big-endian byte order for a <code>size</code>-byte value (the low <code>size</code> bytes are reversed; higher bytes are cleared). Complexity: O(size).</p>
+</blockquote>
+<h5 id="fn-to_lev-int-size-int-int"><code>fn to_le(v: Int, size: Int) -&gt; Int</code><a class="headerlink" href="#fn-to_lev-int-size-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Converts v to little-endian byte order for a <code>size</code>-byte value. On the little-endian host this is the identity. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-from_bev-int-size-int-int"><code>fn from_be(v: Int, size: Int) -&gt; Int</code><a class="headerlink" href="#fn-from_bev-int-size-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Decodes a <code>size</code>-byte big-endian value held in v into host order (the low <code>size</code> bytes are reversed). Complexity: O(size).</p>
+</blockquote>
+<h5 id="fn-from_lev-int-size-int-int"><code>fn from_le(v: Int, size: Int) -&gt; Int</code><a class="headerlink" href="#fn-from_lev-int-size-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Decodes a <code>size</code>-byte little-endian value held in v into host order (the identity on the little-endian host). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-native_to_bev-int-int"><code>fn native_to_be(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-native_to_bev-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Converts a native value to big-endian order (all 8 bytes reversed). Complexity: O(8).</p>
+</blockquote>
+<h5 id="fn-native_to_lev-int-int"><code>fn native_to_le(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-native_to_lev-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Converts a native value to little-endian order (the identity on this host). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-be_to_nativev-int-int"><code>fn be_to_native(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-be_to_nativev-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Converts a big-endian value to native order (all 8 bytes reversed). Complexity: O(8).</p>
+</blockquote>
+<h5 id="fn-le_to_nativev-int-int"><code>fn le_to_native(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-le_to_nativev-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Converts a little-endian value to native order (the identity on this host). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-swap_endianv-int-int"><code>fn swap_endian(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-swap_endianv-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Unconditionally reverses the byte order of v (all 8 bytes). Complexity: O(8).</p>
+</blockquote>
+<h5 id="fn-bswap_16v-int-int"><code>fn bswap_16(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_16v-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Byte-swaps a 16-bit value stored in the low 16 bits of v. Complexity: O(2).</p>
+</blockquote>
+<h5 id="fn-bswap_32v-int-int"><code>fn bswap_32(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_32v-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Byte-swaps a 32-bit value stored in the low 32 bits of v. Complexity: O(4).</p>
+</blockquote>
+<h5 id="fn-bswap_64v-int-int"><code>fn bswap_64(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_64v-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Byte-swaps a 64-bit value. Complexity: O(8).</p>
+</blockquote>
+<h5 id="fn-bswap_128v-int-int"><code>fn bswap_128(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_128v-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Byte-swaps a 128-bit value. FALLBACK (platform Int is 64-bit): identical to bswap_64. Complexity: O(8).</p>
+</blockquote>
+<h5 id="fn-bswap_256v-int-int"><code>fn bswap_256(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_256v-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Byte-swaps a 256-bit value. FALLBACK (platform Int is 64-bit): identical to bswap_64. Complexity: O(8).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="popcountxi"><code>popcount.xi</code><a class="headerlink" href="#popcountxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-popcountn-int-int_1"><code>fn popcount(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-popcountn-int-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of set bits in n. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-popcount64n-uint64-int"><code>fn popcount64(n: UInt64) -&gt; Int</code><a class="headerlink" href="#fn-popcount64n-uint64-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of set bits in a UInt64 value. The low bit of an arithmetic shift is identical to a logical shift, so <code>(n &gt;&gt; i) &amp; 1</code> is exact. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-count_leading_zerosn-int-int"><code>fn count_leading_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_leading_zerosn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Consecutive zero bits from the most significant bit; 64 for zero. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-count_trailing_zerosn-int-int"><code>fn count_trailing_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_trailing_zerosn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Consecutive zero bits from the least significant bit; 64 for zero. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-count_onesn-int-int"><code>fn count_ones(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_onesn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of set bits (alias of popcount). Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-count_zerosn-int-int"><code>fn count_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_zerosn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of cleared bits (64 - popcount). Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-parityn-int-int"><code>fn parity(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-parityn-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>1 if the population count is odd, else 0. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+</ul>
+<h5 id="fn-bit_lengthn-int-int_1"><code>fn bit_length(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_lengthn-int-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Number of bits needed to represent n: 0 for zero, 64 for negative values, otherwise floor(log2 n) + 1. Complexity: O(64).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
+</ul>
+<h5 id="fn-next_pow2n-int-int"><code>fn next_pow2(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-next_pow2n-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Smallest power of two &gt;= n. n &lt;= 0 yields 1; values above 2^62 yield 0 (the next power of two would not fit an Int). Complexity: O(63).</p>
+</blockquote>
+<h5 id="fn-prev_pow2n-int-int"><code>fn prev_pow2(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-prev_pow2n-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Largest power of two &lt;= n. n &lt;= 0 yields 0. Complexity: O(64).</p>
+</blockquote>
+<h5 id="fn-rotate_leftn-int-k-int-int_1"><code>fn rotate_left(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rotate_leftn-int-k-int-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Circular left shift by k bits (the shift amount is reduced mod 64). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-rotate_rightn-int-k-int-int_1"><code>fn rotate_right(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rotate_rightn-int-k-int-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Circular right shift by k bits (the shift amount is reduced mod 64). Complexity: O(1).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="rotationxi"><code>rotation.xi</code><a class="headerlink" href="#rotationxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-rotate_leftn-int-k-int-int_2"><code>fn rotate_left(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rotate_leftn-int-k-int-int_2" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Circular left rotation by k bits (the shift amount is reduced mod 64). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-rotate_rightn-int-k-int-int_2"><code>fn rotate_right(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rotate_rightn-int-k-int-int_2" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Circular right rotation by k bits (the shift amount is reduced mod 64). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-rotate_left_carryn-int-k-int-carry_in-int-int-int"><code>fn rotate_left_carry(n: Int, k: Int, carry_in: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-rotate_left_carryn-int-k-int-carry_in-int-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Rotate-left-with-carry: performs k rotate-through-carry steps (each step moves bit 63 into the carry and shifts the carry into bit 0). Returns (rotated_value, new_carry). The shift amount is reduced mod 64. Complexity: O(k).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._1 == 0 || result._1 == 1</code></li>
+</ul>
+<h5 id="fn-rotate_right_carryn-int-k-int-carry_in-int-int-int"><code>fn rotate_right_carry(n: Int, k: Int, carry_in: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-rotate_right_carryn-int-k-int-carry_in-int-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Rotate-right-with-carry: performs k rotate-through-carry steps (each step moves bit 0 into the carry and shifts the carry into bit 63). Returns (rotated_value, new_carry). The shift amount is reduced mod 64. Complexity: O(k).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._1 == 0 || result._1 == 1</code></li>
+</ul>
+<h5 id="fn-rol_immn-int-k-int-int"><code>fn rol_imm(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rol_immn-int-k-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Rotate left by a "compile-time constant" k (equivalent to rotate_left; the language has no distinct immediate form). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-ror_immn-int-k-int-int"><code>fn ror_imm(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-ror_immn-int-k-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Rotate right by a "compile-time constant" k (equivalent to rotate_right). Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-bit_rotate_leftn-int-k-int-int"><code>fn bit_rotate_left(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_rotate_leftn-int-k-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Alias of rotate_left. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-bit_rotate_rightn-int-k-int-int"><code>fn bit_rotate_right(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-bit_rotate_rightn-int-k-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Alias of rotate_right. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-masked_rotate_leftn-int-k-int-mask-int-int"><code>fn masked_rotate_left(n: Int, k: Int, mask: Int) -&gt; Int</code><a class="headerlink" href="#fn-masked_rotate_leftn-int-k-int-mask-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Rotates left only the bits selected by <code>mask</code>; the rotation happens within the span of the selected bit positions and unselected bits are unchanged. The shift amount is reduced mod (number of selected bits). Complexity: O(64 + popcount(mask)).</p>
+</blockquote>
+<h5 id="fn-masked_rotate_rightn-int-k-int-mask-int-int"><code>fn masked_rotate_right(n: Int, k: Int, mask: Int) -&gt; Int</code><a class="headerlink" href="#fn-masked_rotate_rightn-int-k-int-mask-int-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Rotates right only the bits selected by <code>mask</code> (inverse of masked_rotate_left). The shift amount is reduced mod (number of selected bits). Complexity: O(64 + popcount(mask)).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0. <a href="https://xiom-lang.org/terms.html">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

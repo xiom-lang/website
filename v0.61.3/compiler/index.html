@@ -1,0 +1,4315 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.61.3/compiler/">
+      
+      
+        <link rel="prev" href="../ffi/">
+      
+      
+        <link rel="next" href="../debugger/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/xiom-icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Compiler - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/brand.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#compiler" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../img/xiom-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Compiler
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../img/xiom-logo.png" alt="logo">
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://xiom-lang.org/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xiom-lang.org
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unsafe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unsafe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-toolchain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Native Toolchain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contract-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contract modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-and-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug and diagnostics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-assisted-diagnostics-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI-assisted diagnostics (--ai)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcp-server-and-companion-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP server and companion tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safety-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safety modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-caching-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration, caching, and limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CLI Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invocation-and-subcommands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invocation and subcommands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-targets-and-debug-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output, targets and debug builds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contracts-and-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contracts and verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safety-and-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safety and hardening
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration and performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnostics-graphs-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnostics, graphs and limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-and-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing and benchmarks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-and-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project and packages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Targets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Language Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selfhost-gate-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selfhost Gate Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-from-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build from Source
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debugger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/reflect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_23" id="__nav_23_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Error Codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/C001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/E001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/L001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    L001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/P001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    P001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/T001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    T001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/W000/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W000
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/W001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/X0010/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0010
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/X0011/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0011
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/X0100/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0100
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_24" >
+        
+          
+          <label class="md-nav__link" for="__nav_24" id="__nav_24_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toolchain-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Toolchain Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../post-release-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post-release Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-toolchain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Native Toolchain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contract-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contract modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-and-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug and diagnostics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-assisted-diagnostics-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI-assisted diagnostics (--ai)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcp-server-and-companion-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP server and companion tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safety-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safety modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-caching-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration, caching, and limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CLI Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invocation-and-subcommands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invocation and subcommands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-targets-and-debug-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output, targets and debug builds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contracts-and-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contracts and verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safety-and-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safety and hardening
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration and performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnostics-graphs-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnostics, graphs and limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-and-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing and benchmarks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-and-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project and packages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Targets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Language Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selfhost-gate-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selfhost Gate Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-from-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build from Source
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<!--
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
+<h1 id="compiler">Compiler<a class="headerlink" href="#compiler" title="Permanent link">&para;</a></h1>
+<h2 id="pipeline">Pipeline<a class="headerlink" href="#pipeline" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>.xi source
+  -&gt; Lexer           (tokenize -- 55+ token kinds)
+  -&gt; Parser          (AST -- LL(1), no backtracking)
+  -&gt; Type Checker    (primitives, structs, functions, interface satisfaction, Send/Sync)
+  -&gt; Borrow Checker  (lexical scope -- &amp;T, &amp;mut T, move semantics, E001 warnings)
+  -&gt; CTFE            (compile-time function evaluation -- const exprs, builtins, pure fn VM)
+  -&gt; LLVM IR         (text emission, human-readable)
+     |- Contracts   (runtime guards -- @llvm.trap on violation)
+     |- DWARF DI    (function-level debug metadata -- per-function !DISubprogram)
+     |- Derive      (Eq, Clone, Display, Hash, Ord, Debug -- struct + enum)
+     |- Generics    (monomorphisation -- register + specialize, worklist)
+     `- Parallel    (rayon per-function IR emission -- --parallel-codegen)
+  -&gt; clang           (native .exe, .out, .wasm)
+</code></pre></div>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<p>XIOM is a Rust toolchain of 20 crates. It emits LLVM IR as text and hands
+it to clang for the final binary, so there is no LLVM library dependency
+and the generated IR is readable by humans. The bootstrap compiler is Rust
+by design and permanent; self-hosting gates are cleared, but no
+self-hosted release has shipped yet.</p>
+<h2 id="native-toolchain">Native Toolchain<a class="headerlink" href="#native-toolchain" title="Permanent link">&para;</a></h2>
+<p>The compiler shells out to a small set of host tools; <code>xiom doctor</code> reports
+which ones it found:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Status</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clang</code> (LLVM 18 or newer)</td>
+<td>Required</td>
+<td>Assembling and linking every program</td>
+</tr>
+<tr>
+<td><code>opt</code> (LLVM)</td>
+<td>Optional</td>
+<td>IR optimization passes</td>
+</tr>
+<tr>
+<td><code>nasm</code> (2.15 or newer)</td>
+<td>Optional</td>
+<td>Assembling the hardware-accelerated runtime: crypto primitives, bulk memory operations, context switching</td>
+</tr>
+</tbody>
+</table>
+<p>When NASM is absent the compiler defines <code>XIOM_NO_ASM</code> and the runtime is
+built without those assembly paths. That is a verification-relevant choice,
+not just a performance one: the <a href="../contracts/">contracts guide</a> documents how
+accelerated runtime code sits inside the trusted base.</p>
+<p>Design decisions that shape everything else:</p>
+<ul>
+<li><strong>Lexical scope borrowing</strong> instead of lifetime annotations: a borrow
+  expires where it is visible in the source, so checking needs no lifetime
+  calculus.</li>
+<li><strong>Contracts compile to runtime guards</strong>, with an SMT-LIB path for Z3
+  verification. Static proof is an additional mode, not a prerequisite for
+  running code.</li>
+<li><strong>Text IR emission</strong> keeps the backend debuggable and portable; clang is
+  the only external tool used for codegen.</li>
+<li><strong>Implicit <code>self</code></strong> and inline type constraints (<code>[T: Ord]</code>) keep
+  signatures short; <code>derive</code> generates the repetitive interfaces.</li>
+</ul>
+<h2 id="modes">Modes<a class="headerlink" href="#modes" title="Permanent link">&para;</a></h2>
+<p>The compiler behaves differently depending on how it is invoked and which
+flags are set. This section explains the modes; the reference tables below
+list every flag.</p>
+<h3 id="build-modes">Build modes<a class="headerlink" href="#build-modes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Default (<code>xiom file.xi</code>): native binary with debug-friendly codegen.</li>
+<li><code>--release</code>: clang <code>-O3</code>. Contract guards and debug checks are stripped
+  unless <code>--runtime-contracts</code> / <code>--keep-debug-checks</code> are passed.</li>
+<li><code>--lto</code>: ThinLTO whole-program optimization.</li>
+<li><code>--target wasm|arm|riscv</code>, <code>--shared</code>: cross-compilation and library
+  output.</li>
+</ul>
+<h3 id="execution-modes">Execution modes<a class="headerlink" href="#execution-modes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xiom build</code>: build the project from <code>xiom.toml</code>; <code>xiom build --watch</code>
+  keeps rebuilding on change.</li>
+<li><code>xiom run &lt;file&gt;</code>: scripting mode. Shebang scripts, inline <code>-e</code>, stdin
+  <code>-</code>, and <code>--watch</code> are supported, and top-level code is wrapped
+  automatically, so <code>fn main()</code> is optional.</li>
+<li><code>xiom repl</code>: interactive shell.</li>
+<li><code>--jit</code> and <code>--jit --lazy</code>: in-process JIT with an optional incremental
+  cache; <code>--cache</code> caches binaries by source hash.</li>
+<li><code>--watch</code> / <code>--hot-reload</code>: recompile on change, optionally hot-swapping
+  a shared library (<code>--hot-reload-contracts</code> verifies contracts first).</li>
+<li><code>--standalone script.xi -o app</code>: turn a script into a binary.</li>
+</ul>
+<h3 id="contract-modes">Contract modes<a class="headerlink" href="#contract-modes" title="Permanent link">&para;</a></h3>
+<p>Contracts (<code>requires:</code> / <code>ensures:</code> / <code>invariant:</code>) are part of the
+language, not annotations. By default they compile to runtime guards that
+trap on violation. <code>--no-contracts</code> removes the guards. <code>--release</code> strips
+them unless <code>--runtime-contracts</code> forces them.</p>
+<p>Verification is a separate path with three distinct stages:</p>
+<ul>
+<li><strong>exported</strong> -- <code>--dump-contracts</code> exports contract metadata (JSON) and
+  <code>--verify</code> exports SMT-LIB proof obligations; no proof claim is made.</li>
+<li><strong>checked</strong> -- <code>xiom-verify --check</code> runs the bundled <code>z3</code> over that
+  output; the verdict is Proven, Violated or UNKNOWN.</li>
+<li><strong>proved</strong> -- only a verdict of <code>unsat</code> (Proven) counts as a proof.
+  Obligations the encoder cannot express faithfully are reported UNKNOWN
+  and never count as proofs.</li>
+</ul>
+<h3 id="debug-and-diagnostics">Debug and diagnostics<a class="headerlink" href="#debug-and-diagnostics" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>--debug</code> / <code>-g</code>: DWARF/PDB metadata for debuggers. See the
+  <a href="../debugger/">Debugging guide</a> for clients, breakpoints and contract traps.</li>
+<li>Debug intrinsics: <code>assert(cond[, msg])</code>, <code>dbg!()</code>, <code>todo!()</code>,
+  <code>unimplemented!()</code>, and <code>debugger;</code>. These are stripped in release builds
+  unless <code>--keep-debug-checks</code> is passed.</li>
+<li><code>--diagnostics=json</code>: structured output for tooling.</li>
+</ul>
+<p>Every diagnostic carries a stable code (<code>X0010</code> type mismatch, <code>X0100</code>
+contract violation). The reference is the <strong>Error Codes</strong> section of this
+documentation, and <code>xiom --explain &lt;code&gt;</code> prints the same page when the
+current directory contains <code>docs/error_codes/</code> (a checkout).
+- <code>--explain T001</code>: explain an error code.
+- <code>--emit-tokens</code>, <code>--emit-ir</code>, <code>--check</code>: inspect a single compilation
+  stage.</p>
+<h3 id="ai-assisted-diagnostics-ai">AI-assisted diagnostics (<code>--ai</code>)<a class="headerlink" href="#ai-assisted-diagnostics-ai" title="Permanent link">&para;</a></h3>
+<p>The compiler can send compilation errors to an LLM and get actionable hints
+back. Results are written to <code>.xiom_ai.json</code>; source files are <strong>never
+modified</strong>. Providers: Ollama (local, free), DeepSeek, OpenAI, OpenRouter,
+Groq, and any OpenAI-compatible endpoint.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># local: nothing leaves the machine</span>
+ollama<span class="w"> </span>pull<span class="w"> </span>codellama
+xiom<span class="w"> </span>--ai<span class="w"> </span>--ai-local<span class="w"> </span>source.xi
+
+<span class="c1"># any OpenAI-compatible provider</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">XIOM_AI_ENDPOINT</span><span class="o">=</span>https://api.deepseek.com
+<span class="nb">export</span><span class="w"> </span><span class="nv">XIOM_AI_KEY</span><span class="o">=</span>sk-...
+<span class="nb">export</span><span class="w"> </span><span class="nv">XIOM_AI_MODEL</span><span class="o">=</span>deepseek-chat
+xiom<span class="w"> </span>--ai<span class="w"> </span>source.xi
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--ai</code></td>
+<td>Enable AI diagnostics (Ollama or an API key required)</td>
+</tr>
+<tr>
+<td><code>--ai-local</code></td>
+<td>Local-only: never sends code to the cloud</td>
+</tr>
+<tr>
+<td><code>--ai-dry-run</code></td>
+<td>Print the prompt without calling the model</td>
+</tr>
+<tr>
+<td><code>--ai-silent</code></td>
+<td>Suppress stdout; write only <code>.xiom_ai.json</code></td>
+</tr>
+<tr>
+<td><code>--ai-strict</code></td>
+<td>Refuse binary output on contract violations</td>
+</tr>
+<tr>
+<td><code>--ai-batch</code> (alias <code>--batch</code>)</td>
+<td>Batch mode: analyze all sources into one <code>.xiom_ai.json</code></td>
+</tr>
+<tr>
+<td><code>--ai-model=&lt;name&gt;</code></td>
+<td>Override the model</td>
+</tr>
+<tr>
+<td><code>--ai-timeout=&lt;sec&gt;</code></td>
+<td>Model timeout in seconds (default: 10)</td>
+</tr>
+</tbody>
+</table>
+<p>Configuration can also live in <code>.xiom_ai_config.json</code>. The compiler searches,
+first found wins:
+1. <code>&lt;project&gt;/.xiom_ai_config.json</code>
+2. <code>$XIOM_HOME/.xiom_ai_config.json</code> -- what the installers write; on Windows
+   <code>%LOCALAPPDATA%\xiom</code>, on Linux/macOS <code>~/.local/share/xiom</code>
+3. <code>~/.xiom_ai_config.json</code></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deepseek"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.deepseek.com"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sk-your-key-here"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deepseek-chat"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"timeout_secs"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Environment variables override the file and command-line flags override the
+environment: <code>XIOM_AI_KEY</code>, <code>XIOM_AI_ENDPOINT</code>, <code>XIOM_AI_MODEL</code>,
+<code>XIOM_AI_PROVIDER</code>, <code>XIOM_AI_TIMEOUT</code>, <code>XIOM_AI_MAX_TOKENS</code> and
+<code>XIOM_AI_ALLOW_HTTP</code>. To change a key later, edit that file or export
+<code>XIOM_AI_KEY</code> again. Keys are refused over plaintext <code>http://</code> to non-local
+hosts. <code>xiom --help-ai</code> prints the full guide from the compiler itself, and
+<a href="../getting-started/">Getting Started</a> walks through first-time setup.</p>
+<h3 id="mcp-server-and-companion-tools">MCP server and companion tools<a class="headerlink" href="#mcp-server-and-companion-tools" title="Permanent link">&para;</a></h3>
+<p><code>xiom-mcp</code> is a Model Context Protocol server (stdio, JSON-RPC 2.0) that
+lets AI agents work with XIOM as tools. It exposes sixteen tools:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compile_and_analyze</code></td>
+<td>Compile a source file, return structured diagnostics</td>
+</tr>
+<tr>
+<td><code>compile_and_fix</code></td>
+<td>Compile, then run <code>ai_diagnose</code> on the errors in one shot</td>
+</tr>
+<tr>
+<td><code>check_xiom_syntax</code></td>
+<td>Parse-only check for a fast syntax feedback loop</td>
+</tr>
+<tr>
+<td><code>format_xiom_code</code></td>
+<td>Format source with <code>xiom-fmt</code></td>
+</tr>
+<tr>
+<td><code>explain_error_code</code></td>
+<td>Full reference for an error code (for example <code>T001</code>)</td>
+</tr>
+<tr>
+<td><code>get_contract_signature</code></td>
+<td>requires/ensures/invariants for project code</td>
+</tr>
+<tr>
+<td><code>verify_contracts</code></td>
+<td>Run <code>xiom-verify</code>: Z3 results and counterexamples</td>
+</tr>
+<tr>
+<td><code>audit_safety_sandbox</code></td>
+<td>Enumerate and score <code>unsafe</code> blocks</td>
+</tr>
+<tr>
+<td><code>ai_diagnose</code></td>
+<td>Send diagnostics to a model for a fix suggestion</td>
+</tr>
+<tr>
+<td><code>hot_reload_watch</code></td>
+<td>Compile to a shared library and watch for changes</td>
+</tr>
+<tr>
+<td><code>xiom_cheatsheet</code></td>
+<td>Canonical patterns and idioms</td>
+</tr>
+<tr>
+<td><code>xiom_stdlib_reference</code></td>
+<td>Live-parsed stdlib modules with contracts</td>
+</tr>
+<tr>
+<td><code>xiom_language_guide</code></td>
+<td>Language semantics by topic (types, ownership, contracts)</td>
+</tr>
+<tr>
+<td><code>xiom_workflow_guide</code></td>
+<td>Toolchain operations; topic <code>context</code> returns the canonical context file</td>
+</tr>
+<tr>
+<td><code>search_packages</code></td>
+<td>Registry search (read-only, no token)</td>
+</tr>
+<tr>
+<td><code>package_info</code></td>
+<td>Registry metadata for one package (read-only, no token)</td>
+</tr>
+</tbody>
+</table>
+<p>The canonical CLI, registry and limitations context that ships inside every
+release (<code>lib/AI_CONTEXT.md</code>) is also published on the documentation site as
+<a href="https://docs.xiom-lang.org/latest/toolchain-context/">Toolchain Context</a>.
+Toolchain updates are manual today: <code>xiom update</code> is retired because it used
+an unverified channel, and the <a href="https://docs.xiom-lang.org/latest/post-release-plan/">Post-release Plan</a>
+specifies the verified updater that will replace it.</p>
+<p>Register the server in any MCP-capable client:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"xiom"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"C:\\path\\to\\xiom-mcp.exe"</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Build it from source with <code>cargo build --release -p xiom-mcp</code> if you
+prefer; the release archives already ship it as <code>bin/xiom-mcp</code>.</p>
+<p>Release archives ship the full toolchain in <code>bin/</code>: <code>xiom</code>, <code>xiom-pkg</code>,
+<code>xiom-fmt</code>, <code>xiom-doc</code>, <code>xiom-ffigen</code>, <code>xiom-lsp</code>, <code>xiom-mcp</code>, <code>xiom-dbg</code>
+and <code>xiom-verify</code>, plus a pinned <code>z3</code> for the verifier. The installer links
+every <code>xiom*</code> tool into your PATH and leaves <code>z3</code> beside the tools.</p>
+<h3 id="safety-modes">Safety modes<a class="headerlink" href="#safety-modes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Integer overflow checks are ON by default; <code>--no-overflow-checks</code>
+  disables them.</li>
+<li><code>--sanitize=address|undefined|leak|thread</code>: sanitizer instrumentation;
+  <code>--stack-protector</code> adds stack canaries.</li>
+<li><code>--strict</code> (alias <code>--strict-mode</code>) turns borrow-checker warnings (E001)
+  into hard errors; <code>--strict-exhaustive</code> makes non-exhaustive matches a
+  hard error.</li>
+<li>Unsafe confinement: every <code>unsafe</code> block is a confined transaction.
+  <code>#[unsafe_no_retry]</code> and <code>#[unsafe_direct]</code> (with
+  <code>--enable-unsafe-direct</code>) are the explicit escape hatches.</li>
+<li><code>--sandbox</code> runs a safety audit over <code>unsafe</code> blocks; <code>--sandbox=strict</code>
+  blocks compilation on HIGH severity findings, and
+  <code>--sandbox-report=json</code> emits the report as JSON.</li>
+</ul>
+<h3 id="iteration-caching-and-limits">Iteration, caching, and limits<a class="headerlink" href="#iteration-caching-and-limits" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>--watch</code> recompiles on change; <code>--hot-reload</code> pairs it with shared
+  library reloads, and <code>--hot-reload-contracts</code> verifies contracts before
+  swapping function pointers.</li>
+<li><code>--incremental</code> caches IR and skips unchanged sources; <code>--force</code>
+  ignores every cache.</li>
+<li><code>--parallel</code> / <code>--sequential</code> / <code>--jobs &lt;N&gt;</code> control parallelism;
+  <code>--parallel-codegen</code> emits IR per function.</li>
+<li><code>--timeout &lt;seconds&gt;</code> (default 300; 0 disables) and
+  <code>--max-memory-mb &lt;N&gt;</code> bound a compilation; <code>--max-depth &lt;N&gt;</code> bounds
+  recursion (default 500).</li>
+</ul>
+<h2 id="cli-reference">CLI Reference<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>xiom [flags] &lt;source.xi&gt;
+</code></pre></div>
+<h3 id="invocation-and-subcommands">Invocation and subcommands<a class="headerlink" href="#invocation-and-subcommands" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xiom &lt;file.xi&gt;</code></td>
+<td>Compile a single file</td>
+</tr>
+<tr>
+<td><code>xiom --run &lt;file.xi&gt;</code></td>
+<td>Compile and run (requires <code>fn main()</code>)</td>
+</tr>
+<tr>
+<td><code>xiom run &lt;file.xi&gt;</code></td>
+<td>Execute as a script (auto-wraps in <code>fn main()</code>)</td>
+</tr>
+<tr>
+<td><code>xiom run -</code></td>
+<td>Read the script from stdin</td>
+</tr>
+<tr>
+<td><code>xiom run -e "&lt;code&gt;"</code></td>
+<td>Execute inline code</td>
+</tr>
+<tr>
+<td><code>xiom build</code></td>
+<td>Build the project from <code>xiom.toml</code></td>
+</tr>
+<tr>
+<td><code>xiom build --watch</code></td>
+<td>Build daemon: watch and rebuild</td>
+</tr>
+<tr>
+<td><code>xiom repl</code></td>
+<td>Interactive shell</td>
+</tr>
+<tr>
+<td><code>xiom doc &lt;file.xi&gt;</code></td>
+<td>Generate documentation (Markdown/HTML)</td>
+</tr>
+<tr>
+<td><code>xiom build-runtime</code></td>
+<td>Pre-compile the C runtime shared library (OrcJIT)</td>
+</tr>
+<tr>
+<td><code>xiom doctor</code></td>
+<td>Check toolchain dependencies</td>
+</tr>
+<tr>
+<td><code>xiom fmt</code> / <code>lsp</code> / <code>mcp</code> / <code>pkg</code> / <code>dbg</code> / <code>verify</code> / <code>ffigen</code> / <code>ai</code> / <code>graph</code> / <code>test</code></td>
+<td>Tool dispatchers for the companion binaries</td>
+</tr>
+</tbody>
+</table>
+<h3 id="output-targets-and-debug-builds">Output, targets and debug builds<a class="headerlink" href="#output-targets-and-debug-builds" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-o &lt;output&gt;</code></td>
+<td>Output binary path (default <code>a.exe</code> / <code>a.out</code>)</td>
+</tr>
+<tr>
+<td><code>--emit-ir</code></td>
+<td>Print LLVM IR to stdout (no compilation)</td>
+</tr>
+<tr>
+<td><code>--emit-tokens</code></td>
+<td>Print the token stream</td>
+</tr>
+<tr>
+<td><code>--check</code></td>
+<td>Type-check only, no binary</td>
+</tr>
+<tr>
+<td><code>--release</code></td>
+<td>clang <code>-O3</code>; strips contract guards and debug checks unless re-enabled</td>
+</tr>
+<tr>
+<td><code>--debug</code> / <code>-g</code></td>
+<td>DWARF/PDB debug metadata</td>
+</tr>
+<tr>
+<td><code>--lto</code></td>
+<td>ThinLTO link-time optimization</td>
+</tr>
+<tr>
+<td><code>--shared</code></td>
+<td>Compile as a shared library (.dll/.so)</td>
+</tr>
+<tr>
+<td><code>--static</code></td>
+<td>Compile as a static library</td>
+</tr>
+<tr>
+<td><code>--opt-level &lt;0..3&gt;</code></td>
+<td>Explicit optimization level</td>
+</tr>
+<tr>
+<td><code>--standalone &lt;file&gt; -o &lt;exe&gt;</code></td>
+<td>Turn a script into a binary</td>
+</tr>
+<tr>
+<td><code>--target &lt;target&gt;</code></td>
+<td><code>native</code> (default), <code>wasm</code>, <code>arm</code>, <code>riscv</code></td>
+</tr>
+<tr>
+<td><code>--jit</code> / <code>--jit --lazy</code></td>
+<td>In-process JIT; <code>--lazy</code> adds the incremental cache</td>
+</tr>
+<tr>
+<td><code>--cache</code> / <code>--no-cache</code></td>
+<td>Binary cache by source hash / disable it</td>
+</tr>
+</tbody>
+</table>
+<h3 id="contracts-and-verification">Contracts and verification<a class="headerlink" href="#contracts-and-verification" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--no-contracts</code></td>
+<td>Disable all contract runtime checks</td>
+</tr>
+<tr>
+<td><code>--runtime-contracts</code></td>
+<td>Force runtime contract checks, even in release</td>
+</tr>
+<tr>
+<td><code>--dump-contracts</code></td>
+<td>Export contract metadata (JSON)</td>
+</tr>
+<tr>
+<td><code>--verify</code></td>
+<td>Export SMT-LIB proof obligations (no proof claim)</td>
+</tr>
+<tr>
+<td><code>--verify-output &lt;file&gt;</code></td>
+<td>Write the SMT-LIB output to a file</td>
+</tr>
+<tr>
+<td><code>--keep-debug-checks</code></td>
+<td>Keep debug intrinsics in release builds</td>
+</tr>
+</tbody>
+</table>
+<h3 id="safety-and-hardening">Safety and hardening<a class="headerlink" href="#safety-and-hardening" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--sandbox</code></td>
+<td>Safety audit over <code>unsafe</code> blocks (text report)</td>
+</tr>
+<tr>
+<td><code>--sandbox=strict</code></td>
+<td>Block compilation on HIGH severity findings</td>
+</tr>
+<tr>
+<td><code>--sandbox-report=json</code></td>
+<td>Emit the sandbox report as JSON</td>
+</tr>
+<tr>
+<td><code>--sanitize=address</code></td>
+<td>AddressSanitizer</td>
+</tr>
+<tr>
+<td><code>--sanitize=undefined</code></td>
+<td>UndefinedBehaviorSanitizer</td>
+</tr>
+<tr>
+<td><code>--sanitize=leak</code></td>
+<td>LeakSanitizer</td>
+</tr>
+<tr>
+<td><code>--sanitize=thread</code></td>
+<td>ThreadSanitizer</td>
+</tr>
+<tr>
+<td><code>--stack-protector</code></td>
+<td>Stack canaries (<code>-fstack-protector</code>)</td>
+</tr>
+<tr>
+<td><code>--overflow-checks</code> / <code>--no-overflow-checks</code></td>
+<td>Integer overflow traps (ON by default)</td>
+</tr>
+<tr>
+<td><code>--enable-unsafe-direct</code></td>
+<td>Allow <code>#[unsafe_direct]</code> in user code</td>
+</tr>
+<tr>
+<td><code>--strict</code> (alias <code>--strict-mode</code>)</td>
+<td>Borrow-checker warnings (E001) become hard errors</td>
+</tr>
+<tr>
+<td><code>--strict-exhaustive</code></td>
+<td>Non-exhaustive matches become hard errors</td>
+</tr>
+</tbody>
+</table>
+<h3 id="iteration-and-performance">Iteration and performance<a class="headerlink" href="#iteration-and-performance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--watch</code></td>
+<td>Watch source files and recompile on change</td>
+</tr>
+<tr>
+<td><code>--hot-reload</code></td>
+<td>Watch plus shared-library hot reload</td>
+</tr>
+<tr>
+<td><code>--hot-reload-contracts</code></td>
+<td>Verify contracts before hot-swapping function pointers</td>
+</tr>
+<tr>
+<td><code>--incremental</code></td>
+<td>Cache compiled IR, skip unchanged sources</td>
+</tr>
+<tr>
+<td><code>--force</code></td>
+<td>Force recompile, ignore all caches</td>
+</tr>
+<tr>
+<td><code>--parallel</code> / <code>--sequential</code></td>
+<td>Parallel lex+parse (rayon) or force sequential</td>
+</tr>
+<tr>
+<td><code>--jobs &lt;N&gt;</code></td>
+<td>Number of parallel compile jobs (default: CPUs)</td>
+</tr>
+<tr>
+<td><code>--parallel-codegen</code></td>
+<td>Per-function IR emission</td>
+</tr>
+</tbody>
+</table>
+<h3 id="diagnostics-graphs-and-limits">Diagnostics, graphs and limits<a class="headerlink" href="#diagnostics-graphs-and-limits" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--diagnostics=json</code></td>
+<td>Structured compiler output</td>
+</tr>
+<tr>
+<td><code>--explain &lt;CODE&gt;</code></td>
+<td>Explain an error code (e.g. <code>--explain T001</code>)</td>
+</tr>
+<tr>
+<td><code>--graph</code> / <code>--graph=mermaid</code></td>
+<td>Dependency graph as DOT or Mermaid</td>
+</tr>
+<tr>
+<td><code>--timeout &lt;seconds&gt;</code></td>
+<td>Compilation timeout (default 300; 0 disables)</td>
+</tr>
+<tr>
+<td><code>--max-memory-mb &lt;N&gt;</code></td>
+<td>Memory budget in MB (0 = disabled)</td>
+</tr>
+<tr>
+<td><code>--max-depth &lt;N&gt;</code></td>
+<td>Maximum recursion depth (default 500)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="linking">Linking<a class="headerlink" href="#linking" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--link &lt;name&gt;</code></td>
+<td>Link a native library (repeatable, e.g. <code>vulkan-1</code>)</td>
+</tr>
+<tr>
+<td><code>--link-path &lt;dir&gt;</code></td>
+<td>Add a library search path (repeatable)</td>
+</tr>
+<tr>
+<td><code>--c-source &lt;file&gt;</code></td>
+<td>Link an extra C/object file (repeatable)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testing-and-benchmarks">Testing and benchmarks<a class="headerlink" href="#testing-and-benchmarks" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--test</code></td>
+<td>Run the example test suite</td>
+</tr>
+<tr>
+<td><code>--test-dir &lt;dir&gt;</code></td>
+<td>Test directory for <code>--test</code> (default: examples)</td>
+</tr>
+<tr>
+<td><code>--bench-file &lt;file&gt;</code></td>
+<td>Benchmark a single file</td>
+</tr>
+<tr>
+<td><code>--count &lt;N&gt;</code></td>
+<td>Benchmark iteration count</td>
+</tr>
+</tbody>
+</table>
+<h3 id="project-and-packages">Project and packages<a class="headerlink" href="#project-and-packages" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--scaffold</code></td>
+<td>Scaffold a project in the current directory</td>
+</tr>
+<tr>
+<td><code>--clean</code></td>
+<td>Remove build artifacts</td>
+</tr>
+<tr>
+<td><code>--registry &lt;url&gt;</code></td>
+<td>Package registry URL (<code>xiom pkg</code>)</td>
+</tr>
+<tr>
+<td><code>--locked</code></td>
+<td>Use the lockfile exactly (<code>xiom pkg</code>)</td>
+</tr>
+<tr>
+<td><code>--frozen</code></td>
+<td>Offline lockfile-only mode (<code>xiom pkg</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="utility">Utility<a class="headerlink" href="#utility" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--version</code></td>
+<td>Print version and test stats</td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td>Print usage</td>
+</tr>
+<tr>
+<td><code>--help-ai</code></td>
+<td>AI mode setup and configuration guide</td>
+</tr>
+</tbody>
+</table>
+<h2 id="targets">Targets<a class="headerlink" href="#targets" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x86_64-pc-windows-msvc</code></td>
+<td>[OK] Verified</td>
+</tr>
+<tr>
+<td><code>x86_64-unknown-linux-gnu</code></td>
+<td>[OK] Verified (WSL build + compile + run)</td>
+</tr>
+<tr>
+<td><code>wasm32-unknown-unknown</code></td>
+<td>[OK] Verified</td>
+</tr>
+<tr>
+<td><code>aarch64-unknown-linux-gnu</code> (<code>--target arm</code>)</td>
+<td>Accepted by the CLI</td>
+</tr>
+<tr>
+<td><code>riscv</code></td>
+<td>Accepted by the CLI; status tracked in the compiler repository</td>
+</tr>
+<tr>
+<td><code>aarch64-apple-darwin</code></td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h2 id="language-features">Language Features<a class="headerlink" href="#language-features" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Surface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>move</code> keyword (spawn captures)</td>
+<td><code>spawn move { ... }</code></td>
+</tr>
+<tr>
+<td>Overflow checks ON by default</td>
+<td><code>--overflow-checks</code> default true</td>
+</tr>
+<tr>
+<td>Parallel codegen</td>
+<td><code>--parallel-codegen</code></td>
+</tr>
+<tr>
+<td>DWARF debug info</td>
+<td><code>--debug</code> / <code>-g</code></td>
+</tr>
+<tr>
+<td>Thread-local recursion counter</td>
+<td><code>@xiom_recursion_counter thread_local</code></td>
+</tr>
+<tr>
+<td>Send/Sync enforcement</td>
+<td>Auto-derived, spawn capture check</td>
+</tr>
+<tr>
+<td>Spawn move semantics</td>
+<td>Capture analysis + env forwarding</td>
+</tr>
+<tr>
+<td>Unsafe confinement</td>
+<td>Confined <code>unsafe</code> transactions, guard heap, fault trapping</td>
+</tr>
+<tr>
+<td>Debug intrinsics</td>
+<td><code>assert</code>, <code>dbg!</code>, <code>todo!</code>, <code>unimplemented!</code>, <code>debugger;</code></td>
+</tr>
+<tr>
+<td>Secure numeric policy</td>
+<td><code>Int</code> / <code>Float64</code> mixing requires explicit <code>as</code></td>
+</tr>
+<tr>
+<td>Labeled loops</td>
+<td><code>@label: while</code> / <code>break @label;</code></td>
+</tr>
+<tr>
+<td>Release-stripped contracts</td>
+<td><code>--runtime-contracts</code> retains them</td>
+</tr>
+</tbody>
+</table>
+<p>When each surface landed is part of the release history, tracked on the website's <a href="https://xiom-lang.org/history.html">History</a> page.</p>
+<h2 id="selfhost-gate-status">Selfhost Gate Status<a class="headerlink" href="#selfhost-gate-status" title="Permanent link">&para;</a></h2>
+<p>All self-hosting gates are cleared, but no self-hosted release has shipped
+yet; the released compiler remains the bootstrap toolchain. Remaining work
+is tracked in the compiler repository (<code>docs/PRE_SELFHOST_GAPS.md</code>).</p>
+<h2 id="architecture-decisions">Architecture Decisions<a class="headerlink" href="#architecture-decisions" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bootstrap compiler</td>
+<td><strong>Rust</strong> (permanent)</td>
+</tr>
+<tr>
+<td>LLVM backend</td>
+<td><strong>Text IR emission</strong> (no library dependency)</td>
+</tr>
+<tr>
+<td>WASM target</td>
+<td>via clang</td>
+</tr>
+<tr>
+<td>Ownership model</td>
+<td><strong>Lexical scope borrowing</strong></td>
+</tr>
+<tr>
+<td>Contracts</td>
+<td>Runtime guards; SMT-LIB export checked with the bundled <code>z3</code> (<code>xiom-verify --check</code>)</td>
+</tr>
+<tr>
+<td>Type constraints</td>
+<td><strong>Inline</strong> <code>[T: Ord]</code></td>
+</tr>
+<tr>
+<td>Method receiver</td>
+<td><strong>Implicit</strong> <code>self</code>, inferred</td>
+</tr>
+<tr>
+<td>Crate structure</td>
+<td>20 crates (xiom, xiom-ast, xiom-lowering, xiom-check, xiom-lexer, xiom-parser, xiom-codegen, xiom-ctfe, xiom-jit, xiom-verify, xiom-fmt, xiom-lsp, xiom-pkg, xiom-mcp, xiom-doc, xiom-ffigen, xiom-dbg, xiom-display, xiom-graph, xiom-wasm)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="build-from-source">Build from Source<a class="headerlink" href="#build-from-source" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/xiom-lang/xiom.git
+<span class="nb">cd</span><span class="w"> </span>xiom
+cargo<span class="w"> </span>build<span class="w"> </span>-p<span class="w"> </span>xiom
+cargo<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-p<span class="w"> </span>xiom-codegen<span class="w"> </span>--test<span class="w"> </span>e2e_tests
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0. <a href="https://xiom-lang.org/terms.html">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

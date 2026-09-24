@@ -1,0 +1,3161 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Language guide and standard library API reference for XIOM.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.61.3/api/reflect/">
+      
+      
+        <link rel="prev" href="../rc/">
+      
+      
+        <link rel="next" href="../regex/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../img/xiom-icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>reflect - XIOM Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stdlibreflect" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="XIOM Documentation" class="md-header__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../../img/xiom-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XIOM Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              reflect
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="XIOM Documentation" class="md-nav__button md-logo" aria-label="XIOM Documentation" data-md-component="logo">
+      
+  <img src="../../img/xiom-logo.png" alt="logo">
+
+    </a>
+    XIOM Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://xiom-lang.org/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xiom-lang.org
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    By Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unsafe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unsafe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pattern-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pattern Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Derive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C FFI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compiler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compiler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debugger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard Library API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standard Library API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alloc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    alloc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    async
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    crypto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    debug
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ffi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ffi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../net/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    net
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../num/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    num
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../os/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    os
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ptr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ptr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reflect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fieldsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fields.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reflectxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reflect.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typeinfoxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typeinfo.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    regex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../serialize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    serialize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thread
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_23" id="__nav_23_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Error Codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/C001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/E001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/L001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    L001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/P001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    P001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/T001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    T001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/W000/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W000
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/W001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W001
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0010/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0010
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0011/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0011
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../error-codes/X0100/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    X0100
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_24" >
+        
+          
+          <label class="md-nav__link" for="__nav_24" id="__nav_24_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../toolchain-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Toolchain Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../post-release-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post-release Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_CONTEXT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Coding Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fieldsxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fields.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reflectxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reflect.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typeinfoxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typeinfo.xi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="stdlibreflect"><code>stdlib.reflect</code><a class="headerlink" href="#stdlibreflect" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Runtime Reflection</strong></p>
+<p>Generated from <code>v0.61.3</code>. 3 source files, 48 documented symbols.</p>
+</blockquote>
+<h2 id="fieldsxi"><code>fields.xi</code><a class="headerlink" href="#fieldsxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-field_countt-int"><code>fn field_count[T]() -&gt; Int</code><a class="headerlink" href="#fn-field_countt-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The number of fields in struct T. LIMITED: always 0. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-field_nameti-int-optionstr"><code>fn field_name[T](i: Int) -&gt; Option[Str]</code><a class="headerlink" href="#fn-field_nameti-int-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The name of field <code>i</code> of T. LIMITED: always None. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-field_typeti-int-optionstr"><code>fn field_type[T](i: Int) -&gt; Option[Str]</code><a class="headerlink" href="#fn-field_typeti-int-optionstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The type name of field <code>i</code> of T. LIMITED: always None. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-field_offsetti-int-optionint"><code>fn field_offset[T](i: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-field_offsetti-int-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The byte offset of field <code>i</code> of T. LIMITED: always None. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-field_valuetobj-t-i-int-optionint"><code>fn field_value[T](obj: &amp;T, i: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-field_valuetobj-t-i-int-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Read field <code>i</code> of <code>obj</code> as an integer. LIMITED: always None. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-field_namest-vecstr"><code>fn field_names[T]() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-field_namest-vecstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>All field names in declaration order. LIMITED: always empty. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-field_typest-vecstr"><code>fn field_types[T]() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-field_typest-vecstr" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>All field type names in declaration order. LIMITED: always empty. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-field_offsetst-vecint"><code>fn field_offsets[T]() -&gt; Vec[Int]</code><a class="headerlink" href="#fn-field_offsetst-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>All field byte offsets in declaration order. LIMITED: always empty. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-variant_nametv-t-str"><code>fn variant_name[T](v: T) -&gt; Str</code><a class="headerlink" href="#fn-variant_nametv-t-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The name of enum variant <code>v</code>. LIMITED: the compiler does not expose variant metadata -- returns "unknown". Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-variant_indextv-t-int"><code>fn variant_index[T](v: T) -&gt; Int</code><a class="headerlink" href="#fn-variant_indextv-t-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The index of enum variant <code>v</code>. LIMITED: returns 0. Complexity: O(1).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+<h2 id="reflectxi"><code>reflect.xi</code><a class="headerlink" href="#reflectxi" title="Permanent link">&para;</a></h2>
+<h4 id="fn-type_count-int"><code>fn type_count() -&gt; Int</code><a class="headerlink" href="#fn-type_count-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Number of user types registered in this compilation unit. REAL.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h4 id="fn-type_name_by_idid-int-str"><code>fn type_name_by_id(id: Int) -&gt; Str</code><a class="headerlink" href="#fn-type_name_by_idid-int-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Name of the type with the given stable id, or "unknown" if out of range. REAL.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+</ul>
+<h4 id="fn-type_id_by_namename-str-int"><code>fn type_id_by_name(name: Str) -&gt; Int</code><a class="headerlink" href="#fn-type_id_by_namename-str-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Stable id of the type with the given name, or -1 if not found. REAL.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+</ul>
+<h4 id="fn-type_field_countid-int-int"><code>fn type_field_count(id: Int) -&gt; Int</code><a class="headerlink" href="#fn-type_field_countid-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Number of fields of the type with the given id (0 for enums/unknown). REAL.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h4 id="type-typeid"><code>type TypeId</code><a class="headerlink" href="#type-typeid" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Stable numeric identity of a type.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Derives:</strong> <code>Eq, Clone, Hash</code></p>
+<h4 id="fn-oft-typeid"><code>fn of[T]() -&gt; TypeId</code><a class="headerlink" href="#fn-oft-typeid" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>TypeId of T.</p>
+</blockquote>
+<h4 id="fn-type_namet-str"><code>fn type_name[T]() -&gt; Str</code><a class="headerlink" href="#fn-type_namet-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Source name of T.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
+<h4 id="fn-type_sizet-int"><code>fn type_size[T]() -&gt; Int</code><a class="headerlink" href="#fn-type_sizet-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Size of T in bytes.</p>
+</blockquote>
+<h4 id="fn-type_alignt-int"><code>fn type_align[T]() -&gt; Int</code><a class="headerlink" href="#fn-type_alignt-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Alignment of T in bytes.</p>
+</blockquote>
+<h4 id="fn-downcast_reftvalue-any-optiont"><code>fn downcast_ref[T](value: &amp;Any) -&gt; Option[&amp;T]</code><a class="headerlink" href="#fn-downcast_reftvalue-any-optiont" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Downcasting</p>
+</blockquote>
+<h4 id="fn-downcast_muttvalue-mut-any-optionmut-t"><code>fn downcast_mut[T](value: &amp;mut Any) -&gt; Option[&amp;mut T]</code><a class="headerlink" href="#fn-downcast_muttvalue-mut-any-optionmut-t" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Downcast a dyn Any to &amp;mut T, or None on mismatch.</p>
+</blockquote>
+<h4 id="type-typeinfo"><code>type TypeInfo</code><a class="headerlink" href="#type-typeinfo" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Reflected type description (name, size, alignment, fields).</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>align</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>fields</code></td>
+<td><code>Vec[FieldInfo]</code></td>
+</tr>
+<tr>
+<td><code>variants</code></td>
+<td><code>Vec[Str]</code></td>
+</tr>
+<tr>
+<td><code>derives</code></td>
+<td><code>Vec[Str]</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Derives:</strong> <code>Clone</code></p>
+<h4 id="type-fieldinfo"><code>type FieldInfo</code><a class="headerlink" href="#type-fieldinfo" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Reflected field description (name, offset, type name).</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>type_name</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>offset</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Derives:</strong> <code>Clone</code></p>
+<h4 id="fn-reflect_typet-typeinfo"><code>fn reflect_type[T]() -&gt; TypeInfo</code><a class="headerlink" href="#fn-reflect_typet-typeinfo" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>TypeInfo for T.</p>
+</blockquote>
+<h4 id="fn-type_info_by_namename-str-optiontypeinfo"><code>fn type_info_by_name(name: Str) -&gt; Option[TypeInfo]</code><a class="headerlink" href="#fn-type_info_by_namename-str-optiontypeinfo" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Look up a type by name and return REAL data from the compiler RTTI table: the canonical <code>name</code> and the true field count (materialised as that many placeholder FieldInfo entries so <code>result.fields.len()</code> is exact). LIMITED: size/align are reported as 0, kind defaults to 1 (struct), and per-field names/types are "unknown" -- that metadata is not embedded yet.</p>
+</blockquote>
+<h4 id="fn-all_types-vectypeinfo"><code>fn all_types() -&gt; Vec[TypeInfo]</code><a class="headerlink" href="#fn-all_types-vectypeinfo" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Enumerate every registered user type with REAL names and field counts. LIMITED: size/align/kind and per-field metadata are placeholders (see above).</p>
+</blockquote>
+<h4 id="fn-type_is_primitivet-bool"><code>fn type_is_primitive[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_primitivet-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns true if <code>T</code> is a primitive type (Int, Float64, Bool, Char, etc.). LIMITED: compiler does not expose this metadata yet -- always returns false. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_is_structt-bool"><code>fn type_is_struct[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_structt-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns true if <code>T</code> is a struct type. LIMITED: compiler does not expose this metadata yet -- always returns false. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_is_enumt-bool"><code>fn type_is_enum[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_enumt-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns true if <code>T</code> is an enum type. LIMITED: compiler does not expose this metadata yet -- always returns false. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_is_generict-bool"><code>fn type_is_generic[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_generict-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns true if <code>T</code> has generic parameters. LIMITED: compiler does not expose this metadata yet -- always returns false. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_is_sizedt-bool"><code>fn type_is_sized[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_sizedt-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Always returns <code>true</code>: all XIOM types are sized (statically known layout). Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_kindt-str"><code>fn type_kind[T]() -&gt; Str</code><a class="headerlink" href="#fn-type_kindt-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns a human-readable kind string: "primitive", "struct", "enum", or "unknown". LIMITED: compiler does not expose kind metadata yet -- always returns "unknown". Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_name_of_valuetvalue-t-str"><code>fn type_name_of_value[T](value: &amp;T) -&gt; Str</code><a class="headerlink" href="#fn-type_name_of_valuetvalue-t-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns the type name of the value referenced by <code>value</code>. Delegates to <code>type_name[T]()</code>. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_id_of_valuetvalue-t-int"><code>fn type_id_of_value[T](value: &amp;T) -&gt; Int</code><a class="headerlink" href="#fn-type_id_of_valuetvalue-t-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns the stable type id of the value referenced by <code>value</code>. Delegates to <code>TypeId.of[T]()</code>. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_field_nametidx-int-str"><code>fn type_field_name[T](idx: Int) -&gt; Str</code><a class="headerlink" href="#fn-type_field_nametidx-int-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns the name of field at index <code>idx</code> in type <code>T</code>, or "unknown". LIMITED: per-field metadata not embedded yet -- always returns "unknown". Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_field_offsettidx-int-int"><code>fn type_field_offset[T](idx: Int) -&gt; Int</code><a class="headerlink" href="#fn-type_field_offsettidx-int-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns the byte offset of field at index <code>idx</code> in type <code>T</code>, or 0. LIMITED: field offset intrinsic not available yet -- always returns 0. Complexity: O(1).</p>
+</blockquote>
+<h4 id="fn-type_total_sizet-int"><code>fn type_total_size[T]() -&gt; Int</code><a class="headerlink" href="#fn-type_total_sizet-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Returns the total size of type <code>T</code> in bytes. Alias for <code>type_size[T]()</code>. Complexity: O(1).</p>
+</blockquote>
+<hr />
+<hr />
+<h2 id="typeinfoxi"><code>typeinfo.xi</code><a class="headerlink" href="#typeinfoxi" title="Permanent link">&para;</a></h2>
+<h5 id="fn-type_namet-str_1"><code>fn type_name[T]() -&gt; Str</code><a class="headerlink" href="#fn-type_namet-str_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The name of type T. LIMITED: the compiler does not expose generic type names yet -- returns "unknown". Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_idt-int"><code>fn type_id[T]() -&gt; Int</code><a class="headerlink" href="#fn-type_idt-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>A stable numeric id for type T. LIMITED: returns 0. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_sizet-int_1"><code>fn type_size[T]() -&gt; Int</code><a class="headerlink" href="#fn-type_sizet-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The size of type T in bytes. LIMITED: the layout intrinsics are not emitted yet -- returns 0. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_alignt-int_1"><code>fn type_align[T]() -&gt; Int</code><a class="headerlink" href="#fn-type_alignt-int_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The alignment of type T in bytes. LIMITED: returns 0. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_is_primitivet-bool_1"><code>fn type_is_primitive[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_primitivet-bool_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Whether T is a primitive type. LIMITED: always false. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_is_structt-bool_1"><code>fn type_is_struct[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_structt-bool_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Whether T is a struct type. LIMITED: always false. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_is_enumt-bool_1"><code>fn type_is_enum[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_enumt-bool_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Whether T is an enum type. LIMITED: always false. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_is_generict-bool_1"><code>fn type_is_generic[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_generict-bool_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Whether T is a generic type. LIMITED: always false. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_oftvalue-t-str"><code>fn type_of[T](value: T) -&gt; Str</code><a class="headerlink" href="#fn-type_oftvalue-t-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The type name of a value. Delegates to <code>type_name[T]()</code>. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_variant_countt-int"><code>fn type_variant_count[T]() -&gt; Int</code><a class="headerlink" href="#fn-type_variant_countt-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The number of enum variants of T, or 0 when T is not an enum. LIMITED: always 0. Complexity: O(1).</p>
+</blockquote>
+<h5 id="fn-type_is_sizedt-bool_1"><code>fn type_is_sized[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_sizedt-bool_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Whether T has a known size. All XIOM types are statically sized, so this is always true. Complexity: O(1).</p>
+</blockquote>
+<hr />
+<hr />
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0. <a href="https://xiom-lang.org/terms.html">Terms of Use</a> &middot; <a href="https://xiom-lang.org/privacy.html">Privacy Policy</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
