@@ -61,12 +61,23 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     <h2>Current state</h2>
     <table>
       <tr><th>Workstream</th><th>Status</th><th>Notes</th></tr>
-      <tr><td>Compiler releases</td><td>shipping</td><td>Latest release on the mirror is v0.60.1; v0.61.0 is on main</td></tr>
+      <tr><td>Compiler releases</td><td>shipping</td><td>Rolling releases on GitHub and the mirror; the versions page tracks the current tag</td></tr>
       <tr><td>Language surface</td><td>shipped</td><td>Ownership, generics, contracts, pattern matching, derive, C FFI, scripting mode</td></tr>
       <tr><td>Production hardening</td><td>shipped</td><td>Contracts, diagnostics, scripting and JIT, AI-assisted diagnostics, sandbox audit, sanitizers</td></tr>
       <tr><td>Standard library</td><td>beta</td><td>517 source files and 6,532 public functions; limitations are published</td></tr>
       <tr><td>Self-hosting</td><td>gates cleared</td><td>No self-hosted release has shipped; the bootstrap toolchain is the release compiler</td></tr>
-      <tr><td>Ecosystem</td><td>in progress</td><td>Package registry application, publishing, and editor tooling</td></tr>
+      <tr><td>Ecosystem</td><td>live</td><td>Registry, official packages, editor tooling and the playground are live; see the Ecosystem section below</td></tr>
+    </table>
+  </div>
+
+  <div class="content-section">
+    <h2>Ecosystem</h2>
+    <table>
+      <tr><th>Part</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Registry 1.0</td><td>live</td><td>Publish, install and search; immutable versions, sha256 checks, ed25519 signatures and provenance. Installable official packages: <strong><span data-registry-count>see the registry</span></strong>.</td></tr>
+      <tr><td>Editor tooling</td><td>live</td><td>The VS Code extension is listed on the VS Code Marketplace and Open VSX; the release workflow publishes new extension versions to both marketplaces.</td></tr>
+      <tr><td>Playground</td><td>live</td><td>Browser compiler and lessons at <a href="https://playground.xiom-lang.org" style="color:var(--signal);">playground.xiom-lang.org</a>.</td></tr>
+      <tr><td>Registry 2.0</td><td>direction</td><td>GitHub account sign-in, community review and self-service publishing; recorded as a direction, not scheduled. Community publishing today uses publisher tokens.</td></tr>
     </table>
   </div>
 
@@ -97,10 +108,16 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     <h2>Next</h2>
     <ul>
       <li>First self-hosted release once the remaining gaps close.</li>
-      <li>Package registry application and public publishing.</li>
+      <li>Registry 2.0 (direction): GitHub account sign-in, community review and self-service publishing, plus more official packages as they pass the publish gate.</li>
       <li>Static contract proof integration -- SMT-LIB output is available today through <code>--verify</code>.</li>
       <li>macOS archives ship for Intel and Apple Silicon; ARM and RISC-V cross-compilation targets are in progress.</li>
     </ul>
+  </div>
+
+  <div class="content-section" id="benchmark">
+    <h2>Reproducible evidence (in preparation)</h2>
+    <p>An experimental benchmark of AI-generated systems software is being prepared. It records correctness, safety, runtime behavior, memory usage, binary footprint, compile success, contract compliance, verification, repair cost and token usage, under three context conditions (no context, retrieved documentation, MCP tools). The task definition, generated source, compiler output, runtime results, contract configuration, tool interactions, tokens, environment and sessions will be published with the harness so anyone can rerun it.</p>
+    <p style="color:var(--muted);font-size:13px;">Nothing is claimed yet: no results have been published. Results will be linked here when the benchmark and its paper are public.</p>
   </div>
 
   <div class="content-section">
@@ -162,5 +179,6 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   </div>
 </footer>
 
+<script src="js/registry-count.js"></script>
 </body>
 </html>

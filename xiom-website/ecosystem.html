@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 <main class="wrap" id="main">
   <div class="page-banner-intro">
-    <p class="page-banner-lede">The compiler and standard library come first, then packages. The registry is live; the package catalog opens as the foundation stabilizes. This page describes the plan -- not unfinished work.</p>
+    <p class="page-banner-lede">The compiler, standard library and registry are live, and official packages now ship from the existing corpus. This page records what is published and the direction of the rest -- not unfinished work.</p>
   </div>
 
   <!-- Where it stands -->
@@ -62,13 +62,13 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     <h2>Where the ecosystem stands</h2>
     <table>
       <tr><th>Layer</th><th>Status</th><th>Notes</th></tr>
-      <tr><td>Compiler</td><td>shipping</td><td>Releases on the mirror; v0.61.0 on main</td></tr>
+      <tr><td>Compiler</td><td>shipping</td><td>Rolling releases on GitHub and the mirror; the versions page tracks the current tag</td></tr>
       <tr><td>Standard library</td><td>beta</td><td>Ships with the toolchain; 44 modules with published limitations</td></tr>
-      <tr><td>Registry</td><td>live (beta)</td><td>Browse and search today; publishing through publisher tokens</td></tr>
-      <tr><td>First-party packages</td><td>in porting</td><td>A large package corpus already exists in a monorepo; it was written against an earlier standard library and is being ported before anything is published</td></tr>
-      <tr><td>Community publishing</td><td>planned</td><td>Opens once the toolchain is stable and the registry leaves beta</td></tr>
+      <tr><td>Registry</td><td>live</td><td>Publish, install and search, with sha256 checks, ed25519 signatures and OIDC provenance</td></tr>
+      <tr><td>First-party packages</td><td>published</td><td>Installable official packages: <strong><span data-registry-count>see the registry</span></strong>; the rest of the corpus ships in batches as each package passes the build, test and contract gate</td></tr>
+      <tr><td>Community publishing</td><td>open (tokens)</td><td>Publisher tokens are issued on request; self-service sign-in and review are the Registry 2.0 direction (not scheduled)</td></tr>
     </table>
-    <p style="color:var(--muted);font-size:13px;margin-top:16px;">We deliberately do not list packages that do not build against the current toolchain. This page describes the plan.</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;">We deliberately do not list packages that do not build against the current toolchain; the registry is the live catalog. This page records what is published and what comes next.</p>
   </div>
 
   <!-- The plan -->
@@ -149,7 +149,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     <h2>Registry</h2>
     <p>The package registry is live at <a href="https://registry.xiom-lang.org" style="color:var(--signal);">registry.xiom-lang.org</a>. Browsers get a read-only UI: the package list, search, and version pages with digests, signatures and yank state, plus copy-ready install and trust commands. The same data is available as JSON at <a href="https://registry.xiom-lang.org/index.json" style="color:var(--signal);">/index.json</a>.</p>
     <p>Client installs verify the sha256 of every artifact against the index, published versions are immutable, and first-party packages are signed with ed25519. Publishing is open through publisher tokens: request one via the <a href="https://github.com/xiom-lang/registry/blob/main/PUBLISHING.md" style="color:var(--signal);">publishing guide</a>, and see the <a href="https://docs.xiom-lang.org/registry/" style="color:var(--signal);">registry guide</a> for install, locking and trust commands.</p>
-    <p>The service is in beta and the public package list is just beginning. The organization lives on GitHub: <a href="https://github.com/xiom-lang" style="color:var(--signal);">github.com/xiom-lang</a>.</p>
+    <p>Official packages publish in batches from the release pipeline with signatures and provenance; the public catalog grows as each port passes its gate. The organization lives on GitHub: <a href="https://github.com/xiom-lang" style="color:var(--signal);">github.com/xiom-lang</a>.</p>
   </div>
 
 </main>
@@ -208,5 +208,6 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   </div>
 </footer>
 
+<script src="js/registry-count.js"></script>
 </body>
 </html>
