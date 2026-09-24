@@ -559,6 +559,16 @@ Remaining:
     pages. The "AI benchmark" card was removed from the homepage and became
     the "Reproducible evidence (in preparation)" section on the roadmap
     (`roadmap.html#benchmark`); no results are claimed.
+31. **Docs refresh automation (done 2026-09-25)**: `docs-versioned.yml` now
+    resolves the current tag from the GitHub releases API with a mirror
+    fallback for runs without a dispatch version, and carries a weekly
+    schedule (Monday 04:00 UTC) that republishes the current release from
+    main -- so stdlib/compiler drift shows up at least weekly without the
+    release dispatch. The first run is the push that lands this change
+    (workflow-file changes trigger the push path); it publishes v0.61.3 +
+    latest from main instead of the stale mirror's v0.60.1. Release dispatch
+    stays the release-accurate path once `XIOM_RELEASE_TOKEN` covers this
+    repo (owner action, relay above). DEPLOY.md documents the trigger set.
 
 ## Cross-lane notes
 
@@ -656,14 +666,16 @@ the mirror and the GitHub releases API and use whichever release is newer
 rate limit). The mirror sync pipeline itself still needs fixing so the
 canonical source stops lagging.
 
-Release dispatch to the website is broken (owner action, reported 2026-09-22):
-the compiler release workflow's dispatch to xiom-lang/website fails with 403
-because the release token lacks `Contents: read/write` on this repository; the
-workflow now warns instead of failing, so docs are not republished on new
-tags. Options: extend the PAT, or add an alternative publisher (for example a
-scheduled docs-versioned run that reads the mirror's latest tag and publishes
-if the tag is not yet on gh-pages) -- the latter needs owner approval because
-it changes CI permissions.
+Docs refresh automation (done 2026-09-25, owner-approved): the compiler
+release workflow already dispatches `compiler-release` with tag, `stdlib_ref`
+(from STDLIB_VERSION) and `compiler_ref` (release.yml CRB-4b); the 403 is
+only the token, which must cover `xiom-lang/website` with Contents:
+read/write (fine-grained) or classic `repo` scope. Until the owner widens
+`XIOM_RELEASE_TOKEN`, docs no longer wait on it: `docs-versioned.yml` gained
+a weekly schedule (Monday 04:00 UTC) and GitHub-first tag resolution
+(`/releases/latest`, mirror fallback), so the current release is republished
+from main every week. The dispatch remains the release-accurate path (pinned
+refs) once the token covers the repo.
 
 No-NASM crypto stubs (compiler/stdlib lane, found 2026-09-22):
 `stdlib/runtime/xiom_runtime.c` defines, under `-DXIOM_NO_ASM`,
@@ -867,7 +879,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-09-25): HEAD 7f6b639. Copyright notices across the repo read
+State (2026-09-25): HEAD 98b1daa. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
@@ -887,9 +899,10 @@ compiler checkout, the release-notes system (schema v1 in
 download and versions pages, fully tested), installer resilience
 (mirror + GitHub, newer release wins; macOS shipping copy), the
 checksum-column copy correction from the live deploy verification, the
-owner's webp art refresh including the og-card webp switch, and the
+owner's webp art refresh including the og-card webp switch, the
 ecosystem status pass with the live registry package count and the benchmark
-move to the roadmap. All guide syntax
+move to the roadmap, and the weekly docs refresh with GitHub-first tag
+resolution. All guide syntax
 was audited against a local compiler build: `if let`, range expressions
 and the `Byte` alias are not implemented and the docs do not claim them.
 Commits carry `-s` sign-off. `docs/wikipedia-draft.md` is a planning sheet
