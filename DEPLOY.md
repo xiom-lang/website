@@ -64,8 +64,11 @@ The versioned site for `docs.xiom-lang.org` is built from:
 `docs/build_mkdocs.py` assembles everything into `build/mkdocs-src/`
 (gitignored) and writes `SUMMARY.md` for the navigation; `mkdocs build
 --strict` must pass. `.github/workflows/docs-versioned.yml` runs the whole
-pipeline on `repository_dispatch: compiler-release` or manually
-(`workflow_dispatch`) and publishes with
+pipeline on `repository_dispatch: compiler-release` (the release-accurate
+path), on a push touching documentation inputs, on a weekly schedule
+(Monday 04:00 UTC, main-tracking), or manually (`workflow_dispatch`). Runs
+without a dispatch version resolve the release tag from the GitHub releases
+API with a mirror fallback, then publish with
 `mike deploy --push --update-aliases <tag> latest` to the `gh-pages` branch.
 
 Local verification (Python 3.8+; any managed interpreter works):

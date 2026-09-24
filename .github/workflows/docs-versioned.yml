@@ -7,15 +7,21 @@
 # in strict mode, and deploys with mike so each release keeps a docs snapshot
 # plus the latest alias. Publishes on:
 #   - push to main touching documentation inputs (republishes the current
-#     release version, resolved from the mirror, so the site cannot go stale)
+#     release version, resolved from the GitHub releases API with a mirror
+#     fallback, so the site cannot go stale)
 #   - repository_dispatch: compiler-release with client_payload.tag
+#     (requires XIOM_RELEASE_TOKEN in xiom-lang/xiom to cover this repo with
+#     Contents: read/write)
 #   - workflow_dispatch for manual publishes and backfill
+#   - a weekly schedule (Monday 04:00 UTC) that refreshes the current
+#     release from main, catching stdlib/compiler drift between releases
 #
 # Semantics: guides are checked out from website main in every run, so a
 # version directory is main-as-of-publish rather than byte-frozen to its tag.
-# Push runs refresh the current version plus the latest alias; release
-# dispatches additionally pin compiler_ref/stdlib_ref, making the generated
-# API pages as release-accurate as the pipeline allows. Push runs default
+# Push and scheduled runs refresh the current release plus the latest alias;
+# release dispatches additionally pin compiler_ref/stdlib_ref to the release
+# tag and its STDLIB_VERSION, making the generated API pages as
+# release-accurate as the pipeline allows. Runs without pinned refs default
 # those refs to main, so API pages may describe unreleased compiler/stdlib
 # state between releases -- "latest docs track main". If byte-stable
 # snapshots are ever required (e.g. at 1.0), the pattern is a dedicated dev
@@ -52,6 +58,10 @@ on:
         type: string
   repository_dispatch:
     types: [compiler-release]
+  schedule:
+    # Weekly main-tracking refresh; the tag comes from the GitHub releases
+    # API (mirror fallback) and the API pages are regenerated from main.
+    - cron: "0 4 * * 1"
 
 permissions:
   contents: write
@@ -72,12 +82,20 @@ jobs:
           IN_COMPILER: ${{ github.event.inputs.compiler_ref || github.event.client_payload.compiler_ref || 'main' }}
         run: |
           if [ -z "${IN_VERSION}" ]; then
-            echo "No dispatch version; resolving the current release from the mirror."
+            echo "No dispatch version; resolving the current release from the GitHub releases API."
+            IN_VERSION="$(curl -fsSL \
+              -H 'Accept: application/vnd.github+json' \
+              -H 'User-Agent: xiom-docs-versioned' \
+              https://api.github.com/repos/xiom-lang/xiom/releases/latest \
+              | grep -o '"tag_name": *"[^"]*"' | head -n 1 | cut -d'"' -f4)"
+          fi
+          if [ -z "${IN_VERSION}" ]; then
+            echo "GitHub API gave no tag; falling back to the mirror."
             IN_VERSION="$(curl -fsSL https://dl.xiom-lang.org/latest.json \
               | grep -o '"tag": *"[^"]*"' | head -n 1 | cut -d'"' -f4)"
           fi
           if [ -z "${IN_VERSION}" ]; then
-            echo "::error::No version tag provided and the mirror is unreachable"
+            echo "::error::No version tag provided and no release could be resolved"
             exit 1
           fi
           case "${IN_VERSION}" in
