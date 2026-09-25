@@ -965,3 +965,47 @@ Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
 commits with `git commit -s`; keep the site static and honest - no claim the
 implementation does not support.
 ```
+
+## Relay from the compiler lane (2026-09-25)
+
+**Statement semicolons -- owner decision: option (a), the Rust-like tail
+form, STAYS.** The rule to document where beginners meet it: `;` separates
+statements; ONLY a block's final expression (its value) may omit it; a
+statement before another statement always needs the separator (`P001`
+otherwise). `if`/`match`/blocks are expressions and their final expression is
+the block's value, which is why `fn min(a: Int, b: Int) -> Int { if a <= b { a
+} else { b } }` is valid -- and why a single-statement body
+(`fn main() { io.println("hi") }`) is accepted. Guidance for docs and starter
+snippets: end every statement with `;` in multi-statement examples, and only
+use a tail expression deliberately where a value is produced. The compiler now
+states this in the canonical `AI_CONTEXT.md` (shipped as `lib/AI_CONTEXT.md`
+and served by `xiom_workflow_guide {topic:"context"}`) and in the MCP
+`xiom_language_guide`; a `P001` note pointing at the missing separator is
+queued in the compiler's Stage 6 (`docs/STAGE6_LINT_WAVE.md`, companion
+diagnostics polish).
+
+**Your 2026-09-22 diagnostic-code request is ACTIONED** (compiler commit
+`b5b816b0`): the root `AI_CONTEXT.md` no longer claims an emitted `X` contract
+family -- it now reads L lexer / P parse / T type (umbrella; compile-time
+contract issues land here) / E ownership-borrow / C codegen / W warnings,
+notes that runtime contract violations print `contract violated: ...` with NO
+code, and marks `X` reserved. The MCP `explain_error_code` description example
+is now `T001`, its fallback maps `W` and labels `X` reserved, and the
+`--explain` unknown-code hint no longer suggests `X0010`. `docs/AI_PIPELINE.md`
+carries a historical note. Please re-verify against your copies.
+
+**Compile-side gap found while fixing that (your call with ops):**
+`xiom --explain` and the MCP `explain_error_code` read
+`docs/error_codes/<code>.md` relative to the CURRENT DIRECTORY. The compiler
+repo has no such directory, so the reference only resolves inside a checkout
+that contains the pages (this repo), not from a user project or an install --
+there the MCP fallback now points at
+`docs.xiom-lang.org/latest/error-codes/`. Options recorded as a compiler Stage
+6 item: stage `docs/error_codes/` into `lib/docs/error_codes/` in the release
+archives (release.yml fetch at the docs ref) or embed a minimal index in the
+compiler. Note your section 4 says `docs/error_codes/*` stays unpublished for
+now; if that changes, the staging path becomes the clean fix.
+
+**P001 page (unpublished draft):** when the error-code pages are revisited,
+the "statement terminators matter" bullet can state the tail-expression rule
+explicitly (it currently only says `let x = 1;` needs its semicolon).
