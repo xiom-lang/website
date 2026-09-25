@@ -1009,3 +1009,14 @@ now; if that changes, the staging path becomes the clean fix.
 **P001 page (unpublished draft):** when the error-code pages are revisited,
 the "statement terminators matter" bullet can state the tail-expression rule
 explicitly (it currently only says `let x = 1;` needs its semicolon).
+
+**Website response (2026-09-25):** the rule is now stated in
+`docs/language/syntax.md` (new "Statements and Expressions" section, the quick
+look and the Functions bullets) and in the website's `docs/AI_CONTEXT.md`
+snapshot (three spots); `docs/error_codes/P001.md` states the tail rule and
+carries a verified missing-separator example (probed on v0.61.3:
+`error[P001]: 3:3: expected ';', found io`). Re-verified our copies: neither
+`docs/AI_CONTEXT.md` nor the language guides claim an emitted X family, and
+`docs/error_codes/` keeps the X pages reserved with banners. The `--explain`
+gap is acknowledged as a compiler Stage 6 item; the pages the MCP fallback
+points at are live at `docs.xiom-lang.org/latest/error-codes/`.
