@@ -5478,7 +5478,7 @@ to ensure code works in all compilation modes.</p>
 - <code>let</code> = immutable. <code>var</code> = mutable.
 - Type annotation optional when compiler can infer.
 - Inference does NOT cross function boundaries. Function signatures always fully annotated.
-- Every statement MUST end with <code>;</code>. The last expression in a block (tail expression) does NOT.</p>
+- <code>;</code> separates statements. The final expression of a block is its value and is written WITHOUT <code>;</code>; only the tail may omit it, a statement before another statement always needs the <code>;</code> (a missing separator is a hard <code>P001</code> parse error), and a Unit-returning call may sit in tail position without <code>;</code>. In multi-statement code, end every statement with <code>;</code>.</p>
 <h3 id="22-functions">2.2 Functions<a class="headerlink" href="#22-functions" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
@@ -5503,7 +5503,7 @@ to ensure code works in all compilation modes.</p>
 - All parameters must have type annotations.
 - Return type is required unless the function returns nothing.
 - <code>requires</code> and <code>ensures</code> go between signature and body.
-- <code>return</code> always needs <code>;</code>. Tail expressions do not.
+- <code>return</code> always needs <code>;</code>; only a block's final expression may omit the separator.
 - Functions are not first-class values for assignment. Use closures.</p>
 <h3 id="23-methods">2.3 Methods<a class="headerlink" href="#23-methods" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="nc">Vec3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span><span class="w"> </span><span class="n">z</span><span class="p">:</span><span class="w"> </span><span class="kt">Float32</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
@@ -8150,9 +8150,9 @@ UInt64 tuples collide with Int tuples in codegen (named structs, e.g.
 </thead>
 <tbody>
 <tr>
-<td>Missing <code>;</code> after statement</td>
-<td><code>expected ';', found ...</code></td>
-<td>Every statement needs <code>;</code> except tail expressions and block closers.</td>
+<td>Missing <code>;</code> between statements</td>
+<td><code>error[P001]: expected ';', found ...</code></td>
+<td>Statements end with <code>;</code>; only a block's final expression may omit it.</td>
 </tr>
 <tr>
 <td><code>else if</code> instead of <code>elif</code></td>
