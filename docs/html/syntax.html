@@ -121,7 +121,30 @@
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Syntax Reference</h1>
-      <blockquote><p><strong>Quick look:</strong> <code>let x = 42;</code> - <code>fn name(args) -&gt; Type { ... }</code> - <code>if/elif/else</code> - <code>match x { Arm =&gt; ..., }</code> - <code>;</code> on every statement</p></blockquote>
+      <blockquote><p><strong>Quick look:</strong> <code>let x = 42;</code> - <code>fn name(args) -&gt; Type { ... }</code> - <code>if/elif/else</code> - <code>match x { Arm =&gt; ..., }</code> - <code>;</code> separates statements; only a block's final expression omits it</p></blockquote>
+<h2>Statements and Expressions</h2>
+<p><code>;</code> separates statements. The final expression of a block is its value and is written without <code>;</code>:</p>
+<pre class="language-xiom"><code>
+<span class='kw'>fn</span> <span class='func'>min</span>(a: <span class='ty'>Int</span>, b: <span class='ty'>Int</span>) -&gt; <span class='ty'>Int</span> {
+  <span class='kw'>if</span> a &lt;= b { a } <span class='kw'>else</span> { b }
+}
+</code></pre>
+<ul>
+<li>Only a block's final expression may omit the <code>;</code>. A statement before another</li>
+</ul>
+<p>statement always needs it: <code>io.println("a")</code> followed by <code>io.println("b")</code>   on the next line does not compile -- the missing separator is a hard <code>P001</code>   parse error (<code>expected ';', found ...</code>).</p>
+<ul>
+<li>A Unit-returning call may also sit in tail position without <code>;</code>, which is</li>
+</ul>
+<p>why <code>fn main() { io.println("hi") }</code> is accepted.</p>
+<ul>
+<li>In multi-statement code, end every statement with <code>;</code> and use <code>return expr;</code></li>
+</ul>
+<p>in value blocks; use a short tail expression only where a value is produced.</p>
+<ul>
+<li><code>if</code>, <code>match</code> and blocks are expressions: each yields a value, so it can be</li>
+</ul>
+<p>assigned or stand in tail position.</p>
 <h2>Variables</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>let</span> x: <span class='ty'>Int</span> = <span class='num'>42</span>;           <span class='cm'>// immutable binding</span>
@@ -160,9 +183,9 @@
 <ul>
 <li>Function signatures are always fully annotated.</li>
 <li>Contracts (<code>requires</code>, <code>ensures</code>) appear between the signature and the body.</li>
-<li>The last expression in a block is the return value (tail expression).</li>
-<li>Every statement <strong>must</strong> end with <code>;</code>. Tail expressions do not.</li>
+<li>The last expression in a block is the return value (tail expression); see</li>
 </ul>
+<p>Statements and Expressions above.</p>
 <h2>Methods</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ty'>Vec3</span> = { x: <span class='ty'>Float32</span>; y: <span class='ty'>Float32</span>; z: <span class='ty'>Float32</span>; }

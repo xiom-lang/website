@@ -79,7 +79,7 @@ let v = [1, 2, 3];        // type inferred -- Vec[Int]
 - `let` = immutable. `var` = mutable.
 - Type annotation optional when compiler can infer.
 - Inference does NOT cross function boundaries. Function signatures always fully annotated.
-- Every statement MUST end with `;`. The last expression in a block (tail expression) does NOT.
+- `;` separates statements. The final expression of a block is its value and is written WITHOUT `;`; only the tail may omit it, a statement before another statement always needs the `;` (a missing separator is a hard `P001` parse error), and a Unit-returning call may sit in tail position without `;`. In multi-statement code, end every statement with `;`.
 
 ### 2.2 Functions
 
@@ -108,7 +108,7 @@ fn divide(a: Float64, b: Float64) -> Float64
 - All parameters must have type annotations.
 - Return type is required unless the function returns nothing.
 - `requires` and `ensures` go between signature and body.
-- `return` always needs `;`. Tail expressions do not.
+- `return` always needs `;`; only a block's final expression may omit the separator.
 - Functions are not first-class values for assignment. Use closures.
 
 ### 2.3 Methods
@@ -2839,7 +2839,7 @@ fn connect(host: Str, port: Port) -> Result[Conn, NetError]
 
 | Mistake | Error | Fix |
 |---------|-------|-----|
-| Missing `;` after statement | `expected ';', found ...` | Every statement needs `;` except tail expressions and block closers. |
+| Missing `;` between statements | `error[P001]: expected ';', found ...` | Statements end with `;`; only a block's final expression may omit it. |
 | `else if` instead of `elif` | (accepted) | `else if` desugars to `elif`; `elif` remains the canonical spelling. |
 | `self.x` in method | Not a compile error but stylistically wrong | Fields accessed directly: `x`, not `self.x`. |
 | Returning a borrow | `cannot return borrow` | Return owned type or clone. |

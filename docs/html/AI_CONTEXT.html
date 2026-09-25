@@ -193,7 +193,7 @@ Pipeline: .xi -&gt; Lexer -&gt; Parser -&gt; Type Checker -&gt; Borrow Checker -
 <li><code>let</code> = immutable. <code>var</code> = mutable.</li>
 <li>Type annotation optional when compiler can infer.</li>
 <li>Inference does NOT cross function boundaries. Function signatures always fully annotated.</li>
-<li>Every statement MUST end with <code>;</code>. The last expression in a block (tail expression) does NOT.</li>
+<li><code>;</code> separates statements. The final expression of a block is its value and is written WITHOUT <code>;</code>; only the tail may omit it, a statement before another statement always needs the <code>;</code> (a missing separator is a hard <code>P001</code> parse error), and a Unit-returning call may sit in tail position without <code>;</code>. In multi-statement code, end every statement with <code>;</code>.</li>
 </ul>
 <h3>2.2 Functions</h3>
 <pre class="language-xiom"><code>
@@ -221,7 +221,7 @@ Pipeline: .xi -&gt; Lexer -&gt; Parser -&gt; Type Checker -&gt; Borrow Checker -
 <li>All parameters must have type annotations.</li>
 <li>Return type is required unless the function returns nothing.</li>
 <li><code>requires</code> and <code>ensures</code> go between signature and body.</li>
-<li><code>return</code> always needs <code>;</code>. Tail expressions do not.</li>
+<li><code>return</code> always needs <code>;</code>; only a block's final expression may omit the separator.</li>
 <li>Functions are not first-class values for assignment. Use closures.</li>
 </ul>
 <h3>2.3 Methods</h3>
@@ -2862,9 +2862,9 @@ vulkan-<span class='num'>1.</span>dll + glfw3.<span class='func'>dll</span>(nati
 <th>Fix</th>
 </tr>
 <tr>
-<td>Missing <code>;</code> after statement</td>
-<td><code>expected ';', found ...</code></td>
-<td>Every statement needs <code>;</code> except tail expressions and block closers.</td>
+<td>Missing <code>;</code> between statements</td>
+<td><code>error[P001]: expected ';', found ...</code></td>
+<td>Statements end with <code>;</code>; only a block's final expression may omit it.</td>
 </tr>
 <tr>
 <td><code>else if</code> instead of <code>elif</code></td>

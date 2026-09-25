@@ -4,7 +4,29 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 -->
 # Syntax Reference
 
-> **Quick look:** `let x = 42;` - `fn name(args) -> Type { ... }` - `if/elif/else` - `match x { Arm => ..., }` - `;` on every statement
+> **Quick look:** `let x = 42;` - `fn name(args) -> Type { ... }` - `if/elif/else` - `match x { Arm => ..., }` - `;` separates statements; only a block's final expression omits it
+
+## Statements and Expressions
+
+`;` separates statements. The final expression of a block is its value and is
+written without `;`:
+
+```xiom
+fn min(a: Int, b: Int) -> Int {
+  if a <= b { a } else { b }
+}
+```
+
+- Only a block's final expression may omit the `;`. A statement before another
+  statement always needs it: `io.println("a")` followed by `io.println("b")`
+  on the next line does not compile -- the missing separator is a hard `P001`
+  parse error (`expected ';', found ...`).
+- A Unit-returning call may also sit in tail position without `;`, which is
+  why `fn main() { io.println("hi") }` is accepted.
+- In multi-statement code, end every statement with `;` and use `return expr;`
+  in value blocks; use a short tail expression only where a value is produced.
+- `if`, `match` and blocks are expressions: each yields a value, so it can be
+  assigned or stand in tail position.
 
 ## Variables
 
@@ -46,8 +68,8 @@ fn divide(a: Float64, b: Float64) -> Float64
 
 - Function signatures are always fully annotated.
 - Contracts (`requires`, `ensures`) appear between the signature and the body.
-- The last expression in a block is the return value (tail expression).
-- Every statement **must** end with `;`. Tail expressions do not.
+- The last expression in a block is the return value (tail expression); see
+  Statements and Expressions above.
 
 ## Methods
 

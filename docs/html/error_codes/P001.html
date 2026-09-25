@@ -139,6 +139,16 @@ error[P001]: <span class='num'>2</span>:<span class='num'>13</span>: expected ')
 <pre><code>
 error[P001]: <span class='num'>1</span>:<span class='num'>12</span>: expected identifier, found '{'
 </code></pre>
+<p>Statements on consecutive lines without a separator:</p>
+<pre class="language-xiom"><code>
+<span class='kw'>fn</span> <span class='func'>main</span>() {
+  io.<span class='func'>println</span>(<span class='str'>a</span>)
+  io.<span class='func'>println</span>(<span class='str'>b</span>)
+}
+</code></pre>
+<pre><code>
+error[P001]: <span class='num'>3</span>:<span class='num'>3</span>: expected ';', found io
+</code></pre>
 <h2>Fix</h2>
 <ul>
 <li>Balance every <code>()</code>, <code>[]</code> and <code>{}</code> pair.</li>
@@ -146,8 +156,9 @@ error[P001]: <span class='num'>1</span>:<span class='num'>12</span>: expected id
 </ul>
 <p>just before or at it.</p>
 <ul>
-<li>Statement terminators matter: <code>let x = 1;</code> needs its semicolon.</li>
+<li>Statements end with <code>;</code>; only a block's final expression may omit it. A</li>
 </ul>
+<p>missing separator between two statements is this error.</p>
 <h2>Notes</h2>
 <ul>
 <li>The parser stops the pipeline: no type checking happens until P001 is</li>
