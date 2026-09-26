@@ -6,16 +6,17 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 The XIOM package registry is live at
 [registry.xiom-lang.org](https://registry.xiom-lang.org) and is the package
-source your `xiom pkg` commands already use. It is in beta: the service,
-protocol and verification pipeline are operational, and the public package
-list is just beginning.
+source your `xiom pkg` commands already use. The 1.0 publishing protocol is
+proven, and the 2.0 platform is live: GitHub sign-in, self-service publish
+requests, rendered READMEs and reviews. The public catalog grows in batches
+as packages pass their gates.
 
 ## Browse
 
 - The web UI lists every package with its latest version, with search.
 - A package page shows every version with published date, size, sha256
-  digest, signature fingerprint and yank state, plus copy-ready install and
-  trust commands.
+  digest, signature fingerprint and yank state, its rendered README and
+  reviews, plus copy-ready install and trust commands.
 - The JSON API behind the UI is public: `https://registry.xiom-lang.org/index.json`.
 
 ## Install a package
@@ -93,6 +94,16 @@ downloadable. The package page marks it `yanked`.
 | install falls back to local resolution | the registry was unreachable; integrity failures never fall back |
 | stale index | the client caches the index in-process for 5 minutes |
 
-Publishing your own packages is covered in the registry repository's
-`PUBLISHING.md`; registry issues go to
+## Publishing and accounts
+
+Sign in at
+[registry.xiom-lang.org/login](https://registry.xiom-lang.org/login) with
+GitHub to request a publish token or a trusted-publisher entry; an operator
+approves the request. Sign-in is identity only -- a browser session can
+never publish, and artifacts are always signed by the publisher's key (OIDC
+in CI, or a scoped token). The full flow, signing and troubleshooting live
+in the registry repository's `PUBLISHING.md`; the service change log is at
+[registry.xiom-lang.org/whats-new](https://registry.xiom-lang.org/whats-new).
+
+Registry issues go to
 [github.com/xiom-lang/registry/issues](https://github.com/xiom-lang/registry/issues).

@@ -121,13 +121,13 @@
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
       <h1 style="font-size:36px;margin-bottom:24px;">Package Registry</h1>
-      <p>The XIOM package registry is live at <a href="https://registry.xiom-lang.org">registry.xiom-lang.org</a> and is the package source your <code>xiom pkg</code> commands already use. It is in beta: the service, protocol and verification pipeline are operational, and the public package list is just beginning.</p>
+      <p>The XIOM package registry is live at <a href="https://registry.xiom-lang.org">registry.xiom-lang.org</a> and is the package source your <code>xiom pkg</code> commands already use. The 1.0 publishing protocol is proven, and the 2.0 platform is live: GitHub sign-in, self-service publish requests, rendered READMEs and reviews. The public catalog grows in batches as packages pass their gates.</p>
 <h2>Browse</h2>
 <ul>
 <li>The web UI lists every package with its latest version, with search.</li>
 <li>A package page shows every version with published date, size, sha256</li>
 </ul>
-<p>digest, signature fingerprint and yank state, plus copy-ready install and   trust commands.</p>
+<p>digest, signature fingerprint and yank state, its rendered README and   reviews, plus copy-ready install and trust commands.</p>
 <ul>
 <li>The JSON API behind the UI is public: <code>https://registry.xiom-lang.org/index.json</code>.</li>
 </ul>
@@ -211,7 +211,9 @@ xiom pkg search http        # downloads the index and filters locally
 <td>the client caches the index in-process for 5 minutes</td>
 </tr>
 </table>
-<p>Publishing your own packages is covered in the registry repository's <code>PUBLISHING.md</code>; registry issues go to <a href="https://github.com/xiom-lang/registry/issues">github.com/xiom-lang/registry/issues</a>.</p>
+<h2>Publishing and accounts</h2>
+<p>Sign in at <a href="https://registry.xiom-lang.org/login">registry.xiom-lang.org/login</a> with GitHub to request a publish token or a trusted-publisher entry; an operator approves the request. Sign-in is identity only -- a browser session can never publish, and artifacts are always signed by the publisher's key (OIDC in CI, or a scoped token). The full flow, signing and troubleshooting live in the registry repository's <code>PUBLISHING.md</code>; the service change log is at <a href="https://registry.xiom-lang.org/whats-new">registry.xiom-lang.org/whats-new</a>.</p>
+<p>Registry issues go to <a href="https://github.com/xiom-lang/registry/issues">github.com/xiom-lang/registry/issues</a>.</p>
     </main>
 
   </div>

@@ -2,7 +2,7 @@
 Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 SPDX-License-Identifier: MIT OR Apache-2.0
 
-Live official-package count for the roadmap and ecosystem pages.
+Live installable-package count for the roadmap and ecosystem pages.
 
 Reads the public registry index (registry.xiom-lang.org/index.json, served
 with Access-Control-Allow-Origin: *) and fills every element that carries a
