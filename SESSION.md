@@ -594,13 +594,14 @@ Remaining:
     run published it to gh-pages). The client named as "gravity" in the
     request could not be matched against current docs; unlisted clients use
     the portable block.
-34. **Owner webp banner refresh, higher resolution (done 2026-09-26)**: six
-    webps replaced (prior-art, roadmap, spec, why plus the unreferenced
-    playground and registry) at 2172x724 (was 1539x510); the four referenced
-    banners got matching width/height hints. Dimensions verified; checks
-    clean (`9a78059`). Note: `playground.webp` and `registry.webp` have no
-    references anywhere in the repo (checked with `git grep`); they are kept
-    for future use.
+34. **Owner webp banner refresh, higher resolution (done 2026-09-26)**: the
+    referenced banners prior-art, roadmap, spec, why (2172x724) and ecosystem
+    (2171x724) were replaced, plus the unreferenced playground and registry
+    (2172x724); all were 1539x510 before, and every referenced banner got a
+    matching size hint (`9a78059`, `f22e5af`). Dimensions verified; checks
+    clean; `contributing.webp` is the only banner still at 1539x510. Note:
+    `playground.webp` and `registry.webp` have no references anywhere in the
+    repo (checked with `git grep`); they are kept for future use.
 
 ## Cross-lane notes
 
