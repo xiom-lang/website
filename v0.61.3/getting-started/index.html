@@ -411,6 +411,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#use-xiom-from-ai-agents-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use XIOM from AI agents (MCP)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#build-from-source" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2869,6 +2880,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#use-xiom-from-ai-agents-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use XIOM from AI agents (MCP)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#build-from-source" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3149,6 +3171,52 @@ only <code>.xiom_ai.json</code>, <code>--ai-model=&lt;name&gt;</code> overrides 
 non-local hosts, and <code>xiom --help-ai</code> prints this guide from the compiler
 itself. The installer's config file is gitignored; prefer <code>XIOM_AI_KEY</code> over a
 key on disk.</p>
+<h2 id="use-xiom-from-ai-agents-mcp">Use XIOM from AI agents (MCP)<a class="headerlink" href="#use-xiom-from-ai-agents-mcp" title="Permanent link">&para;</a></h2>
+<p><code>xiom-mcp</code> is a Model Context Protocol server: it gives agents the compiler,
+the language guides, the standard library, contract verification and registry
+search as tools (the full list is on the <a href="../compiler/">Compiler page</a>). It
+ships in every release archive and the installers put <code>xiom-mcp</code> on your
+<code>PATH</code>; it speaks stdio JSON-RPC, so any MCP-capable client can run it.</p>
+<p>Claude Code:</p>
+<div class="highlight"><pre><span></span><code>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>--transport<span class="w"> </span>stdio<span class="w"> </span>xiom<span class="w"> </span>--<span class="w"> </span>xiom-mcp<span class="w">              </span><span class="c1"># this project</span>
+claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>--scope<span class="w"> </span>user<span class="w"> </span>--transport<span class="w"> </span>stdio<span class="w"> </span>xiom<span class="w"> </span>--<span class="w"> </span>xiom-mcp<span class="w"> </span><span class="c1"># all projects</span>
+</code></pre></div>
+<p>Portable project file (<code>.mcp.json</code>), read by Claude Code, VS Code and other
+compatible clients:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"xiom"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xiom-mcp"</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Cursor: put the same <code>mcpServers</code> block in <code>.cursor/mcp.json</code> (project) or
+<code>~/.cursor/mcp.json</code> (global).</p>
+<p>VS Code (Copilot) uses <code>.vscode/mcp.json</code> with a <code>servers</code> key:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"xiom"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xiom-mcp"</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Codex CLI: add to <code>~/.codex/config.toml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[mcp_servers.xiom]</span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"xiom-mcp"</span>
+</code></pre></div>
+<p>Kilo: add to <code>kilo.json</code>/<code>kilo.jsonc</code> in the project, or
+<code>~/.config/kilo/kilo.jsonc</code> globally:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"mcp"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"xiom"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local"</span><span class="p">,</span><span class="w"> </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"xiom-mcp"</span><span class="p">],</span><span class="w"> </span><span class="nt">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Any other MCP-capable client: use the portable <code>mcpServers</code> block above, or
+run <code>xiom-mcp</code> as a stdio server directly.</p>
+<p>On Windows the installer places the tools in <code>%LOCALAPPDATA%\xiom\bin</code>; if a
+client does not inherit your <code>PATH</code>, use the absolute path
+<code>%LOCALAPPDATA%\xiom\bin\xiom-mcp.exe</code> in <code>command</code>. <code>xiom-mcp --version</code>
+prints the server version. Once connected, ask the agent for the
+<code>xiom_cheatsheet</code>, or have it compile your file with <code>compile_and_analyze</code>.</p>
 <h2 id="build-from-source">Build from Source<a class="headerlink" href="#build-from-source" title="Permanent link">&para;</a></h2>
 <p>Requires Rust 1.86+ and LLVM/Clang 18+.</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/xiom-lang/xiom.git
