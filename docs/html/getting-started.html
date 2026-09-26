@@ -314,6 +314,45 @@ xiom --ai --ai-local source.xi
 </tr>
 </table>
 <p>Useful flags: <code>--ai-local</code> forces Ollama on loopback and drops any cloud key, <code>--ai-dry-run</code> prints the prompt without calling a model, <code>--ai-silent</code> writes only <code>.xiom_ai.json</code>, <code>--ai-model=&lt;name&gt;</code> overrides the model, and <code>--ai-timeout=&lt;sec&gt;</code> the timeout. Keys are refused over plaintext <code>http://</code> to non-local hosts, and <code>xiom --help-ai</code> prints this guide from the compiler itself. The installer's config file is gitignored; prefer <code>XIOM_AI_KEY</code> over a key on disk.</p>
+<h2>Use XIOM from AI agents (MCP)</h2>
+<p><code>xiom-mcp</code> is a Model Context Protocol server: it gives agents the compiler, the language guides, the standard library, contract verification and registry search as tools (the full list is on the <a href="compiler.html">Compiler page</a>). It ships in every release archive and the installers put <code>xiom-mcp</code> on your <code>PATH</code>; it speaks stdio JSON-RPC, so any MCP-capable client can run it.</p>
+<p>Claude Code:</p>
+<pre class="language-bash"><code>
+claude mcp add --transport stdio xiom -- xiom-mcp              # this project
+claude mcp add --scope user --transport stdio xiom -- xiom-mcp # all projects
+</code></pre>
+<p>Portable project file (<code>.mcp.json</code>), read by Claude Code, VS Code and other compatible clients:</p>
+<pre class="language-json"><code>
+{
+  <span class='str'>mcpServers</span>: {
+    <span class='str'>xiom</span>: { <span class='str'>command</span>: <span class='str'>xiom-mcp</span> }
+  }
+}
+</code></pre>
+<p>Cursor: put the same <code>mcpServers</code> block in <code>.cursor/mcp.json</code> (project) or <code>~/.cursor/mcp.json</code> (global).</p>
+<p>VS Code (Copilot) uses <code>.vscode/mcp.json</code> with a <code>servers</code> key:</p>
+<pre class="language-json"><code>
+{
+  <span class='str'>servers</span>: {
+    <span class='str'>xiom</span>: { <span class='str'>command</span>: <span class='str'>xiom-mcp</span> }
+  }
+}
+</code></pre>
+<p>Codex CLI: add to <code>~/.codex/config.toml</code>:</p>
+<pre class="language-toml"><code>
+[mcp_servers.xiom]
+command = <span class='str'>xiom-mcp</span>
+</code></pre>
+<p>Kilo: add to <code>kilo.json</code>/<code>kilo.jsonc</code> in the project, or <code>~/.config/kilo/kilo.jsonc</code> globally:</p>
+<pre class="language-json"><code>
+{
+  <span class='str'>mcp</span>: {
+    <span class='str'>xiom</span>: { <span class='str'><span class='kw'>type</span></span>: <span class='str'>local</span>, <span class='str'>command</span>: [<span class='str'>xiom-mcp</span>], <span class='str'>enabled</span>: <span class='kw'>true</span> }
+  }
+}
+</code></pre>
+<p>Any other MCP-capable client: use the portable <code>mcpServers</code> block above, or run <code>xiom-mcp</code> as a stdio server directly.</p>
+<p>On Windows the installer places the tools in <code>%LOCALAPPDATA%\xiom\bin</code>; if a client does not inherit your <code>PATH</code>, use the absolute path <code>%LOCALAPPDATA%\xiom\bin\xiom-mcp.exe</code> in <code>command</code>. <code>xiom-mcp --version</code> prints the server version. Once connected, ask the agent for the <code>xiom_cheatsheet</code>, or have it compile your file with <code>compile_and_analyze</code>.</p>
 <h2>Build from Source</h2>
 <p>Requires Rust 1.86+ and LLVM/Clang 18+.</p>
 <pre class="language-bash"><code>

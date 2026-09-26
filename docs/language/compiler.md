@@ -219,7 +219,9 @@ Register the server in any MCP-capable client:
 ```
 
 Build it from source with `cargo build --release -p xiom-mcp` if you
-prefer; the release archives already ship it as `bin/xiom-mcp`.
+prefer; the release archives already ship it as `bin/xiom-mcp`. Client-by-client
+setup (Claude Code, Cursor, VS Code, Codex CLI, Kilo) is in
+[Getting Started](getting-started.md#use-xiom-from-ai-agents-mcp).
 
 Release archives ship the full toolchain in `bin/`: `xiom`, `xiom-pkg`,
 `xiom-fmt`, `xiom-doc`, `xiom-ffigen`, `xiom-lsp`, `xiom-mcp`, `xiom-dbg`

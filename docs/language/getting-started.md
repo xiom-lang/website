@@ -180,6 +180,72 @@ non-local hosts, and `xiom --help-ai` prints this guide from the compiler
 itself. The installer's config file is gitignored; prefer `XIOM_AI_KEY` over a
 key on disk.
 
+## Use XIOM from AI agents (MCP)
+
+`xiom-mcp` is a Model Context Protocol server: it gives agents the compiler,
+the language guides, the standard library, contract verification and registry
+search as tools (the full list is on the [Compiler page](compiler.md)). It
+ships in every release archive and the installers put `xiom-mcp` on your
+`PATH`; it speaks stdio JSON-RPC, so any MCP-capable client can run it.
+
+Claude Code:
+
+```bash
+claude mcp add --transport stdio xiom -- xiom-mcp              # this project
+claude mcp add --scope user --transport stdio xiom -- xiom-mcp # all projects
+```
+
+Portable project file (`.mcp.json`), read by Claude Code, VS Code and other
+compatible clients:
+
+```json
+{
+  "mcpServers": {
+    "xiom": { "command": "xiom-mcp" }
+  }
+}
+```
+
+Cursor: put the same `mcpServers` block in `.cursor/mcp.json` (project) or
+`~/.cursor/mcp.json` (global).
+
+VS Code (Copilot) uses `.vscode/mcp.json` with a `servers` key:
+
+```json
+{
+  "servers": {
+    "xiom": { "command": "xiom-mcp" }
+  }
+}
+```
+
+Codex CLI: add to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.xiom]
+command = "xiom-mcp"
+```
+
+Kilo: add to `kilo.json`/`kilo.jsonc` in the project, or
+`~/.config/kilo/kilo.jsonc` globally:
+
+```json
+{
+  "mcp": {
+    "xiom": { "type": "local", "command": ["xiom-mcp"], "enabled": true }
+  }
+}
+```
+
+Any other MCP-capable client: use the portable `mcpServers` block above, or
+run `xiom-mcp` as a stdio server directly.
+
+On Windows the installer places the tools in `%LOCALAPPDATA%\xiom\bin`; if a
+client does not inherit your `PATH`, use the absolute path
+`%LOCALAPPDATA%\xiom\bin\xiom-mcp.exe` in `command`. `xiom-mcp --version`
+prints the server version. Once connected, ask the agent for the
+`xiom_cheatsheet`, or have it compile your file with `compile_and_analyze`.
+
 ## Build from Source
 
 Requires Rust 1.86+ and LLVM/Clang 18+.
