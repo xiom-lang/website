@@ -583,6 +583,17 @@ Remaining:
     gains "Publishing and accounts" and README/reviews in Browse. Count
     labels became "Installable packages in the registry" (live count, 112
     today). `docs/html` regenerated; checks clean.
+33. **MCP client setup in Getting Started (done 2026-09-26)**: the guide now
+    documents the shipped `xiom-mcp` stdio server client-by-client -- Claude
+    Code (`claude mcp add`, `.mcp.json`), Cursor (`.cursor/mcp.json`), VS
+    Code (`.vscode/mcp.json` `servers`), Codex CLI (`config.toml`
+    `[mcp_servers.xiom]`), Kilo (`kilo.json` `mcp` with `type: local`), plus
+    the portable `mcpServers` block and the Windows absolute-path fallback.
+    Formats verified against the clients' current documentation on
+    2026-09-26; the compiler page links to the section (`ebf9c33`; the docs
+    run published it to gh-pages). The client named as "gravity" in the
+    request could not be matched against current docs; unlisted clients use
+    the portable block.
 
 ## Cross-lane notes
 
