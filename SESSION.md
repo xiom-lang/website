@@ -549,8 +549,8 @@ Remaining:
     and provenance), editor tooling live (the VS Code extension is on the VS
     Code Marketplace and Open VSX; `release.yml` publishes new extension
     versions to both and skips toolchain-only releases), playground live,
-    and Registry 2.0 recorded as a direction (GitHub sign-in, review,
-    self-service) per registry SESSION section 15. The live package count is
+    and Registry 2.0 recorded as a direction at the time (superseded
+    2026-09-26: 2.0 is live -- item 32). The live package count is
     read at page load from `registry.xiom-lang.org/index.json` through
     `js/registry-count.js` (ACAO `*`; installable = entries with a non-empty
     `latest`; 37 of 38 today, the yanked probe excluded) on both the roadmap
@@ -569,6 +569,20 @@ Remaining:
     latest from main instead of the stale mirror's v0.60.1. Release dispatch
     stays the release-accurate path once `XIOM_RELEASE_TOKEN` covers this
     repo (owner action, relay above). DEPLOY.md documents the trigger set.
+32. **Registry 2.0 launched and reflected on the site (done 2026-09-26)**:
+    production serves registry 2.0.0 (protocol 1.0.0) with 113 entries / 112
+    installable. Verified live: `/login` 200 with GitHub sign-in ("request a
+    publish token"), `/auth/github/start` 302, `/account`, `/review` and
+    `/admin/requests` auth-gated, `/whats-new` renders the changelog,
+    package pages render the README and a Reviews section, `/index.json`
+    shape unchanged. The roadmap Ecosystem table now shows Registry 1.0
+    (shipped protocol foundation) and Registry 2.0 (live: sign-in
+    identity-only, self-service token/trusted-publisher requests with
+    operator approval, reviews, READMEs, what's-new); the ecosystem page
+    drops the "read-only UI" and "not scheduled" wording; the registry guide
+    gains "Publishing and accounts" and README/reviews in Browse. Count
+    labels became "Installable packages in the registry" (live count, 112
+    today). `docs/html` regenerated; checks clean.
 
 ## Cross-lane notes
 
@@ -906,8 +920,9 @@ download and versions pages, fully tested), installer resilience
 checksum-column copy correction from the live deploy verification, the
 owner's webp art refresh including the og-card webp switch, the
 ecosystem status pass with the live registry package count and the benchmark
-move to the roadmap, and the weekly docs refresh with GitHub-first tag
-resolution. All guide syntax
+move to the roadmap, the weekly docs refresh with GitHub-first tag
+resolution, the compiler-relay semicolon rule, and the Registry 2.0 launch
+update. All guide syntax
 was audited against a local compiler build: `if let`, range expressions
 and the `Byte` alias are not implemented and the docs do not claim them.
 Commits carry `-s` sign-off. `docs/wikipedia-draft.md` is a planning sheet
