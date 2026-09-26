@@ -612,6 +612,16 @@ Remaining:
     (`7ac30eb`). The DEPLOY list is authoritative; its future-tense
     nightly-backup wording stays pending until ops confirms the first restic
     snapshot and a restore drill.
+36. **Ecosystem category statuses corrected (done 2026-09-26)**: the registry
+    index now serves 250 entries / 249 installable, so the eight category
+    cards no longer read "planned": seven are "shipping" with texts stating
+    what is live (serialization/data formats, protocol codecs, model/tensor
+    formats, domain formats, image/audio/video, system formats and dev tools,
+    property/fuzz/SMT-LIB) and what is next; Interoperability and bridges
+    stays "planned" because no FFI or binding package exists yet. The
+    first-party table row reads "shipping", the plan list is present tense,
+    and `eco-tag.shipping` reuses the verified accent (`7174924`; generated
+    docs/html/style.css refreshed).
 
 ## Cross-lane notes
 
