@@ -602,6 +602,16 @@ Remaining:
     clean; `contributing.webp` is the only banner still at 1539x510. Note:
     `playground.webp` and `registry.webp` have no references anywhere in the
     repo (checked with `git grep`); they are kept for future use.
+35. **Privacy page synced to the playground P2 cutover (done 2026-09-26)**:
+    relay from the playground lane; the accounts paragraph now mirrors
+    playground DEPLOY.md's "User data and privacy facts": one JSON progress
+    document per account stored by the host-side playground service on the
+    host (access-controlled, mode 0600, atomic writes) with no copy in the
+    web container, and the backup sentence points at the host state directory
+    plus the pre-cutover Docker volume retained only for the rollback window
+    (`7ac30eb`). The DEPLOY list is authoritative; its future-tense
+    nightly-backup wording stays pending until ops confirms the first restic
+    snapshot and a restore drill.
 
 ## Cross-lane notes
 
