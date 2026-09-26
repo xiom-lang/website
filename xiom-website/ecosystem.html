@@ -65,7 +65,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       <tr><td>Compiler</td><td>shipping</td><td>Rolling releases on GitHub and the mirror; the versions page tracks the current tag</td></tr>
       <tr><td>Standard library</td><td>beta</td><td>Ships with the toolchain; 44 modules with published limitations</td></tr>
       <tr><td>Registry</td><td>live (2.0)</td><td>Publish, install and search, with sha256 checks, ed25519 signatures and provenance; GitHub sign-in, self-service publish requests, rendered READMEs and reviews on top</td></tr>
-      <tr><td>First-party packages</td><td>published</td><td>Installable packages in the registry: <strong><span data-registry-count>see the registry</span></strong>; the rest of the corpus ships in batches as each package passes the build, test and contract gate</td></tr>
+      <tr><td>First-party packages</td><td>shipping</td><td>Installable packages in the registry: <strong><span data-registry-count>see the registry</span></strong>, growing in batches as each package passes the build, test and contract gate</td></tr>
       <tr><td>Community publishing</td><td>open (self-service)</td><td>Sign in with GitHub to request a publish token or a trusted-publisher entry; an operator approves it. Publishing stays signed (OIDC or token) -- a browser session can never publish</td></tr>
     </table>
     <p style="color:var(--muted);font-size:13px;margin-top:16px;">We deliberately do not list packages that do not build against the current toolchain; the registry is the live catalog. This page records what is published and what comes next.</p>
@@ -76,8 +76,8 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     <h2>The plan</h2>
     <ol>
       <li><strong>Stabilize the foundation.</strong> Compiler and standard library first -- a stable release is the prerequisite for everything else.</li>
-      <li><strong>Port and publish first-party packages.</strong> The existing corpus is being ported to the current standard library; each package is published only when it builds, tests and carries contracts.</li>
-      <li><strong>Open community publishing.</strong> The registry already enforces immutable versions, sha256 integrity and ed25519 signatures; publishing opens wide once the foundation is stable.</li>
+      <li><strong>Publish first-party packages.</strong> Batches ship continuously from the existing corpus; each package is published only when it builds, tests and carries contracts.</li>
+      <li><strong>Community publishing.</strong> The registry enforces immutable versions, sha256 integrity, ed25519 signatures and OIDC provenance, and self-service publishing is open with GitHub sign-in and operator approval.</li>
       <li><strong>Graduate to per-package repositories.</strong> The monorepo is the working method; as packages mature they move to their own repositories under the xiom-lang organization.</li>
     </ol>
   </div>
@@ -85,43 +85,43 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <!-- Directions -->
   <div class="content-section">
     <h2>Directions we are building toward</h2>
-    <p>Categories, not product names -- specific packages are published when they are ready.</p>
+    <p>Categories, not product names -- most of these already ship published packages, and the rest publish as they pass their gate.</p>
     <div class="eco-grid eco-grid--visual" style="margin-top:24px;">
       <div class="eco-card">
         <img src="img/data_storage.webp" alt="" width="373" height="416" loading="lazy">
         <h4>Data and storage</h4>
-        <p>Typed embedded storage, query and vector search built on XIOM types and contracts -- no SQL strings, no ORM.</p>
-        <span class="eco-tag planned">planned</span>
+        <p>Serialization and data-format packages are live on XIOM types and contracts -- no SQL strings, no ORM; typed embedded storage, query and vector search are the next layer.</p>
+        <span class="eco-tag shipping">shipping</span>
       </div>
       <div class="eco-card">
         <img src="img/networking_storage.webp" alt="" width="373" height="416" loading="lazy">
         <h4>Networking and web</h4>
-        <p>HTTP clients and servers, serialization formats and protocol libraries with contract-checked boundaries.</p>
-        <span class="eco-tag planned">planned</span>
+        <p>Protocol and packet libraries are live with contract-checked boundaries; HTTP clients and servers are on the way.</p>
+        <span class="eco-tag shipping">shipping</span>
       </div>
       <div class="eco-card">
         <img src="img/ai_ml.webp" alt="" width="373" height="416" loading="lazy">
         <h4>AI and machine learning</h4>
-        <p>Tensor and numeric libraries, inference primitives and tokenizers, with contract-verified shapes and dimensions.</p>
-        <span class="eco-tag planned">planned</span>
+        <p>Model and tensor file formats (GGUF, safetensors) and grammar files are live with contract-verified shapes and dimensions; numeric and inference libraries are the next layer.</p>
+        <span class="eco-tag shipping">shipping</span>
       </div>
       <div class="eco-card">
         <img src="img/scientific_computing.webp" alt="" width="373" height="416" loading="lazy">
         <h4>Scientific computing</h4>
-        <p>Linear algebra, statistics and plotting -- with FFI backends where the wider ecosystem is stronger.</p>
-        <span class="eco-tag planned">planned</span>
+        <p>Domain and data formats are live (astronomy, chemistry, FITS, geospatial); linear algebra, statistics and plotting follow, with FFI backends where the wider ecosystem is stronger.</p>
+        <span class="eco-tag shipping">shipping</span>
       </div>
       <div class="eco-card">
         <img src="img/graphics_games.webp" alt="" width="373" height="416" loading="lazy">
         <h4>Graphics and games</h4>
-        <p>GPU bindings and a game framework, leaning on the WebAssembly target for the browser.</p>
-        <span class="eco-tag planned">planned</span>
+        <p>Image, audio and video formats are live; GPU bindings and a game framework follow, leaning on the WebAssembly target for the browser.</p>
+        <span class="eco-tag shipping">shipping</span>
       </div>
       <div class="eco-card">
         <img src="img/systems_tooling.webp" alt="" width="373" height="416" loading="lazy">
         <h4>Systems and tooling</h4>
-        <p>Editors, formatters, package tooling and generators that treat contracts as first-class documentation.</p>
-        <span class="eco-tag planned">planned</span>
+        <p>System formats (ELF, GPT, device trees) and developer tools (diff, patch, flags, fuzzing) are live; more generators and editor tooling follow, treating contracts as first-class documentation.</p>
+        <span class="eco-tag shipping">shipping</span>
       </div>
       <div class="eco-card">
         <img src="img/interoperability_bridges.webp" alt="" width="373" height="416" loading="lazy">
@@ -132,8 +132,8 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       <div class="eco-card">
         <img src="img/verification_analysis.webp" alt="" width="373" height="416" loading="lazy">
         <h4>Verification and analysis</h4>
-        <p>Property testing, fuzzing and verifier frontends built on the contract and SMT path the compiler already exposes.</p>
-        <span class="eco-tag planned">planned</span>
+        <p>Property testing, fuzzing and SMT-LIB tooling are live on the contract path the compiler exposes; verifier frontends are the next layer.</p>
+        <span class="eco-tag shipping">shipping</span>
       </div>
     </div>
   </div>
