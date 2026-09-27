@@ -75,14 +75,24 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <div class="content-section">
     <h2>How the ecosystem grows</h2>
     <p>The compiler, the standard library and the package corpus improve each other in a loop. The corpus is ported with AI assistance under review; the gates below, not the tooling, decide what publishes.</p>
-    <table>
-      <tr><th>Stage</th><th>What it receives</th><th>What it gives back</th></tr>
-      <tr><td>Compiler</td><td>Bugs found by package and language tests, with reproductions</td><td>Fixes and rolling releases; the toolchain every package gate pins</td></tr>
-      <tr><td>Standard library</td><td>Helpers that many packages re-implement, and missing modules</td><td>Shared modules adopted by batches of packages</td></tr>
-      <tr><td>Packages</td><td>Conformance suites on the pinned toolchain, and contract checks</td><td>Findings filed upstream and batches ready to publish</td></tr>
-      <tr><td>Registry</td><td>Packages that passed the gate, with signatures</td><td>Immutable signed versions, installs, reviews and yanks</td></tr>
-    </table>
-    <p style="color:var(--muted);font-size:13px;margin-top:16px;">The loop is running now: package suites have already filed reproducible compiler bugs, and repeated helpers such as CRC and bit-reading code are tracked as standard-library work instead of staying as per-package copies. Nothing publishes that has not passed the gate.</p>
+    <div class="growth-layout">
+      <figure class="growth-figure">
+        <a href="img/eco_growth_cycle.webp" target="_blank" rel="noopener" aria-label="Open the ecosystem growth cycle diagram full size">
+          <img src="img/eco_growth_cycle.webp" alt="The ecosystem growth loop: the compiler core feeds the standard library, which feeds official packages; every package passes a verification gate (build, tests, lint, safety, contracts, sign) before entering the registry of immutable, signed, versioned releases. Bug reports with reproduction evidence loop back to the compiler, and repeated helpers and missing modules loop back to the standard library." width="1145" height="1374" loading="lazy" decoding="async">
+        </a>
+        <figcaption>The loop and its verification gate. Click the diagram to open it full size.</figcaption>
+      </figure>
+      <div class="growth-body">
+        <table>
+          <tr><th>Stage</th><th>What it receives</th><th>What it gives back</th></tr>
+          <tr><td>Compiler</td><td>Bugs found by package and language tests, with reproductions</td><td>Fixes and rolling releases; the toolchain every package gate pins</td></tr>
+          <tr><td>Standard library</td><td>Helpers that many packages re-implement, and missing modules</td><td>Shared modules adopted by batches of packages</td></tr>
+          <tr><td>Packages</td><td>Conformance suites on the pinned toolchain, and contract checks</td><td>Findings filed upstream and batches ready to publish</td></tr>
+          <tr><td>Registry</td><td>Packages that passed the gate, with signatures</td><td>Immutable signed versions, installs, reviews and yanks</td></tr>
+        </table>
+        <p class="growth-note">The loop is running now: package suites have already filed reproducible compiler bugs, and repeated helpers such as CRC and bit-reading code are tracked as standard-library work instead of staying as per-package copies. Nothing publishes that has not passed the gate.</p>
+      </div>
+    </div>
   </div>
 
   <!-- What comes next -->
