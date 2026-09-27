@@ -675,6 +675,16 @@ Remaining:
     stdlib checkout under `%TEMP%\kilo\stdlib_ws\compiler_main3\stdlib`
     costs every compile a second tree walk plus ~90 `W001` warnings; the
     stdlib lane should remove or relocate it once its battery is idle.
+41. **Lightbox zoom and pan (done 2026-09-27)**: the growth-diagram modal
+    gained cursor-anchored wheel/trackpad zoom (1x-8x), drag-to-pan with
+    clamping and grab/grabbing cursors, pinch zoom on touch, a bottom
+    toolbar (-, percentage, +, Reset), a double-click toggle and +/-/0
+    shortcuts; Escape, Close and click-outside still dismiss and focus
+    returns to the link. Verified with CDP-driven interactions (toolbar to
+    140 percent, wheel to 237 percent, drag changes the transform, Reset
+    back to 100 percent, Escape closes) plus a zoomed screenshot; the test
+    wrapper was removed and the figure caption now says to zoom and drag
+    (`2e3bd46`).
 
 ## Cross-lane notes
 
