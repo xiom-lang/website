@@ -71,13 +71,26 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     <p style="color:var(--muted);font-size:13px;margin-top:16px;">We deliberately do not list packages that do not build against the current toolchain; the registry is the live catalog. This page records what is published and what comes next.</p>
   </div>
 
-  <!-- The plan -->
+  <!-- How the ecosystem grows -->
   <div class="content-section">
-    <h2>The plan</h2>
+    <h2>How the ecosystem grows</h2>
+    <p>The compiler, the standard library and the package corpus improve each other in a loop. The corpus is ported with AI assistance under review; the gates below, not the tooling, decide what publishes.</p>
+    <table>
+      <tr><th>Stage</th><th>What it receives</th><th>What it gives back</th></tr>
+      <tr><td>Compiler</td><td>Bugs found by package and language tests, with reproductions</td><td>Fixes and rolling releases; the toolchain every package gate pins</td></tr>
+      <tr><td>Standard library</td><td>Helpers that many packages re-implement, and missing modules</td><td>Shared modules adopted by batches of packages</td></tr>
+      <tr><td>Packages</td><td>Conformance suites on the pinned toolchain, and contract checks</td><td>Findings filed upstream and batches ready to publish</td></tr>
+      <tr><td>Registry</td><td>Packages that passed the gate, with signatures</td><td>Immutable signed versions, installs, reviews and yanks</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;">The loop is running now: package suites have already filed reproducible compiler bugs, and repeated helpers such as CRC and bit-reading code are tracked as standard-library work instead of staying as per-package copies. Nothing publishes that has not passed the gate.</p>
+  </div>
+
+  <!-- What comes next -->
+  <div class="content-section">
+    <h2>What comes next</h2>
     <ol>
-      <li><strong>Stabilize the foundation.</strong> Compiler and standard library first -- a stable release is the prerequisite for everything else.</li>
-      <li><strong>Publish first-party packages.</strong> Batches ship continuously from the existing corpus; each package is published only when it builds, tests and carries contracts.</li>
-      <li><strong>Community publishing.</strong> The registry enforces immutable versions, sha256 integrity, ed25519 signatures and OIDC provenance, and self-service publishing is open with GitHub sign-in and operator approval.</li>
+      <li><strong>More packages, in batches.</strong> The remaining corpus ships as each package passes the gates.</li>
+      <li><strong>More standard-library coverage.</strong> Repeated helpers become shared modules instead of per-package copies.</li>
       <li><strong>Graduate to per-package repositories.</strong> The monorepo is the working method; as packages mature they move to their own repositories under the xiom-lang organization.</li>
     </ol>
   </div>
