@@ -632,6 +632,16 @@ Remaining:
     paste-ready relay for the packages lane (public README landing) is in
     the lane-prompts section (`c87a484`); the section image is planned from
     the owner.
+38. **Growth-cycle diagram integrated; packages README landed (done
+    2026-09-27)**: `img/eco_growth_cycle.webp` (1145x1374, owner-supplied)
+    now sits in "How the ecosystem grows" as a two-column layout -- figure
+    left (480px) beside the receive/give-back table, stacking at 860px, with
+    descriptive alt text, a caption and a click-to-open-full-size link; the
+    `.growth-*` styles are in style.css and the docs/html copy is refreshed
+    (`f4e1743`; verified with desktop and mobile screenshots). The packages
+    lane landed the public README (`776e369`) with the approved framing,
+    closing the relay; their SESSION.md says framing changes go back through
+    this lane.
 
 ## Cross-lane notes
 
