@@ -642,6 +642,19 @@ Remaining:
     lane landed the public README (`776e369`) with the approved framing,
     closing the relay; their SESSION.md says framing changes go back through
     this lane.
+39. **Growth-diagram lightbox and mobile audit (done 2026-09-27)**: the
+    diagram opens in an in-page modal now (`js/lightbox.js`; `data-lightbox`
+    links) instead of a new tab -- Escape, the Close button and a
+    click-outside all close it, focus returns to the link, background scroll
+    locks; without JavaScript the link still opens the file in the same tab.
+    Verified with CDP device emulation at a true 414x900 viewport (image
+    397x477, Close fully inside the frame) and at desktop size. Audit of all
+    seven hero/banner pages (index, contributing, ecosystem, prior-art,
+    roadmap, spec, why) at 414px: `scrollWidth == innerWidth` everywhere (no
+    horizontal overflow); banners render 414x138 with the title block inside
+    the artwork's open area; the index hero is 414x511 with full-width CTAs
+    (`d7bb744`). Test wrappers removed after the audit; no page code beyond
+    the lightbox changed.
 
 ## Cross-lane notes
 
