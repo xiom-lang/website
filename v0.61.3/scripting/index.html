@@ -497,28 +497,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#arguments-flags-and-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arguments, flags and options
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#standard-input" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Standard input
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -556,6 +534,17 @@
     <span class="md-ellipsis">
       
         Shebang scripts (Linux and macOS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-limitations-v0613" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known limitations (v0.61.3)
       
     </span>
   </a>
@@ -2874,28 +2863,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#arguments-flags-and-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arguments, flags and options
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#standard-input" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Standard input
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2933,6 +2900,17 @@
     <span class="md-ellipsis">
       
         Shebang scripts (Linux and macOS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-limitations-v0613" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known limitations (v0.61.3)
       
     </span>
   </a>
@@ -2997,6 +2975,10 @@ Scripts suit small tools, one-off data work and shell-style automation.</p>
 <td>Compile and run a program (requires <code>fn main()</code>)</td>
 </tr>
 <tr>
+<td><code>xiom run --watch script.xi</code></td>
+<td>Re-run the script when the file changes</td>
+</tr>
+<tr>
 <td><code>xiom script.xi -o tool.exe</code></td>
 <td>Compile to a binary you can ship</td>
 </tr>
@@ -3034,42 +3016,13 @@ reassign inside loops.</p>
 <span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
 
 <span class="k">var</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="k">var</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"sum: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">total</span><span class="p">));</span>
 </code></pre></div>
-<h2 id="arguments-flags-and-options">Arguments, flags and options<a class="headerlink" href="#arguments-flags-and-options" title="Permanent link">&para;</a></h2>
-<p><code>xiom.os.args</code> reads the arguments passed after the script name.</p>
-<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
-<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
-<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">os</span><span class="p">.</span><span class="n">args</span><span class="p">;</span>
-
-<span class="k">let</span><span class="w"> </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="nf">args_raw</span><span class="p">();</span>
-<span class="k">let</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="nf">positionals</span><span class="p">(</span><span class="o">&amp;</span><span class="n">raw</span><span class="p">);</span>
-
-<span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="nf">args_has_flag</span><span class="p">(</span><span class="s2">"--shout"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"shouting with "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">positional</span><span class="p">.</span><span class="nf">len</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">" argument(s)"</span><span class="p">);</span>
-<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="nf">itos</span><span class="p">(</span><span class="n">positional</span><span class="p">.</span><span class="nf">len</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">" argument(s)"</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="k">match</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="nf">args_option</span><span class="p">(</span><span class="s2">"--name"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"hello, "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="p">),</span>
-<span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"hello, world"</span><span class="p">),</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><code>args.flag_lookup(raw, flag)</code> and <code>args.option_value(raw, key)</code> are the
-lower-level forms when you manage the argument vector yourself.</p>
-<h2 id="standard-input">Standard input<a class="headerlink" href="#standard-input" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
-<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
-
-<span class="k">let</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">read_all_stdin</span><span class="p">();</span>
-<span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"read "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="nf">len</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">" bytes from stdin"</span><span class="p">);</span>
-</code></pre></div>
-<p><code>io.read_line()</code> and <code>io.read_line_trim()</code> read one line at a time, and
-<code>io.read_int()</code> parses a line into a <code>Result[Int, Str]</code>.</p>
 <h2 id="files">Files<a class="headerlink" href="#files" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 <span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
@@ -3110,8 +3063,10 @@ byte-level and range helpers.</p>
 and returns its pid; <code>process.wait(pid)</code> collects the exit code, and
 <code>process.command_exists(name)</code> checks availability first.</p>
 <h2 id="shebang-scripts-linux-and-macos">Shebang scripts (Linux and macOS)<a class="headerlink" href="#shebang-scripts-linux-and-macos" title="Permanent link">&para;</a></h2>
-<p>Make the script executable and the shebang runs it directly:</p>
-<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="o">!/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span><span class="w"> </span><span class="n">xiom</span>
+<p>A plain <code>#!/usr/bin/env xiom</code> starts the compiler in program mode, which
+rejects top-level code; route the shebang through <code>xiom run</code> with the <code>-S</code>
+form:</p>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="o">!/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span><span class="w"> </span><span class="o">-</span><span class="nc">S</span><span class="w"> </span><span class="n">xiom</span><span class="w"> </span><span class="n">run</span>
 <span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
 
 <span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"hello from a shebang script"</span><span class="p">);</span>
@@ -3120,6 +3075,19 @@ and returns its pid; <code>process.wait(pid)</code> collects the exit code, and
 ./greet.xi
 </code></pre></div>
 <p>Windows runs scripts through <code>xiom run</code>; shebangs are POSIX-only.</p>
+<h2 id="known-limitations-v0613">Known limitations (v0.61.3)<a class="headerlink" href="#known-limitations-v0613" title="Permanent link">&para;</a></h2>
+<p>Verified against the shipped toolchain; each item is tracked upstream.</p>
+<ul>
+<li><code>xiom run</code> does not pass script arguments yet: <code>args.args_raw()</code> returns
+  only the temporary binary path, with or without a <code>--</code> separator, so
+  <code>xiom.os.args</code> sees no user arguments.</li>
+<li>Reading piped standard input crashes on Linux (<code>Fatal error: glibc
+  detected an invalid stdio handle</code>) through both <code>io.read_all_stdin()</code> and
+  <code>io.read_line_trim()</code>.</li>
+<li><code>for x in [ ... ]</code> over an array literal fails at LLVM codegen
+  (<code>invalid getelementptr indices</code>); use <code>while</code> or the <code>xiom.iter</code>
+  functions until the fix ships.</li>
+</ul>
 <h2 id="determinism-and-limits">Determinism and limits<a class="headerlink" href="#determinism-and-limits" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Scripts are compiled, not interpreted: type errors surface before anything

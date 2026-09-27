@@ -4076,15 +4076,20 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </code></pre></div>
 <p><code>if let</code> is not implemented by the current compiler. Use <code>match</code>, or test a variant with <code>if value is Variant</code> when no binding is needed.</p>
 <h3 id="while-loop"><code>while</code> loop<a class="headerlink" href="#while-loop" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
+
+<span class="k">var</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="nf">itos</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
 <span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="for-loop-range-based"><code>for</code> loop (range-based)<a class="headerlink" href="#for-loop-range-based" title="Permanent link">&para;</a></h3>
+<p>The current release fails at LLVM codegen for <code>for</code> over an array literal
+(<code>invalid getelementptr indices</code>, tracked upstream); prefer <code>while</code> or the
+<code>xiom.iter</code> functions until the fix ships.</p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="nf">itos</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="loop-infinite-loop"><code>loop</code> -- infinite loop<a class="headerlink" href="#loop-infinite-loop" title="Permanent link">&para;</a></h3>
@@ -4098,7 +4103,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
-<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="nf">itos</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>Loops can carry a label; <code>break @label;</code> and <code>continue @label;</code> target the labeled loop instead of the innermost one:</p>
