@@ -655,6 +655,21 @@ Remaining:
     the artwork's open area; the index hero is 414x511 with full-width CTAs
     (`d7bb744`). Test wrappers removed after the audit; no page code beyond
     the lightbox changed.
+40. **Scripting guide, verified examples, and the example audit (done
+    2026-09-27)**: `docs/language/scripting.md` published with examples
+    type-checked 9/9 and run end to end on Linux: hello, itos values,
+    while-sum, files, environment/exit and spawn verified green; `run
+    --watch` re-runs on change; the shebang form is `#!/usr/bin/env -S xiom
+    run` (plain `env xiom` parses in program mode and fails). Findings
+    relayed to the compiler lane (below): for-in over array literals fails
+    LLVM codegen; `xiom run` passes no script arguments; piped stdin crashes
+    on Linux; `io.println(<Int>)` is T001 (reference loop examples fixed
+    with `itos`); `xiom build` without a manifest errors oddly; the help's
+    launcher note is stale. The guide marks the first three as known
+    limitations. Correction recorded: the earlier `run` "hang" was machine
+    load (compiler diagnosis), not a bug (`212290d`, `6957446`). The full
+    corpus `--check` audit (400 blocks) is still running in the background;
+    a run-level audit of `examples.md` is a follow-up.
 
 ## Cross-lane notes
 
@@ -969,6 +984,40 @@ discover it later.
 process. They are kept public for transparency and describe how the work is
 coordinated, not the product story; the product story is what ships:
 verified, signed and immutable releases.
+
+### Compiler lane: scripting findings (2026-09-27)
+
+Found while writing the scripting guide; verified against the installed
+v0.61.3 (Linux runs in WSL, checks on Windows). The guide marks 1-3 as
+known limitations until fixed.
+
+1. `for x in [ ... ]` over an array literal fails at LLVM codegen:
+   `xiominput.ll:695:31: error: invalid getelementptr indices ... error:
+   compilation failed` (clang exit 1). Reproduced with an accumulating body
+   and with a print-only body; `--check` passes, so it is codegen. The
+   reference docs now carry the caveat.
+2. `xiom run` does not pass script arguments: `args.args_raw()` (and
+   `io.args()`) return exactly one element -- the temporary binary path --
+   with or without a `--` separator. Repro: a script printing each raw
+   entry, run as `xiom run args.xi --shout --name Ada one two`.
+3. Piped stdin crashes on Linux in both `io.read_all_stdin()` and
+   `io.read_line_trim()`: `Fatal error: glibc detected an invalid stdio
+   handle`, exit -1 (`printf 'a\nb\n' | xiom run script.xi`).
+4. `io.println(<Int>)` is `T001` (expected Str); several reference loop
+   examples printed an Int. Fixed with `itos` and an explicit
+   `use xiom.convert.itos;`.
+5. `xiom build` in a directory without `xiom.toml` errors
+   `cannot read 'build'` (treated as a source path) while the help lists
+   `build`; a clearer standing error when no manifest is present would help.
+6. The help says tool dispatchers need the `xiom.bat`/wrapper launcher, but
+   `xiom.exe` dispatches `fmt`, `pkg` and `doctor` directly (verified);
+   `xiom doc --help` prints the main compiler help instead of the doc
+   tool's.
+7. Confirmed working and documented: `run -e` and `run -` complete (the
+   earlier 25-60 s timeouts were machine load, per the compiler diagnosis),
+   `run --watch` re-runs on change, shebang via
+   `#!/usr/bin/env -S xiom run`, and the example set (hello, values,
+   while-sum, files, env/exit, spawn) is green end to end.
 
 ## Rules
 
