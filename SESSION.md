@@ -1034,6 +1034,19 @@ known limitations until fixed.
    `#!/usr/bin/env -S xiom run`, and the example set (hello, values,
    while-sum, files, env/exit, spawn) is green end to end.
 
+### Ops lane: static cache headers (Safari staleness, 2026-09-27)
+
+nginx serves `style.css`, `js/*.js` and `img/*` with `Expires: Thu, 31 Dec
+2037` and `Cache-Control: max-age=315360000` while HTML has no cache header.
+iOS Safari therefore keeps a months-old stylesheet with fresh text, and only
+clearing website data fixes it. Please update the `xiom-lang.org` vhost
+(Hestia template) so the static tree revalidates: remove the far-future
+`expires`, or set `expires -1;` for the static locations so responses carry
+`Cache-Control: no-cache`; the existing `ETag`/`Last-Modified` headers
+already answer `304` for unchanged files, and `no-store` is unnecessary.
+Apply the same treatment to the docs docroot assets. Full context in
+DEPLOY.md, "Static asset caching".
+
 ## Rules
 
 - Pure ASCII files only; the org encoding gate rejects mojibake.

@@ -103,6 +103,29 @@ curl -sI https://xiom-lang.org/install.sh | head -3
 curl -sI https://xiom-lang.org/install.ps1 | head -3
 ```
 
+## Static asset caching
+
+Asset URLs are not content-hashed (`/style.css`, `/js/lightbox.js`,
+`/img/*.webp`), and files are replaced in place on every deploy. The nginx
+vhost must therefore make browsers revalidate instead of caching blindly:
+
+- The vhost currently sends `Expires: 2037` + `Cache-Control:
+  max-age=315360000` for CSS, JS and images while HTML has no cache header.
+  That combination produces the observed failure mode on Safari/iOS: fresh
+  HTML with a stale stylesheet for months, fixable only by clearing website
+  data.
+- Fix (ops, Hestia template for `xiom-lang.org`): drop the far-future
+  `expires` directive for the static tree, or set `expires -1;` so responses
+  carry `Cache-Control: no-cache`. With `ETag`/`Last-Modified` already
+  enabled, unchanged files keep answering `304`, so the cost is one
+  conditional request per asset per load.
+- `no-store` is not needed and wastes the revalidation path; `no-cache`
+  (cache, but always revalidate) plus the existing ETags is the correct
+  setting in both browsers.
+- If an already-poisoned cache must be refreshed before the header change
+  lands, a one-time query bump on the asset references forces new cache
+  entries; it is a workaround, not a substitute for the header fix.
+
 ## Notes
 
 - `docs/html/` is generated output; regenerate with `docs/build_docs.py`
