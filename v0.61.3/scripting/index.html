@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.xiom-lang.org/v0.61.3/post-release-plan/">
+        <link rel="canonical" href="https://docs.xiom-lang.org/v0.61.3/scripting/">
       
       
-        <link rel="prev" href="../toolchain-context/">
+        <link rel="prev" href="../examples/">
       
       
-        <link rel="next" href="../AI_CONTEXT/">
+        <link rel="next" href="../syntax/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Post-release Plan - XIOM Documentation</title>
+        <title>Scripting - XIOM Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#post-release-plan-after-v0611" class="md-skip">
+        <a href="#scripting" class="md-skip">
           Skip to content
         </a>
       
@@ -109,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Post-release Plan
+              Scripting
             
           </span>
         </div>
@@ -401,10 +401,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../scripting/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -420,6 +447,136 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#running-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running scripts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hello-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hello, script
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working with values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arguments-flags-and-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arguments, flags and options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#standard-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard input
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-and-exit-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment and exit codes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-other-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running other programs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shebang-scripts-linux-and-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shebang scripts (Linux and macOS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#determinism-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Determinism and limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2519,8 +2676,6 @@
       
   
   
-    
-  
   
   
     
@@ -2533,11 +2688,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_25" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_25" >
         
           
           <label class="md-nav__link" for="__nav_25" id="__nav_25_label" tabindex="">
@@ -2558,7 +2713,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_25_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_25_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_25">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2601,37 +2756,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Post-release Plan
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../post-release-plan/" class="md-nav__link">
         
   
   
@@ -2647,59 +2775,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-verified-toolchain-updater-xiom-toolchain-check-update" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Verified toolchain updater (xiom toolchain check / update)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-mcp-contract-queries-get_contracts-search_symbols" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. MCP contract queries (get_contracts, search_symbols)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-ai-context-pipeline-shipped-in-r64" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. AI context pipeline (shipped in R64)
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2766,10 +2841,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-verified-toolchain-updater-xiom-toolchain-check-update" class="md-nav__link">
+  <a href="#running-scripts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Verified toolchain updater (xiom toolchain check / update)
+        Running scripts
       
     </span>
   </a>
@@ -2777,10 +2852,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-mcp-contract-queries-get_contracts-search_symbols" class="md-nav__link">
+  <a href="#hello-script" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. MCP contract queries (get_contracts, search_symbols)
+        Hello, script
       
     </span>
   </a>
@@ -2788,10 +2863,87 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-ai-context-pipeline-shipped-in-r64" class="md-nav__link">
+  <a href="#working-with-values" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. AI context pipeline (shipped in R64)
+        Working with values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arguments-flags-and-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arguments, flags and options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#standard-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard input
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-and-exit-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment and exit codes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-other-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running other programs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shebang-scripts-linux-and-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shebang scripts (Linux and macOS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#determinism-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Determinism and limits
       
     </span>
   </a>
@@ -2815,81 +2967,168 @@
 
 
 
-<h1 id="post-release-plan-after-v0611">Post-release plan (after v0.61.1)<a class="headerlink" href="#post-release-plan-after-v0611" title="Permanent link">&para;</a></h1>
-<p>Two agreed features plus the AI-context pipeline. Spec'd here so the website
-docs and the next compiler sessions can pick them up without re-deriving.</p>
-<p>Status: <strong>v0.61.1 shipped</strong> (2026-09-22). Nothing in this document blocks it.</p>
-<h2 id="1-verified-toolchain-updater-xiom-toolchain-check-update">1. Verified toolchain updater (<code>xiom toolchain check</code> / <code>update</code>)<a class="headerlink" href="#1-verified-toolchain-updater-xiom-toolchain-check-update" title="Permanent link">&para;</a></h2>
-<p>Problem: <code>xiom update</code> is retired (it used an unverified channel), so users
-must re-download release archives manually. We want one command with no
-weakening of the supply-chain posture.</p>
-<p>Commands:
-<div class="highlight"><pre><span></span><code>xiom toolchain check            # current vs latest release (no changes)
-xiom toolchain check --json     # {current, latest, platform, up_to_date, notes}
-xiom toolchain update           # verify + stage + atomic swap + rollback
-xiom toolchain update --dry-run # download/verify only
-</code></pre></div></p>
-<p>Rules (non-negotiable):
-1. Source is the GitHub Releases API for <code>xiom-lang/xiom</code> only; no git
-   channel, no third-party mirrors.
-2. Verify <strong>SHA256SUMS</strong> and the <strong>build-provenance attestation</strong>
-   (<code>gh attestation verify</code> equivalent in-process) before unpacking.
-3. Swap <code>bin/</code> and <code>lib/</code> atomically (stage into a sibling dir, rename);
-   keep the previous <code>bin/</code>/<code>lib/</code> under <code>rollback/</code> for one version.
-4. Never touch user data (<code>$XIOM_HOME</code>, projects, the script cache). The
-   bundled stdlib upgrades with <code>lib/</code>.
-5. Refuse when the toolchain was installed by a package manager (marker file
-   or path heuristic) and point at that manager instead.
-6. <code>--json</code> everywhere for agents/CI; exit codes: 0 ok/up-to-date, 1 update
-   available (with <code>check</code>), 2 verification failed, 3 permission/install-kind.</p>
-<p>Acceptance: on a scratch install of v0.61.1, <code>check</code> reports v0.61.2 when a
-new tag exists; <code>update</code> verifies + swaps; <code>xiom --version</code> and the bundled
-stdlib both change; rollback restores v0.61.1; a tampered archive is refused
-with exit 2 and leaves the install untouched.</p>
-<h2 id="2-mcp-contract-queries-get_contracts-search_symbols">2. MCP contract queries (<code>get_contracts</code>, <code>search_symbols</code>)<a class="headerlink" href="#2-mcp-contract-queries-get_contracts-search_symbols" title="Permanent link">&para;</a></h2>
-<p>Problem: contracts are XIOM's differentiator, but agents must know which of
-<code>get_contract_signature</code> (project files) or <code>xiom_stdlib_reference</code> (stdlib)
-to call, and get prose instead of fields.</p>
-<p><code>get_contracts</code>:
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xiom.string.str_concat"</span><span class="w"> </span><span class="p">}</span><span class="w">        </span><span class="c1">// or a project symbol</span>
-<span class="p">{</span><span class="w"> </span><span class="nt">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w"> </span><span class="nt">"verify"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w">           </span><span class="c1">// fold in Z3 results</span>
+<h1 id="scripting">Scripting<a class="headerlink" href="#scripting" title="Permanent link">&para;</a></h1>
+<p>XIOM is compiled, but the toolchain has a script mode: a file with top-level
+code is wrapped in <code>fn main()</code> automatically, compiled, and run in one step.
+Scripts suit small tools, one-off data work and shell-style automation.</p>
+<h2 id="running-scripts">Running scripts<a class="headerlink" href="#running-scripts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xiom run script.xi</code></td>
+<td>Compile the script and run it (top-level code allowed)</td>
+</tr>
+<tr>
+<td><code>xiom run -e "&lt;code&gt;"</code></td>
+<td>Compile and run an inline snippet</td>
+</tr>
+<tr>
+<td><code>xiom run -</code></td>
+<td>Compile and run a script read from stdin</td>
+</tr>
+<tr>
+<td><code>xiom --run program.xi</code></td>
+<td>Compile and run a program (requires <code>fn main()</code>)</td>
+</tr>
+<tr>
+<td><code>xiom script.xi -o tool.exe</code></td>
+<td>Compile to a binary you can ship</td>
+</tr>
+<tr>
+<td><code>xiom repl</code></td>
+<td>Interactive REPL</td>
+</tr>
+</tbody>
+</table>
+<p>Scripts are compiled on every run; the built binary is written under the
+system temp directory (reused while the script is unchanged). For anything
+you run often, build a binary once and ship it.</p>
+<p><code>xiom --check script.xi</code> type-checks without compiling or running, and it
+accepts the same top-level style as a script.</p>
+<h2 id="hello-script">Hello, script<a class="headerlink" href="#hello-script" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1">// hello.xi -- top-level code runs as-is, no fn main required</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+
+<span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"hello, xiom"</span><span class="p">);</span>
 </code></pre></div>
-Response (structured, one object per symbol):
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xiom.string.str_concat"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xiom.string"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"signature"</span><span class="p">:</span><span class="w"> </span><span class="s2">"str_concat(a: Str, b: Str) -&gt; Str"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"requires"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="nt">"ensures"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"result.len() == a.len() + b.len()"</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">"invariants"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">  </span><span class="nt">"pre_refs"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="nt">"post_refs"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"clause"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w"> </span><span class="nt">"line"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">}],</span>
-<span class="w">  </span><span class="nt">"qualified"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"verify"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"proved|unknown|counterexample"</span><span class="p">,</span><span class="w"> </span><span class="nt">"counterexample"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code>xiom<span class="w"> </span>run<span class="w"> </span>hello.xi
+</code></pre></div>
+<h2 id="working-with-values">Working with values<a class="headerlink" href="#working-with-values" title="Permanent link">&para;</a></h2>
+<p><code>io.println</code> takes a <code>Str</code>; use <code>xiom.convert.itos</code> for numbers.</p>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
+
+<span class="k">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">21</span><span class="p">;</span>
+<span class="k">let</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"a * b = "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">));</span>
+</code></pre></div>
+<p>Top-level bindings are immutable by default; use <code>var</code> for values you
+reassign inside loops.</p>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
+
+<span class="k">var</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"sum: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">total</span><span class="p">));</span>
+</code></pre></div>
+<h2 id="arguments-flags-and-options">Arguments, flags and options<a class="headerlink" href="#arguments-flags-and-options" title="Permanent link">&para;</a></h2>
+<p><code>xiom.os.args</code> reads the arguments passed after the script name.</p>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">os</span><span class="p">.</span><span class="n">args</span><span class="p">;</span>
+
+<span class="k">let</span><span class="w"> </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="nf">args_raw</span><span class="p">();</span>
+<span class="k">let</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="nf">positionals</span><span class="p">(</span><span class="o">&amp;</span><span class="n">raw</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="nf">args_has_flag</span><span class="p">(</span><span class="s2">"--shout"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"shouting with "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">positional</span><span class="p">.</span><span class="nf">len</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">" argument(s)"</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="nf">itos</span><span class="p">(</span><span class="n">positional</span><span class="p">.</span><span class="nf">len</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">" argument(s)"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">match</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="nf">args_option</span><span class="p">(</span><span class="s2">"--name"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"hello, "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"hello, world"</span><span class="p">),</span>
 <span class="p">}</span>
 </code></pre></div>
-<code>search_symbols</code>: <code>{ "query": "concat" }</code> -&gt; ranked <code>[{symbol, module,
-signature}]</code> across the bundled stdlib <strong>and</strong> the current project; fuzzy on
-leaf names, exact on qualified names.</p>
-<p>Rules: resolution must use the same catalogs the compiler uses (bundled
-stdlib at <code>lib/</code>); no shelling out to a network service; project symbols come
-from the open workspace; results cached per snapshot.</p>
-<p>Acceptance: an agent can go from a task ("concatenate two strings safely") to
-the exact signature + pre/postconditions of the stdlib function in one call;
-<code>verify: true</code> returns counterexamples for a deliberately failing clause;
-unknown symbols produce a clear error with close matches.</p>
-<h2 id="3-ai-context-pipeline-shipped-in-r64">3. AI context pipeline (shipped in R64)<a class="headerlink" href="#3-ai-context-pipeline-shipped-in-r64" title="Permanent link">&para;</a></h2>
-<p><code>AI_CONTEXT.md</code> (repo root) is the single source of truth for toolchain
-facts. It is:
-- <strong>compiled into</strong> <code>xiom-mcp</code> (<code>include_str!</code>) and served as
-  <code>xiom_workflow_guide {topic: "context"}</code> -- always matches the build;
-- <strong>shipped</strong> in every archive at <code>lib/AI_CONTEXT.md</code> (release staging +
-  <code>package.ps1</code>/<code>package.sh</code>);
-- the reference the website docs can render for an "AI/agent usage" page.</p>
-<p>Maintainers: update <code>AI_CONTEXT.md</code> whenever syntax, flags, error codes,
-registry behavior, or known limitations change (same rule the ROADMAP lists
-for MCP knowledge). The MCP guide constants in
-<code>crates/xiom-mcp/src/guides.rs</code> should stay a curated subset, not a copy.</p>
-<p>Website pickup: render <code>AI_CONTEXT.md</code> + this file at build time; the release
-payload for the docs dispatch carries <code>{tag, stdlib_ref, compiler_ref}</code>.</p>
+<p><code>args.flag_lookup(raw, flag)</code> and <code>args.option_value(raw, key)</code> are the
+lower-level forms when you manage the argument vector yourself.</p>
+<h2 id="standard-input">Standard input<a class="headerlink" href="#standard-input" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
+
+<span class="k">let</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">read_all_stdin</span><span class="p">();</span>
+<span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"read "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="nf">len</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">" bytes from stdin"</span><span class="p">);</span>
+</code></pre></div>
+<p><code>io.read_line()</code> and <code>io.read_line_trim()</code> read one line at a time, and
+<code>io.read_int()</code> parses a line into a <code>Result[Int, Str]</code>.</p>
+<h2 id="files">Files<a class="headerlink" href="#files" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
+
+<span class="k">match</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">read_file</span><span class="p">(</span><span class="s2">"input.txt"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"input.txt: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="nf">len</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">" bytes"</span><span class="p">),</span>
+<span class="w">  </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"cannot read input.txt: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">message</span><span class="p">),</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>io.write_file</code>, <code>io.append_file</code>, <code>io.file_exists</code>, <code>io.list_dir</code> and
+<code>io.read_file_lines</code> cover the common file tasks; <code>xiom.io.fs</code> adds
+byte-level and range helpers.</p>
+<h2 id="environment-and-exit-codes">Environment and exit codes<a class="headerlink" href="#environment-and-exit-codes" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">process</span><span class="p">;</span>
+
+<span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"pid: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="nf">get_pid</span><span class="p">()));</span>
+
+<span class="k">match</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="nf">env_var</span><span class="p">(</span><span class="s2">"HOME"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Some</span><span class="p">(</span><span class="n">home</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"HOME="</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">home</span><span class="p">),</span>
+<span class="w">  </span><span class="no">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"HOME is not set"</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">process</span><span class="p">.</span><span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+<h2 id="running-other-programs">Running other programs<a class="headerlink" href="#running-other-programs" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">convert</span><span class="p">.</span><span class="n">itos</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">process</span><span class="p">;</span>
+
+<span class="k">match</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="nf">spawn_blocking</span><span class="p">(</span><span class="s2">"git --version"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="no">Ok</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"git exited with "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">itos</span><span class="p">(</span><span class="n">code</span><span class="p">)),</span>
+<span class="w">  </span><span class="no">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"could not run git: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">e</span><span class="p">),</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>process.spawn_command(cmd, args)</code> starts a program with an argument vector
+and returns its pid; <code>process.wait(pid)</code> collects the exit code, and
+<code>process.command_exists(name)</code> checks availability first.</p>
+<h2 id="shebang-scripts-linux-and-macos">Shebang scripts (Linux and macOS)<a class="headerlink" href="#shebang-scripts-linux-and-macos" title="Permanent link">&para;</a></h2>
+<p>Make the script executable and the shebang runs it directly:</p>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="o">!/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span><span class="w"> </span><span class="n">xiom</span>
+<span class="k">use</span><span class="w"> </span><span class="n">xiom</span><span class="p">.</span><span class="n">io</span><span class="p">;</span>
+
+<span class="n">io</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s2">"hello from a shebang script"</span><span class="p">);</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>greet.xi
+./greet.xi
+</code></pre></div>
+<p>Windows runs scripts through <code>xiom run</code>; shebangs are POSIX-only.</p>
+<h2 id="determinism-and-limits">Determinism and limits<a class="headerlink" href="#determinism-and-limits" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Scripts are compiled, not interpreted: type errors surface before anything
+  runs, and contract checks are active by default.</li>
+<li>Anything a program can do, a script can do -- the only difference is the
+  automatic <code>fn main()</code> wrapper.</li>
+<li><code>xiom run</code> reads the script from the path you give it; for a project with a
+  <code>xiom.toml</code>, <code>xiom build</code> builds the project instead.</li>
+</ul>
 
 
 
