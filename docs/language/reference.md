@@ -449,21 +449,14 @@ extern "C" {
 
 ## Scripting Mode
 
-XIOM supports a scripting workflow via `xiom run`:
+Scripts -- files with top-level code and no `fn main` -- run through
+`xiom run`, which wraps the code in `fn main()`, compiles it and executes it.
+The [Scripting](scripting.md) page covers the workflow, arguments, stdin,
+files, environment access and exit codes.
 
-```bash
-xiom run script.xi          # JIT compile and execute
-xiom run --watch script.xi  # auto-recompile on changes
-xiom repl                   # interactive REPL
-xiom --standalone script.xi # produce standalone binary
-```
-
-Shebangs are supported:
-
-```xiom
-#!/usr/bin/env xiom
-io.println("Hello from script!");
-```
+`xiom repl` starts an interactive REPL; `xiom --run program.xi` compiles and
+runs a program that has `fn main()`. Shebang scripts are supported on Linux
+and macOS.
 
 ---
 
@@ -471,8 +464,10 @@ io.println("Hello from script!");
 
 | Command | Description |
 |---------|-------------|
-| `xiom build file.xi` | Compile to native binary |
-| `xiom run file.xi` | JIT compile and execute |
+| `xiom file.xi -o out` | Compile to a native binary |
+| `xiom run file.xi` | Compile and run a script (top-level code allowed) |
+| `xiom --run file.xi` | Compile and run a program (requires `fn main()`) |
+| `xiom build` | Build a project from `xiom.toml` |
 | `xiom --check file.xi` | Type-check only (no codegen) |
 | `xiom doctor` | Verify toolchain (clang, opt) |
 | `xiom pkg search <q>` | Search registry |

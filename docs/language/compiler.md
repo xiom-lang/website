@@ -79,6 +79,7 @@ list every flag.
 - `xiom build`: build the project from `xiom.toml`; `xiom build --watch`
   keeps rebuilding on change.
 - `xiom run <file>`: scripting mode. Shebang scripts, inline `-e`, stdin
+  (see the [Scripting guide](scripting.md))
   `-`, and `--watch` are supported, and top-level code is wrapped
   automatically, so `fn main()` is optional.
 - `xiom repl`: interactive shell.

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>xiom -- Unsafe</title>
+<title>xiom -- Scripting</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="">
 <link rel="stylesheet" href="style.css">
@@ -42,11 +42,11 @@
         <a href="reference.html" style="color:var(--muted);">Language Reference</a>
         <a href="concepts.html" style="color:var(--muted);">Concepts</a>
         <a href="examples.html" style="color:var(--muted);">By Example</a>
-        <a href="scripting.html" style="color:var(--muted);">Scripting</a>
+        <a href="scripting.html" style="color:var(--signal);font-weight:500;">Scripting</a>
         <a href="syntax.html" style="color:var(--muted);">Syntax</a>
         <a href="types.html" style="color:var(--muted);">Type System</a>
         <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
-        <a href="unsafe.html" style="color:var(--signal);font-weight:500;">Unsafe</a>
+        <a href="unsafe.html" style="color:var(--muted);">Unsafe</a>
         <a href="contracts.html" style="color:var(--muted);">Contracts</a>
         <a href="error-handling.html" style="color:var(--muted);">Error Handling</a>
         <a href="modules.html" style="color:var(--muted);">Modules</a>
@@ -121,165 +121,167 @@
 
     <main class="content-section" id="main" style="border:none;padding-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">latest</div>
-      <h1 style="font-size:36px;margin-bottom:24px;">Unsafe</h1>
-      <blockquote><p><strong>Quick look:</strong> <code>unsafe { ... }</code> is a confined transaction. Raw pointers, extern calls and inline assembly live inside it; everything that could escape is checked at the block boundary.</p></blockquote>
-<p>XIOM is memory-safe by default. <code>unsafe</code> exists for the three things a compiler cannot verify on its own: raw pointer operations, calls into C, and inline assembly. Writing <code>unsafe</code> does not switch safety off -- it marks a region where the compiler applies a confinement model instead of ordinary rules.</p>
-<h2>The Block Rule</h2>
-<p><code>unsafe</code> applies strictly to a block expression. It cannot prefix a declaration:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>abi_like</span>() -&gt; <span class='ty'>Int</span>
-  <span class='kw'>requires</span>: <span class='kw'>true</span>
-{
-  <span class='kw'>unsafe</span> {
-    <span class='func'>asm</span>(<span class='str'>nop</span>);
-    <span class='kw'>return</span> <span class='num'>0</span>;
-  }
-}
-</code></pre>
-<p><code>unsafe fn</code>, <code>unsafe module</code>, <code>unsafe struct</code> and <code>unsafe impl</code> are hard errors, not warnings. The compiler reports: "<code>unsafe</code> applies only to block expressions <code>unsafe { ... }</code>; it cannot prefix declarations".</p>
-<p>Inline assembly is only available inside an <code>unsafe</code> block. A function whose entire body is a single <code>unsafe</code> block must declare a <code>requires:</code> clause (the pre-entry contract), because callers need to know what they are buying into:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>fn</span> <span class='func'>read_value</span>() -&gt; <span class='ty'>Int</span>
-  <span class='kw'>requires</span>: <span class='kw'>true</span>
-{
-  <span class='kw'>unsafe</span> {
-    <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>get_ptr</span>();
-    <span class='kw'>return</span> *raw;
-  }
-}
-</code></pre>
-<h2>The Confinement Model</h2>
-<p>Every <code>unsafe</code> block runs as a transaction. The requirements below are enforced by the compiler or by the runtime fault path:</p>
+      <h1 style="font-size:36px;margin-bottom:24px;">Scripting</h1>
+      <p>XIOM is compiled, but the toolchain has a script mode: a file with top-level code is wrapped in <code>fn main()</code> automatically, compiled, and run in one step. Scripts suit small tools, one-off data work and shell-style automation.</p>
+<h2>Running scripts</h2>
 <table>
 <tr>
-<th>Rule</th>
-<th>What it enforces</th>
+<th>Command</th>
+<th>What it does</th>
 </tr>
 <tr>
-<td>Lexical</td>
-<td><code>unsafe</code> is a block expression only. Whole-body unsafe functions declare <code>requires:</code>.</td>
+<td><code>xiom run script.xi</code></td>
+<td>Compile the script and run it (top-level code allowed)</td>
 </tr>
 <tr>
-<td>Extern gate</td>
-<td>Calling an <code>extern "C"</code> function from safe code is an error. Functions that declare contracts are sanctioned wrappers; otherwise call inside <code>unsafe</code>.</td>
+<td><code>xiom run -e "&lt;code&gt;"</code></td>
+<td>Compile and run an inline snippet</td>
 </tr>
 <tr>
-<td>Signature gate</td>
-<td>A safe function cannot cast or return a raw pointer outside <code>unsafe</code>. The integer-to-pointer cast is itself gated.</td>
+<td><code>xiom run -</code></td>
+<td>Compile and run a script read from stdin</td>
 </tr>
 <tr>
-<td>Pre-entry contracts</td>
-<td>A function whose entire body is one <code>unsafe</code> block must declare <code>requires:</code>.</td>
+<td><code>xiom --run program.xi</code></td>
+<td>Compile and run a program (requires <code>fn main()</code>)</td>
 </tr>
 <tr>
-<td>Heap isolation</td>
-<td>Allocations inside the block route to a per-thread guard arena, discarded wholesale at block exit.</td>
+<td><code>xiom script.xi -o tool.exe</code></td>
+<td>Compile to a binary you can ship</td>
 </tr>
 <tr>
-<td>Stack guard</td>
-<td>A per-thread guard page is armed at block entry; a stack overflow faults in the red zone instead of writing into adjacent memory.</td>
-</tr>
-<tr>
-<td>Fault trap</td>
-<td>A hardware fault inside the block is caught by the platform trampoline (SEH on Windows, sigsetjmp elsewhere); the process survives.</td>
-</tr>
-<tr>
-<td>Transient retry</td>
-<td>A transient fault is retried once on a fresh memory slot. <code>#[unsafe_no_retry]</code> disables this for deterministic behavior.</td>
-</tr>
-<tr>
-<td>Zero escape</td>
-<td>A raw pointer, <code>&amp;T</code> / <code>&amp;mut T</code>, function type, or struct containing them cannot be the block's tail value. String tails are copied out to the main heap before the arena resets.</td>
-</tr>
-<tr>
-<td>FFI ownership</td>
-<td>An extern call returning <code>*T</code> must be converted to an owned XIOM type before the block tail (<code>ffi.safe_ptr_from_raw</code>, <code>box_from_ptr</code>, <code>vec_from_ptr_with_free</code>, <code>str_from_ptr_owned</code>).</td>
+<td><code>xiom repl</code></td>
+<td>Interactive REPL</td>
 </tr>
 </table>
-<h2>Attributes</h2>
+<p>Scripts are compiled on every run; the built binary is written under the system temp directory (reused while the script is unchanged). For anything you run often, build a binary once and ship it.</p>
+<p><code>xiom --check script.xi</code> type-checks without compiling or running, and it accepts the same top-level style as a script.</p>
+<h2>Hello, script</h2>
 <pre class="language-xiom"><code>
-#[unsafe_no_retry]   <span class='cm'>// disable the once-only transient <span class='func'>retry</span>(deterministic faults)</span>
-#[unsafe_direct]     <span class='cm'>// trusted escape hatch: plain <span class='kw'>unsafe</span>, no trampoline, arena or</span>
-                     <span class='cm'>// guard page. Stdlib/selfhost only; user code <span class='kw'>requires</span></span>
-                     <span class='cm'>// --enable-<span class='kw'>unsafe</span>-direct and every <span class='kw'>use</span> <span class='kw'>is</span> warned and audited.</span>
+<span class='cm'>// hello.xi -- top-level code runs <span class='kw'>as</span>-<span class='kw'>is</span>, no <span class='kw'>fn</span> main required</span>
+<span class='kw'>use</span> xiom.io;
+
+io.<span class='func'>println</span>(<span class='str'>hello, xiom</span>);
 </code></pre>
-<h2>Fault Handling</h2>
-<p>A fault inside a confined block does not abort the process. The block yields a recoverable zero for the enclosing function's return type, and the fault is classified:</p>
-<table>
-<tr>
-<th>Code</th>
-<th>Cause</th>
-</tr>
-<tr>
-<td>1</td>
-<td>Access violation (SIGSEGV)</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Illegal instruction (SIGILL)</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Floating-point error (SIGFPE)</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Stack overflow</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Guard page hit</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Other</td>
-</tr>
-</table>
-<p>Runtime types for callers that want the details:</p>
-<pre class="language-xiom"><code>
-<span class='kw'>pub</span> <span class='kw'>type</span> HardwareFault     = { signal: <span class='ty'>Str</span>; pc: <span class='ty'>UInt64</span>; retried: <span class='ty'>Bool</span>; }
-<span class='kw'>pub</span> <span class='kw'>type</span> ContractViolation = { contract: <span class='ty'>Str</span>; }
+<pre class="language-bash"><code>
+xiom run hello.xi
 </code></pre>
-<h2>A Safe Wrapper for C</h2>
-<p>The pattern the compiler expects: a function with a contract that owns the unsafe block, and converts any raw result into an owned XIOM value before returning.</p>
+<h2>Working with values</h2>
+<p><code>io.println</code> takes a <code>Str</code>; use <code>xiom.convert.itos</code> for numbers.</p>
 <pre class="language-xiom"><code>
-<span class='kw'>extern</span> <span class='str'>C</span> {
-  <span class='kw'>fn</span> <span class='func'>get_ptr</span>() -&gt; *<span class='ty'>Int</span>;
+<span class='kw'>use</span> xiom.io;
+<span class='kw'>use</span> xiom.convert.itos;
+
+<span class='kw'>let</span> a = <span class='num'>21</span>;
+<span class='kw'>let</span> b = <span class='num'>2</span>;
+io.<span class='func'>println</span>(<span class='str'>a * b = </span> + <span class='func'>itos</span>(a * b));
+</code></pre>
+<p>Top-level bindings are immutable by default; use <code>var</code> for values you reassign inside loops.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.io;
+<span class='kw'>use</span> xiom.convert.itos;
+
+<span class='kw'>var</span> total = <span class='num'>0</span>;
+<span class='kw'>for</span> n <span class='kw'>in</span> [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>, <span class='num'>4</span>] {
+  total = total + n;
+}
+io.<span class='func'>println</span>(<span class='str'>sum: </span> + <span class='func'>itos</span>(total));
+</code></pre>
+<h2>Arguments, flags and options</h2>
+<p><code>xiom.os.args</code> reads the arguments passed after the script name.</p>
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.io;
+<span class='kw'>use</span> xiom.convert.itos;
+<span class='kw'>use</span> xiom.os.args;
+
+<span class='kw'>let</span> raw = args.<span class='func'>args_raw</span>();
+<span class='kw'>let</span> positional = args.<span class='func'>positionals</span>(&amp;raw);
+
+<span class='kw'>if</span> args.<span class='func'>args_has_flag</span>(<span class='str'>--shout</span>) {
+  io.<span class='func'>println</span>(<span class='str'>shouting with </span> + <span class='func'>itos</span>(positional.<span class='func'>len</span>()) + <span class='str'> <span class='func'>argument</span>(s)</span>);
+} <span class='kw'>else</span> {
+  io.<span class='func'>println</span>(<span class='func'>itos</span>(positional.<span class='func'>len</span>()) + <span class='str'> <span class='func'>argument</span>(s)</span>);
 }
 
-<span class='kw'>fn</span> <span class='func'>read_value</span>() -&gt; <span class='ty'>Int</span>
-  <span class='kw'>requires</span>: <span class='kw'>true</span>
-{
-  <span class='kw'>unsafe</span> {
-    <span class='kw'>let</span> raw: *<span class='ty'>Int</span> = <span class='func'>get_ptr</span>();
-    <span class='kw'>let</span> value = *raw;
-    <span class='kw'>return</span> value;
-  }
+<span class='kw'>match</span> args.<span class='func'>args_option</span>(<span class='str'>--name</span>) {
+  <span class='kw'>Some</span>(name) =&gt; io.<span class='func'>println</span>(<span class='str'>hello, </span> + name),
+  <span class='kw'>None</span> =&gt; io.<span class='func'>println</span>(<span class='str'>hello, world</span>),
 }
 </code></pre>
-<p>Callers see a normal safe function. The unsafe region is at the boundary, in one place, visible in review.</p>
-<h2>Auditing Unsafe Code</h2>
-<p>The compiler can report what each <code>unsafe</code> block does:</p>
-<pre><code>
-xiom --sandbox file.xi              # text safety report
-xiom --sandbox=strict file.xi       # fail the build on HIGH severity findings
-xiom --sandbox-report=json file.xi  # machine-readable report
+<p><code>args.flag_lookup(raw, flag)</code> and <code>args.option_value(raw, key)</code> are the lower-level forms when you manage the argument vector yourself.</p>
+<h2>Standard input</h2>
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.io;
+<span class='kw'>use</span> xiom.convert.itos;
+
+<span class='kw'>let</span> text = io.<span class='func'>read_all_stdin</span>();
+io.<span class='func'>println</span>(<span class='str'>read </span> + <span class='func'>itos</span>(text.<span class='func'>len</span>()) + <span class='str'> bytes from stdin</span>);
 </code></pre>
-<p><code>#[unsafe_direct]</code> is the only escape from confinement, and using it is deliberately loud: the compiler prints a warning on every invocation so release logs cannot silently contain unguarded code.</p>
-<h2>What Unsafe Does Not Change</h2>
+<p><code>io.read_line()</code> and <code>io.read_line_trim()</code> read one line at a time, and <code>io.read_int()</code> parses a line into a <code>Result[Int, Str]</code>.</p>
+<h2>Files</h2>
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.io;
+<span class='kw'>use</span> xiom.convert.itos;
+
+<span class='kw'>match</span> io.<span class='func'>read_file</span>(<span class='str'>input.txt</span>) {
+  <span class='kw'>Ok</span>(text) =&gt; io.<span class='func'>println</span>(<span class='str'>input.txt: </span> + <span class='func'>itos</span>(text.<span class='func'>len</span>()) + <span class='str'> bytes</span>),
+  <span class='kw'>Err</span>(e) =&gt; io.<span class='func'>println</span>(<span class='str'>cannot read input.txt: </span> + e.message),
+}
+</code></pre>
+<p><code>io.write_file</code>, <code>io.append_file</code>, <code>io.file_exists</code>, <code>io.list_dir</code> and <code>io.read_file_lines</code> cover the common file tasks; <code>xiom.io.fs</code> adds byte-level and range helpers.</p>
+<h2>Environment and exit codes</h2>
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.io;
+<span class='kw'>use</span> xiom.convert.itos;
+<span class='kw'>use</span> xiom.process;
+
+io.<span class='func'>println</span>(<span class='str'>pid: </span> + <span class='func'>itos</span>(process.<span class='func'>get_pid</span>()));
+
+<span class='kw'>match</span> process.<span class='func'>env_var</span>(<span class='str'>HOME</span>) {
+  <span class='kw'>Some</span>(home) =&gt; io.<span class='func'>println</span>(<span class='str'>HOME=</span> + home),
+  <span class='kw'>None</span> =&gt; io.<span class='func'>println</span>(<span class='str'>HOME <span class='kw'>is</span> not set</span>),
+}
+
+process.<span class='func'>exit</span>(<span class='num'>0</span>);
+</code></pre>
+<h2>Running other programs</h2>
+<pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.io;
+<span class='kw'>use</span> xiom.convert.itos;
+<span class='kw'>use</span> xiom.process;
+
+<span class='kw'>match</span> process.<span class='func'>spawn_blocking</span>(<span class='str'>git --version</span>) {
+  <span class='kw'>Ok</span>(code) =&gt; io.<span class='func'>println</span>(<span class='str'>git exited with </span> + <span class='func'>itos</span>(code)),
+  <span class='kw'>Err</span>(e) =&gt; io.<span class='func'>println</span>(<span class='str'>could not run git: </span> + e),
+}
+</code></pre>
+<p><code>process.spawn_command(cmd, args)</code> starts a program with an argument vector and returns its pid; <code>process.wait(pid)</code> collects the exit code, and <code>process.command_exists(name)</code> checks availability first.</p>
+<h2>Shebang scripts (Linux and macOS)</h2>
+<p>Make the script executable and the shebang runs it directly:</p>
+<pre class="language-xiom"><code>
+#!/usr/bin/env xiom
+<span class='kw'>use</span> xiom.io;
+
+io.<span class='func'>println</span>(<span class='str'>hello from a shebang script</span>);
+</code></pre>
+<pre class="language-bash"><code>
+chmod +x greet.xi
+./greet.xi
+</code></pre>
+<p>Windows runs scripts through <code>xiom run</code>; shebangs are POSIX-only.</p>
+<h2>Determinism and limits</h2>
 <ul>
-<li>Memory safety in safe code: ownership, borrowing and <code>Send</code>/<code>Sync</code> rules are unchanged.</li>
-<li>Contracts: they still run (unless stripped) inside and outside unsafe blocks.</li>
-<li>Review expectations: an unsafe block is the place to document the invariant the compiler cannot see.</li>
+<li>Scripts are compiled, not interpreted: type errors surface before anything</li>
 </ul>
-<h2>Runtime Assembly Is Not User Unsafe</h2>
-<p>The toolchain ships hand-written x86_64 assembly (assembled with NASM) for some runtime hot paths: crypto primitives, bulk memory operations and context switching. That code belongs to the trusted runtime, not to the <code>unsafe</code> blocks described here: the confinement model on this page does not apply to it, and the contract verifier treats it as an implementation of a contract rather than something it proves. The <a href="contracts.html">contracts guide</a> states the boundary in full.</p>
-<h2>See Also</h2>
+<p>runs, and contract checks are active by default.</p>
 <ul>
-<li><a href="memory-model.html">Memory Model</a> -- ownership, borrowing, and where unsafe fits</li>
-<li><a href="ffi.html">C FFI</a> -- extern declarations and wrapper patterns</li>
-<li><a href="compiler.html">Compiler</a> -- flags, targets, and the confinement model summary</li>
+<li>Anything a program can do, a script can do -- the only difference is the</li>
 </ul>
+<p>automatic <code>fn main()</code> wrapper.</p>
+<ul>
+<li><code>xiom run</code> reads the script from the path you give it; for a project with a</li>
+</ul>
+<p><code>xiom.toml</code>, <code>xiom build</code> builds the project instead.</p>
     </main>
 
   </div>

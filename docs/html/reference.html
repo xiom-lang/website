@@ -42,6 +42,7 @@
         <a href="reference.html" style="color:var(--signal);font-weight:500;">Language Reference</a>
         <a href="concepts.html" style="color:var(--muted);">Concepts</a>
         <a href="examples.html" style="color:var(--muted);">By Example</a>
+        <a href="scripting.html" style="color:var(--muted);">Scripting</a>
         <a href="syntax.html" style="color:var(--muted);">Syntax</a>
         <a href="types.html" style="color:var(--muted);">Type System</a>
         <a href="memory-model.html" style="color:var(--muted);">Memory Model</a>
@@ -563,18 +564,8 @@ enum_type.Variant   <span class='cm'>// <span class='kw'>enum</span> variant</sp
 </code></pre>
 <hr>
 <h2>Scripting Mode</h2>
-<p>XIOM supports a scripting workflow via <code>xiom run</code>:</p>
-<pre class="language-bash"><code>
-xiom run script.xi          # JIT compile and execute
-xiom run --watch script.xi  # auto-recompile on changes
-xiom repl                   # interactive REPL
-xiom --standalone script.xi # produce standalone binary
-</code></pre>
-<p>Shebangs are supported:</p>
-<pre class="language-xiom"><code>
-#!/usr/bin/env xiom
-io.<span class='func'>println</span>(<span class='str'>Hello from script!</span>);
-</code></pre>
+<p>Scripts -- files with top-level code and no <code>fn main</code> -- run through <code>xiom run</code>, which wraps the code in <code>fn main()</code>, compiles it and executes it. The <a href="scripting.html">Scripting</a> page covers the workflow, arguments, stdin, files, environment access and exit codes.</p>
+<p><code>xiom repl</code> starts an interactive REPL; <code>xiom --run program.xi</code> compiles and runs a program that has <code>fn main()</code>. Shebang scripts are supported on Linux and macOS.</p>
 <hr>
 <h2>CLI Reference</h2>
 <table>
@@ -583,12 +574,20 @@ io.<span class='func'>println</span>(<span class='str'>Hello from script!</span>
 <th>Description</th>
 </tr>
 <tr>
-<td><code>xiom build file.xi</code></td>
-<td>Compile to native binary</td>
+<td><code>xiom file.xi -o out</code></td>
+<td>Compile to a native binary</td>
 </tr>
 <tr>
 <td><code>xiom run file.xi</code></td>
-<td>JIT compile and execute</td>
+<td>Compile and run a script (top-level code allowed)</td>
+</tr>
+<tr>
+<td><code>xiom --run file.xi</code></td>
+<td>Compile and run a program (requires <code>fn main()</code>)</td>
+</tr>
+<tr>
+<td><code>xiom build</code></td>
+<td>Build a project from <code>xiom.toml</code></td>
 </tr>
 <tr>
 <td><code>xiom --check file.xi</code></td>

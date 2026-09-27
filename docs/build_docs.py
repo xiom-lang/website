@@ -383,6 +383,7 @@ NAV_ORDER = [
     ("reference.md", "Language Reference"),
     ("concepts.md", "Concepts"),
     ("examples.md", "By Example"),
+    ("scripting.md", "Scripting"),
     ("syntax.md", "Syntax"),
     ("types.md", "Type System"),
     ("memory-model.md", "Memory Model"),
