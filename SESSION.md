@@ -668,8 +668,13 @@ Remaining:
     launcher note is stale. The guide marks the first three as known
     limitations. Correction recorded: the earlier `run` "hang" was machine
     load (compiler diagnosis), not a bug (`212290d`, `6957446`). The full
-    corpus `--check` audit (400 blocks) is still running in the background;
-    a run-level audit of `examples.md` is a follow-up.
+    corpus `--check` audit (400 blocks; `verify-code.js` writes
+    `audit-results.json`) was stopped under the shared machine's load and
+    is deferred to a quiet window, then a run-level audit of `examples.md`
+    (output claims, not just types) follows. Load hygiene note: the stale
+    stdlib checkout under `%TEMP%\kilo\stdlib_ws\compiler_main3\stdlib`
+    costs every compile a second tree walk plus ~90 `W001` warnings; the
+    stdlib lane should remove or relocate it once its battery is idle.
 
 ## Cross-lane notes
 
