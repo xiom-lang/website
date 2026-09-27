@@ -584,6 +584,56 @@ nav .wrap {
   .growth-figure { max-width: 440px; margin: 0 auto; }
 }
 
+/* Click-to-enlarge preview (js/lightbox.js) */
+
+html.lightbox-open { overflow: hidden; }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(5, 8, 15, 0.94);
+}
+
+.lightbox-img {
+  max-width: min(96vw, 1200px);
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #05080f;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--paper);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.lightbox-close:hover {
+  border-color: var(--signal);
+  color: var(--signal);
+}
+
+@media (max-width: 480px) {
+  .lightbox { padding: 14px; }
+  .lightbox-close { top: 12px; right: 12px; }
+}
+
 .content-section pre {
   position: relative;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0) 64px), var(--panel);
