@@ -4067,7 +4067,7 @@
 <h1 id="stdlibconvert"><code>stdlib.convert</code><a class="headerlink" href="#stdlibconvert" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Type Conversion Traits</strong></p>
-<p>Generated from <code>v0.61.3</code>. 61 source files, 309 documented symbols.</p>
+<p>Generated from <code>v0.61.3</code>. 61 source files, 310 documented symbols.</p>
 </blockquote>
 <h2 id="ascii85xi"><code>ascii85.xi</code><a class="headerlink" href="#ascii85xi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-to_ascii85data-vecuint8-str"><code>fn to_ascii85(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-to_ascii85data-vecuint8-str" title="Permanent link">&para;</a></h5>
@@ -4339,9 +4339,16 @@
 <blockquote>
 <p>Truncate a Float64 toward zero.</p>
 </blockquote>
+<h4 id="fn-to_stringn-int-str"><code>fn to_string(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-to_stringn-int-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Formats an Int as a decimal string, exact for the full range including INT_MIN (the core intrinsic negates in place and mishandles it). The canonical implementation lives here so <code>use xiom.convert;</code> alone resolves <code>to_string</code>; <code>xiom.convert.tostring.to_string</code> delegates to it. Complexity: O(log_10 |n|).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-int_to_stringn-int-str"><code>fn int_to_string(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-int_to_stringn-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Decimal string for an Int.</p>
+<p>Decimal string for an Int (alias of <code>to_string</code>; the public idiom).</p>
 </blockquote>
 <h4 id="fn-float_to_fixed_strf-float64-decimals-int-str"><code>fn float_to_fixed_str(f: Float64, decimals: Int) -&gt; Str</code><a class="headerlink" href="#fn-float_to_fixed_strf-float64-decimals-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -4504,66 +4511,114 @@
 <blockquote>
 <p>Escape text for HTML body content: &amp; &lt; &gt; " ' become entities. Parameters: s -- the input text. Returns: the escaped text (strictly longer unless no specials). Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-html_unescapes-str-str"><code>fn html_unescape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-html_unescapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decode HTML entities back to characters: the named set (&amp; &lt; &gt; &quot; &#39; &apos;) and numeric forms (&amp;#NN; decimal, &amp;#xHH; hex). Parameters: s -- the escaped text. Returns: the decoded text; unrecognized sequences pass through. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-html_escape_attrs-str-str"><code>fn html_escape_attr(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-html_escape_attrs-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape text for use inside HTML attribute quotes: same entity set as html_escape plus both quote characters are always escaped. Parameters: s -- the attribute value text. Returns: the escaped text. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-xml_escapes-str-str"><code>fn xml_escape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-xml_escapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape the five predefined XML entities: &amp; " ' &lt; &gt;. Parameters: s -- the input text. Returns: the escaped text. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-xml_unescapes-str-str"><code>fn xml_unescape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-xml_unescapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decode the predefined XML entities back to characters. Parameters: s -- the escaped text. Returns: the decoded text; unrecognized sequences pass through. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-csv_escape_fields-str-str"><code>fn csv_escape_field(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-csv_escape_fields-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape and quote a field for RFC 4180 CSV output: the field is quoted when it contains a comma, quote, CR or LF, and embedded quotes are doubled. Parameters: s -- the raw field value. Returns: the CSV-ready field. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-csv_unescape_fields-str-str"><code>fn csv_unescape_field(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-csv_unescape_fields-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parse and unquote a single CSV field: a quoted field is unquoted and doubled quotes are restored; unquoted fields pass through unchanged. Parameters: s -- a single CSV field (no separators). Returns: the raw field value. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-tsv_escape_fields-str-str"><code>fn tsv_escape_field(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-tsv_escape_fields-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape tab, CR and LF characters in a TSV field as \t, \r, \n. Parameters: s -- the raw field value. Returns: the escaped field. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-tsv_unescape_fields-str-str"><code>fn tsv_unescape_field(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-tsv_unescape_fields-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Restore tab, CR and LF escapes in a TSV field. Parameters: s -- the escaped field. Returns: the raw field value. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-regex_escapes-str-str"><code>fn regex_escape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-regex_escapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape regex metacharacters in a literal string with a backslash. Escapes: \ . ^ $ * + ? ( ) [ ] { } |. Parameters: s -- the literal text. Returns: the regex-safe text. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-glob_escapes-str-str"><code>fn glob_escape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-glob_escapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape glob wildcard metacharacters (* ? [ ] and backslash) in a literal string with a backslash. Parameters: s -- the literal text. Returns: the glob-safe text. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-glob_unescapes-str-str"><code>fn glob_unescape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-glob_unescapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Restore escaped glob metacharacters: a backslash before a glob character is removed. Parameters: s -- the escaped text. Returns: the literal text. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-shell_escapes-str-str"><code>fn shell_escape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-shell_escapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape a string for safe use in a POSIX shell command: every character outside the safe set (alphanumerics plus _ - . / , : @ % + =) is preceded by a backslash. Parameters: s -- the raw argument. Returns: the shell-escaped argument. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-shell_quotes-str-str"><code>fn shell_quote(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-shell_quotes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Quote a string with single quotes for a POSIX shell; embedded single quotes are closed, escaped and reopened ('\''). Parameters: s -- the raw argument. Returns: the single-quoted argument. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len() + 2</code></li>
+</ul>
 <h5 id="fn-cmd_escapes-str-str"><code>fn cmd_escape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-cmd_escapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape a string for safe use in a Windows cmd command line: ^ &amp; | &lt; &gt; ( ) " % are escaped with a caret. Parameters: s -- the raw argument. Returns: the cmd-escaped argument. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-cmd_quotes-str-str"><code>fn cmd_quote(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-cmd_quotes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Quote a string for a Windows cmd command line: wrap in double quotes and double any embedded quote characters. Parameters: s -- the raw argument. Returns: the double-quoted argument. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len() + 2</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5194,9 +5249,9 @@
 <hr />
 <hr />
 <h2 id="tostringxi"><code>tostring.xi</code><a class="headerlink" href="#tostringxi" title="Permanent link">&para;</a></h2>
-<h5 id="fn-to_stringn-int-str"><code>fn to_string(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-to_stringn-int-str" title="Permanent link">&para;</a></h5>
+<h5 id="fn-to_stringn-int-str_1"><code>fn to_string(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-to_stringn-int-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Formats an integer as a decimal string. Exact for the full Int range (including INT_MIN, which the core implementation mishandles by negating in place). Complexity: O(log_10 |n|).</p>
+<p>Formats an integer as a decimal string. Exact for the full Int range (including INT_MIN). Canonical implementation: <code>xiom.convert.to_string</code>; this wrapper keeps the <code>xiom.convert.tostring</code> path working. Complexity: O(log_10 |n|).</p>
 </blockquote>
 <h5 id="fn-to_string_floatf-float64-str"><code>fn to_string_float(f: Float64) -&gt; Str</code><a class="headerlink" href="#fn-to_string_floatf-float64-str" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -5554,54 +5609,94 @@
 <blockquote>
 <p>Check the basic email shape (local@domain). Parameters: s -- the candidate address. Returns: true when there is exactly one '@', a non-empty local part, a non-empty domain containing a dot, and no whitespace. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() &lt; 3 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_valid_email_stricts-str-bool"><code>fn is_valid_email_strict(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_email_stricts-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check an email against stricter RFC 5322-shaped rules: local part up to 64 chars, domain labels 1..63 chars, no leading/trailing dots. Parameters: s -- the candidate address. Returns: true for a well-formed address. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_valid_phones-str-bool"><code>fn is_valid_phone(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_phones-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check a phone number for a recognizable format (digits, spaces, + - ( )). Parameters: s -- the candidate number. Returns: true when the number contains 7..15 digits with only allowed separator characters. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_valid_phone_e164s-str-bool"><code>fn is_valid_phone_e164(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_phone_e164s-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check a phone number against the E.164 specification: optional leading '+', then 1..15 digits. Parameters: s -- the candidate number. Returns: true for an E.164-compliant number. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result == false</code></li>
+<li><strong>Postcondition:</strong> <code>s.len() &gt; 16 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_valid_credit_cards-str-bool"><code>fn is_valid_credit_card(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_credit_cards-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check a card number for length (13-19 digits) and Luhn validity. Parameters: s -- the candidate card number (digits, optional spaces). Returns: true for a valid card number. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() &lt; 13 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-luhn_checks-str-bool"><code>fn luhn_check(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-luhn_checks-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Validate a digit string with the Luhn algorithm. Parameters: s -- a string of digits. Returns: true when the Luhn checksum passes. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_valid_ibans-str-bool"><code>fn is_valid_iban(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_ibans-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Validate an IBAN structure, country format, and mod-97 checksum. Parameters: s -- the candidate IBAN (spaces allowed). Returns: true for a valid IBAN. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() &lt; 15 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-iban_country_codes-str-str"><code>fn iban_country_code(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-iban_country_codes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Extract the two-letter country code from an IBAN. Parameters: s -- the IBAN. Returns: the country code (uppercase) or "" when too short. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() &lt; 2 =&gt; result.len() == 0</code></li>
+</ul>
 <h5 id="fn-iban_checksums-str-str"><code>fn iban_checksum(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-iban_checksums-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Extract the two-digit checksum from an IBAN. Parameters: s -- the IBAN. Returns: the checksum digits or "" when too short. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() &lt; 6 =&gt; result.len() == 0</code></li>
+</ul>
 <h5 id="fn-is_valid_swifts-str-bool"><code>fn is_valid_swift(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_swifts-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check a SWIFT/BIC code for the 8 or 11 character layout. Parameters: s -- the candidate code. Returns: true for a valid layout (6 alphanumeric + 2 alpha + optional 3 alphanumeric). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() != 8 &amp;&amp; s.len() != 11 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_valid_bics-str-bool"><code>fn is_valid_bic(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_bics-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Alias checking a BIC code for the 8 or 11 character layout. Parameters: s -- the candidate BIC. Returns: true for a valid BIC. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() != 8 &amp;&amp; s.len() != 11 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_valid_hex_colors-str-bool"><code>fn is_valid_hex_color(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_hex_colors-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check a hex color value in #RGB, #RRGGBB, or #RRGGBBAA form. Parameters: s -- the candidate color. Returns: true for a well-formed hex color. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() != 4 &amp;&amp; s.len() != 7 &amp;&amp; s.len() != 9 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_valid_semvers-str-bool"><code>fn is_valid_semver(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_semvers-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check a semantic version string per SemVer 2.0.0 (major.minor.patch with optional -prerelease and +build). Parameters: s -- the candidate version. Returns: true for a valid SemVer. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result == false</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

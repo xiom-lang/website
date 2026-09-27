@@ -4148,7 +4148,7 @@
 </blockquote>
 <h5 id="fn-least_squaresa-vecvecfloat64-b-vecfloat64-vecfloat64"><code>fn least_squares(a: &amp;Vec[Vec[Float64]], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-least_squaresa-vecvecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Normal-equation least-squares solution of A x = b: solves (A^T A) x = A^T b by Gaussian elimination. Returns the empty vector for empty or mismatched input (documented). Complexity: O(m * n^2 + n^3). Least-squares solution of A x = b via the normal equations (A^T A x = A^T b). Returns the empty vector for empty/mismatched input, a singular normal matrix, or when the input matrix is read through a <code>&amp;Vec[Vec[Float64]]</code> parameter (TODO(compiler): BUG 26 #1 -- by-ref nested float Vec element reads return garbage data pointers; len fields are correct). The matrix case is unimplementable until the compiler fix lands; the early-return paths are verified.</p>
+<p>Normal-equation least-squares solution of A x = b: solves (A^T A) x = A^T b by Gaussian elimination. Returns the empty vector for empty or mismatched input (documented). Complexity: O(m * n^2 + n^3). The nested matrix is first repaired into a local matrix (copy row handles into a fresh <code>Vec[Vec[Float64]]</code>, then index that): the inner Vec headers of a by-ref nested Float64 matrix arrive corrupted on the current compiler (BUG 26 #1), while a locally built matrix is readable -- the recipe proven in geom/matrix.xi and re-verified on v0.61.3 (row-local copies alone are NOT enough for the Float64 case; the full local-matrix copy is required).</p>
 </blockquote>
 <h5 id="fn-minimaxf-fnfloat64-float64-a-float64-b-float64-degree-int-vecfloat64"><code>fn minimax(f: fn(Float64) -&gt; Float64, a: Float64, b: Float64, degree: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-minimaxf-fnfloat64-float64-a-float64-b-float64-degree-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -4185,22 +4185,37 @@
 <blockquote>
 <p>Least common multiple of |a| and |b|; always non-negative. 0 when either input is 0, and 0 (documented overflow) when the true lcm exceeds Int range. Complexity: O(gcd).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-is_power_of_twon-int-bool_1"><code>fn is_power_of_two(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_power_of_twon-int-bool_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is a positive power of two. is_power_of_two(0) == false, is_power_of_two(1) == true. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false || n &gt;= 1</code></li>
+</ul>
 <h5 id="fn-next_power_of_twon-int-int_1"><code>fn next_power_of_two(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-next_power_of_twon-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest power of two &gt;= n. Returns 1 for n &lt;= 0. When the next power of two would exceed Int range (n &gt; 2^62) returns 0 (documented overflow). Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result &gt;= n</code></li>
+</ul>
 <h5 id="fn-prev_power_of_twon-int-int"><code>fn prev_power_of_two(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-prev_power_of_twon-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Largest power of two &lt;= n. Returns 0 for n &lt;= 0 (no positive power fits). Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 || (result &gt;= 1 &amp;&amp; result &lt;= n)</code></li>
+</ul>
 <h5 id="fn-gcd_extendeda-int-b-int-int-int-int"><code>fn gcd_extended(a: Int, b: Int) -&gt; (Int, Int, Int)</code><a class="headerlink" href="#fn-gcd_extendeda-int-b-int-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Extended Euclid: returns (g, x, y) with a<em>x + b</em>y == g == gcd(a, b). g is non-negative. For a == b == 0 returns (0, 1, 0). Complexity: O(log).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0</code></li>
+</ul>
 <h5 id="fn-mod_inversea-int-m-int-optionint_1"><code>fn mod_inverse(a: Int, m: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-mod_inversea-int-m-int-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiplicative inverse of a mod m: x with (a * x) % m == 1. Returns None when gcd(a, m) != 1 (no inverse exists), when m == 0 (no modulus), and Some(0) for m == 1 (everything is 0 mod 1). Complexity: O(log min(a, m)).</p>
@@ -4209,14 +4224,23 @@
 <blockquote>
 <p>base^exp mod m via exponentiation by squaring. Result in [0, m). exp &lt; 0 returns 0 (documented; only non-negative exponents are supported), m == 1 returns 0, m == 0 returns 0 (documented, division by zero guard). Complexity: O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-is_oddn-int-bool"><code>fn is_odd(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_oddn-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is odd (sign-aware: -3 is odd).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (n % 2 != 0)</code></li>
+</ul>
 <h5 id="fn-is_evenn-int-bool"><code>fn is_even(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_evenn-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is even (sign-aware: -4 is even).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (n % 2 == 0)</code></li>
+</ul>
 <h5 id="fn-div_ceila-int-b-int-int"><code>fn div_ceil(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-div_ceila-int-b-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Integer division rounded toward positive infinity (ceiling). ceil(-7, 2) == -3. Division by zero returns 0; INT_MIN / -1 returns INT_MIN (unrepresentable +2^63). Complexity: O(1).</p>
@@ -4233,10 +4257,16 @@
 <blockquote>
 <p>Modulus with result matching the divisor sign. mod_floor(-7, 2) == 1, mod_floor(7, -2) == -1. Division by zero returns 0. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 || result == 0 || (result &lt; 0) == (b &lt; 0)</code></li>
+</ul>
 <h5 id="fn-mod_trunca-int-b-int-int"><code>fn mod_trunc(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_trunca-int-b-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Modulus with result matching the dividend sign (native semantics). mod_trunc(-7, 2) == -1, mod_trunc(7, -2) == 1. Division by zero returns 0. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 || result == 0 || (result &lt; 0) == (a &lt; 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4271,7 +4301,7 @@
 </blockquote>
 <h5 id="fn-integrate_gaussf-fnfloat64-float64-a-float64-b-float64-n-int-float64"><code>fn integrate_gauss(f: fn(Float64) -&gt; Float64, a: Float64, b: Float64, n: Int) -&gt; Float64</code><a class="headerlink" href="#fn-integrate_gaussf-fnfloat64-float64-a-float64-b-float64-n-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>n-point Gauss quadrature over [a, b] (Gauss-Legendre, n in 1..8, otherwise the 8-point rule). Delegates to xiom.math.integral.integrate_gauss_legendre. Complexity: O(n). TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the cross-module delegation to the Gauss-Legendre recursion crashes at startup with 0xC000001D (BUG 20 AVX-512 codegen) even though the direct call works. Keep the frozen signature; revisit when cross-module Float64 delegation is safe.</p>
+<p>n-point Gauss quadrature over [a, b] (Gauss-Legendre, n in 1..8, otherwise the 8-point rule). Delegates to xiom.math.integral.integrate_gauss_legendre. Complexity: O(n). Re-verified on v0.61.3 (2026-09-24): the cross-module delegation works; the old BUG-20 crash claim was stale.</p>
 </blockquote>
 <h5 id="fn-limitf-fnfloat64-float64-x-float64-float64"><code>fn limit(f: fn(Float64) -&gt; Float64, x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-limitf-fnfloat64-float64-x-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -4381,114 +4411,273 @@
 <blockquote>
 <p>Number of k-permutations of n distinct items: n!/(n-k)!. Delegates to xiom.math.factorial.falling_factorial (returns 0 for invalid input and on overflow). Complexity: O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(k &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k &gt; 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-combinationsn-int-k-int-int"><code>fn combinations(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-combinationsn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of k-combinations of n distinct items: C(n, k). Delegates to xiom.math.factorial.binomial. Complexity: O(min(k, n-k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0 &amp;&amp; (k == 0 || k == n)) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-permutations_with_repetitionn-int-k-int-int"><code>fn permutations_with_repetition(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-permutations_with_repetitionn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of ordered k-selections from n items with repetition: n^k. Returns 0 for n &lt; 0 or k &lt; 0 (documented), 1 for k == 0, and 0 (documented overflow) when n^k exceeds Int range. Complexity: O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k &gt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-combinations_with_repetitionn-int-k-int-int"><code>fn combinations_with_repetition(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-combinations_with_repetitionn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of unordered k-selections from n items with repetition: C(n + k - 1, k). Returns 0 for n &lt; 0 or k &lt; 0 and on overflow (documented). Complexity: O(min(k, n-1)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k &gt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-derangementsn-int-int"><code>fn derangements(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-derangementsn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of derangements of n items (fixed-point-free permutations). Delegates to xiom.math.factorial.subfactorial. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 21) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-bell_numbersn-int-int"><code>fn bell_numbers(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-bell_numbersn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bell number B(n): partitions of an n-set. Delegates to xiom.math.factorial.bell. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 || n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-catalan_numbersn-int-int"><code>fn catalan_numbers(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-catalan_numbersn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Catalan number C_n. Delegates to xiom.math.factorial.catalan. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 34) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-eulerian_numbersn-int-k-int-int"><code>fn eulerian_numbers(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-eulerian_numbersn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Eulerian number A(n, k): permutations of n items with exactly k ascents. Delegates to xiom.math.factorial.eulerian. Complexity: O(n*k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-stirling_numbers_1n-int-k-int-int"><code>fn stirling_numbers_1(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-stirling_numbers_1n-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Signed Stirling numbers of the first kind s(n, k). Derived from the unsigned numbers: s(n,k) = (-1)^(n-k) * |s(n,k)|. Delegates to xiom.math.factorial.stirling_first. Complexity: O(n*k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-stirling_numbers_2n-int-k-int-int"><code>fn stirling_numbers_2(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-stirling_numbers_2n-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Stirling numbers of the second kind S(n, k): partitions of an n-set into k blocks. Delegates to xiom.math.factorial.stirling_second. Complexity: O(n*k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-lah_numbersn-int-k-int-int"><code>fn lah_numbers(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-lah_numbersn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lah numbers L(n, k). Delegates to xiom.math.factorial.lah. Complexity: O(min(k, n-k) + (n-k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0 || k &lt;= 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-narayana_numbersn-int-k-int-int"><code>fn narayana_numbers(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-narayana_numbersn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Narayana numbers N(n, k). Delegates to xiom.math.factorial.narayana. Complexity: O(min(k, n-k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0 || k &lt;= 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-fibonaccin-int-int"><code>fn fibonacci(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-fibonaccin-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fibonacci number F(n), 0-indexed: F(0) = 0, F(1) = 1. Returns 0 for n &lt; 0 and 0 (documented overflow) when F(n) exceeds Int range (n &gt; 92). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0 &amp;&amp; n &lt;= 1) =&gt; (result == n)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 93) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-fibonacci_starta-int-b-int-n-int-int"><code>fn fibonacci_start(a: Int, b: Int, n: Int) -&gt; Int</code><a class="headerlink" href="#fn-fibonacci_starta-int-b-int-n-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Term n of the Fibonacci-like sequence beginning with a and b (term 0 is a, term 1 is b, each later term is the sum of the previous two). Returns 0 for n &lt; 0 and 0 (documented overflow) when the term exceeds Int range. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == a)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result == b)</code></li>
+</ul>
 <h5 id="fn-lucasn-int-int"><code>fn lucas(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-lucasn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lucas number L(n): L(0) = 2, L(1) = 1, L(n) = L(n-1) + L(n-2). Returns 0 for n &lt; 0 and 0 (documented overflow) when L(n) exceeds Int range. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 2)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 91) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-tribonaccin-int-int"><code>fn tribonacci(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-tribonaccin-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tribonacci number T(n): T(0) = T(1) = 0, T(2) = 1, T(n) = T(n-1) + T(n-2) + T(n-3). Returns 0 for n &lt; 0 and 0 (documented overflow) when T(n) exceeds Int range. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 1) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 2) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-tetranaccin-int-int"><code>fn tetranacci(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-tetranaccin-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tetranacci number T(n): T(0) = T(1) = T(2) = 0, T(3) = 1, and each later term is the sum of the previous four. Returns 0 for n &lt; 0 and 0 (documented overflow) when T(n) exceeds Int range. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 2) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 3) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-partitionsn-int-int"><code>fn partitions(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-partitionsn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of integer partitions p(n). Delegates to xiom.math.factorial.partition_count. Complexity: O(n * sqrt(n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-integer_partitionsn-int-vecvecint"><code>fn integer_partitions(n: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-integer_partitionsn-int-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All integer partitions of n as lists. Delegates to xiom.math.factorial.integer_partitions. Complexity: O(p(n) * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-compositionsn-int-k-int-int"><code>fn compositions(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-compositionsn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of compositions of n into exactly k positive parts: C(n-1, k-1). Returns 0 for n &lt; 0, k &lt;= 0, and k &gt; n; n == 0, k == 0 yields 1 (the empty composition) and n == 0 with k &gt; 0 yields 0. Complexity: O(min(k, n-k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k != 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0 &amp;&amp; (k &lt;= 0 || k &gt; n)) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-compositions_alln-int-int"><code>fn compositions_all(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-compositions_alln-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Total number of compositions of n: 2^(n-1) for n &gt;= 1, 1 for n == 0. Returns 0 for n &lt; 0 and 0 (documented overflow) when 2^(n-1) exceeds Int range (n &gt; 63). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 64) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-surjectionsn-int-k-int-int"><code>fn surjections(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-surjectionsn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of onto (surjective) functions from an n-set to a k-set: k! * S(n, k). Returns 0 for n &lt; 0, k &lt; 0, k &gt; n, and 0 (documented overflow) when the count exceeds Int range. Complexity: O(n*k + k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-involutionsn-int-int"><code>fn involutions(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-involutionsn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of involutions on n elements (self-inverse permutations). Uses the recurrence I(n) = I(n-1) + (n-1)*I(n-2), I(0) = I(1) = 1. Returns 0 for n &lt; 0 and 0 (documented overflow) when I(n) exceeds Int range. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0 &amp;&amp; n &lt;= 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-derangements_enumn-int-vecvecint"><code>fn derangements_enum(n: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-derangements_enumn-int-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All fixed-point-free permutations of 1..n as lists. Returns the empty list for n &lt; 0; n == 0 yields a single empty permutation. Complexity: O(!n * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 2) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-permutations_enumelems-vecint-vecvecint"><code>fn permutations_enum(elems: &amp;Vec[Int]) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-permutations_enumelems-vecint-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All permutations of elems as lists (n! results). Returns an empty list for an empty input. Complexity: O(n! * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(elems.len() == 0) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(elems.len() &gt; 0) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-combinations_enumelems-vecint-k-int-vecvecint"><code>fn combinations_enum(elems: &amp;Vec[Int], k: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-combinations_enumelems-vecint-k-int-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All k-combinations of elems as lists (C(n, k) results). Returns an empty list for k &lt; 0 or k &gt; n. Complexity: O(C(n, k) * k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(k &lt; 0 || k &gt; elems.len()) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(k == 0 &amp;&amp; k &lt;= elems.len()) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(k &gt; 0 &amp;&amp; k &lt;= elems.len()) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-subsets_enumelems-vecint-k-int-vecvecint"><code>fn subsets_enum(elems: &amp;Vec[Int], k: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-subsets_enumelems-vecint-k-int-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All k-element subsets of elems as lists. Alias of combinations_enum. Complexity: O(C(n, k) * k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(k &lt; 0 || k &gt; elems.len()) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(k == 0 &amp;&amp; k &lt;= elems.len()) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(k &gt; 0 &amp;&amp; k &lt;= elems.len()) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-powerset_enumelems-vecint-vecvecint"><code>fn powerset_enum(elems: &amp;Vec[Int]) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-powerset_enumelems-vecint-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All subsets of elems as lists (2^n results). Returns an empty list when n &gt; 20 (documented guard against an impractical 2^n result set). Complexity: O(2^n * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(elems.len() &gt; 20) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(elems.len() == 0) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(elems.len() &lt;= 20) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4628,12 +4817,18 @@
 </blockquote>
 <h5 id="fn-observabilitya-vecvecfloat64-c-vecvecfloat64-bool"><code>fn observability(a: &amp;Vec[Vec[Float64]], c: &amp;Vec[Vec[Float64]]) -&gt; Bool</code><a class="headerlink" href="#fn-observabilitya-vecvecfloat64-c-vecvecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Whether the pair (A, C) is observable. TODO(compiler): NOT IMPLEMENTABLE - the matrices are Vec[Vec[Float64]] whose element reads return garbage in this compiler build.</p>
+<p>Whether the pair (A, C) is observable: the rank of the stacked observability matrix [C; CA; ...; C*A^(n-1)] equals n. Returns false for empty or non-square A, empty C, width mismatches, or a multiply failure. Complexity: O(n^4) dense rank.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>!result || a.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-controllabilitya-vecvecfloat64-b-vecvecfloat64-bool"><code>fn controllability(a: &amp;Vec[Vec[Float64]], b: &amp;Vec[Vec[Float64]]) -&gt; Bool</code><a class="headerlink" href="#fn-controllabilitya-vecvecfloat64-b-vecvecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Whether the pair (A, B) is controllable. TODO(compiler): NOT IMPLEMENTABLE - the matrices are Vec[Vec[Float64]] whose element reads return garbage in this compiler build.</p>
+<p>Whether the pair (A, B) is controllable: the rank of the stacked transpose-form controllability matrix [B^T; B^T A^T; ...; B^T (A^T)^(n-1)] equals n. Returns false for empty or non-square A, empty B, B with zero columns, width mismatches, or a multiply failure. Complexity: O(n^4) dense rank.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>!result || a.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-stability_routh_hurwitzden-vecfloat64-bool"><code>fn stability_routh_hurwitz(den: &amp;Vec[Float64]) -&gt; Bool</code><a class="headerlink" href="#fn-stability_routh_hurwitzden-vecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Routh-Hurwitz stability test on the denominator polynomial (coefficients highest power first). Returns false for an empty or non-positive leading coefficient. Routh table rows hold at most 4 entries (degree &lt;= 8). Complexity: O(n^2).</p>
@@ -4771,11 +4966,11 @@
 </blockquote>
 <h5 id="fn-richardsonf-fnfloat64-float64-x-float64-h-float64-tol-float64-float64"><code>fn richardson(f: fn(Float64) -&gt; Float64, x: Float64, h: Float64, tol: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-richardsonf-fnfloat64-float64-x-float64-h-float64-tol-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Richardson-extrapolated first derivative of f at x: repeatedly halves h and combines D(h) and D(h/2) as (4*D(h/2) - D(h))/3 until consecutive estimates agree within tol. Returns 0.0 for tol &lt;= 0 (documented). Complexity: O(halvings). TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the halving iteration loop emits AVX-512 and crashes with 0xC000001D (BUG 20) on Zen 2. Keep the frozen signature; revisit when the loop is not vectorized.</p>
+<p>Richardson-extrapolated first derivative of f at x: repeatedly halves h and combines D(h) and D(h/2) as (4*D(h/2) - D(h))/3 until consecutive estimates agree within tol. Returns 0.0 for tol &lt;= 0 (documented). Complexity: O(halvings). Implemented iteratively on v0.61.3 (2026-09-24); the old BUG-20 crash claim was stale.</p>
 </blockquote>
 <h5 id="fn-gradientf-fnvecfloat64-float64-x-vecfloat64-vecfloat64_1"><code>fn gradient(f: fn(&amp;Vec[Float64]) -&gt; Float64, x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-gradientf-fnvecfloat64-float64-x-vecfloat64-vecfloat64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Gradient vector of the scalar field f at x: each component is the central partial difference (f(x + h e_i) - f(x - h e_i))/2h with h = 1e-6. Complexity: O(n * f). TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the central partial-difference loops build and read Vec[Float64] perturbations, which crash with 0xC0000005 (BUG 12 family Vec[Float64] element reads) and 0xC000001D (BUG 20 loops). Keep the frozen signature; revisit when Vec[Float64] element reads and float loops are codegen-correct.</p>
+<p>Gradient vector of the scalar field f at x: each component is the central partial difference (f(x + h e_i) - f(x - h e_i))/2h with h = 1e-6. Complexity: O(n * f). Implemented on v0.61.3 (2026-09-24) with push-only perturbation vectors (no indexed writes); Vec[Float64] reads and float loops are codegen-correct.</p>
 </blockquote>
 <h5 id="fn-jacobianfs-vecfnvecfloat64-float64-x-vecfloat64-vecvecfloat64_1"><code>fn jacobian(fs: &amp;Vec[fn(&amp;Vec[Float64]) -&gt; Float64], x: &amp;Vec[Float64]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-jacobianfs-vecfnvecfloat64-float64-x-vecfloat64-vecvecfloat64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -4783,7 +4978,7 @@
 </blockquote>
 <h5 id="fn-partial_derivativef-fnvecfloat64-float64-x-vecfloat64-i-int-h-float64-float64_1"><code>fn partial_derivative(f: fn(&amp;Vec[Float64]) -&gt; Float64, x: &amp;Vec[Float64], i: Int, h: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-partial_derivativef-fnvecfloat64-float64-x-vecfloat64-i-int-h-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Partial derivative of f with respect to x[i] at x by the central difference. Returns 0.0 for h == 0 and for i out of [0, len(x)) (documented). Complexity: O(f). TODO(compiler): NOT IMPLEMENTABLE - same Vec[Float64]/loop crash as gradient (0xC0000005 / 0xC000001D). Keep the frozen signature.</p>
+<p>Partial derivative of f with respect to x[i] at x by the central difference. Returns 0.0 for h == 0 and for i out of [0, len(x)) (documented). Complexity: O(f). Implemented on v0.61.3 (2026-09-24) with push-only perturbations.</p>
 </blockquote>
 <hr />
 <hr />
@@ -4825,50 +5020,86 @@
 <blockquote>
 <p>e^x. Returns +inf for x &gt; 700 (overflow) and 0.0 for x &lt; -745 (underflow) via libm. Complexity: O(1), libm exp.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 || result != result</code></li>
+</ul>
 <h5 id="fn-exp2x-float64-float64"><code>fn exp2(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-exp2x-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>2^x. Complexity: O(1), libm pow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 || result != result</code></li>
+</ul>
 <h5 id="fn-exp10x-float64-float64"><code>fn exp10(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-exp10x-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>10^x. Complexity: O(1), libm pow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 || result != result</code></li>
+</ul>
 <h5 id="fn-expm1x-float64-float64"><code>fn expm1(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-expm1x-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>e^x - 1, accurate for small x. Uses the Taylor series x + x^2/2! + ... for |x| &lt;= 1e-4 (where exp(x) - 1.0 suffers catastrophic cancellation) and libm exp - 1.0 otherwise. Returns -1.0 for x &lt; -700 and +inf for x &gt; 700. Complexity: O(20) series terms / O(1) libm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 || result != result</code></li>
+</ul>
 <h5 id="fn-lnx-float64-float64"><code>fn ln(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-lnx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Natural logarithm of x. Requires x &gt; 0. For x &lt;= 0 returns NaN (IEEE semantics; BUG 19 fixed -- NaN ops now work).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt; 1) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-log2x-float64-float64"><code>fn log2(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-log2x-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Base-2 logarithm of x. Requires x &gt; 0. For x &lt;= 0 returns NaN (see ln). Complexity: O(1), libm log2.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt; 1) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-log10x-float64-float64"><code>fn log10(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-log10x-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Base-10 logarithm of x. Requires x &gt; 0. For x &lt;= 0 returns NaN (see ln). Complexity: O(1), libm log10.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt; 1) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-log1px-float64-float64"><code>fn log1p(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-log1px-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ln(1 + x), accurate for small x. Requires x &gt; -1. Uses the alternating series x - x^2/2 + x^3/3 - ... for |x| &lt;= 1e-4 and libm ln(1+x) otherwise. log1p(-1.0) == -inf (ln 0), log1p(x &lt; -1) returns NaN (IEEE semantics).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt; 0) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-ln_1_plusx-float64-float64"><code>fn ln_1_plus(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-ln_1_plusx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ln(1 + x), alias of log1p. See log1p for semantics and domain handling.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt; 0) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-powbase-float64-exp-float64-float64"><code>fn pow(base: Float64, exp: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-powbase-float64-exp-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>base^exp. Uses libm pow; negative bases require an integral exponent (libm semantics). For a negative base with a non-integral exponent returns NaN (IEEE semantics). Complexity: O(1), libm pow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(base &gt; 0) =&gt; (result &gt;= 0 || result != result)</code></li>
+</ul>
 <h5 id="fn-pow_intbase-float64-exp-int-float64"><code>fn pow_int(base: Float64, exp: Int) -&gt; Float64</code><a class="headerlink" href="#fn-pow_intbase-float64-exp-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>base raised to an integer power via binary exponentiation (square-and- multiply). pow_int(2, 10) == 1024, pow_int(2, -2) == 0.25. 0^0 == 1.0; 0^negative == +inf; base^INT_MIN is handled by magnitude (|base| &lt; 1 -&gt; 0, == 1 -&gt; 1, &gt; 1 -&gt; +inf). Complexity: O(log |exp|) multiplications.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(exp == 0) =&gt; (result == 1)</code></li>
+</ul>
 <h5 id="fn-pow_floatbase-float64-exp-float64-float64"><code>fn pow_float(base: Float64, exp: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-pow_floatbase-float64-exp-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>base^exp for a float exponent. See pow for semantics and domain handling. Complexity: O(1), libm pow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(base &gt; 0) =&gt; (result &gt;= 0 || result != result)</code></li>
+</ul>
 <h5 id="fn-sqrt_powerbase-float64-exp-float64-float64"><code>fn sqrt_power(base: Float64, exp: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sqrt_powerbase-float64-exp-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>sqrt(base)^exp. Requires base &gt;= 0. For base &lt; 0 returns NaN (IEEE). Complexity: O(1), libm.</p>
@@ -4880,22 +5111,37 @@
 <blockquote>
 <p>e^x via the pure range-reduced Taylor series (math.exp_pure), no libm. Returns +inf for x &gt; 700 and 0.0 for x &lt; -700. Complexity: O(25 + log).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 || result != result</code></li>
+</ul>
 <h5 id="fn-ln_purex-float64-float64"><code>fn ln_pure(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-ln_purex-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Natural logarithm via the pure atanh series (math.ln_pure), no libm. Requires x &gt; 0; for x &lt;= 0 returns NaN (IEEE semantics).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt; 1) =&gt; (result &gt;= 0 || result != result)</code></li>
+</ul>
 <h5 id="fn-log2_purex-float64-float64"><code>fn log2_pure(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-log2_purex-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Base-2 logarithm via the pure series (math.log2_pure), no libm. Requires x &gt; 0; for x &lt;= 0 returns NaN (IEEE semantics).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt; 1) =&gt; (result &gt;= 0 || result != result)</code></li>
+</ul>
 <h5 id="fn-log10_purex-float64-float64"><code>fn log10_pure(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-log10_purex-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Base-10 logarithm via the pure series (math.log10_pure), no libm. Requires x &gt; 0; for x &lt;= 0 returns NaN (IEEE semantics).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt; 1) =&gt; (result &gt;= 0 || result != result)</code></li>
+</ul>
 <h5 id="fn-pow_purebase-float64-exp-float64-float64"><code>fn pow_pure(base: Float64, exp: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-pow_purebase-float64-exp-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>base^exp via the pure exp/ln series (math.pow_pure), no libm. Negative bases are handled before delegation because math.pow_pure declares <code>requires: base &gt;= 0.0 || exp integral</code> (runtime-enforced in this compiler); a negative base with a non-integral exponent returns NaN (IEEE semantics). Complexity: O(ln + exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(base &gt; 0) =&gt; (result &gt;= 0 || result != result)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4904,90 +5150,214 @@
 <blockquote>
 <p>n! for n &gt;= 0. Returns 0 for n &lt; 0 (documented) and 0 (documented overflow) when the true value exceeds Int range (n &gt; 20). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 || n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 21) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-double_factorialn-int-int"><code>fn double_factorial(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-double_factorialn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Double factorial n!! = product of n, n-2, n-4, ... down to 1 (odd n) or 2 (even n). Returns 0 for n &lt; 0 and 0 (documented overflow) when the value exceeds Int range. Complexity: O(n/2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 || n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 34) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-subfactorialn-int-int"><code>fn subfactorial(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-subfactorialn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Derangement count !n: the number of fixed-point-free permutations of n items. Uses the recurrence D(0)=1, D(1)=0, D(n) = (n-1)(D(n-1)+D(n-2)). Returns 0 for n &lt; 0 and 0 (documented overflow) when D(n) exceeds Int range. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 21) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-multifactorialn-int-k-int-int"><code>fn multifactorial(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-multifactorialn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>k-th multifactorial of n: product n, n-k, n-2k, ... down to the smallest positive term. Returns 0 for n &lt; 0 or k &lt;= 0 (documented) and 0 (documented overflow) when the value exceeds Int range. Complexity: O(n/k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(k &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0 &amp;&amp; k &gt; 0 &amp;&amp; n &lt;= 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-binomialn-int-k-int-int_1"><code>fn binomial(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-binomialn-int-k-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binomial coefficient C(n, k). Returns 0 for invalid input (n &lt; 0, k &lt; 0, k &gt; n) and 0 (documented overflow) when C(n, k) exceeds Int range. Uses the multiplicative form with a per-step overflow guard. Complexity: O(min(k, n - k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0 &amp;&amp; (k == 0 || k == n)) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 2 &amp;&amp; k == 1) =&gt; (result == n)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-binomial_coeffn-int-k-int-int"><code>fn binomial_coeff(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-binomial_coeffn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Alias of binomial. Complexity: O(min(k, n - k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-multinomialn-int-ks-vecint-int"><code>fn multinomial(n: Int, ks: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-multinomialn-int-ks-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multinomial coefficient n!/(k1! k2! ... km!) where the ki sum to n. Returns 0 when the entries are negative or do not sum to n, and 0 (documented overflow) when the value exceeds Int range. Computed as a chain of binomial coefficients. Complexity: O(m * min(k_i, ...)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(ks.len() == 0 &amp;&amp; n != 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(ks.len() == 0 &amp;&amp; n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-falling_factorialx-int-k-int-int"><code>fn falling_factorial(x: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-falling_factorialx-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Falling factorial x * (x-1) * ... * (x-k+1). Returns 0 for k &lt; 0 and 0 (documented overflow) when the magnitude exceeds Int range. k == 0 gives 1. Complexity: O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(k &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 0 &amp;&amp; k &gt; 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-rising_factorialx-int-k-int-int"><code>fn rising_factorial(x: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rising_factorialx-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rising factorial x * (x+1) * ... * (x+k-1). Returns 0 for k &lt; 0 and 0 (documented overflow) when the magnitude exceeds Int range. k == 0 gives 1. Complexity: O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(k &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 0 &amp;&amp; k &gt; 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-stirling_firstn-int-k-int-int"><code>fn stirling_first(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-stirling_firstn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unsigned Stirling number of the first kind s(n, k): permutations of n items with exactly k cycles. Row DP over s(n,k) = s(n-1,k-1) + (n-1)<em>s(n-1,k) with s(0,0) = 1. Returns 0 for invalid input (n &lt; 0, k &lt; 0, k &gt; n) and 0 (documented overflow) when the value exceeds Int range. Complexity: O(n</em>k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-stirling_secondn-int-k-int-int"><code>fn stirling_second(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-stirling_secondn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Stirling number of the second kind S(n, k): partitions of an n-element set into k nonempty blocks. Row DP over S(n,k) = k<em>S(n-1,k) + S(n-1,k-1) with S(0,0) = 1. Returns 0 for invalid input and 0 (documented overflow) when the value exceeds Int range. Complexity: O(n</em>k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-belln-int-int"><code>fn bell(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-belln-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bell number B(n): the number of partitions of an n-element set. Computed via the Aitken / Bell triangle, whose rightmost entry of row k is B(k+1) (row 0 is [1] and B(0) = B(1) = 1), so the value is the last entry of row n - 1. Returns 0 for n &lt; 0 and 0 (documented overflow) when B(n) exceeds Int range. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 || n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-catalann-int-int"><code>fn catalan(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-catalann-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Catalan number C_n = C(2n, n)/(n+1). Returns 0 for n &lt; 0 and 0 (documented overflow) when the value exceeds Int range (n &gt; 33). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 34) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-euleriann-int-k-int-int"><code>fn eulerian(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-euleriann-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Eulerian number A(n, k): permutations of n items with exactly k ascents. Row DP over A(n,k) = (n-k)<em>A(n-1,k-1) + (k+1)</em>A(n-1,k) with A(0,0) = 1 and A(n,n) = 0. Returns 0 for invalid input and 0 (documented overflow) when the value exceeds Int range. Complexity: O(n*k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || k &lt; 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-narayanan-int-k-int-int"><code>fn narayana(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-narayanan-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Narayana number N(n, k) = C(n, k) * C(n, k-1) / n. Returns 0 for invalid input (n &lt;= 0, k &lt;= 0, k &gt; n) and 0 (documented overflow) when the value exceeds Int range. Complexity: O(min(k, n-k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0 || k &lt;= 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-lahn-int-k-int-int"><code>fn lah(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-lahn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lah number L(n, k) = C(n, k) * C(n-1, k-1) * (n-k)!. Returns 0 for invalid input (n &lt;= 0, k &lt;= 0, k &gt; n) and 0 (documented overflow) when the value exceeds Int range. Complexity: O(min(k, n-k) + (n-k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0 || k &lt;= 0 || k &gt; n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 1 &amp;&amp; k == n) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-motzkinn-int-int"><code>fn motzkin(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-motzkinn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Motzkin number M_n (lattice paths / non-crossing partitions). Uses the closed recurrence M(n) = ((2n+1)M(n-1) + (3n-3)M(n-2))/(n+2), M(0) = M(1) = 1. Returns 0 for n &lt; 0 and 0 (documented overflow) when M_n exceeds Int range. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 || n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-schroedern-int-int"><code>fn schroeder(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-schroedern-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Large Schroder number S_n. Uses S(n) = S(n-1) + sum_{k=0..n-1} S(k)*S(n-1-k), S(0) = 1. Returns 0 for n &lt; 0 and 0 (documented overflow) when S_n exceeds Int range. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-partition_countn-int-int"><code>fn partition_count(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-partition_countn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of integer partitions p(n). Uses the Euler pentagonal-number recurrence p(n) = sum_{k != 0} (-1)^(k+1) p(n - k(3k-1)/2). Returns 0 for n &lt; 0 and 0 (documented overflow) when p(n) exceeds Int range (n &gt; 255). Complexity: O(n * sqrt(n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-integer_partitionsn-int-vecvecint_1"><code>fn integer_partitions(n: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-integer_partitionsn-int-vecvecint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All integer partitions of n as lists (each partition non-increasing, starting from the largest part; the result order is unspecified). Returns an empty list for n &lt; 0; n == 0 yields a single empty partition. Complexity: O(p(n) * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-derangementsn-int-int_1"><code>fn derangements(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-derangementsn-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of derangements of n items (fixed-point-free permutations). Alias of subfactorial. Returns 0 for n &lt; 0 and 0 (documented overflow). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 21) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-bell_trianglen-int-vecvecint"><code>fn bell_triangle(n: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-bell_trianglen-int-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bell triangle rows up to n: rows 0..n inclusive. Row 0 is [1]; each later row starts with the previous row's last entry and continues with the sum of the entry to its left and the one above-left, so the rightmost entry of row k is B(k+1) and the leftmost is B(k). Returns an empty list for n &lt; 0. Cells that would overflow Int are stored as 0 (documented). Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() &gt; 1)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5627,22 +5997,37 @@
 <blockquote>
 <p>Logical biconditional: true when a equals b. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (a == b)</code></li>
+</ul>
 <h5 id="fn-impliesa-bool-b-bool-bool"><code>fn implies(a: Bool, b: Bool) -&gt; Bool</code><a class="headerlink" href="#fn-impliesa-bool-b-bool-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Logical implication: false only when a is true and b is false. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (!a || b)</code></li>
+</ul>
 <h5 id="fn-xora-bool-b-bool-bool"><code>fn xor(a: Bool, b: Bool) -&gt; Bool</code><a class="headerlink" href="#fn-xora-bool-b-bool-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Exclusive or: true when a differs from b. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (a != b)</code></li>
+</ul>
 <h5 id="fn-nanda-bool-b-bool-bool"><code>fn nand(a: Bool, b: Bool) -&gt; Bool</code><a class="headerlink" href="#fn-nanda-bool-b-bool-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Not-and of a and b. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == !(a &amp;&amp; b)</code></li>
+</ul>
 <h5 id="fn-nora-bool-b-bool-bool"><code>fn nor(a: Bool, b: Bool) -&gt; Bool</code><a class="headerlink" href="#fn-nora-bool-b-bool-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Not-or of a and b. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == !(a || b)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5792,7 +6177,7 @@
 <p><code>base</code> raised to <code>exp</code> via libm. A negative base requires an integer exponent.</p>
 </blockquote>
 <ul>
-<li><strong>Precondition:</strong> <code>base &gt;= 0 || exp == to_int(exp)</code></li>
+<li><strong>Precondition:</strong> <code>base &gt;= 0 || exp == (?)</code></li>
 </ul>
 <h4 id="fn-abs_intx-int-int"><code>fn abs_int(x: Int) -&gt; Int</code><a class="headerlink" href="#fn-abs_intx-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -5994,7 +6379,7 @@
 <p>Pure-XIOM <code>base ^ exp</code> via <code>exp(exp * ln(base))</code>; negative base requires an integer exponent.</p>
 </blockquote>
 <ul>
-<li><strong>Precondition:</strong> <code>base &gt;= 0 || exp == to_int(exp)</code></li>
+<li><strong>Precondition:</strong> <code>base &gt;= 0 || exp == (?)</code></li>
 </ul>
 <h4 id="fn-abs_float_purex-float64-float64"><code>fn abs_float_pure(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-abs_float_purex-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -6567,74 +6952,128 @@
 <blockquote>
 <p>(a + b) mod m with the result in [0, m). Returns 0 for m &lt;= 0 (no modulus, documented) and 0 for m == 1 (everything is 0 mod 1). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-mod_suba-int-b-int-m-int-int"><code>fn mod_sub(a: Int, b: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_suba-int-b-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>(a - b) mod m with the result in [0, m). Returns 0 for m &lt;= 0 (no modulus, documented) and 0 for m == 1. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-mod_mula-int-b-int-m-int-int"><code>fn mod_mul(a: Int, b: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_mula-int-b-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>(a * b) mod m with the result in [0, m). Uses overflow-free double-and-add. Returns 0 for m &lt;= 0 (no modulus, documented) and 0 for m == 1. Complexity: O(log min(a, b)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-mod_powbase-int-exp-int-m-int-int"><code>fn mod_pow(base: Int, exp: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_powbase-int-exp-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>base^exp mod m with the result in [0, m). Delegates to xiom.math.arithmetic.pow_mod. Returns 0 for m &lt;= 0, m == 1, and exp &lt; 0 (documented; only non-negative exponents are supported). Complexity: O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-mod_inversea-int-m-int-int"><code>fn mod_inverse(a: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_inversea-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiplicative inverse of a mod m: x with (a*x) % m == 1. Returns 0 when no inverse exists (gcd(a, m) != 1), when m == 0 (no modulus) and for m == 1 (documented). Delegates to xiom.math.arithmetic.mod_inverse. Complexity: O(log min(|a|, |m|)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-mod_sqrta-int-p-int-int"><code>fn mod_sqrt(a: Int, p: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_sqrta-int-p-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A square root of a mod prime p (x with x^2 == a mod p), choosing the root in [0, (p-1)/2]. Returns 0 when no root exists, when p &lt;= 1 (no modulus) and when p is composite (documented: p must be prime). Delegates to tonelli_shanks. Complexity: O(log^3 p).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p &lt;= 2 || (result &gt;= 0 &amp;&amp; result &lt;= (p - 1) / 2)</code></li>
+</ul>
 <h5 id="fn-mod_cbrta-int-m-int-int"><code>fn mod_cbrt(a: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_cbrta-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A cube root of a mod m: x with x^3 == a mod m. For prime m with gcd(3, m-1) == 1 the root is a^((2m-1)/3) mod m; for m == 1 (mod 3) a small scan is used. Returns 0 when no root exists, for m &lt;= 0 (no modulus) and when m == 1. Complexity: O(log m) for the closed form, O(m) scan otherwise.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-mod_diva-int-b-int-m-int-int"><code>fn mod_div(a: Int, b: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_diva-int-b-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>(a / b) mod m: a * b^(-1) mod m. Returns 0 when b has no inverse mod m (gcd(b, m) != 1), when m &lt;= 0 (no modulus) and for m == 1 (documented). Complexity: O(log min(|b|, |m|)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-mod_lcma-int-b-int-m-int-int"><code>fn mod_lcm(a: Int, b: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_lcma-int-b-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Least common multiple of a and b reduced mod m. Returns 0 when m &lt;= 0 (no modulus), for m == 1 and when either input is 0. Uses the overflow-free modular multiply so the true lcm may exceed Int range. Complexity: O(log).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-crtremainders-vecint-moduli-vecint-int"><code>fn crt(remainders: &amp;Vec[Int], moduli: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-crtremainders-vecint-moduli-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Chinese remainder theorem solution x with x % m_i == r_i for every pair. Returns 0 when the slices differ in length, when either slice is empty, when any modulus is non-positive, when the moduli are not pairwise coprime, and when the product of the moduli overflows Int (documented). The result lies in [0, M) with M = prod(m_i). Complexity: O(n^2 * log max(m_i)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-crt_solvecongruences-vecint-int-int"><code>fn crt_solve(congruences: &amp;Vec[(Int, Int)]) -&gt; Int</code><a class="headerlink" href="#fn-crt_solvecongruences-vecint-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Solve a system of congruences given as (remainder, modulus) pairs using the iterative merging method. Returns 0 when the list is empty, when any modulus is non-positive, when the system is inconsistent, and on overflow (documented). Complexity: O(n * log max(m_i)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-linear_congruencea-int-b-int-m-int-int"><code>fn linear_congruence(a: Int, b: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-linear_congruencea-int-b-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Solve a*x == b (mod m): returns the least non-negative solution. Returns 0 when m &lt;= 0 (no modulus), when m == 1, when gcd(a, m) does not divide b (no solution) and on overflow (documented). Complexity: O(log min(|a|, |m|)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <h5 id="fn-quadratic_residuea-int-p-int-bool"><code>fn quadratic_residue(a: Int, p: Int) -&gt; Bool</code><a class="headerlink" href="#fn-quadratic_residuea-int-p-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff a is a quadratic residue mod prime p, i.e. x^2 == a (mod p) has a solution. a == 0 (mod p) counts as a residue (x = 0). Returns false for p &lt;= 1 (no modulus). Uses Euler's criterion. Complexity: O(log p).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false || p &gt;= 2</code></li>
+</ul>
 <h5 id="fn-tonelli_shanksn-int-p-int-int"><code>fn tonelli_shanks(n: Int, p: Int) -&gt; Int</code><a class="headerlink" href="#fn-tonelli_shanksn-int-p-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Square root of n mod odd prime p via the Tonelli-Shanks algorithm, choosing the root in [0, (p-1)/2]. Returns 0 when n is a non-residue mod p, for p &lt;= 2 (p == 2 is handled directly) and when p is composite (documented: p must be prime). Complexity: O(log^3 p).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p &lt;= 2 || (result &gt;= 0 &amp;&amp; result &lt;= (p - 1) / 2)</code></li>
+</ul>
 <h5 id="fn-cipollan-int-p-int-int"><code>fn cipolla(n: Int, p: Int) -&gt; Int</code><a class="headerlink" href="#fn-cipollan-int-p-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Square root of n mod odd prime p via Cipolla's algorithm, choosing the root in [0, (p-1)/2]. Returns 0 when n is a non-residue mod p, for p &lt;= 2 (p == 2 is handled directly) and when p is composite (documented: p must be prime). Complexity: O(log^2 p).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p &lt;= 2 || (result &gt;= 0 &amp;&amp; result &lt;= (p - 1) / 2)</code></li>
+</ul>
 <h5 id="fn-cornacchiad-int-b-int-m-int-int-int"><code>fn cornacchia(d: Int, b: Int, m: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-cornacchiad-int-b-int-m-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cornacchia's algorithm: find integers x, y &gt;= 0 with x^2 + d*y^2 = m. The parameter b is a square root of -d modulo m (the caller must supply one; for prime m this is sqrt(-d) mod m, e.g. via tonelli_shanks). Returns (0, 0) when d &lt;= 0, when no representation exists, and on overflow (documented). Complexity: O(log^2 m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._1 &gt;= 0</code></li>
+</ul>
 <h5 id="fn-hilbert_symbola-int-b-int-p-int-int"><code>fn hilbert_symbol(a: Int, b: Int, p: Int) -&gt; Int</code><a class="headerlink" href="#fn-hilbert_symbola-int-b-int-p-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Local Hilbert symbol (a, b)_p over Q_p, returning 1 or -1. Uses the standard factorization: for odd p, (a,b)_p = (-1)^(alpha*beta) * (u/p)^beta * (v/p)^alpha with a = p^alpha * u, b = p^beta * v; for p == 2 the explicit epsilon/omega formula is used. Returns 0 when a or b is 0 (the symbol is degenerate there, documented). Complexity: O(log_p |a| + log_p |b| + log p).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 1</code></li>
+</ul>
 <h5 id="fn-pow_mod_fastbase-int-exp-int-m-int-int"><code>fn pow_mod_fast(base: Int, exp: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-pow_mod_fastbase-int-exp-int-m-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fast modular exponentiation base^exp mod m. Alias of xiom.math.arithmetic.pow_mod; returns 0 for m &lt;= 0, m == 1 and exp &lt; 0 (documented). Complexity: O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; (m &lt;= 1 || result &lt; m)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -6731,10 +7170,19 @@
 <blockquote>
 <p>Deterministic primality test for 64-bit n (Miller-Rabin over the fixed base set {2, 325, 9375, 28178, 450775, 9780504, 1795265022}, which is proven for every n &lt; 2^64). Returns false for n &lt; 2. Complexity: O(log^3 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 2) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 2) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-is_prime_deterministicn-int-bool"><code>fn is_prime_deterministic(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_prime_deterministicn-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Strict deterministic primality test: Miller-Rabin with the fixed base set proven correct for all 64-bit integers. Returns false for n &lt; 2. Complexity: O(log^3 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 2) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 2) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 2 &amp;&amp; n % 2 == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-next_primen-int-int"><code>fn next_prime(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-next_primen-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest prime strictly greater than n. Returns 0 for n &lt; 0 (no positive prime is representable in range for the largest inputs) and 0 when no such prime fits in Int (n &gt;= INT_MAX - 1). Complexity: O(gap * sqrt(p)).</p>
@@ -6743,10 +7191,19 @@
 <blockquote>
 <p>Largest prime strictly less than n. Returns 0 for n &lt;= 2 (no such prime) and 0 (documented) when the search leaves the representable range. Complexity: O(gap * sqrt(p)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 2) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(result != 0) =&gt; (result &lt; n)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-factorn-int-vecint"><code>fn factor(n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-factorn-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Prime factorization of n with multiplicity. Returns the empty list for n &lt;= 1; negative n is factored by absolute value. Complexity: O(sqrt(|n|)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 1) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-pollard_rhon-int-int"><code>fn pollard_rho(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-pollard_rhon-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A non-trivial factor of n via Pollard's rho (Floyd cycle detection with f(x) = x^2 + c mod n). Returns n itself when n is prime or when no split is found within the retry budget (documented; a repeated call with a different internal constant is the standard recovery). Returns 1 for n &lt;= 1. Complexity: O(sqrt(p)) expected for the smallest prime factor p.</p>
@@ -6759,22 +7216,46 @@
 <blockquote>
 <p>True iff n passes the Fermat test for base a, i.e. a^(n-1) == 1 (mod n). Returns false for n &lt;= 1, true for n == 2, and false when a is a multiple of n (the residue is 0, not 1). Primes always pass; composite pseudoprimes to base a also return true. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 1) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 2) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-miller_rabinn-int-bases-vecint-bool"><code>fn miller_rabin(n: Int, bases: &amp;Vec[Int]) -&gt; Bool</code><a class="headerlink" href="#fn-miller_rabinn-int-bases-vecint-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Miller-Rabin strong pseudoprime test against the supplied bases. Returns false for n &lt;= 1, even n (n &gt; 2) and for any base witnessing compositeness; a value that passes every base is reported true (likely prime, exactly prime for n &lt; 2^64 when the base set is the deterministic one). Complexity: O(|bases| * log^3 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 1) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 2) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 2 &amp;&amp; n % 2 == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(bases.len() == 0 &amp;&amp; n &gt; 2 &amp;&amp; n % 2 != 0) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-fermat_testn-int-a-int-bool"><code>fn fermat_test(n: Int, a: Int) -&gt; Bool</code><a class="headerlink" href="#fn-fermat_testn-int-a-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fermat compositeness test with base a: true iff a^(n-1) == 1 (mod n). Alias of is_pseudoprime. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 1) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 2) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-lucas_lehmerp-int-bool"><code>fn lucas_lehmer(p: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lucas_lehmerp-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lucas-Lehmer primality test for the Mersenne number M_p = 2^p - 1. Returns false for p &lt; 2 and when M_p does not fit in Int (p &gt; 62). Complexity: O(p * mulmod).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p &lt; 2) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(p == 2) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(p &gt; 62) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-mersenne_prime_pp-int-bool"><code>fn mersenne_prime_p(p: Int) -&gt; Bool</code><a class="headerlink" href="#fn-mersenne_prime_pp-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff 2^p - 1 is prime. Alias of lucas_lehmer. Returns false for p &lt; 2 and when M_p exceeds Int range. Complexity: O(p * mulmod).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p &lt; 2) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(p == 2) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(p &gt; 62) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-euler_phin-int-int"><code>fn euler_phi(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-euler_phin-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euler totient phi(n): count of integers k in [1, n] coprime to n. Returns 0 for n &lt;= 0 (documented). Complexity: O(sqrt(n)).</p>
@@ -6799,26 +7280,53 @@
 <blockquote>
 <p>The n-th prime, 1-indexed (nth_prime(1) == 2). Returns 0 for n &lt;= 0 and 0 (documented) when the search leaves the representable Int range. Complexity: O(n * sqrt(p_n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result == 2)</code></li>
+<li><strong>Postcondition:</strong> <code>(result != 0) =&gt; (result &gt;= 2)</code></li>
+</ul>
 <h5 id="fn-primorialn-int-int_1"><code>fn primorial(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-primorialn-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Product of the first n primes (p_n#). Returns 0 for n &lt;= 0 and 0 (documented overflow) when the product exceeds Int range (n &gt; 15). Complexity: O(n * sqrt(p_n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result == 2)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 16) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-is_compositen-int-bool"><code>fn is_composite(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_compositen-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is composite (n &gt; 1 and not prime). Returns false for n &lt;= 1. Complexity: O(log^3 n) via the Miller-Rabin primality test.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 1 || n == 2) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-is_semiprimen-int-bool"><code>fn is_semiprime(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_semiprimen-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is a product of exactly two primes (with multiplicity), so squares of primes count. Returns false for n &lt; 4. Complexity: O(sqrt(n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 4) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-is_powern-int-bool"><code>fn is_power(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_powern-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is a perfect power a^k for integers a and k &gt;= 2. Returns false for n &lt;= 1. Uses the prime-exponent gcd criterion: n is a perfect power iff the gcd of the exponents in its prime factorization exceeds 1. Complexity: O(sqrt(n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 1) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-is_power_ofn-int-base-int-bool"><code>fn is_power_of(n: Int, base: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_power_ofn-int-base-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is a power of base: n == base^k for some integer k &gt;= 1. Special cases: base 0 (only n == 0), base 1 (only n == 1), base -1 (n == 1 or n == -1). Returns false when the power series overflows Int before reaching n. Complexity: O(log_base |n|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(base == 0 &amp;&amp; n == 0) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(base == 0 &amp;&amp; n != 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(base == 1 &amp;&amp; n == 1) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(base == 1 &amp;&amp; n != 1) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(base == -1 &amp;&amp; (n == 1 || n == -1)) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-radicaln-int-int"><code>fn radical(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-radicaln-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Radical of n: the product of the distinct prime factors of n. Returns n for n &lt;= 1 (rad(1) = 1, rad(0) = 0) and 0 (documented overflow) when the product exceeds Int range. Negative n is handled by absolute value. Complexity: O(sqrt(n)).</p>
@@ -6835,26 +7343,56 @@
 <blockquote>
 <p>Legendre symbol (a/p) for odd prime p: 1 for a quadratic residue, -1 for a non-residue, 0 when p divides a. Uses Euler's criterion a^((p-1)/2) mod p. p == 2 is handled directly (1 for odd a, 0 for even a); p &lt;= 1 returns 0 (documented, no modulus). Complexity: O(log p).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p &lt;= 1) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1 &amp;&amp; result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-jacobi_symbola-int-n-int-int_1"><code>fn jacobi_symbol(a: Int, n: Int) -&gt; Int</code><a class="headerlink" href="#fn-jacobi_symbola-int-n-int-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Jacobi symbol (a/n) for odd positive n; generalizes the Legendre symbol to composite odd n. Returns 0 for even or non-positive n (documented; the Jacobi symbol is undefined there) and 0 when gcd(a, n) != 1. Uses the quadratic-reciprocity reduction over the binary expansion of a. Complexity: O(log^2 n) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0 &amp;&amp; n % 2 == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1 &amp;&amp; result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-kronecker_symbola-int-n-int-int"><code>fn kronecker_symbol(a: Int, n: Int) -&gt; Int</code><a class="headerlink" href="#fn-kronecker_symbola-int-n-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Kronecker symbol (a/n), the full extension of the Jacobi symbol to all integer n. Returns 1 for n == 1, (a/-1) by the sign of a, and uses the 2-adic rules for even n. n == 0 gives 1 iff a == 1 or a == -1, else 0. Complexity: O(log^2 |n|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; a != 1 &amp;&amp; a != -1) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; (a == 1 || a == -1)) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1 &amp;&amp; result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-divisor_sumn-int-k-int-int"><code>fn divisor_sum(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-divisor_sumn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sum of the k-th powers of the positive divisors of n, sigma_k(n). Returns 0 for n &lt;= 0 and 0 for k &lt; 0 (documented). Computed from the prime factorization: sigma_k(n) = prod (p^(k(e+1)) - 1)/(p^k - 1); k == 0 is the divisor count. Returns 0 (documented overflow) when the value exceeds Int range. Complexity: O(sqrt(n) * log k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 1 &amp;&amp; k &lt; 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-divisor_countn-int-int"><code>fn divisor_count(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-divisor_countn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of positive divisors of n. Returns 0 for n &lt;= 0. Alias of divisor_sum(n, 0). Complexity: O(sqrt(n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 1) =&gt; (result &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-proper_divisorsn-int-vecint"><code>fn proper_divisors(n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-proper_divisorsn-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All positive divisors of n excluding n itself (unsorted). Returns the empty list for n &lt;= 1 (1 has no proper divisors). Complexity: O(sqrt(n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 1) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -7109,8 +7647,11 @@
 </blockquote>
 <h5 id="fn-lp_simplexc-vecfloat64-a-vecvecfloat64-b-vecfloat64-vecfloat64"><code>fn lp_simplex(c: &amp;Vec[Float64], a: &amp;Vec[Vec[Float64]], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-lp_simplexc-vecfloat64-a-vecvecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Solve a linear program by the simplex method. TODO(compiler): NOT IMPLEMENTABLE - the constraint matrix A is a Vec[Vec[Float64]] whose element reads return garbage in this compiler build.</p>
+<p>Minimize c'x subject to Ax &lt;= b, x &gt;= 0, by the dense simplex method with Bland's rule (entering: smallest negative reduced cost; leaving: smallest basis index on ratio ties), Gauss-Jordan pivots and a 10000-iteration cap. Returns the empty vector for empty c or A, b.len() != a.len(), ragged A, any b[i] &lt; 0 (no Phase I), unbounded programs, and cap exhaustion; otherwise the argmin x of length c.len(). Complexity: O(iterations * m * (n + m)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == c.len()</code></li>
+</ul>
 <h5 id="fn-lp_interior_pointc-vecfloat64-a-vecvecfloat64-b-vecfloat64-vecfloat64"><code>fn lp_interior_point(c: &amp;Vec[Float64], a: &amp;Vec[Vec[Float64]], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-lp_interior_pointc-vecfloat64-a-vecvecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Solve a linear program by the interior-point method. TODO(compiler): NOT IMPLEMENTABLE - the constraint matrix A is a Vec[Vec[Float64]] whose element reads return garbage in this compiler build.</p>
@@ -7556,7 +8097,7 @@
 </blockquote>
 <h5 id="fn-convergence_rateseq-vecfloat64-float64"><code>fn convergence_rate(seq: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-convergence_rateseq-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Estimated order of convergence p of the sequence seq: using the last consecutive-difference triple (e0, e1, e2) with all ratios valid, p = ln(e2/e1) / ln(e1/e0). Returns 0.0 when fewer than 4 terms are supplied or when no valid triple exists (documented; e.g. a zero difference anywhere). Complexity: O(len(seq)). TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the recursive walk threading a Bool accumulator and math.ln results makes any program that links it crash at startup with 0xC000001D (BUG 20 AVX-512 codegen on Zen 2), even before main. Keep the frozen signature; revisit when the vectorizer cannot touch this shape.</p>
+<p>Estimated order of convergence p of the sequence seq: using the last consecutive-difference triple (e0, e1, e2) with all ratios valid, p = ln(e2/e1) / ln(e1/e0). Returns 0.0 when fewer than 4 terms are supplied or when no valid triple exists (documented; e.g. a zero difference anywhere). Complexity: O(len(seq)). Implemented iteratively (no recursive Bool-accumulator walk) and verified on v0.61.3 on 2026-09-24: linear sequences give ~1.0, quadratically convergent sequences give ~2.0.</p>
 </blockquote>
 <hr />
 <hr />
@@ -7566,18 +8107,30 @@
 <blockquote>
 <p>Union of two sets: every element present in either input, deduplicated. Complexity: O((|a| + |b|)^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= a.len() + b.len()</code></li>
+</ul>
 <h5 id="fn-set_intersectiona-vecint-b-vecint-vecint"><code>fn set_intersection(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-set_intersectiona-vecint-b-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Intersection of two sets: elements present in both inputs, deduplicated. Complexity: O(|a| * |b|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= a.len()</code></li>
+</ul>
 <h5 id="fn-set_differencea-vecint-b-vecint-vecint"><code>fn set_difference(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-set_differencea-vecint-b-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Difference of two sets: elements of a not present in b, deduplicated. Complexity: O(|a| * |b|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= a.len()</code></li>
+</ul>
 <h5 id="fn-set_symmetric_differencea-vecint-b-vecint-vecint"><code>fn set_symmetric_difference(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-set_symmetric_differencea-vecint-b-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Symmetric difference: elements present in exactly one of the two inputs, deduplicated. Complexity: O(|a| * |b| + |b|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= a.len() + b.len()</code></li>
+</ul>
 <h5 id="fn-set_subseta-vecint-b-vecint-bool"><code>fn set_subset(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Bool</code><a class="headerlink" href="#fn-set_subseta-vecint-b-vecint-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff a is a subset of b: every element of a appears in b (duplicates in the inputs are ignored). The empty set is a subset of everything. Complexity: O(|a| * |b|).</p>
@@ -7596,28 +8149,43 @@
 </blockquote>
 <h5 id="fn-set_partitions-vecint-blocks-vecvecint-bool"><code>fn set_partition(s: &amp;Vec[Int], blocks: &amp;Vec[Vec[Int]]) -&gt; Bool</code><a class="headerlink" href="#fn-set_partitions-vecint-blocks-vecvecint-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>True iff the blocks form a partition of s: every block is non-empty, the blocks are pairwise disjoint, and their union equals s exactly (each element of s appears in exactly one block and no block contains an element outside s). Complexity: O(|blocks|^2 * max block size + |s| * |blocks|). TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the implementation must read elements of a nested Vec[Vec[Int]] (blocks[i][j]), and nested Vec element reads are miscompiled (access violation 0xC0000005; see docs/COMPILER_BUGS.md BUG 12 family and the collect/graph.xi arena note). Even a program that merely links this function crashes before main. Keep the frozen signature; revisit when nested Vec[Vec[T]] element reads work.</p>
+<p>True iff the blocks form a partition of s: every block is non-empty, the blocks are pairwise disjoint, and their union equals s exactly (each element of s appears in exactly one block and no block contains an element outside s). Complexity: O(|blocks|^2 * max block size + |s| * |blocks|). Whether <code>blocks</code> partitions <code>s</code>: every element of <code>s</code> appears in exactly one block and no block carries an element outside <code>s</code>. Implemented with the row-local nested-Vec read (copy <code>blocks[i]</code> into a local before indexing); direct <code>blocks[i][j]</code> on a by-ref parameter is miscompiled on the current compiler (BUG 12 family). Re-verified on v0.61.3 with the row-copy shape, so the previous NOT-IMPLEMENTABLE stub is closed. Complexity: O(|s| * total block elements).</p>
 </blockquote>
 <h5 id="fn-set_power_sets-vecint-vecvecint"><code>fn set_power_set(s: &amp;Vec[Int]) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-set_power_sets-vecint-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All subsets of s (the power set, 2^n subsets). Returns an empty list when |s| &gt; 20 (documented guard against an impractical result set). Complexity: O(2^n * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() &gt; 20 || result.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-set_cartesian_producta-vecint-b-vecint-vecint-int"><code>fn set_cartesian_product(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-set_cartesian_producta-vecint-b-vecint-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All ordered pairs (x, y) with x in a and y in b. Complexity: O(|a| * |b|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == a.len() * b.len()</code></li>
+</ul>
 <h5 id="fn-set_cardinalitys-vecint-int"><code>fn set_cardinality(s: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-set_cardinalitys-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of unique elements in s (duplicates in the input are ignored). Complexity: O(|s|^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-set_complements-vecint-universe-vecint-vecint"><code>fn set_complement(s: &amp;Vec[Int], universe: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-set_complements-vecint-universe-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Complement of s relative to universe: every element of universe not present in s. Complexity: O(|universe| * |s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= universe.len()</code></li>
+</ul>
 <h5 id="fn-set_comprehensionpred-fnint-bool-universe-vecint-vecint"><code>fn set_comprehension(pred: fn(Int) -&gt; Bool, universe: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-set_comprehensionpred-fnint-bool-universe-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Elements of universe satisfying the predicate pred, in universe order. Complexity: O(|universe| * pred).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= universe.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -7626,162 +8194,282 @@
 <blockquote>
 <p>Discrete Fourier transform by direct summation. Returns the interleaved complex spectrum [re0, im0, ...] of length 2n; empty for an empty input. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 2 * x.len()</code></li>
+</ul>
 <h5 id="fn-idftx-vecfloat64-vecfloat64"><code>fn idft(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-idftx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse discrete Fourier transform: the interleaved complex input is inverted and the real part is returned. Empty for an empty input. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len() / 2</code></li>
+</ul>
 <h5 id="fn-fftx-vecfloat64-vecfloat64"><code>fn fft(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-fftx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fast Fourier transform (iterative radix-2) of a real signal; non-power-of- two lengths fall back to the direct DFT. Returns the interleaved spectrum. Complexity: O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 2 * x.len()</code></li>
+</ul>
 <h5 id="fn-ifftx-vecfloat64-vecfloat64"><code>fn ifft(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-ifftx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse fast Fourier transform: inverts the interleaved complex spectrum by the direct inverse DFT (O(n^2)); the real signal is returned. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len() / 2</code></li>
+</ul>
 <h5 id="fn-fft_realx-vecfloat64-vecfloat64"><code>fn fft_real(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-fft_realx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>FFT specialized for real-valued input (same routine as fft). Complexity: O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 2 * x.len()</code></li>
+</ul>
 <h5 id="fn-ifft_realx-vecfloat64-vecfloat64"><code>fn ifft_real(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-ifft_realx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse FFT returning the real signal. Complexity: O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len() / 2</code></li>
+</ul>
 <h5 id="fn-dctx-vecfloat64-vecfloat64"><code>fn dct(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-dctx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Orthonormal discrete cosine transform (type II). Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-idctx-vecfloat64-vecfloat64"><code>fn idct(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-idctx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse discrete cosine transform (type III, unnormalized-compatible with dct). Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-dct_type2x-vecfloat64-vecfloat64"><code>fn dct_type2(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-dct_type2x-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Discrete cosine transform type II (alias of dct). Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-dct_type3x-vecfloat64-vecfloat64"><code>fn dct_type3(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-dct_type3x-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Discrete cosine transform type III (alias of idct). Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-dstx-vecfloat64-vecfloat64"><code>fn dst(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-dstx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Discrete sine transform (DST-I). Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-idstx-vecfloat64-vecfloat64"><code>fn idst(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-idstx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse discrete sine transform (IDST-I). Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-wavelet_haarx-vecfloat64-level-int-vecfloat64"><code>fn wavelet_haar(x: &amp;Vec[Float64], level: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-wavelet_haarx-vecfloat64-level-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Haar discrete wavelet transform to the given level: the approximation coefficients followed by the detail coefficients of each level. Returns the empty vector for level &lt;= 0 or an empty signal. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= x.len()</code></li>
+</ul>
 <h5 id="fn-wavelet_dwtx-vecfloat64-level-int-vecfloat64"><code>fn wavelet_dwt(x: &amp;Vec[Float64], level: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-wavelet_dwtx-vecfloat64-level-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Level multi-resolution discrete wavelet transform (Haar basis). Alias of wavelet_haar. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= x.len()</code></li>
+</ul>
 <h5 id="fn-wavelet_idwtcoeffs-vecfloat64-level-int-vecfloat64"><code>fn wavelet_idwt(coeffs: &amp;Vec[Float64], level: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-wavelet_idwtcoeffs-vecfloat64-level-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse Haar wavelet transform: the input holds the detail coefficients of each level (level 1 first) followed by the final approximation block, as produced by wavelet_haar. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= coeffs.len()</code></li>
+</ul>
 <h5 id="fn-wavelet_daubechiesx-vecfloat64-taps-int-level-int-vecfloat64"><code>fn wavelet_daubechies(x: &amp;Vec[Float64], taps: Int, level: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-wavelet_daubechiesx-vecfloat64-taps-int-level-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Daubechies wavelet transform with the D4 filter for taps == 4; other tap counts fall back to the Haar basis. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= x.len()</code></li>
+</ul>
 <h5 id="fn-filter_lowpassx-vecfloat64-cutoff-float64-order-int-vecfloat64"><code>fn filter_lowpass(x: &amp;Vec[Float64], cutoff: Float64, order: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_lowpassx-vecfloat64-cutoff-float64-order-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>One-pass first-order alpha filter: y[n] = y[n-1] + a (x[n] - y[n-1]) with a = cutoff / (1 + cutoff). filter_lowpass applies it <code>order</code> times. Complexity: O(n * order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>order &lt;= 0 || result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-filter_highpassx-vecfloat64-cutoff-float64-order-int-vecfloat64"><code>fn filter_highpass(x: &amp;Vec[Float64], cutoff: Float64, order: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_highpassx-vecfloat64-cutoff-float64-order-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>First-order high-pass filter: y[n] = alpha (y[n-1] + x[n] - x[n-1]), applied <code>order</code> times. Complexity: O(n * order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>order &lt;= 0 || result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-filter_bandpassx-vecfloat64-lo-float64-hi-float64-order-int-vecfloat64"><code>fn filter_bandpass(x: &amp;Vec[Float64], lo: Float64, hi: Float64, order: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_bandpassx-vecfloat64-lo-float64-hi-float64-order-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Band-pass filter: a low-pass at hi cascaded with a high-pass at lo. Complexity: O(n * order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>order &lt;= 0 || result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-filter_bandstopx-vecfloat64-lo-float64-hi-float64-order-int-vecfloat64"><code>fn filter_bandstop(x: &amp;Vec[Float64], lo: Float64, hi: Float64, order: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_bandstopx-vecfloat64-lo-float64-hi-float64-order-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Band-stop filter: the input minus the band-passed signal. Complexity: O(n * order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>order &lt;= 0 || result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-filter_butterworthx-vecfloat64-cutoff-float64-order-int-vecfloat64"><code>fn filter_butterworth(x: &amp;Vec[Float64], cutoff: Float64, order: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_butterworthx-vecfloat64-cutoff-float64-order-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Butterworth low-pass filter (maximally flat): implemented as the cascaded first-order alpha low-pass of filter_lowpass. Complexity: O(n * order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>order &lt;= 0 || result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-filter_chebyshevx-vecfloat64-cutoff-float64-ripple-float64-order-int-vecfloat64"><code>fn filter_chebyshev(x: &amp;Vec[Float64], cutoff: Float64, ripple: Float64, order: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_chebyshevx-vecfloat64-cutoff-float64-ripple-float64-order-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Chebyshev low-pass filter with passband ripple: implemented as the cascaded alpha low-pass (the ripple parameter shapes the alpha gain). Complexity: O(n * order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>order &lt;= 0 || result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-filter_besselx-vecfloat64-cutoff-float64-order-int-vecfloat64"><code>fn filter_bessel(x: &amp;Vec[Float64], cutoff: Float64, order: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_besselx-vecfloat64-cutoff-float64-order-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bessel low-pass filter (maximally flat group delay): implemented as the cascaded alpha low-pass. Complexity: O(n * order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>order &lt;= 0 || result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-filter_firx-vecfloat64-coeffs-vecfloat64-vecfloat64"><code>fn filter_fir(x: &amp;Vec[Float64], coeffs: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_firx-vecfloat64-coeffs-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Finite impulse response filter: y[n] = sum_k coeffs[k] x[n-k]. Complexity: O(n * taps).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() &gt; 0 &amp;&amp; coeffs.len() &gt; 0) =&gt; (result.len() == x.len())</code></li>
+</ul>
 <h5 id="fn-filter_iirx-vecfloat64-b-vecfloat64-a-vecfloat64-vecfloat64"><code>fn filter_iir(x: &amp;Vec[Float64], b: &amp;Vec[Float64], a: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-filter_iirx-vecfloat64-b-vecfloat64-a-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Infinite impulse response filter with numerator b and denominator a: y[n] = (sum_k b_k x[n-k] - sum_{k&gt;=1} a_k y[n-k]) / a_0. Complexity: O(n * taps).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() &gt; 0 &amp;&amp; a.len() &gt; 0) =&gt; (result.len() == 0 || result.len() == x.len())</code></li>
+</ul>
 <h5 id="fn-convolvex-vecfloat64-kernel-vecfloat64-vecfloat64"><code>fn convolve(x: &amp;Vec[Float64], kernel: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-convolvex-vecfloat64-kernel-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Linear convolution of x with kernel (length n + m - 1). Complexity: O(n*m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() &gt; 0 &amp;&amp; kernel.len() &gt; 0) =&gt; (result.len() == x.len() + kernel.len() - 1)</code></li>
+</ul>
 <h5 id="fn-correlatex-vecfloat64-kernel-vecfloat64-vecfloat64"><code>fn correlate(x: &amp;Vec[Float64], kernel: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-correlatex-vecfloat64-kernel-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cross-correlation of x with kernel at lags - (m-1) .. (n-1). Complexity: O(n*m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() &gt; 0 &amp;&amp; kernel.len() &gt; 0) =&gt; (result.len() == x.len() + kernel.len() - 1)</code></li>
+</ul>
 <h5 id="fn-autocorrelatex-vecfloat64-vecfloat64"><code>fn autocorrelate(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-autocorrelatex-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Autocorrelation of x at lags 0 .. n-1. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-window_hanningn-int-vecfloat64"><code>fn window_hanning(n: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-window_hanningn-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length-n Hanning window: 0.5 (1 - cos(2 pi i / (n-1))). Empty for n &lt;= 0. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 || result.len() == n</code></li>
+</ul>
 <h5 id="fn-window_hammingn-int-vecfloat64"><code>fn window_hamming(n: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-window_hammingn-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length-n Hamming window: 0.54 - 0.46 cos(2 pi i / (n-1)). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 || result.len() == n</code></li>
+</ul>
 <h5 id="fn-window_blackmann-int-vecfloat64"><code>fn window_blackman(n: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-window_blackmann-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length-n Blackman window. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 || result.len() == n</code></li>
+</ul>
 <h5 id="fn-window_kaisern-int-beta-float64-vecfloat64"><code>fn window_kaiser(n: Int, beta: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-window_kaisern-int-beta-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length-n Kaiser window with shape beta (zeroth-order modified Bessel approximation). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 || result.len() == n</code></li>
+</ul>
 <h5 id="fn-window_bartlettn-int-vecfloat64"><code>fn window_bartlett(n: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-window_bartlettn-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length-n Bartlett triangular window. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 || result.len() == n</code></li>
+</ul>
 <h5 id="fn-window_gaussiann-int-sigma-float64-vecfloat64"><code>fn window_gaussian(n: Int, sigma: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-window_gaussiann-int-sigma-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length-n Gaussian window with deviation sigma. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 || result.len() == n</code></li>
+</ul>
 <h5 id="fn-spectrumx-vecfloat64-vecfloat64"><code>fn spectrum(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-spectrumx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Magnitude spectrum |FFT(x)|. Complexity: O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-psdx-vecfloat64-vecfloat64"><code>fn psd(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-psdx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Power spectral density |FFT(x)|^2 / N. Complexity: O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-spectrogramx-vecfloat64-win_size-int-hop-int-vecvecfloat64"><code>fn spectrogram(x: &amp;Vec[Float64], win_size: Int, hop: Int) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-spectrogramx-vecfloat64-win_size-int-hop-int-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Time-frequency spectrogram matrix: windowed magnitude spectra, one row per frame (frames start every <code>hop</code> samples, width <code>win_size</code>). Complexity: O(frames * win_size^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() == 0 || win_size &lt;= 0 || hop &lt;= 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-cepstrumx-vecfloat64-vecfloat64"><code>fn cepstrum(x: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-cepstrumx-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cepstrum: |IDFT(ln(|DFT(x)| + eps))|. Complexity: O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == x.len()</code></li>
+</ul>
 <h5 id="fn-mel_filterbankn_filters-int-fft_size-int-sample_rate-float64-vecvecfloat64"><code>fn mel_filterbank(n_filters: Int, fft_size: Int, sample_rate: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mel_filterbankn_filters-int-fft_size-int-sample_rate-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mel-scale triangular filter bank: n_filters rows of fft_size/2 + 1 weights. Complexity: O(n_filters * fft_size).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n_filters &gt; 0 &amp;&amp; fft_size &gt; 0 &amp;&amp; sample_rate &gt; 0) =&gt; (result.len() == n_filters)</code></li>
+</ul>
 <h5 id="fn-mfccx-vecfloat64-n_coeffs-int-sample_rate-float64-vecfloat64"><code>fn mfcc(x: &amp;Vec[Float64], n_coeffs: Int, sample_rate: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-mfccx-vecfloat64-n_coeffs-int-sample_rate-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mel-frequency cepstral coefficients: the log-mel spectrum of x followed by the DCT, keeping the first n_coeffs coefficients. Empty for degenerate input. Complexity: O(n log n + filters * fft_size + filters^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 24</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -8264,15 +8952,15 @@
 </blockquote>
 <h5 id="fn-sinhx-float64-float64_1"><code>fn sinh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sinhx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Hyperbolic sine of x: (exp(x) - exp(-x))/2. Large |x| propagates as +- infinity. Complexity: O(1). TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the exp()-based inline arithmetic crashes at startup with 0xC000001D (BUG 20 AVX-512 codegen on Zen 2). Keep the frozen signature; revisit when the arithmetic is not vectorized.</p>
+<p>Hyperbolic sine of x: (exp(x) - exp(-x))/2. Large |x| propagates as +- infinity. Complexity: O(1). Delegates to xiom.math.hyperbolic (the pure-exp composition is gate-green there; the old inline-arithmetic stub refreshed 2026-09-24).</p>
 </blockquote>
 <h5 id="fn-coshx-float64-float64_1"><code>fn cosh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-coshx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Hyperbolic cosine of x: (exp(x) + exp(-x))/2. Complexity: O(1). TODO(compiler): NOT IMPLEMENTABLE - same crash as sinh (0xC000001D).</p>
+<p>Hyperbolic cosine of x: (exp(x) + exp(-x))/2. Complexity: O(1). Delegates to xiom.math.hyperbolic.</p>
 </blockquote>
 <h5 id="fn-tanhx-float64-float64_1"><code>fn tanh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-tanhx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Hyperbolic tangent of x: sinh(x)/cosh(x). Saturated to +-1 for |x| &gt; 20 to avoid a NaN from inf/inf at the exponent overflow boundary. Complexity: O(1). TODO(compiler): NOT IMPLEMENTABLE - same crash as sinh (0xC000001D).</p>
+<p>Hyperbolic tangent of x: sinh(x)/cosh(x). Saturated to +-1 for |x| &gt; 20 to avoid a NaN from inf/inf at the exponent overflow boundary. Complexity: O(1). Delegates to xiom.math.hyperbolic.</p>
 </blockquote>
 <h5 id="fn-asinhx-float64-float64_1"><code>fn asinh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-asinhx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -8284,7 +8972,7 @@
 </blockquote>
 <h5 id="fn-atanhx-float64-float64_1"><code>fn atanh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-atanhx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Inverse hyperbolic tangent of x: ln((1+x)/(1-x))/2. For |x| &gt;= 1 returns NaN (documented domain error; the function is undefined at the poles). Complexity: O(1). TODO(compiler): NOT IMPLEMENTABLE - the ln()-based inline arithmetic crashes at startup with 0xC000001D (BUG 20 AVX-512 codegen on Zen 2); see sinh.</p>
+<p>Inverse hyperbolic tangent of x: ln((1+x)/(1-x))/2. For |x| &gt;= 1 returns NaN (documented domain error; the function is undefined at the poles). Complexity: O(1). Delegates to xiom.math.hyperbolic.</p>
 </blockquote>
 <h5 id="fn-secx-float64-float64"><code>fn sec(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-secx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>

@@ -3102,10 +3102,18 @@
 <blockquote>
 <p>Uniform density on [a, b]. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b &gt; a &amp;&amp; x &lt; a =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>b &gt; a &amp;&amp; x &gt; b =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-uniform_cdfx-float64-a-float64-b-float64-float64_1"><code>fn uniform_cdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-uniform_cdfx-float64-a-float64-b-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Uniform cumulative distribution on [a, b]. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b &gt; a &amp;&amp; x &lt;= a =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>b &gt; a &amp;&amp; x &gt;= b =&gt; result == 1</code></li>
+</ul>
 <h5 id="fn-normal_pdfx-float64-mu-float64-sigma-float64-float64_1"><code>fn normal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normal_pdfx-float64-mu-float64-sigma-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Normal density with mean mu and stddev sigma. Complexity: O(1).</p>
@@ -3126,6 +3134,9 @@
 <blockquote>
 <p>Exponential cumulative distribution. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lambda &gt; 0 &amp;&amp; x == 0 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-gamma_pdfx-float64-k-float64-theta-float64-float64"><code>fn gamma_pdf(x: Float64, k: Float64, theta: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-gamma_pdfx-float64-k-float64-theta-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Gamma density with shape k and scale theta. Complexity: O(1).</p>
@@ -3134,6 +3145,9 @@
 <blockquote>
 <p>Gamma cumulative distribution: P(k, x/theta). Complexity: O(iterations).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>k &gt; 0 &amp;&amp; theta &gt; 0 &amp;&amp; x &lt;= 0 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-beta_pdfx-float64-a-float64-b-float64-float64_1"><code>fn beta_pdf(x: Float64, a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-beta_pdfx-float64-a-float64-b-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Beta density with shape parameters a and b. Complexity: O(1).</p>
@@ -3142,6 +3156,10 @@
 <blockquote>
 <p>Beta cumulative distribution: I_x(a, b). Complexity: O(iterations).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a &gt; 0 &amp;&amp; b &gt; 0 &amp;&amp; x &lt;= 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>a &gt; 0 &amp;&amp; b &gt; 0 &amp;&amp; x &gt;= 1 =&gt; result == 1</code></li>
+</ul>
 <h5 id="fn-chi2_pdfx-float64-k-float64-float64"><code>fn chi2_pdf(x: Float64, k: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-chi2_pdfx-float64-k-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Chi-squared density with k degrees of freedom. Complexity: O(1).</p>
@@ -3150,6 +3168,9 @@
 <blockquote>
 <p>Chi-squared cumulative distribution: P(k/2, x/2). Complexity: O(iterations).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>k &gt; 0 &amp;&amp; x &lt;= 0 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-t_pdfx-float64-v-float64-float64"><code>fn t_pdf(x: Float64, v: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-t_pdfx-float64-v-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Student's t density with v degrees of freedom. Complexity: O(1).</p>
@@ -3166,6 +3187,9 @@
 <blockquote>
 <p>F cumulative distribution: I_{d1 x / (d1 x + d2)}(d1/2, d2/2). Complexity: O(iterations).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>d1 &gt; 0 &amp;&amp; d2 &gt; 0 &amp;&amp; x &lt;= 0 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-weibull_pdfx-float64-shape-float64-scale-float64-float64"><code>fn weibull_pdf(x: Float64, shape: Float64, scale: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-weibull_pdfx-float64-shape-float64-scale-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Weibull density with shape and scale. Complexity: O(1).</p>
@@ -3174,6 +3198,9 @@
 <blockquote>
 <p>Weibull cumulative distribution. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>shape &gt; 0 &amp;&amp; scale &gt; 0 &amp;&amp; x &lt;= 0 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-lognormal_pdfx-float64-mu-float64-sigma-float64-float64"><code>fn lognormal_pdf(x: Float64, mu: Float64, sigma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-lognormal_pdfx-float64-mu-float64-sigma-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Log-normal density of exp(mu + sigma Z). Complexity: O(1).</p>
@@ -3194,10 +3221,17 @@
 <blockquote>
 <p>Poisson probability of k events with mean lambda (integer k). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lambda == 0 &amp;&amp; k == 0 =&gt; result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>lambda == 0 &amp;&amp; k &gt; 0 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-poisson_cdfk-int-lambda-float64-float64"><code>fn poisson_cdf(k: Int, lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-poisson_cdfk-int-lambda-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Poisson cumulative distribution. Complexity: O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lambda == 0 &amp;&amp; k &gt;= 0 =&gt; result == 1</code></li>
+</ul>
 <h5 id="fn-binomial_pmfk-int-n-int-p-float64-float64"><code>fn binomial_pmf(k: Int, n: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-binomial_pmfk-int-n-int-p-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binomial probability of k successes in n trials. Complexity: O(1).</p>
@@ -3206,14 +3240,23 @@
 <blockquote>
 <p>Binomial cumulative distribution. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &gt;= 0 &amp;&amp; k &gt;= n =&gt; result == 1</code></li>
+</ul>
 <h5 id="fn-geometric_pmfk-int-p-float64-float64"><code>fn geometric_pmf(k: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-geometric_pmfk-int-p-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Geometric probability of first success at trial k. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p &gt; 0 &amp;&amp; p &lt;= 1 &amp;&amp; k &gt;= 1 =&gt; result &gt;= 0 &amp;&amp; result &lt;= 1</code></li>
+</ul>
 <h5 id="fn-geometric_cdfk-int-p-float64-float64"><code>fn geometric_cdf(k: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-geometric_cdfk-int-p-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Geometric cumulative distribution. Complexity: O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p &gt; 0 &amp;&amp; p &lt;= 1 &amp;&amp; k &gt;= 1 =&gt; result &gt;= 0 &amp;&amp; result &lt;= 1</code></li>
+</ul>
 <h5 id="fn-negative_binomial_pmfk-int-r-int-p-float64-float64"><code>fn negative_binomial_pmf(k: Int, r: Int, p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-negative_binomial_pmfk-int-r-int-p-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Negative binomial probability of k failures before r successes. Complexity: O(1).</p>
@@ -3230,6 +3273,9 @@
 <blockquote>
 <p>Hypergeometric cumulative distribution. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>N &gt; 0 &amp;&amp; K &gt;= 0 &amp;&amp; n &gt;= 0 &amp;&amp; k &gt;= K =&gt; result == 1</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3412,14 +3458,23 @@
 <blockquote>
 <p>Returns the minimum value in a vector of integers. Returns 0 for empty input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_maxdata-vecint-int"><code>fn stats_max(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_maxdata-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the maximum value in a vector of integers. Returns 0 for empty input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_rangedata-vecint-int"><code>fn stats_range(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_rangedata-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the range (max - min) of a vector of integers.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_modedata-vecint-optionint"><code>fn stats_mode(data: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-stats_modedata-vecint-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the most frequently occurring value (mode) in a sorted vector. For ties, returns the first mode encountered.</p>
@@ -3428,46 +3483,83 @@
 <blockquote>
 <p>Computes the population variance of a vector of integers. Sum of squared deviations from the mean divided by N.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-stats_sample_variancedata-vecint-float64"><code>fn stats_sample_variance(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_sample_variancedata-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the sample variance (Bessel's correction: divide by N-1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() &lt; 2 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-stats_stddev_fdata-vecint-float64"><code>fn stats_stddev_f(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_stddev_fdata-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the population standard deviation (Float64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-stats_sample_stddevdata-vecint-float64"><code>fn stats_sample_stddev(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_sample_stddevdata-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the sample standard deviation (Float64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-stats_q1data-vecint-int"><code>fn stats_q1(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_q1data-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the first quartile (Q1) of a sorted vector of integers. Uses the median-of-lower-half method.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_q3data-vecint-int"><code>fn stats_q3(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_q3data-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the third quartile (Q3) of a sorted vector of integers. Uses the median-of-upper-half method.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_iqrdata-vecint-int"><code>fn stats_iqr(data: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-stats_iqrdata-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the interquartile range (Q3 - Q1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_sum_fdata-vecfloat64-float64"><code>fn stats_sum_f(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_sum_fdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sum of a vector of Float64 values.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_mean_fdata-vecfloat64-float64"><code>fn stats_mean_f(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_mean_fdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Mean of a vector of Float64 values.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_stddev_f_fdata-vecfloat64-float64"><code>fn stats_stddev_f_f(data: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_stddev_f_fdata-vecfloat64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Population standard deviation of a vector of Float64 values.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 || result != result</code></li>
+</ul>
 <h4 id="fn-stats_covariancea-vecint-b-vecint-float64"><code>fn stats_covariance(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_covariancea-vecint-b-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the population covariance between two vectors of equal length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>b.len() != a.len() =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_correlationa-vecint-b-vecint-float64"><code>fn stats_correlation(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_correlationa-vecint-b-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the Pearson correlation coefficient between two vectors.</p>
@@ -3476,30 +3568,57 @@
 <blockquote>
 <p>Builds a histogram with the specified number of bins over [lo, hi]. Each bin counts values in [bin_start, bin_start + bin_width).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>bins &lt;= 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>hi &lt;= lo =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>bins &gt; 0 &amp;&amp; hi &gt; lo =&gt; result.len() == bins</code></li>
+</ul>
 <h4 id="fn-stats_geometric_meandata-vecint-float64"><code>fn stats_geometric_mean(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_geometric_meandata-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the geometric mean using logarithms to avoid overflow. Requires all values to be positive.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-stats_harmonic_meandata-vecint-float64"><code>fn stats_harmonic_mean(data: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_harmonic_meandata-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the harmonic mean. Returns 0 if any value is &lt;= 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-stats_zscorevalue-int-mean-float64-stddev-float64-float64"><code>fn stats_zscore(value: Int, mean: Float64, stddev: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-stats_zscorevalue-int-mean-float64-stddev-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the z-score: (value - mean) / stddev.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>stddev == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_slopex-vecint-y-vecint-float64"><code>fn stats_slope(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_slopex-vecint-y-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the slope of the simple linear regression line y = mx + b.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>x.len() &lt; 2 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>y.len() != x.len() =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_interceptx-vecint-y-vecint-float64"><code>fn stats_intercept(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_interceptx-vecint-y-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the intercept of the simple linear regression line y = mx + b.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>y.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-stats_r_squaredx-vecint-y-vecint-float64"><code>fn stats_r_squared(x: &amp;Vec[Int], y: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-stats_r_squaredx-vecint-y-vecint-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Computes the R-squared (coefficient of determination) for linear regression.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>x.len() &lt; 2 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>y.len() != x.len() =&gt; result == 0</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="testxi"><code>test.xi</code><a class="headerlink" href="#testxi" title="Permanent link">&para;</a></h2>

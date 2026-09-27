@@ -4243,7 +4243,7 @@
 <h1 id="stdlibstring"><code>stdlib.string</code><a class="headerlink" href="#stdlibstring" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>String Library</strong></p>
-<p>Generated from <code>v0.61.3</code>. 69 source files, 413 documented symbols.</p>
+<p>Generated from <code>v0.61.3</code>. 69 source files, 414 documented symbols.</p>
 </blockquote>
 <h2 id="alignxi"><code>align.xi</code><a class="headerlink" href="#alignxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-str_align_lefts-str-width-int-str"><code>fn str_align_left(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_align_lefts-str-width-int-str" title="Permanent link">&para;</a></h5>
@@ -4959,7 +4959,7 @@
 <h2 id="comparexi"><code>compare.xi</code><a class="headerlink" href="#comparexi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-str_comparea-str-b-str-int"><code>fn str_compare(a: Str, b: Str) -&gt; Int</code><a class="headerlink" href="#fn-str_comparea-str-b-str-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Lexicographic byte-wise comparison of <code>a</code> and <code>b</code>. Returns a negative Int when <code>a</code> sorts before <code>b</code>, 0 when equal, and a positive Int when <code>a</code> sorts after <code>b</code>. Comparison is byte-by-byte over the UTF-8 representation, so the ordering matches Unicode code-point order only for ASCII inputs; multi-byte sequences compare by their raw bytes. Params: a, b the strings to compare. Returns: negative/zero/positive. Error case: none. Complexity: O(min(|a|, |b|)).</p>
+<p>Lexicographic byte-wise comparison of <code>a</code> and <code>b</code>. Returns a negative Int when <code>a</code> sorts before <code>b</code>, 0 when equal, and a positive Int when <code>a</code> sorts after <code>b</code>. Canonical implementation: <code>xiom.string.str_compare</code>; this wrapper keeps the <code>xiom.string.compare</code> path working for existing importers. Params: a, b the strings to compare. Returns: negative/zero/positive. Error case: none. Complexity: O(min(|a|, |b|)).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 1</code></li>
@@ -5931,6 +5931,13 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>suffix.len() == 0 =&gt; result</code></li>
+</ul>
+<h4 id="fn-str_comparea-str-b-str-int_1"><code>fn str_compare(a: Str, b: Str) -&gt; Int</code><a class="headerlink" href="#fn-str_comparea-str-b-str-int_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Lexicographic byte-wise comparison of <code>a</code> and <code>b</code>: negative when <code>a</code> sorts before <code>b</code>, 0 when equal, positive when after. Byte-wise over the UTF-8 representation (matches Unicode code-point order for ASCII). This is the canonical implementation exposed on <code>xiom.string</code> itself; <code>xiom.string.compare.str_compare</code> delegates here so <code>use xiom.string;</code> alone resolves the call.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 1</code></li>
 </ul>
 <h4 id="fn-str_splits-str-delimiter-str-vecstr"><code>fn str_split(s: Str, delimiter: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_splits-str-delimiter-str-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>

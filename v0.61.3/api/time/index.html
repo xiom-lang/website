@@ -2901,7 +2901,7 @@
 <h1 id="stdlibtime"><code>stdlib.time</code><a class="headerlink" href="#stdlibtime" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Time Library</strong></p>
-<p>Generated from <code>v0.61.3</code>. 8 source files, 143 documented symbols.</p>
+<p>Generated from <code>v0.61.3</code>. 8 source files, 144 documented symbols.</p>
 </blockquote>
 <h2 id="calendarxi"><code>calendar.xi</code><a class="headerlink" href="#calendarxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-calendar_month_namemonth-int-str"><code>fn calendar_month_name(month: Int) -&gt; Str</code><a class="headerlink" href="#fn-calendar_month_namemonth-int-str" title="Permanent link">&para;</a></h5>
@@ -3319,6 +3319,14 @@
 <blockquote>
 <p>Checked difference; None when it would be negative.</p>
 </blockquote>
+<h4 id="fn-monotonic_ms-int"><code>fn monotonic_ms() -&gt; Int</code><a class="headerlink" href="#fn-monotonic_ms-int" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Monotonic clock reading in milliseconds since an unspecified epoch. Never decreases and is unaffected by wall-clock adjustments, so it is the supported source for elapsed-time measurement. Backed by the runtime's <code>xiom_async_now_ms</code> (QueryPerformanceCounter on Windows, CLOCK_MONOTONIC on POSIX, <code>clock()</code> fallback); the same source as <code>xiom.async.async_now_ms</code> and <code>xiom.async.timer.Stopwatch</code>. Complexity: O(1). Thread-safe.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="type-instant"><code>type Instant</code><a class="headerlink" href="#type-instant" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Instant -- a point in time (monotonic clock) ===</p>
@@ -3339,7 +3347,7 @@
 </table>
 <h4 id="fn-now-instant"><code>fn now() -&gt; Instant</code><a class="headerlink" href="#fn-now-instant" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Monotonic clock reading for measuring elapsed time.</p>
+<p>Wall-clock reading from <code>time(0)</code>, kept for compatibility. For monotonic elapsed-time measurement prefer <code>xiom.time.monotonic_ms</code> (or <code>xiom.async.timer.Stopwatch</code>).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>

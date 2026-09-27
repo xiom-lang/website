@@ -2791,7 +2791,7 @@
 <h1 id="stdlibarray"><code>stdlib.array</code><a class="headerlink" href="#stdlibarray" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Fixed-Size Array Operations</strong></p>
-<p>Generated from <code>v0.61.3</code>. 3 source files, 44 documented symbols.</p>
+<p>Generated from <code>v0.61.3</code>. 3 source files, 45 documented symbols.</p>
 </blockquote>
 <h2 id="arrayxi"><code>array.xi</code><a class="headerlink" href="#arrayxi" title="Permanent link">&para;</a></h2>
 <h4 id="fn-lent-narr-nt-int"><code>fn len[T, N](arr: &amp;[N]T) -&gt; Int</code><a class="headerlink" href="#fn-lent-narr-nt-int" title="Permanent link">&para;</a></h4>
@@ -2910,12 +2910,19 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>arr.is_sorted()</code></li>
 </ul>
+<h4 id="fn-is_sorted_byt-narr-nt-compare-fnt-t-ordering-bool"><code>fn is_sorted_by[T, N](arr: &amp;[N]T, compare: fn(&amp;T, &amp;T) -&gt; Ordering) -&gt; Bool</code><a class="headerlink" href="#fn-is_sorted_byt-narr-nt-compare-fnt-t-ordering-bool" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Whether <code>arr</code> is sorted according to <code>compare</code> (non-decreasing: no adjacent pair compares as Greater). O(N).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>arr.len() &lt; 2 =&gt; result == true</code></li>
+</ul>
 <h4 id="fn-sort_byt-narr-mut-nt-compare-fnt-t-ordering"><code>fn sort_by[T, N](arr: &amp;mut [N]T, compare: fn(&amp;T, &amp;T) -&gt; Ordering)</code><a class="headerlink" href="#fn-sort_byt-narr-mut-nt-compare-fnt-t-ordering" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sort with a comparator returning an Ordering.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>arr.is_sorted_by(compare)</code></li>
+<li><strong>Postcondition:</strong> <code>is_sorted_by(arr, compare)</code></li>
 </ul>
 <h4 id="fn-binary_searcht-narr-nt-x-t-resultint-int"><code>fn binary_search[T, N](arr: &amp;[N]T, x: &amp;T) -&gt; Result[Int, Int]</code><a class="headerlink" href="#fn-binary_searcht-narr-nt-x-t-resultint-int" title="Permanent link">&para;</a></h4>
 <blockquote>

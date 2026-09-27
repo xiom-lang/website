@@ -2820,6 +2820,9 @@
 <blockquote>
 <p>Reverse elements in place. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_sort_asctv-mut-vect"><code>fn vec_sort_asc[T](v: &amp;mut Vec[T])</code><a class="headerlink" href="#fn-vec_sort_asctv-mut-vect" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sort elements in ascending order. O(N log N) avg.</p>
@@ -2836,54 +2839,96 @@
 <blockquote>
 <p>Remove consecutive duplicate elements. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() &lt;= v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_rotate_lefttv-mut-vect-k-int"><code>fn vec_rotate_left[T](v: &amp;mut Vec[T], k: Int)</code><a class="headerlink" href="#fn-vec_rotate_lefttv-mut-vect-k-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Rotate elements left by k positions. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_filltv-mut-vect-value-t"><code>fn vec_fill[T](v: &amp;mut Vec[T], value: T)</code><a class="headerlink" href="#fn-vec_filltv-mut-vect-value-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fill the vector with copies of <code>value</code>. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_swap_elemstv-mut-vect-i-int-j-int"><code>fn vec_swap_elems[T](v: &amp;mut Vec[T], i: Int, j: Int)</code><a class="headerlink" href="#fn-vec_swap_elemstv-mut-vect-i-int-j-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Swap the elements at indices i and j. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_str_joinitems-vecstr-sep-str-str"><code>fn vec_str_join(items: &amp;Vec[Str], sep: Str) -&gt; Str</code><a class="headerlink" href="#fn-vec_str_joinitems-vecstr-sep-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Join a vector of strings with a separator. O(N-L) where L is avg string length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>items.len() == 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>items.len() == 1 =&gt; result == items[0]</code></li>
+</ul>
 <h4 id="fn-vec_mintv-vect-optiont"><code>fn vec_min[T](v: &amp;Vec[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-vec_mintv-vect-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Minimum element in a vector, or None if empty. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>v.len() &gt; 0 =&gt; result is Some(_)</code></li>
+</ul>
 <h4 id="fn-vec_maxtv-vect-optiont"><code>fn vec_max[T](v: &amp;Vec[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-vec_maxtv-vect-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Maximum element in a vector, or None if empty. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>v.len() &gt; 0 =&gt; result is Some(_)</code></li>
+</ul>
 <h4 id="fn-vec_sumv-vecint-int"><code>fn vec_sum(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-vec_sumv-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sum of all elements in an integer vector. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-vec_avgv-vecint-int"><code>fn vec_avg(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-vec_avgv-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Integer average (truncated division) of a vector. Returns 0 if empty. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-vec_count_iftv-vect-pred-fnt-bool-int"><code>fn vec_count_if[T](v: &amp;Vec[T], pred: fn(&amp;T) -&gt; Bool) -&gt; Int</code><a class="headerlink" href="#fn-vec_count_iftv-vect-pred-fnt-bool-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Count elements satisfying a predicate. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= v.len()</code></li>
+</ul>
 <h4 id="fn-vec_anytv-vect-pred-fnt-bool-bool"><code>fn vec_any[T](v: &amp;Vec[T], pred: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-vec_anytv-vect-pred-fnt-bool-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if any element satisfies the predicate. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h4 id="fn-vec_alltv-vect-pred-fnt-bool-bool"><code>fn vec_all[T](v: &amp;Vec[T], pred: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-vec_alltv-vect-pred-fnt-bool-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if all elements satisfy the predicate. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h4 id="fn-map_lenk-vm-mapk-v-int"><code>fn map_len[K, V](m: Map[K, V]) -&gt; Int</code><a class="headerlink" href="#fn-map_lenk-vm-mapk-v-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of entries in the map. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-map_contains_keyk-vm-mapk-v-key-k-bool"><code>fn map_contains_key[K, V](m: &amp;Map[K, V], key: &amp;K) -&gt; Bool</code><a class="headerlink" href="#fn-map_contains_keyk-vm-mapk-v-key-k-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if the key exists in the map. O(N).</p>
@@ -2900,6 +2945,9 @@
 <blockquote>
 <p>Remove all entries from the map. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.len() == 0</code></li>
+</ul>
 <h4 id="fn-map_insert_if_absentk-vm-mut-mapk-v-key-k-value-v-bool"><code>fn map_insert_if_absent[K, V](m: &amp;mut Map[K, V], key: K, value: V) -&gt; Bool</code><a class="headerlink" href="#fn-map_insert_if_absentk-vm-mut-mapk-v-key-k-value-v-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Insert a key-value pair only if the key is not already present. Returns true if inserted, false if key already existed. O(N).</p>
@@ -2908,6 +2956,10 @@
 <blockquote>
 <p>Merge two maps into a new map. Entries from <code>b</code> overwrite those from <code>a</code> on key collision. O(N-M).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= a.len()</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= a.len() + b.len()</code></li>
+</ul>
 <h4 id="fn-set_insertts-mut-sett-value-t"><code>fn set_insert[T](s: &amp;mut Set[T], value: T)</code><a class="headerlink" href="#fn-set_insertts-mut-sett-value-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Insert a value into the set. O(N).</p>
@@ -2924,18 +2976,31 @@
 <blockquote>
 <p>Number of elements in the set. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-set_unionta-sett-b-sett-sett"><code>fn set_union[T](a: &amp;Set[T], b: &amp;Set[T]) -&gt; Set[T]</code><a class="headerlink" href="#fn-set_unionta-sett-b-sett-sett" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Union of two sets: all elements present in either set. O(N-M).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= a.len()</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= a.len() + b.len()</code></li>
+</ul>
 <h4 id="fn-set_intersectionta-sett-b-sett-sett"><code>fn set_intersection[T](a: &amp;Set[T], b: &amp;Set[T]) -&gt; Set[T]</code><a class="headerlink" href="#fn-set_intersectionta-sett-b-sett-sett" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Intersection of two sets: elements present in both. O(N-M).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= a.len()</code></li>
+</ul>
 <h4 id="fn-set_differenceta-sett-b-sett-sett"><code>fn set_difference[T](a: &amp;Set[T], b: &amp;Set[T]) -&gt; Set[T]</code><a class="headerlink" href="#fn-set_differenceta-sett-b-sett-sett" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Difference of two sets: elements in <code>a</code> but not in <code>b</code>. O(N-M).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= a.len()</code></li>
+</ul>
 <h4 id="fn-set_is_subsettsub-sett-sup-sett-bool"><code>fn set_is_subset[T](sub: &amp;Set[T], sup: &amp;Set[T]) -&gt; Bool</code><a class="headerlink" href="#fn-set_is_subsettsub-sett-sup-sett-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if <code>sub</code> is a subset of <code>sup</code> (all elements of sub are in sup). O(N-M).</p>
@@ -2944,14 +3009,23 @@
 <blockquote>
 <p>Returns true if the set contains no elements. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (s.len() == 0)</code></li>
+</ul>
 <h4 id="fn-set_to_vects-sett-vect"><code>fn set_to_vec[T](s: &amp;Set[T]) -&gt; Vec[T]</code><a class="headerlink" href="#fn-set_to_vects-sett-vect" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert a set to a vector containing all its elements. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
+</ul>
 <h4 id="fn-set_from_vectv-vect-sett"><code>fn set_from_vec[T](v: &amp;Vec[T]) -&gt; Set[T]</code><a class="headerlink" href="#fn-set_from_vectv-vect-sett" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Create a set from a vector (deduplicates). O(N2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h4 id="fn-vec_sort_bytv-mut-vect-compare-fnt-t-int"><code>fn vec_sort_by[T](v: &amp;mut Vec[T], compare: fn(&amp;T, &amp;T) -&gt; Int)</code><a class="headerlink" href="#fn-vec_sort_bytv-mut-vect-compare-fnt-t-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sort a vector using a custom comparator. Delegates to xiom.sort.sort_by. O(N log N) average, O(N2) worst. Unstable. NOTE: the comparator must be a NAMED function -- inline lambdas crash the current runtime (see xiom.sort comparator note).</p>
@@ -2960,58 +3034,107 @@
 <blockquote>
 <p>Sliding-window maximum: for each window of size <code>k</code> starting at index 0, the maximum element of that window. O(N-K) with O(K) extra space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>k &lt;= 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>k &gt; 0 &amp;&amp; k &lt;= v.len() =&gt; result.len() == v.len() - k + 1</code></li>
+<li><strong>Postcondition:</strong> <code>k &gt; v.len() &amp;&amp; v.len() &gt; 0 =&gt; result.len() == 1</code></li>
+</ul>
 <h4 id="fn-vec_window_minv-vecint-k-int-vecint"><code>fn vec_window_min(v: &amp;Vec[Int], k: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_window_minv-vecint-k-int-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sliding-window minimum: for each window of size <code>k</code>, the minimum element. O(N-K) with O(K) extra space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>k &lt;= 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>k &gt; 0 &amp;&amp; k &lt;= v.len() =&gt; result.len() == v.len() - k + 1</code></li>
+<li><strong>Postcondition:</strong> <code>k &gt; v.len() &amp;&amp; v.len() &gt; 0 =&gt; result.len() == 1</code></li>
+</ul>
 <h4 id="fn-vec_cumsumv-vecint-vecint"><code>fn vec_cumsum(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_cumsumv-vecint-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Cumulative sum: result[i] = v[0] + ... + v[i]. O(N). Empty input -&gt; empty.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == v.len()</code></li>
+</ul>
 <h4 id="fn-vec_dota-vecint-b-vecint-optionint"><code>fn vec_dot(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-vec_dota-vecint-b-vecint-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Dot product of two integer vectors, or None if lengths differ. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() != b.len() =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-vec_productv-vecint-int"><code>fn vec_product(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-vec_productv-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Product of all elements in an integer vector. Returns 1 if empty. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-vec_frequency_keysv-vecint-vecint"><code>fn vec_frequency_keys(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_frequency_keysv-vecint-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Frequency keys: distinct values of the vector, sorted ascending. O(N + M2). Companion of vec_frequency_counts; the two result vectors are parallel (keys[i] occurs counts[i] times).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h4 id="fn-vec_frequency_countsv-vecint-vecint"><code>fn vec_frequency_counts(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_frequency_countsv-vecint-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Frequency counts: occurrence counts aligned with vec_frequency_keys. O(N + M2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h4 id="fn-vec_medianv-mut-vecint-optionint"><code>fn vec_median(v: &amp;mut Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-vec_medianv-mut-vecint-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Median of an integer vector, or None if empty. O(N log N). Convention: returns the lower-middle element (index (n-1)/2) of the sorted copy, so even-length inputs yield the smaller of the two middle values.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-vec_percentilev-mut-vecint-p-int-optionint"><code>fn vec_percentile(v: &amp;mut Vec[Int], p: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-vec_percentilev-mut-vecint-p-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Percentile of an integer vector at p (0..100), or None if empty or p invalid. O(N log N). Convention: nearest-rank, index floor((n-1) * p / 100).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>p &lt; 0 || p &gt; 100 =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-vec_find_alltv-vect-value-t-vecint"><code>fn vec_find_all[T](v: &amp;Vec[T], value: T) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_find_alltv-vect-value-t-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>All indices where <code>value</code> occurs. O(N). Empty if not found.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h4 id="fn-vec_remove_alltv-mut-vect-value-t"><code>fn vec_remove_all[T](v: &amp;mut Vec[T], value: T)</code><a class="headerlink" href="#fn-vec_remove_alltv-mut-vect-value-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Remove every occurrence of <code>value</code> in place. O(N). Stability preserved.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() &lt;= v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_retaintv-mut-vect-keep-fnt-bool-int"><code>fn vec_retain[T](v: &amp;mut Vec[T], keep: fn(&amp;T) -&gt; Bool) -&gt; Int</code><a class="headerlink" href="#fn-vec_retaintv-mut-vect-keep-fnt-bool-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Keep only elements for which <code>keep</code> returns true. Returns the number of removed elements. O(N). NOTE: pass a NAMED predicate -- lambdas crash the current runtime.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == v.len()@pre - v.len()</code></li>
+</ul>
 <h4 id="fn-vec_is_sortedtv-vect-bool"><code>fn vec_is_sorted[T](v: &amp;Vec[T]) -&gt; Bool</code><a class="headerlink" href="#fn-vec_is_sortedtv-vect-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if the vector is sorted in non-decreasing order. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() &lt;= 1 =&gt; result == true</code></li>
+</ul>
 <h4 id="fn-vec_is_emptytv-vect-bool"><code>fn vec_is_empty[T](v: &amp;Vec[T]) -&gt; Bool</code><a class="headerlink" href="#fn-vec_is_emptytv-vect-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if the vector has no elements. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (v.len() == 0)</code></li>
+</ul>
 <h4 id="fn-vec_get_ortv-vect-i-int-default-t-t"><code>fn vec_get_or[T](v: &amp;Vec[T], i: Int, default: T) -&gt; T</code><a class="headerlink" href="#fn-vec_get_ortv-vect-i-int-default-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Element at index i, or <code>default</code> if out of bounds. O(1).</p>
@@ -3020,22 +3143,42 @@
 <blockquote>
 <p>Left part of a vector: elements [0, i), clamped to the valid range. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>i &lt;= 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>i &gt; 0 =&gt; result.len() &lt;= i</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h4 id="fn-vec_rightv-vecint-i-int-vecint"><code>fn vec_right(v: &amp;Vec[Int], i: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_rightv-vecint-i-int-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Right part of a vector: elements [i, n). If i &lt;= 0 the whole vector is returned; if i &gt;= n the result is empty. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>i &gt;= v.len() =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h4 id="fn-vec_zip_inta-vecint-b-vecint-vecint"><code>fn vec_zip_int(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_zip_inta-vecint-b-vecint-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Zip two integer vectors, interleaving pairs [a0, b0, a1, b1, ...] up to the shorter length. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() % 2 == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 2 * a.len()</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 2 * b.len()</code></li>
+</ul>
 <h4 id="fn-vec_unzip_evensv-vecint-vecint"><code>fn vec_unzip_evens(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_unzip_evensv-vecint-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Even-indexed elements of a vector: [v[0], v[2], v[4], ...]. O(N). Pairs with vec_unzip_odds to recover the two halves of a zipped vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == (v.len() + 1) / 2</code></li>
+</ul>
 <h4 id="fn-vec_unzip_oddsv-vecint-vecint"><code>fn vec_unzip_odds(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_unzip_oddsv-vecint-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Odd-indexed elements of a vector: [v[1], v[3], v[5], ...]. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == v.len() / 2</code></li>
+</ul>
 <hr />
 <hr />
 

@@ -4067,7 +4067,7 @@
 <h1 id="stdlibcollect"><code>stdlib.collect</code><a class="headerlink" href="#stdlibcollect" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Collections: Adaptive Replacement Cache</strong></p>
-<p>Generated from <code>v0.61.3</code>. 61 source files, 565 documented symbols.</p>
+<p>Generated from <code>v0.61.3</code>. 61 source files, 570 documented symbols.</p>
 </blockquote>
 <h2 id="arcxi"><code>arc.xi</code><a class="headerlink" href="#arcxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-arc_newcapacity-int-arccache"><code>fn arc_new(capacity: Int) -&gt; ArcCache</code><a class="headerlink" href="#fn-arc_newcapacity-int-arccache" title="Permanent link">&para;</a></h5>
@@ -4779,6 +4779,20 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
+<h5 id="fn-lru_removec-mut-lrucache-key-int-bool"><code>fn lru_remove(c: &amp;mut LruCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lru_removec-mut-lrucache-key-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Remove <code>key</code>, returning whether it was present. Canonical home of the <code>xiom.collect.lru</code> surface.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lru_contains(c, key) == false</code></li>
+</ul>
+<h5 id="fn-lru_clearc-mut-lrucache"><code>fn lru_clear(c: &amp;mut LruCache)</code><a class="headerlink" href="#fn-lru_clearc-mut-lrucache" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Remove all entries from the cache.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lru_size(c) == 0</code></li>
+</ul>
 <h5 id="type-lfucache"><code>type LfuCache</code><a class="headerlink" href="#type-lfucache" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>LFU Cache (Int keys, Int values) Parallel <code>keys</code>/<code>values</code>/<code>counts</code> vectors plus an insertion-sequence vector <code>seq</code> used as a deterministic tie-break: when several keys share the lowest frequency, the least recently inserted one is evicted first.</p>
@@ -4848,6 +4862,27 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-lfu_removec-mut-lfucache-key-int-bool"><code>fn lfu_remove(c: &amp;mut LfuCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lfu_removec-mut-lfucache-key-int-bool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Remove <code>key</code>, returning whether it was present. Canonical home of the <code>xiom.collect.lfu</code> surface.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lfu_contains(c, key) == false</code></li>
+</ul>
+<h5 id="fn-lfu_capacityc-lfucache-int"><code>fn lfu_capacity(c: &amp;LfuCache) -&gt; Int</code><a class="headerlink" href="#fn-lfu_capacityc-lfucache-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Maximum number of entries the cache can hold.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-lfu_clearc-mut-lfucache"><code>fn lfu_clear(c: &amp;mut LfuCache)</code><a class="headerlink" href="#fn-lfu_clearc-mut-lfucache" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Remove all entries from the cache.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lfu_size(c) == 0</code></li>
 </ul>
 <h5 id="type-arccache"><code>type ArcCache</code><a class="headerlink" href="#type-arccache" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -5953,6 +5988,27 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == lhmap_size(m)</code></li>
 </ul>
+<h5 id="fn-lhmap_firstm-lhmap-optionint"><code>fn lhmap_first(m: &amp;LhMap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_firstm-lhmap-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>First key in insertion order, or None when the map is empty. Canonical home of the <code>xiom.collect.linkedhash</code> order accessors.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (lhmap_size(m) &gt; 0)</code></li>
+</ul>
+<h5 id="fn-lhmap_lastm-lhmap-optionint"><code>fn lhmap_last(m: &amp;LhMap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_lastm-lhmap-optionint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Last key in insertion order, or None when the map is empty.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (lhmap_size(m) &gt; 0)</code></li>
+</ul>
+<h5 id="fn-lhmap_iterm-lhmap-vecint"><code>fn lhmap_iter(m: &amp;LhMap) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-lhmap_iterm-lhmap-vecint" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>All keys in insertion order (same order as lhmap_keys_in_order).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == lhmap_size(m)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -6641,98 +6697,58 @@
 <hr />
 <hr />
 <h2 id="lfuxi"><code>lfu.xi</code><a class="headerlink" href="#lfuxi" title="Permanent link">&para;</a></h2>
-<h5 id="type-lfucache_1"><code>type LfuCache</code><a class="headerlink" href="#type-lfucache_1" title="Permanent link">&para;</a></h5>
-<blockquote>
-<p>Least-frequently-used cache with Int keys and values, evicting the least frequently accessed entry when full.</p>
-<p>Flat-arena style. <code>keys</code>/<code>values</code>/<code>counts</code> are parallel vectors; every access bumps the entry's frequency. <code>seq</code> is an insertion-sequence vector used as a deterministic tie-break: when several keys share the lowest frequency, the least recently inserted one is evicted first. <code>next_seq</code> hands out increasing sequence numbers. <code>lfu_get</code> / <code>lfu_put</code> increase the frequency of the touched key (a get on a hit counts as an access).</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>capacity</code></td>
-<td><code>Int</code></td>
-</tr>
-<tr>
-<td><code>keys</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-<tr>
-<td><code>values</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-<tr>
-<td><code>counts</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-<tr>
-<td><code>seq</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-<tr>
-<td><code>next_seq</code></td>
-<td><code>Int</code></td>
-</tr>
-</tbody>
-</table>
 <h5 id="fn-lfu_newcapacity-int-lfucache_1"><code>fn lfu_new(capacity: Int) -&gt; LfuCache</code><a class="headerlink" href="#fn-lfu_newcapacity-int-lfucache_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Create a new LFU cache holding at most <code>capacity</code> entries. Capacity is clamped to &gt;= 1. O(1).</p>
+<p>Create an LFU cache holding at most <code>capacity</code> entries.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result.capacity &gt;= 1</code></li>
 <li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
 </ul>
 <h5 id="fn-lfu_getc-mut-lfucache-key-int-optionint_1"><code>fn lfu_get(c: &amp;mut LfuCache, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lfu_getc-mut-lfucache-key-int-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Get the value for <code>key</code>, increasing its frequency. None if absent. O(n).</p>
+<p>Fetch a value and increment its access frequency. None if absent.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.is_some == lfu_contains(c, key)</code></li>
 </ul>
 <h5 id="fn-lfu_putc-mut-lfucache-key-int-value-int_1"><code>fn lfu_put(c: &amp;mut LfuCache, key: Int, value: Int)</code><a class="headerlink" href="#fn-lfu_putc-mut-lfucache-key-int-value-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Insert or update <code>key</code> -&gt; <code>value</code>, evicting the least-frequently-used entry when full (tie-break: least recently inserted among the minimum-frequency group). A put on an existing key increases its frequency. O(n).</p>
+<p>Insert or update a key. On overflow, evicts the lowest-frequency key (tie-break: least recently inserted among the minimum-frequency group).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>lfu_contains(c, key)</code></li>
+<li><strong>Postcondition:</strong> <code>lfu_contains(c, key) == true</code></li>
 </ul>
 <h5 id="fn-lfu_containsc-mut-lfucache-key-int-bool"><code>fn lfu_contains(c: &amp;mut LfuCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lfu_containsc-mut-lfucache-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Check whether <code>key</code> is present (does not change its frequency). O(n).</p>
+<p>True if the key is present in the cache.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == true =&gt; lfu_size(c) &gt; 0</code></li>
 </ul>
-<h5 id="fn-lfu_removec-mut-lfucache-key-int-bool"><code>fn lfu_remove(c: &amp;mut LfuCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lfu_removec-mut-lfucache-key-int-bool" title="Permanent link">&para;</a></h5>
+<h5 id="fn-lfu_removec-mut-lfucache-key-int-bool_1"><code>fn lfu_remove(c: &amp;mut LfuCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lfu_removec-mut-lfucache-key-int-bool_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Remove <code>key</code>, returning whether it was present. O(n).</p>
+<p>Remove <code>key</code>, returning whether it was present.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>lfu_contains(c, key) == false</code></li>
 </ul>
 <h5 id="fn-lfu_sizec-mut-lfucache-int"><code>fn lfu_size(c: &amp;mut LfuCache) -&gt; Int</code><a class="headerlink" href="#fn-lfu_sizec-mut-lfucache-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Number of entries currently cached. O(1).</p>
+<p>Number of entries currently cached.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
 <h5 id="fn-lfu_capacityc-mut-lfucache-int"><code>fn lfu_capacity(c: &amp;mut LfuCache) -&gt; Int</code><a class="headerlink" href="#fn-lfu_capacityc-mut-lfucache-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Maximum number of entries the cache can hold. O(1).</p>
+<p>Maximum number of entries the cache can hold.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
-<h5 id="fn-lfu_clearc-mut-lfucache"><code>fn lfu_clear(c: &amp;mut LfuCache)</code><a class="headerlink" href="#fn-lfu_clearc-mut-lfucache" title="Permanent link">&para;</a></h5>
+<h5 id="fn-lfu_clearc-mut-lfucache_1"><code>fn lfu_clear(c: &amp;mut LfuCache)</code><a class="headerlink" href="#fn-lfu_clearc-mut-lfucache_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Remove all entries from the cache. O(1).</p>
+<p>Remove all entries from the cache.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>lfu_size(c) == 0</code></li>
@@ -6741,32 +6757,13 @@
 <hr />
 <hr />
 <h2 id="linkedhashxi"><code>linkedhash.xi</code><a class="headerlink" href="#linkedhashxi" title="Permanent link">&para;</a></h2>
-<h5 id="type-lhmap_1"><code>type LhMap</code><a class="headerlink" href="#type-lhmap_1" title="Permanent link">&para;</a></h5>
-<blockquote>
-<p>Hash map preserving insertion order of Int keys. Keys and values live in two parallel Vec[Int]s in insertion order: putting an existing key updates its value without moving it; putting a new key appends. <code>lhmap_first</code>/ <code>lhmap_last</code>/<code>lhmap_iter</code> read that order. Lookup is a linear scan (O(n)), which keeps the API dependency-free; removal compacts the vectors.</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>keys</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-<tr>
-<td><code>values</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-</tbody>
-</table>
 <h5 id="fn-lhmap_new-lhmap_1"><code>fn lhmap_new() -&gt; LhMap</code><a class="headerlink" href="#fn-lhmap_new-lhmap_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create a new empty insertion-ordered map. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
+</ul>
 <h5 id="fn-lhmap_putm-mut-lhmap-key-int-value-int_1"><code>fn lhmap_put(m: &amp;mut LhMap, key: Int, value: Int)</code><a class="headerlink" href="#fn-lhmap_putm-mut-lhmap-key-int-value-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert or update <code>key</code> -&gt; <code>value</code>. New keys are appended in insertion order; updating keeps the existing position. O(n).</p>
@@ -6781,7 +6778,7 @@
 </blockquote>
 <h5 id="fn-lhmap_removem-mut-lhmap-key-int"><code>fn lhmap_remove(m: &amp;mut LhMap, key: Int)</code><a class="headerlink" href="#fn-lhmap_removem-mut-lhmap-key-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Remove <code>key</code> if present, preserving the relative order of the remaining entries. O(n).</p>
+<p>Remove <code>key</code> if present, preserving the relative order of the remaining entries. O(n). Unit wrapper over the canonical Bool-returning function.</p>
 </blockquote>
 <h5 id="fn-lhmap_sizem-lhmap-int_1"><code>fn lhmap_size(m: &amp;LhMap) -&gt; Int</code><a class="headerlink" href="#fn-lhmap_sizem-lhmap-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -6790,15 +6787,15 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
-<h5 id="fn-lhmap_firstm-lhmap-optionint"><code>fn lhmap_first(m: &amp;LhMap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_firstm-lhmap-optionint" title="Permanent link">&para;</a></h5>
+<h5 id="fn-lhmap_firstm-lhmap-optionint_1"><code>fn lhmap_first(m: &amp;LhMap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_firstm-lhmap-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>First key in insertion order, or None when the map is empty. O(1).</p>
 </blockquote>
-<h5 id="fn-lhmap_lastm-lhmap-optionint"><code>fn lhmap_last(m: &amp;LhMap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_lastm-lhmap-optionint" title="Permanent link">&para;</a></h5>
+<h5 id="fn-lhmap_lastm-lhmap-optionint_1"><code>fn lhmap_last(m: &amp;LhMap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_lastm-lhmap-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Last key in insertion order, or None when the map is empty. O(1).</p>
 </blockquote>
-<h5 id="fn-lhmap_iterm-lhmap-vecint"><code>fn lhmap_iter(m: &amp;LhMap) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-lhmap_iterm-lhmap-vecint" title="Permanent link">&para;</a></h5>
+<h5 id="fn-lhmap_iterm-lhmap-vecint_1"><code>fn lhmap_iter(m: &amp;LhMap) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-lhmap_iterm-lhmap-vecint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All keys in insertion order. O(n).</p>
 </blockquote>
@@ -6914,41 +6911,13 @@
 <hr />
 <hr />
 <h2 id="lruxi"><code>lru.xi</code><a class="headerlink" href="#lruxi" title="Permanent link">&para;</a></h2>
-<h5 id="type-lrucache_1"><code>type LruCache</code><a class="headerlink" href="#type-lrucache_1" title="Permanent link">&para;</a></h5>
-<blockquote>
-<p>Least-recently-used cache with O(1) get/put over Int keys and values.</p>
-<p>Flat-arena style. <code>keys</code>/<code>values</code> are parallel vectors and <code>order</code> is a vector of keys in recency order, front = most recently used. <code>lru_get</code> and <code>lru_put</code> move an accessed key to the front; when full, the key at the back of <code>order</code> (least recently used) is evicted. Lookups are O(n) linear scans (the compiler's Vec has no hash map for struct elements), which is acceptable for the small cache sizes this module targets.</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>capacity</code></td>
-<td><code>Int</code></td>
-</tr>
-<tr>
-<td><code>keys</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-<tr>
-<td><code>values</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-<tr>
-<td><code>order</code></td>
-<td><code>Vec[Int]</code></td>
-</tr>
-</tbody>
-</table>
 <h5 id="fn-lru_newcapacity-int-lrucache_1"><code>fn lru_new(capacity: Int) -&gt; LruCache</code><a class="headerlink" href="#fn-lru_newcapacity-int-lrucache_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create a new LRU cache holding at most <code>capacity</code> entries. Capacity is clamped to &gt;= 1. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
+</ul>
 <h5 id="fn-lru_getc-mut-lrucache-key-int-optionint_1"><code>fn lru_get(c: &amp;mut LruCache, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lru_getc-mut-lrucache-key-int-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Get the value for <code>key</code>, marking it recently used. None if absent. O(n).</p>
@@ -6961,10 +6930,13 @@
 <blockquote>
 <p>Check whether <code>key</code> is present (does not change recency). O(n).</p>
 </blockquote>
-<h5 id="fn-lru_removec-mut-lrucache-key-int-bool"><code>fn lru_remove(c: &amp;mut LruCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lru_removec-mut-lrucache-key-int-bool" title="Permanent link">&para;</a></h5>
+<h5 id="fn-lru_removec-mut-lrucache-key-int-bool_1"><code>fn lru_remove(c: &amp;mut LruCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lru_removec-mut-lrucache-key-int-bool_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code>, returning whether it was present. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lru_contains(c, key) == false</code></li>
+</ul>
 <h5 id="fn-lru_sizec-mut-lrucache-int"><code>fn lru_size(c: &amp;mut LruCache) -&gt; Int</code><a class="headerlink" href="#fn-lru_sizec-mut-lrucache-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of entries currently cached. O(1).</p>
@@ -6979,7 +6951,7 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 </ul>
-<h5 id="fn-lru_clearc-mut-lrucache"><code>fn lru_clear(c: &amp;mut LruCache)</code><a class="headerlink" href="#fn-lru_clearc-mut-lrucache" title="Permanent link">&para;</a></h5>
+<h5 id="fn-lru_clearc-mut-lrucache_1"><code>fn lru_clear(c: &amp;mut LruCache)</code><a class="headerlink" href="#fn-lru_clearc-mut-lrucache_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove all entries from the cache. O(1).</p>
 </blockquote>

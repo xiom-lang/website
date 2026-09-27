@@ -2798,38 +2798,65 @@
 <blockquote>
 <p>Fail the test unless <code>cond</code> is true. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>cond == true</code></li>
+</ul>
 <h5 id="fn-assert_eqta-t-b-t-msg-str"><code>fn assert_eq[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_eqta-t-b-t-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>a</code> equals <code>b</code>. Complexity: O(1) for scalars; O(len) for content types.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == b</code></li>
+</ul>
 <h5 id="fn-assert_neta-t-b-t-msg-str"><code>fn assert_ne[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_neta-t-b-t-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>a</code> differs from <code>b</code>. Complexity: O(1) for scalars; O(len) for content types.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a != b</code></li>
+</ul>
 <h5 id="fn-assert_ltta-t-b-t-msg-str"><code>fn assert_lt[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_ltta-t-b-t-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>a</code> is less than <code>b</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a &lt; b</code></li>
+</ul>
 <h5 id="fn-assert_leta-t-b-t-msg-str"><code>fn assert_le[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_leta-t-b-t-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>a</code> is less than or equal to <code>b</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a &lt;= b</code></li>
+</ul>
 <h5 id="fn-assert_gtta-t-b-t-msg-str"><code>fn assert_gt[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_gtta-t-b-t-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>a</code> is greater than <code>b</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a &gt; b</code></li>
+</ul>
 <h5 id="fn-assert_geta-t-b-t-msg-str"><code>fn assert_ge[T](a: T, b: T, msg: Str)</code><a class="headerlink" href="#fn-assert_geta-t-b-t-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>a</code> is greater than or equal to <code>b</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a &gt;= b</code></li>
+</ul>
 <h5 id="fn-assert_truecond-bool-msg-str"><code>fn assert_true(cond: Bool, msg: Str)</code><a class="headerlink" href="#fn-assert_truecond-bool-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>cond</code> is true. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>cond == true</code></li>
+</ul>
 <h5 id="fn-assert_falsecond-bool-msg-str"><code>fn assert_false(cond: Bool, msg: Str)</code><a class="headerlink" href="#fn-assert_falsecond-bool-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>cond</code> is false. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>cond == false</code></li>
+</ul>
 <h5 id="fn-assert_neara-float64-b-float64-eps-float64-msg-str"><code>fn assert_near(a: Float64, b: Float64, eps: Float64, msg: Str)</code><a class="headerlink" href="#fn-assert_neara-float64-b-float64-eps-float64-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>a</code> and <code>b</code> are within <code>eps</code> of each other. Complexity: O(1).</p>
@@ -2838,6 +2865,9 @@
 <blockquote>
 <p>Fail unless <code>haystack</code> contains <code>needle</code>. Complexity: O(len(haystack) * len(needle)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>string.str_contains(haystack, needle)</code></li>
+</ul>
 <h5 id="fn-assert_matchess-str-pattern-str-msg-str"><code>fn assert_matches(s: Str, pattern: Str, msg: Str)</code><a class="headerlink" href="#fn-assert_matchess-str-pattern-str-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>s</code> matches the regex <code>pattern</code> (search semantics, via xiom.regex.engine). Complexity: O(len(s) * len(pattern)) worst case.</p>
@@ -2846,34 +2876,58 @@
 <blockquote>
 <p>Fail on Err and return the Ok value. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>r.is_ok</code></li>
+</ul>
 <h5 id="fn-assert_errtr-resultt-str-msg-str"><code>fn assert_err[T](r: Result[T, Str], msg: Str)</code><a class="headerlink" href="#fn-assert_errtr-resultt-str-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>r</code> is an Err. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>!r.is_ok</code></li>
+</ul>
 <h5 id="fn-assert_someto-optiont-msg-str-t"><code>fn assert_some[T](o: Option[T], msg: Str) -&gt; T</code><a class="headerlink" href="#fn-assert_someto-optiont-msg-str-t" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail on None and return the value. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>o.is_some</code></li>
+</ul>
 <h5 id="fn-assert_noneto-optiont-msg-str"><code>fn assert_none[T](o: Option[T], msg: Str)</code><a class="headerlink" href="#fn-assert_noneto-optiont-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>o</code> is None. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>!o.is_some</code></li>
+</ul>
 <h5 id="fn-assert_panicsf-fn-unit-msg-str"><code>fn assert_panics(f: fn() -&gt; Unit, msg: Str)</code><a class="headerlink" href="#fn-assert_panicsf-fn-unit-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless calling <code>f</code> panics. Panics terminate the process in this build, so a panic cannot be observed: <code>f</code> is invoked and, if it returns normally, this assertion panics with <code>msg</code>. Complexity: O(cost of f).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-assert_throwsf-fn-unit-msg-str"><code>fn assert_throws(f: fn() -&gt; Unit, msg: Str)</code><a class="headerlink" href="#fn-assert_throwsf-fn-unit-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless calling <code>f</code> raises an error. Same observable behaviour as <code>assert_panics</code> in this build (no unwind support). Complexity: O(cost of f).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-assert_emptytv-vect-msg-str"><code>fn assert_empty[T](v: &amp;Vec[T], msg: Str)</code><a class="headerlink" href="#fn-assert_emptytv-vect-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>v</code> has no elements. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0</code></li>
+</ul>
 <h5 id="fn-assert_lentv-vect-n-int-msg-str"><code>fn assert_len[T](v: &amp;Vec[T], n: Int, msg: Str)</code><a class="headerlink" href="#fn-assert_lentv-vect-n-int-msg-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fail unless <code>v</code> has exactly <code>n</code> elements. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == n</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2961,46 +3015,79 @@
 <blockquote>
 <p>Create an empty test runner. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.names.len() == 0 &amp;&amp; result.tests.len() == 0 &amp;&amp; result.skipped.len() == 0</code></li>
+</ul>
 <h5 id="fn-harness_add_testh-mut-harness-name-str-f-fn-resultunit-str"><code>fn harness_add_test(h: &amp;mut Harness, name: Str, f: fn() -&gt; Result[Unit, Str])</code><a class="headerlink" href="#fn-harness_add_testh-mut-harness-name-str-f-fn-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Register a named test. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>h.names.len() == h.names.len()@pre + 1 &amp;&amp; h.tests.len() == h.tests.len()@pre + 1</code></li>
+</ul>
 <h5 id="fn-harness_runh-harness-testreport"><code>fn harness_run(h: &amp;Harness) -&gt; TestReport</code><a class="headerlink" href="#fn-harness_runh-harness-testreport" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Run all tests sequentially, respecting skipped names. Complexity: O(tests).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed + result.failed + result.skipped == h.tests.len()</code></li>
+</ul>
 <h5 id="fn-harness_run_filteredh-harness-filter-str-testreport"><code>fn harness_run_filtered(h: &amp;Harness, filter: Str) -&gt; TestReport</code><a class="headerlink" href="#fn-harness_run_filteredh-harness-filter-str-testreport" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Run only tests whose name matches <code>filter</code> (substring, case-sensitive). Complexity: O(tests).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed + result.failed + result.skipped &lt;= h.tests.len()</code></li>
+</ul>
 <h5 id="fn-harness_parallelh-harness-workers-int-testreport"><code>fn harness_parallel(h: &amp;Harness, workers: Int) -&gt; TestReport</code><a class="headerlink" href="#fn-harness_parallelh-harness-workers-int-testreport" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Run tests with up to <code>workers</code> threads. This single-threaded build runs them sequentially (documented). Complexity: O(tests).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed + result.failed + result.skipped == h.tests.len()</code></li>
+</ul>
 <h5 id="fn-harness_skiph-mut-harness-name-str"><code>fn harness_skip(h: &amp;mut Harness, name: Str)</code><a class="headerlink" href="#fn-harness_skiph-mut-harness-name-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mark a named test as skipped. Complexity: O(skipped).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>h.skipped.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-harness_benchmarkh-mut-harness-name-str-f-fn-unit-iterations-int-int"><code>fn harness_benchmark(h: &amp;mut Harness, name: Str, f: fn() -&gt; Unit, iterations: Int) -&gt; Int</code><a class="headerlink" href="#fn-harness_benchmarkh-mut-harness-name-str-f-fn-unit-iterations-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Time <code>f</code> over <code>iterations</code> calls and register the result under <code>name</code>. Returns the total elapsed time in milliseconds. Complexity: O(iterations * cost of f).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>h.names.len() == h.names.len()@pre + 1 &amp;&amp; h.tests.len() == h.tests.len()@pre + 1</code></li>
+</ul>
 <h5 id="fn-report_passedr-testreport-int"><code>fn report_passed(r: &amp;TestReport) -&gt; Int</code><a class="headerlink" href="#fn-report_passedr-testreport-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The number of passed tests. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == r.passed</code></li>
+</ul>
 <h5 id="fn-report_failedr-testreport-int"><code>fn report_failed(r: &amp;TestReport) -&gt; Int</code><a class="headerlink" href="#fn-report_failedr-testreport-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The number of failed tests. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == r.failed</code></li>
+</ul>
 <h5 id="fn-report_skippedr-testreport-int"><code>fn report_skipped(r: &amp;TestReport) -&gt; Int</code><a class="headerlink" href="#fn-report_skippedr-testreport-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The number of skipped tests. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == r.skipped</code></li>
+</ul>
 <h5 id="fn-report_duration_msr-testreport-int"><code>fn report_duration_ms(r: &amp;TestReport) -&gt; Int</code><a class="headerlink" href="#fn-report_duration_msr-testreport-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The total run time in milliseconds. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == r.duration_ms</code></li>
+</ul>
 <h5 id="fn-report_printr-testreport"><code>fn report_print(r: &amp;TestReport)</code><a class="headerlink" href="#fn-report_printr-testreport" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Print a human-readable summary. Complexity: O(1).</p>
@@ -3009,10 +3096,16 @@
 <blockquote>
 <p>The report serialized as JSON. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 47</code></li>
+</ul>
 <h5 id="fn-test_main-int"><code>fn test_main() -&gt; Int</code><a class="headerlink" href="#fn-test_main-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Run all registered global tests and return the exit code. LIMITED: the registered tests cannot be executed in this build (module-scope function pointers are read-only after initialization), so this returns 0 when at least one test has been registered and 1 otherwise. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+</ul>
 <h5 id="fn-test_registername-str-f-fn-resultunit-str-bool"><code>fn test_register(name: Str, f: fn() -&gt; Result[Unit, Str]) -&gt; Bool</code><a class="headerlink" href="#fn-test_registername-str-f-fn-resultunit-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Register a test in the global harness. Returns true when the test was recorded, false when the 8-slot registry is full. LIMITED: only the test name is recorded -- the function pointer cannot be retained in this build (see header). Complexity: O(1).</p>
@@ -3105,18 +3198,30 @@
 <blockquote>
 <p>Pass when the values differ.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (expected != actual)</code></li>
+</ul>
 <h4 id="fn-assert_lttleft-t-right-t-name-str-testresult"><code>fn assert_lt[T](left: T, right: T, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_lttleft-t-right-t-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pass when left &lt; right.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (left &lt; right)</code></li>
+</ul>
 <h4 id="fn-assert_gttleft-t-right-t-name-str-testresult"><code>fn assert_gt[T](left: T, right: T, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_gttleft-t-right-t-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pass when left &gt; right.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (left &gt; right)</code></li>
+</ul>
 <h4 id="fn-assert_containshaystack-str-needle-str-name-str-testresult"><code>fn assert_contains(haystack: Str, needle: Str, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_containshaystack-str-needle-str-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pass when <code>haystack</code> contains <code>needle</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == string.str_contains(haystack, needle)</code></li>
+</ul>
 <h4 id="fn-assert_okt-eresult-resultt-e-name-str-testresult"><code>fn assert_ok[T, E](result: Result[T, E], name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_okt-eresult-resultt-e-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pass when the Result is Ok.</p>
@@ -3129,90 +3234,156 @@
 <blockquote>
 <p>Pass when the Option is Some.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == option.is_some</code></li>
+</ul>
 <h4 id="fn-assert_nonetoption-optiont-name-str-testresult"><code>fn assert_none[T](option: Option[T], name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_nonetoption-optiont-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pass when the Option is None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (!option.is_some)</code></li>
+</ul>
 <h4 id="fn-assert_contracttvalue-t-predicate-fnt-bool-name-str-testresult"><code>fn assert_contract[T](value: T, predicate: fn(&amp;T) -&gt; Bool, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_contracttvalue-t-predicate-fnt-bool-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pass when <code>predicate</code> holds for the value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (result.contract_failures.len() == 0)</code></li>
+</ul>
 <h4 id="fn-runtest-fn-testresult-int"><code>fn run(test: fn() -&gt; TestResult) -&gt; Int</code><a class="headerlink" href="#fn-runtest-fn-testresult-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Run one test and print the result; returns the exit code (0 = pass).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+</ul>
 <h4 id="fn-run_alltests-vecfn-testresult-int"><code>fn run_all(tests: Vec[fn() -&gt; TestResult]) -&gt; Int</code><a class="headerlink" href="#fn-run_alltests-vecfn-testresult-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Run every test and print a summary; returns the exit code.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= tests.len()</code></li>
+</ul>
 <h4 id="fn-run_filteredtests-vecfn-testresult-filter-str-int"><code>fn run_filtered(tests: Vec[fn() -&gt; TestResult], filter: Str) -&gt; Int</code><a class="headerlink" href="#fn-run_filteredtests-vecfn-testresult-filter-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Run tests whose name contains <code>filter</code>; returns the exit code.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= tests.len()</code></li>
+</ul>
 <h4 id="fn-format_resultsresults-vectestresult-str"><code>fn format_results(results: Vec[TestResult]) -&gt; Str</code><a class="headerlink" href="#fn-format_resultsresults-vectestresult-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Human-readable summary of the results.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 37</code></li>
+</ul>
 <h4 id="fn-format_results_jsonresults-vectestresult-str"><code>fn format_results_json(results: Vec[TestResult]) -&gt; Str</code><a class="headerlink" href="#fn-format_results_jsonresults-vectestresult-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>JSON summary of the results.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 2</code></li>
+</ul>
 <h4 id="fn-benchname-str-f-fn-unit-testresult"><code>fn bench(name: Str, f: fn() -&gt; Unit) -&gt; TestResult</code><a class="headerlink" href="#fn-benchname-str-f-fn-unit-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Time <code>f</code> once and report it as a benchmark result.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == true</code></li>
+</ul>
 <h4 id="fn-assert_falsecond-bool-name-str-testresult"><code>fn assert_false(cond: Bool, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_falsecond-bool-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asserts that <code>cond</code> is false. Complexity: O(1). Pure in test context.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (!cond)</code></li>
+</ul>
 <h4 id="fn-assert_eq_intexpected-int-actual-int-name-str-testresult"><code>fn assert_eq_int(expected: Int, actual: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_eq_intexpected-int-actual-int-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asserts that two <code>Int</code> values are equal. Complexity: O(1). Pure in test context.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (expected == actual)</code></li>
+</ul>
 <h4 id="fn-assert_ne_intexpected-int-actual-int-name-str-testresult"><code>fn assert_ne_int(expected: Int, actual: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_ne_intexpected-int-actual-int-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asserts that two <code>Int</code> values are not equal. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (expected != actual)</code></li>
+</ul>
 <h4 id="fn-assert_gt_intleft-int-right-int-name-str-testresult"><code>fn assert_gt_int(left: Int, right: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_gt_intleft-int-right-int-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asserts that <code>left</code> is strictly greater than <code>right</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (left &gt; right)</code></li>
+</ul>
 <h4 id="fn-assert_lt_intleft-int-right-int-name-str-testresult"><code>fn assert_lt_int(left: Int, right: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_lt_intleft-int-right-int-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asserts that <code>left</code> is strictly less than <code>right</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (left &lt; right)</code></li>
+</ul>
 <h4 id="fn-assert_ge_intleft-int-right-int-name-str-testresult"><code>fn assert_ge_int(left: Int, right: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_ge_intleft-int-right-int-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asserts that <code>left</code> is greater than or equal to <code>right</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (left &gt;= right)</code></li>
+</ul>
 <h4 id="fn-assert_le_intleft-int-right-int-name-str-testresult"><code>fn assert_le_int(left: Int, right: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_le_intleft-int-right-int-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asserts that <code>left</code> is less than or equal to <code>right</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (left &lt;= right)</code></li>
+</ul>
 <h4 id="fn-assert_in_rangevalue-int-lo-int-hi-int-name-str-testresult"><code>fn assert_in_range(value: Int, lo: Int, hi: Int, name: Str) -&gt; TestResult</code><a class="headerlink" href="#fn-assert_in_rangevalue-int-lo-int-hi-int-name-str-testresult" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asserts that <code>value</code> is within the inclusive range [<code>lo</code>, <code>hi</code>]. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.passed == (value &gt;= lo &amp;&amp; value &lt;= hi)</code></li>
+</ul>
 <h4 id="fn-test_count_failuresresults-vectestresult-int"><code>fn test_count_failures(results: Vec[TestResult]) -&gt; Int</code><a class="headerlink" href="#fn-test_count_failuresresults-vectestresult-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Counts the number of failing test results in the vector. Complexity: O(n). Consumes the vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= results.len()</code></li>
+</ul>
 <h4 id="fn-test_pass_countresults-vectestresult-int"><code>fn test_pass_count(results: Vec[TestResult]) -&gt; Int</code><a class="headerlink" href="#fn-test_pass_countresults-vectestresult-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Counts the number of passing test results in the vector. Complexity: O(n). Consumes the vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= results.len()</code></li>
+</ul>
 <h4 id="fn-test_fail_countresults-vectestresult-int"><code>fn test_fail_count(results: Vec[TestResult]) -&gt; Int</code><a class="headerlink" href="#fn-test_fail_countresults-vectestresult-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Counts the number of failing test results. Alias for <code>test_count_failures</code>. Complexity: O(n). Consumes the vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= results.len()</code></li>
+</ul>
 <h4 id="fn-test_summaryresults-vectestresult-str"><code>fn test_summary(results: Vec[TestResult]) -&gt; Str</code><a class="headerlink" href="#fn-test_summaryresults-vectestresult-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns a one-line summary string: <code>"P passed, F failed, T total"</code>. Complexity: O(n). Consumes the vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 17</code></li>
+</ul>
 <h4 id="fn-test_reportresults-vectestresult-str"><code>fn test_report(results: Vec[TestResult]) -&gt; Str</code><a class="headerlink" href="#fn-test_reportresults-vectestresult-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Generates a multi-line test report using <code>xiom.string.str_concat</code>. Includes per-test results followed by a summary footer. Complexity: O(n). Consumes the vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 34</code></li>
+</ul>
 <hr />
 <hr />
 

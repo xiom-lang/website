@@ -2960,6 +2960,9 @@
 <blockquote>
 <p>Write a string to standard error. Params: s - the string. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-console_clear"><code>fn console_clear()</code><a class="headerlink" href="#fn-console_clear" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Clear the terminal screen. Complexity: O(1) shell invocation.</p>
@@ -2971,10 +2974,16 @@
 <blockquote>
 <p>Set the terminal window title. Params: title - the new title. Complexity: O(1) shell invocation.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-console_get_size-int-int"><code>fn console_get_size() -&gt; (Int, Int)</code><a class="headerlink" href="#fn-console_get_size-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Terminal dimensions; tuple is (rows, cols). Returns: a documented simulation of (24, 80). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 == 24 &amp;&amp; result._1 == 80</code></li>
+</ul>
 <h5 id="fn-console_is_tty-bool"><code>fn console_is_tty() -&gt; Bool</code><a class="headerlink" href="#fn-console_is_tty-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether standard output is an interactive terminal. Returns: false (the runtime does not expose isatty). Complexity: O(1).</p>
@@ -3060,6 +3069,10 @@
 <blockquote>
 <p>Whether the path exists. Params: path - the path. Returns: true if the path can be opened for reading. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; io.file_exists(path) || io.is_dir(path)</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; !io.file_exists(path) &amp;&amp; !io.is_dir(path)</code></li>
+</ul>
 <h5 id="fn-fs_is_filepath-str-bool"><code>fn fs_is_file(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_is_filepath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether the path is a regular file. Params: path - the path. Returns: true if the path is a regular file. Complexity: O(1).</p>
@@ -3180,18 +3193,30 @@
 <blockquote>
 <p>Read and parse an Int from standard input; Err on bad input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-read_float-resultfloat64-str"><code>fn read_float() -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-read_float-resultfloat64-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Read and parse a Float64 from standard input; Err on bad input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-parse_ints-str-resultint-str"><code>fn parse_int(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-parse_ints-str-resultint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse a decimal integer (optional leading +/- sign, ASCII digits only). Deterministic core of read_int, exposed for parsing without stdin.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-parse_floats-str-resultfloat64-str"><code>fn parse_float(s: Str) -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-parse_floats-str-resultfloat64-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse a decimal float (optional sign, one optional '.', ASCII digits; no exponent support). Deterministic core of read_float.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-read_filepath-str-resultstr-ioerror"><code>fn read_file(path: Str) -&gt; Result[Str, IOError]</code><a class="headerlink" href="#fn-read_filepath-str-resultstr-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== File system ===</p>
@@ -3565,6 +3590,10 @@
 <blockquote>
 <p>True when the path is absolute.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; path.len() &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>path.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h4 id="fn-read_line_trim-str"><code>fn read_line_trim() -&gt; Str</code><a class="headerlink" href="#fn-read_line_trim-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>read_line_trim reads a line from stdin and trims trailing whitespace (including \r, \n).  Delegates to read_line + trim. Complexity: O(n) where n is line length.</p>
@@ -3590,10 +3619,17 @@
 <blockquote>
 <p>flush_stdout is a no-op: the Xiom runtime does not expose fflush via externs, but stdio is line-buffered by default so explicit flushing is rarely required.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h4 id="fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror"><code>fn write_file_bytes(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>write_file_bytes writes raw bytes to a file, truncating if it exists. Complexity: O(n) where n = data.len().</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(path)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-read_file_bytespath-str-resultvecuint8-ioerror"><code>fn read_file_bytes(path: Str) -&gt; Result[Vec[UInt8], IOError]</code><a class="headerlink" href="#fn-read_file_bytespath-str-resultvecuint8-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>read_file_bytes reads a file and returns its raw bytes. Complexity: O(n) where n = file size.</p>
@@ -3616,6 +3652,10 @@
 <blockquote>
 <p>move_file renames (moves) a file or directory from src to dst. Alias for rename.  Complexity: O(1) OS call.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(dst)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-dir_existspath-str-bool"><code>fn dir_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_existspath-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>dir_exists returns true if the path exists and is a directory.</p>
@@ -3624,6 +3664,9 @@
 <blockquote>
 <p>create_dir_all creates the directory and all missing parent directories along the path.  Returns Ok(()) on success. Complexity: O(d) where d = directory depth.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) &amp;&amp; path.len() &gt; 0 =&gt; is_dir(path)</code></li>
+</ul>
 <h4 id="fn-list_dir_recursivepath-str-resultvecstr-ioerror"><code>fn list_dir_recursive(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-list_dir_recursivepath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>list_dir_recursive recursively collects all file and directory paths under the given root directory.  Returns the full paths relative to root.  Complexity: O(N) where N = total entries.</p>
@@ -3642,10 +3685,18 @@
 <blockquote>
 <p>write_file_lines writes a Vec[Str] to a file, one line per entry. Lines are separated by '\n'.  Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(path)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-append_linepath-str-line-str-resultunit-ioerror"><code>fn append_line(path: Str, line: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-append_linepath-str-line-str-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>append_line appends a single line (followed by '\n') to a file. If the file does not exist it will be created. Complexity: O(n) where n = line length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(path)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="pipexi"><code>pipe.xi</code><a class="headerlink" href="#pipexi" title="Permanent link">&para;</a></h2>
@@ -3653,6 +3704,9 @@
 <blockquote>
 <p>Create a pipe; tuple is (read_fd, write_fd). Returns: (read_fd, write_fd), or (-1, -1) on failure. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 == -1 =&gt; result._1 == -1</code></li>
+</ul>
 <h5 id="fn-pipe_readfd-int-buf-mut-vecuint8-resultint-str"><code>fn pipe_read(fd: Int, buf: &amp;mut Vec[UInt8]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-pipe_readfd-int-buf-mut-vecuint8-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read available bytes into <code>buf</code>. Params: fd - the pipe fd; buf - the destination buffer. Returns: Ok(bytes read), Err on failure. Complexity: O(n) syscall.</p>
@@ -3680,6 +3734,9 @@
 <blockquote>
 <p>Whether a descriptor is still valid. Params: fd - the pipe fd. Returns: true while the fd is non-negative (documented simulation). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (fd &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-pipe_read_linefd-int-resultstr-str"><code>fn pipe_read_line(fd: Int) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-pipe_read_linefd-int-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read a line from a pipe. Params: fd - the pipe fd. Returns: Ok(line without the trailing newline), Err on failure. Complexity: O(n) where n is the line length.</p>

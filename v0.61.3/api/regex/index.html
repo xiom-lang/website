@@ -3045,93 +3045,163 @@
 <blockquote>
 <p>Compile a pattern; Err with a message on syntax errors.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pattern.len() == 0 =&gt; result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-is_matchself-self-text-str-bool"><code>fn is_match(self: Self, text: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_matchself-self-text-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the pattern matches anywhere in <code>text</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.pattern.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h4 id="fn-findself-self-text-str-optionmatch"><code>fn find(self: Self, text: Str) -&gt; Option[Match]</code><a class="headerlink" href="#fn-findself-self-text-str-optionmatch" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>First match in <code>text</code>, or None.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.is_some =&gt; result.value.start &gt;= 0 &amp;&amp; result.value.end &gt;= result.value.start</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_some =&gt; result.value.end &lt;= text.len()</code></li>
 </ul>
 <h4 id="fn-find_allself-self-text-str-vecmatch"><code>fn find_all(self: Self, text: Str) -&gt; Vec[Match]</code><a class="headerlink" href="#fn-find_allself-self-text-str-vecmatch" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>All non-overlapping matches in <code>text</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= text.len() + 1</code></li>
+<li><strong>Postcondition:</strong> <code>self.pattern.len() == 0 =&gt; result.len() == text.len() + 1</code></li>
+</ul>
 <h4 id="fn-capturesself-self-text-str-optioncaptures"><code>fn captures(self: Self, text: Str) -&gt; Option[Captures]</code><a class="headerlink" href="#fn-capturesself-self-text-str-optioncaptures" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Capture groups of the first match, or None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.pattern.len() == 0 =&gt; result is Some(_)</code></li>
+</ul>
 <h4 id="fn-replaceself-self-text-str-replacement-str-str"><code>fn replace(self: Self, text: Str, replacement: Str) -&gt; Str</code><a class="headerlink" href="#fn-replaceself-self-text-str-replacement-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Replace the first match with <code>replacement</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= text.len() + replacement.len()</code></li>
+</ul>
 <h4 id="fn-replace_allself-self-text-str-replacement-str-str"><code>fn replace_all(self: Self, text: Str, replacement: Str) -&gt; Str</code><a class="headerlink" href="#fn-replace_allself-self-text-str-replacement-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Replace all non-overlapping matches.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= text.len() + (text.len() + 1) * replacement.len()</code></li>
+<li><strong>Postcondition:</strong> <code>self.pattern.len() == 0 =&gt; result.len() == text.len() + (text.len() + 1) * replacement.len()</code></li>
+</ul>
 <h4 id="fn-splitself-self-text-str-vecstr"><code>fn split(self: Self, text: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-splitself-self-text-str-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Split <code>text</code> on matches of the pattern.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.pattern.len() &gt; 0 =&gt; result.len() &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= text.len() + 2</code></li>
+</ul>
 <h4 id="fn-match_countself-self-text-str-int"><code>fn match_count(self: Self, text: Str) -&gt; Int</code><a class="headerlink" href="#fn-match_countself-self-text-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of non-overlapping matches.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= text.len() + 1</code></li>
+</ul>
 <h4 id="fn-getself-self-index-int-optionmatch"><code>fn get(self: Self, index: Int) -&gt; Option[Match]</code><a class="headerlink" href="#fn-getself-self-index-int-optionmatch" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Group at <code>index</code> (0 = whole match), or None when absent.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; index &gt;= 0 &amp;&amp; index &lt; self.groups.len()</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; index &lt; 0 || index &gt;= self.groups.len()</code></li>
+</ul>
 <h4 id="fn-get_namedself-self-name-str-optionmatch"><code>fn get_named(self: Self, name: Str) -&gt; Option[Match]</code><a class="headerlink" href="#fn-get_namedself-self-name-str-optionmatch" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Named group by name, or None when absent.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None</code></li>
+</ul>
 <h4 id="fn-lenself-self-int"><code>fn len(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-lenself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of capture groups including the whole match.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == self.groups.len()</code></li>
+</ul>
 <h4 id="fn-regex_escapepattern-str-str"><code>fn regex_escape(pattern: Str) -&gt; Str</code><a class="headerlink" href="#fn-regex_escapepattern-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Escape regex metacharacters so the result matches literally.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= pattern.len() &amp;&amp; result.len() &lt;= 2 * pattern.len()</code></li>
+</ul>
 <h4 id="fn-is_valid_regexpattern-str-bool"><code>fn is_valid_regex(pattern: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_valid_regexpattern-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the pattern compiles.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pattern.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h4 id="fn-regex_replace_allre-regex-text-str-replacement-str-str"><code>fn regex_replace_all(re: Regex, text: Str, replacement: Str) -&gt; Str</code><a class="headerlink" href="#fn-regex_replace_allre-regex-text-str-replacement-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Replaces all non-overlapping matches of <code>re</code> in <code>text</code> with <code>replacement</code>. Uses literal replacement (no $1 group references).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= text.len() + (text.len() + 1) * replacement.len()</code></li>
+<li><strong>Postcondition:</strong> <code>re.pattern.len() == 0 =&gt; result.len() == text.len() + (text.len() + 1) * replacement.len()</code></li>
+</ul>
 <h4 id="fn-regex_find_first_strre-regex-text-str-optionstr"><code>fn regex_find_first_str(re: Regex, text: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-regex_find_first_strre-regex-text-str-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Finds the first match of <code>re</code> in <code>text</code> and returns the matched substring. Returns None if no match is found.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.len() &lt;= text.len()</code></li>
+<li><strong>Postcondition:</strong> <code>re.pattern.len() == 0 =&gt; result is Some(_)</code></li>
+</ul>
 <h4 id="fn-regex_splitre-regex-text-str-vecstr"><code>fn regex_split(re: Regex, text: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-regex_splitre-regex-text-str-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Splits <code>text</code> around all non-overlapping matches of <code>re</code>. Returns a Vec of substrings between matches.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>re.pattern.len() &gt; 0 =&gt; result.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-regex_count_matchesre-regex-text-str-int"><code>fn regex_count_matches(re: Regex, text: Str) -&gt; Int</code><a class="headerlink" href="#fn-regex_count_matchesre-regex-text-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the number of non-overlapping matches of <code>re</code> in <code>text</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= text.len() + 1</code></li>
+</ul>
 <h4 id="fn-regex_matches_allre-regex-text-str-vecmatch"><code>fn regex_matches_all(re: Regex, text: Str) -&gt; Vec[Match]</code><a class="headerlink" href="#fn-regex_matches_allre-regex-text-str-vecmatch" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns all non-overlapping matches of <code>re</code> in <code>text</code> as Match objects. Wraps Regex.find_all.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= text.len() + 1</code></li>
+</ul>
 <h4 id="fn-regex_extract_groupsre-regex-text-str-vecoptionstr"><code>fn regex_extract_groups(re: Regex, text: Str) -&gt; Vec[Option[Str]]</code><a class="headerlink" href="#fn-regex_extract_groupsre-regex-text-str-vecoptionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Extracts capture groups from the first match of <code>re</code> in <code>text</code>. Returns a Vec where each element is the text of a captured group, or None if that group did not participate in the match. The first element (index 0) is the full match.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 1</code></li>
+</ul>
 <h4 id="fn-regex_escape_literals-str-str"><code>fn regex_escape_literal(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-regex_escape_literals-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Escapes regex metacharacters in <code>s</code> so it can be used as a literal pattern. Wraps regex_escape.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len() &amp;&amp; result.len() &lt;= 2 * s.len()</code></li>
+</ul>
 <h4 id="fn-regex_is_validpattern-str-bool"><code>fn regex_is_valid(pattern: Str) -&gt; Bool</code><a class="headerlink" href="#fn-regex_is_validpattern-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if <code>pattern</code> is a syntactically valid regex. Checks for balanced brackets and valid quantifier positions. Wraps is_valid_regex.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pattern.len() == 0 =&gt; result == true</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="syntaxxi"><code>syntax.xi</code><a class="headerlink" href="#syntaxxi" title="Permanent link">&para;</a></h2>
@@ -3170,30 +3240,56 @@
 <blockquote>
 <p>Escape every metacharacter in <code>s</code> so the text matches literally. Complexity: O(len(s)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len() &amp;&amp; result.len() &lt;= 2 * s.len()</code></li>
+</ul>
 <h5 id="fn-regex_unescapes-str-resultstr-str"><code>fn regex_unescape(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-regex_unescapes-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decode escape sequences back to plain text. Handles escaped metacharacters (<code>\*</code>, <code>\\</code>, <code>\[</code>, ...) and the standard control escapes <code>\n</code>, <code>\t</code>, <code>\r</code>. Any other <code>\x</code> sequence decodes to the literal character <code>x</code>. A trailing backslash is an error. Complexity: O(len(s)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result is Ok(_)</code></li>
+</ul>
 <h5 id="fn-regex_parsepattern-str-resultast-str"><code>fn regex_parse(pattern: Str) -&gt; Result[Ast, Str]</code><a class="headerlink" href="#fn-regex_parsepattern-str-resultast-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parse <code>pattern</code> into a summary <code>Ast</code>, or <code>Err</code> when the syntax is invalid. The AST counts pattern elements, groups and character classes. Complexity: O(len(pattern)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; pattern.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>pattern.len() == 0 =&gt; result is Ok(_)</code></li>
+</ul>
 <h5 id="fn-regex_validatepattern-str-bool"><code>fn regex_validate(pattern: Str) -&gt; Bool</code><a class="headerlink" href="#fn-regex_validatepattern-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when <code>pattern</code> is syntactically valid (balanced classes, no dangling escape or leading quantifier). Complexity: O(len(pattern)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pattern.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h5 id="fn-regex_syntax_errorpattern-str-optionstr"><code>fn regex_syntax_error(pattern: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-regex_syntax_errorpattern-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The first syntax error message for <code>pattern</code>, or None when it is valid. Complexity: O(len(pattern)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pattern.len() == 0 =&gt; result is None</code></li>
+</ul>
 <h5 id="fn-regex_character_classname-str-str"><code>fn regex_character_class(name: Str) -&gt; Str</code><a class="headerlink" href="#fn-regex_character_classname-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pattern text for a named character class. Supported names: <code>alpha</code>, <code>digit</code>, <code>space</code>, <code>alnum</code>, <code>upper</code>, <code>lower</code>, <code>word</code>, <code>xdigit</code>, <code>punct</code>, <code>graph</code>, <code>print</code>, <code>any</code>. Unknown names return the empty string. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>name.len() == 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 14</code></li>
+</ul>
 <h5 id="fn-regex_quantifiermin-int-max-int-str"><code>fn regex_quantifier(min: Int, max: Int) -&gt; Str</code><a class="headerlink" href="#fn-regex_quantifiermin-int-max-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Build the pattern text for a <code>{min,max}</code> quantifier. When <code>max == min</code> the shorthand <code>{min}</code> is emitted, when <code>max &lt; 0</code> the open form <code>{min,}</code> is emitted. Invalid ranges (max &gt;= 0 and max &lt; min, or min &lt; 0) return "". Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>min &lt; 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>max &gt;= 0 &amp;&amp; max &lt; min =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>min &gt;= 0 &amp;&amp; (max &lt; 0 || max &gt;= min) =&gt; result.len() &gt;= 3</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
