@@ -622,6 +622,16 @@ Remaining:
     first-party table row reads "shipping", the plan list is present tense,
     and `eco-tag.shipping` reuses the verified accent (`7174924`; generated
     docs/html/style.css refreshed).
+37. **Ecosystem growth-cycle section and packages-lane relay (done
+    2026-09-27)**: `ecosystem.html` gained "How the ecosystem grows" (a
+    receive/give-back table for compiler, stdlib, packages and registry; the
+    publish-gate guarantee; two live loop examples -- reproducible compiler
+    findings filed by package suites, CRC and bit-reading helpers tracked as
+    stdlib work) and "What comes next" replaced "The plan". One
+    owner-approved line states AI-assisted porting under review. A
+    paste-ready relay for the packages lane (public README landing) is in
+    the lane-prompts section (`c87a484`); the section image is planned from
+    the owner.
 
 ## Cross-lane notes
 
@@ -903,6 +913,39 @@ where the website links to registry releases. No action needed for the
 current toolchain notes. Optional but useful: keep the `xiom-std` package
 metadata listing the toolchain tag it is pinned to, so package versions can
 be correlated with toolchain releases.
+
+### Packages lane: public README landing (owner-approved framing)
+
+The website now has a "How the ecosystem grows" section that presents the
+loop -- compiler, standard library, packages, registry -- and the publish
+gates, and it states in one line that the corpus is ported with AI assistance
+under review. That is deliberate: we do not hide the method, and no one would
+believe the pace without assistance. The public pitch is the system loop and
+its guarantees, not the coordination mechanics; `xiom-packages/packages` has
+no README, so its first impression is `SESSION.md` and `docs/` in internal
+vocabulary (waves, sessions, dispatches). Please add a public `README.md`
+that owns the method and frames those files as internal working notes kept
+public on purpose. Keep the tone matter-of-fact, not apologetic; if anyone
+disagrees with the framing, raise it rather than adopting it half-way.
+
+Suggested README content:
+
+## How this corpus is built
+
+This is the staging and release home of the XIOM package ecosystem. The
+corpus is ported and maintained with AI assistance; that is not hidden, and
+it is why the ecosystem has grown to hundreds of packages this fast. What
+makes the result trustworthy is not the absence of assistance but the process
+around it: every package must pass its conformance suite on a pinned
+toolchain, findings are filed upstream with reproductions, and nothing
+publishes without the release gate. If that method is not for you, the
+ecosystem is not for you -- we would rather say this plainly than have you
+discover it later.
+
+`SESSION.md` and the notes under `docs/` are the internal record of that
+process. They are kept public for transparency and describe how the work is
+coordinated, not the product story; the product story is what ships:
+verified, signed and immutable releases.
 
 ## Rules
 
