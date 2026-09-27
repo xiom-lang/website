@@ -346,16 +346,19 @@
 <p><code>if let</code> is not implemented by the current compiler. Use <code>match</code>, or test a variant with <code>if value is Variant</code> when no binding is needed.</p>
 <h3><code>while</code> loop</h3>
 <pre class="language-xiom"><code>
+<span class='kw'>use</span> xiom.convert.itos;
+
 <span class='kw'>var</span> i = <span class='num'>0</span>;
 <span class='kw'>while</span> i &lt; <span class='num'>10</span> {
-  io.<span class='func'>println</span>(i);
+  io.<span class='func'>println</span>(<span class='func'>itos</span>(i));
   i = i + <span class='num'>1</span>;
 }
 </code></pre>
 <h3><code>for</code> loop (range-based)</h3>
+<p>The current release fails at LLVM codegen for <code>for</code> over an array literal (<code>invalid getelementptr indices</code>, tracked upstream); prefer <code>while</code> or the <code>xiom.iter</code> functions until the fix ships.</p>
 <pre class="language-xiom"><code>
 <span class='kw'>for</span> i <span class='kw'>in</span> [<span class='num'>0</span>, <span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>] {
-  io.<span class='func'>println</span>(i);
+  io.<span class='func'>println</span>(<span class='func'>itos</span>(i));
 }
 </code></pre>
 <h3><code>loop</code> -- infinite loop</h3>
@@ -371,7 +374,7 @@ loop {
   i = i + <span class='num'>1</span>;
   <span class='kw'>if</span> i % <span class='num'>2</span> == <span class='num'>0</span> { continue; };
   <span class='kw'>if</span> i &gt; <span class='num'>50</span> { break; };
-  io.<span class='func'>println</span>(i);
+  io.<span class='func'>println</span>(<span class='func'>itos</span>(i));
 }
 </code></pre>
 <p>Loops can carry a label; <code>break @label;</code> and <code>continue @label;</code> target the labeled loop instead of the innermost one:</p>

@@ -146,6 +146,10 @@
 <td>Compile and run a program (requires <code>fn main()</code>)</td>
 </tr>
 <tr>
+<td><code>xiom run --watch script.xi</code></td>
+<td>Re-run the script when the file changes</td>
+</tr>
+<tr>
 <td><code>xiom script.xi -o tool.exe</code></td>
 <td>Compile to a binary you can ship</td>
 </tr>
@@ -182,42 +186,13 @@ io.<span class='func'>println</span>(<span class='str'>a * b = </span> + <span c
 <span class='kw'>use</span> xiom.convert.itos;
 
 <span class='kw'>var</span> total = <span class='num'>0</span>;
-<span class='kw'>for</span> n <span class='kw'>in</span> [<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>, <span class='num'>4</span>] {
-  total = total + n;
+<span class='kw'>var</span> i = <span class='num'>1</span>;
+<span class='kw'>while</span> i &lt;= <span class='num'>4</span> {
+  total = total + i;
+  i = i + <span class='num'>1</span>;
 }
 io.<span class='func'>println</span>(<span class='str'>sum: </span> + <span class='func'>itos</span>(total));
 </code></pre>
-<h2>Arguments, flags and options</h2>
-<p><code>xiom.os.args</code> reads the arguments passed after the script name.</p>
-<pre class="language-xiom"><code>
-<span class='kw'>use</span> xiom.io;
-<span class='kw'>use</span> xiom.convert.itos;
-<span class='kw'>use</span> xiom.os.args;
-
-<span class='kw'>let</span> raw = args.<span class='func'>args_raw</span>();
-<span class='kw'>let</span> positional = args.<span class='func'>positionals</span>(&amp;raw);
-
-<span class='kw'>if</span> args.<span class='func'>args_has_flag</span>(<span class='str'>--shout</span>) {
-  io.<span class='func'>println</span>(<span class='str'>shouting with </span> + <span class='func'>itos</span>(positional.<span class='func'>len</span>()) + <span class='str'> <span class='func'>argument</span>(s)</span>);
-} <span class='kw'>else</span> {
-  io.<span class='func'>println</span>(<span class='func'>itos</span>(positional.<span class='func'>len</span>()) + <span class='str'> <span class='func'>argument</span>(s)</span>);
-}
-
-<span class='kw'>match</span> args.<span class='func'>args_option</span>(<span class='str'>--name</span>) {
-  <span class='kw'>Some</span>(name) =&gt; io.<span class='func'>println</span>(<span class='str'>hello, </span> + name),
-  <span class='kw'>None</span> =&gt; io.<span class='func'>println</span>(<span class='str'>hello, world</span>),
-}
-</code></pre>
-<p><code>args.flag_lookup(raw, flag)</code> and <code>args.option_value(raw, key)</code> are the lower-level forms when you manage the argument vector yourself.</p>
-<h2>Standard input</h2>
-<pre class="language-xiom"><code>
-<span class='kw'>use</span> xiom.io;
-<span class='kw'>use</span> xiom.convert.itos;
-
-<span class='kw'>let</span> text = io.<span class='func'>read_all_stdin</span>();
-io.<span class='func'>println</span>(<span class='str'>read </span> + <span class='func'>itos</span>(text.<span class='func'>len</span>()) + <span class='str'> bytes from stdin</span>);
-</code></pre>
-<p><code>io.read_line()</code> and <code>io.read_line_trim()</code> read one line at a time, and <code>io.read_int()</code> parses a line into a <code>Result[Int, Str]</code>.</p>
 <h2>Files</h2>
 <pre class="language-xiom"><code>
 <span class='kw'>use</span> xiom.io;
@@ -257,9 +232,9 @@ process.<span class='func'>exit</span>(<span class='num'>0</span>);
 </code></pre>
 <p><code>process.spawn_command(cmd, args)</code> starts a program with an argument vector and returns its pid; <code>process.wait(pid)</code> collects the exit code, and <code>process.command_exists(name)</code> checks availability first.</p>
 <h2>Shebang scripts (Linux and macOS)</h2>
-<p>Make the script executable and the shebang runs it directly:</p>
+<p>A plain <code>#!/usr/bin/env xiom</code> starts the compiler in program mode, which rejects top-level code; route the shebang through <code>xiom run</code> with the <code>-S</code> form:</p>
 <pre class="language-xiom"><code>
-#!/usr/bin/env xiom
+#!/usr/bin/env -S xiom run
 <span class='kw'>use</span> xiom.io;
 
 io.<span class='func'>println</span>(<span class='str'>hello from a shebang script</span>);
@@ -269,6 +244,20 @@ chmod +x greet.xi
 ./greet.xi
 </code></pre>
 <p>Windows runs scripts through <code>xiom run</code>; shebangs are POSIX-only.</p>
+<h2>Known limitations (v0.61.3)</h2>
+<p>Verified against the shipped toolchain; each item is tracked upstream.</p>
+<ul>
+<li><code>xiom run</code> does not pass script arguments yet: <code>args.args_raw()</code> returns</li>
+</ul>
+<p>only the temporary binary path, with or without a <code>--</code> separator, so   <code>xiom.os.args</code> sees no user arguments.</p>
+<ul>
+<li>Reading piped standard input crashes on Linux (`Fatal error: glibc</li>
+</ul>
+<p>detected an invalid stdio handle<code>) through both </code>io.read_all_stdin()<code> and   </code>io.read_line_trim()`.</p>
+<ul>
+<li><code>for x in [ ... ]</code> over an array literal fails at LLVM codegen</li>
+</ul>
+<p>(<code>invalid getelementptr indices</code>); use <code>while</code> or the <code>xiom.iter</code>   functions until the fix ships.</p>
 <h2>Determinism and limits</h2>
 <ul>
 <li>Scripts are compiled, not interpreted: type errors surface before anything</li>

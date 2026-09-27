@@ -12,6 +12,7 @@ Scripts suit small tools, one-off data work and shell-style automation.
 | `xiom run -e "<code>"` | Compile and run an inline snippet |
 | `xiom run -` | Compile and run a script read from stdin |
 | `xiom --run program.xi` | Compile and run a program (requires `fn main()`) |
+| `xiom run --watch script.xi` | Re-run the script when the file changes |
 | `xiom script.xi -o tool.exe` | Compile to a binary you can ship |
 | `xiom repl` | Interactive REPL |
 
@@ -56,51 +57,13 @@ use xiom.io;
 use xiom.convert.itos;
 
 var total = 0;
-for n in [1, 2, 3, 4] {
-  total = total + n;
+var i = 1;
+while i <= 4 {
+  total = total + i;
+  i = i + 1;
 }
 io.println("sum: " + itos(total));
 ```
-
-## Arguments, flags and options
-
-`xiom.os.args` reads the arguments passed after the script name.
-
-```xiom
-use xiom.io;
-use xiom.convert.itos;
-use xiom.os.args;
-
-let raw = args.args_raw();
-let positional = args.positionals(&raw);
-
-if args.args_has_flag("--shout") {
-  io.println("shouting with " + itos(positional.len()) + " argument(s)");
-} else {
-  io.println(itos(positional.len()) + " argument(s)");
-}
-
-match args.args_option("--name") {
-  Some(name) => io.println("hello, " + name),
-  None => io.println("hello, world"),
-}
-```
-
-`args.flag_lookup(raw, flag)` and `args.option_value(raw, key)` are the
-lower-level forms when you manage the argument vector yourself.
-
-## Standard input
-
-```xiom
-use xiom.io;
-use xiom.convert.itos;
-
-let text = io.read_all_stdin();
-io.println("read " + itos(text.len()) + " bytes from stdin");
-```
-
-`io.read_line()` and `io.read_line_trim()` read one line at a time, and
-`io.read_int()` parses a line into a `Result[Int, Str]`.
 
 ## Files
 
@@ -154,10 +117,12 @@ and returns its pid; `process.wait(pid)` collects the exit code, and
 
 ## Shebang scripts (Linux and macOS)
 
-Make the script executable and the shebang runs it directly:
+A plain `#!/usr/bin/env xiom` starts the compiler in program mode, which
+rejects top-level code; route the shebang through `xiom run` with the `-S`
+form:
 
 ```xiom
-#!/usr/bin/env xiom
+#!/usr/bin/env -S xiom run
 use xiom.io;
 
 io.println("hello from a shebang script");
@@ -169,6 +134,20 @@ chmod +x greet.xi
 ```
 
 Windows runs scripts through `xiom run`; shebangs are POSIX-only.
+
+## Known limitations (v0.61.3)
+
+Verified against the shipped toolchain; each item is tracked upstream.
+
+- `xiom run` does not pass script arguments yet: `args.args_raw()` returns
+  only the temporary binary path, with or without a `--` separator, so
+  `xiom.os.args` sees no user arguments.
+- Reading piped standard input crashes on Linux (`Fatal error: glibc
+  detected an invalid stdio handle`) through both `io.read_all_stdin()` and
+  `io.read_line_trim()`.
+- `for x in [ ... ]` over an array literal fails at LLVM codegen
+  (`invalid getelementptr indices`); use `while` or the `xiom.iter`
+  functions until the fix ships.
 
 ## Determinism and limits
 

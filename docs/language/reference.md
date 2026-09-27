@@ -183,18 +183,24 @@ while let Some(item) = iter.next() { process(item); }
 ### `while` loop
 
 ```xiom
+use xiom.convert.itos;
+
 var i = 0;
 while i < 10 {
-  io.println(i);
+  io.println(itos(i));
   i = i + 1;
 }
 ```
 
 ### `for` loop (range-based)
 
+The current release fails at LLVM codegen for `for` over an array literal
+(`invalid getelementptr indices`, tracked upstream); prefer `while` or the
+`xiom.iter` functions until the fix ships.
+
 ```xiom
 for i in [0, 1, 2, 3] {
-  io.println(i);
+  io.println(itos(i));
 }
 ```
 
@@ -214,7 +220,7 @@ while i < 100 {
   i = i + 1;
   if i % 2 == 0 { continue; };
   if i > 50 { break; };
-  io.println(i);
+  io.println(itos(i));
 }
 ```
 
