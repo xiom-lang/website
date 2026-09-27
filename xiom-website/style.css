@@ -584,7 +584,7 @@ nav .wrap {
   .growth-figure { max-width: 440px; margin: 0 auto; }
 }
 
-/* Click-to-enlarge preview (js/lightbox.js) */
+/* Click-to-enlarge preview with zoom and pan (js/lightbox.js) */
 
 html.lightbox-open { overflow: hidden; }
 
@@ -599,14 +599,70 @@ html.lightbox-open { overflow: hidden; }
   background: rgba(5, 8, 15, 0.94);
 }
 
+.lightbox-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+}
+
 .lightbox-img {
-  max-width: min(96vw, 1200px);
-  max-height: 90vh;
+  max-width: min(94vw, 1200px);
+  max-height: 82vh;
   width: auto;
   height: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: #05080f;
+  transform-origin: center center;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+  cursor: zoom-in;
+}
+
+.lightbox-stage.is-zoomed .lightbox-img { cursor: grab; }
+
+.lightbox-img.is-dragging { cursor: grabbing; }
+
+.lightbox-tools {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background: rgba(10, 15, 26, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.lightbox-tool {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--paper);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  min-width: 34px;
+  cursor: pointer;
+}
+
+.lightbox-level {
+  min-width: 46px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
 }
 
 .lightbox-close {
@@ -629,9 +685,17 @@ html.lightbox-open { overflow: hidden; }
   color: var(--signal);
 }
 
+.lightbox-tool:hover {
+  border-color: var(--signal);
+  color: var(--signal);
+}
+
 @media (max-width: 480px) {
   .lightbox { padding: 14px; }
   .lightbox-close { top: 12px; right: 12px; }
+  .lightbox-img { max-height: 78vh; }
+  .lightbox-tools { bottom: 12px; gap: 6px; }
+  .lightbox-tool { padding: 6px 10px; }
 }
 
 .content-section pre {
