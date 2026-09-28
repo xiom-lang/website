@@ -3969,10 +3969,16 @@
 <blockquote>
 <p>Greatest common divisor of a and b; always non-negative (gcd(0, 0) == 0). Delegates to xiom.math.arithmetic.gcd, which saturates the one unrepresentable case gcd(INT_MIN, k) = 2^63 to INT_MAX (documented). Complexity: O(log min(|a|, |b|)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-lcma-int-b-int-int"><code>fn lcm(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-lcma-int-b-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Least common multiple of |a| and |b|; always non-negative. 0 when either input is 0 and 0 (documented overflow) when the true lcm exceeds Int range. Delegates to xiom.math.arithmetic.lcm. Complexity: O(gcd).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-egcda-int-b-int-int-int-int"><code>fn egcd(a: Int, b: Int) -&gt; (Int, Int, Int)</code><a class="headerlink" href="#fn-egcda-int-b-int-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Extended Euclid: (g, x, y) with a<em>x + b</em>y == g == gcd(a, b), g &gt;= 0. For a == b == 0 returns (0, 1, 0). Delegates to xiom.math.arithmetic.gcd_extended. Complexity: O(log min(|a|, |b|)).</p>
@@ -3989,42 +3995,72 @@
 <blockquote>
 <p>Legendre symbol (a/p) for odd prime p: 1 when a is a quadratic residue modulo p, -1 when it is a non-residue, 0 when p divides a. Uses Euler's criterion a^((p-1)/2) mod p via modular exponentiation. p == 2 is handled directly (1 for odd a, 0 for even a); p &lt;= 1 returns 0 (documented, no modulus). Complexity: O(log p).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == -1) || (result == 0) || (result == 1)</code></li>
+</ul>
 <h5 id="fn-jacobi_symbola-int-n-int-int"><code>fn jacobi_symbol(a: Int, n: Int) -&gt; Int</code><a class="headerlink" href="#fn-jacobi_symbola-int-n-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Jacobi symbol (a/n) for odd positive n; generalizes the Legendre symbol to composite odd n. Returns 0 for even or non-positive n (documented; the Jacobi symbol is undefined there) and 0 when gcd(a, n) != 1. Uses the standard quadratic-reciprocity reduction over the binary expansion. Complexity: O(log^2 n) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == -1) || (result == 0) || (result == 1)</code></li>
+</ul>
 <h5 id="fn-binomialn-int-k-int-int"><code>fn binomial(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-binomialn-int-k-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binomial coefficient C(n, k). Returns 0 for invalid input (k &lt; 0, k &gt; n, n &lt; 0) and 0 on overflow. Computed by the multiplicative form with an overflow guard on every step (result * (n - i + 1) / i stays in range). Complexity: O(min(k, n - k)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-factorialn-int-int"><code>fn factorial(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-factorialn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Factorial of n (n!). Returns 0 for n &lt; 0 and 0 on overflow (n &gt;= 21 exceeds Int range). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-primorialn-int-int"><code>fn primorial(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-primorialn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Product of the first n primes (p_n#). Returns 0 for n &lt;= 0 and 0 (documented overflow) when the product exceeds Int range (n &gt; 15). Complexity: O(n * sqrt(p_n)) trial division.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-nth_primen-int-int"><code>fn nth_prime(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-nth_primen-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The n-th prime, 1-indexed (nth_prime(1) == 2). Returns 0 for n &lt;= 0. Trial-division sieve walking odd candidates. Complexity: O(n * sqrt(p_n)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-integer_sqrtn-int-int"><code>fn integer_sqrt(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-integer_sqrtn-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>floor(sqrt(n)) for n &gt;= 0 via integer Newton iteration (no float, no overflow). Returns -1 for n &lt; 0 (documented). Delegates to xiom.math.roots.integer_sqrt. Complexity: O(log n) iterations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+</ul>
 <h5 id="fn-next_power_of_twon-int-int"><code>fn next_power_of_two(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-next_power_of_twon-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest power of two &gt;= n. Returns 1 for n &lt;= 0 and 0 (documented overflow) when the next power of two exceeds Int range (n &gt; 2^62). Delegates to xiom.math.arithmetic.next_power_of_two. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-is_power_of_twon-int-bool"><code>fn is_power_of_two(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_power_of_twon-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is a positive power of two (is_power_of_two(0) == false, is_power_of_two(1) == true). Delegates to xiom.math.arithmetic.is_power_of_two. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == false) || (n &gt; 0)</code></li>
+</ul>
 <h5 id="fn-is_perfect_squaren-int-bool"><code>fn is_perfect_square(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_perfect_squaren-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff n is a perfect square (0 and 1 are squares). Returns false for n &lt; 0. Uses the exact integer floor-sqrt check. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == false) || (n &gt;= 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4089,54 +4125,93 @@
 <blockquote>
 <p>Degrees to radians: deg * (pi/180).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((deg &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((deg &lt;= 0) &amp;&amp; (result &lt;= 0))) || (deg != deg)</code></li>
+</ul>
 <h5 id="fn-to_degreesrad-float64-float64"><code>fn to_degrees(rad: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-to_degreesrad-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Radians to degrees: rad * (180/pi).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((rad &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((rad &lt;= 0) &amp;&amp; (result &lt;= 0))) || (rad != rad)</code></li>
+</ul>
 <h5 id="fn-to_gradiansdeg-float64-float64"><code>fn to_gradians(deg: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-to_gradiansdeg-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Degrees to gradians (400 gradians per full circle): deg * (10/9).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((deg &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((deg &lt;= 0) &amp;&amp; (result &lt;= 0))) || (deg != deg)</code></li>
+</ul>
 <h5 id="fn-from_gradiansgrad-float64-float64"><code>fn from_gradians(grad: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-from_gradiansgrad-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Gradians to degrees: grad * (9/10).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((grad &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((grad &lt;= 0) &amp;&amp; (result &lt;= 0))) || (grad != grad)</code></li>
+</ul>
 <h5 id="fn-to_milsdeg-float64-float64"><code>fn to_mils(deg: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-to_milsdeg-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Degrees to milliradians (6400 mils per full circle): deg * (160/9).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((deg &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((deg &lt;= 0) &amp;&amp; (result &lt;= 0))) || (deg != deg)</code></li>
+</ul>
 <h5 id="fn-from_milsmil-float64-float64"><code>fn from_mils(mil: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-from_milsmil-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Milliradians to degrees: mil * (9/160).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((mil &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((mil &lt;= 0) &amp;&amp; (result &lt;= 0))) || (mil != mil)</code></li>
+</ul>
 <h5 id="fn-to_arcmindeg-float64-float64"><code>fn to_arcmin(deg: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-to_arcmindeg-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Degrees to arcminutes: deg * 60.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((deg &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((deg &lt;= 0) &amp;&amp; (result &lt;= 0))) || (deg != deg)</code></li>
+</ul>
 <h5 id="fn-from_arcminarcmin-float64-float64"><code>fn from_arcmin(arcmin: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-from_arcminarcmin-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Arcminutes to degrees: arcmin / 60.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((arcmin &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((arcmin &lt;= 0) &amp;&amp; (result &lt;= 0))) || (arcmin != arcmin)</code></li>
+</ul>
 <h5 id="fn-to_arcsecdeg-float64-float64"><code>fn to_arcsec(deg: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-to_arcsecdeg-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Degrees to arcseconds: deg * 3600.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((deg &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((deg &lt;= 0) &amp;&amp; (result &lt;= 0))) || (deg != deg)</code></li>
+</ul>
 <h5 id="fn-from_arcsecarcsec-float64-float64"><code>fn from_arcsec(arcsec: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-from_arcsecarcsec-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Arcseconds to degrees: arcsec / 3600.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((arcsec &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((arcsec &lt;= 0) &amp;&amp; (result &lt;= 0))) || (arcsec != arcsec)</code></li>
+</ul>
 <h5 id="fn-normalize_anglerad-float64-float64"><code>fn normalize_angle(rad: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normalize_anglerad-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap radians into (-pi, pi]. normalize_angle(-pi) == pi, normalize_angle(3*pi) == pi. Infinities pass through unchanged. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result &gt; -3.141592653589793) &amp;&amp; (result &lt;= 3.141592653589793)) || (result == 1 / 0)) || (result == -1 / 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-normalize_angle_degdeg-float64-float64"><code>fn normalize_angle_deg(deg: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-normalize_angle_degdeg-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap degrees into (-180, 180]. normalize_angle_deg(-180) == 180, normalize_angle_deg(540) == 180. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result &gt; -180) &amp;&amp; (result &lt;= 180)) || (result == 1 / 0)) || (result == -1 / 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-angle_diffa-float64-b-float64-float64"><code>fn angle_diff(a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-angle_diffa-float64-b-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Signed angular difference a - b (radians), wrapped into (-pi, pi]. angle_diff(pi/2, 0) == pi/2. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result &gt; -3.141592653589793) &amp;&amp; (result &lt;= 3.141592653589793)) || (result == 1 / 0)) || (result == -1 / 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-angle_lerpa-float64-b-float64-t-float64-float64"><code>fn angle_lerp(a: Float64, b: Float64, t: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-angle_lerpa-float64-b-float64-t-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Shortest-path linear interpolation between angles a and b at parameter t: a + normalize_angle(b - a) * t. t in [0, 1] interpolates; angle_lerp(0, pi, 0.5) == pi/2. Complexity: O(1).</p>
@@ -4735,22 +4810,37 @@
 <blockquote>
 <p>Create a complex number from real and imaginary parts. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re == re) || (result.re != result.re)) &amp;&amp; ((result.im == im) || (result.im != result.im))</code></li>
+</ul>
 <h4 id="fn-complex_from_polarr-float64-theta-float64-complex"><code>fn complex_from_polar(r: Float64, theta: Float64) -&gt; Complex</code><a class="headerlink" href="#fn-complex_from_polarr-float64-theta-float64-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Create a complex number from polar form (magnitude r, phase theta). O(1). z = r * (cos(theta) + i * sin(theta))</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re * result.re + result.im * result.im &gt;= 0) || (result.re != result.re)) || (result.im != result.im)</code></li>
+</ul>
 <h4 id="fn-complex_adda-complex-b-complex-complex"><code>fn complex_add(a: Complex, b: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_adda-complex-b-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Add two complex numbers: (a+bi) + (c+di) = (a+c) + (b+d)i. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re == a.re + b.re) || (result.re != result.re)) &amp;&amp; ((result.im == a.im + b.im) || (result.im != result.im))</code></li>
+</ul>
 <h4 id="fn-complex_suba-complex-b-complex-complex"><code>fn complex_sub(a: Complex, b: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_suba-complex-b-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Subtract b from a: (a+bi) - (c+di) = (a-c) + (b-d)i. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re == a.re - b.re) || (result.re != result.re)) &amp;&amp; ((result.im == a.im - b.im) || (result.im != result.im))</code></li>
+</ul>
 <h4 id="fn-complex_mula-complex-b-complex-complex"><code>fn complex_mul(a: Complex, b: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_mula-complex-b-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Multiply two complex numbers: (a+bi)(c+di) = (ac-bd) + (ad+bc)i. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re == a.re * b.re - a.im * b.im) || (result.re != result.re)) &amp;&amp; ((result.im == a.re * b.im + a.im * b.re) || (result.im != result.im))</code></li>
+</ul>
 <h4 id="fn-complex_diva-complex-b-complex-complex"><code>fn complex_div(a: Complex, b: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_diva-complex-b-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Divide a by b: (a+bi)/(c+di) = (ac+bd)/(c2+d2) + i*(bc-ad)/(c2+d2). O(1).</p>
@@ -4759,58 +4849,100 @@
 <blockquote>
 <p>Multiply a complex number by a real scalar. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re == z.re * s) || (result.re != result.re)) &amp;&amp; ((result.im == z.im * s) || (result.im != result.im))</code></li>
+</ul>
 <h4 id="fn-complex_conjz-complex-complex"><code>fn complex_conj(z: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_conjz-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Conjugate: conj(a+bi) = a - bi. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re == z.re) || (result.re != result.re)) &amp;&amp; ((result.im == -z.im) || (result.im != result.im))</code></li>
+</ul>
 <h4 id="fn-complex_absz-complex-float64"><code>fn complex_abs(z: Complex) -&gt; Float64</code><a class="headerlink" href="#fn-complex_absz-complex-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value (magnitude, modulus): |z| = sqrt(re2 + im2). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h4 id="fn-complex_argz-complex-float64"><code>fn complex_arg(z: Complex) -&gt; Float64</code><a class="headerlink" href="#fn-complex_argz-complex-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Argument (phase, angle): atan2(im, re) in radians (-pi, pi]. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -3.1416) &amp;&amp; (result &lt;= 3.1416)) || (result != result)</code></li>
+</ul>
 <h4 id="fn-complex_equalsa-complex-b-complex-eps-float64-bool"><code>fn complex_equals(a: Complex, b: Complex, eps: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-complex_equalsa-complex-b-complex-eps-float64-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Check if the complex number is approximately equal to another within epsilon. Uses absolute tolerance comparison. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(eps &lt;= 0) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-complex_is_zeroz-complex-eps-float64-bool"><code>fn complex_is_zero(z: Complex, eps: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-complex_is_zeroz-complex-eps-float64-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Check if the complex number is approximately zero within epsilon. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(eps &lt;= 0) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-complex_expz-complex-complex"><code>fn complex_exp(z: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_expz-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Complex exponential: exp(a+bi) = e^a * (cos(b) + i<em>sin(b)). O(1). Euler's formula: e^(i</em>b) = cos(b) + i*sin(b).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re * result.re + result.im * result.im &gt;= 0) || (result.re != result.re)) || (result.im != result.im)</code></li>
+</ul>
 <h4 id="fn-complex_logz-complex-complex"><code>fn complex_log(z: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_logz-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Complex natural logarithm (principal branch). ln(z) = ln(|z|) + i * arg(z), where arg(z) in (-pi, pi]. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.im &gt;= -3.1416) &amp;&amp; (result.im &lt;= 3.1416)) || (result.im != result.im)</code></li>
+</ul>
 <h4 id="fn-complex_powz-complex-w-complex-complex"><code>fn complex_pow(z: Complex, w: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_powz-complex-w-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Complex power: z^w = exp(w * ln(z)). Uses the principal branch of the logarithm. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re * result.re + result.im * result.im &gt;= 0) || (result.re != result.re)) || (result.im != result.im)</code></li>
+</ul>
 <h4 id="fn-complex_sqrtz-complex-complex"><code>fn complex_sqrt(z: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_sqrtz-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Complex square root (principal branch). Formula: sqrt(z) = sqrt(r) * (cos(theta/2) + i*sin(theta/2)) where r=|z|, theta=arg(z). Also handles negative re branch properly. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((z.im == 0) &amp;&amp; (z.re &gt;= 0)) =&gt; ((result.im == 0) &amp;&amp; (result.re &gt;= 0))</code></li>
+</ul>
 <h4 id="fn-complex_sinz-complex-complex"><code>fn complex_sin(z: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_sinz-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Complex sine: sin(a+bi) = sin(a)<em>cosh(b) + i</em>cos(a)*sinh(b). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re * result.re + result.im * result.im &gt;= 0) || (result.re != result.re)) || (result.im != result.im)</code></li>
+</ul>
 <h4 id="fn-complex_cosz-complex-complex"><code>fn complex_cos(z: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_cosz-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Complex cosine: cos(a+bi) = cos(a)<em>cosh(b) - i</em>sin(a)*sinh(b). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re * result.re + result.im * result.im &gt;= 0) || (result.re != result.re)) || (result.im != result.im)</code></li>
+</ul>
 <h4 id="fn-complex_tanz-complex-complex"><code>fn complex_tan(z: Complex) -&gt; Complex</code><a class="headerlink" href="#fn-complex_tanz-complex-complex" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Complex tangent: tan(z) = sin(z) / cos(z). Uses tan(a+bi) = (sin(2a) + i*sinh(2b)) / (cos(2a) + cosh(2b)). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.re * result.re + result.im * result.im &gt;= 0) || (result.re != result.re)) || (result.im != result.im)</code></li>
+</ul>
 <h4 id="fn-complex_to_stringz-complex-str"><code>fn complex_to_string(z: Complex) -&gt; Str</code><a class="headerlink" href="#fn-complex_to_stringz-complex-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert a complex number to a human-readable string "a + bi". Uses built-in to_string and manual decimal string building. O(n) in digits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="constantsxi"><code>constants.xi</code><a class="headerlink" href="#constantsxi" title="Permanent link">&para;</a></h2>
@@ -5819,10 +5951,16 @@
 <blockquote>
 <p>Hyperbolic cosine of x. cosh(0.0) == 1.0; |x| &gt; ~710 overflows to +inf. Complexity: O(1), libm exp.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-tanhx-float64-float64"><code>fn tanh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-tanhx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic tangent of x. tanh(0.0) == 0.0; saturates to +-1.0 for |x| &gt; 20. Uses (exp(2x)-1)/(exp(2x)+1) for stability. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cschx-float64-float64"><code>fn csch(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cschx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic cosecant, 1/sinh(x). csch(0.0) == +inf (native 1.0/0.0). Complexity: O(1), libm exp.</p>
@@ -5831,10 +5969,16 @@
 <blockquote>
 <p>Hyperbolic secant, 1/cosh(x). Always finite (cosh &gt; 0). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cothx-float64-float64"><code>fn coth(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cothx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic cotangent, 1/tanh(x). coth(0.0) == +inf (native 1.0/0.0). Complexity: O(1), libm exp.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &lt;= -1) || (result &gt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-asinhx-float64-float64"><code>fn asinh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-asinhx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse hyperbolic sine: ln(x + sqrt(x^2 + 1)). Odd function. For |x| &gt; 1e150 uses ln(|x|) + ln 2 (avoids x^2 overflow and cancellation). asinh(1.0) == 0.881373587019543. Complexity: O(1), libm ln/sqrt.</p>
@@ -5843,6 +5987,9 @@
 <blockquote>
 <p>Inverse hyperbolic cosine: ln(x + sqrt(x^2 - 1)). Requires x &gt;= 1. For x &lt; 1 returns NaN (IEEE semantics). For x &gt; 1e150 uses ln(x) + ln 2 (avoids overflow). acosh(1.0) == 0.0, acosh(cosh(1.0)) == 1.0. Complexity: O(1), libm ln/sqrt.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-atanhx-float64-float64"><code>fn atanh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-atanhx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse hyperbolic tangent: 0.5 * ln((1+x)/(1-x)). Requires |x| &lt; 1. For |x| &gt; 1 returns NaN (IEEE semantics); atanh(1.0) == +inf and atanh(-1.0) == -inf (native, ln 0/inf). atanh(0.0) == 0.0. Complexity: O(1), libm ln.</p>
@@ -7654,8 +7801,11 @@
 <h2 id="optimizationxi"><code>optimization.xi</code><a class="headerlink" href="#optimizationxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-linear_programmingc-vecfloat64-a-vecvecfloat64-b-vecfloat64-bounds-vecvecfloat64-vecfloat64"><code>fn linear_programming(c: &amp;Vec[Float64], a: &amp;Vec[Vec[Float64]], b: &amp;Vec[Float64], bounds: &amp;Vec[Vec[Float64]]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-linear_programmingc-vecfloat64-a-vecvecfloat64-b-vecfloat64-bounds-vecvecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Minimize c'x subject to Ax &lt;= b and bounds. TODO(compiler): NOT IMPLEMENTABLE - the constraint matrix A is a Vec[Vec[Float64]] whose element reads return garbage in this compiler build.</p>
+<p>Minimize c'x subject to Ax &lt;= b and per-variable bounds. Empty bounds means every variable is &gt;= 0 (a direct lp_simplex delegation); otherwise bounds carries one entry per variable, each holding [lo, hi] with the infinities standing in for absent sides (an empty entry means [0, +inf) and a single entry means [lo, +inf)). Lower-only variables shift (x = lo + z), upper-only ones reflect (x = hi - z), doubly-bounded ones scale into [0, 1] with an added z &lt;= 1 row, and free variables split as z+ - z-. The transformed program is solved by lp_simplex on repaired locals and the solution is mapped back. Returns the empty vector for empty c or A, b.len() != a.len(), ragged A, a bounds length other than 0 or c.len(), a bounds row with more than two entries, a NaN bound, infeasible bounds (lo &gt; hi, lo == +inf, hi == -inf), a zero-length simplex result (which includes the documented limitation that a shifted b2 with a negative entry has no Phase I), and every lp_simplex guard; otherwise the argmin x of length c.len(). Complexity: O(iterations * (m + q) * (n + q)) with q the number of doubly-bounded or free variables.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == c.len()</code></li>
+</ul>
 <h5 id="fn-integer_programmingc-vecfloat64-a-vecvecfloat64-b-vecfloat64-vecint"><code>fn integer_programming(c: &amp;Vec[Float64], a: &amp;Vec[Vec[Float64]], b: &amp;Vec[Float64]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-integer_programmingc-vecfloat64-a-vecvecfloat64-b-vecfloat64-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Solve a linear program with integer variables. TODO(compiler): NOT IMPLEMENTABLE - the constraint matrix A is a Vec[Vec[Float64]] whose element reads return garbage in this compiler build.</p>
@@ -8026,22 +8176,37 @@
 <blockquote>
 <p>Largest integer &lt;= x. For |x| &gt;= 2^63 the result is x itself (such values are integers). Complexity: O(1), libm floor.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &lt;= x) || (result != result)</code></li>
+</ul>
 <h5 id="fn-ceilx-float64-float64_1"><code>fn ceil(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-ceilx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest integer &gt;= x. For |x| &gt;= 2^63 the result is x itself. Complexity: O(1), libm ceil.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= x) || (result != result)</code></li>
+</ul>
 <h5 id="fn-roundx-float64-float64"><code>fn round(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-roundx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Nearest integer, ties away from zero. round(2.5) == 3.0, round(-2.5) == -3.0. For |x| &gt;= 2^63 the result is x (already integral). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((x &lt; 0) &amp;&amp; (result &lt;= 0))) || (x != x)</code></li>
+</ul>
 <h5 id="fn-truncx-float64-float64"><code>fn trunc(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-truncx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Integer part of x, truncated toward zero. trunc(2.7) == 2.0, trunc(-2.7) == -2.0. For |x| &gt;= 2^63 the result is x. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((x &lt; 0) &amp;&amp; (result &lt;= 0))) || (x != x)</code></li>
+</ul>
 <h5 id="fn-fractx-float64-float64_1"><code>fn fract(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-fractx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fractional part of x: x - trunc(x), same sign as x. fract(2.5) == 0.5, fract(-2.5) == -0.5. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0) &amp;&amp; (result &lt; 1)) || ((x &lt; 0) &amp;&amp; (result &lt;= 0) &amp;&amp; (result &gt; -1))) || (result != result)</code></li>
+</ul>
 <h5 id="fn-modfx-float64-float64-float64"><code>fn modf(x: Float64) -&gt; (Float64, Float64)</code><a class="headerlink" href="#fn-modfx-float64-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Split x into (fract, int): fract is the fractional part, int is the integer part truncated toward zero. modf(2.5) == (0.5, 2.0). Complexity: O(1).</p>
@@ -8050,30 +8215,51 @@
 <blockquote>
 <p>Largest integer &lt;= x without libm. Pure-XIOM; see floor() for semantics. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == x) =&gt; (result &lt;= x)</code></li>
+</ul>
 <h5 id="fn-ceil_purex-float64-float64_1"><code>fn ceil_pure(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-ceil_purex-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest integer &gt;= x without libm. Pure-XIOM; see ceil() for semantics. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == x) =&gt; (result &gt;= x)</code></li>
+</ul>
 <h5 id="fn-round_purex-float64-float64"><code>fn round_pure(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-round_purex-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Nearest integer, ties away from zero, without libm. See round(). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((x &lt; 0) &amp;&amp; (result &lt;= 0))) || (x != x)</code></li>
+</ul>
 <h5 id="fn-trunc_purex-float64-float64"><code>fn trunc_pure(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-trunc_purex-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Integer part truncated toward zero, without libm. See trunc(). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0) &amp;&amp; (result &lt;= x)) || ((x &lt; 0) &amp;&amp; (result &lt;= 0) &amp;&amp; (result &gt;= x))) || (x != x)</code></li>
+</ul>
 <h5 id="fn-fract_purex-float64-float64"><code>fn fract_pure(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-fract_purex-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fractional part of x without libm. See fract(). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0) &amp;&amp; (result &lt; 1)) || ((x &lt; 0) &amp;&amp; (result &lt;= 0) &amp;&amp; (result &gt; -1))) || (result != result)</code></li>
+</ul>
 <h5 id="fn-integer_partx-float64-float64"><code>fn integer_part(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-integer_partx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Integer part of x (truncated toward zero), as a Float64. Alias of trunc. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((x &lt; 0) &amp;&amp; (result &lt;= 0))) || (x != x)</code></li>
+</ul>
 <h5 id="fn-frac_partx-float64-float64"><code>fn frac_part(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-frac_partx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fractional part of x. Alias of fract. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0) &amp;&amp; (result &lt; 1)) || ((x &lt; 0) &amp;&amp; (result &lt;= 0) &amp;&amp; (result &gt; -1))) || (result != result)</code></li>
+</ul>
 <h5 id="fn-round_tox-float64-places-int-float64"><code>fn round_to(x: Float64, places: Int) -&gt; Float64</code><a class="headerlink" href="#fn-round_tox-float64-places-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Round x to <code>places</code> decimal places, ties away from zero. Negative places round to multiples of 10^|places| (round_to(1234.5, -2) == 1200.0). Decimal rounding is subject to binary float representation error; the result is the correctly rounded Float64 of x scaled by 10^places. Complexity: O(1).</p>
@@ -8082,6 +8268,9 @@
 <blockquote>
 <p>Round to the nearest integer, ties to even, returned as Int. round_nearest(2.5) == 2, round_nearest(3.5) == 4, round_nearest(-2.5) == -2. For |x| &gt;= 2^63 the result saturates to INT_MAX/INT_MIN (documented; the true rounded value is outside Int range). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((x &lt;= 0) &amp;&amp; (result &lt;= 0))) || (x != x)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -8881,38 +9070,65 @@
 <blockquote>
 <p>Square root of x; requires x &gt;= 0. Returns NaN (0.0/0.0) for x &lt; 0. Delegates to math.roots.sqrt. Complexity: O(1), libm sqrt.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((x &lt; 0) &amp;&amp; (result != result))) || (x != x)</code></li>
+</ul>
 <h5 id="fn-cbrtx-float64-float64_2"><code>fn cbrt(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cbrtx-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cube root of x, any sign. Delegates to math.roots.cbrt. Complexity: O(1), libm pow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((x &gt;= 0) &amp;&amp; (result &gt;= 0)) || ((x &lt;= 0) &amp;&amp; (result &lt;= 0))) || (x != x)</code></li>
+</ul>
 <h5 id="fn-expx-float64-float64_2"><code>fn exp(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-expx-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>e^x. Returns +inf for x &gt; 700 (overflow) and 0.0 for x &lt; -745 (underflow). Delegates to math.exponential.exp. Complexity: O(1), libm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-exp2x-float64-float64_1"><code>fn exp2(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-exp2x-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>2^x. Delegates to math.exponential.exp2. Complexity: O(1), libm pow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-expm1x-float64-float64_1"><code>fn expm1(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-expm1x-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>e^x - 1, accurate for small x (series for |x| &lt;= 1e-4). Returns -1.0 for x &lt; -700 and +inf for x &gt; 700. Delegates to math.exponential.expm1. Complexity: O(20) series terms / O(1) libm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1) || (result != result)</code></li>
+</ul>
 <h5 id="fn-lnx-float64-float64_2"><code>fn ln(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-lnx-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Natural logarithm of x; requires x &gt; 0. Returns NaN (0.0/0.0) for x &lt;= 0. Delegates to math.exponential.ln. Complexity: O(1), libm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result != result) || (x &gt; 0)</code></li>
+</ul>
 <h5 id="fn-log2x-float64-float64_2"><code>fn log2(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-log2x-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Base-2 logarithm of x; requires x &gt; 0. Returns NaN for x &lt;= 0. Delegates to math.exponential.log2. Complexity: O(1), libm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result != result) || (x &gt; 0)</code></li>
+</ul>
 <h5 id="fn-log10x-float64-float64_2"><code>fn log10(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-log10x-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Base-10 logarithm of x; requires x &gt; 0. Returns NaN for x &lt;= 0. Delegates to math.exponential.log10. Complexity: O(1), libm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result != result) || (x &gt; 0)</code></li>
+</ul>
 <h5 id="fn-log1px-float64-float64_1"><code>fn log1p(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-log1px-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ln(1 + x), accurate for small x (series for |x| &lt;= 1e-4). log1p(-1.0) is -inf and log1p(x &lt; -1) returns NaN (IEEE). Delegates to math.exponential.log1p. Complexity: O(30) series terms / O(1) libm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result != result) || (x &gt; -1)) || (result == -1 / 0)</code></li>
+</ul>
 <h5 id="fn-powa-float64-b-float64-float64"><code>fn pow(a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-powa-float64-b-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>a raised to the power b (libm pow). A negative base with a non-integral exponent returns NaN (IEEE). Delegates to math.exponential.pow. Complexity: O(1), libm.</p>
@@ -8935,12 +9151,18 @@
 </blockquote>
 <h5 id="fn-erfx-float64-float64_1"><code>fn erf(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-erfx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Error function erf(x). Uses erfc via the Numerical-Recipes continued fraction (relative error &lt; 1.2e-7). erf(0) == 0, erf(1) ~= 0.8427. Complexity: O(1).</p>
+<p>Error function erf(x). Uses erfc via the Numerical-Recipes continued fraction (relative error &lt; 1.2e-7). erf(0) ~= 0 (approximation, not exact), erf(1) ~= 0.8427. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-erfcx-float64-float64_1"><code>fn erfc(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-erfcx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Complementary error function erfc(x) = 1 - erf(x). erfc(0) == 1, erfc(3) ~= 2.2e-5. Uses the Numerical-Recipes continued-fraction approximation. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= 0) &amp;&amp; (result &lt;= 2)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-lambert_wx-float64-float64"><code>fn lambert_w(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-lambert_wx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Principal (W0) branch of the Lambert W function, the real solution of w * e^w = x. lambert_w(0) == 0, lambert_w(e) == 1, lambert_w(1) ~= 0.567143. Returns NaN for x &lt; -1/e (no real branch exists). Newton iteration on the standard Halley-ish update converges quadratically. Complexity: O(100) iterations, O(1) each.</p>
@@ -8953,10 +9175,16 @@
 <blockquote>
 <p>Sine of x in radians. NaN and infinite inputs propagate. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cosx-float64-float64_1"><code>fn cos(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cosx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cosine of x in radians. NaN and infinite inputs propagate. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-tanx-float64-float64_1"><code>fn tan(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-tanx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tangent of x in radians; a pole (cos(x) == 0) yields +-infinity (IEEE). Complexity: O(1).</p>
@@ -8965,18 +9193,30 @@
 <blockquote>
 <p>Arc sine of x in radians, result in [-pi/2, pi/2]. For x outside [-1, 1] returns NaN (documented domain error). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1.5708) &amp;&amp; (result &lt;= 1.5708)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-acosx-float64-float64_2"><code>fn acos(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-acosx-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Arc cosine of x in radians, result in [0, pi]. For x outside [-1, 1] returns NaN (documented domain error). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= 0) &amp;&amp; (result &lt;= 3.1416)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-atanx-float64-float64_2"><code>fn atan(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-atanx-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Arc tangent of x in radians, result in (-pi/2, pi/2). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1.5708) &amp;&amp; (result &lt;= 1.5708)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-atan2y-float64-x-float64-float64_2"><code>fn atan2(y: Float64, x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-atan2y-float64-x-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Four-quadrant arc tangent of y/x in radians. When both y and x are zero returns NaN (documented; the angle is undefined there). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -3.1416) &amp;&amp; (result &lt;= 3.1416)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-sinhx-float64-float64_1"><code>fn sinh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sinhx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic sine of x: (exp(x) - exp(-x))/2. Large |x| propagates as +- infinity. Complexity: O(1). Delegates to xiom.math.hyperbolic (the pure-exp composition is gate-green there; the old inline-arithmetic stub refreshed 2026-09-24).</p>
@@ -8985,18 +9225,30 @@
 <blockquote>
 <p>Hyperbolic cosine of x: (exp(x) + exp(-x))/2. Complexity: O(1). Delegates to xiom.math.hyperbolic.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-tanhx-float64-float64_1"><code>fn tanh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-tanhx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic tangent of x: sinh(x)/cosh(x). Saturated to +-1 for |x| &gt; 20 to avoid a NaN from inf/inf at the exponent overflow boundary. Complexity: O(1). Delegates to xiom.math.hyperbolic.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-asinhx-float64-float64_1"><code>fn asinh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-asinhx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse hyperbolic sine of x: ln(x + sqrt(x^2 + 1)). Well-defined for every x. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt;= 0) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-acoshx-float64-float64_1"><code>fn acosh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-acoshx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse hyperbolic cosine of x: ln(x + sqrt(x^2 - 1)). For x &lt; 1 returns NaN (documented domain error). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-atanhx-float64-float64_1"><code>fn atanh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-atanhx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse hyperbolic tangent of x: ln((1+x)/(1-x))/2. For |x| &gt;= 1 returns NaN (documented domain error; the function is undefined at the poles). Complexity: O(1). Delegates to xiom.math.hyperbolic.</p>
@@ -9005,10 +9257,16 @@
 <blockquote>
 <p>Secant of x: 1/cos(x). A pole (cos(x) == 0) yields +-infinity (IEEE). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &lt;= -1) || (result &gt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cscx-float64-float64"><code>fn csc(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cscx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cosecant of x: 1/sin(x). A pole (sin(x) == 0) yields +-infinity (IEEE). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &lt;= -1) || (result &gt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cotx-float64-float64"><code>fn cot(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cotx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cotangent of x: cos(x)/sin(x). A pole (sin(x) == 0) yields +-infinity (IEEE). Complexity: O(1).</p>
@@ -9025,10 +9283,16 @@
 <blockquote>
 <p>Sine of x in degrees. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cos_degx-float64-float64"><code>fn cos_deg(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cos_degx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cosine of x in degrees. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-tan_degx-float64-float64"><code>fn tan_deg(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-tan_degx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tangent of x in degrees. Complexity: O(1).</p>
@@ -9045,10 +9309,16 @@
 <blockquote>
 <p>Sine of x (radians). NaN/infinite inputs propagate. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cosx-float64-float64_2"><code>fn cos(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cosx-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cosine of x (radians). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-tanx-float64-float64_2"><code>fn tan(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-tanx-float64-float64_2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tangent of x (radians); a pole (cos(x) == 0) yields +-infinity. Complexity: O(1).</p>
@@ -9057,10 +9327,16 @@
 <blockquote>
 <p>Cosecant of x: 1/sin(x); a zero sine yields +inf (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &lt;= -1) || (result &gt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-secx-float64-float64_1"><code>fn sec(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-secx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Secant of x: 1/cos(x); a zero cosine yields +inf (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &lt;= -1) || (result &gt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cotx-float64-float64_1"><code>fn cot(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cotx-float64-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cotangent of x: cos(x)/sin(x); a zero sine yields +inf (documented). Complexity: O(1).</p>
@@ -9087,15 +9363,21 @@
 </blockquote>
 <h5 id="fn-sinpix-float64-float64"><code>fn sinpi(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sinpix-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>sin(pi*x), accurate for large x by reducing x into [0, 2) first. Complexity: O(1).</p>
+<p>sin(pi*x): x is reduced into [0, 2) with a linear loop, then the sine is evaluated on the reduced angle. NaN and infinite inputs return NaN (the reduction cannot terminate on infinities). Complexity: O(|x|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-cospix-float64-float64"><code>fn cospi(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cospix-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>cos(pi*x), accurate for large x by reducing x into [0, 2) first. Complexity: O(1).</p>
+<p>cos(pi*x): x is reduced into [0, 2) with a linear loop, then the cosine is evaluated on the reduced angle. NaN and infinite inputs return NaN (the reduction cannot terminate on infinities). Complexity: O(|x|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= -1) &amp;&amp; (result &lt;= 1)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-tanpix-float64-float64"><code>fn tanpi(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-tanpix-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>tan(pi*x), accurate for large x by reducing x into [0, 2) first. A pole yields +-infinity. Complexity: O(1).</p>
+<p>tan(pi*x): x is reduced into [0, 2) with a linear loop, then the tangent is evaluated on the reduced angle. NaN and infinite inputs return NaN (the reduction cannot terminate on infinities); a pole yields +-infinity. Complexity: O(|x|).</p>
 </blockquote>
 <hr />
 <hr />
@@ -9183,110 +9465,191 @@
 <blockquote>
 <p>Construct a 2D vector. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == x) || (result.x != result.x)) &amp;&amp; ((result.y == y) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec2_adda-vec2-b-vec2-vec2"><code>fn vec2_add(a: Vec2, b: Vec2) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_adda-vec2-b-vec2-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Component-wise addition of two 2D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x + b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y + b.y) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec2_suba-vec2-b-vec2-vec2"><code>fn vec2_sub(a: Vec2, b: Vec2) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_suba-vec2-b-vec2-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Component-wise subtraction (a - b) of two 2D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x - b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y - b.y) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec2_scalev-vec2-s-float64-vec2"><code>fn vec2_scale(v: Vec2, s: Float64) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_scalev-vec2-s-float64-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiply each component of a 2D vector by scalar s. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == v.x * s) || (result.x != result.x)) &amp;&amp; ((result.y == v.y * s) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec2_dota-vec2-b-vec2-float64"><code>fn vec2_dot(a: Vec2, b: Vec2) -&gt; Float64</code><a class="headerlink" href="#fn-vec2_dota-vec2-b-vec2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dot product of two 2D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == a.x * b.x + a.y * b.y) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec2_lenv-vec2-float64"><code>fn vec2_len(v: Vec2) -&gt; Float64</code><a class="headerlink" href="#fn-vec2_lenv-vec2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a 2D vector. Overflow-safe via math.roots.hypot. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec2_normv-vec2-vec2"><code>fn vec2_norm(v: Vec2) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_normv-vec2-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit vector of a 2D vector. Returns the zero vector when the length is zero (documented). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.x == 0) &amp;&amp; (result.y == 0)) || ((result.x * result.x + result.y * result.y - 1) &lt;= 0.000000000001)) || (result.x != result.x) || (result.y != result.y)</code></li>
+</ul>
 <h5 id="fn-vec2_dista-vec2-b-vec2-float64"><code>fn vec2_dist(a: Vec2, b: Vec2) -&gt; Float64</code><a class="headerlink" href="#fn-vec2_dista-vec2-b-vec2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean distance between two 2D points. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec2_lerpa-vec2-b-vec2-t-float64-vec2"><code>fn vec2_lerp(a: Vec2, b: Vec2, t: Float64) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_lerpa-vec2-b-vec2-t-float64-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Component-wise linear interpolation between a and b by t (t outside [0, 1] extrapolates; t is not clamped). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x + (b.x - a.x) * t) || (result.x != result.x)) &amp;&amp; ((result.y == a.y + (b.y - a.y) * t) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec3_newx-float64-y-float64-z-float64-vec3"><code>fn vec3_new(x: Float64, y: Float64, z: Float64) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_newx-float64-y-float64-z-float64-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a 3D vector. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.x == x) || (result.x != result.x)) &amp;&amp; ((result.y == y) || (result.y != result.y))) &amp;&amp; ((result.z == z) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_adda-vec3-b-vec3-vec3"><code>fn vec3_add(a: Vec3, b: Vec3) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_adda-vec3-b-vec3-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Component-wise addition of two 3D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.x == a.x + b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y + b.y) || (result.y != result.y))) &amp;&amp; ((result.z == a.z + b.z) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_suba-vec3-b-vec3-vec3"><code>fn vec3_sub(a: Vec3, b: Vec3) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_suba-vec3-b-vec3-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Component-wise subtraction (a - b) of two 3D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.x == a.x - b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y - b.y) || (result.y != result.y))) &amp;&amp; ((result.z == a.z - b.z) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_scalev-vec3-s-float64-vec3"><code>fn vec3_scale(v: Vec3, s: Float64) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_scalev-vec3-s-float64-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiply each component of a 3D vector by scalar s. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.x == v.x * s) || (result.x != result.x)) &amp;&amp; ((result.y == v.y * s) || (result.y != result.y))) &amp;&amp; ((result.z == v.z * s) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_dota-vec3-b-vec3-float64"><code>fn vec3_dot(a: Vec3, b: Vec3) -&gt; Float64</code><a class="headerlink" href="#fn-vec3_dota-vec3-b-vec3-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dot product of two 3D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == a.x * b.x + a.y * b.y + a.z * b.z) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec3_crossa-vec3-b-vec3-vec3"><code>fn vec3_cross(a: Vec3, b: Vec3) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_crossa-vec3-b-vec3-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Right-handed cross product a x b of two 3D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.x == a.y * b.z - a.z * b.y) || (result.x != result.x)) &amp;&amp; ((result.y == a.z * b.x - a.x * b.z) || (result.y != result.y))) &amp;&amp; ((result.z == a.x * b.y - a.y * b.x) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_lenv-vec3-float64"><code>fn vec3_len(v: Vec3) -&gt; Float64</code><a class="headerlink" href="#fn-vec3_lenv-vec3-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a 3D vector. Overflow-safe via math.roots.hypot3. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec3_normv-vec3-vec3"><code>fn vec3_norm(v: Vec3) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_normv-vec3-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit vector of a 3D vector. Returns the zero vector when the length is zero (documented). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((result.x == 0) &amp;&amp; (result.y == 0) &amp;&amp; (result.z == 0)) || ((result.x * result.x + result.y * result.y + result.z * result.z - 1) &lt;= 0.000000000001)) || (result.x != result.x)) || (result.y != result.y) || (result.z != result.z)</code></li>
+</ul>
 <h5 id="fn-vec4_newx-float64-y-float64-z-float64-w-float64-vec4"><code>fn vec4_new(x: Float64, y: Float64, z: Float64, w: Float64) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_newx-float64-y-float64-z-float64-w-float64-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a 4D vector. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((result.x == x) || (result.x != result.x)) &amp;&amp; ((result.y == y) || (result.y != result.y))) &amp;&amp; ((result.z == z) || (result.z != result.z))) &amp;&amp; ((result.w == w) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-vec4_adda-vec4-b-vec4-vec4"><code>fn vec4_add(a: Vec4, b: Vec4) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_adda-vec4-b-vec4-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Component-wise addition of two 4D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((result.x == a.x + b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y + b.y) || (result.y != result.y))) &amp;&amp; ((result.z == a.z + b.z) || (result.z != result.z))) &amp;&amp; ((result.w == a.w + b.w) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-vec4_suba-vec4-b-vec4-vec4"><code>fn vec4_sub(a: Vec4, b: Vec4) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_suba-vec4-b-vec4-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Component-wise subtraction (a - b) of two 4D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((result.x == a.x - b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y - b.y) || (result.y != result.y))) &amp;&amp; ((result.z == a.z - b.z) || (result.z != result.z))) &amp;&amp; ((result.w == a.w - b.w) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-vec4_scalev-vec4-s-float64-vec4"><code>fn vec4_scale(v: Vec4, s: Float64) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_scalev-vec4-s-float64-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiply each component of a 4D vector by scalar s. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((result.x == v.x * s) || (result.x != result.x)) &amp;&amp; ((result.y == v.y * s) || (result.y != result.y))) &amp;&amp; ((result.z == v.z * s) || (result.z != result.z))) &amp;&amp; ((result.w == v.w * s) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-vec4_dota-vec4-b-vec4-float64"><code>fn vec4_dot(a: Vec4, b: Vec4) -&gt; Float64</code><a class="headerlink" href="#fn-vec4_dota-vec4-b-vec4-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dot product of two 4D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec4_lenv-vec4-float64"><code>fn vec4_len(v: Vec4) -&gt; Float64</code><a class="headerlink" href="#fn-vec4_lenv-vec4-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a 4D vector: sqrt(sum of squared components). O(4).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec4_normv-vec4-vec4"><code>fn vec4_norm(v: Vec4) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_normv-vec4-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit vector of a 4D vector. Returns the zero vector when the length is zero (documented). O(4).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((((result.x == 0) &amp;&amp; (result.y == 0) &amp;&amp; (result.z == 0) &amp;&amp; (result.w == 0)) || ((result.x * result.x + result.y * result.y + result.z * result.z + result.w * result.w - 1) &lt;= 0.000000000001)) || (result.x != result.x)) || (result.y != result.y) || (result.z != result.z)) || (result.w != result.w)</code></li>
+</ul>
 <h5 id="fn-vec_dota-vecfloat64-b-vecfloat64-float64"><code>fn vec_dot(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-vec_dota-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dot product of two equal-length dynamic vectors. Returns NaN (0.0/0.0) when the vectors differ in length (documented; no silent garbage). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() == b.len()) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec_normv-vecfloat64-float64"><code>fn vec_norm(v: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-vec_normv-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a dynamic vector. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec_scalev-vecfloat64-s-float64-vecfloat64"><code>fn vec_scale(v: &amp;Vec[Float64], s: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-vec_scalev-vecfloat64-s-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiply each component of v by scalar s, returning a new vector. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == v.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
