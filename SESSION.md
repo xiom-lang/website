@@ -1056,9 +1056,11 @@ already answer `304` for unchanged files, and `no-store` is unnecessary.
 Apply the same treatment to the docs docroot assets. Full context in
 DEPLOY.md, "Static asset caching".
 
-### Compiler lane: extension install link (2026-09-28)
+### Compiler lane: extension install link (2026-09-28, delivered)
 
-The missing-toolchain notification in the VS Code extension points at
+The owner relayed this to the compiler lane on 2026-09-28; kept here for
+reference. The missing-toolchain notification in the VS Code extension
+points at
 `https://xiom-lang.org/install`, which was a 404. The website now serves
 that URL: a directory stub redirects it to the One-Line Install section of
 `https://xiom-lang.org/download.html#install`. No extension change is needed;
