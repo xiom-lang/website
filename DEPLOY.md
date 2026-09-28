@@ -126,6 +126,18 @@ vhost must therefore make browsers revalidate instead of caching blindly:
   lands, a one-time query bump on the asset references forces new cache
   entries; it is a workaround, not a substitute for the header fix.
 
+## URL routing
+
+Extensionless routes are not resolved by the vhost: `/download` 404s while
+`/download.html` works, and only directories carrying an `index.html` stub
+(`/docs/`, `/install/`, `/download/`) answer without the extension. External
+links that use the pretty form therefore need either a directory stub in
+this repository or, better, a routing rule in the ops vhost
+(`try_files $uri $uri.html $uri/ =404;` in the site's `location /`), which
+also covers every future page. The extension's missing-toolchain
+notification is the known consumer of `/install`; the same pattern is why
+`/install` and `/download` now ship stubs here.
+
 ## Notes
 
 - `docs/html/` is generated output; regenerate with `docs/build_docs.py`

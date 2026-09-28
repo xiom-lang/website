@@ -1043,18 +1043,34 @@ known limitations until fixed.
    `#!/usr/bin/env -S xiom run`, and the example set (hello, values,
    while-sum, files, env/exit, spawn) is green end to end.
 
-### Ops lane: static cache headers (Safari staleness, 2026-09-27)
+### Ops lane: URL routing and cache headers (2026-09-28, needs relay)
 
-nginx serves `style.css`, `js/*.js` and `img/*` with `Expires: Thu, 31 Dec
-2037` and `Cache-Control: max-age=315360000` while HTML has no cache header.
-iOS Safari therefore keeps a months-old stylesheet with fresh text, and only
-clearing website data fixes it. Please update the `xiom-lang.org` vhost
-(Hestia template) so the static tree revalidates: remove the far-future
-`expires`, or set `expires -1;` for the static locations so responses carry
-`Cache-Control: no-cache`; the existing `ETag`/`Last-Modified` headers
-already answer `304` for unchanged files, and `no-store` is unnecessary.
-Apply the same treatment to the docs docroot assets. Full context in
-DEPLOY.md, "Static asset caching".
+1. Pretty URLs: the vhost serves `/download.html` but `/download` is a 404
+   with no redirect, so any external link using the extensionless form dies.
+   The extension's install notification used `/install`; the website now
+   ships `install/` and `download/` directory stubs so both work today, but
+   every future page would need a stub. Recommended fix in the
+   `xiom-lang.org` server block:
+
+       location / {
+         try_files $uri $uri.html $uri/ =404;
+       }
+
+   That resolves `/download` (and every other page) to its `.html` file and
+   keeps the directory stubs working. Alternative, if you prefer explicit
+   routes: `location = /download { return 301 /download.html; }`.
+
+2. Cache headers: nginx serves `style.css`, `js/*.js` and `img/*` with
+   `Expires: Thu, 31 Dec 2037` and `Cache-Control: max-age=315360000` while
+   HTML has no cache header. iOS Safari therefore keeps a months-old
+   stylesheet with fresh text -- and can keep a cached 404 for a URL that
+   has since been fixed (the `/install` report) -- until website data is
+   cleared. Please make the static tree revalidate: remove the far-future
+   `expires`, or set `expires -1;` for those locations so responses carry
+   `Cache-Control: no-cache`; the existing `ETag`/`Last-Modified` already
+   answer 304 for unchanged files, and `no-store` is unnecessary. Same
+   treatment for the docs docroot assets. Full context in DEPLOY.md,
+   "Static asset caching" and "URL routing".
 
 ### Compiler lane: extension install link (2026-09-28, delivered)
 
