@@ -106,37 +106,40 @@ curl -sI https://xiom-lang.org/install.ps1 | head -3
 ## Static asset caching
 
 Asset URLs are not content-hashed (`/style.css`, `/js/lightbox.js`,
-`/img/*.webp`), and files are replaced in place on every deploy. The nginx
-vhost must therefore make browsers revalidate instead of caching blindly:
+`/img/*.webp`), and files are replaced in place on every deploy, so the
+static tree must revalidate rather than cache blindly. That is now the case:
+the `xiom-static` Hestia template pair (assigned to `xiom-lang.org` and
+`docs.xiom-lang.org`, applied 2026-09-28) sends `Cache-Control: no-cache`
+with a past `Expires`; `ETag`/`Last-Modified` answer `304` for unchanged
+files (verified with conditional requests). HTML headers are unchanged.
 
-- The vhost currently sends `Expires: 2037` + `Cache-Control:
-  max-age=315360000` for CSS, JS and images while HTML has no cache header.
-  That combination produces the observed failure mode on Safari/iOS: fresh
-  HTML with a stale stylesheet for months, fixable only by clearing website
-  data.
-- Fix (ops, Hestia template for `xiom-lang.org`): drop the far-future
-  `expires` directive for the static tree, or set `expires -1;` so responses
-  carry `Cache-Control: no-cache`. With `ETag`/`Last-Modified` already
-  enabled, unchanged files keep answering `304`, so the cost is one
-  conditional request per asset per load.
-- `no-store` is not needed and wastes the revalidation path; `no-cache`
-  (cache, but always revalidate) plus the existing ETags is the correct
-  setting in both browsers.
-- If an already-poisoned cache must be refreshed before the header change
-  lands, a one-time query bump on the asset references forces new cache
-  entries; it is a workaround, not a substitute for the header fix.
+- Why this setting: before the change, CSS, JS and images carried
+  `Expires: 2037` + `max-age=315360000` while HTML had no cache header --
+  Safari kept a stale stylesheet with fresh text, and also kept a cached 404
+  for a URL that had since been fixed.
+- `no-store` is not needed (it would waste the revalidation path); `no-cache`
+  plus ETags is the correct setting while filenames are stable.
+- One-time bump applied 2026-09-28: `?v=20260928` on `style.css`, the JS
+  includes and the images that changed since (story and pillar icons,
+  `og-card.webp`, the refreshed banners). Pre-fix clients held a 10-year
+  entry for those exact URLs and never re-requested them, so the header
+  change alone could not reach them. HTML always revalidates, so a future
+  bump would propagate on the next visit; bump again only when a fixed-name
+  asset must bypass an old cache immediately.
+- MkDocs assets under `docs.xiom-lang.org` (`assets/stylesheets/main.<hash>.*`)
+  are content-hashed, so long-caching them is safe; if we want that
+  optimisation, scope an immutable rule to those hashed asset directories
+  and leave HTML and the fixed-name site assets revalidating.
 
 ## URL routing
 
-Extensionless routes are not resolved by the vhost: `/download` 404s while
-`/download.html` works, and only directories carrying an `index.html` stub
-(`/docs/`, `/install/`, `/download/`) answer without the extension. External
-links that use the pretty form therefore need either a directory stub in
-this repository or, better, a routing rule in the ops vhost
-(`try_files $uri $uri.html $uri/ =404;` in the site's `location /`), which
-also covers every future page. The extension's missing-toolchain
-notification is the known consumer of `/install`; the same pattern is why
-`/install` and `/download` now ship stubs here.
+The vhost resolves extensionless routes (applied 2026-09-28 via the
+`xiom-static` template): `/download` serves the download page directly, and
+every other page behaves the same, so external links can use the pretty
+form. Directory stubs in this repository (`docs/`, `install/`, `download/`)
+remain for the trailing-slash forms and as belt-and-braces; `/download/`
+starts answering once the stub deploys. `dl.xiom-lang.org/` now 302s to the
+download page (mirror landing).
 
 ## Notes
 

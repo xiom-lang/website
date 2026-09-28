@@ -695,6 +695,22 @@ Remaining:
     stale-stylesheet report was traced to the vhost's far-future caching on
     non-hashed assets (DEPLOY.md "Static asset caching", ops relay).
 
+43. **Ops routing and cache fixes verified (done 2026-09-28)**: `/download`
+    and `/install` serve 200 directly; `style.css` sends `Cache-Control:
+    no-cache` plus a past `Expires` and answers 304 on conditional requests
+    (verified with curl etag-compare and If-Modified-Since); docs hashed
+    assets revalidate; `dl.xiom-lang.org/` 302s to the download page. The
+    `/download/` stub lands with the next pull. DEPLOY.md's "Static asset
+    caching" and "URL routing" now describe the applied state; the
+    immutable-long-cache option for hashed MkDocs assets is recorded for
+    ops (recommended, narrow rule, nothing depends on it). Ops then asked
+    for the one-time asset bump so pre-fix Safari clients stop serving the
+    poisoned 10-year `style.css` entry: `?v=20260928` was applied to
+    `style.css` (14 pages), the five JS includes, and the images that
+    changed since (story/pillar icons, `og-card.webp`, the refreshed
+    banners); HTML always revalidates, so every client picks the new URLs up
+    on the next visit.
+
 ## Cross-lane notes
 
 Release-notes mirror publish cannot be a website job (found 2026-09-24): the
@@ -1043,34 +1059,22 @@ known limitations until fixed.
    `#!/usr/bin/env -S xiom run`, and the example set (hello, values,
    while-sum, files, env/exit, spawn) is green end to end.
 
-### Ops lane: URL routing and cache headers (2026-09-28, needs relay)
+### Ops lane: URL routing and cache headers (2026-09-28, actioned)
 
-1. Pretty URLs: the vhost serves `/download.html` but `/download` is a 404
-   with no redirect, so any external link using the extensionless form dies.
-   The extension's install notification used `/install`; the website now
-   ships `install/` and `download/` directory stubs so both work today, but
-   every future page would need a stub. Recommended fix in the
-   `xiom-lang.org` server block:
+Ops applied both fixes on 2026-09-28. The `xiom-static` Hestia template
+pair (assigned to `xiom-lang.org` and `docs.xiom-lang.org`) now serves
+`Cache-Control: no-cache` with a past `Expires`; conditional requests answer
+`304` via `ETag`/`Last-Modified` (verified here with curl etag-compare and
+If-Modified-Since for `style.css`, and the docs hashed assets revalidate
+too). `/download` and `/install` resolve directly, and `dl.xiom-lang.org/`
+302s to the download page. HTML headers are unchanged.
 
-       location / {
-         try_files $uri $uri.html $uri/ =404;
-       }
-
-   That resolves `/download` (and every other page) to its `.html` file and
-   keeps the directory stubs working. Alternative, if you prefer explicit
-   routes: `location = /download { return 301 /download.html; }`.
-
-2. Cache headers: nginx serves `style.css`, `js/*.js` and `img/*` with
-   `Expires: Thu, 31 Dec 2037` and `Cache-Control: max-age=315360000` while
-   HTML has no cache header. iOS Safari therefore keeps a months-old
-   stylesheet with fresh text -- and can keep a cached 404 for a URL that
-   has since been fixed (the `/install` report) -- until website data is
-   cleared. Please make the static tree revalidate: remove the far-future
-   `expires`, or set `expires -1;` for those locations so responses carry
-   `Cache-Control: no-cache`; the existing `ETag`/`Last-Modified` already
-   answer 304 for unchanged files, and `no-store` is unnecessary. Same
-   treatment for the docs docroot assets. Full context in DEPLOY.md,
-   "Static asset caching" and "URL routing".
+Open question back to ops: MkDocs assets are content-hashed, so they could
+be immutable long-cache. The website recommends a narrow immutable rule for
+those hashed asset directories only, leaving HTML and the fixed-name site
+assets revalidating; nothing depends on it. The directory stubs stay for
+the trailing-slash forms (`/download/` answers once the stub deploys) and as
+belt-and-braces.
 
 ### Compiler lane: extension install link (2026-09-28, delivered)
 
