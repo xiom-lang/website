@@ -685,6 +685,15 @@ Remaining:
     back to 100 percent, Escape closes) plus a zoomed screenshot; the test
     wrapper was removed and the figure caption now says to zoom and drag
     (`2e3bd46`).
+42. **Extension install link fixed (done 2026-09-28)**: `/install`, linked
+    from the VS Code extension's missing-toolchain notification, returned
+    404; the site now carries a directory stub (same pattern as `/docs`)
+    redirecting `/install` to `/download.html#install`, and the One-Line
+    Install section has the anchor (`90efe11`). The extension needs no
+    change to keep the URL; the compiler lane can repoint it at
+    `/download.html` if preferred. Reminder from the same thread: the iOS
+    stale-stylesheet report was traced to the vhost's far-future caching on
+    non-hashed assets (DEPLOY.md "Static asset caching", ops relay).
 
 ## Cross-lane notes
 
@@ -1046,6 +1055,18 @@ clearing website data fixes it. Please update the `xiom-lang.org` vhost
 already answer `304` for unchanged files, and `no-store` is unnecessary.
 Apply the same treatment to the docs docroot assets. Full context in
 DEPLOY.md, "Static asset caching".
+
+### Compiler lane: extension install link (2026-09-28)
+
+The missing-toolchain notification in the VS Code extension points at
+`https://xiom-lang.org/install`, which was a 404. The website now serves
+that URL: a directory stub redirects it to the One-Line Install section of
+`https://xiom-lang.org/download.html#install`. No extension change is needed;
+if you prefer a direct target, point the notification and README at
+`https://xiom-lang.org/download.html` (note: the extensionless `/download`
+does not resolve on this vhost). The marketplace text still says "Minimum
+toolchain: v0.61.0" while v0.62.0 is out; it is correct as a floor, update
+it whenever the extension docs are next touched.
 
 ## Rules
 
