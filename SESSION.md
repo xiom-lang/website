@@ -710,6 +710,20 @@ Remaining:
     changed since (story/pillar icons, `og-card.webp`, the refreshed
     banners); HTML always revalidates, so every client picks the new URLs up
     on the next visit.
+44. **Installer resilience implemented and tested (done 2026-09-28)**:
+    `install.ps1` now sets `$ProgressPreference = 'SilentlyContinue'`, lists
+    running `xiom*` processes before touching the install directory, retries
+    removal three times and otherwise installs side by side to
+    `<dir>.new` with its bin prepended to PATH; the next successful run
+    consolidates and prunes the stale tree and PATH entry (`733656b`).
+    Tested in three phases (clean install; `vcruntime140.dll` held open
+    with FileShare.None; consolidated rerun with the side-by-side tree
+    gone) and against a real locked run: the owner's machine had the VS Code
+    LSP plus eight xiom-mcp processes live, so the installer went side by
+    side and v0.62.1 is now first on PATH from `%LOCALAPPDATA%\xiom.new`.
+    The canonical tree lost its exes to the partial wipe and consolidates on
+    the next installer run after VS Code closes. The download page documents
+    the fallback.
 
 ## Cross-lane notes
 
@@ -1089,6 +1103,17 @@ if you prefer a direct target, point the notification and README at
 does not resolve on this vhost). The marketplace text still says "Minimum
 toolchain: v0.61.0" while v0.62.0 is out; it is correct as a floor, update
 it whenever the extension docs are next touched.
+
+### Compiler lane: installer resilience (2026-09-28, actioned)
+
+The requested changes are live: `$ProgressPreference = 'SilentlyContinue'`,
+running-`xiom*` detection before the wipe, removal retries, and a
+side-by-side fallback to `<InstallDir>.new` with PATH preemption when
+`vcruntime140.dll` is locked; the next run consolidates back. Verified with
+a held `FileShare.None` handle and a real locked run (VS Code LSP plus
+xiom-mcp processes); the owner's machine now runs v0.62.1 from
+`%LOCALAPPDATA%\xiom.new`, PATH-first, and consolidates after VS Code
+closes. Extension-link audit acknowledged: no extension change needed.
 
 ## Rules
 
