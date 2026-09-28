@@ -20,6 +20,10 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# PowerShell 5.1 renders a progress bar for Invoke-WebRequest and that
+# rendering, not the transfer, makes a 20 MB download crawl. The installer
+# prints its own progress lines, so turn the bar off.
+$ProgressPreference = 'SilentlyContinue'
 $mirrorBase = 'https://dl.xiom-lang.org'
 $mirror = "$mirrorBase/latest.json"
 
@@ -33,6 +37,56 @@ function Compare-Tag([string]$a, [string]$b) {
     if ($x -ne $y) { return [Math]::Sign($x - $y) }
   }
   return 0
+}
+
+function Get-XiomProcesses {
+  # Any running tool keeps vcruntime140.dll and its own exe open, which
+  # blocks removing or renaming the install directory.
+  return @(Get-Process -Name 'xiom*' -ErrorAction SilentlyContinue)
+}
+
+function Remove-OldInstall([string]$dir) {
+  for ($attempt = 1; $attempt -le 3; $attempt++) {
+    Remove-Item -Recurse -Force $dir -ErrorAction SilentlyContinue
+    if (-not (Test-Path $dir)) { return $true }
+    Start-Sleep -Milliseconds 700
+  }
+  return $false
+}
+
+function Add-PathEntry([string]$bin, [switch]$Prepend) {
+  # Adds the bin directory to the user PATH unless it is already there;
+  # -Prepend puts it first so a side-by-side install wins immediately.
+  $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+  $entries = @($userPath -split ';' | Where-Object { $_ })
+  $present = @($entries | Where-Object { $_.TrimEnd('\') -eq $bin.TrimEnd('\') })
+  if ($present.Count -gt 0) {
+    if (-not $Prepend) { return $false }
+    if ($entries[0].TrimEnd('\') -eq $bin.TrimEnd('\')) { return $false }
+  }
+  $entries = @($entries | Where-Object { $_.TrimEnd('\') -ne $bin.TrimEnd('\') })
+  if ($Prepend) { $entries = ,$bin + $entries } else { $entries = $entries + $bin }
+  [Environment]::SetEnvironmentVariable('Path', ($entries -join ';'), 'User')
+  return $true
+}
+
+function Remove-PathEntry([string[]]$paths) {
+  # Drops stale bin directories (a side-by-side tree from a locked run) from
+  # the user PATH.
+  $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+  if (-not $userPath) { return $false }
+  $keep = @($userPath -split ';' | Where-Object {
+    $entry = $_.Trim()
+    if (-not $entry) { return $false }
+    foreach ($p in $paths) {
+      if ($entry.TrimEnd('\') -eq $p.TrimEnd('\')) { return $false }
+    }
+    return $true
+  })
+  $joined = ($keep -join ';')
+  if ($joined -eq $userPath) { return $false }
+  [Environment]::SetEnvironmentVariable('Path', $joined, 'User')
+  return $true
 }
 
 Write-Host 'XIOM toolchain installer' -ForegroundColor Cyan
@@ -101,16 +155,50 @@ try {
   if ($expected -ne $actual) { throw "Checksum mismatch: expected $expected, got $actual" }
   Write-Host 'Checksum verified.'
 
-  if (Test-Path $InstallDir) { Remove-Item -Recurse -Force $InstallDir }
-  New-Item -ItemType Directory -Path $InstallDir | Out-Null
-  Expand-Archive -Path $zip -DestinationPath $InstallDir
+  $canonicalDir = $InstallDir
+  $running = Get-XiomProcesses
+  if ($running.Count -gt 0) {
+    $list = ($running | ForEach-Object { "$($_.ProcessName) (pid $($_.Id))" }) -join ', '
+    Write-Warning "Running XIOM processes detected: $list"
+    Write-Host '  Close VS Code or stop them if the install is locked; the installer is resilient either way.'
+  }
 
-  $bin = Join-Path $InstallDir 'bin'
-  if (-not $NoPath) {
-    $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
-    if ($userPath -notlike "*$bin*") {
-      [Environment]::SetEnvironmentVariable('Path', ($userPath.TrimEnd(';') + ';' + $bin), 'User')
-      Write-Host "Added $bin to the user PATH (takes effect in new terminals)."
+  if ((Test-Path $InstallDir) -and (-not (Remove-OldInstall $InstallDir))) {
+    # A live process (usually the VS Code extension's xiom-lsp) holds
+    # vcruntime140.dll, so the tree can be neither deleted nor renamed.
+    # Install side by side and let the fresh tree win on PATH; the next
+    # successful run consolidates back to the canonical directory.
+    Write-Warning "Could not remove $canonicalDir (files are locked by a running XIOM process)."
+    $InstallDir = "$canonicalDir.new"
+    if (Test-Path $InstallDir) { Remove-OldInstall $InstallDir | Out-Null }
+    New-Item -ItemType Directory -Path $InstallDir | Out-Null
+    Expand-Archive -Path $zip -DestinationPath $InstallDir
+    $bin = Join-Path $InstallDir 'bin'
+    if (-not $NoPath) {
+      Add-PathEntry $bin -Prepend | Out-Null
+      Write-Host "Installed side by side; $bin is now first on the user PATH."
+    } else {
+      Write-Host "Installed side by side at $InstallDir (-NoPath)."
+    }
+    Write-Warning "Close VS Code and rerun the installer to replace $canonicalDir."
+  } else {
+    New-Item -ItemType Directory -Path $InstallDir | Out-Null
+    Expand-Archive -Path $zip -DestinationPath $InstallDir
+    $bin = Join-Path $InstallDir 'bin'
+    # Consolidation succeeded: drop a side-by-side tree from an earlier
+    # locked run and forget its PATH entry.
+    $sideBySide = "$canonicalDir.new"
+    if (Test-Path $sideBySide) {
+      if (Remove-OldInstall $sideBySide) {
+        if (-not $NoPath) {
+          Remove-PathEntry @((Join-Path $sideBySide 'bin')) | Out-Null
+        }
+      }
+    }
+    if (-not $NoPath) {
+      if (Add-PathEntry $bin) {
+        Write-Host "Added $bin to the user PATH (takes effect in new terminals)."
+      }
     }
   }
 
