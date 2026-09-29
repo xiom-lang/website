@@ -722,8 +722,20 @@ Remaining:
     LSP plus eight xiom-mcp processes live, so the installer went side by
     side and v0.62.1 is now first on PATH from `%LOCALAPPDATA%\xiom.new`.
     The canonical tree lost its exes to the partial wipe and consolidates on
-    the next installer run after VS Code closes. The download page documents
+    the     next installer run after VS Code closes. The download page documents
     the fallback.
+45. **Self-hosting progress made accurate and live (done 2026-09-29)**: the
+    roadmap, history and spec pages claimed "self-hosting gates cleared"
+    while the compiler lane's tracker (`docs/SELFHOST_PROGRESS.md`,
+    `532bfa75`) reports 9% (1 of 11 gates) with selfhost shipping only at
+    100%. The copy now says in progress, and the roadmap carries a live
+    meter (`js/selfhost-meter.js`) that reads the tracker from `main` via
+    raw.githubusercontent.com (ACAO `*`) and shows "N% (x of y gates)",
+    with the authored fallback until the fetch succeeds; verified by unit
+    tests (success and fallback paths) and a local render (`d41295d`).
+    The tracker sits in five unpushed compiler commits, so the live page
+    shows the fallback today and activates the moment the compiler lane
+    pushes; no further website change is needed.
 
 ## Cross-lane notes
 
@@ -1114,6 +1126,15 @@ a held `FileShare.None` handle and a real locked run (VS Code LSP plus
 xiom-mcp processes); the owner's machine now runs v0.62.1 from
 `%LOCALAPPDATA%\xiom.new`, PATH-first, and consolidates after VS Code
 closes. Extension-link audit acknowledged: no extension change needed.
+
+### Compiler lane: selfhost tracker visibility (2026-09-29)
+
+The website renders the bootstrap meter live from
+`main:docs/SELFHOST_PROGRESS.md` on the roadmap page. That file is in the
+five unpushed commits on your local `main` (`532bfa75` and the selfhost
+Phase 0 work), so the page currently shows its fallback text; pushing
+`main` activates the meter with no further website change. No other
+action needed.
 
 ## Rules
 
