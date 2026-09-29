@@ -744,6 +744,15 @@ Remaining:
     viewport: nine icons in one row, no horizontal overflow, Instagram last;
     link checker clean. The playground/registry lane prompt now lists the
     new order and URL.
+47. **Self-hosting progress bar (done 2026-09-29)**: the tracker went public,
+    so the roadmap's self-hosting section now renders a rounded progress bar
+    filled with the brand accent gradient (#66fff1 -> #4cc8ff) and glow,
+    with the percentage inside the bar, the "x of y gates" detail beside it
+    and the same live percentage in the state table. `js/selfhost-meter.js`
+    drives fill width, labels and `aria-valuenow`, and only unhides the bar
+    when the tracker fetch succeeds; the authored fallback stands otherwise
+    (`63701eb`). Unit tests cover both paths; desktop and mobile renders
+    verified at a true 414px viewport.
 
 ## Cross-lane notes
 
