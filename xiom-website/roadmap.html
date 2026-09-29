@@ -65,7 +65,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       <tr><td>Language surface</td><td>shipped</td><td>Ownership, generics, contracts, pattern matching, derive, C FFI, scripting mode</td></tr>
       <tr><td>Production hardening</td><td>shipped</td><td>Contracts, diagnostics, scripting and JIT, AI-assisted diagnostics, sandbox audit, sanitizers</td></tr>
       <tr><td>Standard library</td><td>beta</td><td>517 source files and 6,532 public functions; limitations are published</td></tr>
-      <tr><td>Self-hosting</td><td>in progress</td><td>Bootstrap progress: <strong><span data-selfhost-meter>tracked in the compiler repository</span></strong>; the bootstrap toolchain is the release compiler</td></tr>
+      <tr><td>Self-hosting</td><td>in progress</td><td>Bootstrap progress: <strong><span data-selfhost-pct>tracked in the compiler repository</span></strong>; the bootstrap toolchain is the release compiler</td></tr>
       <tr><td>Ecosystem</td><td>live</td><td>Registry, official packages, editor tooling and the playground are live; see the Ecosystem section below</td></tr>
     </table>
   </div>
@@ -101,7 +101,14 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
   <div class="content-section">
     <h2>Self-hosting</h2>
-    <p>Self-hosting -- compiling the compiler with itself -- is in progress. Self-hosted releases ship only once every tracked bootstrap gate is green; until then the bootstrap compiler remains the released toolchain. Current progress: <strong><span data-selfhost-meter>tracked in the compiler repository</span></strong>.</p>
+    <p>Self-hosting -- compiling the compiler with itself -- is in progress. Self-hosted releases ship only once every tracked bootstrap gate is green; until then the bootstrap compiler remains the released toolchain.</p>
+    <div class="selfhost-progress" data-selfhost-progress hidden>
+      <div class="selfhost-bar" data-selfhost-bar role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Self-hosting bootstrap gates complete">
+        <div class="selfhost-fill" data-selfhost-fill></div>
+        <span class="selfhost-pct" data-selfhost-pct>0%</span>
+      </div>
+      <span class="selfhost-detail"><strong><span data-selfhost-meter>tracked in the compiler repository</span></strong> complete</span>
+    </div>
     <p style="color:var(--muted);font-size:13px;">The gate table, Phase 0 evidence, blockers and gate commands live in the compiler repository: <a href="https://github.com/xiom-lang/xiom/blob/main/docs/SELFHOST_PROGRESS.md" style="color:var(--signal);">docs/SELFHOST_PROGRESS.md</a>.</p>
   </div>
 

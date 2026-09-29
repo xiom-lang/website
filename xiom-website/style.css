@@ -584,6 +584,68 @@ nav .wrap {
   .growth-figure { max-width: 440px; margin: 0 auto; }
 }
 
+/* ============================================================
+   Self-hosting progress bar (roadmap.html)
+   ============================================================ */
+
+.selfhost-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: var(--space-lg) 0 0;
+}
+
+.selfhost-bar {
+  position: relative;
+  flex: 1 1 360px;
+  min-width: 240px;
+  max-width: 560px;
+  height: 34px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.selfhost-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #66fff1 0%, #4cc8ff 100%);
+  box-shadow:
+    0 0 7px rgba(76, 220, 255, 0.45),
+    0 0 16px rgba(76, 180, 255, 0.18);
+  transition: width 700ms ease;
+}
+
+.selfhost-pct {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--paper);
+  text-shadow: 0 1px 3px rgba(5, 8, 15, 0.85);
+}
+
+.selfhost-detail {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selfhost-fill { transition: none; }
+}
+
 /* Click-to-enlarge preview with zoom and pan (js/lightbox.js) */
 
 html.lightbox-open { overflow: hidden; }
