@@ -3001,26 +3001,44 @@
 <blockquote>
 <p>Integer n as a string in the given base (2-36), lowercase digits. n == 0 yields "0"; negatives get a "-" prefix. Invalid base yields "". NOTE: INT_MIN's magnitude (2^63) has no positive i64 representation, so to_base(INT_MIN, base) returns "-" (documented edge). Complexity: O(log_base |n|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((base &lt; 2) || (base &gt; 36)) =&gt; (result == "")) &amp;&amp; (((base &gt;= 2) &amp;&amp; (base &lt;= 36) &amp;&amp; (n == 0)) =&gt; (result == "0"))</code></li>
+</ul>
 <h5 id="fn-from_bases-str-base-int-resultint-str"><code>fn from_base(s: Str, base: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-from_bases-str-base-int-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parses a base-(2-36) string into an Int. An optional leading '-'/'+' is accepted; both digit cases are. Err on invalid base, empty string, an invalid digit, a digit out of range for the base, or overflow. Complexity: O(len(s)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((base &lt; 2) || (base &gt; 36)) =&gt; (result.is_ok == false)) &amp;&amp; ((s == "") =&gt; (result.is_ok == false))</code></li>
+</ul>
 <h5 id="fn-to_base_floatf-float64-base-int-prec-int-str"><code>fn to_base_float(f: Float64, base: Int, prec: Int) -&gt; Str</code><a class="headerlink" href="#fn-to_base_floatf-float64-base-int-prec-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Float f as a base-(2-36) string with prec fraction digits (truncated, not rounded). Handles sign, "inf"/"-inf", and (for the future) "nan". Returns "" for an invalid base/prec or for |f| &gt;= 2^63 (the integer part is then not representable). Complexity: O(prec + log_base |f|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((base &lt; 2) || (base &gt; 36) || (prec &lt; 0)) =&gt; (result == "")) &amp;&amp; (((f == 1 / 0) &amp;&amp; (base &gt;= 2) &amp;&amp; (base &lt;= 36) &amp;&amp; (prec &gt;= 0)) =&gt; (result == "inf"))</code></li>
+</ul>
 <h5 id="fn-from_base_floats-str-base-int-resultfloat64-str"><code>fn from_base_float(s: Str, base: Int) -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-from_base_floats-str-base-int-resultfloat64-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parses a base-(2-36) float string ("-1a.2f") into a Float64. An optional sign and a single '.' are accepted; scientific notation is not. Err on invalid base, empty string, bad digits, or multiple decimal points. Complexity: O(len(s)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((base &lt; 2) || (base &gt; 36)) =&gt; (result.is_ok == false)) &amp;&amp; ((s == "") =&gt; (result.is_ok == false))</code></li>
+</ul>
 <h5 id="fn-digits_ofn-int-base-int-vecint"><code>fn digits_of(n: Int, base: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-digits_ofn-int-base-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Digits of |n| in the given base, least significant first (little-endian). n == 0 yields [0]; negatives use the magnitude. Invalid base yields an empty vector. Complexity: O(log_base |n|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((base &lt; 2) || (base &gt; 36)) =&gt; (result.len() == 0)) &amp;&amp; (((base &gt;= 2) &amp;&amp; (base &lt;= 36)) =&gt; (result.len() &gt; 0))</code></li>
+</ul>
 <h5 id="fn-from_digitsdigits-vecint-base-int-int"><code>fn from_digits(digits: &amp;Vec[Int], base: Int) -&gt; Int</code><a class="headerlink" href="#fn-from_digitsdigits-vecint-base-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Integer reconstructed from a little-endian digit vector in the given base (inverse of digits_of). Returns 0 on an invalid base, an out-of-range digit, or overflow (documented -- the signature cannot signal errors). Complexity: O(len(digits)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((base &lt; 2) || (base &gt; 36)) =&gt; (result == 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3095,30 +3113,51 @@
 <blockquote>
 <p>Constants (constructor functions -- see header note)</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.sign == false) &amp;&amp; (result.significand.digits.len() == 0)) &amp;&amp; (result.exponent == 0)</code></li>
+</ul>
 <h5 id="fn-bigfloat_one-bigfloat"><code>fn bigfloat_one() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_one-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Constant 1.0 with default precision.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_two-bigfloat"><code>fn bigfloat_two() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_two-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Constant 2.0 with default precision.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_ten-bigfloat"><code>fn bigfloat_ten() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_ten-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Constant 10.0 with default precision.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_half-bigfloat"><code>fn bigfloat_half() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_half-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Constant 0.5 with default precision.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_pi-bigfloat"><code>fn bigfloat_pi() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_pi-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>pi to 100 decimal digits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_e-bigfloat"><code>fn bigfloat_e() -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_e-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>e to 100 decimal digits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_set_round_modemode-roundmode"><code>fn bigfloat_set_round_mode(mode: RoundMode)</code><a class="headerlink" href="#fn-bigfloat_set_round_modemode-roundmode" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rounding mode (thread-local default; whole-value global assignment)</p>
@@ -3131,6 +3170,9 @@
 <blockquote>
 <p>Constructors</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_from_floatf-float64-bigfloat"><code>fn bigfloat_from_float(f: Float64) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_from_floatf-float64-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Exact to 15 significant digits (the f64 round-trip guarantee); power-of-10 inputs (0.1, 1e300, 3.14) come out exact.</p>
@@ -3138,37 +3180,52 @@
 <ul>
 <li><strong>Precondition:</strong> <code>!xiom.math.is_nan(f)</code></li>
 <li><strong>Precondition:</strong> <code>!xiom.math.is_inf(f)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_from_strs-str-resultbigfloat-str"><code>fn bigfloat_from_str(s: Str) -&gt; Result[BigFloat, Str]</code><a class="headerlink" href="#fn-bigfloat_from_strs-str-resultbigfloat-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parse decimal strings: "3.14159", "-1e-10", "2.5E+3", ".5", "3.". Exponent range is Int (i64). Result is normalized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result.is_ok == false)</code></li>
+</ul>
 <h5 id="fn-bigfloat_from_bigintb-bigint-bigfloat"><code>fn bigfloat_from_bigint(b: &amp;BigInt) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_from_bigintb-bigint-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convert a BigInt to BigFloat.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_with_precisionn-int-precision-int-bigfloat"><code>fn bigfloat_with_precision(n: Int, precision: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_with_precisionn-int-precision-int-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value <code>n</code> with the given decimal working precision.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>precision &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_to_strf-bigfloat-str"><code>fn bigfloat_to_str(f: &amp;BigFloat) -&gt; Str</code><a class="headerlink" href="#fn-bigfloat_to_strf-bigfloat-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Exact decimal representation of the stored value ("shortest round-trip" by construction: the representation IS the decimal).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h5 id="fn-bigfloat_to_str_precf-bigfloat-digits-int-str"><code>fn bigfloat_to_str_prec(f: &amp;BigFloat, digits: Int) -&gt; Str</code><a class="headerlink" href="#fn-bigfloat_to_str_precf-bigfloat-digits-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Round to <code>digits</code> significant digits (current round mode) then format. Trailing zeros produced by rounding stay significant ("1.41421356237310" is 15 digits); a rounding carry that overflows the digit budget collapses to its normalized form ("1" for 0.999...9 -&gt; 20 digits).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>digits &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
 </ul>
 <h5 id="fn-bigfloat_to_bigintf-bigfloat-bigint"><code>fn bigfloat_to_bigint(f: &amp;BigFloat) -&gt; BigInt</code><a class="headerlink" href="#fn-bigfloat_to_bigintf-bigfloat-bigint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Truncate toward zero.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h5 id="fn-bigfloat_to_float128f-bigfloat-float128"><code>fn bigfloat_to_float128(f: &amp;BigFloat) -&gt; Float128</code><a class="headerlink" href="#fn-bigfloat_to_float128f-bigfloat-float128" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Float128 conversion. Same accumulation strategy as bigfloat_to_float64 but in fp128: ~34 significant digits of the significand survive, and the exponent range extends to ~1.1e4932. Values whose exponent exceeds the fp128 range saturate to +/-inf (fp128 IEEE-754 semantics). TODO(compiler): BUG 33 -- Option[Float128] payload unwrap emits a load of the undefined <code>%struct.Float128</code> (opaque) instead of native <code>fp128</code>, so the Option-returning form cannot be consumed yet; returns the value directly until the unwrap path is fixed.</p>
@@ -3177,59 +3234,94 @@
 <blockquote>
 <p>Float64 conversion. None on exponent overflow/underflow beyond f64 range (|value| &gt; ~1.8e308); values underflowing to 0.0 return Some(0.0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.significand.digits.len() == 0) =&gt; (result is Some(_))</code></li>
+</ul>
 <h5 id="fn-bigfloat_is_zerof-bigfloat-bool"><code>fn bigfloat_is_zero(f: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_is_zerof-bigfloat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Predicates</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == false) =&gt; (f.significand.digits.len() &gt; 0)</code></li>
+</ul>
 <h5 id="fn-bigfloat_is_negativef-bigfloat-bool"><code>fn bigfloat_is_negative(f: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_is_negativef-bigfloat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when the value is negative.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (f.sign == true)</code></li>
+</ul>
 <h5 id="fn-bigfloat_is_onef-bigfloat-bool"><code>fn bigfloat_is_one(f: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_is_onef-bigfloat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when the value equals 1.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (f.sign == false)</code></li>
+</ul>
 <h5 id="fn-bigfloat_signf-bigfloat-int"><code>fn bigfloat_sign(f: &amp;BigFloat) -&gt; Int</code><a class="headerlink" href="#fn-bigfloat_signf-bigfloat-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>-1, 0 or 1 according to the sign.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1) &amp;&amp; (result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-bigfloat_precisionf-bigfloat-int"><code>fn bigfloat_precision(f: &amp;BigFloat) -&gt; Int</code><a class="headerlink" href="#fn-bigfloat_precisionf-bigfloat-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Working precision in decimal digits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == f.precision</code></li>
+</ul>
 <h5 id="fn-bigfloat_adda-bigfloat-b-bigfloat-bigfloat"><code>fn bigfloat_add(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_adda-bigfloat-b-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Arithmetic (result precision = max of operand precisions, rounded)</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_suba-bigfloat-b-bigfloat-bigfloat"><code>fn bigfloat_sub(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_suba-bigfloat-b-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Difference of two BigFloats.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_mula-bigfloat-b-bigfloat-bigfloat"><code>fn bigfloat_mul(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_mula-bigfloat-b-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Product of two BigFloats.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_diva-bigfloat-b-bigfloat-bigfloat"><code>fn bigfloat_div(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_diva-bigfloat-b-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Truncating long division with guard digits, then rounded to precision. Requires a non-zero divisor.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(b)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_negf-bigfloat-bigfloat"><code>fn bigfloat_neg(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_negf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Negation.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.significand.negative == false</code></li>
+</ul>
 <h5 id="fn-bigfloat_absf-bigfloat-bigfloat"><code>fn bigfloat_abs(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_absf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Absolute value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.sign == false) &amp;&amp; (result.significand.negative == false)</code></li>
+</ul>
 <h5 id="fn-bigfloat_invf-bigfloat-bigfloat"><code>fn bigfloat_inv(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_invf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>1/f with guard digits, rounded to precision.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(f)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_sqrtf-bigfloat-bigfloat"><code>fn bigfloat_sqrt(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_sqrtf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3237,6 +3329,7 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(f)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_powbase-bigfloat-exp-int-bigfloat"><code>fn bigfloat_pow(base: &amp;BigFloat, exp: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_powbase-bigfloat-exp-int-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3244,6 +3337,7 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>exp &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_truncf-bigfloat-bigfloat"><code>fn bigfloat_trunc(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_truncf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3265,17 +3359,24 @@
 <blockquote>
 <p>Fractional part with the sign of f: f - trunc(f).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_with_roundingf-bigfloat-mode-roundmode-digits-int-bigfloat"><code>fn bigfloat_with_rounding(f: &amp;BigFloat, mode: RoundMode, digits: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_with_roundingf-bigfloat-mode-roundmode-digits-int-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Explicit rounding of <code>f</code> to <code>digits</code> significant digits with <code>mode</code>.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>digits &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_comparea-bigfloat-b-bigfloat-int"><code>fn bigfloat_compare(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; Int</code><a class="headerlink" href="#fn-bigfloat_comparea-bigfloat-b-bigfloat-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Comparisons</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1) &amp;&amp; (result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-bigfloat_eqa-bigfloat-b-bigfloat-bool"><code>fn bigfloat_eq(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_eqa-bigfloat-b-bigfloat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Exact equality.</p>
@@ -3302,6 +3403,7 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>precision &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_e_with_precisionprecision-int-bigfloat"><code>fn bigfloat_e_with_precision(precision: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_e_with_precisionprecision-int-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3309,11 +3411,15 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>precision &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_expf-bigfloat-bigfloat"><code>fn bigfloat_exp(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_expf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>exp(x) = exp(r) * 10^k with r = x - k*ln(10) in [-ln(10)/2, ln(10)/2].</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_lnf-bigfloat-bigfloat"><code>fn bigfloat_ln(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_lnf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ln(x): x = m * 10^k with m in [1, 10); reduce m to [1, sqrt(10)) via one sqrt; ln(x) = 2<em>atanh((m-1)/(m+1)) + k</em>ln(10).</p>
@@ -3321,6 +3427,7 @@
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(f)</code></li>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(f)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_log10f-bigfloat-bigfloat"><code>fn bigfloat_log10(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_log10f-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3329,33 +3436,50 @@
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(f)</code></li>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(f)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_sinf-bigfloat-bigfloat"><code>fn bigfloat_sin(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_sinf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sine of the value (radians).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_cosf-bigfloat-bigfloat"><code>fn bigfloat_cos(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_cosf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cosine of the value (radians).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_tanf-bigfloat-bigfloat"><code>fn bigfloat_tan(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_tanf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tangent of the value (radians).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_atanf-bigfloat-bigfloat"><code>fn bigfloat_atan(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_atanf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>atan(x) in [-pi/2, pi/2].</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_atan2y-bigfloat-x-bigfloat-bigfloat"><code>fn bigfloat_atan2(y: &amp;BigFloat, x: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_atan2y-bigfloat-x-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>atan2(y, x) in [-pi, pi].</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_pow_bfbase-bigfloat-exp-bigfloat-bigfloat"><code>fn bigfloat_pow_bf(base: &amp;BigFloat, exp: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_pow_bfbase-bigfloat-exp-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>base^exp for base &gt;= 0 via exp(exp * ln(base)); negative exponents via inv.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(base)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_log2f-bigfloat-bigfloat"><code>fn bigfloat_log2(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_log2f-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3364,49 +3488,78 @@
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_negative(f)</code></li>
 <li><strong>Precondition:</strong> <code>!bigfloat_is_zero(f)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_exp2f-bigfloat-bigfloat"><code>fn bigfloat_exp2(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_exp2f-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>exp2(x) = exp(x * ln(2)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_cbrtf-bigfloat-bigfloat"><code>fn bigfloat_cbrt(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_cbrtf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cube root (Newton: x = (2x + n/x^2)/3). Works for negative operands via sign symmetry; the significand is scaled to a multiple-of-3 exponent so the final 10^(exp/3) shift is exact.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_hypota-bigfloat-b-bigfloat-bigfloat"><code>fn bigfloat_hypot(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_hypota-bigfloat-b-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>hypot(a, b) = sqrt(a^2 + b^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_sinhf-bigfloat-bigfloat"><code>fn bigfloat_sinh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_sinhf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic functions via exp.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_coshf-bigfloat-bigfloat"><code>fn bigfloat_cosh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_coshf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic cosine.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_tanhf-bigfloat-bigfloat"><code>fn bigfloat_tanh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_tanhf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic tangent.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_asinf-bigfloat-bigfloat"><code>fn bigfloat_asin(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_asinf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>asin(x) = atan(x / sqrt(1 - x^2)); asin(+-1) = +-pi/2.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_acosf-bigfloat-bigfloat"><code>fn bigfloat_acos(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_acosf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>acos(x) = pi/2 - asin(x). Exact endpoints: acos(1) = 0, acos(-1) = pi.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_asinhf-bigfloat-bigfloat"><code>fn bigfloat_asinh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_asinhf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>asinh(x) = ln(x + sqrt(x^2 + 1)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
+</ul>
 <h5 id="fn-bigfloat_acoshf-bigfloat-bigfloat"><code>fn bigfloat_acosh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_acoshf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>acosh(x) = ln(x + sqrt(x^2 - 1)); requires x &gt;= 1.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigfloat_lt(f, &amp;bigfloat_one())</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_atanhf-bigfloat-bigfloat"><code>fn bigfloat_atanh(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_atanhf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3414,6 +3567,7 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>bigfloat_lt(&amp;bigfloat_abs(f), &amp;bigfloat_one())</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_to_str_scif-bigfloat-digits-int-str"><code>fn bigfloat_to_str_sci(f: &amp;BigFloat, digits: Int) -&gt; Str</code><a class="headerlink" href="#fn-bigfloat_to_str_scif-bigfloat-digits-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3421,6 +3575,7 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>digits &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
 </ul>
 <h5 id="fn-bigfloat_from_ration-int-d-int-bigfloat"><code>fn bigfloat_from_ratio(n: Int, d: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_from_ration-int-d-int-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3428,27 +3583,43 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>d != 0</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.significand.negative == false) &amp;&amp; ((result.significand.digits.len() == 0) =&gt; (result.sign == false))) &amp;&amp; ((result.sign == true) =&gt; (result.significand.digits.len() &gt; 0)))</code></li>
 </ul>
 <h5 id="fn-bigfloat_pow10f-bigfloat-n-int-bigfloat"><code>fn bigfloat_pow10(f: &amp;BigFloat, n: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_pow10f-bigfloat-n-int-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Exact x * 10^n (pure exponent shift; no rounding).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.significand.negative == false</code></li>
+</ul>
 <h5 id="fn-bigfloat_floor_intf-bigfloat-resultint-str"><code>fn bigfloat_floor_int(f: &amp;BigFloat) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigfloat_floor_intf-bigfloat-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Integer-valued helpers (range-checked to i64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.significand.digits.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h5 id="fn-bigfloat_ceil_intf-bigfloat-resultint-str"><code>fn bigfloat_ceil_int(f: &amp;BigFloat) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigfloat_ceil_intf-bigfloat-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convert to Int after ceiling; Err when out of range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.significand.digits.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h5 id="fn-bigfloat_round_intf-bigfloat-resultint-str"><code>fn bigfloat_round_int(f: &amp;BigFloat) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigfloat_round_intf-bigfloat-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convert to Int after rounding; Err when out of range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.significand.digits.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h5 id="fn-bigfloat_trunc_intf-bigfloat-resultint-str"><code>fn bigfloat_trunc_int(f: &amp;BigFloat) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigfloat_trunc_intf-bigfloat-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convert to Int after truncation; Err when out of range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.significand.digits.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3482,38 +3653,65 @@
 <blockquote>
 <p>Construction -- from Int, from Str</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_from_u64n-uint64-bigint"><code>fn bigint_from_u64(n: UInt64) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_from_u64n-uint64-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Build from an unsigned 64-bit value. The compiler emits SIGNED LLVM instructions for UInt64 <code>/</code> and <code>%</code>, so the proven unsigned helpers from xiom.num (u64_div_floor / u64_mod_euclid) are used instead -- exact for the full 0 .. 2^64-1 range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_from_strs-str-resultbigint-str"><code>fn bigint_from_str(s: Str) -&gt; Result[BigInt, Str]</code><a class="headerlink" href="#fn-bigint_from_strs-str-resultbigint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse decimal string. Uses xiom.string.str_slice for char access. O(n2) due to repeated multiply-by-10-and-add during accumulation.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result.is_ok == false)</code></li>
+</ul>
 <h4 id="fn-bigint_to_strb-bigint-str"><code>fn bigint_to_str(b: &amp;BigInt) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_strb-bigint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert to decimal string via repeated division by BASE.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h4 id="fn-bigint_adda-bigint-b-bigint-bigint"><code>fn bigint_add(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_adda-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Core arithmetic -- add, sub, mul, div_mod</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_suba-bigint-b-bigint-bigint"><code>fn bigint_sub(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_suba-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Difference of two BigInts.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_mula-bigint-b-bigint-bigint"><code>fn bigint_mul(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_mula-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Product of two BigInts.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_div_moda-bigint-b-bigint-bigint-bigint"><code>fn bigint_div_mod(a: &amp;BigInt, b: &amp;BigInt) -&gt; (BigInt, BigInt)</code><a class="headerlink" href="#fn-bigint_div_moda-bigint-b-bigint-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncating division: returns (quotient, remainder).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result._0.negative == true) =&gt; (result._0.digits.len() &gt; 0)) &amp;&amp; ((result._0.digits.len() == 0) =&gt; (result._0.negative == false))) &amp;&amp; (((result._1.negative == true) =&gt; (result._1.digits.len() &gt; 0)) &amp;&amp; ((result._1.digits.len() == 0) =&gt; (result._1.negative == false)))</code></li>
+</ul>
 <h4 id="fn-bigint_comparea-bigint-b-bigint-int"><code>fn bigint_compare(a: &amp;BigInt, b: &amp;BigInt) -&gt; Int</code><a class="headerlink" href="#fn-bigint_comparea-bigint-b-bigint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Comparison, zero, sign, abs, neg</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1) &amp;&amp; (result &lt;= 1)</code></li>
+</ul>
 <h4 id="fn-bigint_is_zerob-bigint-bool"><code>fn bigint_is_zero(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_zerob-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the value is zero.</p>
@@ -3522,103 +3720,171 @@
 <blockquote>
 <p>Absolute value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))) &amp;&amp; (result.negative == false)</code></li>
+</ul>
 <h4 id="fn-bigint_negb-bigint-bigint"><code>fn bigint_neg(b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_negb-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Negation.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_signb-bigint-int"><code>fn bigint_sign(b: &amp;BigInt) -&gt; Int</code><a class="headerlink" href="#fn-bigint_signb-bigint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-1, 0 or 1 according to the sign.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1) &amp;&amp; (result &lt;= 1)</code></li>
+</ul>
 <h4 id="fn-bigint_moda-bigint-m-bigint-bigint"><code>fn bigint_mod(a: &amp;BigInt, m: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_moda-bigint-m-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Modular arithmetic and advanced operations</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_powbase-bigint-exp-int-bigint"><code>fn bigint_pow(base: &amp;BigInt, exp: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_powbase-bigint-exp-int-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>base</code> raised to a non-negative Int exponent.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_gcda-bigint-b-bigint-bigint"><code>fn bigint_gcd(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_gcda-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Greatest common divisor (non-negative).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_shift_leftb-bigint-shift-int-bigint"><code>fn bigint_shift_left(b: &amp;BigInt, shift: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_shift_leftb-bigint-shift-int-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Shift left by <code>shift</code> bits (a negative shift moves right).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_zero-bigint"><code>fn bigint_zero() -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_zero-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-- Constants --------------------------------------------------------------- NOTE (2026-08-10): module-global initializers cannot call functions (the compiler silently leaves them zero -- see docs/COMPILER_BUGS.md), so the spec constants BIGINT_ZERO/ONE/TEN are exposed as pure constructors that return a fresh value. Zero-cost, immutable by construction.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.digits.len() == 0) &amp;&amp; (result.negative == false)</code></li>
+</ul>
 <h4 id="fn-bigint_one-bigint"><code>fn bigint_one() -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_one-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Constant 1 as BigInt.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.digits.len() == 1) &amp;&amp; (result.negative == false)</code></li>
+</ul>
 <h4 id="fn-bigint_ten-bigint"><code>fn bigint_ten() -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_ten-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Constant 10 as BigInt.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.digits.len() == 1) &amp;&amp; (result.negative == false)</code></li>
+</ul>
 <h4 id="fn-bigint_two-bigint"><code>fn bigint_two() -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_two-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Constant 2 as BigInt.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.digits.len() == 1) &amp;&amp; (result.negative == false)</code></li>
+</ul>
 <h4 id="fn-bigint_from_bases-str-base-int-resultbigint-str"><code>fn bigint_from_base(s: Str, base: Int) -&gt; Result[BigInt, Str]</code><a class="headerlink" href="#fn-bigint_from_bases-str-base-int-resultbigint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse a string in base 2..36 (optional leading - or +).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>base &gt;= 2 &amp;&amp; base &lt;= 36</code></li>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result.is_ok == false)</code></li>
 </ul>
 <h4 id="fn-bigint_from_hexs-str-resultbigint-str"><code>fn bigint_from_hex(s: Str) -&gt; Result[BigInt, Str]</code><a class="headerlink" href="#fn-bigint_from_hexs-str-resultbigint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse hexadecimal ("ff", "-1a"). Case-insensitive; no "0x" prefix.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result.is_ok == false)</code></li>
+</ul>
 <h4 id="fn-bigint_to_baseb-bigint-base-int-str"><code>fn bigint_to_base(b: &amp;BigInt, base: Int) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_baseb-bigint-base-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert to a string in base 2..36 (digits 0-9, A-Z; "-" prefix for negatives). Returns "" for an invalid base.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((base &lt; 2) || (base &gt; 36)) =&gt; (result == "")</code></li>
+</ul>
 <h4 id="fn-bigint_to_hexb-bigint-str"><code>fn bigint_to_hex(b: &amp;BigInt) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_hexb-bigint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Lowercase hexadecimal (matches the parse examples "ff"/"-1a").</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h4 id="fn-bigint_to_intb-bigint-resultint-str"><code>fn bigint_to_int(b: &amp;BigInt) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-bigint_to_intb-bigint-resultint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Range-checked conversion to Int (i64). Err on overflow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(b.digits.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h4 id="fn-bigint_to_u64b-bigint-resultuint64-str"><code>fn bigint_to_u64(b: &amp;BigInt) -&gt; Result[UInt64, Str]</code><a class="headerlink" href="#fn-bigint_to_u64b-bigint-resultuint64-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert to UInt64 (0 .. 2^64-1). Negative or &gt;= 2^64 -&gt; Err.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(b.digits.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h4 id="fn-bigint_to_u128b-bigint-resultuint128-str"><code>fn bigint_to_u128(b: &amp;BigInt) -&gt; Result[UInt128, Str]</code><a class="headerlink" href="#fn-bigint_to_u128b-bigint-resultuint128-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert to UInt128 (0 .. 2^128-1). Negative or &gt;= 2^128 -&gt; Err.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(b.digits.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h4 id="fn-bigint_to_i128b-bigint-resultint128-str"><code>fn bigint_to_i128(b: &amp;BigInt) -&gt; Result[Int128, Str]</code><a class="headerlink" href="#fn-bigint_to_i128b-bigint-resultint128-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert to Int128 (-2^127 .. 2^127-1). Out of range -&gt; Err.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(b.digits.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h4 id="fn-bigint_is_oneb-bigint-bool"><code>fn bigint_is_one(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_oneb-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-- Predicates ---------------------------------------------------------------</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (b.negative == false)</code></li>
+</ul>
 <h4 id="fn-bigint_is_evenb-bigint-bool"><code>fn bigint_is_even(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_evenb-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the value is even.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == false) =&gt; (b.digits.len() &gt; 0)</code></li>
+</ul>
 <h4 id="fn-bigint_is_oddb-bigint-bool"><code>fn bigint_is_odd(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_oddb-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the value is odd.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (b.digits.len() &gt; 0)</code></li>
+</ul>
 <h4 id="fn-bigint_is_negativeb-bigint-bool"><code>fn bigint_is_negative(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_negativeb-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the value is negative.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (b.negative == true)</code></li>
+</ul>
 <h4 id="fn-bigint_diva-bigint-b-bigint-bigint"><code>fn bigint_div(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_diva-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncating division (quotient of bigint_div_mod).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigint_is_zero(b)</code></li>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
 </ul>
 <h4 id="fn-bigint_pow_modbase-bigint-exp-bigint-m-bigint-bigint"><code>fn bigint_pow_mod(base: &amp;BigInt, exp: &amp;BigInt, m: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_pow_modbase-bigint-exp-bigint-m-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3627,6 +3893,7 @@
 <ul>
 <li><strong>Precondition:</strong> <code>!bigint_is_zero(m)</code></li>
 <li><strong>Precondition:</strong> <code>!bigint_is_negative(exp)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))) &amp;&amp; (result.negative == false)</code></li>
 </ul>
 <h4 id="fn-bigint_sqrtb-bigint-bigint"><code>fn bigint_sqrt(b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_sqrtb-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3634,6 +3901,7 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigint_is_negative(b)</code></li>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
 </ul>
 <h4 id="fn-bigint_sqrt_remb-bigint-bigint-bigint"><code>fn bigint_sqrt_rem(b: &amp;BigInt) -&gt; (BigInt, BigInt)</code><a class="headerlink" href="#fn-bigint_sqrt_remb-bigint-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3641,29 +3909,43 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>!bigint_is_negative(b)</code></li>
+<li><strong>Postcondition:</strong> <code>(((result._0.negative == true) =&gt; (result._0.digits.len() &gt; 0)) &amp;&amp; ((result._0.digits.len() == 0) =&gt; (result._0.negative == false))) &amp;&amp; (((result._1.negative == true) =&gt; (result._1.digits.len() &gt; 0)) &amp;&amp; ((result._1.digits.len() == 0) =&gt; (result._1.negative == false)))</code></li>
 </ul>
 <h4 id="fn-bigint_lcma-bigint-b-bigint-bigint"><code>fn bigint_lcm(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_lcma-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Least common multiple. lcm(0, x) == 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_ext_gcda-bigint-b-bigint-bigint-bigint-bigint"><code>fn bigint_ext_gcd(a: &amp;BigInt, b: &amp;BigInt) -&gt; (BigInt, BigInt, BigInt)</code><a class="headerlink" href="#fn-bigint_ext_gcda-bigint-b-bigint-bigint-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Extended Euclidean algorithm: returns (g, x, y) with a<em>x + b</em>y == g, g = gcd(|a|, |b|) &gt; 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((((result._0.negative == true) =&gt; (result._0.digits.len() &gt; 0)) &amp;&amp; ((result._0.digits.len() == 0) =&gt; (result._0.negative == false))) &amp;&amp; (result._0.negative == false)) &amp;&amp; (((result._1.negative == true) =&gt; (result._1.digits.len() &gt; 0)) &amp;&amp; ((result._1.digits.len() == 0) =&gt; (result._1.negative == false)))) &amp;&amp; (((result._2.negative == true) =&gt; (result._2.digits.len() &gt; 0)) &amp;&amp; ((result._2.digits.len() == 0) =&gt; (result._2.negative == false)))</code></li>
+</ul>
 <h4 id="fn-bigint_is_primeb-bigint-bool"><code>fn bigint_is_prime(b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_is_primeb-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Miller-Rabin primality test. Deterministic for n &lt; 3.3e24 (bases 2..37), probabilistic (error &lt; 4^-rounds) above.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (b.negative == false)</code></li>
+</ul>
 <h4 id="fn-bigint_next_primeb-bigint-bigint"><code>fn bigint_next_prime(b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_next_primeb-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Smallest prime strictly greater than b. next_prime(1) == 2.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))) &amp;&amp; (result.negative == false)</code></li>
+</ul>
 <h4 id="fn-bigint_factorialn-int-bigint"><code>fn bigint_factorial(n: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_factorialn-int-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>n! for n &gt;= 0. O(n) BigInt multiplications.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>n &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
 </ul>
 <h4 id="fn-bigint_binomialn-int-k-int-bigint"><code>fn bigint_binomial(n: Int, k: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_binomialn-int-k-int-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3673,6 +3955,7 @@
 <li><strong>Precondition:</strong> <code>n &gt;= 0</code></li>
 <li><strong>Precondition:</strong> <code>k &gt;= 0</code></li>
 <li><strong>Precondition:</strong> <code>k &lt;= n</code></li>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
 </ul>
 <h4 id="fn-bigint_fibonaccin-int-bigint"><code>fn bigint_fibonacci(n: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_fibonaccin-int-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3680,54 +3963,86 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>n &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
 </ul>
 <h4 id="fn-bigint_bit_anda-bigint-b-bigint-bigint"><code>fn bigint_bit_and(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_bit_anda-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Bitwise AND on the two's-complement limbs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_bit_ora-bigint-b-bigint-bigint"><code>fn bigint_bit_or(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_bit_ora-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Bitwise OR on the two's-complement limbs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_bit_xora-bigint-b-bigint-bigint"><code>fn bigint_bit_xor(a: &amp;BigInt, b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_bit_xora-bigint-b-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Bitwise XOR on the two's-complement limbs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
+</ul>
 <h4 id="fn-bigint_shift_rightb-bigint-n-int-bigint"><code>fn bigint_shift_right(b: &amp;BigInt, n: Int) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_shift_rightb-bigint-n-int-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Arithmetic (floor) right shift by n bits: b &gt;&gt; n. For negative b this rounds toward -inf (true arithmetic shift).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>n &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>((result.negative == true) =&gt; (result.digits.len() &gt; 0)) &amp;&amp; ((result.digits.len() == 0) =&gt; (result.negative == false))</code></li>
 </ul>
 <h4 id="fn-bigint_popcountb-bigint-int"><code>fn bigint_popcount(b: &amp;BigInt) -&gt; Int</code><a class="headerlink" href="#fn-bigint_popcountb-bigint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of set bits in |b| (well-defined for all signs).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-bigint_bit_lenb-bigint-int"><code>fn bigint_bit_len(b: &amp;BigInt) -&gt; Int</code><a class="headerlink" href="#fn-bigint_bit_lenb-bigint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Bits needed to represent |b|; 0 for zero.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-bigint_eqa-bigint-b-bigint-bool"><code>fn bigint_eq(a: &amp;BigInt, b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_eqa-bigint-b-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-- Comparison wrappers ------------------------------------------------------</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigint_compare(a, b) == 0)</code></li>
+</ul>
 <h4 id="fn-bigint_lta-bigint-b-bigint-bool"><code>fn bigint_lt(a: &amp;BigInt, b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_lta-bigint-b-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Strictly less than.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigint_compare(a, b) &lt; 0)</code></li>
+</ul>
 <h4 id="fn-bigint_lea-bigint-b-bigint-bool"><code>fn bigint_le(a: &amp;BigInt, b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_lea-bigint-b-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Less than or equal.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigint_compare(a, b) &lt;= 0)</code></li>
+</ul>
 <h4 id="fn-bigint_gta-bigint-b-bigint-bool"><code>fn bigint_gt(a: &amp;BigInt, b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_gta-bigint-b-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Strictly greater than.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigint_compare(a, b) &gt; 0)</code></li>
+</ul>
 <h4 id="fn-bigint_gea-bigint-b-bigint-bool"><code>fn bigint_ge(a: &amp;BigInt, b: &amp;BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_gea-bigint-b-bigint-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Greater than or equal.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigint_compare(a, b) &gt;= 0)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="convertxi"><code>convert.xi</code><a class="headerlink" href="#convertxi" title="Permanent link">&para;</a></h2>
@@ -3735,34 +4050,58 @@
 <blockquote>
 <p>Base58 (Bitcoin alphabet) encoding of <code>n</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n == 0) =&gt; (result == "1")) &amp;&amp; ((n &lt; 0) =&gt; (result != ""))</code></li>
+</ul>
 <h5 id="fn-from_base58s-str-optionint"><code>fn from_base58(s: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-from_base58s-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decode base58; None on invalid characters or overflow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result is None)</code></li>
+</ul>
 <h5 id="fn-to_base62n-int-str"><code>fn to_base62(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-to_base62n-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts an integer to its Base62 representation ("0-9A-Za-z"). n == 0 yields "0". Negative numbers get a '-' prefix. Complexity: O(log_62 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n == 0) =&gt; (result == "0")) &amp;&amp; ((n &lt; 0) =&gt; (result != ""))</code></li>
+</ul>
 <h5 id="fn-from_base62s-str-optionint"><code>fn from_base62(s: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-from_base62s-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parses a Base62 string back into an integer. Returns None on invalid characters, overflow, or an empty string. An optional leading '-'/'+' is accepted. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result is None)</code></li>
+</ul>
 <h5 id="fn-to_ascii85data-vecuint8-str"><code>fn to_ascii85(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-to_ascii85data-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Adobe Ascii85 encoding of the bytes (see also xiom.convert.ascii85).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == "")</code></li>
+</ul>
 <h5 id="fn-from_ascii85s-str-optionvecuint8"><code>fn from_ascii85(s: Str) -&gt; Option[Vec[UInt8]]</code><a class="headerlink" href="#fn-from_ascii85s-str-optionvecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decode Ascii85 into bytes; None on malformed input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result is Some(_))</code></li>
+</ul>
 <h5 id="fn-to_romann-int-optionstr"><code>fn to_roman(n: Int) -&gt; Option[Str]</code><a class="headerlink" href="#fn-to_romann-int-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Roman numeral for 1..3999, or None outside that range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((n &lt;= 0) || (n &gt; 3999)) =&gt; (result is None)) &amp;&amp; (((n &gt;= 1) &amp;&amp; (n &lt;= 3999)) =&gt; (result is Some(_)))</code></li>
+</ul>
 <h5 id="fn-from_romans-str-optionint"><code>fn from_roman(s: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-from_romans-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parse a Roman numeral; None on invalid input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result is None)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3771,46 +4110,79 @@
 <blockquote>
 <p>Raw 64-bit IEEE-754 bit pattern of f. FALLBACK (TODO(compiler): needs bitcast intrinsic): returns 0 until one lands. Do not rely on the value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0</code></li>
+</ul>
 <h5 id="fn-bits_to_floatbits-int-float64"><code>fn bits_to_float(bits: Int) -&gt; Float64</code><a class="headerlink" href="#fn-bits_to_floatbits-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Float64 reconstructed from a raw 64-bit IEEE-754 bit pattern. FALLBACK (TODO(compiler): needs bitcast intrinsic): returns 0.0 until one lands. Do not rely on the value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0</code></li>
+</ul>
 <h5 id="fn-float_mantissaf-float64-int"><code>fn float_mantissa(f: Float64) -&gt; Int</code><a class="headerlink" href="#fn-float_mantissaf-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The significand of f as an integer (implicit leading bit included for normal values; no implicit bit for subnormals). Zero, NaN, and infinities map to 0 (documented). Exact: computed by scaling |f| by exact powers of two until it lies in [1, 2), then multiplying by 2^52 (or 2^(e+1074) for subnormals). Complexity: O(|exponent|) -- at most ~1074 iterations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-float_exponentf-float64-int"><code>fn float_exponent(f: Float64) -&gt; Int</code><a class="headerlink" href="#fn-float_exponentf-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unbiased binary exponent of |f|: the unique e with 2^e &lt;= |f| &lt; 2^(e+1). Zero, NaN, and infinities map to 0 (documented; IEEE's stored exponent of zero would be -1023, but 0 is the conventional frexp-style result). Exact via repeated halving/doubling. Complexity: O(|e|) -- at most ~1074 iterations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1074) &amp;&amp; (result &lt;= 1023)</code></li>
+</ul>
 <h5 id="fn-float_is_subnormalf-float64-bool"><code>fn float_is_subnormal(f: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-float_is_subnormalf-float64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff f is a subnormal value: 0 &lt; |f| &lt; 2^-1022 (the minimum normal). Zero, NaN, and infinities are not subnormal. Exact via comparison. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == false) || (f != 0)</code></li>
+</ul>
 <h5 id="fn-float_is_nanf-float64-bool"><code>fn float_is_nan(f: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-float_is_nanf-float64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff f is NaN (f != f is the IEEE identity). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (f != f)</code></li>
+</ul>
 <h5 id="fn-float_is_infinitef-float64-bool"><code>fn float_is_infinite(f: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-float_is_infinitef-float64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff f is +inf or -inf (checked against 1.0/0.0 and -1.0/0.0). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == ((f == 1 / 0) || (f == -1 / 0))</code></li>
+</ul>
 <h5 id="fn-float_next_upf-float64-float64"><code>fn float_next_up(f: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-float_next_upf-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest Float64 strictly greater than f.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt; f) || (result != result)) || (f == 1 / 0)</code></li>
+</ul>
 <h5 id="fn-float_next_downf-float64-float64"><code>fn float_next_down(f: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-float_next_downf-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Largest Float64 strictly less than f.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &lt; f) || (result != result)) || (f == -1 / 0)</code></li>
+</ul>
 <h5 id="fn-float_ulpf-float64-float64"><code>fn float_ulp(f: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-float_ulpf-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit in the last place of f: the distance to the next representable value. NaN for NaN/infinite inputs; 5e-324 for zero (subnormal step).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-float_classifyf-float64-str"><code>fn float_classify(f: Float64) -&gt; Str</code><a class="headerlink" href="#fn-float_classifyf-float64-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Classification string: "nan", "inf", "-inf", "subnormal", "zero", or "normal" (checked in that order). The "nan" branch uses f != f (IEEE). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((((result == "nan") || (result == "inf")) || (result == "-inf")) || (result == "subnormal")) || (result == "zero")) || (result == "normal")</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5104,22 +5476,37 @@
 <blockquote>
 <p>Parses a decimal string (optional leading '-'/'+'). None on invalid input (empty string or non-digit character). Complexity: O(n^2) accumulation.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result is None)</code></li>
+</ul>
 <h5 id="fn-bigint_to_strb-bigint-str_1"><code>fn bigint_to_str(b: BigInt) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_strb-bigint-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decimal string representation. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h5 id="fn-bigint_to_hexb-bigint-str_1"><code>fn bigint_to_hex(b: BigInt) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_hexb-bigint-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lowercase hexadecimal string representation ("ff", "-1a"). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h5 id="fn-bigint_to_binb-bigint-str"><code>fn bigint_to_bin(b: BigInt) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_binb-bigint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binary string representation ("0"/"1" digits). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h5 id="fn-bigint_to_octb-bigint-str"><code>fn bigint_to_oct(b: BigInt) -&gt; Str</code><a class="headerlink" href="#fn-bigint_to_octb-bigint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Octal string representation. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h5 id="fn-bigint_adda-bigint-b-bigint-bigint_1"><code>fn bigint_add(a: BigInt, b: BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_adda-bigint-b-bigint-bigint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sum a + b. Complexity: O(n).</p>
@@ -5159,6 +5546,9 @@
 <blockquote>
 <p>Three-way comparison: -1, 0, or 1 ordering a vs b. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1) &amp;&amp; (result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-bigint_eqa-bigint-b-bigint-bool_1"><code>fn bigint_eq(a: BigInt, b: BigInt) -&gt; Bool</code><a class="headerlink" href="#fn-bigint_eqa-bigint-b-bigint-bool_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether a equals b. Complexity: O(n).</p>
@@ -5275,10 +5665,16 @@
 <blockquote>
 <p>Parses "num/den" (optional signs) or a decimal string ("3.14", "-0.5"). None on invalid input, empty parts, or a zero denominator. Complexity: O(n^2) via the bigint accumulation.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "") =&gt; (result is None)</code></li>
+</ul>
 <h5 id="fn-bigrat_to_strr-bigrat-str"><code>fn bigrat_to_str(r: BigRat) -&gt; Str</code><a class="headerlink" href="#fn-bigrat_to_strr-bigrat-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>String representation: "num" when the denominator is 1, else "num/den". Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h5 id="fn-bigrat_numeratorr-bigrat-bigint"><code>fn bigrat_numerator(r: BigRat) -&gt; BigInt</code><a class="headerlink" href="#fn-bigrat_numeratorr-bigrat-bigint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The numerator (a copy). Complexity: O(n).</p>
@@ -5307,10 +5703,16 @@
 <blockquote>
 <p>Negation. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.num.negative == true) =&gt; (result.num.negative == false)</code></li>
+</ul>
 <h5 id="fn-bigrat_absa-bigrat-bigrat"><code>fn bigrat_abs(a: BigRat) -&gt; BigRat</code><a class="headerlink" href="#fn-bigrat_absa-bigrat-bigrat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Absolute value. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.num.negative == false</code></li>
+</ul>
 <h5 id="fn-bigrat_recipa-bigrat-optionbigrat"><code>fn bigrat_recip(a: BigRat) -&gt; Option[BigRat]</code><a class="headerlink" href="#fn-bigrat_recipa-bigrat-optionbigrat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reciprocal 1/a. None when a is zero. Complexity: O(n^2) reduction.</p>
@@ -5335,6 +5737,9 @@
 <blockquote>
 <p>Three-way comparison via cross-multiplication: -1, 0, or 1. Valid because denominators are positive. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= -1) &amp;&amp; (result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-bigrat_eqa-bigrat-b-bigrat-bool"><code>fn bigrat_eq(a: BigRat, b: BigRat) -&gt; Bool</code><a class="headerlink" href="#fn-bigrat_eqa-bigrat-b-bigrat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether a equals b. Complexity: O(n^2).</p>
@@ -5343,6 +5748,9 @@
 <blockquote>
 <p>Converts to Float64 (bigint magnitude accumulation, then division). The result may be inf for values beyond the Float64 range (documented). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((r.num.negative == false) =&gt; ((result &gt;= 0) || (result != result))) &amp;&amp; ((r.num.negative == true) =&gt; ((result &lt;= 0) || (result != result)))</code></li>
+</ul>
 <h5 id="fn-bigrat_to_integerr-bigrat-optionbigint"><code>fn bigrat_to_integer(r: BigRat) -&gt; Option[BigInt]</code><a class="headerlink" href="#fn-bigrat_to_integerr-bigrat-optionbigint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The integer value of r; None when r is not integral. Complexity: O(1) (reduced form: integral iff den == 1).</p>

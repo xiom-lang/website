@@ -7022,46 +7022,84 @@
 <blockquote>
 <p>Construct a 2x2 matrix from elements in row-major reading order (a11 a12 / a21 a22) stored column-major. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((result.m00 == a11) || (result.m00 != result.m00)) &amp;&amp; ((result.m01 == a12) || (result.m01 != result.m01))) &amp;&amp; ((result.m10 == a21) || (result.m10 != result.m10))) &amp;&amp; ((result.m11 == a22) || (result.m11 != result.m11))</code></li>
+</ul>
 <h5 id="fn-mat2_mula-mat2-b-mat2-mat2"><code>fn mat2_mul(a: Mat2, b: Mat2) -&gt; Mat2</code><a class="headerlink" href="#fn-mat2_mula-mat2-b-mat2-mat2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Matrix product a * b (2x2). O(8) ops.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((result.m00 == a.m00 * b.m00 + a.m01 * b.m10) || (result.m00 != result.m00)) &amp;&amp; ((result.m01 == a.m00 * b.m01 + a.m01 * b.m11) || (result.m01 != result.m01))) &amp;&amp; ((result.m10 == a.m10 * b.m00 + a.m11 * b.m10) || (result.m10 != result.m10))) &amp;&amp; ((result.m11 == a.m10 * b.m01 + a.m11 * b.m11) || (result.m11 != result.m11))</code></li>
+</ul>
 <h5 id="fn-mat2_detm-mat2-float64"><code>fn mat2_det(m: Mat2) -&gt; Float64</code><a class="headerlink" href="#fn-mat2_detm-mat2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Determinant of a 2x2 matrix: m00<em>m11 - m01</em>m10. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == m.m00 * m.m11 - m.m01 * m.m10) || (result != result)</code></li>
+</ul>
 <h5 id="fn-mat2_invm-mat2-optionmat2"><code>fn mat2_inv(m: Mat2) -&gt; Option[Mat2]</code><a class="headerlink" href="#fn-mat2_invm-mat2-optionmat2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse of a 2x2 matrix via the adjugate formula. Returns None when the determinant is near zero (|det| &lt; 1e-12, documented singularity cutoff). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is None) =&gt; ((m.m00 * m.m11 - m.m01 * m.m10) * (m.m00 * m.m11 - m.m01 * m.m10) &lt; 0.000000000000000000000001)</code></li>
+</ul>
 <h5 id="fn-mat2_transposem-mat2-mat2"><code>fn mat2_transpose(m: Mat2) -&gt; Mat2</code><a class="headerlink" href="#fn-mat2_transposem-mat2-mat2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Transpose of a 2x2 matrix. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((result.m00 == m.m00) || (result.m00 != result.m00)) &amp;&amp; ((result.m01 == m.m10) || (result.m01 != result.m01))) &amp;&amp; ((result.m10 == m.m01) || (result.m10 != result.m10))) &amp;&amp; ((result.m11 == m.m11) || (result.m11 != result.m11))</code></li>
+</ul>
 <h5 id="fn-mat3_newa11-float64-a12-float64-a13-float64-a21-float64-a22-float64-a23-float64-a31-float64-a32-float64-a33-float64-mat3"><code>fn mat3_new(a11: Float64, a12: Float64, a13: Float64, a21: Float64, a22: Float64, a23: Float64, a31: Float64, a32: Float64, a33: Float64) -&gt; Mat3</code><a class="headerlink" href="#fn-mat3_newa11-float64-a12-float64-a13-float64-a21-float64-a22-float64-a23-float64-a31-float64-a32-float64-a33-float64-mat3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a 3x3 matrix from elements in row-major reading order (three rows) stored column-major. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((((result.m00 == a11) || (result.m00 != result.m00)) &amp;&amp; ((result.m01 == a12) || (result.m01 != result.m01))) &amp;&amp; ((result.m02 == a13) || (result.m02 != result.m02))) &amp;&amp; (((result.m10 == a21) || (result.m10 != result.m10)) &amp;&amp; ((result.m11 == a22) || (result.m11 != result.m11)))) &amp;&amp; (((result.m12 == a23) || (result.m12 != result.m12)) &amp;&amp; ((result.m20 == a31) || (result.m20 != result.m20)))) &amp;&amp; (((result.m21 == a32) || (result.m21 != result.m21)) &amp;&amp; ((result.m22 == a33) || (result.m22 != result.m22)))</code></li>
+</ul>
 <h5 id="fn-mat3_mula-mat3-b-mat3-mat3"><code>fn mat3_mul(a: Mat3, b: Mat3) -&gt; Mat3</code><a class="headerlink" href="#fn-mat3_mula-mat3-b-mat3-mat3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Matrix product a * b (3x3). O(27) ops.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.m00 == a.m00 * b.m00 + a.m01 * b.m10 + a.m02 * b.m20) || (result.m00 != result.m00)) &amp;&amp; ((result.m01 == a.m00 * b.m01 + a.m01 * b.m11 + a.m02 * b.m21) || (result.m01 != result.m01)) &amp;&amp; ((result.m02 == a.m00 * b.m02 + a.m01 * b.m12 + a.m02 * b.m22) || (result.m02 != result.m02))</code></li>
+<li><strong>Postcondition:</strong> <code>((result.m10 == a.m10 * b.m00 + a.m11 * b.m10 + a.m12 * b.m20) || (result.m10 != result.m10)) &amp;&amp; ((result.m11 == a.m10 * b.m01 + a.m11 * b.m11 + a.m12 * b.m21) || (result.m11 != result.m11)) &amp;&amp; ((result.m12 == a.m10 * b.m02 + a.m11 * b.m12 + a.m12 * b.m22) || (result.m12 != result.m12))</code></li>
+<li><strong>Postcondition:</strong> <code>((result.m20 == a.m20 * b.m00 + a.m21 * b.m10 + a.m22 * b.m20) || (result.m20 != result.m20)) &amp;&amp; ((result.m21 == a.m20 * b.m01 + a.m21 * b.m11 + a.m22 * b.m21) || (result.m21 != result.m21)) &amp;&amp; ((result.m22 == a.m20 * b.m02 + a.m21 * b.m12 + a.m22 * b.m22) || (result.m22 != result.m22))</code></li>
+</ul>
 <h5 id="fn-mat3_detm-mat3-float64"><code>fn mat3_det(m: Mat3) -&gt; Float64</code><a class="headerlink" href="#fn-mat3_detm-mat3-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Determinant of a 3x3 matrix by cofactor expansion. O(9) ops.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == m.m00 * (m.m11 * m.m22 - m.m12 * m.m21) - m.m01 * (m.m10 * m.m22 - m.m12 * m.m20) + m.m02 * (m.m10 * m.m21 - m.m11 * m.m20)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-mat3_invm-mat3-optionmat3"><code>fn mat3_inv(m: Mat3) -&gt; Option[Mat3]</code><a class="headerlink" href="#fn-mat3_invm-mat3-optionmat3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse of a 3x3 matrix via the adjugate formula. Returns None when the determinant is near zero (|det| &lt; 1e-12, documented singularity cutoff). O(27) ops.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is None) =&gt; (((m.m00 * (m.m11 * m.m22 - m.m12 * m.m21) - m.m01 * (m.m10 * m.m22 - m.m12 * m.m20) + m.m02 * (m.m10 * m.m21 - m.m11 * m.m20)) * (m.m00 * (m.m11 * m.m22 - m.m12 * m.m21) - m.m01 * (m.m10 * m.m22 - m.m12 * m.m20) + m.m02 * (m.m10 * m.m21 - m.m11 * m.m20))) &lt; 0.000000000000000000000001)</code></li>
+</ul>
 <h5 id="fn-mat3_transposem-mat3-mat3"><code>fn mat3_transpose(m: Mat3) -&gt; Mat3</code><a class="headerlink" href="#fn-mat3_transposem-mat3-mat3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Transpose of a 3x3 matrix. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((((result.m00 == m.m00) || (result.m00 != result.m00)) &amp;&amp; ((result.m01 == m.m10) || (result.m01 != result.m01))) &amp;&amp; ((result.m02 == m.m20) || (result.m02 != result.m02))) &amp;&amp; (((result.m10 == m.m01) || (result.m10 != result.m10)) &amp;&amp; ((result.m11 == m.m11) || (result.m11 != result.m11)))) &amp;&amp; (((result.m12 == m.m21) || (result.m12 != result.m12)) &amp;&amp; ((result.m20 == m.m02) || (result.m20 != result.m20)))) &amp;&amp; (((result.m21 == m.m12) || (result.m21 != result.m21)) &amp;&amp; ((result.m22 == m.m22) || (result.m22 != result.m22)))</code></li>
+</ul>
 <h5 id="fn-mat4_newa11-float64-a12-float64-a13-float64-a14-float64-a21-float64-a22-float64-a23-float64-a24-float64-a31-float64-a32-float64-a33-float64-a34-float64-a41-float64-a42-float64-a43-float64-a44-float64-mat4"><code>fn mat4_new(a11: Float64, a12: Float64, a13: Float64, a14: Float64, a21: Float64, a22: Float64, a23: Float64, a24: Float64, a31: Float64, a32: Float64, a33: Float64, a34: Float64, a41: Float64, a42: Float64, a43: Float64, a44: Float64) -&gt; Mat4</code><a class="headerlink" href="#fn-mat4_newa11-float64-a12-float64-a13-float64-a14-float64-a21-float64-a22-float64-a23-float64-a24-float64-a31-float64-a32-float64-a33-float64-a34-float64-a41-float64-a42-float64-a43-float64-a44-float64-mat4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a 4x4 matrix from elements in row-major reading order (four rows) stored column-major. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.m00 == a11) || (result.m00 != result.m00)) &amp;&amp; ((result.m01 == a12) || (result.m01 != result.m01)) &amp;&amp; ((result.m02 == a13) || (result.m02 != result.m02)) &amp;&amp; ((result.m03 == a14) || (result.m03 != result.m03))</code></li>
+<li><strong>Postcondition:</strong> <code>((result.m10 == a21) || (result.m10 != result.m10)) &amp;&amp; ((result.m11 == a22) || (result.m11 != result.m11)) &amp;&amp; ((result.m12 == a23) || (result.m12 != result.m12)) &amp;&amp; ((result.m13 == a24) || (result.m13 != result.m13))</code></li>
+<li><strong>Postcondition:</strong> <code>((result.m20 == a31) || (result.m20 != result.m20)) &amp;&amp; ((result.m21 == a32) || (result.m21 != result.m21)) &amp;&amp; ((result.m22 == a33) || (result.m22 != result.m22)) &amp;&amp; ((result.m23 == a34) || (result.m23 != result.m23))</code></li>
+<li><strong>Postcondition:</strong> <code>((result.m30 == a41) || (result.m30 != result.m30)) &amp;&amp; ((result.m31 == a42) || (result.m31 != result.m31)) &amp;&amp; ((result.m32 == a43) || (result.m32 != result.m32)) &amp;&amp; ((result.m33 == a44) || (result.m33 != result.m33))</code></li>
+</ul>
 <h5 id="fn-mat4_mula-mat4-b-mat4-mat4"><code>fn mat4_mul(a: Mat4, b: Mat4) -&gt; Mat4</code><a class="headerlink" href="#fn-mat4_mula-mat4-b-mat4-mat4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Matrix product a * b (4x4). O(64) ops.</p>
@@ -7078,46 +7116,82 @@
 <blockquote>
 <p>Transpose of a 4x4 matrix. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.m00 == m.m00) || (result.m00 != result.m00)) &amp;&amp; ((result.m01 == m.m10) || (result.m01 != result.m01)) &amp;&amp; ((result.m02 == m.m20) || (result.m02 != result.m02)) &amp;&amp; ((result.m03 == m.m30) || (result.m03 != result.m03))</code></li>
+<li><strong>Postcondition:</strong> <code>((result.m10 == m.m01) || (result.m10 != result.m10)) &amp;&amp; ((result.m11 == m.m11) || (result.m11 != result.m11)) &amp;&amp; ((result.m12 == m.m21) || (result.m12 != result.m12)) &amp;&amp; ((result.m13 == m.m31) || (result.m13 != result.m13))</code></li>
+<li><strong>Postcondition:</strong> <code>((result.m20 == m.m02) || (result.m20 != result.m20)) &amp;&amp; ((result.m21 == m.m12) || (result.m21 != result.m21)) &amp;&amp; ((result.m22 == m.m22) || (result.m22 != result.m22)) &amp;&amp; ((result.m23 == m.m32) || (result.m23 != result.m23))</code></li>
+<li><strong>Postcondition:</strong> <code>((result.m30 == m.m03) || (result.m30 != result.m30)) &amp;&amp; ((result.m31 == m.m13) || (result.m31 != result.m31)) &amp;&amp; ((result.m32 == m.m23) || (result.m32 != result.m32)) &amp;&amp; ((result.m33 == m.m33) || (result.m33 != result.m33))</code></li>
+</ul>
 <h5 id="fn-mat_identityn-int-vecvecfloat64"><code>fn mat_identity(n: Int) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_identityn-int-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>n x n identity matrix. Returns an empty matrix for n &lt;= 0 (documented). O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n &lt;= 0) =&gt; (result.len() == 0)) &amp;&amp; ((n &gt; 0) =&gt; (result.len() == n))</code></li>
+</ul>
 <h5 id="fn-mat_mula-vecvecfloat64-b-vecvecfloat64-vecvecfloat64"><code>fn mat_mul(a: &amp;Vec[Vec[Float64]], b: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_mula-vecvecfloat64-b-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dynamic matrix product a * b. Returns an empty matrix when the inner dimensions disagree (a.cols != b.rows), or when either input is empty (documented; no silent garbage). O(rows * cols * inner).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() == 0) || (result.len() == a.len())</code></li>
+</ul>
 <h5 id="fn-mat_detm-vecvecfloat64-float64"><code>fn mat_det(m: &amp;Vec[Vec[Float64]]) -&gt; Float64</code><a class="headerlink" href="#fn-mat_detm-vecvecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Determinant of a dynamic square matrix via Laplace cofactor expansion. Returns NaN (0.0/0.0) for non-square or empty input (documented). O(n!).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(m.len() == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-mat_invm-vecvecfloat64-optionvecvecfloat64"><code>fn mat_inv(m: &amp;Vec[Vec[Float64]]) -&gt; Option[Vec[Vec[Float64]]]</code><a class="headerlink" href="#fn-mat_invm-vecvecfloat64-optionvecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse of a dynamic square matrix via Gauss-Jordan elimination. Returns None for non-square, empty, or (numerically) singular input (documented; pivot tolerance 1e-12). O(n^3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(m.len() == 0) =&gt; (result is None)</code></li>
+</ul>
 <h5 id="fn-mat_translatem-vecvecfloat64-x-float64-y-float64-z-float64-vecvecfloat64"><code>fn mat_translate(m: &amp;Vec[Vec[Float64]], x: Float64, y: Float64, z: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_translatem-vecvecfloat64-x-float64-y-float64-z-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>m * T where T is the 4x4 translation matrix by (x, y, z). When m is not 4x4 the input is returned unchanged (documented). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == m.len()</code></li>
+</ul>
 <h5 id="fn-mat_rotatem-vecvecfloat64-angle-float64-axis-vecfloat64-vecvecfloat64"><code>fn mat_rotate(m: &amp;Vec[Vec[Float64]], angle: Float64, axis: &amp;Vec[Float64]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_rotatem-vecvecfloat64-angle-float64-axis-vecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>m * R where R is the 4x4 rotation by angle radians about axis (axis is normalised internally). A zero axis returns m unchanged (documented); a non-4x4 m is returned unchanged. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == m.len()</code></li>
+</ul>
 <h5 id="fn-mat_scalem-vecvecfloat64-x-float64-y-float64-z-float64-vecvecfloat64"><code>fn mat_scale(m: &amp;Vec[Vec[Float64]], x: Float64, y: Float64, z: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_scalem-vecvecfloat64-x-float64-y-float64-z-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>m * S where S is the 4x4 scale matrix by (x, y, z). A non-4x4 m is returned unchanged (documented). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == m.len()</code></li>
+</ul>
 <h5 id="fn-mat_look_ateye-vecfloat64-target-vecfloat64-up-vecfloat64-vecvecfloat64"><code>fn mat_look_at(eye: &amp;Vec[Float64], target: &amp;Vec[Float64], up: &amp;Vec[Float64]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_look_ateye-vecfloat64-target-vecfloat64-up-vecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Right-handed look-at view matrix: camera at eye looking at target with up vector. eye/target/up are length-3 dynamic vectors; vectors of any other length return an empty matrix (documented). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() == 0) || (result.len() == 4)</code></li>
+</ul>
 <h5 id="fn-mat_perspectivefovy-float64-aspect-float64-near-float64-far-float64-vecvecfloat64"><code>fn mat_perspective(fovy: Float64, aspect: Float64, near: Float64, far: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_perspectivefovy-float64-aspect-float64-near-float64-far-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Perspective projection matrix (right-handed, standard OpenGL mapping to NDC [-1, 1]^3). Returns an empty matrix for fovy &lt;= 0, aspect &lt;= 0, or near == far (documented). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() == 0) || (result.len() == 4)</code></li>
+</ul>
 <h5 id="fn-mat_ortholeft-float64-right-float64-bottom-float64-top-float64-near-float64-far-float64-vecvecfloat64"><code>fn mat_ortho(left: Float64, right: Float64, bottom: Float64, top: Float64, near: Float64, far: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_ortholeft-float64-right-float64-bottom-float64-top-float64-near-float64-far-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Orthographic projection matrix mapping [l, r] x [b, t] x [n, f] to NDC [-1, 1]^3. Returns an empty matrix when any two facing planes coincide (documented). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() == 0) || (result.len() == 4)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -7260,6 +7334,9 @@
 <blockquote>
 <p>Decimal Int to a binary string. n == 0 yields "0"; negatives get a '-' prefix. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n == 0) =&gt; (result == "0")) &amp;&amp; ((n &lt; 0) =&gt; (result != ""))</code></li>
+</ul>
 <h5 id="fn-octal_to_ints-str-resultint-str"><code>fn octal_to_int(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-octal_to_ints-str-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Octal string to Int. Err on invalid input. Complexity: O(len).</p>
@@ -7268,6 +7345,9 @@
 <blockquote>
 <p>Decimal Int to an octal string. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n == 0) =&gt; (result == "0")) &amp;&amp; ((n &lt; 0) =&gt; (result != ""))</code></li>
+</ul>
 <h5 id="fn-hex_to_ints-str-resultint-str"><code>fn hex_to_int(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-hex_to_ints-str-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hexadecimal string to Int. Err on invalid input. Complexity: O(len).</p>
@@ -7276,14 +7356,23 @@
 <blockquote>
 <p>Decimal Int to a hexadecimal string (upper-case digits). Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n == 0) =&gt; (result == "0")) &amp;&amp; ((n &lt; 0) =&gt; (result != ""))</code></li>
+</ul>
 <h5 id="fn-base_n_to_ints-str-base-int-resultint-str"><code>fn base_n_to_int(s: Str, base: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-base_n_to_ints-str-base-int-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parse a string in an arbitrary base (2..36) to Int. Err on invalid input, an out-of-range base, or overflow. Complexity: O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((base &lt; 2) || (base &gt; 36)) =&gt; (result.is_ok == false)</code></li>
+</ul>
 <h5 id="fn-int_to_base_nn-int-base-int-str"><code>fn int_to_base_n(n: Int, base: Int) -&gt; Str</code><a class="headerlink" href="#fn-int_to_base_nn-int-base-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decimal Int to a string in an arbitrary base (2..36). Returns "" for an out-of-range base. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((base &lt; 2) || (base &gt; 36)) =&gt; (result == "")) &amp;&amp; (((base &gt;= 2) &amp;&amp; (base &lt;= 36) &amp;&amp; (n == 0)) =&gt; (result == "0"))</code></li>
+</ul>
 <h5 id="fn-roman_to_ints-str-resultint-str"><code>fn roman_to_int(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-roman_to_ints-str-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Roman numeral string to Int. Err for empty or invalid input; subtractive notation (IV, IX, XL, XC, CD, CM) is supported. Complexity: O(len).</p>
@@ -7292,50 +7381,86 @@
 <blockquote>
 <p>Int to a Roman numeral string (1..3999); "" outside that range. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((n &lt; 1) || (n &gt; 3999)) =&gt; (result == "")) &amp;&amp; (((n &gt;= 1) &amp;&amp; (n &lt;= 3999)) =&gt; (result != ""))</code></li>
+</ul>
 <h5 id="fn-chinese_numeralsn-int-str"><code>fn chinese_numerals(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-chinese_numeralsn-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Int to a Chinese numeral string (supports 0..99999999; larger values return the 亿-form with the remainder documented). Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h5 id="fn-japanese_numeralsn-int-str"><code>fn japanese_numerals(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-japanese_numeralsn-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Int to a Japanese numeral string (〇一...九 + 十百千万; 0..99999999). Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != ""</code></li>
+</ul>
 <h5 id="fn-egyptian_fractionsnumer-int-denom-int-vecint-int"><code>fn egyptian_fractions(numer: Int, denom: Int) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-egyptian_fractionsnumer-int-denom-int-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Greedy Egyptian fraction expansion of numer/denom as (1, unit) pairs. Empty for a non-positive numerator or denominator. Complexity: O(denom).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((numer &lt;= 0) || (denom &lt;= 0)) =&gt; (result.len() == 0)) &amp;&amp; (((numer &gt; 0) &amp;&amp; (denom &gt; 0)) =&gt; (result.len() &gt; 0))</code></li>
+</ul>
 <h5 id="fn-babylonian_numeralsn-int-str"><code>fn babylonian_numerals(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-babylonian_numeralsn-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Babylonian-style base-60 notation: the sexagesimal places of n joined by ';' (a documented approximation of cuneiform numerals). n == 0 yields "0". Complexity: O(log_60 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n == 0) =&gt; (result == "0")) &amp;&amp; ((n != 0) =&gt; (result != ""))</code></li>
+</ul>
 <h5 id="fn-greek_numeralsn-int-str"><code>fn greek_numerals(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-greek_numeralsn-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Int to a Greek alphabetic numeral string (1..999 using the standard archaic digits; "" outside the range). Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((n &lt; 1) || (n &gt; 999)) =&gt; (result == "")) &amp;&amp; (((n &gt;= 1) &amp;&amp; (n &lt;= 999)) =&gt; (result != ""))</code></li>
+</ul>
 <h5 id="fn-continued_fractionx-float64-terms-int-vecint"><code>fn continued_fraction(x: Float64, terms: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-continued_fractionx-float64-terms-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Continued-fraction coefficients of x (at most <code>terms</code> of them). Complexity: O(terms).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((terms &lt;= 0) || (x != x)) =&gt; (result.len() == 0)) &amp;&amp; (((terms &gt; 0) &amp;&amp; (x == x)) =&gt; (result.len() &lt;= terms))</code></li>
+</ul>
 <h5 id="fn-fraction_newnumer-int-denom-int-int-int"><code>fn fraction_new(numer: Int, denom: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-fraction_newnumer-int-denom-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reduced fraction (numer / gcd, denom / gcd) with the sign on the numerator. Returns (0, 1) for denom == 0. Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((denom == 0) =&gt; ((result._0 == 0) &amp;&amp; (result._1 == 1))) &amp;&amp; ((denom != 0) =&gt; (result._1 &gt; 0))</code></li>
+</ul>
 <h5 id="fn-fraction_adda-int-int-b-int-int-int-int"><code>fn fraction_add(a: (Int, Int), b: (Int, Int)) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-fraction_adda-int-int-b-int-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sum of two reduced fractions (reduced again). Complexity: O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._1 &gt; 0</code></li>
+</ul>
 <h5 id="fn-surd_simplifya-int-b-int-int-int"><code>fn surd_simplify(a: Int, b: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-surd_simplifya-int-b-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Simplify sqrt(a)/sqrt(b) to (coefficient, radicand): the largest square factor of a<em>b is pulled out of the radical. Returns (1, 1) for b == 0. Complexity: O(sqrt(a</em>b)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((b == 0) =&gt; ((result._0 == 1) &amp;&amp; (result._1 == 1))) &amp;&amp; (((a == 0) &amp;&amp; (b != 0)) =&gt; ((result._0 == 0) &amp;&amp; (result._1 == 1)))) &amp;&amp; (((a != 0) &amp;&amp; (b != 0) &amp;&amp; ((a * b) &gt; 0)) =&gt; ((result._0 &gt;= 1) &amp;&amp; (result._1 &gt;= 1)))</code></li>
+</ul>
 <h5 id="fn-octonion_adda-vecfloat64-b-vecfloat64-vecfloat64"><code>fn octonion_add(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-octonion_adda-vecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Componentwise sum of two octonions (8 components). Empty for a length mismatch. Complexity: O(8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() == 0) || (result.len() == 8)</code></li>
+</ul>
 <h5 id="fn-sedenion_adda-vecfloat64-b-vecfloat64-vecfloat64"><code>fn sedenion_add(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-sedenion_adda-vecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Componentwise sum of two sedenions (16 components). Empty for a length mismatch. Complexity: O(16).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() == 0) || (result.len() == 16)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -7965,10 +8090,10 @@
 </ul>
 <h5 id="fn-absx-float64-float64"><code>fn abs(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-absx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Absolute value of x. Handles -inf correctly (returns +inf).</p>
+<p>Absolute value of x. Handles -inf correctly (returns +inf); NaN propagates.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
 </ul>
 <h5 id="fn-signumx-float64-int"><code>fn signum(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-signumx-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -8045,50 +8170,86 @@
 <blockquote>
 <p>M/M/1 mean queue length L and mean waiting time W = L/lambda. The tuple is (L, W). Unstable (rho &gt;= 1) returns (+inf, +inf). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((arrival_rate &lt;= 0) || (service_rate &lt;= 0)) =&gt; ((result._0 != result._0) &amp;&amp; (result._1 != result._1))) &amp;&amp; (((arrival_rate &gt; 0) &amp;&amp; (service_rate &gt; 0) &amp;&amp; ((arrival_rate / service_rate) &gt;= 1)) =&gt; ((result._0 == 1 / 0) &amp;&amp; (result._1 == 1 / 0)))) &amp;&amp; (((arrival_rate &gt; 0) &amp;&amp; (service_rate &gt; 0) &amp;&amp; ((arrival_rate / service_rate) &lt; 1)) =&gt; ((result._0 &gt;= 0) &amp;&amp; ((result._1 == result._0 / arrival_rate) || (result._1 != result._1))))</code></li>
+</ul>
 <h5 id="fn-m_m_carrival_rate-float64-service_rate-float64-servers-int-float64-float64"><code>fn m_m_c(arrival_rate: Float64, service_rate: Float64, servers: Int) -&gt; (Float64, Float64)</code><a class="headerlink" href="#fn-m_m_carrival_rate-float64-service_rate-float64-servers-int-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>M/M/c mean queue length L_q and mean waiting time W_q via the Erlang-C formula. The tuple is (L_q, W_q). Unstable returns (+inf, +inf). Complexity: O(c).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((arrival_rate &lt;= 0) || (service_rate &lt;= 0) || (servers &lt;= 0)) =&gt; ((result._0 != result._0) &amp;&amp; (result._1 != result._1))) &amp;&amp; (((arrival_rate &gt; 0) &amp;&amp; (service_rate &gt; 0) &amp;&amp; (servers &gt; 0) &amp;&amp; ((arrival_rate / (service_rate * (?))) &gt;= 1)) =&gt; ((result._0 == 1 / 0) &amp;&amp; (result._1 == 1 / 0)))) &amp;&amp; (((arrival_rate &gt; 0) &amp;&amp; (service_rate &gt; 0) &amp;&amp; (servers &gt; 0) &amp;&amp; ((arrival_rate / (service_rate * (?))) &lt; 1)) =&gt; ((result._0 &gt;= 0) &amp;&amp; ((result._1 == result._0 / arrival_rate) || (result._1 != result._1))))</code></li>
+</ul>
 <h5 id="fn-m_g_1arrival_rate-float64-mean_service-float64-var_service-float64-float64"><code>fn m_g_1(arrival_rate: Float64, mean_service: Float64, var_service: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-m_g_1arrival_rate-float64-mean_service-float64-var_service-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>M/G/1 mean queue length via the Pollaczek-Khinchine formula L_q = lambda^2 (var + mean^2) / (2 (1 - rho)). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((arrival_rate &lt;= 0) || (mean_service &lt;= 0)) =&gt; (result != result)) &amp;&amp; (((arrival_rate &gt; 0) &amp;&amp; (mean_service &gt; 0) &amp;&amp; ((arrival_rate * mean_service) &gt;= 1)) =&gt; (result == 1 / 0))) &amp;&amp; (((arrival_rate &gt; 0) &amp;&amp; (mean_service &gt; 0) &amp;&amp; ((arrival_rate * mean_service) &lt; 1) &amp;&amp; (var_service &gt;= 0)) =&gt; (result &gt;= 0))</code></li>
+</ul>
 <h5 id="fn-g_g_1mean_interarrival-float64-var_interarrival-float64-mean_service-float64-var_service-float64-float64"><code>fn g_g_1(mean_interarrival: Float64, var_interarrival: Float64, mean_service: Float64, var_service: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-g_g_1mean_interarrival-float64-var_interarrival-float64-mean_service-float64-var_service-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>G/G/1 approximate mean waiting time via Kingman's heavy-traffic bound W_q ~ (rho/(1 - rho)) * (c_a^2 + c_s^2)/2 * mean_service. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((((mean_interarrival &lt;= 0) || (mean_service &lt;= 0)) =&gt; (result != result)) &amp;&amp; (((mean_interarrival &gt; 0) &amp;&amp; (mean_service &gt; 0) &amp;&amp; ((mean_service / mean_interarrival) &gt;= 1)) =&gt; (result == 1 / 0))) &amp;&amp; (((mean_interarrival &gt; 0) &amp;&amp; (mean_service &gt; 0) &amp;&amp; ((mean_service / mean_interarrival) &lt; 1) &amp;&amp; (var_interarrival &gt;= 0) &amp;&amp; (var_service &gt;= 0)) =&gt; (result &gt;= 0))</code></li>
+</ul>
 <h5 id="fn-erlang_boffered_load-float64-servers-int-float64"><code>fn erlang_b(offered_load: Float64, servers: Int) -&gt; Float64</code><a class="headerlink" href="#fn-erlang_boffered_load-float64-servers-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Erlang B blocking probability B(c, A) for the M/M/c/c loss system, by the iterative recurrence. Complexity: O(c).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((offered_load &gt;= 0) &amp;&amp; (servers &gt;= 0)) =&gt; (((result &gt;= 0) &amp;&amp; (result &lt;= 1)) || (result != result))) &amp;&amp; ((servers == 0) =&gt; (result == 1))</code></li>
+</ul>
 <h5 id="fn-erlang_coffered_load-float64-servers-int-float64"><code>fn erlang_c(offered_load: Float64, servers: Int) -&gt; Float64</code><a class="headerlink" href="#fn-erlang_coffered_load-float64-servers-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Erlang C delay probability C(c, A) for M/M/c, from the Erlang B value. Complexity: O(c).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((offered_load &gt;= 0) &amp;&amp; (servers &gt; 0)) =&gt; (((result &gt;= 0) &amp;&amp; (result &lt;= 1)) || (result != result))) &amp;&amp; (((offered_load &gt;= 0) &amp;&amp; (servers &gt; 0) &amp;&amp; ((offered_load / (?)) &gt;= 1)) =&gt; (result == 1))</code></li>
+</ul>
 <h5 id="fn-little_lawlambda-float64-w-float64-float64"><code>fn little_law(lambda: Float64, w: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-little_lawlambda-float64-w-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Little's law: number of customers in the system L = lambda * W. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == lambda * w) || (result != result)</code></li>
+</ul>
 <h5 id="fn-utilizationarrival_rate-float64-service_rate-float64-servers-int-float64"><code>fn utilization(arrival_rate: Float64, service_rate: Float64, servers: Int) -&gt; Float64</code><a class="headerlink" href="#fn-utilizationarrival_rate-float64-service_rate-float64-servers-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Server utilization rho = lambda / (mu * c). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((service_rate &lt;= 0) || (servers &lt;= 0)) =&gt; (result != result)) &amp;&amp; (((service_rate &gt; 0) &amp;&amp; (servers &gt; 0)) =&gt; ((result == arrival_rate / (service_rate * (?))) || (result != result)))</code></li>
+</ul>
 <h5 id="fn-queue_lengtharrival_rate-float64-service_rate-float64-servers-int-float64"><code>fn queue_length(arrival_rate: Float64, service_rate: Float64, servers: Int) -&gt; Float64</code><a class="headerlink" href="#fn-queue_lengtharrival_rate-float64-service_rate-float64-servers-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Expected number of customers waiting in the M/M/c queue. Unstable returns +inf. Complexity: O(c).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((arrival_rate &lt;= 0) || (service_rate &lt;= 0) || (servers &lt;= 0)) =&gt; (result != result)) &amp;&amp; (((arrival_rate &gt; 0) &amp;&amp; (service_rate &gt; 0) &amp;&amp; (servers &gt; 0) &amp;&amp; ((arrival_rate / (service_rate * (?))) &gt;= 1)) =&gt; (result == 1 / 0))</code></li>
+</ul>
 <h5 id="fn-waiting_timearrival_rate-float64-service_rate-float64-servers-int-float64"><code>fn waiting_time(arrival_rate: Float64, service_rate: Float64, servers: Int) -&gt; Float64</code><a class="headerlink" href="#fn-waiting_timearrival_rate-float64-service_rate-float64-servers-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Expected waiting time in the M/M/c queue. Unstable returns +inf. Complexity: O(c).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((arrival_rate &lt;= 0) || (service_rate &lt;= 0) || (servers &lt;= 0)) =&gt; (result != result)) &amp;&amp; (((arrival_rate &gt; 0) &amp;&amp; (service_rate &gt; 0) &amp;&amp; (servers &gt; 0) &amp;&amp; ((arrival_rate / (service_rate * (?))) &gt;= 1)) =&gt; (result == 1 / 0))</code></li>
+</ul>
 <h5 id="fn-loss_probabilityarrival_rate-float64-service_rate-float64-capacity-int-float64"><code>fn loss_probability(arrival_rate: Float64, service_rate: Float64, capacity: Int) -&gt; Float64</code><a class="headerlink" href="#fn-loss_probabilityarrival_rate-float64-service_rate-float64-capacity-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Probability that an arrival finds the system full (M/M/c/c loss): the Erlang B blocking probability. Complexity: O(c).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((service_rate &lt;= 0) =&gt; (result != result)) &amp;&amp; (((arrival_rate &lt; 0) &amp;&amp; (service_rate &gt; 0)) =&gt; (result != result))) &amp;&amp; (((arrival_rate &gt;= 0) &amp;&amp; (service_rate &gt; 0) &amp;&amp; (capacity &gt;= 0)) =&gt; (((result &gt;= 0) &amp;&amp; (result &lt;= 1)) || (result != result)))</code></li>
+</ul>
 <h5 id="fn-blocking_probabilityarrival_rate-float64-service_rate-float64-capacity-int-float64"><code>fn blocking_probability(arrival_rate: Float64, service_rate: Float64, capacity: Int) -&gt; Float64</code><a class="headerlink" href="#fn-blocking_probabilityarrival_rate-float64-service_rate-float64-capacity-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Probability that a call is blocked: the Erlang B blocking probability. Complexity: O(c).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(service_rate &lt;= 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-heavy_trafficarrival_rate-float64-service_rate-float64-servers-int-float64"><code>fn heavy_traffic(arrival_rate: Float64, service_rate: Float64, servers: Int) -&gt; Float64</code><a class="headerlink" href="#fn-heavy_trafficarrival_rate-float64-service_rate-float64-servers-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Kingman heavy-traffic approximation of the queue size for G/G/c: L_q ~ (rho^2/(1 - rho)) * (c_a^2 + c_s^2)/2 (unit-coefficient traffic). Complexity: O(1).</p>
