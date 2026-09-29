@@ -736,6 +736,14 @@ Remaining:
     The tracker sits in five unpushed compiler commits, so the live page
     shows the fallback today and activates the moment the compiler lane
     pushes; no further website change is needed.
+46. **Instagram added to the footer social row (done 2026-09-29)**: the
+    `.footer-social` row gained a ninth icon, `XIOM on Instagram`
+    (`https://www.instagram.com/xiom.language/`), appended after Facebook on
+    all twelve pages that carry a footer, with the same aria-label, title,
+    `target="_blank"` and `rel="noopener"` rules. Verified at a true 414px
+    viewport: nine icons in one row, no horizontal overflow, Instagram last;
+    link checker clean. The playground/registry lane prompt now lists the
+    new order and URL.
 
 ## Cross-lane notes
 
@@ -906,11 +914,11 @@ implementation committed on 2026-09-21 (`xiom-website/index.html` and the
 Add the website's social row to the playground footer (or About panel):
 copy the `.footer-social` block from `xiom-website/index.html` and the
 matching `.footer-social*` CSS from `xiom-website/style.css`. Keep the order
-Discord, X, Mastodon, Bluesky, Reddit, Hacker News, LinkedIn, Facebook;
-one `aria-label` and `title` per link; `target="_blank" rel="noopener"`
-(Mastodon also `rel="me"` immediately after `title`). Wording for Discord
-must stay "XIOM community Discord (open invite)" -- the server is invite
-only and must not be described as discoverable.
+Discord, X, Mastodon, Bluesky, Reddit, Hacker News, LinkedIn, Facebook,
+Instagram; one `aria-label` and `title` per link; `target="_blank"
+rel="noopener"` (Mastodon also `rel="me"` immediately after `title`).
+Wording for Discord must stay "XIOM community Discord (open invite)" -- the
+server is invite only and must not be described as discoverable.
 URLs:
 - https://discord.gg/fsxQfDUg9
 - https://x.com/XiomLang
@@ -920,6 +928,7 @@ URLs:
 - https://news.ycombinator.com/user?id=xiom-lang
 - https://www.linkedin.com/company/145216062/
 - https://www.facebook.com/profile.php?id=61594524426045
+- https://www.instagram.com/xiom.language/
 
 ### Registry lane
 
