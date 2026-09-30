@@ -7,9 +7,10 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 The XIOM package registry is live at
 [registry.xiom-lang.org](https://registry.xiom-lang.org) and is the package
 source your `xiom pkg` commands already use. The 1.0 publishing protocol is
-proven, and the 2.0 platform is live: GitHub sign-in, self-service publish
-requests, rendered READMEs and reviews. The public catalog grows in batches
-as packages pass their gates.
+proven, and the platform keeps shipping: GitHub sign-in, self-service
+publish and grant requests, rendered READMEs, reviews, download stats,
+feeds and contributor profiles. The public catalog grows in batches as
+packages pass their gates.
 
 ## Browse
 
@@ -101,7 +102,9 @@ Sign in at
 GitHub to request a publish token or a trusted-publisher entry; an operator
 approves the request. Sign-in is identity only -- a browser session can
 never publish, and artifacts are always signed by the publisher's key (OIDC
-in CI, or a scoped token). The full flow, signing and troubleshooting live
+in CI, or a scoped token). The registry also offers a publish preflight
+(`POST /validate`) that runs the exact publish checks without writing an
+index entry. The full flow, signing and troubleshooting live
 in the registry repository's `PUBLISHING.md`; the service change log is at
 [registry.xiom-lang.org/whats-new](https://registry.xiom-lang.org/whats-new).
 
