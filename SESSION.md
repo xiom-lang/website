@@ -751,8 +751,21 @@ Remaining:
     and the same live percentage in the state table. `js/selfhost-meter.js`
     drives fill width, labels and `aria-valuenow`, and only unhides the bar
     when the tracker fetch succeeds; the authored fallback stands otherwise
-    (`63701eb`). Unit tests cover both paths; desktop and mobile renders
+    (`63701eb`).     Unit tests cover both paths; desktop and mobile renders
     verified at a true 414px viewport.
+48. **Roadmap refreshed to the live platform state (done 2026-09-30)**: the
+    roadmap was re-checked against the registry change log (2.7.0) and
+    `/health`. Added a Platforms row (Windows and Linux x64, macOS Intel and
+    Apple Silicon shipping; ARM and RISC-V cross-compilation in progress);
+    the registry row now reads 2.x with the shipped features (self-service
+    grant requests and rotations, download stats, feeds and following,
+    contributor profiles and sponsors, signed index digest, publish
+    preflight); Next dropped the stale "reviewer roles and the moderation
+    console" (shipped in 2.4-2.5) and the macOS item (archives ship),
+    leaving packages plus post-beta object storage and index sharding, and
+    ARM/RISC-V. The ecosystem page and the registry guide were updated to
+    match (the guide now mentions the `POST /validate` preflight); the live
+    package count reads 362 installable (`7c9644b`).
 
 ## Cross-lane notes
 
