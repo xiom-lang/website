@@ -5258,50 +5258,86 @@
 <blockquote>
 <p>n x n identity matrix. O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == n</code></li>
+</ul>
 <h5 id="fn-mat_mula-vecvecfloat64-b-vecvecfloat64-vecvecfloat64"><code>fn mat_mul(a: &amp;Vec[Vec[Float64]], b: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_mula-vecvecfloat64-b-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Matrix product a * b. Returns an empty matrix when the inner dimensions do not match. O(n^3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == a.len()</code></li>
+</ul>
 <h5 id="fn-mat_detm-vecvecfloat64-float64"><code>fn mat_det(m: &amp;Vec[Vec[Float64]]) -&gt; Float64</code><a class="headerlink" href="#fn-mat_detm-vecvecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Determinant of a square matrix via Gaussian elimination with partial pivoting. Returns NaN for a non-square matrix and 0 for a singular one. O(n^3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result != result) || (result == 0) || (m.len() &gt; 0)</code></li>
+</ul>
 <h5 id="fn-mat_invm-vecvecfloat64-optionvecvecfloat64"><code>fn mat_inv(m: &amp;Vec[Vec[Float64]]) -&gt; Option[Vec[Vec[Float64]]]</code><a class="headerlink" href="#fn-mat_invm-vecvecfloat64-optionvecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse of a square matrix via Gauss-Jordan elimination with partial pivoting. None when the matrix is singular or non-square. O(n^3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_some == false) || (m.len() &gt; 0)</code></li>
+</ul>
 <h5 id="fn-mat_transposem-vecvecfloat64-vecvecfloat64"><code>fn mat_transpose(m: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_transposem-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Transpose of a matrix. Empty matrix for a ragged input. O(n*m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || m.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-mat_translatem-vecvecfloat64-x-float64-y-float64-z-float64-vecvecfloat64"><code>fn mat_translate(m: &amp;Vec[Vec[Float64]], x: Float64, y: Float64, z: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_translatem-vecvecfloat64-x-float64-y-float64-z-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compose the 4x4 matrix m with a translation (x, y, z): returns T * m where T is the translation matrix, so the translation is applied after m. Empty matrix unless m is 4x4. O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || (result.len() == 4 &amp;&amp; m.len() == 4)</code></li>
+</ul>
 <h5 id="fn-mat_rotatem-vecvecfloat64-angle-float64-axis-vecfloat64-vecvecfloat64"><code>fn mat_rotate(m: &amp;Vec[Vec[Float64]], angle: Float64, axis: &amp;Vec[Float64]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_rotatem-vecvecfloat64-angle-float64-axis-vecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compose the 4x4 matrix m with a rotation of angle (radians) about the axis direction: returns R * m where R is the Rodrigues rotation matrix (the axis is normalised first). Empty matrix unless m is 4x4. O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || (result.len() == 4 &amp;&amp; m.len() == 4)</code></li>
+</ul>
 <h5 id="fn-mat_scalem-vecvecfloat64-x-float64-y-float64-z-float64-vecvecfloat64"><code>fn mat_scale(m: &amp;Vec[Vec[Float64]], x: Float64, y: Float64, z: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_scalem-vecvecfloat64-x-float64-y-float64-z-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compose the 4x4 matrix m with a scale (x, y, z): returns S * m where S is the scale matrix, applied after m. Empty matrix unless m is 4x4. O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || (result.len() == 4 &amp;&amp; m.len() == 4)</code></li>
+</ul>
 <h5 id="fn-mat_look_ateye-vecfloat64-target-vecfloat64-up-vecfloat64-vecvecfloat64"><code>fn mat_look_at(eye: &amp;Vec[Float64], target: &amp;Vec[Float64], up: &amp;Vec[Float64]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_look_ateye-vecfloat64-target-vecfloat64-up-vecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Right-handed look-at view matrix: camera at eye looking at target with up direction. Column-major 4x4. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 4</code></li>
+</ul>
 <h5 id="fn-mat_perspectivefovy-float64-aspect-float64-near-float64-far-float64-vecvecfloat64"><code>fn mat_perspective(fovy: Float64, aspect: Float64, near: Float64, far: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_perspectivefovy-float64-aspect-float64-near-float64-far-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Perspective projection matrix (right-handed, standard OpenGL mapping). fovy is the vertical field of view in radians; near/far must differ. 4x4. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 4</code></li>
+</ul>
 <h5 id="fn-mat_ortholeft-float64-right-float64-bottom-float64-top-float64-near-float64-far-float64-vecvecfloat64"><code>fn mat_ortho(left: Float64, right: Float64, bottom: Float64, top: Float64, near: Float64, far: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-mat_ortholeft-float64-right-float64-bottom-float64-top-float64-near-float64-far-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Orthographic projection matrix mapping [left,right] x [bottom,top] x [near,far] to NDC [-1,1]^3. 4x4. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 4</code></li>
+</ul>
 <h5 id="fn-mat_transform_pointm-vecvecfloat64-p-vecfloat64-vecfloat64"><code>fn mat_transform_point(m: &amp;Vec[Vec[Float64]], p: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-mat_transform_pointm-vecvecfloat64-p-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Transform the point p (3 or 4 components, w defaults to 1) by the 4x4 matrix m including the perspective divide. Returns the zero vector when the transformed w is zero. Empty vector for a non-4x4 matrix. O(16).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == 3</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5700,46 +5736,79 @@
 <blockquote>
 <p>Construct a quaternion from components. Implemented locally (name collision with geom.quat_new which takes axis/angle). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.x == x &amp;&amp; result.y == y &amp;&amp; result.z == z &amp;&amp; result.w == w</code></li>
+</ul>
 <h5 id="fn-quat_identity-quat"><code>fn quat_identity() -&gt; Quat</code><a class="headerlink" href="#fn-quat_identity-quat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Identity quaternion (no rotation). Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.x == 0 &amp;&amp; result.y == 0 &amp;&amp; result.z == 0 &amp;&amp; result.w == 1</code></li>
+</ul>
 <h5 id="fn-quat_mula-quat-b-quat-quat"><code>fn quat_mul(a: Quat, b: Quat) -&gt; Quat</code><a class="headerlink" href="#fn-quat_mula-quat-b-quat-quat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hamilton product a * b (compose rotations; b applied first). Implemented locally (name collision with geom.quat_mul). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y) || (result.x != result.x)) &amp;&amp; ((result.y == a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x) || (result.y != result.y)) &amp;&amp; ((result.z == a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w) || (result.z != result.z)) &amp;&amp; ((result.w == a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-quat_conjugateq-quat-quat"><code>fn quat_conjugate(q: Quat) -&gt; Quat</code><a class="headerlink" href="#fn-quat_conjugateq-quat-quat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Conjugate of a quaternion: negate the vector part. Implemented locally (name collision with geom.quat_conjugate). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == -q.x) || (result.x != result.x)) &amp;&amp; ((result.y == -q.y) || (result.y != result.y)) &amp;&amp; ((result.z == -q.z) || (result.z != result.z)) &amp;&amp; ((result.w == q.w) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-quat_invq-quat-quat"><code>fn quat_inv(q: Quat) -&gt; Quat</code><a class="headerlink" href="#fn-quat_invq-quat-quat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Inverse of a unit quaternion (the conjugate). Delegates to geom.quat_inverse through the canonical Quaternion type. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.x == 0 &amp;&amp; result.y == 0 &amp;&amp; result.z == 0 &amp;&amp; result.w == 1) || (q.x != 0 || q.y != 0 || q.z != 0 || q.w != 0)</code></li>
+</ul>
 <h5 id="fn-quat_normq-quat-float64"><code>fn quat_norm(q: Quat) -&gt; Float64</code><a class="headerlink" href="#fn-quat_normq-quat-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a quaternion. Delegates to geom.quat_length. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-quat_normalizeq-quat-quat"><code>fn quat_normalize(q: Quat) -&gt; Quat</code><a class="headerlink" href="#fn-quat_normalizeq-quat-quat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit quaternion; identity if the length is zero. Implemented locally (name collision with geom.quat_normalize). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.x == 0 &amp;&amp; result.y == 0 &amp;&amp; result.z == 0 &amp;&amp; result.w == 1) || (q.x != 0 || q.y != 0 || q.z != 0 || q.w != 0)</code></li>
+</ul>
 <h5 id="fn-quat_from_axis_angleaxis-vecfloat64-angle-float64-quat"><code>fn quat_from_axis_angle(axis: &amp;Vec[Float64], angle: Float64) -&gt; Quat</code><a class="headerlink" href="#fn-quat_from_axis_angleaxis-vecfloat64-angle-float64-quat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Quaternion rotating angle (radians) about the (non-zero) axis direction. The axis is normalised first. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.x == 0 &amp;&amp; result.y == 0 &amp;&amp; result.z == 0 &amp;&amp; result.w == 1) || (axis.len() &gt; 0)</code></li>
+</ul>
 <h5 id="fn-quat_to_eulerq-quat-float64-float64-float64"><code>fn quat_to_euler(q: Quat) -&gt; (Float64, Float64, Float64)</code><a class="headerlink" href="#fn-quat_to_eulerq-quat-float64-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Extract (yaw, pitch, roll) in radians, matching geom.quat_from_euler (ZYX intrinsic). Implemented locally: module-qualified results inside a tuple literal mis-type as Int in this compiler (BUG). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result._0 &gt;= -4 &amp;&amp; result._0 &lt;= 4) || (result._0 != result._0)) &amp;&amp; ((result._1 &gt;= -2 &amp;&amp; result._1 &lt;= 2) || (result._1 != result._1)) &amp;&amp; ((result._2 &gt;= -4 &amp;&amp; result._2 &lt;= 4) || (result._2 != result._2))</code></li>
+</ul>
 <h5 id="fn-quat_slerpa-quat-b-quat-t-float64-quat"><code>fn quat_slerp(a: Quat, b: Quat, t: Float64) -&gt; Quat</code><a class="headerlink" href="#fn-quat_slerpa-quat-b-quat-t-float64-quat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Spherical linear interpolation between a and b by t in [0,1] along the shortest arc. Implemented locally (name collision with geom.quat_slerp). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((result.x == a.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y) || (result.y != result.y)) &amp;&amp; ((result.z == a.z) || (result.z != result.z)) &amp;&amp; ((result.w == a.w) || (result.w != result.w))) || (((result.x == b.x) || (result.x != result.x)) &amp;&amp; ((result.y == b.y) || (result.y != result.y)) &amp;&amp; ((result.z == b.z) || (result.z != result.z)) &amp;&amp; ((result.w == b.w) || (result.w != result.w))) || (!(t &lt;= 0) &amp;&amp; !(t &gt;= 1))</code></li>
+</ul>
 <h5 id="fn-quat_rotateq-quat-v-vecfloat64-vecfloat64"><code>fn quat_rotate(q: Quat, v: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-quat_rotateq-quat-v-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rotate the 3D vector v by quaternion q. Delegates to geom.quat_rotate_vec3 through the canonical types. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == 3</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5858,118 +5927,205 @@
 <blockquote>
 <p>Construct a 2D vector. Delegates to geom.vec2_new. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.x == x &amp;&amp; result.y == y</code></li>
+</ul>
 <h5 id="fn-vec2_adda-vec2-b-vec2-vec2_1"><code>fn vec2_add(a: Vec2, b: Vec2) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_adda-vec2-b-vec2-vec2_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add two 2D vectors component-wise. Implemented locally (same name as the canonical geom.vec2_add; same-name delegation is avoided). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x + b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y + b.y) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec2_suba-vec2-b-vec2-vec2_1"><code>fn vec2_sub(a: Vec2, b: Vec2) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_suba-vec2-b-vec2-vec2_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Subtract b from a component-wise. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x - b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y - b.y) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec2_scalev-vec2-s-float64-vec2"><code>fn vec2_scale(v: Vec2, s: Float64) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_scalev-vec2-s-float64-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiply each component of v by scalar s. Delegates to geom.vec2_mul_scalar. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == v.x * s) || (result.x != result.x)) &amp;&amp; ((result.y == v.y * s) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec2_dota-vec2-b-vec2-float64_1"><code>fn vec2_dot(a: Vec2, b: Vec2) -&gt; Float64</code><a class="headerlink" href="#fn-vec2_dota-vec2-b-vec2-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dot product of two 2D vectors. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == a.x * b.x + a.y * b.y) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec2_crossa-vec2-b-vec2-float64_1"><code>fn vec2_cross(a: Vec2, b: Vec2) -&gt; Float64</code><a class="headerlink" href="#fn-vec2_crossa-vec2-b-vec2-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>2D cross product (scalar, signed area). Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == a.x * b.y - a.y * b.x) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec2_lenv-vec2-float64"><code>fn vec2_len(v: Vec2) -&gt; Float64</code><a class="headerlink" href="#fn-vec2_lenv-vec2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a 2D vector. Delegates to geom.vec2_length. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec2_normv-vec2-vec2"><code>fn vec2_norm(v: Vec2) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_normv-vec2-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit vector of v; zero vector when the length is zero. Delegates to geom.vec2_normalize. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.x == 0 &amp;&amp; result.y == 0) || (v.x != 0 || v.y != 0)</code></li>
+</ul>
 <h5 id="fn-vec2_dista-vec2-b-vec2-float64"><code>fn vec2_dist(a: Vec2, b: Vec2) -&gt; Float64</code><a class="headerlink" href="#fn-vec2_dista-vec2-b-vec2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean distance between two 2D points. Delegates to geom.vec2_distance. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec2_lerpa-vec2-b-vec2-t-float64-vec2"><code>fn vec2_lerp(a: Vec2, b: Vec2, t: Float64) -&gt; Vec2</code><a class="headerlink" href="#fn-vec2_lerpa-vec2-b-vec2-t-float64-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Linear interpolation between a and b by t (t outside [0,1] extrapolates). Implemented locally: the canonical geom.vec2_lerp returns a scalar, so a full Vec2 result requires a dedicated implementation. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x + (b.x - a.x) * t) || (result.x != result.x)) &amp;&amp; ((result.y == a.y + (b.y - a.y) * t) || (result.y != result.y))</code></li>
+</ul>
 <h5 id="fn-vec3_newx-float64-y-float64-z-float64-vec3_1"><code>fn vec3_new(x: Float64, y: Float64, z: Float64) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_newx-float64-y-float64-z-float64-vec3_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a 3D vector. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.x == x &amp;&amp; result.y == y &amp;&amp; result.z == z</code></li>
+</ul>
 <h5 id="fn-vec3_adda-vec3-b-vec3-vec3_1"><code>fn vec3_add(a: Vec3, b: Vec3) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_adda-vec3-b-vec3-vec3_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add two 3D vectors component-wise. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x + b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y + b.y) || (result.y != result.y)) &amp;&amp; ((result.z == a.z + b.z) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_suba-vec3-b-vec3-vec3_1"><code>fn vec3_sub(a: Vec3, b: Vec3) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_suba-vec3-b-vec3-vec3_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Subtract b from a component-wise. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x - b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y - b.y) || (result.y != result.y)) &amp;&amp; ((result.z == a.z - b.z) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_scalev-vec3-s-float64-vec3"><code>fn vec3_scale(v: Vec3, s: Float64) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_scalev-vec3-s-float64-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiply each component of v by scalar s. Delegates to geom.vec3_mul_scalar. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == v.x * s) || (result.x != result.x)) &amp;&amp; ((result.y == v.y * s) || (result.y != result.y)) &amp;&amp; ((result.z == v.z * s) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_dota-vec3-b-vec3-float64_1"><code>fn vec3_dot(a: Vec3, b: Vec3) -&gt; Float64</code><a class="headerlink" href="#fn-vec3_dota-vec3-b-vec3-float64_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dot product of two 3D vectors. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == a.x * b.x + a.y * b.y + a.z * b.z) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec3_crossa-vec3-b-vec3-vec3_1"><code>fn vec3_cross(a: Vec3, b: Vec3) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_crossa-vec3-b-vec3-vec3_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Right-handed cross product a x b. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.y * b.z - a.z * b.y) || (result.x != result.x)) &amp;&amp; ((result.y == a.z * b.x - a.x * b.z) || (result.y != result.y)) &amp;&amp; ((result.z == a.x * b.y - a.y * b.x) || (result.z != result.z))</code></li>
+</ul>
 <h5 id="fn-vec3_lenv-vec3-float64"><code>fn vec3_len(v: Vec3) -&gt; Float64</code><a class="headerlink" href="#fn-vec3_lenv-vec3-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a 3D vector. Delegates to geom.vec3_length. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec3_normv-vec3-vec3"><code>fn vec3_norm(v: Vec3) -&gt; Vec3</code><a class="headerlink" href="#fn-vec3_normv-vec3-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit vector of v; zero vector when the length is zero. Delegates to geom.vec3_normalize. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.x == 0 &amp;&amp; result.y == 0 &amp;&amp; result.z == 0) || (v.x != 0 || v.y != 0 || v.z != 0)</code></li>
+</ul>
 <h5 id="fn-vec3_dista-vec3-b-vec3-float64"><code>fn vec3_dist(a: Vec3, b: Vec3) -&gt; Float64</code><a class="headerlink" href="#fn-vec3_dista-vec3-b-vec3-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean distance between two 3D points. Delegates to geom.vec3_distance. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec4_newx-float64-y-float64-z-float64-w-float64-vec4_1"><code>fn vec4_new(x: Float64, y: Float64, z: Float64, w: Float64) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_newx-float64-y-float64-z-float64-w-float64-vec4_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a 4D vector. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.x == x &amp;&amp; result.y == y &amp;&amp; result.z == z &amp;&amp; result.w == w</code></li>
+</ul>
 <h5 id="fn-vec4_adda-vec4-b-vec4-vec4"><code>fn vec4_add(a: Vec4, b: Vec4) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_adda-vec4-b-vec4-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add two 4D vectors component-wise. No canonical dynamic equivalent; local. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x + b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y + b.y) || (result.y != result.y)) &amp;&amp; ((result.z == a.z + b.z) || (result.z != result.z)) &amp;&amp; ((result.w == a.w + b.w) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-vec4_suba-vec4-b-vec4-vec4"><code>fn vec4_sub(a: Vec4, b: Vec4) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_suba-vec4-b-vec4-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Subtract b from a component-wise. No canonical dynamic equivalent; local. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == a.x - b.x) || (result.x != result.x)) &amp;&amp; ((result.y == a.y - b.y) || (result.y != result.y)) &amp;&amp; ((result.z == a.z - b.z) || (result.z != result.z)) &amp;&amp; ((result.w == a.w - b.w) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-vec4_scalev-vec4-s-float64-vec4_1"><code>fn vec4_scale(v: Vec4, s: Float64) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_scalev-vec4-s-float64-vec4_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiply each component of v by scalar s. Implemented locally (name collision). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result.x == v.x * s) || (result.x != result.x)) &amp;&amp; ((result.y == v.y * s) || (result.y != result.y)) &amp;&amp; ((result.z == v.z * s) || (result.z != result.z)) &amp;&amp; ((result.w == v.w * s) || (result.w != result.w))</code></li>
+</ul>
 <h5 id="fn-vec4_dota-vec4-b-vec4-float64"><code>fn vec4_dot(a: Vec4, b: Vec4) -&gt; Float64</code><a class="headerlink" href="#fn-vec4_dota-vec4-b-vec4-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dot product of two 4D vectors. No canonical equivalent; local. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec4_lenv-vec4-float64"><code>fn vec4_len(v: Vec4) -&gt; Float64</code><a class="headerlink" href="#fn-vec4_lenv-vec4-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a 4D vector. No canonical equivalent; local. O(4).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-vec4_normv-vec4-vec4"><code>fn vec4_norm(v: Vec4) -&gt; Vec4</code><a class="headerlink" href="#fn-vec4_normv-vec4-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit vector of v; zero vector when the length is zero. Local (no canonical equivalent for the vec4 length/normalise pair). O(4).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.x == 0 &amp;&amp; result.y == 0 &amp;&amp; result.z == 0 &amp;&amp; result.w == 0) || (v.x != 0 || v.y != 0 || v.z != 0 || v.w != 0)</code></li>
+</ul>
 <h5 id="fn-vec_reflectv-vecfloat64-n-vecfloat64-vecfloat64"><code>fn vec_reflect(v: &amp;Vec[Float64], n: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-vec_reflectv-vecfloat64-n-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reflect the dynamic vector v about a surface normal n: v - 2<em>dot(v,n)</em>n. The normal is normalised first (any non-zero direction is accepted); a degenerate normal returns a copy of v. Dynamic-domain operation with no canonical Vec[Float64] equivalent in geom.xi. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == v.len()</code></li>
+</ul>
 <h5 id="fn-vec_projecta-vecfloat64-b-vecfloat64-float64"><code>fn vec_project(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-vec_projecta-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Scalar projection of a onto b: dot(a, b) / |b|. Zero when b is degenerate. Dynamic-domain operation with no canonical Vec[Float64] equivalent. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == 0) || (result != result) || (a.len() == b.len() &amp;&amp; b.len() &gt; 0)</code></li>
+</ul>
 <h5 id="fn-vec_anglea-vecfloat64-b-vecfloat64-float64"><code>fn vec_angle(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-vec_anglea-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Angle in radians between two equal-length non-zero vectors, in [0, PI]. Returns 0 when either vector is degenerate. Dynamic-domain operation. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0 &amp;&amp; result &lt; 4) || (result != result)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
