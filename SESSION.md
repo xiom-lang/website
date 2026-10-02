@@ -829,6 +829,17 @@ Remaining:
     involved: the values were already live; the old sentence implied the
     displayed table was the snapshot. The tracker files themselves carry
     their measurement provenance (commit/date/box) for audit.
+55. **Registry trust explained in plain terms (done 2026-10-02)**: the
+    registry guide now explains why tampering fails -- immutable versions
+    (republishing returns `409`), sha256-verified artifacts, the signed
+    index digest (`/index-digest.json`; a pinned key detects an altered or
+    rolled-back index), CI provenance naming repository/workflow/commit with
+    a run link, the staging canary before official packages reach
+    production, and yank-instead-of-rewrite -- with the trust-model table
+    gaining digest and provenance rows; the ecosystem page carries the same
+    summary (`de1a850`). Claims verified against the live signed digest,
+    the live per-version provenance block in `/index.json` and the registry
+    docs.
 
 ## Cross-lane notes
 
