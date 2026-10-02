@@ -106,6 +106,23 @@ Official packages are canaried: they publish to the staging registry first
 and only reach production after they verify there -- the canary in the coal
 mine.
 
+## Attacks this stops
+
+Package registries are attacked in a handful of classic ways. Here is what
+each one runs into:
+
+| Attack | What stops it |
+|--------|---------------|
+| Swap the code under a version you already reviewed | versions are immutable: republishing returns `409`, so changed code needs a new version number |
+| Roll you back to an older, vulnerable release | lockfiles pin exact versions and digests, and a pinned index key flags an altered or rolled-back index |
+| Hand you a different tarball in transit | every artifact's sha256 (and ed25519 signature, when a key is pinned) is verified; a mismatch aborts the install |
+| Impersonate a publisher or hide the real build | signatures carry a key fingerprint, and CI provenance names the repository, workflow and commit that built the version |
+| Quietly delete a bad release | mistakes are yanked, not rewritten: the version stays visible and marked, and pinned installs keep working |
+
+These cover what the registry can prove: who built a version, that it has
+not changed, and that you received those exact bytes. They do not vouch for
+what the code does -- read the source, and use contracts where they apply.
+
 ## Troubleshooting
 
 | Symptom | Meaning |
