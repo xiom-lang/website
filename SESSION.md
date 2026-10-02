@@ -850,6 +850,14 @@ Remaining:
     prove who built what and that bytes are unchanged, not what the code
     does). The ecosystem page carries the one-clause summary (`3af1994`).
     Decision recorded: no absolute security adjectives on the site.
+57. **Playground release-phase roadmap (done 2026-10-02)**: the roadmap
+    gains a Playground roadmap section mirroring the registry pattern --
+    1.0.x maintenance (now), 1.1 input end to end once the compiler's stdin
+    fix ships, 2.0 Algorithm Lab (split player, trace protocol, compare
+    mode), 2.1 Lab expansion, 2.2 gamified learning, 2.3 Lab advanced, 3.0
+    unscoped future -- rephrased from the playground lane's plan, with
+    internal IDs and the graphics asset brief left in the repository; the
+    ecosystem table gains a Playground row linking the section (`c365eae`).
 
 ## Cross-lane notes
 
