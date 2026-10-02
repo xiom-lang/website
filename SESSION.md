@@ -784,6 +784,17 @@ Remaining:
     24/24, perf 3/3, formatter 86/86, lsp 45/45 from the tracker, with the
     stdlib corpus on the snapshot until its tracker publishes a gates line
     (`7bdebb5`).
+50. **Dijkstra quote on the Why page; stdlib tracker lines pending push
+    (done 2026-10-02)**: a styled pull quote ("Testing can only prove the
+    presence of bugs, not their absence." -- Edsger W. Dijkstra) closes the
+    Four layers of protection section on why.html, rendered and checked
+    (`378e479`). The compiler's gates line was verified live on the page
+    (feature 517/517, perf 3/3 immediately; e2e 2395/2395 once `7bdebb5`
+    deploys). The stdlib lane reported adding the meter (70%, 7 of 10) and
+    gates lines (`415e20d`), and both match the parser regexes locally, but
+    their `main` is seven commits ahead of origin, so the raw tracker does
+    not carry them yet and the bar correctly stays hidden; the site will
+    show 70% and corpus 951/951 as soon as they push `main`.
 
 ## Cross-lane notes
 
