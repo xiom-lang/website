@@ -1158,14 +1158,16 @@ xiom-mcp processes); the owner's machine now runs v0.62.1 from
 `%LOCALAPPDATA%\xiom.new`, PATH-first, and consolidates after VS Code
 closes. Extension-link audit acknowledged: no extension change needed.
 
-### Compiler lane: selfhost tracker visibility (2026-09-29)
+### Compiler lane: selfhost tracker visibility (updated 2026-10-02)
 
 The website renders the bootstrap meter live from
-`main:docs/SELFHOST_PROGRESS.md` on the roadmap page. That file is in the
-five unpushed commits on your local `main` (`532bfa75` and the selfhost
-Phase 0 work), so the page currently shows its fallback text; pushing
-`main` activates the meter with no further website change. No other
-action needed.
+`main:docs/SELFHOST_PROGRESS.md` on the roadmap page (origin/main, fetched
+per page view). The tracker is public now, so the page shows its value with
+no website change. Note: worktree-only updates do not publish -- the
+`selfhost-phase-1-lexer` worktree holds 18% (2 of 11) while origin/main
+still says 9% (1 of 11), so the site correctly shows 9%. Whenever a gate
+closes, land the meter line on `main` (even a docs-only commit) and the
+site follows on the next page view.
 
 ## Rules
 
