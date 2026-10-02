@@ -66,6 +66,12 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   padding: 0;
 }
 
+/* Keep the hidden attribute authoritative over display rules such as
+   `.progress-row { display: flex }`. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -585,10 +591,10 @@ nav .wrap {
 }
 
 /* ============================================================
-   Self-hosting progress bar (roadmap.html)
+   Progress meters (roadmap.html: self-hosting, standard library)
    ============================================================ */
 
-.selfhost-progress {
+.progress-row {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -596,7 +602,7 @@ nav .wrap {
   margin: var(--space-lg) 0 0;
 }
 
-.selfhost-bar {
+.progress-bar {
   position: relative;
   flex: 1 1 360px;
   min-width: 240px;
@@ -608,7 +614,7 @@ nav .wrap {
   overflow: hidden;
 }
 
-.selfhost-fill {
+.progress-fill {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -622,7 +628,7 @@ nav .wrap {
   transition: width 700ms ease;
 }
 
-.selfhost-pct {
+.progress-pct {
   position: absolute;
   inset: 0;
   display: flex;
@@ -635,7 +641,7 @@ nav .wrap {
   text-shadow: 0 1px 3px rgba(5, 8, 15, 0.85);
 }
 
-.selfhost-detail {
+.progress-note {
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.04em;
@@ -643,7 +649,7 @@ nav .wrap {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .selfhost-fill { transition: none; }
+  .progress-fill { transition: none; }
 }
 
 /* Click-to-enlarge preview with zoom and pan (js/lightbox.js) */

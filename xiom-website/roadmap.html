@@ -65,8 +65,8 @@ SPDX-License-Identifier: MIT OR Apache-2.0
       <tr><td>Platforms</td><td>shipping</td><td>Windows x64, Linux x64, macOS Intel and Apple Silicon; ARM and RISC-V cross-compilation in progress</td></tr>
       <tr><td>Language surface</td><td>shipped</td><td>Ownership, generics, contracts, pattern matching, derive, C FFI, scripting mode</td></tr>
       <tr><td>Production hardening</td><td>shipped</td><td>Contracts, diagnostics, scripting and JIT, AI-assisted diagnostics, sandbox audit, sanitizers</td></tr>
-      <tr><td>Standard library</td><td>beta</td><td>517 source files and 6,532 public functions; limitations are published</td></tr>
-      <tr><td>Self-hosting</td><td>in progress</td><td>Bootstrap progress: <strong><span data-selfhost-pct>tracked in the compiler repository</span></strong>; the bootstrap toolchain is the release compiler</td></tr>
+      <tr><td>Standard library</td><td>beta</td><td>517 source files and 6,532 public functions; limitations are published; readiness: <strong><span data-progress-pct="stdlib">tracked in the standard library repository</span></strong></td></tr>
+      <tr><td>Self-hosting</td><td>in progress</td><td>Bootstrap progress: <strong><span data-progress-pct="selfhost">tracked in the compiler repository</span></strong>; the bootstrap toolchain is the release compiler</td></tr>
       <tr><td>Ecosystem</td><td>live</td><td>Registry, official packages, editor tooling and the playground are live; see the Ecosystem section below</td></tr>
     </table>
   </div>
@@ -82,35 +82,48 @@ SPDX-License-Identifier: MIT OR Apache-2.0
     </table>
   </div>
 
-  <div class="content-section">
+  <div class="content-section" id="verification-gates">
     <h2>Verification gates</h2>
-    <p>Every release runs the full gate set before publication. Numbers are from the v0.61.0 compiler gates and the standard library corpus on main (checked 2026-09-22):</p>
+    <p>Every release runs the full gate set before publication. The static values are the last verified snapshot (v0.61.0 compiler gates and the standard library corpus, checked 2026-09-22); rows update on page view when a repository's tracker carries a live gate line.</p>
     <table>
       <tr><th>Gate</th><th>Tests</th></tr>
-      <tr><td>End-to-end</td><td>2338 / 2338</td></tr>
-      <tr><td>Checker</td><td>195 / 195</td></tr>
-      <tr><td>Feature regression</td><td>510</td></tr>
-      <tr><td>Robustness</td><td>63</td></tr>
-      <tr><td>Fuzz</td><td>24</td></tr>
-      <tr><td>Performance and determinism</td><td>2 / 2</td></tr>
-      <tr><td>Formatter</td><td>86</td></tr>
-      <tr><td>Language server</td><td>45</td></tr>
-      <tr><td>Standard library corpus (smoke, known-answer, probes)</td><td>949 / 949</td></tr>
+      <tr><td>End-to-end</td><td data-gate="e2e">2338 / 2338</td></tr>
+      <tr><td>Checker</td><td data-gate="checker">195 / 195</td></tr>
+      <tr><td>Feature regression</td><td data-gate="feature">510</td></tr>
+      <tr><td>Robustness</td><td data-gate="robustness">63</td></tr>
+      <tr><td>Fuzz</td><td data-gate="fuzz">24</td></tr>
+      <tr><td>Performance and determinism</td><td data-gate="perf">2 / 2</td></tr>
+      <tr><td>Formatter</td><td data-gate="formatter">86</td></tr>
+      <tr><td>Language server</td><td data-gate="lsp">45</td></tr>
+      <tr><td>Standard library corpus (smoke, known-answer, probes)</td><td data-gate="corpus">949 / 949</td></tr>
     </table>
-    <p style="color:var(--muted);font-size:13px;">4,212 checks in total across both repositories. The compiler rows count gate test cases; the standard library row counts corpus programs that compile and run. Per-release numbers will move to the versions page when the release metadata carries them.</p>
+    <p style="color:var(--muted);font-size:13px;">The snapshot totals 4,212 checks across both repositories; the compiler rows count gate test cases and the standard library row counts corpus programs that compile and run. Extra labels in a tracker's gate line are ignored until a matching row exists.</p>
   </div>
 
   <div class="content-section">
     <h2>Self-hosting</h2>
     <p>Self-hosting -- compiling the compiler with itself -- is in progress. Self-hosted releases ship only once every tracked bootstrap gate is green; until then the bootstrap compiler remains the released toolchain.</p>
-    <div class="selfhost-progress" data-selfhost-progress hidden>
-      <div class="selfhost-bar" data-selfhost-bar role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Self-hosting bootstrap gates complete">
-        <div class="selfhost-fill" data-selfhost-fill></div>
-        <span class="selfhost-pct" data-selfhost-pct>0%</span>
+    <div class="progress-row" data-progress-block="selfhost" hidden>
+      <div class="progress-bar" data-progress-bar="selfhost" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Self-hosting bootstrap gates complete">
+        <div class="progress-fill" data-progress-fill="selfhost"></div>
+        <span class="progress-pct" data-progress-pct="selfhost">0%</span>
       </div>
-      <span class="selfhost-detail"><strong><span data-selfhost-meter>tracked in the compiler repository</span></strong> complete</span>
+      <span class="progress-note"><strong><span data-progress-detail="selfhost">tracked in the compiler repository</span></strong> complete</span>
     </div>
     <p style="color:var(--muted);font-size:13px;">The gate table, Phase 0 evidence, blockers and gate commands live in the compiler repository: <a href="https://github.com/xiom-lang/xiom/blob/main/docs/SELFHOST_PROGRESS.md" style="color:var(--signal);">docs/SELFHOST_PROGRESS.md</a>.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Standard library</h2>
+    <p>The standard library ships with every toolchain as beta: modules are published with their known limitations, and the library leaves beta when every readiness gate is green.</p>
+    <div class="progress-row" data-progress-block="stdlib" hidden>
+      <div class="progress-bar" data-progress-bar="stdlib" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Standard library readiness gates complete">
+        <div class="progress-fill" data-progress-fill="stdlib"></div>
+        <span class="progress-pct" data-progress-pct="stdlib">0%</span>
+      </div>
+      <span class="progress-note"><strong><span data-progress-detail="stdlib">tracked in the standard library repository</span></strong> complete</span>
+    </div>
+    <p style="color:var(--muted);font-size:13px;">The readiness definition, gate list and evidence live in the standard library repository: <a href="https://github.com/xiom-lang/stdlib/blob/main/docs/PRODUCTION_READINESS_QUEUE.md" style="color:var(--signal);">docs/PRODUCTION_READINESS_QUEUE.md</a>; the smoke gates are listed under <a href="#verification-gates" style="color:var(--signal);">Verification gates</a>.</p>
   </div>
 
   <div class="content-section">
@@ -190,6 +203,6 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 </footer>
 
 <script src="js/registry-count.js?v=20260928"></script>
-<script src="js/selfhost-meter.js"></script>
+<script src="js/progress-meter.js"></script>
 </body>
 </html>
