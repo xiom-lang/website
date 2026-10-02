@@ -858,6 +858,16 @@ Remaining:
     unscoped future -- rephrased from the playground lane's plan, with
     internal IDs and the graphics asset brief left in the repository; the
     ecosystem table gains a Playground row linking the section (`c365eae`).
+58. **Ecosystem contribution path documented (done 2026-10-02)**: the
+    contributing guide gained a "Ways to contribute" section making the
+    non-compiler paths explicit -- publish a package (open to everyone with
+    a GitHub account, via the registry's request flow), review and report,
+    and work on the ecosystem repositories -- while compiler and standard
+    library changes keep their existing path and the RFC process for
+    language changes; the registry guide opens its accounts section with
+    the same point, and the website's Contributing hub gained a matching
+    card (`cc7e3b8`). This answers the owner's question: yes, the ecosystem
+    path belongs beside the source path, not hidden behind it.
 
 ## Cross-lane notes
 
