@@ -816,6 +816,12 @@ Remaining:
     corpus 951/951, modules 509/509, probes 208/208, barename 0/509), and
     the snapshot note scopes the 4,212 figure to the compiler snapshot plus
     the original corpus (`ff1b827`).
+53. **Self-hosting gate wording (done 2026-10-02)**: the Self-hosting
+    section now states the gates are differential -- the self-hosted
+    compiler must match the bootstrap compiler's output at token, AST and
+    byte-identical IR level on the corpus, and the final chain requires
+    byte-identical self-compiled binaries -- matching the tracker's 100%
+    definition and T1/T2/T3 harness (`6f77857`).
 
 ## Cross-lane notes
 
