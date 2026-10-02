@@ -6037,8 +6037,8 @@
 <p>Byte index of the first occurrence, or None.</p>
 </blockquote>
 <ul>
-<li><strong>Precondition:</strong> <code>substr.len() &gt; 0</code></li>
-<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result &gt;= 0 &amp;&amp; result &lt; s.len()</code></li>
+<li><strong>Postcondition:</strong> <code>substr.len() == 0 =&gt; result.is_some</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result &gt;= 0 &amp;&amp; result &lt;= s.len()</code></li>
 </ul>
 <h4 id="fn-last_index_ofs-str-substr-str-optionint"><code>fn last_index_of(s: Str, substr: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-last_index_ofs-str-substr-str-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -6098,7 +6098,7 @@
 <p>Returns the first byte index of needle in haystack, or None if not found. O(n*m) naive search. For an empty needle, returns Some(0).</p>
 </blockquote>
 <ul>
-<li><strong>Precondition:</strong> <code>needle.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>needle.len() == 0 =&gt; result.is_some</code></li>
 </ul>
 <h4 id="fn-str_rindex_ofhaystack-str-needle-str-optionint"><code>fn str_rindex_of(haystack: Str, needle: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-str_rindex_ofhaystack-str-needle-str-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -6112,7 +6112,7 @@
 <p>Replaces every occurrence of <code>from</code> with <code>to</code> in <code>s</code>. O(n*m) where n = |s|, m = |from|. If <code>from</code> is empty, returns <code>s</code> unchanged.</p>
 </blockquote>
 <ul>
-<li><strong>Precondition:</strong> <code>from_needle.len() &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>from_needle.len() == 0 =&gt; result.len() == s.len()</code></li>
 </ul>
 <h4 id="fn-str_repeats-str-n-int-str_1"><code>fn str_repeat(s: Str, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_repeats-str-n-int-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
