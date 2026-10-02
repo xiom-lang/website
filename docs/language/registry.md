@@ -45,6 +45,12 @@ deliberate - change the version and re-run `xiom pkg lock`.
 First-party artifacts are signed; community publishers can sign too, and
 the package page shows a `signed` badge with the key fingerprint.
 
+The registry also signs a digest of its own index
+(`/index-digest.json`): the index's sha256, size, timestamp and the
+registry's ed25519 public key plus a signature over the hash. A client that
+pins that key -- and remembers the last digest it accepted -- can detect an
+altered or rolled-back index before trusting anything from it.
+
 ```
 xiom pkg trust --registry https://registry.xiom-lang.org --key <public key hex>
 xiom pkg trusted     # list pinned keys
@@ -60,6 +66,11 @@ Manual verification of a downloaded artifact:
 ```
 xiom pkg verify <tarball> <signature-file> [--key <public key hex>]
 ```
+
+Versions published from CI carry provenance: the index records the
+repository, workflow, tag or branch and the exact commit that built the
+version, with a link to the run. The package page shows it, so "signed"
+means signed by a key you can identify, from a build you can trace.
 
 ## Search from the CLI
 
@@ -77,13 +88,23 @@ downloadable. The package page marks it `yanked`.
 
 ## Trust model
 
+In plain terms: nothing published can be silently changed, every artifact
+is checked against an index the registry signs, CI publishes say which
+commit built them, and mistakes are withdrawn rather than rewritten.
+
 | Signal | What it means |
 |--------|---------------|
 | sha256 in the index | the bytes you get are the bytes that were published |
-| immutable versions | a published version can never change under you |
+| immutable versions | a published version can never change under you; new content needs a new version number (republishing a version returns `409`) |
 | ed25519 signature | the artifact was signed by the key with that fingerprint |
 | pinned key | you refuse anything not signed by that key |
+| signed index digest | an altered or rolled-back index is detectable when the digest key is pinned |
+| provenance | the version names the repository, workflow and commit that built it |
 | yank | a version is withdrawn without breaking pinned installs |
+
+Official packages are canaried: they publish to the staging registry first
+and only reach production after they verify there -- the canary in the coal
+mine.
 
 ## Troubleshooting
 

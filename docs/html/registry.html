@@ -142,6 +142,7 @@ xiom pkg install my-lib@<span class='num'>1.2</span>.<span class='num'>0</span> 
 <p><code>xiom pkg lock</code> reads <code>package.xi</code> and writes <code>xiom.lock</code>, recording the exact version and digest of every dependency. Commit the lockfile: builds become reproducible and the bytes you reviewed stay pinned. Updating is deliberate - change the version and re-run <code>xiom pkg lock</code>.</p>
 <h2>Signatures and trust</h2>
 <p>First-party artifacts are signed; community publishers can sign too, and the package page shows a <code>signed</code> badge with the key fingerprint.</p>
+<p>The registry also signs a digest of its own index (<code>/index-digest.json</code>): the index's sha256, size, timestamp and the registry's ed25519 public key plus a signature over the hash. A client that pins that key -- and remembers the last digest it accepted -- can detect an altered or rolled-back index before trusting anything from it.</p>
 <pre><code>
 xiom pkg trust --registry https:<span class='cm'>//registry.xiom-lang.org --key &lt;public key hex&gt;</span>
 xiom pkg trusted     # list pinned keys
@@ -151,6 +152,7 @@ xiom pkg trusted     # list pinned keys
 <pre><code>
 xiom pkg verify &lt;tarball&gt; &lt;signature-file&gt; [--key &lt;public key hex&gt;]
 </code></pre>
+<p>Versions published from CI carry provenance: the index records the repository, workflow, tag or branch and the exact commit that built the version, with a link to the run. The package page shows it, so "signed" means signed by a key you can identify, from a build you can trace.</p>
 <h2>Search from the CLI</h2>
 <pre><code>
 xiom pkg search http        # downloads the index and filters locally
@@ -159,6 +161,7 @@ xiom pkg search http        # downloads the index and filters locally
 <h2>Yanked versions</h2>
 <p>A yanked version is withdrawn: it disappears from <code>latest</code> and fresh resolution, but existing lockfiles keep working and the artifact stays downloadable. The package page marks it <code>yanked</code>.</p>
 <h2>Trust model</h2>
+<p>In plain terms: nothing published can be silently changed, every artifact is checked against an index the registry signs, CI publishes say which commit built them, and mistakes are withdrawn rather than rewritten.</p>
 <table>
 <tr>
 <th>Signal</th>
@@ -170,7 +173,7 @@ xiom pkg search http        # downloads the index and filters locally
 </tr>
 <tr>
 <td>immutable versions</td>
-<td>a published version can never change under you</td>
+<td>a published version can never change under you; new content needs a new version number (republishing a version returns <code>409</code>)</td>
 </tr>
 <tr>
 <td>ed25519 signature</td>
@@ -181,10 +184,19 @@ xiom pkg search http        # downloads the index and filters locally
 <td>you refuse anything not signed by that key</td>
 </tr>
 <tr>
+<td>signed index digest</td>
+<td>an altered or rolled-back index is detectable when the digest key is pinned</td>
+</tr>
+<tr>
+<td>provenance</td>
+<td>the version names the repository, workflow and commit that built it</td>
+</tr>
+<tr>
 <td>yank</td>
 <td>a version is withdrawn without breaking pinned installs</td>
 </tr>
 </table>
+<p>Official packages are canaried: they publish to the staging registry first and only reach production after they verify there -- the canary in the coal mine.</p>
 <h2>Troubleshooting</h2>
 <table>
 <tr>
