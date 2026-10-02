@@ -822,6 +822,13 @@ Remaining:
     byte-identical IR level on the corpus, and the final chain requires
     byte-identical self-compiled binaries -- matching the tracker's 100%
     definition and T1/T2/T3 harness (`6f77857`).
+54. **Verification-gates intro clarified (done 2026-10-02)**: the intro now
+    states that rows fill automatically on page view from each repository's
+    tracker, and that only a row without a published tracker value keeps the
+    last verified snapshot (v0.61.0, checked 2026-09-22). No new fetch is
+    involved: the values were already live; the old sentence implied the
+    displayed table was the snapshot. The tracker files themselves carry
+    their measurement provenance (commit/date/box) for audit.
 
 ## Cross-lane notes
 
