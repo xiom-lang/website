@@ -919,6 +919,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#attacks-this-stops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attacks this stops
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2907,6 +2918,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#attacks-this-stops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attacks this stops
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3054,6 +3076,42 @@ commit built them, and mistakes are withdrawn rather than rewritten.</p>
 <p>Official packages are canaried: they publish to the staging registry first
 and only reach production after they verify there -- the canary in the coal
 mine.</p>
+<h2 id="attacks-this-stops">Attacks this stops<a class="headerlink" href="#attacks-this-stops" title="Permanent link">&para;</a></h2>
+<p>Package registries are attacked in a handful of classic ways. Here is what
+each one runs into:</p>
+<table>
+<thead>
+<tr>
+<th>Attack</th>
+<th>What stops it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Swap the code under a version you already reviewed</td>
+<td>versions are immutable: republishing returns <code>409</code>, so changed code needs a new version number</td>
+</tr>
+<tr>
+<td>Roll you back to an older, vulnerable release</td>
+<td>lockfiles pin exact versions and digests, and a pinned index key flags an altered or rolled-back index</td>
+</tr>
+<tr>
+<td>Hand you a different tarball in transit</td>
+<td>every artifact's sha256 (and ed25519 signature, when a key is pinned) is verified; a mismatch aborts the install</td>
+</tr>
+<tr>
+<td>Impersonate a publisher or hide the real build</td>
+<td>signatures carry a key fingerprint, and CI provenance names the repository, workflow and commit that built the version</td>
+</tr>
+<tr>
+<td>Quietly delete a bad release</td>
+<td>mistakes are yanked, not rewritten: the version stays visible and marked, and pinned installs keep working</td>
+</tr>
+</tbody>
+</table>
+<p>These cover what the registry can prove: who built a version, that it has
+not changed, and that you received those exact bytes. They do not vouch for
+what the code does -- read the source, and use contracts where they apply.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
