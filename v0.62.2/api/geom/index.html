@@ -3133,50 +3133,86 @@
 <blockquote>
 <p>Construct an AABB from min and max corners (3 components each). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.min.len() == min.len() &amp;&amp; result.max.len() == max.len()</code></li>
+</ul>
 <h5 id="fn-aabb_containsa-collisionaabb-p-vecfloat64-bool"><code>fn aabb_contains(a: CollisionAabb, p: &amp;Vec[Float64]) -&gt; Bool</code><a class="headerlink" href="#fn-aabb_containsa-collisionaabb-p-vecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff p lies inside the AABB (inclusive). A point with fewer than 3 components is not inside. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.len() &lt; 3 || a.min.len() &lt; 3 || a.max.len() &lt; 3) =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-aabb_intersectsa-collisionaabb-b-collisionaabb-bool"><code>fn aabb_intersects(a: CollisionAabb, b: CollisionAabb) -&gt; Bool</code><a class="headerlink" href="#fn-aabb_intersectsa-collisionaabb-b-collisionaabb-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff the two AABBs overlap or touch. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.min.len() &lt; 3 || a.max.len() &lt; 3 || b.min.len() &lt; 3 || b.max.len() &lt; 3) =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-sphere_newcenter-vecfloat64-radius-float64-collisionsphere"><code>fn sphere_new(center: &amp;Vec[Float64], radius: Float64) -&gt; CollisionSphere</code><a class="headerlink" href="#fn-sphere_newcenter-vecfloat64-radius-float64-collisionsphere" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a sphere from center and radius. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.center.len() == center.len() &amp;&amp; result.radius == radius</code></li>
+</ul>
 <h5 id="fn-sphere_containss-collisionsphere-p-vecfloat64-bool"><code>fn sphere_contains(s: CollisionSphere, p: &amp;Vec[Float64]) -&gt; Bool</code><a class="headerlink" href="#fn-sphere_containss-collisionsphere-p-vecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff p lies inside the sphere (inclusive). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.len() &lt; 3 || s.center.len() &lt; 3) =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-sphere_intersectsa-collisionsphere-b-collisionsphere-bool"><code>fn sphere_intersects(a: CollisionSphere, b: CollisionSphere) -&gt; Bool</code><a class="headerlink" href="#fn-sphere_intersectsa-collisionsphere-b-collisionsphere-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff the two spheres overlap or touch. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.center.len() &lt; 3 || b.center.len() &lt; 3) =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-ray_neworigin-vecfloat64-dir-vecfloat64-collisionray"><code>fn ray_new(origin: &amp;Vec[Float64], dir: &amp;Vec[Float64]) -&gt; CollisionRay</code><a class="headerlink" href="#fn-ray_neworigin-vecfloat64-dir-vecfloat64-collisionray" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a ray from origin and direction. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.origin.len() == origin.len() &amp;&amp; result.dir.len() == dir.len()</code></li>
+</ul>
 <h5 id="fn-ray_sphere_intersectr-collisionray-s-collisionsphere-optionfloat64"><code>fn ray_sphere_intersect(r: CollisionRay, s: CollisionSphere) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-ray_sphere_intersectr-collisionray-s-collisionsphere-optionfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>CollisionRay-sphere intersection: nearest positive t; None on miss. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r.origin.len() &lt; 3 || r.dir.len() &lt; 3 || s.center.len() &lt; 3) =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-ray_aabb_intersectr-collisionray-a-collisionaabb-optionfloat64"><code>fn ray_aabb_intersect(r: CollisionRay, a: CollisionAabb) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-ray_aabb_intersectr-collisionray-a-collisionaabb-optionfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>CollisionRay-AABB intersection via the slab method: nearest positive t; None on miss. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r.origin.len() &lt; 3 || r.dir.len() &lt; 3 || a.min.len() &lt; 3 || a.max.len() &lt; 3) =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-ray_plane_intersectr-collisionray-plane-vecfloat64-optionfloat64"><code>fn ray_plane_intersect(r: CollisionRay, plane: &amp;Vec[Float64]) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-ray_plane_intersectr-collisionray-plane-vecfloat64-optionfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>CollisionRay-plane intersection against the plane (n, d) given as the 4-element vector [nx, ny, nz, d] with n.p = d. None when parallel or behind. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r.origin.len() &lt; 3 || r.dir.len() &lt; 3 || plane.len() &lt; 4) =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-point_in_trianglep-vecfloat64-a-vecfloat64-b-vecfloat64-c-vecfloat64-bool"><code>fn point_in_triangle(p: &amp;Vec[Float64], a: &amp;Vec[Float64], b: &amp;Vec[Float64], c: &amp;Vec[Float64]) -&gt; Bool</code><a class="headerlink" href="#fn-point_in_trianglep-vecfloat64-a-vecfloat64-b-vecfloat64-c-vecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff p is inside (or on) the triangle (a, b, c) using same-side tests on the 2D-projected coordinate with the dominant axis removed. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.len() &lt; 3 || a.len() &lt; 3 || b.len() &lt; 3 || c.len() &lt; 3) =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-segment_intersectp1-vecfloat64-p2-vecfloat64-p3-vecfloat64-p4-vecfloat64-optionvecfloat64"><code>fn segment_intersect(p1: &amp;Vec[Float64], p2: &amp;Vec[Float64], p3: &amp;Vec[Float64], p4: &amp;Vec[Float64]) -&gt; Option[Vec[Float64]]</code><a class="headerlink" href="#fn-segment_intersectp1-vecfloat64-p2-vecfloat64-p3-vecfloat64-p4-vecfloat64-optionvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Intersection point of segments p1p2 and p3p4; None if disjoint or parallel. The result is a 3-component point. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p1.len() &lt; 2 || p2.len() &lt; 2 || p3.len() &lt; 2 || p4.len() &lt; 2) =&gt; result.is_some == false</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3185,30 +3221,51 @@
 <blockquote>
 <p>Point on a quadratic Bezier curve at parameter t. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == p0.len()</code></li>
+</ul>
 <h5 id="fn-bezier_cubicp0-vecfloat64-p1-vecfloat64-p2-vecfloat64-p3-vecfloat64-t-float64-vecfloat64"><code>fn bezier_cubic(p0: &amp;Vec[Float64], p1: &amp;Vec[Float64], p2: &amp;Vec[Float64], p3: &amp;Vec[Float64], t: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-bezier_cubicp0-vecfloat64-p1-vecfloat64-p2-vecfloat64-p3-vecfloat64-t-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Point on a cubic Bezier curve at parameter t. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == p0.len()</code></li>
+</ul>
 <h5 id="fn-bezier_derivativepoints-vecvecfloat64-t-float64-vecfloat64"><code>fn bezier_derivative(points: &amp;Vec[Vec[Float64]], t: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-bezier_derivativepoints-vecvecfloat64-t-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tangent vector of a Bezier curve at t: the derivative of the de Casteljau ladder. O(k^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || points.len() &gt;= 2</code></li>
+</ul>
 <h5 id="fn-catmull_romp0-vecfloat64-p1-vecfloat64-p2-vecfloat64-p3-vecfloat64-t-float64-vecfloat64"><code>fn catmull_rom(p0: &amp;Vec[Float64], p1: &amp;Vec[Float64], p2: &amp;Vec[Float64], p3: &amp;Vec[Float64], t: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-catmull_romp0-vecfloat64-p1-vecfloat64-p2-vecfloat64-p3-vecfloat64-t-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Catmull-Rom spline point over [p1, p2] at parameter t in [0, 1]. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == p0.len()</code></li>
+</ul>
 <h5 id="fn-b_splinepoints-vecvecfloat64-t-float64-vecfloat64"><code>fn b_spline(points: &amp;Vec[Vec[Float64]], t: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-b_splinepoints-vecvecfloat64-t-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Uniform cubic B-spline point at parameter t in [0, 1] over the four control points. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || points.len() &gt;= 4</code></li>
+</ul>
 <h5 id="fn-hermite_curvep0-vecfloat64-t0-vecfloat64-p1-vecfloat64-t1-vecfloat64-t-float64-vecfloat64"><code>fn hermite_curve(p0: &amp;Vec[Float64], t0: &amp;Vec[Float64], p1: &amp;Vec[Float64], t1: &amp;Vec[Float64], t: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-hermite_curvep0-vecfloat64-t0-vecfloat64-p1-vecfloat64-t1-vecfloat64-t-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hermite interpolation with endpoint tangents t0 and t1. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == p0.len()</code></li>
+</ul>
 <h5 id="fn-curve_lengthsamples-fnfloat64-vecfloat64-a-float64-b-float64-n-int-float64"><code>fn curve_length(samples: fn(Float64) -&gt; Vec[Float64], a: Float64, b: Float64, n: Int) -&gt; Float64</code><a class="headerlink" href="#fn-curve_lengthsamples-fnfloat64-vecfloat64-a-float64-b-float64-n-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Arc length of a sampled curve over [a, b] by piecewise-linear integration with n segments. O(n * cost(f)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4630,90 +4687,157 @@
 <blockquote>
 <p>Euclidean distance between two points. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-point_in_circlep-point2-c-circle-bool"><code>fn point_in_circle(p: Point2, c: Circle) -&gt; Bool</code><a class="headerlink" href="#fn-point_in_circlep-point2-c-circle-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if p lies inside (or on) the circle. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(c.radius == c.radius) &amp;&amp; p.x == c.center.x &amp;&amp; p.y == c.center.y =&gt; result == true</code></li>
+</ul>
 <h5 id="fn-point_in_rectp-point2-r-rect-bool"><code>fn point_in_rect(p: Point2, r: Rect) -&gt; Bool</code><a class="headerlink" href="#fn-point_in_rectp-point2-r-rect-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if p lies inside (or on) the axis-aligned rectangle. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.x &lt; r.min.x =&gt; result == false</code></li>
+<li><strong>Postcondition:</strong> <code>p.x &gt; r.max.x =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-point_in_trianglep-point2-t-triangle2-bool"><code>fn point_in_triangle(p: Point2, t: Triangle2) -&gt; Bool</code><a class="headerlink" href="#fn-point_in_trianglep-point2-t-triangle2-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if p lies inside (or on) the triangle (same-side test). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.x == t.a.x &amp;&amp; p.y == t.a.y =&gt; result == true</code></li>
+</ul>
 <h5 id="fn-point_in_polygonp-point2-poly-polygon2-bool"><code>fn point_in_polygon(p: Point2, poly: Polygon2) -&gt; Bool</code><a class="headerlink" href="#fn-point_in_polygonp-point2-poly-polygon2-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if p lies inside the polygon (ray-casting test; boundary counts as inside). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>poly.vertices.len() &lt; 2 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-line_intersectionl1-line2-l2-line2-optionpoint2"><code>fn line_intersection(l1: Line2, l2: Line2) -&gt; Option[Point2]</code><a class="headerlink" href="#fn-line_intersectionl1-line2-l2-line2-optionpoint2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Intersection of two infinite lines; None when they are parallel. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>l1.a * l2.b == l2.a * l1.b =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-segment_intersections1-segment2-s2-segment2-optionpoint2"><code>fn segment_intersection(s1: Segment2, s2: Segment2) -&gt; Option[Point2]</code><a class="headerlink" href="#fn-segment_intersections1-segment2-s2-segment2-optionpoint2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Intersection of two segments; None when they do not meet. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s1.a.y - s1.b.y) * (s2.b.x - s2.a.x) == (s2.a.y - s2.b.y) * (s1.b.x - s1.a.x) =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-segment_point_distances-segment2-p-point2-float64"><code>fn segment_point_distance(s: Segment2, p: Point2) -&gt; Float64</code><a class="headerlink" href="#fn-segment_point_distances-segment2-p-point2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Shortest distance from p to the segment s. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-line_point_distancel-line2-p-point2-float64"><code>fn line_point_distance(l: Line2, p: Point2) -&gt; Float64</code><a class="headerlink" href="#fn-line_point_distancel-line2-p-point2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Perpendicular distance from p to the infinite line l. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-circle_intersectionc-circle-l-line2-optionvecpoint2"><code>fn circle_intersection(c: Circle, l: Line2) -&gt; Option[Vec[Point2]]</code><a class="headerlink" href="#fn-circle_intersectionc-circle-l-line2-optionvecpoint2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Intersection points of the circle and the line; None when they do not meet or the line is degenerate. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(l.a == 0 &amp;&amp; l.b == 0) =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-circle_line_intersectionc-circle-l-line2-optionvecpoint2"><code>fn circle_line_intersection(c: Circle, l: Line2) -&gt; Option[Vec[Point2]]</code><a class="headerlink" href="#fn-circle_line_intersectionc-circle-l-line2-optionvecpoint2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Alias of circle_intersection. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(l.a == 0 &amp;&amp; l.b == 0) =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-circle_circle_intersectionc1-circle-c2-circle-optionvecpoint2"><code>fn circle_circle_intersection(c1: Circle, c2: Circle) -&gt; Option[Vec[Point2]]</code><a class="headerlink" href="#fn-circle_circle_intersectionc1-circle-c2-circle-optionvecpoint2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Intersection points of two circles; None when they do not intersect (or are concentric). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>c1.center.x == c2.center.x &amp;&amp; c1.center.y == c2.center.y =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-area_trianglet-triangle2-float64"><code>fn area_triangle(t: Triangle2) -&gt; Float64</code><a class="headerlink" href="#fn-area_trianglet-triangle2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Signed area of the triangle (positive for counter-clockwise vertices). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>t.b.x == t.a.x &amp;&amp; t.b.y == t.a.y =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-area_polygonpoly-polygon2-float64"><code>fn area_polygon(poly: Polygon2) -&gt; Float64</code><a class="headerlink" href="#fn-area_polygonpoly-polygon2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Signed area of the polygon via the shoelace formula. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>poly.vertices.len() &lt; 3 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-centroidpoly-polygon2-point2"><code>fn centroid(poly: Polygon2) -&gt; Point2</code><a class="headerlink" href="#fn-centroidpoly-polygon2-point2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Area centroid of the polygon. Returns the zero point for a degenerate polygon. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>poly.vertices.len() == 0 =&gt; result.x == 0 &amp;&amp; result.y == 0</code></li>
+</ul>
 <h5 id="fn-convex_hullpoints-vecpoint2-polygon2"><code>fn convex_hull(points: &amp;Vec[Point2]) -&gt; Polygon2</code><a class="headerlink" href="#fn-convex_hullpoints-vecpoint2-polygon2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convex hull of the points via the monotone chain algorithm (Andrew). The hull is counter-clockwise without a duplicated closing vertex. O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>points.len() == 0 =&gt; result.vertices.len() == 0</code></li>
+</ul>
 <h5 id="fn-is_convexpoly-polygon2-bool"><code>fn is_convex(poly: Polygon2) -&gt; Bool</code><a class="headerlink" href="#fn-is_convexpoly-polygon2-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if every interior angle of the polygon is at most 180 degrees (collinear edges allowed). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>poly.vertices.len() &lt; 3 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-polygon_containspoly-polygon2-p-point2-bool"><code>fn polygon_contains(poly: Polygon2, p: Point2) -&gt; Bool</code><a class="headerlink" href="#fn-polygon_containspoly-polygon2-p-point2-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Containment test for p in poly. Same as point_in_polygon. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>poly.vertices.len() &lt; 2 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-polygon_intersectiona-polygon2-b-polygon2-optionpolygon2"><code>fn polygon_intersection(a: Polygon2, b: Polygon2) -&gt; Option[Polygon2]</code><a class="headerlink" href="#fn-polygon_intersectiona-polygon2-b-polygon2-optionpolygon2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Intersection polygon of a and b via Sutherland-Hodgman clipping of a against the edges of b (exact when b is convex). None when the result is empty. O(n*m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.vertices.len() == 0 =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-polygon_uniona-polygon2-b-polygon2-optionpolygon2"><code>fn polygon_union(a: Polygon2, b: Polygon2) -&gt; Option[Polygon2]</code><a class="headerlink" href="#fn-polygon_uniona-polygon2-b-polygon2-optionpolygon2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Boolean union polygon of a and b. Implemented as the convex hull of both vertex sets: exact when the union is convex (e.g. overlapping convex polygons), otherwise an enclosing convex approximation (documented). O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.vertices.len() == 0 &amp;&amp; b.vertices.len() == 0 =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-polygon_differencea-polygon2-b-polygon2-optionpolygon2"><code>fn polygon_difference(a: Polygon2, b: Polygon2) -&gt; Option[Polygon2]</code><a class="headerlink" href="#fn-polygon_differencea-polygon2-b-polygon2-optionpolygon2" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Boolean difference a minus b. Implemented by clipping a against the outside of b (Sutherland-Hodgman with an inverted inside test): exact when b lies fully inside a, otherwise a conservative approximation (documented). None when the result is empty. O(n*m).</p>
+<p>Boolean difference a minus b. NOTE: the current implementation clips a against the outside of every edge of b, which computes the intersection of b's outside half-planes rather than a minus b; for a closed b that is usually empty (a known design bug -- see tools/known_failures/p_polygon_difference_halfplanes.xi). Only the empty-a (None) and empty-b (Some(a)) edges are reliable; do not rely on it for overlapping inputs. A real polygon-clipping implementation is a queue follow-up. O(n*m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.vertices.len() == 0 =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-polygon_circumferencepoly-polygon2-float64"><code>fn polygon_circumference(poly: Polygon2) -&gt; Float64</code><a class="headerlink" href="#fn-polygon_circumferencepoly-polygon2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Perimeter of the polygon. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5046,86 +5170,149 @@
 <blockquote>
 <p>Euclidean distance between two points. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-point_sphere_distancep-point3-s-sphere3d-float64"><code>fn point_sphere_distance(p: Point3, s: Sphere3d) -&gt; Float64</code><a class="headerlink" href="#fn-point_sphere_distancep-point3-s-sphere3d-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Distance from p to the sphere surface (0 when p is inside). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-point_plane_distancep-point3-pl-plane3d-float64"><code>fn point_plane_distance(p: Point3, pl: Plane3d) -&gt; Float64</code><a class="headerlink" href="#fn-point_plane_distancep-point3-pl-plane3d-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Signed distance from p to the plane (positive on the normal side). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pl.normal.x == 0 &amp;&amp; pl.normal.y == 0 &amp;&amp; pl.normal.z == 0 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-plane_point_distancepl-plane3d-p-point3-float64"><code>fn plane_point_distance(pl: Plane3d, p: Point3) -&gt; Float64</code><a class="headerlink" href="#fn-plane_point_distancepl-plane3d-p-point3-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Absolute distance from p to the plane. Alias of point_plane_distance. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-line_point_distancel-line3-p-point3-float64"><code>fn line_point_distance(l: Line3, p: Point3) -&gt; Float64</code><a class="headerlink" href="#fn-line_point_distancel-line3-p-point3-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Shortest distance from p to the infinite line l. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-segment_point_distances-segment3-p-point3-float64"><code>fn segment_point_distance(s: Segment3, p: Point3) -&gt; Float64</code><a class="headerlink" href="#fn-segment_point_distances-segment3-p-point3-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Shortest distance from p to the segment s. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-ray_plane_intersectionr-ray3-pl-plane3d-optionfloat64"><code>fn ray_plane_intersection(r: Ray3, pl: Plane3d) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-ray_plane_intersectionr-ray3-pl-plane3d-optionfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Ray-plane intersection: parameter t along the ray; None when parallel or behind the origin. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == true || result.is_some == false</code></li>
+</ul>
 <h5 id="fn-ray_triangle_intersectionr-ray3-t-triangle3-optionfloat64"><code>fn ray_triangle_intersection(r: Ray3, t: Triangle3) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-ray_triangle_intersectionr-ray3-t-triangle3-optionfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Ray-triangle intersection via the Moller-Trumbore algorithm. Returns the nearest positive t; None on miss or behind the origin. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == true || result.is_some == false</code></li>
+</ul>
 <h5 id="fn-ray_sphere_intersectionr-ray3-s-sphere3d-optionfloat64"><code>fn ray_sphere_intersection(r: Ray3, s: Sphere3d) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-ray_sphere_intersectionr-ray3-s-sphere3d-optionfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Ray-sphere intersection: nearest positive t; None on miss. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r.dir.x == 0 &amp;&amp; r.dir.y == 0 &amp;&amp; r.dir.z == 0) =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-ray_box_intersectionr-ray3-b-box-optionfloat64"><code>fn ray_box_intersection(r: Ray3, b: Box) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-ray_box_intersectionr-ray3-b-box-optionfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Ray-box intersection via the slab method: nearest positive t; None on miss. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == true || result.is_some == false</code></li>
+</ul>
 <h5 id="fn-plane_plane_intersectionp1-plane3d-p2-plane3d-optionline3"><code>fn plane_plane_intersection(p1: Plane3d, p2: Plane3d) -&gt; Option[Line3]</code><a class="headerlink" href="#fn-plane_plane_intersectionp1-plane3d-p2-plane3d-optionline3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Line of intersection of two planes; None when parallel. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p1.normal.x == p2.normal.x &amp;&amp; p1.normal.y == p2.normal.y &amp;&amp; p1.normal.z == p2.normal.z =&gt; result.is_some == false</code></li>
+</ul>
 <h5 id="fn-sphere_sphere_intersectiona-sphere3d-b-sphere3d-bool"><code>fn sphere_sphere_intersection(a: Sphere3d, b: Sphere3d) -&gt; Bool</code><a class="headerlink" href="#fn-sphere_sphere_intersectiona-sphere3d-b-sphere3d-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if the two spheres overlap or touch. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.radius == 0 &amp;&amp; b.radius == 0 =&gt; result == (a.center.x == b.center.x &amp;&amp; a.center.y == b.center.y &amp;&amp; a.center.z == b.center.z)</code></li>
+</ul>
 <h5 id="fn-aabb_intersectiona-box-b-box-bool"><code>fn aabb_intersection(a: Box, b: Box) -&gt; Bool</code><a class="headerlink" href="#fn-aabb_intersectiona-box-b-box-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if the two axis-aligned boxes overlap or touch. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.max.x &lt; b.min.x =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-aabb_containsb-box-p-point3-bool"><code>fn aabb_contains(b: Box, p: Point3) -&gt; Bool</code><a class="headerlink" href="#fn-aabb_containsb-box-p-point3-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if p lies inside (or on) the box. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.x &lt; b.min.x =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-closest_point_on_segments-segment3-p-point3-point3"><code>fn closest_point_on_segment(s: Segment3, p: Point3) -&gt; Point3</code><a class="headerlink" href="#fn-closest_point_on_segments-segment3-p-point3-point3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Closest point on the segment s to p. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.b.x == s.a.x &amp;&amp; s.b.y == s.a.y &amp;&amp; s.b.z == s.a.z =&gt; result.x == s.a.x &amp;&amp; result.y == s.a.y &amp;&amp; result.z == s.a.z</code></li>
+</ul>
 <h5 id="fn-closest_point_on_planepl-plane3d-p-point3-point3"><code>fn closest_point_on_plane(pl: Plane3d, p: Point3) -&gt; Point3</code><a class="headerlink" href="#fn-closest_point_on_planepl-plane3d-p-point3-point3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Orthogonal projection of p onto the plane. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pl.normal.x == 0 &amp;&amp; pl.normal.y == 0 &amp;&amp; pl.normal.z == 0 &amp;&amp; p.x == p.x &amp;&amp; p.y == p.y &amp;&amp; p.z == p.z =&gt; result.x == p.x &amp;&amp; result.y == p.y &amp;&amp; result.z == p.z</code></li>
+</ul>
 <h5 id="fn-triangle_normalt-triangle3-vec3"><code>fn triangle_normal(t: Triangle3) -&gt; Vec3</code><a class="headerlink" href="#fn-triangle_normalt-triangle3-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit normal of the triangle (right-handed, b-a cross c-a). Returns the zero vector for a degenerate triangle. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>t.b.x == t.a.x &amp;&amp; t.b.y == t.a.y &amp;&amp; t.b.z == t.a.z &amp;&amp; t.c.x == t.a.x &amp;&amp; t.c.y == t.a.y &amp;&amp; t.c.z == t.a.z =&gt; result.x == 0 &amp;&amp; result.y == 0 &amp;&amp; result.z == 0</code></li>
+</ul>
 <h5 id="fn-mesh_volumem-mesh-float64"><code>fn mesh_volume(m: Mesh) -&gt; Float64</code><a class="headerlink" href="#fn-mesh_volumem-mesh-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Signed volume of a closed mesh via the divergence theorem (sum of signed tetrahedron volumes about the origin). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.indices.len() &lt; 3 =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-mesh_surface_aream-mesh-float64"><code>fn mesh_surface_area(m: Mesh) -&gt; Float64</code><a class="headerlink" href="#fn-mesh_surface_aream-mesh-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Total surface area of a mesh (sum of triangle areas). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-mesh_centroidm-mesh-point3"><code>fn mesh_centroid(m: Mesh) -&gt; Point3</code><a class="headerlink" href="#fn-mesh_centroidm-mesh-point3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Volume-weighted centroid of a closed mesh. Returns the zero point for a degenerate mesh. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.indices.len() &lt; 3 =&gt; result.x == 0 &amp;&amp; result.y == 0 &amp;&amp; result.z == 0</code></li>
+</ul>
 <h5 id="fn-convex_hull_3dpoints-vecpoint3-mesh"><code>fn convex_hull_3d(points: &amp;Vec[Point3]) -&gt; Mesh</code><a class="headerlink" href="#fn-convex_hull_3dpoints-vecpoint3-mesh" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convex hull of a point cloud as a triangle mesh. Every oriented face is a triangle (i, j, k) such that all other points lie on (or behind) the plane of that triangle. O(n^4); exact for small point sets.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>points.len() &lt; 4 =&gt; result.indices.len() == 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5134,58 +5321,103 @@
 <blockquote>
 <p>Bounded Voronoi diagram of sites clipped to bounds: one cell per site, each cell the intersection of the half-planes defined by the perpendicular bisectors with every other site. O(k^2 * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == sites.len()</code></li>
+</ul>
 <h5 id="fn-delaunaypoints-vecpoint2-vectriangle2"><code>fn delaunay(points: &amp;Vec[Point2]) -&gt; Vec[Triangle2]</code><a class="headerlink" href="#fn-delaunaypoints-vecpoint2-vectriangle2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Delaunay triangulation of points via the Bowyer-Watson algorithm (bounded by a super-triangle). Returns a non-empty triangle list for &gt;= 3 points. O(n^2) typical.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || points.len() &gt;= 3</code></li>
+</ul>
 <h5 id="fn-bezier_curvecontrols-vecvec2-t-float64-vec2"><code>fn bezier_curve(controls: &amp;Vec[Vec2], t: Float64) -&gt; Vec2</code><a class="headerlink" href="#fn-bezier_curvecontrols-vecvec2-t-float64-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Point on a Bezier curve with de Casteljau's algorithm. O(k^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>controls.len() == 0 =&gt; result.x == 0 &amp;&amp; result.y == 0</code></li>
+</ul>
 <h5 id="fn-b_splinecontrols-vecvec2-knots-vecfloat64-t-float64-vec2"><code>fn b_spline(controls: &amp;Vec[Vec2], knots: &amp;Vec[Float64], t: Float64) -&gt; Vec2</code><a class="headerlink" href="#fn-b_splinecontrols-vecvec2-knots-vecfloat64-t-float64-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Uniform open (clamped) quadratic B-spline evaluation with de Boor's algorithm. Knots must satisfy knots.len() == controls.len() + 3 and be clamped (non-decreasing, endpoints repeated); t is clamped to [0, 1]. Returns the zero vector on inconsistent input. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(controls.len() &lt; 3 || knots.len() != controls.len() + 3) =&gt; result.x == 0 &amp;&amp; result.y == 0</code></li>
+</ul>
 <h5 id="fn-nurbscontrols-vecvec2-weights-vecfloat64-knots-vecfloat64-t-float64-vec2"><code>fn nurbs(controls: &amp;Vec[Vec2], weights: &amp;Vec[Float64], knots: &amp;Vec[Float64], t: Float64) -&gt; Vec2</code><a class="headerlink" href="#fn-nurbscontrols-vecvec2-weights-vecfloat64-knots-vecfloat64-t-float64-vec2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>NURBS evaluation: weighted rational B-spline with de Boor's algorithm. weights.len() must equal controls.len() and knots must satisfy the clamped B-spline sizing. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(controls.len() &lt; 3 || weights.len() != controls.len() || knots.len() != controls.len() + 3) =&gt; result.x == 0 &amp;&amp; result.y == 0</code></li>
+</ul>
 <h5 id="fn-subdivisionmesh-mesh-iterations-int-mesh"><code>fn subdivision(mesh: Mesh, iterations: Int) -&gt; Mesh</code><a class="headerlink" href="#fn-subdivisionmesh-mesh-iterations-int-mesh" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Midpoint subdivision surface refinement: every triangle is split into four by inserting edge midpoints (no shared-edge deduplication). The triangle count quadruples per iteration. O(iterations * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>iterations &lt;= 0 =&gt; result.vertices.len() == mesh.vertices.len() &amp;&amp; result.indices.len() == mesh.indices.len()</code></li>
+</ul>
 <h5 id="fn-mesh_processingmesh-mesh-mesh"><code>fn mesh_processing(mesh: Mesh) -&gt; Mesh</code><a class="headerlink" href="#fn-mesh_processingmesh-mesh-mesh" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mesh cleanup pipeline: removes duplicate vertices (exact position match) and rewrites the index list accordingly. Returns the cleaned mesh. O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>mesh.vertices.len() == 0 &amp;&amp; mesh.indices.len() == 0 =&gt; result.vertices.len() == 0 &amp;&amp; result.indices.len() == 0</code></li>
+</ul>
 <h5 id="fn-projective_geometrypoints-vecvec3-vecvec3"><code>fn projective_geometry(points: &amp;Vec[Vec3]) -&gt; Vec[Vec3]</code><a class="headerlink" href="#fn-projective_geometrypoints-vecvec3-vecvec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Apply a projective transform to the points: each point (x, y, z) is mapped to (x/w, y/w, z/w) with the perspective weight w = 1 + x + y + z. Points whose weight is zero are left unchanged. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == points.len()</code></li>
+</ul>
 <h5 id="fn-hyperbolic_geometrya-vecfloat64-b-vecfloat64-float64"><code>fn hyperbolic_geometry(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-hyperbolic_geometrya-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic distance in the Poincare ball model: 2 * atanh(|a - b| / |1 - a.b|). Returns 0 for identical points. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len() || a.len() == 0) =&gt; result != result</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-elliptic_geometrya-vecfloat64-b-vecfloat64-float64"><code>fn elliptic_geometry(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-elliptic_geometrya-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Elliptic (spherical) distance between two unit vectors: acos(a.b) in [0, PI]. Returns 0 for identical unit vectors. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len() || a.len() == 0) =&gt; result != result</code></li>
+<li><strong>Postcondition:</strong> <code>((result &gt;= 0) &amp;&amp; (result &lt;= 4)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-non_euclideana-vecfloat64-b-vecfloat64-float64"><code>fn non_euclidean(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-non_euclideana-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Generic non-Euclidean metric: the Poincare hyperbolic distance (see hyperbolic_geometry). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len() || a.len() == 0) =&gt; result != result</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-incidence_geometrypoints-vecpoint2-lines-vecline2-bool"><code>fn incidence_geometry(points: &amp;Vec[Point2], lines: &amp;Vec[Line2]) -&gt; Bool</code><a class="headerlink" href="#fn-incidence_geometrypoints-vecpoint2-lines-vecline2-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Incidence predicate: true iff every point lies on at least one of the lines. O(p * l).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>points.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h5 id="fn-convex_geometrypoints-vecvec2-polygon2"><code>fn convex_geometry(points: &amp;Vec[Vec2]) -&gt; Polygon2</code><a class="headerlink" href="#fn-convex_geometrypoints-vecvec2-polygon2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convex decomposition/combination of a point set: returns the convex hull of the points as a Polygon2. O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>points.len() == 0 =&gt; result.vertices.len() == 0</code></li>
+</ul>
 <h5 id="fn-computational_geometrypoints-vecvec2-vecpolygon2"><code>fn computational_geometry(points: &amp;Vec[Vec2]) -&gt; Vec[Polygon2]</code><a class="headerlink" href="#fn-computational_geometrypoints-vecvec2-vecpolygon2" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>General computational geometry entry point: returns the convex hull of the points as a single-cell polygon list. O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == 1</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5194,62 +5426,107 @@
 <blockquote>
 <p>Orthonormalise a set of vectors (each row is a vector) via the modified Gram-Schmidt process. Linearly dependent vectors collapse to the zero vector. O(k^2 * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == vectors.len()</code></li>
+</ul>
 <h5 id="fn-orthogonalizevectors-vecvecfloat64-vecvecfloat64"><code>fn orthogonalize(vectors: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-orthogonalizevectors-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Orthogonalise a set of vectors (each row is a vector) without normalising the output. Linearly dependent vectors collapse to the zero vector. O(k^2 * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == vectors.len()</code></li>
+</ul>
 <h5 id="fn-normalize_columnsm-vecvecfloat64-vecvecfloat64"><code>fn normalize_columns(m: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-normalize_columnsm-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Normalise every column of m to unit length. Columns with zero length are left as-is. Empty matrix for a ragged input. O(n*m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || m.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-normalize_rowsm-vecvecfloat64-vecvecfloat64"><code>fn normalize_rows(m: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-normalize_rowsm-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Normalise every row of m to unit length. Rows with zero length are left as-is. Empty matrix for a ragged input. O(n*m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == m.len()</code></li>
+</ul>
 <h5 id="fn-is_orthogonalm-vecvecfloat64-bool"><code>fn is_orthogonal(m: &amp;Vec[Vec[Float64]]) -&gt; Bool</code><a class="headerlink" href="#fn-is_orthogonalm-vecvecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff m is orthogonal: m * m^T is the identity (within 1e-9). Empty or non-square matrices are false. O(n^3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_symmetricm-vecvecfloat64-bool"><code>fn is_symmetric(m: &amp;Vec[Vec[Float64]]) -&gt; Bool</code><a class="headerlink" href="#fn-is_symmetricm-vecvecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff m equals its transpose (exact component equality). O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h5 id="fn-is_skew_symmetricm-vecvecfloat64-bool"><code>fn is_skew_symmetric(m: &amp;Vec[Vec[Float64]]) -&gt; Bool</code><a class="headerlink" href="#fn-is_skew_symmetricm-vecvecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff m equals minus its transpose (exact component equality, diagonal must be zero). O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h5 id="fn-is_positive_definitem-vecvecfloat64-bool"><code>fn is_positive_definite(m: &amp;Vec[Vec[Float64]]) -&gt; Bool</code><a class="headerlink" href="#fn-is_positive_definitem-vecvecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff m is symmetric positive definite: symmetric and every leading principal minor is positive (checked via a Cholesky-style sweep). O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h5 id="fn-is_diagonal_dominantm-vecvecfloat64-bool"><code>fn is_diagonal_dominant(m: &amp;Vec[Vec[Float64]]) -&gt; Bool</code><a class="headerlink" href="#fn-is_diagonal_dominantm-vecvecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff m is diagonally dominant: |m[i][i]| &gt;= sum of the absolute values of the off-diagonal entries in the same row, for every row. O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.len() == 0 =&gt; result == true</code></li>
+</ul>
 <h5 id="fn-matrix_exponentialm-vecvecfloat64-vecvecfloat64"><code>fn matrix_exponential(m: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-matrix_exponentialm-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Matrix exponential of m via the Taylor series exp(M) = sum M^k / k!, iterated until the added term is negligible (or 60 terms). Empty matrix on non-square input. O(n^3 * terms).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == m.len()</code></li>
+</ul>
 <h5 id="fn-matrix_logarithmm-vecvecfloat64-vecvecfloat64"><code>fn matrix_logarithm(m: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-matrix_logarithmm-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Principal matrix logarithm of m via the series log(M) = sum (-1)^(k+1) (M-I)^k / k, which converges when M is close to the identity. Returns the zero matrix for the identity and an empty matrix for non-square input. O(n^3 * terms).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == m.len()</code></li>
+</ul>
 <h5 id="fn-matrix_sqrtm-vecvecfloat64-vecvecfloat64"><code>fn matrix_sqrt(m: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-matrix_sqrtm-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Principal matrix square root of m via Newton iteration X_{k+1} = (X_k + M * X_k^-1) / 2 (converges for well-conditioned SPD-like inputs). Empty matrix on non-square input. O(n^3 * iterations).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == m.len()</code></li>
+</ul>
 <h5 id="fn-matrix_powerm-vecvecfloat64-p-int-vecvecfloat64"><code>fn matrix_power(m: &amp;Vec[Vec[Float64]], p: Int) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-matrix_powerm-vecvecfloat64-p-int-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Integer matrix power m^p. p == 0 yields the identity, p &lt; 0 inverts first, and repeated squaring keeps it to O(log |p|) multiplications. Empty matrix on non-square or singular input. O(n^3 * log |p|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == m.len()</code></li>
+</ul>
 <h5 id="fn-vec_to_skewv-vecfloat64-vecvecfloat64"><code>fn vec_to_skew(v: &amp;Vec[Float64]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-vec_to_skewv-vecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Skew-symmetric matrix [v]_x of a 3-vector v. Empty matrix unless v has exactly 3 elements. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == 3</code></li>
+</ul>
 <h5 id="fn-skew_to_vecm-vecvecfloat64-vecfloat64"><code>fn skew_to_vec(m: &amp;Vec[Vec[Float64]]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-skew_to_vecm-vecvecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The 3-vector v such that vec_to_skew(v) == m, extracted from a skew-symmetric matrix. Empty vector unless m is 3x3. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == 3</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5763,42 +6040,72 @@
 <blockquote>
 <p>Vertices of a cube centered at the origin with the given side length. Returns 8 vertices, each (x, y, z). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 8</code></li>
+</ul>
 <h5 id="fn-cube_faces-vecvecint"><code>fn cube_faces() -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-cube_faces-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Face index list for cube_vertices: 12 triangles (3 indices each). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 12</code></li>
+</ul>
 <h5 id="fn-sphere_verticesradius-float64-slices-int-stacks-int-vecvecfloat64"><code>fn sphere_vertices(radius: Float64, slices: Int, stacks: Int) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-sphere_verticesradius-float64-slices-int-stacks-int-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>UV-sphere vertex grid: (slices + 1) x (stacks + 1) vertices of the form (x, y, z). O(slices * stacks).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(slices &lt; 1 || stacks &lt; 1) =&gt; result.len() == 0</code></li>
+</ul>
 <h5 id="fn-icosahedron_vertices-vecvecfloat64"><code>fn icosahedron_vertices() -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-icosahedron_vertices-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit icosahedron vertices (12) in the standard layout: (+-1, +-phi, 0), (0, +-1, +-phi), (+-phi, 0, +-1). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 12</code></li>
+</ul>
 <h5 id="fn-icosahedron_faces-vecvecint"><code>fn icosahedron_faces() -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-icosahedron_faces-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Icosahedron faces: 20 triangles referencing icosahedron_vertices. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 20</code></li>
+</ul>
 <h5 id="fn-tetrahedron_vertices-vecvecfloat64"><code>fn tetrahedron_vertices() -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-tetrahedron_vertices-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit tetrahedron vertices (4). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 4</code></li>
+</ul>
 <h5 id="fn-octahedron_vertices-vecvecfloat64"><code>fn octahedron_vertices() -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-octahedron_vertices-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit octahedron vertices (6). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 6</code></li>
+</ul>
 <h5 id="fn-dodecahedron_vertices-vecvecfloat64"><code>fn dodecahedron_vertices() -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-dodecahedron_vertices-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit dodecahedron vertices (20). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 20</code></li>
+</ul>
 <h5 id="fn-convex_hull_2dpoints-vecvecfloat64-vecvecfloat64"><code>fn convex_hull_2d(points: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-convex_hull_2dpoints-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convex hull polygon of 2D points (monotone chain). The hull is returned without a duplicated closing vertex. O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>points.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h5 id="fn-convex_hull_3dpoints-vecvecfloat64-vecvecfloat64"><code>fn convex_hull_3d(points: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-convex_hull_3dpoints-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convex hull vertices of a 3D point cloud. Every oriented triangle (i, j, k) with all other points on (or behind) its plane is emitted as a hull face. O(n^4); exact for small point sets.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>points.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -6399,98 +6706,173 @@
 <blockquote>
 <p>Construct a 2D vector. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.x == x &amp;&amp; result.y == y</code></li>
+</ul>
 <h5 id="fn-v3_newx-float64-y-float64-z-float64-vec3"><code>fn v3_new(x: Float64, y: Float64, z: Float64) -&gt; Vec3</code><a class="headerlink" href="#fn-v3_newx-float64-y-float64-z-float64-vec3" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a 3D vector. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.x == x &amp;&amp; result.y == y &amp;&amp; result.z == z</code></li>
+</ul>
 <h5 id="fn-v4_newx-float64-y-float64-z-float64-w-float64-vec4"><code>fn v4_new(x: Float64, y: Float64, z: Float64, w: Float64) -&gt; Vec4</code><a class="headerlink" href="#fn-v4_newx-float64-y-float64-z-float64-w-float64-vec4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Construct a 4D vector. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.x == x &amp;&amp; result.y == y &amp;&amp; result.z == z &amp;&amp; result.w == w</code></li>
+</ul>
 <h5 id="fn-dota-vecfloat64-b-vecfloat64-float64"><code>fn dot(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-dota-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dot product of two equal-length dynamic vectors. Returns NaN (0.0/0.0) when the lengths differ or either is empty (documented; no silent garbage). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() != b.len() =&gt; result != result</code></li>
+</ul>
 <h5 id="fn-crossa-vecfloat64-b-vecfloat64-vecfloat64"><code>fn cross(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-crossa-vecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>3D cross product of two 3-element dynamic vectors. Returns an empty vector when either input is not exactly length 3 (documented). O(3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == 3</code></li>
+</ul>
 <h5 id="fn-cross2a-vec2-b-vec2-float64"><code>fn cross2(a: Vec2, b: Vec2) -&gt; Float64</code><a class="headerlink" href="#fn-cross2a-vec2-b-vec2-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>2D cross product (signed area) of two 2D vectors. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == a.x * b.y - a.y * b.x) || (result != result)</code></li>
+</ul>
 <h5 id="fn-outera-vecfloat64-b-vecfloat64-vecvecfloat64"><code>fn outer(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-outera-vecfloat64-b-vecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Outer product matrix a (x) b: row i, col j holds a[i] * b[j]. O(n*m).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == a.len()</code></li>
+</ul>
 <h5 id="fn-normv-vecfloat64-float64"><code>fn norm(v: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-normv-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean length of a dynamic vector. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-norm_sqv-vecfloat64-float64"><code>fn norm_sq(v: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-norm_sqv-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Squared Euclidean length of a dynamic vector (avoids sqrt). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-normalizev-vecfloat64-vecfloat64"><code>fn normalize(v: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-normalizev-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unit vector of v. Returns the zero vector when the length is zero (documented). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == v.len()</code></li>
+</ul>
 <h5 id="fn-unitv-vecfloat64-vecfloat64"><code>fn unit(v: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-unitv-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Alias of normalize. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == v.len()</code></li>
+</ul>
 <h5 id="fn-distancea-vecfloat64-b-vecfloat64-float64"><code>fn distance(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-distancea-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean distance between two equal-length vectors. Returns NaN when the lengths differ (documented). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() != b.len() =&gt; result != result</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-distance_sqa-vecfloat64-b-vecfloat64-float64"><code>fn distance_sq(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-distance_sqa-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Squared Euclidean distance between two equal-length vectors. Returns NaN when the lengths differ (documented). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() != b.len() =&gt; result != result</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h5 id="fn-anglea-vecfloat64-b-vecfloat64-float64"><code>fn angle(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-anglea-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Angle in radians between two equal-length non-zero vectors, in [0, PI]. Returns 0 when either vector is degenerate. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= 0) &amp;&amp; (result &lt;= 4)) || (result != result)</code></li>
+</ul>
 <h5 id="fn-projecta-vecfloat64-b-vecfloat64-vecfloat64"><code>fn project(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-projecta-vecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Projection of a onto b: b * dot(a,b) / dot(b,b). Returns the zero vector when b is degenerate. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == b.len()</code></li>
+</ul>
 <h5 id="fn-rejecta-vecfloat64-b-vecfloat64-vecfloat64"><code>fn reject(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-rejecta-vecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reject a from b: a - project(a,b), the component of a perpendicular to b. Requires equal-length inputs; empty vector otherwise. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == a.len()</code></li>
+</ul>
 <h5 id="fn-lerpa-vecfloat64-b-vecfloat64-t-float64-vecfloat64"><code>fn lerp(a: &amp;Vec[Float64], b: &amp;Vec[Float64], t: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-lerpa-vecfloat64-b-vecfloat64-t-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Linear interpolation between a and b by t (t outside [0,1] extrapolates). Requires equal-length inputs; empty vector otherwise. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == a.len()</code></li>
+</ul>
 <h5 id="fn-slerpa-vecfloat64-b-vecfloat64-t-float64-vecfloat64"><code>fn slerp(a: &amp;Vec[Float64], b: &amp;Vec[Float64], t: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-slerpa-vecfloat64-b-vecfloat64-t-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Spherical linear interpolation between two equal-length non-zero vectors at parameter t in [0,1], with constant angular velocity. Falls back to lerp for near-parallel inputs; returns the empty vector for degenerate inputs. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == a.len()</code></li>
+</ul>
 <h5 id="fn-reflectv-vecfloat64-normal-vecfloat64-vecfloat64"><code>fn reflect(v: &amp;Vec[Float64], normal: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-reflectv-vecfloat64-normal-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reflect v about the (not necessarily unit) normal: v - 2<em>dot(v,n)/dot(n,n)</em>n. Empty vector when the normal is degenerate or lengths differ. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == v.len()</code></li>
+</ul>
 <h5 id="fn-refractv-vecfloat64-normal-vecfloat64-eta-float64-optionvecfloat64"><code>fn refract(v: &amp;Vec[Float64], normal: &amp;Vec[Float64], eta: Float64) -&gt; Option[Vec[Float64]]</code><a class="headerlink" href="#fn-refractv-vecfloat64-normal-vecfloat64-eta-float64-optionvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Refract v across an interface with relative index eta (both inputs unit). Returns None on total internal reflection (k &lt; 0) or length mismatch. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() != normal.len() || v.len() == 0) =&gt; result.is_some == false</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_some =&gt; v.len() == normal.len()</code></li>
+</ul>
 <h5 id="fn-clampv-vecfloat64-lo-float64-hi-float64-vecfloat64"><code>fn clamp(v: &amp;Vec[Float64], lo: Float64, hi: Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-clampv-vecfloat64-lo-float64-hi-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Clamp each component of v into [lo, hi]. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == v.len()</code></li>
+</ul>
 <h5 id="fn-component_minv-vecfloat64-float64"><code>fn component_min(v: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-component_minv-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest component of v. Returns NaN for an empty vector (documented). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result != result</code></li>
+</ul>
 <h5 id="fn-component_maxv-vecfloat64-float64"><code>fn component_max(v: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-component_maxv-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Largest component of v. Returns NaN for an empty vector (documented). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result != result</code></li>
+</ul>
 <h5 id="fn-hadamarda-vecfloat64-b-vecfloat64-vecfloat64"><code>fn hadamard(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-hadamarda-vecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Component-wise product (Hadamard) of two equal-length vectors. Empty vector on length mismatch (documented). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0 || result.len() == a.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

@@ -2982,6 +2982,11 @@ deliberate - change the version and re-run <code>xiom pkg lock</code>.</p>
 <h2 id="signatures-and-trust">Signatures and trust<a class="headerlink" href="#signatures-and-trust" title="Permanent link">&para;</a></h2>
 <p>First-party artifacts are signed; community publishers can sign too, and
 the package page shows a <code>signed</code> badge with the key fingerprint.</p>
+<p>The registry also signs a digest of its own index
+(<code>/index-digest.json</code>): the index's sha256, size, timestamp and the
+registry's ed25519 public key plus a signature over the hash. A client that
+pins that key -- and remembers the last digest it accepted -- can detect an
+altered or rolled-back index before trusting anything from it.</p>
 <div class="highlight"><pre><span></span><code>xiom pkg trust --registry https://registry.xiom-lang.org --key &lt;public key hex&gt;
 xiom pkg trusted     # list pinned keys
 </code></pre></div>
@@ -2992,6 +2997,10 @@ signed packages and want the strictest guarantee.</p>
 <p>Manual verification of a downloaded artifact:</p>
 <div class="highlight"><pre><span></span><code>xiom pkg verify &lt;tarball&gt; &lt;signature-file&gt; [--key &lt;public key hex&gt;]
 </code></pre></div>
+<p>Versions published from CI carry provenance: the index records the
+repository, workflow, tag or branch and the exact commit that built the
+version, with a link to the run. The package page shows it, so "signed"
+means signed by a key you can identify, from a build you can trace.</p>
 <h2 id="search-from-the-cli">Search from the CLI<a class="headerlink" href="#search-from-the-cli" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>xiom pkg search http        # downloads the index and filters locally
 </code></pre></div>
@@ -3001,6 +3010,9 @@ signed packages and want the strictest guarantee.</p>
 resolution, but existing lockfiles keep working and the artifact stays
 downloadable. The package page marks it <code>yanked</code>.</p>
 <h2 id="trust-model">Trust model<a class="headerlink" href="#trust-model" title="Permanent link">&para;</a></h2>
+<p>In plain terms: nothing published can be silently changed, every artifact
+is checked against an index the registry signs, CI publishes say which
+commit built them, and mistakes are withdrawn rather than rewritten.</p>
 <table>
 <thead>
 <tr>
@@ -3015,7 +3027,7 @@ downloadable. The package page marks it <code>yanked</code>.</p>
 </tr>
 <tr>
 <td>immutable versions</td>
-<td>a published version can never change under you</td>
+<td>a published version can never change under you; new content needs a new version number (republishing a version returns <code>409</code>)</td>
 </tr>
 <tr>
 <td>ed25519 signature</td>
@@ -3026,11 +3038,22 @@ downloadable. The package page marks it <code>yanked</code>.</p>
 <td>you refuse anything not signed by that key</td>
 </tr>
 <tr>
+<td>signed index digest</td>
+<td>an altered or rolled-back index is detectable when the digest key is pinned</td>
+</tr>
+<tr>
+<td>provenance</td>
+<td>the version names the repository, workflow and commit that built it</td>
+</tr>
+<tr>
 <td>yank</td>
 <td>a version is withdrawn without breaking pinned installs</td>
 </tr>
 </tbody>
 </table>
+<p>Official packages are canaried: they publish to the staging registry first
+and only reach production after they verify there -- the canary in the coal
+mine.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
