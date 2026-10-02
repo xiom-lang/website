@@ -795,6 +795,16 @@ Remaining:
     their `main` is seven commits ahead of origin, so the raw tracker does
     not carry them yet and the bar correctly stays hidden; the site will
     show 70% and corpus 951/951 as soon as they push `main`.
+51. **Benchmark cover (done 2026-10-02)**: the Reproducible evidence section
+    carries `img/benchmark-chaos.webp` (1254x1254, owner-supplied) as a 2:1
+    centered cover crop (`object-fit: cover`, `aspect-ratio: 2/1`,
+    `max-height: 460px`) that keeps the XIOM mark and the BENCHMARK OF CHAOS
+    title in frame; alt text and lazy loading included, and the status line
+    now says the harness is still being battle-tested before the repository
+    and results go public (`d110ef9`). Verified with desktop and mobile
+    renders (image complete, 1100x460 and 382x191, no overflow); the
+    deploy lands with the 15:23 pull. The owner supplies the public
+    repository link when it launches.
 
 ## Cross-lane notes
 
