@@ -57,7 +57,9 @@ succeeds, so the page never shows a guessed number.
   function fillGates(text) {
     var pairs = text.split(",");
     for (var i = 0; i < pairs.length; i++) {
-      var m = pairs[i].trim().match(/^([a-z0-9-]+)\s+(\d+)\s*\/\s*(\d+)$/);
+      // Tolerate annotations such as "e2e 2395/2395 (+4 ignored)".
+      var pair = pairs[i].replace(/\([^)]*\)/g, "").trim();
+      var m = pair.match(/^([a-z0-9-]+)\s+(\d+)\s*\/\s*(\d+)$/);
       if (m) setAll('[data-gate="' + m[1] + '"]', m[2] + " / " + m[3]);
     }
   }
