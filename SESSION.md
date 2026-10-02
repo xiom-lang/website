@@ -766,6 +766,18 @@ Remaining:
     ARM/RISC-V. The ecosystem page and the registry guide were updated to
     match (the guide now mentions the `POST /validate` preflight); the live
     package count reads 362 installable (`7c9644b`).
+49. **Live meters generalized; verification gates fetched (done 2026-10-02)**:
+    `js/progress-meter.js` replaces the selfhost-only script and drives both
+    roadmap bars (selfhost, stdlib) from their trackers, plus the
+    Verification gates table cells from an optional
+    `**Gates: label x/y, ...**` line (authored values remain the snapshot
+    fallback). The roadmap gains a Standard library section with a
+    readiness bar (hidden until the stdlib tracker publishes its meter
+    line) and routes the smoke gates to the Verification table; a `[hidden]`
+    reset fixes `display: flex` overriding the attribute. Verified with 15
+    unit tests (success, partial and failure paths) and local renders --
+    selfhost 18% live, stdlib fallback hidden, no overflow (`6e71c18`).
+    Relay requests for the two tracker lines are in the lane notes above.
 
 ## Cross-lane notes
 
@@ -1158,16 +1170,35 @@ xiom-mcp processes); the owner's machine now runs v0.62.1 from
 `%LOCALAPPDATA%\xiom.new`, PATH-first, and consolidates after VS Code
 closes. Extension-link audit acknowledged: no extension change needed.
 
-### Compiler lane: selfhost tracker visibility (updated 2026-10-02)
+### Compiler lane: tracker lines (updated 2026-10-02)
 
 The website renders the bootstrap meter live from
-`main:docs/SELFHOST_PROGRESS.md` on the roadmap page (origin/main, fetched
-per page view). The tracker is public now, so the page shows its value with
-no website change. Note: worktree-only updates do not publish -- the
-`selfhost-phase-1-lexer` worktree holds 18% (2 of 11) while origin/main
-still says 9% (1 of 11), so the site correctly shows 9%. Whenever a gate
-closes, land the meter line on `main` (even a docs-only commit) and the
-site follows on the next page view.
+`main:docs/SELFHOST_PROGRESS.md` (origin/main, fetched per page view); it
+now shows 18% (2 of 11), so the earlier worktree note is closed -- just keep
+landing tracker commits on `main`. Optional second line for the Verification
+gates table (rows update when present, snapshot values otherwise):
+
+**Gates: e2e X/Y, checker X/Y, feature X/Y, robustness X/Y, fuzz X/Y, perf
+X/Y, formatter X/Y, lsp X/Y.**
+
+Add or refresh it whenever the release gate run completes; if a better file
+than the selfhost tracker should carry it, say so and we re-point.
+
+### Stdlib lane: readiness tracker lines (2026-10-02)
+
+The roadmap now has a Standard library readiness bar and routes the smoke
+gates into the Verification gates table. Both are fetched live from
+`main:docs/PRODUCTION_READINESS_QUEUE.md`, so please add two lines near the
+top and update them as work lands:
+
+**<N>% -- <x> of <y> readiness gates complete.**
+
+**Gates: corpus <x>/<y>, modules <x>/<y>, probes <x>/<y>, barename
+<x>/<y>.**
+
+The `corpus` label fills the Standard library corpus row; other labels are
+recorded until matching rows exist. The bar stays hidden until the meter
+line appears; no website change is needed after that.
 
 ## Rules
 
