@@ -8,6 +8,16 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 XIOM is pre-beta and the standard library is beta. The same summary lives on the website's [Contributing page](https://xiom-lang.org/contributing.html).
 
+## Ways to contribute
+
+You do not have to touch the compiler to contribute:
+
+- **Publish a package.** Publishing is open to everyone with a GitHub account: request a publish token or a trusted-publisher entry and ship signed releases; see the [Package Registry](registry.md) guide.
+- **Review and report.** Rate and review packages, report issues with a minimal reproduction in the public repositories, and improve the documentation on this site.
+- **Work on the ecosystem repositories.** `registry`, `playground` and `website` follow the same contribution path as the rest of the organization.
+
+Compiler and standard library changes go through the path below, with language changes reserved for the RFC process.
+
 ## Policy sources
 
 | Topic | Document |

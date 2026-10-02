@@ -135,6 +135,10 @@ what the code does -- read the source, and use contracts where they apply.
 
 ## Publishing and accounts
 
+Publishing is the ecosystem's contribution path: anyone with a GitHub
+account can request access, and you do not need to touch the compiler to
+take part.
+
 Sign in at
 [registry.xiom-lang.org/login](https://registry.xiom-lang.org/login) with
 GitHub to request a publish token or a trusted-publisher entry; an operator
