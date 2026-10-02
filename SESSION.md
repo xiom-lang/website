@@ -794,7 +794,11 @@ Remaining:
     gates lines (`415e20d`), and both match the parser regexes locally, but
     their `main` is seven commits ahead of origin, so the raw tracker does
     not carry them yet and the bar correctly stays hidden; the site will
-    show 70% and corpus 951/951 as soon as they push `main`.
+    show 70% and corpus 951/951 as soon as they push `main`. Pushed later
+    the same day and verified live: the stdlib bar reads 70% (7 of 10
+    gates), the corpus row 951/951, and the compiler e2e row 2395/2395 with
+    the parser fix deployed; `probes 208/208` is carried and ignored until a
+    matching row exists.
 51. **Benchmark cover (done 2026-10-02)**: the Reproducible evidence section
     carries `img/benchmark-chaos.webp` (1254x1254, owner-supplied) as a 2:1
     centered cover crop (`object-fit: cover`, `aspect-ratio: 2/1`,
