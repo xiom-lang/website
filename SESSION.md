@@ -778,6 +778,12 @@ Remaining:
     unit tests (success, partial and failure paths) and local renders --
     selfhost 18% live, stdlib fallback hidden, no overflow (`6e71c18`).
     Relay requests for the two tracker lines are in the lane notes above.
+    The compiler lane published its gates line the same day; after a parser
+    tweak for its `(+4 ignored)` annotation, the live table reads e2e
+    2395/2395, checker 195/195, feature 517/517, robustness 63/63, fuzz
+    24/24, perf 3/3, formatter 86/86, lsp 45/45 from the tracker, with the
+    stdlib corpus on the snapshot until its tracker publishes a gates line
+    (`7bdebb5`).
 
 ## Cross-lane notes
 
