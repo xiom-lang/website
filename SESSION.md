@@ -840,6 +840,16 @@ Remaining:
     summary (`de1a850`). Claims verified against the live signed digest,
     the live per-version provenance block in `/index.json` and the registry
     docs.
+56. **Attacks section instead of a 'bulletproof' claim (done 2026-10-02)**:
+    the guide lists the classic registry attacks and the mechanism stopping
+    each -- code swapped under a version (`409` immutability), rollback to a
+    vulnerable release (locked digests plus the pinned signed index digest),
+    substituted tarballs (sha256/ed25519 verification), publisher
+    impersonation (key fingerprints and commit-level provenance), and quiet
+    deletion (yank, never rewrite) -- closing with the honest limit (these
+    prove who built what and that bytes are unchanged, not what the code
+    does). The ecosystem page carries the one-clause summary (`3af1994`).
+    Decision recorded: no absolute security adjectives on the site.
 
 ## Cross-lane notes
 
