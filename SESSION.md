@@ -809,6 +809,13 @@ Remaining:
     renders (image complete, 1100x460 and 382x191, no overflow); the
     deploy lands with the 15:23 pull. The owner supplies the public
     repository link when it launches.
+52. **Stdlib gate rows (done 2026-10-02)**: the Verification gates table
+    gained live rows for the standard library's modules (type-check clean),
+    probes and bare-name scan alongside the corpus row; all twelve rows
+    fill from the two trackers (verified in a local render: e2e 2395/2395,
+    corpus 951/951, modules 509/509, probes 208/208, barename 0/509), and
+    the snapshot note scopes the 4,212 figure to the compiler snapshot plus
+    the original corpus (`ff1b827`).
 
 ## Cross-lane notes
 
