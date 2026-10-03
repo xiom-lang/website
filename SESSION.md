@@ -882,6 +882,17 @@ Remaining:
     footer's What's new link 404s on direct navigation
     (`playground.xiom-lang.org/whats-new`), while the rest of the page
     serves fine.
+60. **Installer stale-staging fix (done 2026-10-04)**: the compiler lane
+    reported the served `install.ps1` aborting with `New-Item: ...xiom.new
+    already exists` when a stale staging dir remained after a locked-dir
+    install, leaving xiom off PATH. The fallback now stages under
+    `<InstallDir>.new-<timestamp>` when the stale tree cannot be removed,
+    uses `New-Item -Force`, and consolidation removes every
+    `<InstallDir>.new*` sibling and its PATH entry (`e8eeede`). Tested in
+    four phases: clean; canonical locked with a stale `.new` (the reported
+    repro, no abort); both locked (timestamped staging created);
+    consolidation (no leftovers, installed `xiom --version` v0.62.3). Relay
+    response is in the compiler-lane notes.
 
 ## Cross-lane notes
 
@@ -1303,6 +1314,15 @@ top and update them as work lands:
 The `corpus` label fills the Standard library corpus row; other labels are
 recorded until matching rows exist. The bar stays hidden until the meter
 line appears; no website change is needed after that.
+
+### Compiler lane: installer stale staging (2026-10-04, actioned)
+
+Fixed: a stale `<InstallDir>.new` can no longer abort the install -- if it
+cannot be removed it is left alone and staging goes to
+`<InstallDir>.new-<timestamp>`, then PATH registration still runs; the next
+successful canonical install removes every `<InstallDir>.new*` sibling and
+its PATH entry. Verified with the reported repro (stale `.new` plus locked
+canonical) and the double-locked case; `e8eeede`.
 
 ## Rules
 
