@@ -170,8 +170,13 @@ try {
     # successful run consolidates back to the canonical directory.
     Write-Warning "Could not remove $canonicalDir (files are locked by a running XIOM process)."
     $InstallDir = "$canonicalDir.new"
-    if (Test-Path $InstallDir) { Remove-OldInstall $InstallDir | Out-Null }
-    New-Item -ItemType Directory -Path $InstallDir | Out-Null
+    if ((Test-Path $InstallDir) -and (-not (Remove-OldInstall $InstallDir))) {
+      # A stale side-by-side tree is still locked (its own tools may be
+      # running): stage under a fresh name instead of failing on New-Item.
+      $InstallDir = "$canonicalDir.new-" + (Get-Date -Format 'yyyyMMdd-HHmmss')
+      Write-Host "Stale $canonicalDir.new could not be removed; staging in $InstallDir instead."
+    }
+    New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
     Expand-Archive -Path $zip -DestinationPath $InstallDir
     $bin = Join-Path $InstallDir 'bin'
     if (-not $NoPath) {
@@ -180,18 +185,20 @@ try {
     } else {
       Write-Host "Installed side by side at $InstallDir (-NoPath)."
     }
-    Write-Warning "Close VS Code and rerun the installer to replace $canonicalDir."
+    Write-Warning "Close VS Code and rerun the installer to replace $canonicalDir; the next successful run also removes the side-by-side trees."
   } else {
-    New-Item -ItemType Directory -Path $InstallDir | Out-Null
+    New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
     Expand-Archive -Path $zip -DestinationPath $InstallDir
     $bin = Join-Path $InstallDir 'bin'
-    # Consolidation succeeded: drop a side-by-side tree from an earlier
-    # locked run and forget its PATH entry.
-    $sideBySide = "$canonicalDir.new"
-    if (Test-Path $sideBySide) {
-      if (Remove-OldInstall $sideBySide) {
+    # Consolidation succeeded: drop side-by-side trees from earlier locked
+    # runs (including timestamped ones) and forget their PATH entries.
+    $parent = Split-Path -Parent $canonicalDir
+    $leaf = Split-Path -Leaf $canonicalDir
+    $stale = @(Get-ChildItem -Path $parent -Directory -Filter "$leaf.new*" -ErrorAction SilentlyContinue)
+    foreach ($staleDir in $stale) {
+      if (Remove-OldInstall $staleDir.FullName) {
         if (-not $NoPath) {
-          Remove-PathEntry @((Join-Path $sideBySide 'bin')) | Out-Null
+          Remove-PathEntry @((Join-Path $staleDir.FullName 'bin')) | Out-Null
         }
       }
     }
