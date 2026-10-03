@@ -868,6 +868,20 @@ Remaining:
     the same point, and the website's Contributing hub gained a matching
     card (`cc7e3b8`). This answers the owner's question: yes, the ecosystem
     path belongs beside the source path, not hidden behind it.
+59. **Playground 2.0 Algorithm Lab on the roadmap (done 2026-10-04)**: the
+    playground shipped 2.0 (Algorithm Lab) and now versions independently of
+    the toolchain (footer shows both). The roadmap phase table reads 1.0
+    shipped -- version line, offline package catalog, faster runs,
+    re-checked lesson examples, stdin input live in the run panel -- and 2.0
+    live with the shipped features (step-by-step execution with the
+    executing line highlighted, compare mode with per-pane step/compare/swap
+    counters, play/step/scrub/speed, keyboard shortcuts, mobile and reduced
+    motion); Lab expansion, gamified learning, Lab advanced and 3.0 stay as
+    planned scopes without stale version numbers, and the Ecosystem row
+    mentions the Lab (`d95fd94`). Observation for the playground lane: the
+    footer's What's new link 404s on direct navigation
+    (`playground.xiom-lang.org/whats-new`), while the rest of the page
+    serves fine.
 
 ## Cross-lane notes
 
