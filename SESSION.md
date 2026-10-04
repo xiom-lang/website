@@ -1322,7 +1322,9 @@ cannot be removed it is left alone and staging goes to
 `<InstallDir>.new-<timestamp>`, then PATH registration still runs; the next
 successful canonical install removes every `<InstallDir>.new*` sibling and
 its PATH entry. Verified with the reported repro (stale `.new` plus locked
-canonical) and the double-locked case; `e8eeede`.
+canonical) and the double-locked case; `e8eeede`. The served script was
+hash-verified live the same day, so the manual workaround (close VS Code,
+delete `%LOCALAPPDATA%\xiom.new`, re-run) is no longer required.
 
 ## Rules
 
