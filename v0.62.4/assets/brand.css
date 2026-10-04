@@ -1,0 +1,246 @@
+/*
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
+SPDX-License-Identifier: MIT OR Apache-2.0
+*/
+
+/* XIOM brand overrides for Material for MkDocs -- shared palette with the
+   website and playground (indigo on near-black). */
+
+:root {
+  --md-primary-fg-color: #5C6BFF;
+  --md-primary-fg-color--light: #7C88FF;
+  --md-primary-fg-color--dark: #3F4BD1;
+  --md-accent-fg-color: #5C6BFF;
+}
+
+[data-md-color-scheme="slate"] {
+  /* Lifted from pure near-black: less halation against white text */
+  --md-default-bg-color: #0E1014;
+  --md-default-bg-color--light: #14171C;
+  --md-default-fg-color: #DDE1E8;
+  --md-default-fg-color--light: #C3C8D1;
+  --md-default-fg-color--lighter: #99A0AD;
+  /* Code surfaces sit one step above the page so inline chips and blocks are
+     distinguishable. Measured WCAG ratios on #1A1E26: body 13.5:1, comments
+     7.4:1, every token >= 6:1. */
+  --md-code-bg-color: #1A1E26;
+  --md-code-fg-color: #E3E7EE;
+  --md-typeset-a-color: #8A93FF;
+}
+
+[data-md-color-scheme="default"] {
+  /* Softened off-white and ink, instead of pure white on pure black */
+  --md-default-bg-color: #F7F8FA;
+  --md-default-fg-color: #2A2E37;
+  --md-default-fg-color--light: #4A505C;
+  --md-default-fg-color--lighter: #667085;
+  --md-typeset-a-color: #3F4BD1;
+  --md-primary-fg-color: #3F4BD1;
+  --md-primary-fg-color--light: #5C6BFF;
+  --md-primary-fg-color--dark: #3139A8;
+  --md-code-bg-color: #EDEFF3;
+  --md-code-fg-color: #23262E;
+}
+
+.md-header,
+.md-tabs {
+  background-color: #0B0C10;
+}
+
+[data-md-color-scheme="default"] .md-header,
+[data-md-color-scheme="default"] .md-tabs {
+  background-color: #3F4BD1;
+}
+
+/* Typography: one type scale for guide pages and generated API pages, so a
+   module listing and a guide read at the same sizes. */
+.md-typeset h1 {
+  color: var(--md-default-fg-color);
+  font-size: 1.8rem;
+  line-height: 1.25;
+  font-weight: 650;
+}
+
+.md-typeset h2 {
+  font-size: 1.35rem;
+  line-height: 1.3;
+  font-weight: 650;
+}
+
+.md-typeset h3 {
+  font-size: 1.1rem;
+  line-height: 1.35;
+  font-weight: 650;
+}
+
+.md-typeset h4 {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.md-typeset table:not([class]) {
+  font-size: 0.8rem;
+}
+
+.md-typeset code {
+  font-size: 0.82em;
+}
+
+.md-typeset pre > code {
+  font-size: 0.8rem;
+}
+
+/* Signature code inside headings uses one size everywhere (it used to be
+   three different sizes for h1/h2/h4 code). */
+.md-typeset h1 code,
+.md-typeset h2 code,
+.md-typeset h3 code,
+.md-typeset h4 code {
+  font-size: 0.92em;
+}
+
+/* Table of contents: compact, tidy, code-free */
+.md-nav--secondary .md-nav__title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--md-default-fg-color--light);
+  box-shadow: none;
+}
+
+.md-nav--secondary .md-nav__list {
+  padding-left: 0;
+}
+
+.md-nav--secondary .md-nav__link {
+  margin-top: 0;
+  padding: 0.3em 0;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--md-default-fg-color--lighter);
+}
+
+.md-nav--secondary .md-nav__link:hover {
+  color: var(--md-default-fg-color);
+}
+
+.md-nav--secondary .md-nav__link--active {
+  color: var(--md-typeset-a-color);
+  font-weight: 500;
+}
+
+/* Signatures in navigation: plain text, no code chip */
+.md-nav__link code {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  font-size: 0.95em;
+  color: inherit;
+}
+
+/* Generated API pages only (guides have no H4): declaration rows, module
+   purpose and field tables sit on one consistent scale. Scoped to :has(h4)
+   so guide callouts keep their Material quote styling. */
+.md-typeset:has(h4) h4 {
+  margin: 1.6em 0 0.35em;
+  padding-top: 0.9em;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset:has(h4) h4 + blockquote,
+.md-typeset:has(h4) h1 + blockquote {
+  margin: 0 0 0.8em;
+  padding: 0;
+  border: 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.md-typeset:has(h4) h2 {
+  margin-top: 2rem;
+  padding-top: 0.9em;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.md-typeset:has(h4) ul li,
+.md-typeset:has(h4) ol li,
+.md-typeset:has(h4) table:not([class]) {
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+/* Anchor targets clear the sticky header */
+.md-typeset :target {
+  scroll-margin-top: 4.5rem;
+}
+
+/* Three-column reading layout: slimmer rails and a slightly wider grid on
+   large screens, so API signatures get room without stretching prose. */
+@media screen and (min-width: 76.25em) {
+  .md-grid {
+    max-width: 64rem;
+  }
+
+  .md-sidebar {
+    width: 11rem;
+  }
+}
+
+.md-typeset code {
+  border-radius: 6px;
+}
+
+/* Code blocks: framed panels with room to breathe, matching the website. */
+.md-typeset .highlight {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.md-typeset .highlight > pre {
+  margin: 0;
+}
+
+.md-typeset .highlight > pre > code {
+  padding: 0.9em 1.1em;
+}
+
+.md-typeset pre > code {
+  line-height: 1.7;
+}
+
+.md-typeset .highlight .md-clipboard {
+  border-radius: 8px;
+  margin: 0.25rem;
+}
+
+/* XIOM token colours (docs/xiom_lexer.py). Material maps Pygments token
+   classes onto these variables; matching the standalone docs palette keeps
+   the two documentation builds visually consistent. Values are picked so
+   every token clears WCAG AA (4.5:1) on its code background: light values are
+   measured on #EDEFF3, dark values on #1A1E26. */
+[data-md-color-scheme="default"] {
+  --md-code-hl-keyword-color: #3f4bd1;   /* 5.8:1 */
+  --md-code-hl-function-color: #00695c;  /* 5.8:1 */
+  --md-code-hl-constant-color: #9a5b00;  /* 4.7:1 */
+  --md-code-hl-string-color: #256b2a;    /* 5.7:1 */
+  --md-code-hl-number-color: #6a4fbf;    /* 5.2:1 */
+  --md-code-hl-comment-color: #555c6b;   /* 5.8:1 */
+}
+
+[data-md-color-scheme="slate"] {
+  --md-code-hl-keyword-color: #8a93ff;   /* 6.1:1 */
+  --md-code-hl-function-color: #4fd1c5;  /* 9.0:1 */
+  --md-code-hl-constant-color: #f0b445;  /* 9.0:1 */
+  --md-code-hl-string-color: #34d399;    /* 8.7:1 */
+  --md-code-hl-number-color: #c4b5fd;    /* 9.0:1 */
+  --md-code-hl-comment-color: #a6adbc;   /* 7.4:1 */
+}
+
+/* The owner asked to drop the skip-to-content affordance. */
+.md-skip {
+  display: none;
+}
