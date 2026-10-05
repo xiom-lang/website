@@ -2891,38 +2891,65 @@
 <blockquote>
 <p>Match s against a glob pattern supporting '?' (any single character) and '*' (zero or more characters). O(pattern.len() * s.len()) worst, with the classic star-backtracking algorithm. Pattern matching is case-sensitive.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((pattern.len() == 0) =&gt; (result == (s.len() == 0))) &amp;&amp; ((pattern == "*") =&gt; (result == true))</code></li>
+</ul>
 <h5 id="fn-glob_match_case_insensitivepattern-str-s-str-bool"><code>fn glob_match_case_insensitive(pattern: Str, s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-glob_match_case_insensitivepattern-str-s-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Case-insensitive glob match: same semantics as glob_match but compares characters with case folding. O(pattern.len() * s.len()) worst.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((pattern.len() == 0) =&gt; (result == (s.len() == 0))) &amp;&amp; ((pattern == "*") =&gt; (result == true))</code></li>
+</ul>
 <h5 id="fn-glob_escapes-str-str"><code>fn glob_escape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-glob_escapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape glob metacharacters ('*', '?', '[') in s with a backslash so the result matches literally. O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((glob_has_magic(s) == false) =&gt; (result == s)) &amp;&amp; ((s.len() == 0) =&gt; (result.len() == 0))</code></li>
+</ul>
 <h5 id="fn-glob_unescapes-str-str"><code>fn glob_unescape(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-glob_unescapes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Undo glob escaping: remove one backslash before each metacharacter. O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result == s)</code></li>
+</ul>
 <h5 id="fn-glob_has_magics-str-bool"><code>fn glob_has_magic(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-glob_has_magics-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether s contains any glob metacharacter ('*', '?', '['). O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((s.len() == 0) =&gt; (result == false)) &amp;&amp; ((result == true) =&gt; (s.len() &gt; 0))</code></li>
+</ul>
 <h5 id="fn-glob_quotes-str-str"><code>fn glob_quote(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-glob_quotes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Quote s so it matches literally: the same as glob_escape. O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((glob_has_magic(s) == false) =&gt; (result == s)) &amp;&amp; ((s.len() == 0) =&gt; (result.len() == 0))</code></li>
+</ul>
 <h5 id="fn-glob_translatepattern-str-str"><code>fn glob_translate(pattern: Str) -&gt; Str</code><a class="headerlink" href="#fn-glob_translatepattern-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convert a glob pattern to a regex pattern string: '<em>' becomes '.</em>', '?' becomes '.', and other regex metacharacters are escaped. O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(pattern.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-glob_compilepattern-str-resultint-str"><code>fn glob_compile(pattern: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-glob_compilepattern-str-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compile a glob pattern for repeated matching. This implementation keeps a single compiled-pattern slot: each call replaces the previous pattern, and the returned handle is always 1 (any other value is invalid). Matches use the same semantics as glob_match ('*' and '?' metacharacters, case-sensitive). Errors: Err on an empty pattern.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((pattern.len() == 0) =&gt; (result.is_err == true)) &amp;&amp; ((pattern.len() &gt; 0) =&gt; (result.is_ok == true))</code></li>
+</ul>
 <h5 id="fn-glob_compile_matchcompiled-int-s-str-bool"><code>fn glob_compile_match(compiled: Int, s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-glob_compile_matchcompiled-int-s-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Match s against the pattern most recently compiled by glob_compile. Returns false when <code>compiled</code> is not the current handle (or the slot is still empty). O(p * s) worst.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(compiled != 1) =&gt; (result == false)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2931,18 +2958,30 @@
 <blockquote>
 <p>The minimum edit distance between a and b (insert/delete/substitute). O(m*n) time, O(min(m,n)) space via a rolling row.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((a.len() == 0) =&gt; (result == b.len())) &amp;&amp; ((b.len() == 0) =&gt; (result == a.len())) &amp;&amp; ((a == b) =&gt; (result == 0))</code></li>
+</ul>
 <h5 id="fn-levenshtein_distance_limiteda-str-b-str-max-int-int"><code>fn levenshtein_distance_limited(a: Str, b: Str, max: Int) -&gt; Int</code><a class="headerlink" href="#fn-levenshtein_distance_limiteda-str-b-str-max-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Edit distance capped at max. Returns the true distance when it is &lt;= max, otherwise returns max + 1 (indicating the distance exceeds the cap). O(m*n) worst but only evaluates the diagonal band that can stay within the limit, so long divergent strings exit early.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((a.len() == 0 &amp;&amp; b.len() &lt;= max &amp;&amp; max &gt;= 0) =&gt; (result == b.len())) &amp;&amp; ((a.len() &gt; b.len() + max &amp;&amp; max &gt;= 0) =&gt; (result == max + 1))</code></li>
+</ul>
 <h5 id="fn-levenshtein_similaritya-str-b-str-float64"><code>fn levenshtein_similarity(a: Str, b: Str) -&gt; Float64</code><a class="headerlink" href="#fn-levenshtein_similaritya-str-b-str-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Normalized similarity in [0, 1]: 1 - dist / max(len_a, len_b). Equal strings score 1.0; completely different strings approach 0.0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((a == b &amp;&amp; a.len() &gt; 0) =&gt; (result == 1)) &amp;&amp; ((a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result == 1))</code></li>
+</ul>
 <h5 id="fn-levenshtein_matrixa-str-b-str-vecvecint"><code>fn levenshtein_matrix(a: Str, b: Str) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-levenshtein_matrixa-str-b-str-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compute the full (m+1) x (n+1) dynamic-programming matrix for a and b. matrix[i][j] is the edit distance between a[0..i) and b[0..j). O(m*n). NOTE: nested Vec[Vec[Int]] element access is unreliable in the current compiler - treat the result as opaque.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() == 0) =&gt; (result.len() == 1)</code></li>
+</ul>
 <h5 id="fn-levenshtein_aligna-str-b-str-str-str"><code>fn levenshtein_align(a: Str, b: Str) -&gt; (Str, Str)</code><a class="headerlink" href="#fn-levenshtein_aligna-str-b-str-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Optimal alignment of a and b as (aligned_a, aligned_b) with '-' marking gaps. O(m<em>n) time, O(m</em>n) space.</p>
@@ -2951,18 +2990,30 @@
 <blockquote>
 <p>The sequence of edit operations transforming a into b. Operations are "keep:c", "del:c", "ins:c" and "sub:x&gt;y". O(m*n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result.len() == 0)) &amp;&amp; ((a.len() == 0 &amp;&amp; b.len() &gt; 0) =&gt; (result.len() == b.len()))</code></li>
+</ul>
 <h5 id="fn-damerau_levenshteina-str-b-str-int"><code>fn damerau_levenshtein(a: Str, b: Str) -&gt; Int</code><a class="headerlink" href="#fn-damerau_levenshteina-str-b-str-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Damerau-Levenshtein distance with unrestricted adjacent transpositions. O(m<em>n) time, O(m</em>n) space. Uses the classic last-occurrence algorithm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((a.len() == 0) =&gt; (result == b.len())) &amp;&amp; ((b.len() == 0) =&gt; (result == a.len()))</code></li>
+</ul>
 <h5 id="fn-osa_distancea-str-b-str-int"><code>fn osa_distance(a: Str, b: Str) -&gt; Int</code><a class="headerlink" href="#fn-osa_distancea-str-b-str-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Optimal string alignment (restricted transposition) distance. O(m<em>n) time, O(m</em>n) space. Only allows adjacent transpositions that are not themselves part of further transpositions.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((a.len() == 0) =&gt; (result == b.len())) &amp;&amp; ((b.len() == 0) =&gt; (result == a.len()))</code></li>
+</ul>
 <h5 id="fn-wagner_fischera-str-b-str-int"><code>fn wagner_fischer(a: Str, b: Str) -&gt; Int</code><a class="headerlink" href="#fn-wagner_fischera-str-b-str-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Classic Wagner-Fischer edit distance (full-matrix variant of the standard Levenshtein distance). O(m<em>n) time, O(m</em>n) space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((a.len() == 0) =&gt; (result == b.len())) &amp;&amp; ((b.len() == 0) =&gt; (result == a.len()))</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2999,10 +3050,10 @@
 </ul>
 <h4 id="fn-soundexcode-str-str"><code>fn soundex(code: Str) -&gt; Str</code><a class="headerlink" href="#fn-soundexcode-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Compute the classic American Soundex code for a string (4 chars).</p>
+<p>Compute the classic American Soundex code for a string (4 chars). Delegates to the canonical <code>xiom.misc.soundex</code> shim (pre-1.0 alignment: the empty string encodes as "", not the legacy "0000"). Kept as a unique delegation so bare <code>soundex(...)</code> calls stop binding the stale copy that returned "0000" (duplicate-leaf class; see the compiler-lane relay).</p>
 </blockquote>
 <ul>
-<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>(code.len() == 0) =&gt; (result.len() == 0)</code></li>
 </ul>
 <h4 id="fn-is_palindromes-str-bool"><code>fn is_palindrome(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-is_palindromes-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3148,22 +3199,37 @@
 <blockquote>
 <p>A copy of strings sorted naturally (ascending). O(k^2 * n) with insertion sort; stable.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == strings.len()</code></li>
+</ul>
 <h5 id="fn-natural_sort_byitems-vecstr-key-fnstr-str-vecstr"><code>fn natural_sort_by(items: &amp;Vec[Str], key: fn(&amp;Str) -&gt; Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-natural_sort_byitems-vecstr-key-fnstr-str-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sort items by an extracted natural key, returning a new vector. O(k^2 * n). The key function must be named and return a Str. NOTE: implemented as a concrete Vec[Str] specialization of the frozen generic API (compiler fn-ptr codegen bug - docs/STDLIB_GENERICS.md).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == items.len()</code></li>
+</ul>
 <h5 id="fn-natural_keys-str-vecint-str"><code>fn natural_key(s: Str) -&gt; Vec[(Int, Str)]</code><a class="headerlink" href="#fn-natural_keys-str-vecint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The comparison segments of s; each tuple is (digit_value, chunk). Digit runs yield (parsed_value, digit_string); text runs yield (0, text_chunk). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((s.len() == 0) =&gt; (result.len() == 0)) &amp;&amp; ((s.len() &gt; 0) =&gt; (result.len() &gt;= 1))</code></li>
+</ul>
 <h5 id="fn-natural_chunks-str-vecstr"><code>fn natural_chunk(s: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-natural_chunks-str-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Split s into alternating digit and text chunks. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((s.len() == 0) =&gt; (result.len() == 0)) &amp;&amp; ((s.len() &gt; 0) =&gt; (result.len() &gt;= 1))</code></li>
+</ul>
 <h5 id="fn-natural_is_digit_runs-str-i-int-bool"><code>fn natural_is_digit_run(s: Str, i: Int) -&gt; Bool</code><a class="headerlink" href="#fn-natural_is_digit_runs-str-i-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether s contains a digit run starting at index i. O(1). Returns false when i is out of bounds.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((i &lt; 0 || i &gt;= s.len()) =&gt; (result == false)) &amp;&amp; ((result == true) =&gt; (i &gt;= 0 &amp;&amp; i &lt; s.len()))</code></li>
+</ul>
 <h5 id="fn-natural_compare_numerica-str-b-str-int"><code>fn natural_compare_numeric(a: Str, b: Str) -&gt; Int</code><a class="headerlink" href="#fn-natural_compare_numerica-str-b-str-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compare two pure numeric strings by value (leading zeros are ignored). O(n). Returns -1, 0, or 1. Non-digit content compares lexicographically.</p>
@@ -3175,6 +3241,9 @@
 <blockquote>
 <p>A copy of strings sorted naturally in descending order. O(k^2 * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == strings.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3273,26 +3342,44 @@
 <blockquote>
 <p>Four-character American Soundex code of <code>s</code> (canonical: returns "" for empty input). Params: s the word to encode. Returns: the code. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-soundex_comparea-str-b-str-bool"><code>fn soundex_compare(a: Str, b: Str) -&gt; Bool</code><a class="headerlink" href="#fn-soundex_comparea-str-b-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether two strings share a Soundex code. O(|a| + |b|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a == b) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-soundex_encodes-str-str"><code>fn soundex_encode(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-soundex_encodes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Alias for soundex (kept for API compatibility). O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-soundex_keys-str-str"><code>fn soundex_key(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-soundex_keys-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Canonical comparison key for s: the standard Soundex code. O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-soundex_similaritya-str-b-str-float64"><code>fn soundex_similarity(a: Str, b: Str) -&gt; Float64</code><a class="headerlink" href="#fn-soundex_similaritya-str-b-str-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Similarity in [0, 1] from the number of matching Soundex digits. O(1). Canonical-aligned edge cases: two empty inputs score 1.0; exactly one empty input scores 0.0 (the old duplicate compared "0000" codes instead).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result == 1)) &amp;&amp; ((a.len() == 0 &amp;&amp; b.len() &gt; 0) =&gt; (result == 0))</code></li>
+</ul>
 <h5 id="fn-soundex_variantss-str-vecstr"><code>fn soundex_variants(s: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-soundex_variantss-str-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Deterministic alternate Soundex codes for s. Returns a vector with the standard code plus a code that encodes the first letter's own digit (a common variant). O(|s|). The first element is always the canonical code.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 2</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

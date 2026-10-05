@@ -3902,30 +3902,64 @@
 <blockquote>
 <p>Generic PBKDF2 key derivation (HMAC-SHA256 based). <code>iterations</code> and <code>key_len</code> must be positive; invalid inputs yield an empty vector. Complexity: O(iterations * key_len / 32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(iterations &lt; 1 || key_len &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(iterations &gt;= 1 &amp;&amp; key_len &gt;= 1) =&gt; (result.len() == key_len)</code></li>
+</ul>
 <h5 id="fn-pbkdf2_hmac_sha256password-vecuint8-salt-vecuint8-iterations-int-key_len-int-vecuint8"><code>fn pbkdf2_hmac_sha256(password: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], iterations: Int, key_len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-pbkdf2_hmac_sha256password-vecuint8-salt-vecuint8-iterations-int-key_len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>PBKDF2 with HMAC-SHA256 (alias of pbkdf2). Complexity: O(iterations * key_len / 32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(iterations &lt; 1 || key_len &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(iterations &gt;= 1 &amp;&amp; key_len &gt;= 1) =&gt; (result.len() == key_len)</code></li>
+</ul>
 <h5 id="fn-hkdf_extracthash-int-ikm-vecuint8-salt-vecuint8-vecuint8"><code>fn hkdf_extract(hash: Int, ikm: &amp;Vec[UInt8], salt: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hkdf_extracthash-int-ikm-vecuint8-salt-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>HKDF extract step: PRK = HMAC(salt, IKM). <code>hash</code> selects SHA-256 (1) or SHA-512 (2). Complexity: O(n), n = IKM length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(hash == 2) =&gt; (result.len() == 64)</code></li>
+<li><strong>Postcondition:</strong> <code>(hash != 2) =&gt; (result.len() == 32)</code></li>
+</ul>
 <h5 id="fn-hkdf_expandhash-int-prk-vecuint8-info-vecuint8-len-int-vecuint8"><code>fn hkdf_expand(hash: Int, prk: &amp;Vec[UInt8], info: &amp;Vec[UInt8], len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hkdf_expandhash-int-prk-vecuint8-info-vecuint8-len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>HKDF expand step: produce <code>len</code> bytes from the pseudorandom key <code>prk</code>. <code>hash</code> selects SHA-256 (1) or SHA-512 (2). Returns an empty vector for <code>len</code> out of range. Complexity: O(len / hash_len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(hash != 2 &amp;&amp; len &gt; 8160) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(hash == 2 &amp;&amp; len &gt; 16320) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(hash != 2 &amp;&amp; len &gt;= 1 &amp;&amp; len &lt;= 8160) =&gt; (result.len() == len)</code></li>
+<li><strong>Postcondition:</strong> <code>(hash == 2 &amp;&amp; len &gt;= 1 &amp;&amp; len &lt;= 16320) =&gt; (result.len() == len)</code></li>
+</ul>
 <h5 id="fn-hkdf_sha256ikm-vecuint8-salt-vecuint8-info-vecuint8-len-int-vecuint8"><code>fn hkdf_sha256(ikm: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], info: &amp;Vec[UInt8], len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hkdf_sha256ikm-vecuint8-salt-vecuint8-info-vecuint8-len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>One-shot HKDF-SHA256: extract then expand. Complexity: O(len / 32 + n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt; 8160) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 1 &amp;&amp; len &lt;= 8160) =&gt; (result.len() == len)</code></li>
+</ul>
 <h5 id="fn-kdf_derive_mastersecret-vecuint8-salt-vecuint8-info-vecuint8-len-int-vecuint8"><code>fn kdf_derive_master(secret: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], info: &amp;Vec[UInt8], len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-kdf_derive_mastersecret-vecuint8-salt-vecuint8-info-vecuint8-len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Derive a master key from a shared secret (HKDF-SHA256 with the shared secret as IKM and an empty salt). Complexity: O(len / 32 + n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt; 8160) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 1 &amp;&amp; len &lt;= 8160) =&gt; (result.len() == len)</code></li>
+</ul>
 <h5 id="fn-kdf_check_intervaln-int-int"><code>fn kdf_check_interval(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-kdf_check_intervaln-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Validate and adjust a cost parameter: clamps to [1, 1_000_000]. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 1 &amp;&amp; result &lt;= 1000000</code></li>
+<li><strong>Postcondition:</strong> <code>(n &lt; 1) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 1000000) =&gt; (result == 1000000)</code></li>
+</ul>
 <h5 id="fn-scryptpassword-vecuint8-salt-vecuint8-n-int-r-int-p-int-key_len-int-vecuint8"><code>fn scrypt(password: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], n: Int, r: Int, p: Int, key_len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-scryptpassword-vecuint8-salt-vecuint8-n-int-r-int-p-int-key_len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Memory-hard scrypt key derivation (RFC 7914). Uses PBKDF2-HMAC-SHA256 for the outer/inner hashes and Salsa20/8 for the block mix. <code>n</code> must be a power of two; it is clamped to 2^18 and r*p to 256. Complexity: O(n * r * p).</p>
@@ -3934,10 +3968,17 @@
 <blockquote>
 <p>Argon2id-style key derivation. This is a DOCUMENTED APPROXIMATION: it derives via PBKDF2-HMAC-SHA256 with the memory budget folded into the iteration count (matching the pattern of the flat argon2 helper). A full RFC 9106 implementation (BLAKE2b blocks + memory-hard passes) is not practical in pure XIOM. Do not use where exact Argon2id compatibility is required. Complexity: O(iterations * memory / 1024 + iterations).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key_len &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(key_len &gt;= 1) =&gt; (result.len() == key_len)</code></li>
+</ul>
 <h5 id="fn-bcryptpassword-vecuint8-salt-vecuint8-cost-int-vecuint8"><code>fn bcrypt(password: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], cost: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-bcryptpassword-vecuint8-salt-vecuint8-cost-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>bcrypt-style password hashing. This is a DOCUMENTED APPROXIMATION: PBKDF2-HMAC-SHA256 with 2^cost iterations and a version marker derived from the salt's first byte. A full Blowfish-EksBlowfish implementation is not practical in pure XIOM. Do not use where exact bcrypt compatibility is required. Complexity: O(2^cost).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 24</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3950,38 +3991,67 @@
 <blockquote>
 <p>Derive the X25519 public key from a secret key. Complexity: O(255) field operations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(sk.len() == 32) =&gt; (result.len() == 32)</code></li>
+</ul>
 <h5 id="fn-x25519_shared_secretsk-vecuint8-pk-vecuint8-vecuint8"><code>fn x25519_shared_secret(sk: &amp;Vec[UInt8], pk: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-x25519_shared_secretsk-vecuint8-pk-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compute the X25519 shared secret between a secret key and a peer public key. Complexity: O(255) field operations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(sk.len() == 32 &amp;&amp; pk.len() == 32) =&gt; (result.len() == 32)</code></li>
+</ul>
 <h5 id="fn-x25519_basesk-vecuint8-vecuint8"><code>fn x25519_base(sk: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-x25519_basesk-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Multiply the base point by sk (public key). Alias of x25519_public_key. Complexity: O(255) field operations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(sk.len() == 32) =&gt; (result.len() == 32)</code></li>
+</ul>
 <h5 id="fn-ecdh_p256sk-vecuint8-pk-vecuint8-vecuint8"><code>fn ecdh_p256(sk: &amp;Vec[UInt8], pk: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-ecdh_p256sk-vecuint8-pk-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ECDH shared secret on P-256 (x coordinate of sk * pk). Requires a P-256 point-multiplication primitive; delegates to the secp256k1 ladder is NOT possible, so this returns an empty vector until a P-256 point multiplier is wired in (see report). Complexity: O(256) point operations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h5 id="fn-ecdh_secp256k1sk-vecuint8-pk-vecuint8-vecuint8"><code>fn ecdh_secp256k1(sk: &amp;Vec[UInt8], pk: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-ecdh_secp256k1sk-vecuint8-pk-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ECDH shared secret on secp256k1 (x coordinate of sk * pk). Complexity: O(256) point operations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(sk.len() == 32 &amp;&amp; pk.len() == 32) =&gt; (result.len() == 32)</code></li>
+</ul>
 <h5 id="fn-dh_generate_keyprime-vecuint8-generator-vecuint8-vecuint8"><code>fn dh_generate_key(prime: &amp;Vec[UInt8], generator: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-dh_generate_keyprime-vecuint8-generator-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Generate a classic DH private key in [2, p-2]. Complexity: O(1) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == prime.len()</code></li>
+</ul>
 <h5 id="fn-dh_shared_secretprime-vecuint8-own_sk-vecuint8-peer_pk-vecuint8-vecuint8"><code>fn dh_shared_secret(prime: &amp;Vec[UInt8], own_sk: &amp;Vec[UInt8], peer_pk: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-dh_shared_secretprime-vecuint8-own_sk-vecuint8-peer_pk-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compute the classic DH shared secret: peer_pk ^ own_sk mod prime. Complexity: O(bitlen^3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == prime.len()</code></li>
+</ul>
 <h5 id="fn-key_agreement_deriveshared-vecuint8-info-vecuint8-len-int-vecuint8"><code>fn key_agreement_derive(shared: &amp;Vec[UInt8], info: &amp;Vec[UInt8], len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-key_agreement_deriveshared-vecuint8-info-vecuint8-len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Derive symmetric key bytes from a shared secret (HKDF-SHA256). Complexity: O(len / 32 + n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 1 || len &gt; 8160) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 1 &amp;&amp; len &lt;= 8160) =&gt; (result.len() == len)</code></li>
+</ul>
 <h5 id="fn-key_agreement_validatepk-vecuint8-bool"><code>fn key_agreement_validate(pk: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-key_agreement_validatepk-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sanity-check a peer public key: 32 bytes and not all zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(pk.len() != 32) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>result =&gt; (pk.len() == 32)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4020,50 +4090,94 @@
 <blockquote>
 <p>Create an incremental HMAC. <code>hash</code> selects the digest (1=SHA-256, 2=SHA-512, 3=MD5); unknown values fall back to SHA-256. Complexity: O(key length).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.key.len() == result.block</code></li>
+<li><strong>Postcondition:</strong> <code>(hash == 2) =&gt; (result.block == 128)</code></li>
+<li><strong>Postcondition:</strong> <code>(hash != 2) =&gt; (result.block == 64)</code></li>
+<li><strong>Postcondition:</strong> <code>result.data.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.hash == hash</code></li>
+</ul>
 <h5 id="fn-hmac_updateh-mut-hmac-data-vecuint8"><code>fn hmac_update(h: &amp;mut Hmac, data: &amp;Vec[UInt8])</code><a class="headerlink" href="#fn-hmac_updateh-mut-hmac-data-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Feed data into an in-progress HMAC. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>h.data.len() == h.data.len()@pre + data.len()</code></li>
+</ul>
 <h5 id="fn-hmac_finalh-hmac-vecuint8"><code>fn hmac_final(h: Hmac) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hmac_finalh-hmac-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Finish an HMAC and return the tag. Complexity: O(n), n = accumulated data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(h.hash == 2) =&gt; (result.len() == 64)</code></li>
+<li><strong>Postcondition:</strong> <code>(h.hash == 3) =&gt; (result.len() == 16)</code></li>
+<li><strong>Postcondition:</strong> <code>(h.hash != 2 &amp;&amp; h.hash != 3) =&gt; (result.len() == 32)</code></li>
+</ul>
 <h5 id="fn-hmac_sha256key-vecuint8-data-vecuint8-vecuint8_1"><code>fn hmac_sha256(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hmac_sha256key-vecuint8-data-vecuint8-vecuint8_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>One-shot HMAC-SHA256 (RFC 2104). Implemented locally on xiom.crypto.sha256; matches the flat hmac_sha256 and RFC 4231 vectors. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-hmac_sha512key-vecuint8-data-vecuint8-vecuint8"><code>fn hmac_sha512(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hmac_sha512key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>One-shot HMAC-SHA512 (RFC 2104). Uses xiom.crypto.sha512 (verified). Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h5 id="fn-hmac_verifykey-vecuint8-data-vecuint8-tag-vecuint8-bool"><code>fn hmac_verify(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8], tag: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-hmac_verifykey-vecuint8-data-vecuint8-tag-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Verify an HMAC-SHA256 tag in constant time. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (tag.len() == 32)</code></li>
+</ul>
 <h5 id="fn-poly1305_mackey-vecuint8-data-vecuint8-vecuint8"><code>fn poly1305_mac(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-poly1305_mackey-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Poly1305 one-shot MAC (16 bytes). Delegates to xiom.poly1305.poly1305_mac. Complexity: O(n), n = message length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() &gt;= 32) =&gt; (result.len() == 16)</code></li>
+</ul>
 <h5 id="fn-poly1305_verifykey-vecuint8-data-vecuint8-tag-vecuint8-bool"><code>fn poly1305_verify(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8], tag: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-poly1305_verifykey-vecuint8-data-vecuint8-tag-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Constant-time Poly1305 verification. Complexity: O(n), n = message length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (key.len() &gt;= 32 &amp;&amp; tag.len() == 16)</code></li>
+</ul>
 <h5 id="fn-cbc_mackey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8"><code>fn cbc_mac(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-cbc_mackey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>CBC-MAC over the message (NIST SP 800-38B style: full 16-byte blocks; the final partial block is zero-padded). Uses the AES block primitive. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(iv.len() &gt;= 16) =&gt; (result.len() == 16)</code></li>
+</ul>
 <h5 id="fn-cmac_aes128key-vecuint8-data-vecuint8-vecuint8"><code>fn cmac_aes128(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-cmac_aes128key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-CMAC-128 (NIST SP 800-38B). Uses the AES block primitive. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 16</code></li>
+</ul>
 <h5 id="fn-constant_time_eqa-vecuint8-b-vecuint8-bool"><code>fn constant_time_eq(a: &amp;Vec[UInt8], b: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-constant_time_eqa-vecuint8-b-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Timing-safe byte comparison (arithmetic accumulation, no early exit). Complexity: O(n), n = byte length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>result =&gt; (a.len() == b.len())</code></li>
+</ul>
 <h5 id="fn-constant_time_selecta-int-b-int-bit-bool-int"><code>fn constant_time_select(a: Int, b: Int, bit: Bool) -&gt; Int</code><a class="headerlink" href="#fn-constant_time_selecta-int-b-int-bit-bool-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Constant-time select: returns <code>a</code> when <code>bit</code> is true, else <code>b</code>. Both branches are evaluated and combined arithmetically. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>bit =&gt; (result == a)</code></li>
+<li><strong>Postcondition:</strong> <code>!bit =&gt; (result == b)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4096,6 +4210,9 @@
 <p>Parameters: key: 32-byte one-time key (Vec[Int] where each element is a byte value 0-255, or Vec[UInt8]) msg: message to authenticate Returns: 16-byte tag as Vec[Int] (each element 0-255)</p>
 <p>IMPORTANT: The key MUST be used only once per key. Key reuse breaks security. Use with ChaCha20 as ChaCha20-Poly1305 AEAD for authenticated encryption.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() &gt;= 32) =&gt; (result.len() == 16)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="rng_cryptoxi"><code>rng_crypto.xi</code><a class="headerlink" href="#rng_cryptoxi" title="Permanent link">&para;</a></h2>
@@ -4103,6 +4220,10 @@
 <blockquote>
 <p>Fill <code>len</code> bytes from the CSPRNG. Negative lengths return an empty vector. Complexity: O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 0) =&gt; (result.len() == len)</code></li>
+</ul>
 <h5 id="fn-crypto_random_u64-uint64"><code>fn crypto_random_u64() -&gt; UInt64</code><a class="headerlink" href="#fn-crypto_random_u64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Random 64-bit unsigned integer. Complexity: O(1).</p>
@@ -4115,10 +4236,17 @@
 <blockquote>
 <p>Unbiased random integer in [0, n). Returns 0 for n &lt;= 0. Complexity: O(1) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt; n)</code></li>
+</ul>
 <h5 id="fn-crypto_random_float-float64"><code>fn crypto_random_float() -&gt; Float64</code><a class="headerlink" href="#fn-crypto_random_float-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Random double in [0, 1). Uses the top 53 bits of a 64-bit draw. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt; 1</code></li>
+</ul>
 <h5 id="fn-crypto_random_bool-bool"><code>fn crypto_random_bool() -&gt; Bool</code><a class="headerlink" href="#fn-crypto_random_bool-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fair random boolean. Complexity: O(1).</p>
@@ -4139,10 +4267,18 @@
 <blockquote>
 <p>Generate a probable prime of the given bit length (big-endian bytes). Uses bigint_is_prime (probabilistic). Returns an empty vector on invalid bit lengths or failure. Complexity: expected O(bits^4) with rejection.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(bits &lt; 16 || bits &gt; 2048) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(bits &gt;= 16 &amp;&amp; bits &lt;= 2048) =&gt; (result.len() == (bits + 7) / 8)</code></li>
+</ul>
 <h5 id="fn-crypto_random_stringlen-int-alphabet-str-str"><code>fn crypto_random_string(len: Int, alphabet: Str) -&gt; Str</code><a class="headerlink" href="#fn-crypto_random_stringlen-int-alphabet-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Random string drawn from an alphabet (uniform via the CSPRNG). Returns an empty string when the alphabet is empty or <code>len</code> is negative. Complexity: O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 0 || alphabet.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 0 &amp;&amp; alphabet.len() &gt; 0) =&gt; (result.len() == len)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4358,14 +4494,23 @@
 <blockquote>
 <p>Sign a message with an Ed25519 secret key (64-byte signature). Blocked in the current build (see module header).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h5 id="fn-ed25519_verifypk-vecuint8-msg-vecuint8-sig-vecuint8-bool"><code>fn ed25519_verify(pk: &amp;Vec[UInt8], msg: &amp;Vec[UInt8], sig: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-ed25519_verifypk-vecuint8-msg-vecuint8-sig-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Verify an Ed25519 signature. Blocked in the current build.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false</code></li>
+</ul>
 <h5 id="fn-ed25519_public_keysk-vecuint8-vecuint8"><code>fn ed25519_public_key(sk: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-ed25519_public_keysk-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Derive the Ed25519 public key from a secret key. Blocked in the current build (see module header).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h5 id="fn-ed25519_keypair_from_seedseed-vecuint8-vecuint8-vecuint8"><code>fn ed25519_keypair_from_seed(seed: &amp;Vec[UInt8]) -&gt; (Vec[UInt8], Vec[UInt8])</code><a class="headerlink" href="#fn-ed25519_keypair_from_seedseed-vecuint8-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Deterministically expand a 32-byte seed; the tuple is (sk, pk). Blocked in the current build (see module header).</p>
@@ -4386,6 +4531,9 @@
 <blockquote>
 <p>Verify an ECDSA signature. Blocked in the current build.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false</code></li>
+</ul>
 <h5 id="fn-dsa_signp-vecuint8-q-vecuint8-g-vecuint8-x-vecuint8-msg-vecuint8-vecuint8-vecuint8"><code>fn dsa_sign(p: &amp;Vec[UInt8], q: &amp;Vec[UInt8], g: &amp;Vec[UInt8], x: &amp;Vec[UInt8], msg: &amp;Vec[UInt8]) -&gt; (Vec[UInt8], Vec[UInt8])</code><a class="headerlink" href="#fn-dsa_signp-vecuint8-q-vecuint8-g-vecuint8-x-vecuint8-msg-vecuint8-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>DSA sign; the tuple is (r, s). Blocked in the current build.</p>
@@ -4394,6 +4542,9 @@
 <blockquote>
 <p>Verify a DSA signature. Blocked in the current build.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

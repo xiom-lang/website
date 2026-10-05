@@ -2869,10 +2869,18 @@
 <blockquote>
 <p>Create a ChaCha RNG with an all-zero key (deterministic default). Test vector: the first output word of the zero-key block is 0xADE0B876.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state.len() == 16</code></li>
+<li><strong>Postcondition:</strong> <code>result.pos == 0</code></li>
+</ul>
 <h5 id="fn-chacha_rng_from_seedseed-uint64-chacharng"><code>fn chacha_rng_from_seed(seed: UInt64) -&gt; ChaChaRng</code><a class="headerlink" href="#fn-chacha_rng_from_seedseed-uint64-chacharng" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create a ChaCha RNG from a 64-bit seed. The seed's two 32-bit halves are replicated into the 8 key words.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state.len() == 16</code></li>
+<li><strong>Postcondition:</strong> <code>result.pos == 0</code></li>
+</ul>
 <h5 id="fn-chacha_rng_next_u32r-mut-chacharng-uint32"><code>fn chacha_rng_next_u32(r: &amp;mut ChaChaRng) -&gt; UInt32</code><a class="headerlink" href="#fn-chacha_rng_next_u32r-mut-chacharng-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next 32-bit output word. <code>pos</code> tracks the position within the 64-word keystream window (16 words per block, 4 blocks per window); the block counter advances at each 16-word boundary.</p>
@@ -2881,14 +2889,24 @@
 <blockquote>
 <p>Return the next value as a signed i64 in [0, 2^32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt; 4294967296</code></li>
+</ul>
 <h5 id="fn-chacha_rng_next_floatr-mut-chacharng-float64"><code>fn chacha_rng_next_float(r: &amp;mut ChaChaRng) -&gt; Float64</code><a class="headerlink" href="#fn-chacha_rng_next_floatr-mut-chacharng-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value as a Float64 in [0, 1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt; 1</code></li>
+</ul>
 <h5 id="fn-chacha_rng_next_boundedr-mut-chacharng-hi-int-int"><code>fn chacha_rng_next_bounded(r: &amp;mut ChaChaRng, hi: Int) -&gt; Int</code><a class="headerlink" href="#fn-chacha_rng_next_boundedr-mut-chacharng-hi-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value in [0, hi). Requires hi &gt; 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(hi &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(hi &gt; 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt; hi)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2919,14 +2937,26 @@
 <blockquote>
 <p>Create an MT19937 generator with the classic default seed 5489.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state.len() == 624</code></li>
+<li><strong>Postcondition:</strong> <code>result.index == 624</code></li>
+</ul>
 <h5 id="fn-mt19937_from_seedseed-uint32-mt19937"><code>fn mt19937_from_seed(seed: UInt32) -&gt; Mt19937</code><a class="headerlink" href="#fn-mt19937_from_seedseed-uint32-mt19937" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create an MT19937 generator from an explicit 32-bit seed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state.len() == 624</code></li>
+<li><strong>Postcondition:</strong> <code>result.index == 624</code></li>
+</ul>
 <h5 id="fn-mt19937_reseedr-mut-mt19937-seed-uint32"><code>fn mt19937_reseed(r: &amp;mut Mt19937, seed: UInt32)</code><a class="headerlink" href="#fn-mt19937_reseedr-mut-mt19937-seed-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Re-seed an existing generator in place using the classic seeding algorithm.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>r.index == 624</code></li>
+<li><strong>Postcondition:</strong> <code>r.state.len() == r.state.len()@pre</code></li>
+</ul>
 <h5 id="fn-mt19937_next_u32r-mut-mt19937-uint32"><code>fn mt19937_next_u32(r: &amp;mut Mt19937) -&gt; UInt32</code><a class="headerlink" href="#fn-mt19937_next_u32r-mut-mt19937-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next 32-bit output word, tempering with: y ^= y &gt;&gt; 11; y ^= (y &lt;&lt; 7) &amp; 0x9d2c5680; y ^= (y &lt;&lt; 15) &amp; 0xefc60000; y ^= y &gt;&gt; 18.</p>
@@ -2935,14 +2965,24 @@
 <blockquote>
 <p>Return the next value as a signed i64 in [0, 2^32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt; 4294967296</code></li>
+</ul>
 <h5 id="fn-mt19937_next_floatr-mut-mt19937-float64"><code>fn mt19937_next_float(r: &amp;mut Mt19937) -&gt; Float64</code><a class="headerlink" href="#fn-mt19937_next_floatr-mut-mt19937-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value as a Float64 in [0, 1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt; 1</code></li>
+</ul>
 <h5 id="fn-mt19937_next_boundedr-mut-mt19937-hi-int-int"><code>fn mt19937_next_bounded(r: &amp;mut Mt19937, hi: Int) -&gt; Int</code><a class="headerlink" href="#fn-mt19937_next_boundedr-mut-mt19937-hi-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value in [0, hi). Requires hi &gt; 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(hi &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(hi &gt; 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt; hi)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2973,10 +3013,18 @@
 <blockquote>
 <p>Create a PCG generator with the reference default state/stream constants.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state != 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.inc != 0</code></li>
+</ul>
 <h5 id="fn-pcg_from_seedseed-uint64-pcg"><code>fn pcg_from_seed(seed: UInt64) -&gt; Pcg</code><a class="headerlink" href="#fn-pcg_from_seedseed-uint64-pcg" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create a PCG generator from a 64-bit seed. Standard init: state = 0, inc = (seed &lt;&lt; 1) | 1, then advance once.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state != 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.inc != 0</code></li>
+</ul>
 <h5 id="fn-pcg_next_u32r-mut-pcg-uint32"><code>fn pcg_next_u32(r: &amp;mut Pcg) -&gt; UInt32</code><a class="headerlink" href="#fn-pcg_next_u32r-mut-pcg-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next 32-bit output word. xorshifted = ((oldstate &gt;&gt; 18) ^ oldstate) &gt;&gt; 27; rot = oldstate &gt;&gt; 59; output = (xorshifted &gt;&gt; rot) | (xorshifted &lt;&lt; ((-rot) &amp; 31)).</p>
@@ -2985,14 +3033,24 @@
 <blockquote>
 <p>Return the next value as a signed i64 in [0, 2^32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt; 4294967296</code></li>
+</ul>
 <h5 id="fn-pcg_next_floatr-mut-pcg-float64"><code>fn pcg_next_float(r: &amp;mut Pcg) -&gt; Float64</code><a class="headerlink" href="#fn-pcg_next_floatr-mut-pcg-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value as a Float64 in [0, 1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt; 1</code></li>
+</ul>
 <h5 id="fn-pcg_next_boundedr-mut-pcg-hi-int-int"><code>fn pcg_next_bounded(r: &amp;mut Pcg, hi: Int) -&gt; Int</code><a class="headerlink" href="#fn-pcg_next_boundedr-mut-pcg-hi-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value in [0, hi). Requires hi &gt; 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(hi &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(hi &gt; 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt; hi)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3027,6 +3085,10 @@
 <blockquote>
 <p>Deterministic standard RNG from an integer seed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state != 0</code></li>
+<li><strong>Postcondition:</strong> <code>(seed != 0) =&gt; (result.state == seed)</code></li>
+</ul>
 <h4 id="fn-random-float64"><code>fn random() -&gt; Float64</code><a class="headerlink" href="#fn-random-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Basic random values ===</p>
@@ -3047,6 +3109,9 @@
 <blockquote>
 <p>Uniform Float64 in [min, max).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(min &lt;= max) =&gt; (result &gt;= min &amp;&amp; result &lt;= max)</code></li>
+</ul>
 <h4 id="fn-random_bool-bool"><code>fn random_bool() -&gt; Bool</code><a class="headerlink" href="#fn-random_bool-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fair coin flip.</p>
@@ -3055,38 +3120,69 @@
 <blockquote>
 <p><code>count</code> random bytes (empty when count &lt;= 0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(count &gt; 0) =&gt; (result.len() == count)</code></li>
+<li><strong>Postcondition:</strong> <code>(count &lt;= 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h4 id="fn-sample_uniformmin-float64-max-float64-float64"><code>fn sample_uniform(min: Float64, max: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_uniformmin-float64-max-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Distributions ===</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(min &lt;= max) =&gt; (result &gt;= min &amp;&amp; result &lt;= max)</code></li>
+</ul>
 <h4 id="fn-sample_normalmean-float64-stddev-float64-float64"><code>fn sample_normal(mean: Float64, stddev: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_normalmean-float64-stddev-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Normal (Gaussian) sample with the given mean and stddev.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((stddev == 0) &amp;&amp; (mean == mean)) =&gt; (result == mean)</code></li>
+</ul>
 <h4 id="fn-sample_exponentiallambda-float64-float64"><code>fn sample_exponential(lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_exponentiallambda-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Exponential sample with the given rate lambda.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(lambda &gt; 0) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h4 id="fn-sample_bernoullip-float64-bool"><code>fn sample_bernoulli(p: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-sample_bernoullip-float64-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Bernoulli trial: true with probability p.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p &lt;= 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(p &gt; 1) =&gt; (result == true)</code></li>
+</ul>
 <h4 id="fn-sample_binomialn-int-p-float64-int"><code>fn sample_binomial(n: Int, p: Float64) -&gt; Int</code><a class="headerlink" href="#fn-sample_binomialn-int-p-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Binomial sample: successes in <code>n</code> independent trials with probability p.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= n)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-sample_poissonlambda-float64-int"><code>fn sample_poisson(lambda: Float64) -&gt; Int</code><a class="headerlink" href="#fn-sample_poissonlambda-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Poisson sample with mean lambda.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(lambda &lt;= 0) =&gt; (result == -1)</code></li>
+<li><strong>Postcondition:</strong> <code>(lambda &gt;= 1) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h4 id="fn-sample_gammashape-float64-scale-float64-float64"><code>fn sample_gamma(shape: Float64, scale: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_gammashape-float64-scale-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Gamma sample with the given shape and scale.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(shape &lt;= 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-sample_betaalpha-float64-beta-float64-float64"><code>fn sample_beta(alpha: Float64, beta: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sample_betaalpha-float64-beta-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Beta sample with parameters alpha and beta.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alpha &lt;= 0 || beta &lt;= 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-shuffletitems-mut-vect"><code>fn shuffle[T](items: &amp;mut Vec[T])</code><a class="headerlink" href="#fn-shuffletitems-mut-vect" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Shuffle &amp; Pick ===</p>
@@ -3098,14 +3194,28 @@
 <blockquote>
 <p>Uniformly pick one element, or None for an empty vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(items.len() == 0) =&gt; (result.is_none)</code></li>
+<li><strong>Postcondition:</strong> <code>(items.len() &gt; 0) =&gt; (result.is_some)</code></li>
+</ul>
 <h4 id="fn-pick_ntitems-vect-n-int-vect"><code>fn pick_n[T](items: &amp;Vec[T], n: Int) -&gt; Vec[&amp;T]</code><a class="headerlink" href="#fn-pick_ntitems-vect-n-int-vect" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Uniformly pick <code>n</code> distinct elements (fewer when the vector is shorter).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= items.len()</code></li>
+<li><strong>Postcondition:</strong> <code>(items.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0 &amp;&amp; n &lt; items.len()) =&gt; (result.len() == n)</code></li>
+</ul>
 <h4 id="fn-weighted_picktitems-vect-weights-vecfloat64-optiont"><code>fn weighted_pick[T](items: &amp;Vec[T], weights: &amp;Vec[Float64]) -&gt; Option[&amp;T]</code><a class="headerlink" href="#fn-weighted_picktitems-vect-weights-vecfloat64-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pick an element with probability proportional to its weight; None when the vector is empty or all weights are &lt;= 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(items.len() == 0) =&gt; (result.is_none)</code></li>
+<li><strong>Postcondition:</strong> <code>(weights.len() != items.len()) =&gt; (result.is_none)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_some =&gt; (items.len() &gt; 0 &amp;&amp; weights.len() == items.len())</code></li>
+</ul>
 <h4 id="fn-uuid_v4-str"><code>fn uuid_v4() -&gt; Str</code><a class="headerlink" href="#fn-uuid_v4-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Random (version 4) UUID string.</p>
@@ -3161,6 +3271,9 @@
 <blockquote>
 <p>Creates a new Xorshift64 generator with the given seed. Seed must be non-zero. Zero seed is replaced with 1.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state != 0</code></li>
+</ul>
 <h4 id="fn-next_intself-self-int"><code>fn next_int(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-next_intself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the next pseudo-random integer from this Xorshift64 generator. Uses triple-xorshift: x ^= x &lt;&lt; 13; x ^= x &gt;&gt; 7; x ^= x &lt;&lt; 17.</p>
@@ -3169,22 +3282,39 @@
 <blockquote>
 <p>Returns a random element from a vector. Returns None if the vector is empty. Wraps the existing pick function. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(items.len() == 0) =&gt; (result.is_none)</code></li>
+<li><strong>Postcondition:</strong> <code>(items.len() &gt; 0) =&gt; (result.is_some)</code></li>
+</ul>
 <h4 id="fn-random_shuffletitems-mut-vect"><code>fn random_shuffle[T](items: &amp;mut Vec[T])</code><a class="headerlink" href="#fn-random_shuffletitems-mut-vect" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Shuffles a vector in place using Fisher-Yates. Wraps the existing shuffle function. Complexity: O(n), n = items length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>items.len() == items.len()@pre</code></li>
+</ul>
 <h4 id="fn-random_fraction-float64"><code>fn random_fraction() -&gt; Float64</code><a class="headerlink" href="#fn-random_fraction-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Alias for random(). Returns a Float64 in [0, 1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt; 1</code></li>
+</ul>
 <h4 id="fn-gaussian_box_mullermean-float64-stddev-float64-float64"><code>fn gaussian_box_muller(mean: Float64, stddev: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-gaussian_box_mullermean-float64-stddev-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Generates a normally distributed random number using the Box-Muller transform. Mean and stddev parameters control the distribution center and spread. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((stddev == 0) &amp;&amp; (mean == mean)) =&gt; (result == mean)</code></li>
+</ul>
 <h4 id="fn-random_bytes_cryptocount-int-vecuint8"><code>fn random_bytes_crypto(count: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-random_bytes_cryptocount-int-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fills a buffer with cryptographically secure random bytes. Delegates to xiom.crypto.secure_random_bytes. Complexity: O(n), n = count.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(count &gt; 0) =&gt; (result.len() == count)</code></li>
+<li><strong>Postcondition:</strong> <code>(count &lt;= 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <hr />
 <hr />
 

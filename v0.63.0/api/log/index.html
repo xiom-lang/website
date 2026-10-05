@@ -2869,34 +2869,61 @@
 <blockquote>
 <p>The ANSI color sequence for a level (see header for the mapping). Unknown levels return the reset sequence. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 4</code></li>
+</ul>
 <h5 id="fn-log_color_reset-str"><code>fn log_color_reset() -&gt; Str</code><a class="headerlink" href="#fn-log_color_reset-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The ANSI reset sequence. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 4</code></li>
+</ul>
 <h5 id="fn-log_color_enabled-bool"><code>fn log_color_enabled() -&gt; Bool</code><a class="headerlink" href="#fn-log_color_enabled-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether colored output is enabled. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == color_enabled</code></li>
+</ul>
 <h5 id="fn-log_set_color_enabledon-bool"><code>fn log_set_color_enabled(on: Bool)</code><a class="headerlink" href="#fn-log_set_color_enabledon-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Enable or disable colored output. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>color_enabled == on</code></li>
+</ul>
 <h5 id="fn-log_colorizelevel-int-msg-str-str"><code>fn log_colorize(level: Int, msg: Str) -&gt; Str</code><a class="headerlink" href="#fn-log_colorizelevel-int-msg-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap <code>msg</code> in its level color when colored output is enabled; otherwise return <code>msg</code> unchanged. Complexity: O(len(msg)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= msg.len()</code></li>
+</ul>
 <h5 id="fn-log_color_by_levellevel-int-int"><code>fn log_color_by_level(level: Int) -&gt; Int</code><a class="headerlink" href="#fn-log_color_by_levellevel-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The numeric ANSI color code assigned to a level (31 for ERROR, 32 for INFO, ...). Returns 0 for unknown levels. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 31 &amp;&amp; result &lt;= 90</code></li>
+<li><strong>Postcondition:</strong> <code>(level &lt;= 0) =&gt; (result == 90)</code></li>
+<li><strong>Postcondition:</strong> <code>(level &gt;= 5) =&gt; (result == 35)</code></li>
+</ul>
 <h5 id="fn-log_strip_colors-str-str"><code>fn log_strip_color(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-log_strip_colors-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove ANSI color (CSI) sequences from <code>s</code>. Handles sequences of the form ESC [ params letter, including <code>ESC [ m</code>. Complexity: O(len(s)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-log_has_colors-str-bool"><code>fn log_has_color(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-log_has_colors-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether <code>s</code> contains an ANSI color (CSI) sequence (<code>ESC [</code>). Complexity: O(len(s)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() &lt; 2) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>result =&gt; (s.len() &gt;= 2)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2940,10 +2967,17 @@
 <blockquote>
 <p>Build a JSON log line for a level and message, with the current timestamp and thread id. Complexity: O(len(msg)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= msg.len() + 40</code></li>
+</ul>
 <h5 id="fn-log_json_fieldsfields-vecstr-str-str"><code>fn log_json_fields(fields: &amp;Vec[(Str, Str)]) -&gt; Str</code><a class="headerlink" href="#fn-log_json_fieldsfields-vecstr-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Render extra key/value fields as a JSON object: <code>{"k1":"v1","k2":"v2"}</code>. Empty input renders <code>{}</code>. Complexity: O(sum of field lengths).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(fields.len() == 0) =&gt; (result == "{}")</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 2</code></li>
+</ul>
 <h5 id="fn-log_json_timestamp-str"><code>fn log_json_timestamp() -&gt; Str</code><a class="headerlink" href="#fn-log_json_timestamp-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The current time as an ISO 8601 string (via xiom.time.iso8601_now). Complexity: O(1).</p>
@@ -2956,10 +2990,16 @@
 <blockquote>
 <p>Re-serialize a log entry to a JSON line. Complexity: O(len(message) + fields).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= entry.message.len() + 40</code></li>
+</ul>
 <h5 id="fn-log_json_thread_id-int"><code>fn log_json_thread_id() -&gt; Int</code><a class="headerlink" href="#fn-log_json_thread_id-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The current thread id for logging. This build is single-threaded, so the value is always 1. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 1</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2968,50 +3008,89 @@
 <blockquote>
 <p>The trace level constant (0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0</code></li>
+</ul>
 <h5 id="fn-log_level_debug-int"><code>fn log_level_debug() -&gt; Int</code><a class="headerlink" href="#fn-log_level_debug-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The debug level constant (1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 1</code></li>
+</ul>
 <h5 id="fn-log_level_info-int"><code>fn log_level_info() -&gt; Int</code><a class="headerlink" href="#fn-log_level_info-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The info level constant (2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 2</code></li>
+</ul>
 <h5 id="fn-log_level_warn-int"><code>fn log_level_warn() -&gt; Int</code><a class="headerlink" href="#fn-log_level_warn-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The warn level constant (3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 3</code></li>
+</ul>
 <h5 id="fn-log_level_error-int"><code>fn log_level_error() -&gt; Int</code><a class="headerlink" href="#fn-log_level_error-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The error level constant (4).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 4</code></li>
+</ul>
 <h5 id="fn-log_level_fatal-int"><code>fn log_level_fatal() -&gt; Int</code><a class="headerlink" href="#fn-log_level_fatal-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The fatal level constant (5).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 5</code></li>
+</ul>
 <h5 id="fn-log_level_namelevel-int-str"><code>fn log_level_name(level: Int) -&gt; Str</code><a class="headerlink" href="#fn-log_level_namelevel-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The canonical name of a level: TRACE, DEBUG, INFO, WARN, ERROR or FATAL. Unknown levels map to "UNKNOWN". Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 4</code></li>
+<li><strong>Postcondition:</strong> <code>(level &lt;= 0) =&gt; (result == "TRACE")</code></li>
+<li><strong>Postcondition:</strong> <code>(level &gt;= 5) =&gt; (result == "FATAL")</code></li>
+</ul>
 <h5 id="fn-log_level_from_names-str-optionint"><code>fn log_level_from_name(s: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-log_level_from_names-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The level for a name, if known. Matching is case-insensitive. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_none)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_some =&gt; (s.len() &gt;= 4)</code></li>
+</ul>
 <h5 id="fn-log_level_threshold-int"><code>fn log_level_threshold() -&gt; Int</code><a class="headerlink" href="#fn-log_level_threshold-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The current minimum level that is logged. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == threshold</code></li>
+</ul>
 <h5 id="fn-log_set_levellevel-int"><code>fn log_set_level(level: Int)</code><a class="headerlink" href="#fn-log_set_levellevel-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Set the minimum level that is logged. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>threshold == level</code></li>
+</ul>
 <h5 id="fn-log_enabledlevel-int-bool"><code>fn log_enabled(level: Int) -&gt; Bool</code><a class="headerlink" href="#fn-log_enabledlevel-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether a level passes the threshold (level &gt;= threshold). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (level &gt;= threshold)</code></li>
+</ul>
 <h5 id="fn-log_level_all-vecint"><code>fn log_level_all() -&gt; Vec[Int]</code><a class="headerlink" href="#fn-log_level_all-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All level constants in severity order: [TRACE, DEBUG, INFO, WARN, ERROR, FATAL]. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 6</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3072,6 +3151,7 @@
 <p>Core logging</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-debugmsg-str"><code>fn debug(msg: Str)</code><a class="headerlink" href="#fn-debugmsg-str" title="Permanent link">&para;</a></h4>
@@ -3079,6 +3159,7 @@
 <p>Log at debug level.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-infomsg-str"><code>fn info(msg: Str)</code><a class="headerlink" href="#fn-infomsg-str" title="Permanent link">&para;</a></h4>
@@ -3086,6 +3167,7 @@
 <p>Log at info level.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-warnmsg-str"><code>fn warn(msg: Str)</code><a class="headerlink" href="#fn-warnmsg-str" title="Permanent link">&para;</a></h4>
@@ -3093,6 +3175,7 @@
 <p>Log at warn level.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-errormsg-str"><code>fn error(msg: Str)</code><a class="headerlink" href="#fn-errormsg-str" title="Permanent link">&para;</a></h4>
@@ -3100,6 +3183,7 @@
 <p>Log at error level.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-fatalmsg-str"><code>fn fatal(msg: Str)</code><a class="headerlink" href="#fn-fatalmsg-str" title="Permanent link">&para;</a></h4>
@@ -3107,6 +3191,7 @@
 <p>Log at fatal level.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-trace_withmsg-str-data-mapstr-str"><code>fn trace_with(msg: Str, data: Map[Str, Str])</code><a class="headerlink" href="#fn-trace_withmsg-str-data-mapstr-str" title="Permanent link">&para;</a></h4>
@@ -3114,6 +3199,7 @@
 <p>Structured logging (key=value pairs)</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-debug_withmsg-str-data-mapstr-str"><code>fn debug_with(msg: Str, data: Map[Str, Str])</code><a class="headerlink" href="#fn-debug_withmsg-str-data-mapstr-str" title="Permanent link">&para;</a></h4>
@@ -3121,6 +3207,7 @@
 <p>Log at debug level with structured fields.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt;= 0</code></li>
 </ul>
 <h4 id="fn-info_withmsg-str-data-mapstr-str"><code>fn info_with(msg: Str, data: Map[Str, Str])</code><a class="headerlink" href="#fn-info_withmsg-str-data-mapstr-str" title="Permanent link">&para;</a></h4>
@@ -3128,6 +3215,7 @@
 <p>Log at info level with structured fields.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-warn_withmsg-str-data-mapstr-str"><code>fn warn_with(msg: Str, data: Map[Str, Str])</code><a class="headerlink" href="#fn-warn_withmsg-str-data-mapstr-str" title="Permanent link">&para;</a></h4>
@@ -3135,6 +3223,7 @@
 <p>Log at warn level with structured fields.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-error_withmsg-str-data-mapstr-str"><code>fn error_with(msg: Str, data: Map[Str, Str])</code><a class="headerlink" href="#fn-error_withmsg-str-data-mapstr-str" title="Permanent link">&para;</a></h4>
@@ -3142,16 +3231,23 @@
 <p>Log at error level with structured fields.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
 <li><strong>Precondition:</strong> <code>msg.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-set_levellevel-loglevel"><code>fn set_level(level: LogLevel)</code><a class="headerlink" href="#fn-set_levellevel-loglevel" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Configuration</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>current_level == level</code></li>
+</ul>
 <h4 id="fn-get_level-loglevel"><code>fn get_level() -&gt; LogLevel</code><a class="headerlink" href="#fn-get_level-loglevel" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Current minimum level that is emitted.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == current_level</code></li>
+</ul>
 <h4 id="fn-set_outputfile-str-resultunit-str"><code>fn set_output(file: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-set_outputfile-str-resultunit-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Redirect log output to a file; Err when it cannot be opened.</p>
@@ -3163,10 +3259,16 @@
 <blockquote>
 <p>Enable/disable JSON-lines output.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>json_mode == enabled</code></li>
+</ul>
 <h4 id="fn-set_output_colorenabled-bool"><code>fn set_output_color(enabled: Bool)</code><a class="headerlink" href="#fn-set_output_colorenabled-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Enable/disable ANSI color output.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>color_mode == enabled</code></li>
+</ul>
 <h4 id="fn-entries_sinceinstant-instant-veclogentry"><code>fn entries_since(instant: Instant) -&gt; Vec[LogEntry]</code><a class="headerlink" href="#fn-entries_sinceinstant-instant-veclogentry" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Query</p>
@@ -3178,54 +3280,98 @@
 <blockquote>
 <p>Clear any file output and revert to the default sink.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>entries.len() == 0</code></li>
+</ul>
 <h4 id="fn-log_debug_msgmsg-str"><code>fn log_debug_msg(msg: Str)</code><a class="headerlink" href="#fn-log_debug_msgmsg-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Logs a debug-level message. Alias for <code>log.debug</code> for discoverability. Complexity: O(1) if level is filtered, O(1) otherwise.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
+</ul>
 <h4 id="fn-log_info_msgmsg-str"><code>fn log_info_msg(msg: Str)</code><a class="headerlink" href="#fn-log_info_msgmsg-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Logs an info-level message. Alias for <code>log.info</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
+</ul>
 <h4 id="fn-log_warn_msgmsg-str"><code>fn log_warn_msg(msg: Str)</code><a class="headerlink" href="#fn-log_warn_msgmsg-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Logs a warning-level message. Alias for <code>log.warn</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
+</ul>
 <h4 id="fn-log_error_msgmsg-str"><code>fn log_error_msg(msg: Str)</code><a class="headerlink" href="#fn-log_error_msgmsg-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Logs an error-level message. Alias for <code>log.error</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>entries.len() &gt;= entries.len()@pre</code></li>
+</ul>
 <h4 id="fn-log_with_fieldslevel-loglevel-msg-str-fields-mapstr-str-logentry"><code>fn log_with_fields(level: LogLevel, msg: Str, fields: Map[Str, Str]) -&gt; LogEntry</code><a class="headerlink" href="#fn-log_with_fieldslevel-loglevel-msg-str-fields-mapstr-str-logentry" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Creates and writes a log entry with the given level, message, and key-value fields. Returns the created <code>LogEntry</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.message == msg</code></li>
+<li><strong>Postcondition:</strong> <code>result.file.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.line == 0</code></li>
+</ul>
 <h4 id="fn-log_set_min_levellevel-loglevel"><code>fn log_set_min_level(level: LogLevel)</code><a class="headerlink" href="#fn-log_set_min_levellevel-loglevel" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sets the minimum log level. Messages below this level are filtered out. Alias for <code>set_level</code>. Complexity: O(1). Thread-safe: modifies global state.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>current_level == level</code></li>
+</ul>
 <h4 id="fn-log_enable_jsonenable-bool"><code>fn log_enable_json(enable: Bool)</code><a class="headerlink" href="#fn-log_enable_jsonenable-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Enables or disables JSON output format for log entries. Alias for <code>set_output_json</code>. Complexity: O(1). Thread-safe: modifies global state.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>json_mode == enable</code></li>
+</ul>
 <h4 id="fn-log_clear_entries"><code>fn log_clear_entries()</code><a class="headerlink" href="#fn-log_clear_entries" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clears all buffered log entries. Alias for <code>clear_log</code>. Complexity: O(1). Thread-safe: modifies global state.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>entries.len() == 0</code></li>
+</ul>
 <h4 id="fn-log_entry_count-int"><code>fn log_entry_count() -&gt; Int</code><a class="headerlink" href="#fn-log_entry_count-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the number of buffered log entries. Complexity: O(1). Thread-safe: reads global state.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == entries.len()</code></li>
+</ul>
 <h4 id="fn-log_last_entry-optionlogentry"><code>fn log_last_entry() -&gt; Option[LogEntry]</code><a class="headerlink" href="#fn-log_last_entry-optionlogentry" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the most recent log entry, or <code>None</code> if the buffer is empty. Complexity: O(1). Thread-safe: reads global state.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(entries.len() == 0) =&gt; (result.is_none)</code></li>
+<li><strong>Postcondition:</strong> <code>(entries.len() &gt; 0) =&gt; (result.is_some)</code></li>
+</ul>
 <h4 id="fn-log_entries_as_text-str"><code>fn log_entries_as_text() -&gt; Str</code><a class="headerlink" href="#fn-log_entries_as_text-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns all buffered entries as a newline-separated text string. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(entries.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= entries.len()</code></li>
+</ul>
 <h4 id="fn-log_entries_as_json-str"><code>fn log_entries_as_json() -&gt; Str</code><a class="headerlink" href="#fn-log_entries_as_json-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns all buffered entries as a JSON array string. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(entries.len() == 0) =&gt; (result == "[]")</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 2</code></li>
+</ul>
 <h4 id="fn-log_flush"><code>fn log_flush()</code><a class="headerlink" href="#fn-log_flush" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Flushes log output. No-op in this implementation (output is synchronous). Complexity: O(1).</p>
@@ -3294,6 +3440,12 @@
 <blockquote>
 <p>Wrap a raw fd as a log sink. The sink is NOT auto-registered; call <code>log_add_sink</code> to register it. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.target == target</code></li>
+<li><strong>Postcondition:</strong> <code>result.path.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.bytes == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.id &gt;= 1</code></li>
+</ul>
 <h5 id="fn-log_sink_filepath-str-resultsink-str"><code>fn log_sink_file(path: Str) -&gt; Result[Sink, Str]</code><a class="headerlink" href="#fn-log_sink_filepath-str-resultsink-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Open a file sink for appending. Returns Err when the file cannot be opened for append. Complexity: O(1).</p>
@@ -3302,26 +3454,53 @@
 <blockquote>
 <p>A sink that writes to stdout. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.target == 1</code></li>
+<li><strong>Postcondition:</strong> <code>result.path.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.bytes == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.id &gt;= 1</code></li>
+</ul>
 <h5 id="fn-log_sink_stderr-sink"><code>fn log_sink_stderr() -&gt; Sink</code><a class="headerlink" href="#fn-log_sink_stderr-sink" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A sink that writes to stderr. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.target == 2</code></li>
+<li><strong>Postcondition:</strong> <code>result.path.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.bytes == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.id &gt;= 1</code></li>
+</ul>
 <h5 id="fn-log_sink_null-sink"><code>fn log_sink_null() -&gt; Sink</code><a class="headerlink" href="#fn-log_sink_null-sink" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A sink that discards output. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.target == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.path.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.bytes == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.id &gt;= 1</code></li>
+</ul>
 <h5 id="fn-log_add_sinks-sink"><code>fn log_add_sink(s: Sink)</code><a class="headerlink" href="#fn-log_add_sinks-sink" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Register a sink for future log lines. Duplicate ids are ignored. Complexity: O(registered sinks).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sink_list.ids.len() == sink_list.targets.len() &amp;&amp; sink_list.ids.len() == sink_list.paths.len()</code></li>
+</ul>
 <h5 id="fn-log_remove_sinks-sink"><code>fn log_remove_sink(s: Sink)</code><a class="headerlink" href="#fn-log_remove_sinks-sink" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unregister a sink (matched by id). Complexity: O(registered sinks).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sink_list.ids.len() == sink_list.targets.len() &amp;&amp; sink_list.ids.len() == sink_list.paths.len()</code></li>
+</ul>
 <h5 id="fn-log_sinks-vecsink"><code>fn log_sinks() -&gt; Vec[Sink]</code><a class="headerlink" href="#fn-log_sinks-vecsink" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The currently registered sinks. Complexity: O(registered sinks).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == sink_list.ids.len()</code></li>
+</ul>
 <h5 id="fn-log_flush_all"><code>fn log_flush_all()</code><a class="headerlink" href="#fn-log_flush_all" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Flush every registered sink. No-op in this build (output is synchronous). Complexity: O(1).</p>
@@ -3334,6 +3513,9 @@
 <blockquote>
 <p>Close a sink and release its resources: unregisters it from the registry. File handles in this build are per-write and need no explicit release. Complexity: O(registered sinks).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sink_list.ids.len() &lt;= sink_list.ids.len()@pre</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

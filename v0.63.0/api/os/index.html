@@ -3779,90 +3779,162 @@
 <blockquote>
 <p>Detect the line ending style. Parameters: data -- the bytes to inspect. Returns: "lf", "crlf", "cr", "mixed" or "none". Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 2</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == "none")</code></li>
+</ul>
 <h5 id="fn-detect_bomdata-vecuint8-str"><code>fn detect_bom(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_bomdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Detect and describe the byte-order mark, or "" if absent. Parameters: data -- the bytes to inspect. Returns: "utf-8", "utf-16le", "utf-16be", "utf-32le", "utf-32be" or "". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 2) =&gt; (result == "")</code></li>
+</ul>
 <h5 id="fn-has_utf8_bomdata-vecuint8-bool"><code>fn has_utf8_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf8_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data starts with the UTF-8 BOM. Parameters: data -- the bytes to inspect. Returns: true for the EF BB BF prefix. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 3)</code></li>
+</ul>
 <h5 id="fn-has_utf16le_bomdata-vecuint8-bool"><code>fn has_utf16le_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf16le_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data starts with the UTF-16 LE BOM. Parameters: data -- the bytes to inspect. Returns: true for the FF FE prefix. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 2)</code></li>
+</ul>
 <h5 id="fn-has_utf16be_bomdata-vecuint8-bool"><code>fn has_utf16be_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf16be_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data starts with the UTF-16 BE BOM. Parameters: data -- the bytes to inspect. Returns: true for the FE FF prefix. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 2)</code></li>
+</ul>
 <h5 id="fn-has_utf32le_bomdata-vecuint8-bool"><code>fn has_utf32le_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf32le_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data starts with the UTF-32 LE BOM. Parameters: data -- the bytes to inspect. Returns: true for the FF FE 00 00 prefix. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 4)</code></li>
+</ul>
 <h5 id="fn-has_utf32be_bomdata-vecuint8-bool"><code>fn has_utf32be_bom(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-has_utf32be_bomdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data starts with the UTF-32 BE BOM. Parameters: data -- the bytes to inspect. Returns: true for the 00 00 FE FF prefix. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 4)</code></li>
+</ul>
 <h5 id="fn-is_binarydata-vecuint8-bool"><code>fn is_binary(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_binarydata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Classify data as binary by a control-byte heuristic. Parameters: data -- the bytes to inspect. Returns: true when a NUL byte is present or control bytes exceed 30% of the sampled prefix. Complexity: O(min(n, 1024)). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-is_textdata-vecuint8-bool"><code>fn is_text(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_textdata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Classify data as plain text by a control-byte heuristic. Parameters: data -- the bytes to inspect. Returns: true when the data is not classified as binary. Complexity: O(min(n, 1024)). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-detect_encodingdata-vecuint8-str"><code>fn detect_encoding(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_encodingdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Guess the character encoding. Parameters: data -- the bytes to inspect. Returns: "utf-8", "utf-16le", "utf-16be", "utf-32le", "utf-32be", "ascii" or "binary". Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 5</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == "ascii")</code></li>
+</ul>
 <h5 id="fn-magic_numberdata-vecuint8-str"><code>fn magic_number(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-magic_numberdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the magic-number hex prefix of data. Parameters: data -- the bytes to inspect. Returns: the lowercase hex of the first up-to-8 bytes ("" for empty input). Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == "")</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() &gt; 0 &amp;&amp; data.len() &lt;= 8) =&gt; (result.len() == data.len() * 2)</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() &gt; 8) =&gt; (result.len() == 16)</code></li>
+</ul>
 <h5 id="fn-detect_mimedata-vecuint8-str"><code>fn detect_mime(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-detect_mimedata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Detect the MIME type by content sniffing. Parameters: data -- the bytes to inspect. Returns: a MIME type guessed from magic bytes and text heuristics. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 9</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == "text/plain")</code></li>
+</ul>
 <h5 id="fn-mime_from_magicdata-vecuint8-str"><code>fn mime_from_magic(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-mime_from_magicdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Detect the MIME type from magic bytes only. Parameters: data -- the bytes to inspect. Returns: the magic-derived MIME type or "application/octet-stream". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 9</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == "application/octet-stream")</code></li>
+</ul>
 <h5 id="fn-is_image_datadata-vecuint8-bool"><code>fn is_image_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_image_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data matches a known image format. Parameters: data -- the bytes to inspect. Returns: true for PNG/JPEG/GIF/BMP/WebP/ICO signatures. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 2)</code></li>
+</ul>
 <h5 id="fn-is_audio_datadata-vecuint8-bool"><code>fn is_audio_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_audio_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data matches a known audio format. Parameters: data -- the bytes to inspect. Returns: true for WAV/OGG/FLAC/MP3 (ID3) signatures. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 3)</code></li>
+</ul>
 <h5 id="fn-is_video_datadata-vecuint8-bool"><code>fn is_video_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_video_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data matches a known video container. Parameters: data -- the bytes to inspect. Returns: true for AVI/MP4/MKV/WebM/Ogg signatures. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 4)</code></li>
+</ul>
 <h5 id="fn-is_pdf_datadata-vecuint8-bool"><code>fn is_pdf_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_pdf_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data looks like a PDF. Parameters: data -- the bytes to inspect. Returns: true for the "%PDF-" header. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 5)</code></li>
+</ul>
 <h5 id="fn-is_zip_datadata-vecuint8-bool"><code>fn is_zip_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_zip_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data is a ZIP archive. Parameters: data -- the bytes to inspect. Returns: true for the "PK\x03\x04" local-file header. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 4)</code></li>
+</ul>
 <h5 id="fn-is_gzip_datadata-vecuint8-bool"><code>fn is_gzip_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_gzip_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data is a gzip stream. Parameters: data -- the bytes to inspect. Returns: true for the 1F 8B header. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 2)</code></li>
+</ul>
 <h5 id="fn-is_elf_datadata-vecuint8-bool"><code>fn is_elf_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_elf_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data is an ELF binary. Parameters: data -- the bytes to inspect. Returns: true for the 7F 45 4C 46 header. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 4)</code></li>
+</ul>
 <h5 id="fn-is_pe_datadata-vecuint8-bool"><code>fn is_pe_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_pe_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data is a PE/COFF binary. Parameters: data -- the bytes to inspect. Returns: true for the "MZ" DOS header. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 2)</code></li>
+</ul>
 <h5 id="fn-is_macho_datadata-vecuint8-bool"><code>fn is_macho_data(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-is_macho_datadata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return true if data is a Mach-O binary. Parameters: data -- the bytes to inspect. Returns: true for the Mach-O magic numbers. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (data.len() &gt;= 4)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4530,10 +4602,18 @@
 <blockquote>
 <p>Path operations</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.inner.len() == 0) =&gt; (result.is_none)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_some =&gt; (self.inner.len() &gt;= 1)</code></li>
+</ul>
 <h4 id="fn-file_nameself-self-optionstr"><code>fn file_name(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_nameself-self-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Final component of the path, or None when there is none.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.inner.len() == 0) =&gt; (result.is_some)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_none =&gt; (self.inner.len() &gt;= 1)</code></li>
+</ul>
 <h4 id="fn-extensionself-self-optionstr"><code>fn extension(self: Self) -&gt; Option[Str]</code><a class="headerlink" href="#fn-extensionself-self-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Extension after the final dot of the file name, or None.</p>
@@ -4545,6 +4625,10 @@
 <blockquote>
 <p>File name without its final extension, or None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.inner.len() == 0) =&gt; (result.is_some)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_none =&gt; (self.inner.len() &gt;= 1)</code></li>
+</ul>
 <h4 id="fn-is_absoluteself-self-bool"><code>fn is_absolute(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_absoluteself-self-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the path is absolute.</p>
@@ -4556,10 +4640,17 @@
 <blockquote>
 <p>True when the path is relative.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.inner.len() == 0) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result == false) =&gt; (self.inner.len() &gt;= 1)</code></li>
+</ul>
 <h4 id="fn-has_rootself-self-bool"><code>fn has_root(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-has_rootself-self-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the path starts at a root component.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (self.inner.len() &gt;= 1)</code></li>
+</ul>
 <h4 id="fn-componentsself-self-vecstr"><code>fn components(self: Self) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-componentsself-self-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Path components as strings (separators normalized).</p>
@@ -4571,18 +4662,31 @@
 <blockquote>
 <p>The underlying string.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == self.inner</code></li>
+</ul>
 <h4 id="fn-joinself-self-child-str-pathbuf"><code>fn join(self: Self, child: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-joinself-self-child-str-pathbuf" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Append <code>child</code>, inserting a separator when needed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.inner.len() &gt; 0 || child.len() &gt; 0) =&gt; (result.inner.len() &gt;= 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.inner.len() &gt; 0) =&gt; (result.inner.len() &gt;= self.inner.len())</code></li>
+</ul>
 <h4 id="fn-with_extensionself-self-ext-str-pathbuf"><code>fn with_extension(self: Self, ext: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-with_extensionself-self-ext-str-pathbuf" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Replace the extension with <code>ext</code>; an existing extension is removed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-with_file_nameself-self-name-str-pathbuf"><code>fn with_file_name(self: Self, name: Str) -&gt; PathBuf</code><a class="headerlink" href="#fn-with_file_nameself-self-name-str-pathbuf" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Replace the final component with <code>name</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(name.len() &gt; 0) =&gt; (result.inner.len() &gt;= 1)</code></li>
+</ul>
 <h4 id="fn-existsself-self-bool"><code>fn exists(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-existsself-self-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the path exists on disk.</p>
@@ -4591,6 +4695,9 @@
 <blockquote>
 <p>True when the path exists and is a regular file.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (self.inner.len() &gt; 0)</code></li>
+</ul>
 <h4 id="fn-is_dirself-self-bool"><code>fn is_dir(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_dirself-self-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the path exists and is a directory.</p>
@@ -4603,14 +4710,25 @@
 <blockquote>
 <p>Absolute, symlink-resolved path, or Err carrying the OS message.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_ok</code></li>
+</ul>
 <h4 id="fn-starts_withself-self-base-path-bool"><code>fn starts_with(self: Self, base: Path) -&gt; Bool</code><a class="headerlink" href="#fn-starts_withself-self-base-path-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>base</code> is a component-prefix of this path.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(base.inner.len() == 0) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>result =&gt; (self.inner.len() &gt;= base.inner.len())</code></li>
+</ul>
 <h4 id="fn-ends_withself-self-child-path-bool"><code>fn ends_with(self: Self, child: Path) -&gt; Bool</code><a class="headerlink" href="#fn-ends_withself-self-child-path-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>child</code> is a component-suffix of this path.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(child.inner.len() == 0) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>result =&gt; (self.inner.len() &gt;= child.inner.len())</code></li>
+</ul>
 <h4 id="fn-pushself-self-component-str"><code>fn push(self: Self, component: Str)</code><a class="headerlink" href="#fn-pushself-self-component-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>PathBuf operations NOTE: These take &amp;mut self (the old by-value forms mutated a copy and required callers to capture the return -- the stale "&amp;mut self not supported" note predates the BUG 55 fixes; cell.xi &amp;mut self works).</p>
@@ -4622,22 +4740,38 @@
 <blockquote>
 <p>Remove the final component; false when the buffer is already empty.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == false) =&gt; (self.inner.len() == self.inner.len()@pre)</code></li>
+</ul>
 <h4 id="fn-as_pathself-self-path"><code>fn as_path(self: Self) -&gt; Path</code><a class="headerlink" href="#fn-as_pathself-self-path" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Borrow as a <code>Path</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner == self.inner</code></li>
+</ul>
 <h4 id="fn-clearself-self"><code>fn clear(self: Self)</code><a class="headerlink" href="#fn-clearself-self" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Empty the buffer.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.inner.len() == 0</code></li>
+</ul>
 <h4 id="fn-path_separator-str_1"><code>fn path_separator() -&gt; Str</code><a class="headerlink" href="#fn-path_separator-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Utility</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-path_is_absolute_strp-str-bool"><code>fn path_is_absolute_str(p: Str) -&gt; Bool</code><a class="headerlink" href="#fn-path_is_absolute_strp-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>path_is_absolute_str returns true if p starts with '/' or '\'.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.len() == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>result =&gt; (p.len() &gt;= 1)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="platformxi"><code>platform.xi</code><a class="headerlink" href="#platformxi" title="Permanent link">&para;</a></h2>

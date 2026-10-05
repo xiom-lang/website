@@ -2957,18 +2957,30 @@
 <blockquote>
 <p>Compress at the default quality (11) and window exponent (20).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 12</code></li>
+</ul>
 <h5 id="fn-brotli_compress_qualitydata-vecuint8-quality-int-vecuint8"><code>fn brotli_compress_quality(data: &amp;Vec[UInt8], quality: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-brotli_compress_qualitydata-vecuint8-quality-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compress with an explicit quality (0-11, clamped). The quality is recorded in the header and does not change the payload shape.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 12</code></li>
+</ul>
 <h5 id="fn-brotli_compress_windowdata-vecuint8-window-int-vecuint8"><code>fn brotli_compress_window(data: &amp;Vec[UInt8], window: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-brotli_compress_windowdata-vecuint8-window-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compress with an explicit window size in bytes. The base-2 logarithm is stored in the header, clamped to 10..24 (window 1KiB..16MiB).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 12</code></li>
+</ul>
 <h5 id="fn-brotli_decompressdata-vecuint8-resultvecuint8-str"><code>fn brotli_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-brotli_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress a brotli_compress frame. Validates magic and the length trailer, then decompresses the payload. Returns Err on malformed input or a size mismatch.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 10) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-brotli_decompress_streamreader-int-writer-int-resultint-str"><code>fn brotli_decompress_stream(reader: Int, writer: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-brotli_decompress_streamreader-int-writer-int-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Stream-decompress between two file descriptors: reads all bytes from <code>reader</code>, decompresses them, writes the result to <code>writer</code>, and returns the number of bytes written. Errors surface as Err.</p>
@@ -3095,16 +3107,16 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
 </ul>
-<h4 id="fn-lz4_compressdata-vecuint8-resultvecuint8-str"><code>fn lz4_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-lz4_compress_checkeddata-vecuint8-resultvecuint8-str"><code>fn lz4_compress_checked(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_compress_checkeddata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>=== LZ4 ===</p>
+<p>=== LZ4 === Checked wrapper (Result) around the raw block compressor. Renamed from <code>lz4_compress</code> so the umbrella leaf is unique: a bare <code>lz4_compress</code> resolved to the Vec variant in the checker but bound the Result wrapper in codegen (compiler-lane root cause, 2026-10-05).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 1</code></li>
 </ul>
-<h4 id="fn-lz4_decompressdata-vecuint8-resultvecuint8-str"><code>fn lz4_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-lz4_decompress_checkeddata-vecuint8-resultvecuint8-str"><code>fn lz4_decompress_checked(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompress_checkeddata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Decompress an LZ4 block; Err on malformed input.</p>
+<p>Decompress an LZ4 block; Err on malformed input. Renamed from <code>lz4_decompress</code> for the same unique-leaf reason.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
@@ -3181,22 +3193,40 @@
 <blockquote>
 <p>Compress with the RFC 1951 fixed-Huffman encoding (matching the deterministic reference behavior of zlib Z_FIXED for greedy matchers).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 2</code></li>
+</ul>
 <h5 id="fn-deflate_compress_leveldata-vecuint8-level-int-vecuint8"><code>fn deflate_compress_level(data: &amp;Vec[UInt8], level: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-deflate_compress_leveldata-vecuint8-level-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>level 0 =&gt; STORED blocks (real, uncompressed); levels 1-9 =&gt; FIXED Huffman blocks.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 2</code></li>
+<li><strong>Postcondition:</strong> <code>(level &lt;= 0) =&gt; (result.len() &gt;= data.len() + 5)</code></li>
+<li><strong>Postcondition:</strong> <code>(level &lt;= 0 &amp;&amp; data.len() == 0) =&gt; (result.len() == 5)</code></li>
+</ul>
 <h5 id="fn-deflate_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn deflate_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress raw deflate data; Err on malformed input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-deflate_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str_1"><code>fn deflate_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress a real RFC 1951 stream with a hard output ceiling.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-deflate_boundlen-int-int"><code>fn deflate_bound(len: Int) -&gt; Int</code><a class="headerlink" href="#fn-deflate_boundlen-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Worst-case compressed size for <code>len</code> input bytes under the fixed-Huffman encoder: per byte at most 9 code bits + headers + match overhead is always below this bound. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 0) =&gt; (result == 512)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 0) =&gt; (result == len * 5 + 512)</code></li>
+</ul>
 <h5 id="fn-deflate_compress_streamreader-int-writer-int-resultint-str"><code>fn deflate_compress_stream(reader: Int, writer: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-deflate_compress_streamreader-int-writer-int-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Stream-compress between two file descriptors: reads all bytes from <code>reader</code>, compresses them, writes the container to <code>writer</code>, and returns the number of bytes written. Errors (empty input, read/write failures) are returned as Err.</p>
@@ -3209,22 +3239,38 @@
 <blockquote>
 <p>Compute the CRC-32 checksum (IEEE 802.3 polynomial) of <code>data</code>. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-gzip_header_newmtime-int-os-int-vecuint8"><code>fn gzip_header_new(mtime: Int, os: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-gzip_header_newmtime-int-os-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Build a bare gzip header: magic (1F 8B), method (08), flags (00), MTIME (<code>mtime</code>, LE, may be 0), XFL (00) and OS (<code>os</code>, masked to 8 bits; use 255 for unknown, 3 for Unix). Returns 10 bytes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 10</code></li>
+</ul>
 <h5 id="fn-gzip_compressdata-vecuint8-vecuint8"><code>fn gzip_compress(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-gzip_compressdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap <code>data</code> in a gzip stream: header (mtime 0, OS 255) + DEFLATE payload + CRC32 trailer + ISIZE trailer.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 20</code></li>
+</ul>
 <h5 id="fn-gzip_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn gzip_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unwrap and validate a gzip stream. Parses the optional header fields, decompresses the payload, and verifies the CRC32 and ISIZE trailer values. Returns Err on any mismatch or malformed input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 18) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-gzip_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str_1"><code>fn gzip_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on output size (decompression-bomb guard). The header's declared ISIZE is rejected up-front when it exceeds the cap; the payload cap is enforced inside the deflate stages.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 18) =&gt; (result.is_err)</code></li>
+<li><strong>Postcondition:</strong> <code>(max_out &lt; 0) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-gzip_compress_filepath-str-resultunit-str"><code>fn gzip_compress_file(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-gzip_compress_filepath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Gzip a file to <code>&lt;path&gt;.gz</code>. Returns Err when the source cannot be read or the target cannot be written.</p>
@@ -3237,6 +3283,9 @@
 <blockquote>
 <p>Sanity-check magic, method, and the minimum trailer footprint. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 18) =&gt; (result == false)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3323,42 +3372,74 @@
 <blockquote>
 <p>Compress <code>data</code> into a full frame (magic, FLG/BD, block size, payload).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 11</code></li>
+</ul>
 <h5 id="fn-lz4_compress_framedata-vecuint8-vecuint8"><code>fn lz4_compress_frame(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-lz4_compress_framedata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Alias for lz4_compress: the frame IS the full container in this module.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 11</code></li>
+</ul>
 <h5 id="fn-lz4_compress_hcdata-vecuint8-vecuint8"><code>fn lz4_compress_hc(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-lz4_compress_hcdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compress <code>data</code> into a frame using the high-compression block encoder.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 11</code></li>
+</ul>
 <h5 id="fn-lz4_boundlen-int-int"><code>fn lz4_bound(len: Int) -&gt; Int</code><a class="headerlink" href="#fn-lz4_boundlen-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Worst-case compressed size for <code>len</code> input bytes (literals expand by at most 1 byte per 255 input bytes plus token/header overhead). O(1).</p>
 </blockquote>
-<h5 id="fn-lz4_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn lz4_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 0) =&gt; (result == 32)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 0) =&gt; (result == len + (len &gt;&gt; 8) + 32)</code></li>
+</ul>
+<h5 id="fn-lz4_decompressdata-vecuint8-resultvecuint8-str"><code>fn lz4_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress an LZ4 block; Err on malformed input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 11) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-lz4_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn lz4_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on total output size (bomb guard). Checked after each block's expansion.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 11) =&gt; (result.is_err)</code></li>
+<li><strong>Postcondition:</strong> <code>(max_out &lt; 0) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-lz4_decompress_framedata-vecuint8-resultvecuint8-str"><code>fn lz4_decompress_frame(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompress_framedata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Alias for lz4_decompress: parses and decompresses an lz4_compress frame.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 11) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-lz4_compress_blockdata-vecuint8-vecuint8"><code>fn lz4_compress_block(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-lz4_compress_blockdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compress a raw block payload (no frame header) using the LZ4 block format. Greedy search with a 4KiB window; matches need length &gt;= 4. Complexity: O(n * 4096).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.len() == 1)</code></li>
+</ul>
 <h5 id="fn-lz4_compress_hc_blockdata-vecuint8-vecuint8"><code>fn lz4_compress_hc_block(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-lz4_compress_hc_blockdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>High-compression block variant: 64KiB search window, longer match scan. Uses the same block format, so lz4_decompress_block decodes either output.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.len() == 1)</code></li>
+</ul>
 <h5 id="fn-lz4_decompress_blockdata-vecuint8-resultvecuint8-str"><code>fn lz4_decompress_block(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz4_decompress_blockdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress a raw LZ4 block. Returns Err on truncation, an invalid offset, or malformed extended lengths.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.is_ok)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3395,34 +3476,62 @@
 <blockquote>
 <p>Read the varint uncompressed length that opens a raw snappy stream. Returns Err on a malformed header.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-snappy_validatedata-vecuint8-bool"><code>fn snappy_validate(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-snappy_validatedata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sanity-check the varint header of a raw snappy stream. O(1)..O(10).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-snappy_max_compressed_lenlen-int-int"><code>fn snappy_max_compressed_len(len: Int) -&gt; Int</code><a class="headerlink" href="#fn-snappy_max_compressed_lenlen-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Upper bound on the compressed size of <code>len</code> input bytes (varint + up to 1/6 expansion for incompressible data). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 0) =&gt; (result == 32)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 0) =&gt; (result == 32 + len + len / 6)</code></li>
+</ul>
 <h5 id="fn-snappy_compressdata-vecuint8-vecuint8"><code>fn snappy_compress(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-snappy_compressdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compress <code>data</code> into a raw snappy stream (varint length + elements). Greedy matches with a 4KiB window; literals batch until a match is found. Complexity: O(n * 4096).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() &gt; 0) =&gt; (result.len() &gt;= 2)</code></li>
+</ul>
 <h5 id="fn-snappy_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn snappy_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-snappy_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress Snappy data; Err on malformed input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-snappy_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn snappy_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-snappy_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on output size (bomb guard). The varint-declared length is rejected up-front when it exceeds the cap; every literal/copy element re-checks before writing.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.is_err)</code></li>
+<li><strong>Postcondition:</strong> <code>(max_out &lt; 0) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-snappy_compress_framedata-vecuint8-vecuint8"><code>fn snappy_compress_frame(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-snappy_compress_framedata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compress <code>data</code> into a framed stream: varint(compressed payload length) followed by the raw snappy stream (which itself starts with the varint uncompressed length). The frame is self-delimiting.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.len() == 2)</code></li>
+</ul>
 <h5 id="fn-snappy_decompress_framedata-vecuint8-resultvecuint8-str"><code>fn snappy_decompress_frame(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-snappy_decompress_framedata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress a snappy_compress_frame stream. Validates the outer varint against the remaining bytes. Returns Err on any mismatch or malformed data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.is_err)</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() == 1) =&gt; (result.is_err)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3431,26 +3540,44 @@
 <blockquote>
 <p>Build the CMF/FLG header bytes for a level (0-9, clamped). Returns 2 bytes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 2</code></li>
+</ul>
 <h5 id="fn-zlib_adler32data-vecuint8-uint32"><code>fn zlib_adler32(data: &amp;Vec[UInt8]) -&gt; UInt32</code><a class="headerlink" href="#fn-zlib_adler32data-vecuint8-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compute the Adler-32 checksum of <code>data</code>. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 1)</code></li>
+</ul>
 <h5 id="fn-zlib_compressdata-vecuint8-vecuint8"><code>fn zlib_compress(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-zlib_compressdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap <code>data</code> in a zlib stream at the default level (6).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 8</code></li>
+</ul>
 <h5 id="fn-zlib_compress_leveldata-vecuint8-level-int-vecuint8"><code>fn zlib_compress_level(data: &amp;Vec[UInt8], level: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-zlib_compress_leveldata-vecuint8-level-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap <code>data</code> in a zlib stream with an explicit level (0-9, clamped).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 8</code></li>
+</ul>
 <h5 id="fn-zlib_decompressdata-vecuint8-resultvecuint8-str_1"><code>fn zlib_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-zlib_decompressdata-vecuint8-resultvecuint8-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unwrap and validate a zlib stream: header method/checksum, payload decompression, and Adler32 trailer verification. Returns Err on any mismatch or malformed input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 6) =&gt; (result.is_err)</code></li>
+</ul>
 <h5 id="fn-zlib_validatedata-vecuint8-bool"><code>fn zlib_validate(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-zlib_validatedata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sanity-check the zlib header (method and CMF/FLG checksum). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() &lt; 6) =&gt; (result == false)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

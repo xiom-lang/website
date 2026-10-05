@@ -3202,18 +3202,30 @@
 <blockquote>
 <p>Formats a single 16-byte hex dump line (same style as xiom.fmt.format_hexdump): 8-digit hex offset, 16 hex bytes grouped 8+8, then the ASCII column. Missing bytes are space-padded. Complexity: O(len).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((len == 0 &amp;&amp; offset &gt;= 0 &amp;&amp; offset &lt; 100000000) =&gt; (result.len() == 14))</code></li>
+</ul>
 <h5 id="fn-hexdumpdata-vecuint8-str"><code>fn hexdump(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-hexdumpdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Formats a byte buffer as a classic 16-bytes-per-line hex dump. Each line: 8-digit hex offset, 16 hex bytes grouped 8+8 (lowercase), then the ASCII column (printable characters or '.'). The layout mirrors xiom.fmt.format_hexdump with width 16. Empty input yields "". Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((data.len() == 0) =&gt; (result.len() == 0)) &amp;&amp; ((data.len() &gt; 0) =&gt; (result.len() &gt; 0))</code></li>
+</ul>
 <h5 id="fn-octal_dumpdata-vecuint8-str"><code>fn octal_dump(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-octal_dumpdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Formats a byte buffer as an 8-bytes-per-line octal dump. Each line: 8-digit hex offset, 3-digit octal per byte, ASCII column. Empty input yields "". Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((data.len() == 0) =&gt; (result.len() == 0)) &amp;&amp; ((data.len() &gt; 0) =&gt; (result.len() &gt; 0))</code></li>
+</ul>
 <h5 id="fn-binary_dumpdata-vecuint8-str"><code>fn binary_dump(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-binary_dumpdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Formats a byte buffer as a 4-bytes-per-line binary dump. Each line: 8-digit hex offset, 8-bit binary per byte, ASCII column. Empty input yields "". Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((data.len() == 0) =&gt; (result.len() == 0)) &amp;&amp; ((data.len() &gt; 0) =&gt; (result.len() &gt; 0))</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3621,26 +3633,44 @@
 <blockquote>
 <p>Formats an integer with <code>sep</code> inserted every three digits from the right. The sign is preserved: fmt_int_with_separators(-987654, ",") -&gt; "-987,654". n == 0 -&gt; "0". Complexity: O(digits).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == "0")</code></li>
+</ul>
 <h5 id="fn-fmt_float_fixedx-float64-decimals-int-str"><code>fn fmt_float_fixed(x: Float64, decimals: Int) -&gt; Str</code><a class="headerlink" href="#fn-fmt_float_fixedx-float64-decimals-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Formats a float with a fixed number of decimals using integer math. Rounds half away from zero: fmt_float_fixed(3.14159, 2) -&gt; "3.14". Because 2.675 is not exactly representable in binary, its scaled value (267.4999...) rounds to "2.67", not "2.68" -- a documented float-math artifact. Negative values keep their sign. Complexity: O(decimals).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((x == 0 &amp;&amp; decimals == 0) =&gt; (result == "0")) &amp;&amp; ((x == 0 &amp;&amp; decimals == 2) =&gt; (result == "0.00"))</code></li>
+</ul>
 <h5 id="fn-fmt_percentx-float64-decimals-int-str"><code>fn fmt_percent(x: Float64, decimals: Int) -&gt; Str</code><a class="headerlink" href="#fn-fmt_percentx-float64-decimals-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Formats a fraction (0..1) as a percentage with <code>decimals</code> decimals. fmt_percent(0.125, 1) -&gt; "12.5%". Uses fmt_float_fixed for rounding. Complexity: O(decimals).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0 &amp;&amp; decimals == 0) =&gt; (result == "0%")</code></li>
+</ul>
 <h5 id="fn-fmt_bytesn-int-str"><code>fn fmt_bytes(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-fmt_bytesn-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Formats a byte count as human-readable text using binary units. Values below 1024 use plain bytes ("512 B"); larger values use one decimal with KiB/MiB/GiB/TiB ("1.5 KiB"). n == 0 -&gt; "0 B". Complexity: O(units).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n == 0) =&gt; (result == "0 B")) &amp;&amp; ((n == 1024) =&gt; (result == "1.0 KiB")) &amp;&amp; ((n == 0 - 512) =&gt; (result == "512 B"))</code></li>
+</ul>
 <h5 id="fn-fmt_duration_msms-int-str"><code>fn fmt_duration_ms(ms: Int) -&gt; Str</code><a class="headerlink" href="#fn-fmt_duration_msms-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Formats a millisecond duration as compact time units, omitting zero units while keeping the largest nonzero component. 0 -&gt; "0ms"; 65000 -&gt; "1m 5s"; 90061000 -&gt; "1d 1h 1m 1s". Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((ms == 0) =&gt; (result == "0ms")) &amp;&amp; ((ms == 65000) =&gt; (result == "1m 5s")) &amp;&amp; ((ms == 90061000) =&gt; (result == "1d 1h 1m 1s")) &amp;&amp; ((ms == 0 - 1000) =&gt; (result == "-1s"))</code></li>
+</ul>
 <h5 id="fn-fmt_ordinaln-int-str"><code>fn fmt_ordinal(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-fmt_ordinaln-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Formats an integer with its English ordinal suffix: 1st, 2nd, 3rd, 4th, ..., 11th, 12th, 13th, 21st, 22nd, 23rd, 111th. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((n == 1) =&gt; (result == "1st")) &amp;&amp; ((n == 2) =&gt; (result == "2nd")) &amp;&amp; ((n == 3) =&gt; (result == "3rd")) &amp;&amp; ((n == 11) =&gt; (result == "11th")) &amp;&amp; ((n == 21) =&gt; (result == "21st")) &amp;&amp; ((n == 111) =&gt; (result == "111th"))</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3697,46 +3727,79 @@
 <blockquote>
 <p>Format a positive offset as "in N units".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((seconds &lt; 30 &amp;&amp; seconds &gt; 0 - 30) =&gt; (result == "in a moment"))</code></li>
+</ul>
 <h5 id="fn-format_relative_pastseconds-int-str"><code>fn format_relative_past(seconds: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_relative_pastseconds-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format a negative offset as "N units ago".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((seconds &lt; 30 &amp;&amp; seconds &gt; 0 - 30) =&gt; (result == "just now"))</code></li>
+</ul>
 <h5 id="fn-format_relative_timeseconds-int-str"><code>fn format_relative_time(seconds: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_relative_timeseconds-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format a signed offset in seconds as a full relative phrase.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((seconds &lt; 30 &amp;&amp; seconds &gt; 0 - 30) =&gt; (result == "just now"))</code></li>
+</ul>
 <h5 id="fn-format_relative_time_shortseconds-int-str"><code>fn format_relative_time_short(seconds: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_relative_time_shortseconds-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format a signed offset using the compact unit form ("5m", "2d", "now").</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((seconds &lt; 30 &amp;&amp; seconds &gt; 0 - 30) =&gt; (result == "now"))</code></li>
+</ul>
 <h5 id="fn-format_elapsedstart-int-end-int-str"><code>fn format_elapsed(start: Int, end: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_elapsedstart-int-end-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format the span between two timestamps as elapsed time ("5 minutes").</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(end == start) =&gt; (result == "0 seconds")</code></li>
+</ul>
 <h5 id="fn-format_elapsed_msms-int-str"><code>fn format_elapsed_ms(ms: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_elapsed_msms-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format a millisecond span as a compact human duration ("1h 2m 3s").</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(ms == 0) =&gt; (result == "0ms")</code></li>
+</ul>
 <h5 id="fn-format_agotimestamp-int-now-int-str"><code>fn format_ago(timestamp: Int, now: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_agotimestamp-int-now-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format how long before <code>now</code> the timestamp lies ("5 minutes ago", or the future form when <code>timestamp</code> is after <code>now</code>).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(now == timestamp) =&gt; (result == "just now")</code></li>
+</ul>
 <h5 id="fn-format_untiltimestamp-int-now-int-str"><code>fn format_until(timestamp: Int, now: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_untiltimestamp-int-now-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format how long after <code>now</code> the timestamp lies ("in 5 minutes", or the past form when <code>timestamp</code> is before <code>now</code>).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(now == timestamp) =&gt; (result == "in a moment")</code></li>
+</ul>
 <h5 id="fn-format_agedays-int-str"><code>fn format_age(days: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_agedays-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format an age in days as the largest whole unit ("400 days", "3 months").</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(days == 0) =&gt; (result == "0 seconds")</code></li>
+</ul>
 <h5 id="fn-relative_partsseconds-int-vecint-str"><code>fn relative_parts(seconds: Int) -&gt; Vec[(Int, Str)]</code><a class="headerlink" href="#fn-relative_partsseconds-int-vecint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompose <code>seconds</code> into (magnitude, unit name) pairs from largest to smallest, using only the non-zero parts (e.g. 3661 -&gt; hour 1, minute 1, second 1). The sign is ignored; the magnitude is always non-negative.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(seconds == 0) =&gt; (result.len() == 1)</code></li>
+</ul>
 <h5 id="fn-format_secondssecs-int-str"><code>fn format_seconds(secs: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_secondssecs-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format seconds as a compact human duration ("1h 2m 3s", "2m 5s", "45s").</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(secs == 0) =&gt; (result == "0s")</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3775,50 +3838,89 @@
 <blockquote>
 <p>Create an empty table with the given headers.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.row_count == 0 &amp;&amp; result.col_count == headers.len() &amp;&amp; result.headers.len() == headers.len() &amp;&amp; result.cells.len() == 0</code></li>
+</ul>
 <h5 id="fn-table_add_rowt-mut-table-cells-vecstr"><code>fn table_add_row(t: &amp;mut Table, cells: &amp;Vec[Str])</code><a class="headerlink" href="#fn-table_add_rowt-mut-table-cells-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Append a row; extra cells are truncated, missing cells pad empty.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>t.row_count == t.row_count@pre + 1</code></li>
+</ul>
 <h5 id="fn-table_widthst-table-vecint"><code>fn table_widths(t: &amp;Table) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-table_widthst-table-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The display width of each column (max of header and cells, byte length).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == t.col_count</code></li>
+</ul>
 <h5 id="fn-table_rowst-table-int"><code>fn table_rows(t: &amp;Table) -&gt; Int</code><a class="headerlink" href="#fn-table_rowst-table-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The number of data rows.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == t.row_count</code></li>
+</ul>
 <h5 id="fn-table_columnst-table-int"><code>fn table_columns(t: &amp;Table) -&gt; Int</code><a class="headerlink" href="#fn-table_columnst-table-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The number of columns.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == t.col_count</code></li>
+</ul>
 <h5 id="fn-table_rendert-table-str"><code>fn table_render(t: &amp;Table) -&gt; Str</code><a class="headerlink" href="#fn-table_rendert-table-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Render the table as plain aligned text with left-aligned columns: "| a | b |" rows separated by "|---|" under the header.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((t.col_count == 0 &amp;&amp; t.row_count == 0) =&gt; (result == "
+"))</code></li>
+</ul>
 <h5 id="fn-table_render_alignedt-table-align-vecint-str"><code>fn table_render_aligned(t: &amp;Table, align: &amp;Vec[Int]) -&gt; Str</code><a class="headerlink" href="#fn-table_render_alignedt-table-align-vecint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Render with per-column alignment (0 left, 1 right, 2 center).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((t.col_count == 0 &amp;&amp; t.row_count == 0) =&gt; (result == "
+"))</code></li>
+</ul>
 <h5 id="fn-table_render_markdownt-table-str"><code>fn table_render_markdown(t: &amp;Table) -&gt; Str</code><a class="headerlink" href="#fn-table_render_markdownt-table-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Render the table as a GitHub-flavored markdown table.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((t.col_count == 0 &amp;&amp; t.row_count == 0) =&gt; (result == "
+"))</code></li>
+</ul>
 <h5 id="fn-table_render_csvt-table-str"><code>fn table_render_csv(t: &amp;Table) -&gt; Str</code><a class="headerlink" href="#fn-table_render_csvt-table-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Render the table as comma-separated values (RFC 4180 style quoting).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((t.col_count == 0 &amp;&amp; t.row_count == 0) =&gt; (result.len() == 0))</code></li>
+</ul>
 <h5 id="fn-table_render_htmlt-table-str"><code>fn table_render_html(t: &amp;Table) -&gt; Str</code><a class="headerlink" href="#fn-table_render_htmlt-table-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Render the table as an HTML table.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-table_sort_byt-mut-table-col-int"><code>fn table_sort_by(t: &amp;mut Table, col: Int)</code><a class="headerlink" href="#fn-table_sort_byt-mut-table-col-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sort rows in place by a column (stable selection sort by byte order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>t.row_count == t.row_count@pre &amp;&amp; t.col_count == t.col_count@pre</code></li>
+</ul>
 <h5 id="fn-table_set_cellt-mut-table-row-int-col-int-value-str"><code>fn table_set_cell(t: &amp;mut Table, row: Int, col: Int, value: Str)</code><a class="headerlink" href="#fn-table_set_cellt-mut-table-row-int-col-int-value-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Replace a single cell value. Out-of-range cells are ignored.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>t.cells.len() == t.cells.len()@pre</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
