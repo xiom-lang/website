@@ -948,6 +948,21 @@ Remaining:
     compiler lane: every new flag/attribute ships its docs in the same
     commit across the compiler's canonical `AI_CONTEXT.md`, this
     repository's `docs/AI_CONTEXT.md` and the matching language guide.
+64. **Pulse flagship project on the roadmap (done 2026-10-05)**: the owner
+    supplied `img/pulse-cover.webp` (1254x1254, the same 2:1 cover
+    treatment as the benchmark) and the roadmap gained a flagship-project
+    section (`roadmap.html#pulse`, between Reproducible evidence and
+    Scope). The copy describes Pulse at scope level -- a plaintext
+    HTTP/1.1 service covering routing, middleware, configuration,
+    observability, sessions and JWT, crash-safe storage, rate limiting and
+    security headers, with TLS terminated by a front proxy, built as an
+    external project that consumes the published toolchain, stdlib and
+    registry packages and sends findings upstream -- while stating plainly
+    that it is in active development in a private repository and that
+    source, tracker and evidence will be linked when it opens. Verified
+    with desktop and 414px renders (no overflow, wordmark kept in the 2:1
+    crop); a dedicated page follows when the repository goes public
+    (`039d9c3`).
 
 ## Cross-lane notes
 
@@ -1475,7 +1490,8 @@ format and per-pair annotations since `ac1b269`, live-verified), Instagram
 in the footer, the benchmark cover, and the installer stale-staging fix --
 all verified live. v0.64.0 was verified on the live site the day it shipped
 (dynamic download/versions pages, tag-pinned notes render, docs site
-serving v0.64.0 as latest).
+serving v0.64.0 as latest). The Pulse cover and roadmap section landed
+later the same day.
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
@@ -1494,6 +1510,9 @@ Next, in order:
 5. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
+6. Pulse: when the owner opens the repository, link its source, tracker and
+   evidence from the roadmap section (`roadmap.html#pulse`) and add the
+   dedicated page.
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS ships on all
