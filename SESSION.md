@@ -925,6 +925,29 @@ Remaining:
     selfhost 45%, 5 of 11) and on the live page after the 12:23 pull
     (`ac1b269`; live JS hash-matched, render showed 74.9% and the four
     stdlib rows). The lane note below documents the widened contract.
+63. **v0.64.0 release verified on the site; docs published (done
+    2026-10-05)**: the compiler lane tagged v0.64.0 (GitHub published
+    16:41 UTC; the mirror `latest.json`/`index.json` still serve v0.63.1).
+    No website change was needed: the homepage carries no toolchain version
+    (the only version strings in pages are the v0.61.0 extension floor on
+    download.html and the roadmap's snapshot label), and download.html and
+    versions.html read the mirror plus the GitHub releases API and use the
+    newer release -- the live pages render v0.64.0 with the four platform
+    archives, and the release-notes panel shows all five highlights (heap
+    corruption, TcpStream.read elision, unsafe stack exhaustion, installed
+    runtime resolution, exact Float64 bits), the no-breaking-changes line,
+    the known issues and the changelog link, read from the tag-pinned
+    `release-notes/v0.64.0.json` (the mirror has no `release.json` for the
+    tag yet). The `repository_dispatch: compiler-release` docs publish
+    succeeded (run 37342729358); gh-pages carries v0.64.0 as `latest`, and
+    the live docs docroot serves it after the 17:23 pull (versions.json,
+    /latest/ and /v0.64.0/ all 200 at 17:26 UTC). A local
+    `docs/build_docs.py` rebuild produced zero drift, so the standalone
+    bundle needs no regeneration; the versioned docs are built by CI from
+    the pinned refs, not locally. Standing requirement restated from the
+    compiler lane: every new flag/attribute ships its docs in the same
+    commit across the compiler's canonical `AI_CONTEXT.md`, this
+    repository's `docs/AI_CONTEXT.md` and the matching language guide.
 
 ## Cross-lane notes
 
@@ -1363,6 +1386,19 @@ canonical) and the double-locked case; `e8eeede`. The served script was
 hash-verified live the same day, so the manual workaround (close VS Code,
 delete `%LOCALAPPDATA%\xiom.new`, re-run) is no longer required.
 
+### Compiler lane: flags and attributes ship with docs (standing, 2026-10-05)
+
+Restated by the compiler lane during the v0.64.0 release: every new flag or
+attribute (for example `--target freestanding`, `#[repr]`, atomics) ships
+its documentation in the same commit -- the compiler's canonical
+`AI_CONTEXT.md` (staged as the docs site's Toolchain Context page), this
+repository's `docs/AI_CONTEXT.md` language reference, and the matching
+guide page under `docs/language/`. The versioned docs build and the
+syntax/link lints only cover what the repositories contain, so a feature
+that lands without all three reads as undocumented on the site. Nothing to
+sync for v0.64.0: its notes list fixes and tooling only, and neither
+`AI_CONTEXT.md` mentions freestanding, `#[repr]` or atomics yet.
+
 ## Rules
 
 - Pure ASCII files only; the org encoding gate rejects mojibake.
@@ -1437,17 +1473,18 @@ live self-hosting and stdlib readiness meters with fetched verification
 gates (the stdlib meter accepts the tracker's fractional partial-credit
 format and per-pair annotations since `ac1b269`, live-verified), Instagram
 in the footer, the benchmark cover, and the installer stale-staging fix --
-all verified live.
+all verified live. v0.64.0 was verified on the live site the day it shipped
+(dynamic download/versions pages, tag-pinned notes render, docs site
+serving v0.64.0 as latest).
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
    streaks, badges and the certificate ship; the badge artwork is still to
    come.
-2. Next tagged release: verify the release-notes render end to end (mirror
-   first, tag-pinned raw fallback) and that a tag without notes shows only
-   the changelog link. The compiler release dispatch now works, so docs
-   republish on tags too; the mirror-side `release.json`/`"notes": true`
-   publish still belongs to whoever writes archives to the mirror.
+2. Next tagged release: re-verify the release-notes render (for v0.64.0 the
+   tag-pinned raw fallback rendered all five highlights live on 2026-10-05).
+   The mirror-side `release.json`/`"notes": true` publish still belongs to
+   whoever writes archives to the mirror.
 3. Draft "XIOM for game developers" once the owner provides engine facts
    (C# coverage on the Concepts page landed 2026-09-21).
 4. Benchmark showcase: when the owner says the benchmark repo and paper are
@@ -1484,7 +1521,9 @@ Rules: ASCII-only; never hardcode versions (read mirror JSON); pin GitHub
 Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
 <lefterisnotas@gmail.com>); DCO is now a required check on main -- sign
 commits with `git commit -s`; keep the site static and honest - no claim the
-implementation does not support.
+implementation does not support; every new flag/attribute ships docs in the
+same commit (compiler `AI_CONTEXT.md`, `docs/AI_CONTEXT.md` here, and the
+matching language-guide page).
 ```
 
 ## Relay from the compiler lane (2026-09-25)
