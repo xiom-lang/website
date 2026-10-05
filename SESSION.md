@@ -908,6 +908,23 @@ Remaining:
     and the earlier 403 is closed. A local `docs/build_docs.py` rebuild
     produced zero drift, and the docs docroot refreshes on the hourly VPS
     pull.
+62. **Stdlib readiness meter accepts the tracker's richer format (done
+    2026-10-05)**: the stdlib lane's wave-72 tracker edit made the meter
+    line `74.9% -- 7 of 10 gates complete; gate 8 at 49.3% (partial
+    credit) and gates 9-10 discrete.` with both contract lines wrapped in
+    the source. `js/progress-meter.js` required an integer percentage, a
+    closing `.**` right after the phrase and single-line gates, so the
+    roadmap's Standard library row stayed hidden and the smoke-gate cells
+    kept the snapshot (the selfhost meter was unaffected). The parser now
+    accepts a fractional percentage, extra clauses after "gates complete",
+    source-line wrapping and per-pair annotations such as `corpus 950/950
+    release (952 full; 2 C001 carve-outs)`, matching each gates pair on its
+    leading `label x/y`. Verified by running the shipped script against
+    both live trackers in a stubbed DOM (stdlib 74.9%, 7 of 10 gates,
+    corpus 950/950, modules 509/509, probes 233/233, barename 0/509;
+    selfhost 45%, 5 of 11) and on the live page after the 12:23 pull
+    (`ac1b269`; live JS hash-matched, render showed 74.9% and the four
+    stdlib rows). The lane note below documents the widened contract.
 
 ## Cross-lane notes
 
@@ -1315,21 +1332,25 @@ X/Y, formatter X/Y, lsp X/Y.**
 Add or refresh it whenever the release gate run completes; if a better file
 than the selfhost tracker should carry it, say so and we re-point.
 
-### Stdlib lane: readiness tracker lines (2026-10-02)
+### Stdlib lane: readiness tracker lines (2026-10-02; format widened 2026-10-05)
 
-The roadmap now has a Standard library readiness bar and routes the smoke
+The roadmap has a Standard library readiness bar and routes the smoke
 gates into the Verification gates table. Both are fetched live from
-`main:docs/PRODUCTION_READINESS_QUEUE.md`, so please add two lines near the
-top and update them as work lands:
+`main:docs/PRODUCTION_READINESS_QUEUE.md`, so please keep two lines near
+the top and update them as work lands:
 
 **<N>% -- <x> of <y> readiness gates complete.**
 
 **Gates: corpus <x>/<y>, modules <x>/<y>, probes <x>/<y>, barename
 <x>/<y>.**
 
-The `corpus` label fills the Standard library corpus row; other labels are
-recorded until matching rows exist. The bar stays hidden until the meter
-line appears; no website change is needed after that.
+The parser accepts a fractional percentage, extra clauses after "gates
+complete" and source-line wrapping, and it matches each gates pair on its
+leading `label x/y`, so partial-credit wording and annotations such as
+`corpus 950/950 release (952 full; 2 carve-outs)` are fine -- no website
+change is needed. The `corpus`, `modules`, `probes` and `barename` labels
+fill the matching rows; other labels are recorded until matching rows
+exist. The bar stays hidden until the meter line appears.
 
 ### Compiler lane: installer stale staging (2026-10-04, actioned)
 
@@ -1375,7 +1396,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-10-05): HEAD f53c9a9. Copyright notices across the repo read
+State (2026-10-05): HEAD ac1b269. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
@@ -1413,8 +1434,10 @@ reads GitHub, and the notes toggle is honest until the next tag.
 Recent landings (2026-10-02..05): registry trust and "attacks this stops"
 sections, ecosystem contribution paths, playground 2.0/2.1 roadmap rows,
 live self-hosting and stdlib readiness meters with fetched verification
-gates, Instagram in the footer, the benchmark cover, and the installer
-stale-staging fix -- all verified live.
+gates (the stdlib meter accepts the tracker's fractional partial-credit
+format and per-pair annotations since `ac1b269`, live-verified), Instagram
+in the footer, the benchmark cover, and the installer stale-staging fix --
+all verified live.
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
