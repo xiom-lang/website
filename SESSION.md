@@ -893,6 +893,21 @@ Remaining:
     repro, no abort); both locked (timestamped staging created);
     consolidation (no leftovers, installed `xiom --version` v0.62.3). Relay
     response is in the compiler-lane notes.
+61. **Playground 2.1 live on the roadmap; docs automations healthy (done
+    2026-10-05)**: checked the live playground (server 2.1.8, toolchain
+    v0.63.0, stdlib 0.62.4) against the lane handoff: 2.0 Algorithm Lab is
+    shipped, 2.1 Lab expansion is live -- 37 programs across ten categories
+    (merge/quick/heap/counting/radix sorts, dynamic programming, weighted
+    graphs, trees and strings) with the input box auto-opening for input
+    lessons -- and 2.2 gamified learning is next. The roadmap and ecosystem
+    rows were updated (`f53c9a9`). Docs automation is healthy: `docs-versioned`
+    publishes on docs pushes, on the weekly Monday 04:00 schedule (last
+    scheduled run 2026-09-28, success), and now on
+    `repository_dispatch: compiler-release` -- successful dispatches were
+    observed on 2026-10-03 and 2026-10-04, so the release token was widened
+    and the earlier 403 is closed. A local `docs/build_docs.py` rebuild
+    produced zero drift, and the docs docroot refreshes on the hourly VPS
+    pull.
 
 ## Cross-lane notes
 
@@ -999,8 +1014,9 @@ read/write (fine-grained) or classic `repo` scope. Token mapping (owner,
 `xiom-release-write` (it must gain Contents: read/write on website);
 `XIOM_CROSS_REPO_TOKEN` is `xiom-cross-repo-read` (read-only checkouts, no
 website access needed). The owner added website to `xiom-release-write`;
-confirmation is the dispatch line in the next tagged release. Until the
-token lands, docs no longer wait on it: `docs-versioned.yml` gained
+dispatches now succeed (observed 2026-10-03 and 2026-10-04), so this is
+confirmed and the 403 is closed. As a fallback, docs do not depend on it:
+`docs-versioned.yml` gained
 a weekly schedule (Monday 04:00 UTC) and GitHub-first tag resolution
 (`/releases/latest`, mirror fallback), so the current release is republished
 from main every week. The dispatch remains the release-accurate path (pinned
@@ -1359,7 +1375,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-09-25): HEAD 98b1daa. Copyright notices across the repo read
+State (2026-10-05): HEAD f53c9a9. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Review rounds 1-2 are applied (honest claims, Why page
@@ -1394,22 +1410,28 @@ The live deploy was verified on 2026-09-24 (item 28): the installer picks
 GitHub and installs v0.61.3, download.html lists four platforms, versions.html
 reads GitHub, and the notes toggle is honest until the next tag.
 
+Recent landings (2026-10-02..05): registry trust and "attacks this stops"
+sections, ecosystem contribution paths, playground 2.0/2.1 roadmap rows,
+live self-hosting and stdlib readiness meters with fetched verification
+gates, Instagram in the footer, the benchmark cover, and the installer
+stale-staging fix -- all verified live.
+
 Next, in order:
-1. Next tagged release: verify the release-notes render end to end (mirror
+1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
+   streaks, badges and the certificate ship; the badge artwork is still to
+   come.
+2. Next tagged release: verify the release-notes render end to end (mirror
    first, tag-pinned raw fallback) and that a tag without notes shows only
-   the changelog link. The mirror publish of `release.json` and
-   `"notes": true` belongs to whoever writes archives to the mirror; the
-   website has no credentials for it (recorded in cross-lane notes).
-2. Draft "XIOM for game developers" once the owner provides engine facts
+   the changelog link. The compiler release dispatch now works, so docs
+   republish on tags too; the mirror-side `release.json`/`"notes": true`
+   publish still belongs to whoever writes archives to the mirror.
+3. Draft "XIOM for game developers" once the owner provides engine facts
    (C# coverage on the Concepts page landed 2026-09-21).
-3. Benchmark showcase: when the owner says the benchmark repo and paper are
-   public, add a "Reproducible evidence" page (task definition, generated
-   source, compiler output, runtime results, contract configuration, tool
-   interactions, tokens, environment, sessions) and link it from the Why
-   page; the "in preparation" section now lives on the roadmap
-   (`roadmap.html#benchmark`) with no results claimed, and the homepage card
-   was removed 2026-09-25.
-4. If the compiler lane publishes a current specification revision, update
+4. Benchmark showcase: when the owner says the benchmark repo and paper are
+   public, replace the roadmap "in preparation" wording
+   (`roadmap.html#benchmark`, cover image live) with the repository and
+   results links.
+5. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
 
