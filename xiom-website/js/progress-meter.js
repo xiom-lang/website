@@ -6,21 +6,26 @@ Live progress meters for the roadmap page.
 
 Each element carrying a data-progress-block attribute names a tracker in
 SOURCES; the script fetches that markdown from raw.githubusercontent.com
-(Access-Control-Allow-Origin: *), parses its single meter line, for example
+(Access-Control-Allow-Origin: *), parses its meter line, for example
 
     **18% -- 2 of 11 tracked gates complete.**
-    **40% -- 4 of 10 readiness gates complete.**
+    **74.9% -- 7 of 10 gates complete; gate 8 at 49.3% (partial credit).**
 
 and drives that meter's fill width, percentage label, detail text and ARIA
-value. A tracker may also carry an optional gates line, for example
+value. The percentage may be fractional and the sentence may carry extra
+clauses after "gates complete"; tracker lines may also wrap in the source.
+A tracker may carry an optional gates line, for example
 
     **Gates: e2e 2338/2338, checker 195/195, lsp 45/45.**
-    **Gates: corpus 951/951, modules 509/509.**
+    **Gates: corpus 950/950 release (952 full; 2 carve-outs), modules
+    509/509, probes 233/233, barename 0/509.**
 
-Each `label x/y` pair fills the matching `data-gate` cell on the roadmap's
-Verification gates table; labels without a cell are ignored. The authored
-text stays as the fallback and the meter stays hidden until its fetch
-succeeds, so the page never shows a guessed number.
+Each pair is matched on its leading `label x/y`, so parenthesised
+annotations and trailing words are ignored, and it fills the matching
+`data-gate` cell on the roadmap's Verification gates table; labels without
+a cell are ignored. The authored text stays as the fallback and the meter
+stays hidden until its fetch succeeds, so the page never shows a guessed
+number.
 */
 (function () {
   "use strict";
@@ -29,8 +34,8 @@ succeeds, so the page never shows a guessed number.
     selfhost: "https://raw.githubusercontent.com/xiom-lang/xiom/main/docs/SELFHOST_PROGRESS.md",
     stdlib: "https://raw.githubusercontent.com/xiom-lang/stdlib/main/docs/PRODUCTION_READINESS_QUEUE.md"
   };
-  var METER = /\*\*(\d+)%[^*]*?(\d+) of (\d+) [a-z- ]*gates complete\.\*\*/;
-  var GATES = /\*\*Gates:\s*([^.\n]+)\.\*\*/;
+  var METER = /\*\*(\d+(?:\.\d+)?)%[^*]*?(\d+) of (\d+) [a-z- ]*gates complete/;
+  var GATES = /\*\*Gates:\s*([\s\S]*?)\*\*/;
 
   function setAll(selector, value) {
     var nodes = document.querySelectorAll(selector);
@@ -54,12 +59,13 @@ succeeds, so the page never shows a guessed number.
     block.hidden = false;
   }
 
-  function fillGates(text) {
-    var pairs = text.split(",");
+  function fillGates(raw) {
+    // The block may wrap in the source; strip annotations first so a comma
+    // inside them cannot split a pair, then match each pair's leading
+    // "label x/y" (trailing words such as "release" are ignored).
+    var pairs = raw.replace(/\([^)]*\)/g, " ").split(",");
     for (var i = 0; i < pairs.length; i++) {
-      // Tolerate annotations such as "e2e 2395/2395 (+4 ignored)".
-      var pair = pairs[i].replace(/\([^)]*\)/g, "").trim();
-      var m = pair.match(/^([a-z0-9-]+)\s+(\d+)\s*\/\s*(\d+)$/);
+      var m = pairs[i].trim().match(/^([a-z0-9-]+)\s+(\d+)\s*\/\s*(\d+)/);
       if (m) setAll('[data-gate="' + m[1] + '"]', m[2] + " / " + m[3]);
     }
   }
