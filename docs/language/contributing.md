@@ -61,3 +61,7 @@ CI checks every commit in a pull request. Forgot a sign-off? `git commit --amend
 | `website` | This site and the documentation sources. |
 | `playground` | Browser playground. |
 | `.github` | Organization profile, process documents and default templates. |
+
+## Support the project
+
+XIOM is funded through [Open Collective](https://opencollective.com/xiom), hosted by Open Source Europe. Sponsorships and donations support the compiler, the standard library, the registry and the tooling.
