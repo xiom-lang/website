@@ -963,6 +963,22 @@ Remaining:
     with desktop and 414px renders (no overflow, wordmark kept in the 2:1
     crop); a dedicated page follows when the repository goes public
     (`039d9c3`).
+65. **Open Collective on the site (done 2026-10-06)**: the collective is
+    live at https://opencollective.com/xiom (fiscal host Open Source
+    Europe). Its public members endpoint
+    (`https://opencollective.com/xiom/members/all.json`) sends
+    `Access-Control-Allow-Origin: *`, so no token is needed and none was
+    used -- an OAuth token must never ship in a static site. The footer
+    social row gained a tenth icon, `XIOM on Open Collective`, after
+    Instagram on all twelve pages, and the docs template
+    (`docs/build_docs.py`, which predates item 46 and does not carry
+    Instagram) gained it after Facebook; `docs/html` was regenerated (88
+    files). The contributing page and its docs mirror gained a "Support the
+    project" section pointing at the collective (sponsorships support the
+    compiler, stdlib, registry and tooling). Verified at 414px and 1440px
+    (ten icons, one row, no overflow) and with `docs/check_links.py` (95
+    pages, 0 broken relative links). The playground/registry lane prompts
+    now list the tenth icon.
 
 ## Cross-lane notes
 
@@ -1135,7 +1151,7 @@ Add the website's social row to the playground footer (or About panel):
 copy the `.footer-social` block from `xiom-website/index.html` and the
 matching `.footer-social*` CSS from `xiom-website/style.css`. Keep the order
 Discord, X, Mastodon, Bluesky, Reddit, Hacker News, LinkedIn, Facebook,
-Instagram; one `aria-label` and `title` per link; `target="_blank"
+Instagram, Open Collective; one `aria-label` and `title` per link; `target="_blank"
 rel="noopener"` (Mastodon also `rel="me"` immediately after `title`).
 Wording for Discord must stay "XIOM community Discord (open invite)" -- the
 server is invite only and must not be described as discoverable.
@@ -1149,6 +1165,7 @@ URLs:
 - https://www.linkedin.com/company/145216062/
 - https://www.facebook.com/profile.php?id=61594524426045
 - https://www.instagram.com/xiom.language/
+- https://opencollective.com/xiom
 
 ### Registry lane
 
@@ -1491,7 +1508,9 @@ in the footer, the benchmark cover, and the installer stale-staging fix --
 all verified live. v0.64.0 was verified on the live site the day it shipped
 (dynamic download/versions pages, tag-pinned notes render, docs site
 serving v0.64.0 as latest). The Pulse cover and roadmap section landed
-later the same day.
+later the same day. On 2026-10-06 the Open Collective icon joined the
+footer social row on every page and the contributing page gained a
+"Support the project" section.
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
