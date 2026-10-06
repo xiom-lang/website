@@ -3074,8 +3074,11 @@
 </ul>
 <h4 id="fn-all_types-vectypeinfo"><code>fn all_types() -&gt; Vec[TypeInfo]</code><a class="headerlink" href="#fn-all_types-vectypeinfo" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Enumerate every registered user type with REAL names and field counts. LIMITED: size/align/kind and per-field metadata are placeholders (see above).</p>
+<p>Enumerate every registered user type with REAL names and field counts. LIMITED: size/align/kind and per-field metadata are placeholders (see above). v0.64.0 (m195): angle-bracket generic receivers keep their type args, so this is now callable safely; the result has one entry per registered type.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == type_count()</code></li>
+</ul>
 <h4 id="fn-type_is_primitivet-bool"><code>fn type_is_primitive[T]() -&gt; Bool</code><a class="headerlink" href="#fn-type_is_primitivet-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if <code>T</code> is a primitive type (Int, Float64, Bool, Char, etc.). LIMITED: compiler does not expose this metadata yet -- always returns false. Complexity: O(1).</p>

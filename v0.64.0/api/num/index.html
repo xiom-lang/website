@@ -4108,17 +4108,18 @@
 <h2 id="floatxi"><code>float.xi</code><a class="headerlink" href="#floatxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-float_bitsf-float64-int"><code>fn float_bits(f: Float64) -&gt; Int</code><a class="headerlink" href="#fn-float_bitsf-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Raw 64-bit IEEE-754 bit pattern of f. FALLBACK (TODO(compiler): needs bitcast intrinsic): returns 0 until one lands. Do not rely on the value.</p>
+<p>Raw 64-bit IEEE-754 bit pattern of f (exact since v0.64.0/m194; the compiler lowers the call to a bitcast). Zero has two patterns; 1.0 is 0x3FF0000000000000.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>(f == 0) =&gt; (result == 0 || result == (0 - 9223372036854775807 - 1))</code></li>
+<li><strong>Postcondition:</strong> <code>(f == 1) =&gt; (result == 4607182418800017408)</code></li>
 </ul>
 <h5 id="fn-bits_to_floatbits-int-float64"><code>fn bits_to_float(bits: Int) -&gt; Float64</code><a class="headerlink" href="#fn-bits_to_floatbits-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Float64 reconstructed from a raw 64-bit IEEE-754 bit pattern. FALLBACK (TODO(compiler): needs bitcast intrinsic): returns 0.0 until one lands. Do not rely on the value.</p>
+<p>Float64 reconstructed from a raw 64-bit IEEE-754 bit pattern (exact since v0.64.0/m194; the compiler lowers the call to a bitcast).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>float_bits(result) == bits</code></li>
 </ul>
 <h5 id="fn-float_mantissaf-float64-int"><code>fn float_mantissa(f: Float64) -&gt; Int</code><a class="headerlink" href="#fn-float_mantissaf-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
