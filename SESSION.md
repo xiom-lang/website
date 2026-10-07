@@ -1015,6 +1015,23 @@ Remaining:
     paste-ready block under "Paste-ready prompts for other lanes" for both
     lanes to adapt to their layouts. The shared board had no registry or
     playground participants, so the relay rides in SESSION.md as usual.
+69. **Registry publishing instructions verified against registry 2.x (done
+    2026-10-07)**: the GitHub token-request issue template was already
+    retired by the registry lane on 2026-09-26 (`5bc9f51` deleted
+    `.github/ISSUE_TEMPLATE/token-request.yml`, hosted the guide at
+    registry.xiom-lang.org/publish and noted the deprecation at the end of
+    PUBLISHING.md); the org `.github` templates hold only bug and feature
+    requests. The website wording was corrected to match the live flow:
+    ecosystem.html now says requests come from the registry's Requests
+    page and a maintainer approves (not "an operator"), and its
+    "publishing guide" link points at the hosted
+    registry.xiom-lang.org/publish instead of the raw repo file;
+    docs/language/registry.md documents the trusted-publisher vs token
+    choice, the `/account/requests` path, immediate activation vs private
+    token delivery, and the retired issue template; contributing.md links
+    the walkthrough. Live endpoints checked: /publish 200, /login 200,
+    /ui/templates/community-publish.yml 200, /account/requests 302
+    (auth). docs/html regenerated; 95 pages, 0 broken; sources ASCII.
 
 ## Cross-lane notes
 
@@ -1608,7 +1625,9 @@ nav and the footer Project column on every page, and the missing
 Contributing nav item was restored on ten pages. Live Open Collective
 tier cards landed on the contributing page on 2026-10-07, and the
 paste-ready relay for the playground/registry lanes is ready in
-"Paste-ready prompts for other lanes".
+"Paste-ready prompts for other lanes". Registry publishing instructions
+were aligned with the 2.x in-registry request flow on 2026-10-07, and the
+retired GitHub token template confirmed.
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
