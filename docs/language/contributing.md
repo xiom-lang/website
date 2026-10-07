@@ -12,7 +12,7 @@ XIOM is pre-beta and the standard library is beta. The same summary lives on the
 
 You do not have to touch the compiler to contribute:
 
-- **Publish a package.** Publishing is open to everyone with a GitHub account: request a publish token or a trusted-publisher entry and ship signed releases; see the [Package Registry](registry.md) guide.
+- **Publish a package.** Publishing is open to everyone with a GitHub account: sign in at the registry, request a trusted-publisher entry (recommended) or a publish token from its Requests page, and ship signed releases; see the [Package Registry](registry.md) guide and the [publishing walkthrough](https://registry.xiom-lang.org/publish).
 - **Review and report.** Rate and review packages, report issues with a minimal reproduction in the public repositories, and improve the documentation on this site.
 - **Work on the ecosystem repositories.** `registry`, `playground` and `website` follow the same contribution path as the rest of the organization.
 

@@ -141,13 +141,23 @@ take part.
 
 Sign in at
 [registry.xiom-lang.org/login](https://registry.xiom-lang.org/login) with
-GitHub to request a publish token or a trusted-publisher entry; an operator
-approves the request. Sign-in is identity only -- a browser session can
-never publish, and artifacts are always signed by the publisher's key (OIDC
-in CI, or a scoped token). The registry also offers a publish preflight
+GitHub, then open the Requests page
+([registry.xiom-lang.org/account/requests](https://registry.xiom-lang.org/account/requests))
+to ask for a trusted-publisher entry (recommended: no stored secret, the
+workflow authenticates with a short-lived OIDC token) or a publish token
+for the manual lane. A maintainer reviews every request; approved trusted
+publishers activate immediately, and token requests are minted on the
+registry host and delivered privately. Requests are made in the registry
+itself, not through GitHub issues -- the old token-request issue template
+is retired, so credentials can never leak into a public thread.
+
+Sign-in is identity only -- a browser session can never publish, and
+artifacts are always signed by the publisher's key (OIDC in CI, or a
+scoped token). The registry also offers a publish preflight
 (`POST /validate`) that runs the exact publish checks without writing an
-index entry. The full flow, signing and troubleshooting live
-in the registry repository's `PUBLISHING.md`; the service change log is at
+index entry. The full flow, signing and troubleshooting live on the
+[publishing guide](https://registry.xiom-lang.org/publish) and in the
+registry repository's `PUBLISHING.md`; the service change log is at
 [registry.xiom-lang.org/whats-new](https://registry.xiom-lang.org/whats-new).
 
 Registry issues go to
