@@ -294,6 +294,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <a href="{site_base}contributing.html">Contributing</a>
       <a href="{site_base}versions.html">Versions</a>
       <a href="https://playground.xiom-lang.org">Playground</a>
+      <a href="https://opencollective.com/xiom">Support</a>
     </div>
     <a class="nav-cta" href="{site_base}download.html">download</a>
   </div>
@@ -362,6 +363,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         <a href="https://github.com/xiom-lang">GitHub</a>
         <a href="mailto:support@xiom-lang.org">support@xiom-lang.org</a>
         <a href="{site_base}contributing.html">Contributing</a>
+        <a href="https://opencollective.com/xiom">Support XIOM</a>
         <a href="{site_base}terms.html">Terms of Use</a>
         <a href="{site_base}privacy.html">Privacy Policy</a>
       </div>
