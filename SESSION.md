@@ -979,6 +979,17 @@ Remaining:
     (ten icons, one row, no overflow) and with `docs/check_links.py` (95
     pages, 0 broken relative links). The playground/registry lane prompts
     now list the tenth icon.
+66. **Support surfaced site-wide; nav consistency fixed (done 2026-10-07)**:
+    the top nav gained a Support item (https://opencollective.com/xiom) on
+    all twelve pages, the footer Project column gained a Support XIOM link,
+    and the ten pages whose nav lacked Contributing got it (the docs
+    template already had it). The base nav gap was reduced 36px -> 26px and
+    nav links no longer wrap mid-item (white-space: nowrap); a 1440px
+    render had "Prior art" breaking across two lines once the items were
+    added. docs/html was regenerated; the link checker reports 95 pages and
+    0 broken; desktop 1440 and mobile 414 renders were checked (the mobile
+    nav scrolls horizontally as before). Links only -- no token, no
+    third-party script or iframe.
 
 ## Cross-lane notes
 
@@ -1166,6 +1177,10 @@ URLs:
 - https://www.facebook.com/profile.php?id=61594524426045
 - https://www.instagram.com/xiom.language/
 - https://opencollective.com/xiom
+
+The website nav also gained a Support item (https://opencollective.com/xiom,
+directly before the download CTA) and the footer's Project column a "Support
+XIOM" link; mirror both on lanes that carry those menus.
 
 ### Registry lane
 
@@ -1510,7 +1525,9 @@ all verified live. v0.64.0 was verified on the live site the day it shipped
 serving v0.64.0 as latest). The Pulse cover and roadmap section landed
 later the same day. On 2026-10-06 the Open Collective icon joined the
 footer social row on every page and the contributing page gained a
-"Support the project" section.
+"Support the project" section. On 2026-10-07 Support was added to the top
+nav and the footer Project column on every page, and the missing
+Contributing nav item was restored on ten pages.
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
