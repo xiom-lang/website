@@ -3149,13 +3149,22 @@ account can request access, and you do not need to touch the compiler to
 take part.</p>
 <p>Sign in at
 <a href="https://registry.xiom-lang.org/login">registry.xiom-lang.org/login</a> with
-GitHub to request a publish token or a trusted-publisher entry; an operator
-approves the request. Sign-in is identity only -- a browser session can
-never publish, and artifacts are always signed by the publisher's key (OIDC
-in CI, or a scoped token). The registry also offers a publish preflight
+GitHub, then open the Requests page
+(<a href="https://registry.xiom-lang.org/account/requests">registry.xiom-lang.org/account/requests</a>)
+to ask for a trusted-publisher entry (recommended: no stored secret, the
+workflow authenticates with a short-lived OIDC token) or a publish token
+for the manual lane. A maintainer reviews every request; approved trusted
+publishers activate immediately, and token requests are minted on the
+registry host and delivered privately. Requests are made in the registry
+itself, not through GitHub issues -- the old token-request issue template
+is retired, so credentials can never leak into a public thread.</p>
+<p>Sign-in is identity only -- a browser session can never publish, and
+artifacts are always signed by the publisher's key (OIDC in CI, or a
+scoped token). The registry also offers a publish preflight
 (<code>POST /validate</code>) that runs the exact publish checks without writing an
-index entry. The full flow, signing and troubleshooting live
-in the registry repository's <code>PUBLISHING.md</code>; the service change log is at
+index entry. The full flow, signing and troubleshooting live on the
+<a href="https://registry.xiom-lang.org/publish">publishing guide</a> and in the
+registry repository's <code>PUBLISHING.md</code>; the service change log is at
 <a href="https://registry.xiom-lang.org/whats-new">registry.xiom-lang.org/whats-new</a>.</p>
 <p>Registry issues go to
 <a href="https://github.com/xiom-lang/registry/issues">github.com/xiom-lang/registry/issues</a>.</p>
