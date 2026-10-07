@@ -990,6 +990,24 @@ Remaining:
     0 broken; desktop 1440 and mobile 414 renders were checked (the mobile
     nav scrolls horizontally as before). Links only -- no token, no
     third-party script or iframe.
+67. **Live Open Collective tier cards on the contributing page (done
+    2026-10-07)**: the "Support the project" section now renders the
+    collective's six live tiers as native eco-cards (XIOM Backer EUR 5,
+    Support XIOM from EUR 10 flexible, XIOM Sponsor EUR 15, Bronze EUR
+    100, Silver EUR 250, Gold EUR 500 per month), read anonymously from
+    the public GraphQL endpoint (no token; CORS `*` and the JSON preflight
+    verified) and from `opencollective.com/xiom.json` for the
+    financial-contributor count. Each card links to the donate flow with
+    amount and interval pre-filled (`/donate/profile?amount=15&interval=
+    month`); the contribution itself happens on Open Collective, and the
+    authored fallback stands with the grid hidden on any failure
+    (`js/support-tiers.js`). The backers line stays hidden while the count
+    is zero. `privacy.html`'s Third parties section now notes that the
+    contributing page reads public funding data from Open Collective.
+    Tier names render exactly as the collective defines them (leading
+    emoji included; strip on request). Verified with a node run of the
+    shipped script against the live API (six cards, amounts, prefilled
+    URLs, hidden backers line) and 1440/414 renders.
 
 ## Cross-lane notes
 
@@ -1527,7 +1545,8 @@ later the same day. On 2026-10-06 the Open Collective icon joined the
 footer social row on every page and the contributing page gained a
 "Support the project" section. On 2026-10-07 Support was added to the top
 nav and the footer Project column on every page, and the missing
-Contributing nav item was restored on ten pages.
+Contributing nav item was restored on ten pages. Live Open Collective
+tier cards landed on the contributing page on 2026-10-07.
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
