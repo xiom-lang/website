@@ -1008,6 +1008,13 @@ Remaining:
     emoji included; strip on request). Verified with a node run of the
     shipped script against the live API (six cards, amounts, prefilled
     URLs, hidden backers line) and 1440/414 renders.
+68. **Relay written for the playground and registry lanes (done
+    2026-10-07)**: the Open Collective support rollout (tenth footer
+    icon, nav Support item, footer Support XIOM link, live tier cards,
+    privacy note, no-token rule, verification steps) is written as a
+    paste-ready block under "Paste-ready prompts for other lanes" for both
+    lanes to adapt to their layouts. The shared board had no registry or
+    playground participants, so the relay rides in SESSION.md as usual.
 
 ## Cross-lane notes
 
@@ -1172,7 +1179,9 @@ the release notes rather than promising the tool list for every tag.
 
 Send these to the playground and registry sessions; they match the website
 implementation committed on 2026-09-21 (`xiom-website/index.html` and the
-`.footer-social` rules in `xiom-website/style.css`).
+`.footer-social` rules in `xiom-website/style.css`), updated 2026-10-07
+with the Open Collective icon, the nav Support item, the footer Support
+XIOM link and the live tier cards.
 
 ### Playground lane
 
@@ -1205,6 +1214,57 @@ XIOM" link; mirror both on lanes that carry those menus.
 Same block and CSS in the registry UI footer, same order, labels and
 rel/target rules. Keep the Discord invite wording identical; keep
 registry@xiom-lang.org next to the row for registry-specific contact.
+
+### Relay: Open Collective support rollout (2026-10-07, for both lanes)
+
+Mirror what landed on xiom-lang.org on 2026-10-06/07. The sites share
+`xiom-website/style.css`, so reuse the existing classes (`footer-social`,
+`footer-col`, `eco-grid`, `eco-card`); adapt wording and placement to fit
+your layout.
+
+1. Footer social row: add the tenth icon, "XIOM on Open Collective"
+   (https://opencollective.com/xiom), after Instagram (or after the last
+   icon you carry). Same aria-label/title/target/rel rules; the SVG path
+   is in `xiom-website/index.html` (Simple Icons, CC0).
+2. Footer Project column: add
+   `<a href="https://opencollective.com/xiom">Support XIOM</a>`
+   after Contributing. Top nav: add a `Support` item
+   (https://opencollective.com/xiom) as the last nav link, before your
+   download/beta CTA. If your nav lacks the `Contributing` item (the
+   website had it on only two of twelve pages), restore it after Roadmap
+   while you are there.
+3. Support section with live tiers: copy `xiom-website/js/support-tiers.js`
+   and the contributing page markup:
+
+   <div class="eco-grid" style="margin-top:24px;" data-support-tiers hidden></div>
+   <p style="color:var(--muted);font-size:13px;" data-support-backers hidden></p>
+   <p style="color:var(--muted);font-size:13px;">Tiers and amounts are read
+   live from the collective; the contribution itself happens on Open
+   Collective.</p>
+
+   and `<script src="js/support-tiers.js"></script>` before `</body>`.
+   The script reads tiers anonymously from the public GraphQL endpoint
+   (POST https://api.opencollective.com/graphql/v2, JSON body,
+   Access-Control-Allow-Origin: * and the content-type preflight verified)
+   and the financial-contributor count from
+   https://opencollective.com/xiom.json (CORS *, cached one hour). Never
+   add a token: a token in a static site is a leaked token. Cards link to
+   /donate/profile?amount=<n>&interval=month with the amount pre-filled;
+   the backers line stays hidden while the count is zero; on any failure
+   the authored fallback stands and the grid stays hidden -- never show a
+   guessed number or tier. Tier names render exactly as the collective
+   defines them (leading emoji included); strip only if that fits your
+   design better.
+4. Privacy note: add one sentence to your privacy/about page: the support
+   section reads public funding data (tier names, amounts,
+   financial-contributor count) from Open Collective, which receives the
+   request.
+5. Verify: render 1440 and 414 (cards wrap 4+2, stack on phones; the
+   mobile nav scrolls horizontally), confirm six live tiers (XIOM Backer
+   EUR 5, Support XIOM from EUR 10 flexible, XIOM Sponsor EUR 15, Bronze
+   EUR 100, Silver EUR 250, Gold EUR 500 per month), check the pre-filled
+   links resolve to the collective, run your link checker, and confirm no
+   page-load third-party script or iframe was added.
 
 ### Playground lane: banner header
 
@@ -1546,7 +1606,9 @@ footer social row on every page and the contributing page gained a
 "Support the project" section. On 2026-10-07 Support was added to the top
 nav and the footer Project column on every page, and the missing
 Contributing nav item was restored on ten pages. Live Open Collective
-tier cards landed on the contributing page on 2026-10-07.
+tier cards landed on the contributing page on 2026-10-07, and the
+paste-ready relay for the playground/registry lanes is ready in
+"Paste-ready prompts for other lanes".
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
