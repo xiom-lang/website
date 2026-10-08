@@ -45,19 +45,63 @@
 
   <div class="content-section">
     <h2>What works today</h2>
-    <table>
-      <tr><th>Capability</th><th>State</th></tr>
-      <tr><td>In-memory engine -- flat-array B-tree (insert, search, delete), range queries, traversal</td><td>working, churn-proven against a model</td></tr>
-      <tr><td>Write-ahead log -- append, replay, truncate, durable segment file</td><td>working</td></tr>
-      <tr><td>Crash recovery -- disk WAL + page file, crash harnesses on Windows and WSL</td><td>working (torn-tail healing)</td></tr>
-      <tr><td>Query engine -- equality and range filters with limit and offset</td><td>working</td></tr>
-      <tr><td>Schema catalog and validation</td><td>working</td></tr>
-      <tr><td>Storage primitives -- pages, buffer pool, byte-packed tuple codec with CRC32C</td><td>working</td></tr>
-      <tr><td>Conformance suite</td><td>104 tests</td></tr>
-      <tr><td>Transactions -- isolation and crash-safe redo/undo</td><td>state machine only, not started</td></tr>
-      <tr><td>Pager integration and node-per-page B-tree</td><td>in progress</td></tr>
-      <tr><td>fsync-durable commits</td><td>waiting on the standard library's fsync row</td></tr>
-    </table>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <img src="img/b-tree.webp" alt="" loading="lazy" decoding="async">
+        <h4>B-tree index</h4>
+        <p>Insert, search and delete on a flat-array B-tree, churn-proven against a model.</p>
+      </div>
+      <div class="feature-card">
+        <img src="img/range-queries.webp" alt="" loading="lazy" decoding="async">
+        <h4>Range queries</h4>
+        <p>Low/high scans, min/max and in-order traversal.</p>
+      </div>
+      <div class="feature-card">
+        <img src="img/write-ahead-log.webp" alt="" loading="lazy" decoding="async">
+        <h4>Write-ahead log</h4>
+        <p>Append, replay and truncate; durable segment file.</p>
+      </div>
+      <div class="feature-card">
+        <img src="img/crash-recovery.webp" alt="" loading="lazy" decoding="async">
+        <h4>Crash recovery</h4>
+        <p>Disk WAL and page file with crash harnesses on Windows and WSL; torn-tail healing.</p>
+      </div>
+      <div class="feature-card">
+        <img src="img/query-filter.webp" alt="" loading="lazy" decoding="async">
+        <h4>Query engine</h4>
+        <p>Equality and range filters with limit and offset.</p>
+      </div>
+      <div class="feature-card">
+        <img src="img/schema-validation.webp" alt="" loading="lazy" decoding="async">
+        <h4>Schema catalog</h4>
+        <p>Schema definitions with validation.</p>
+      </div>
+      <div class="feature-card">
+        <img src="img/pages-n-buffer-pool.webp" alt="" loading="lazy" decoding="async">
+        <h4>Pages and buffer pool</h4>
+        <p>Storage primitives, page files and the buffer pool.</p>
+      </div>
+      <div class="feature-card">
+        <img src="img/tuple-code-crc32c.webp" alt="" loading="lazy" decoding="async">
+        <h4>Tuple codec and CRC32C</h4>
+        <p>Byte-packed records; checksums verified on read.</p>
+      </div>
+      <div class="feature-card">
+        <img src="img/conformance-suite.webp" alt="" loading="lazy" decoding="async">
+        <h4>Conformance suite</h4>
+        <p>104 tests.</p>
+      </div>
+      <div class="feature-card feature-card--pending">
+        <img src="img/transactions.webp" alt="" loading="lazy" decoding="async">
+        <h4>Transactions</h4>
+        <p>State machine only -- no isolation or crash-safe redo/undo yet.</p>
+      </div>
+      <div class="feature-card feature-card--pending">
+        <img src="img/fsync-durability.webp" alt="" loading="lazy" decoding="async">
+        <h4>fsync durability</h4>
+        <p>Not yet -- waiting on the standard library's fsync row; power-loss durability is scored at zero until then.</p>
+      </div>
+    </div>
   </div>
 
   <div class="content-section">
