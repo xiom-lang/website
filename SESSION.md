@@ -1102,6 +1102,14 @@ Remaining:
     nginx -t clean. The hub and roadmap cards now resolve on the live
     subdomains. Pulse demo/release stays phase 2 on the owner's greenlight
     (`docs/OPS-REQUEST.md` section E in the pulse repo).
+76. **Favicon everywhere, larger feature icons (done 2026-10-08)**: the
+    twelve main pages already linked `img/xiom-icon.ico`; the gap was
+    `projects.html`, the four subdomain pages and `AI_CONTEXT.html`, which
+    now link it too, and each product folder carries its own icon copy.
+    Feature-card icons were enlarged from 40px to 88px and centered with
+    the card text (owner feedback: too small); style.css copied into the
+    four self-contained sites and the render verified at 1440. ASCII
+    clean.
 
 ## Cross-lane notes
 
