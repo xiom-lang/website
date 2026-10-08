@@ -1110,6 +1110,14 @@ Remaining:
     the card text (owner feedback: too small); style.css copied into the
     four self-contained sites and the render verified at 1440. ASCII
     clean.
+77. **Feature icons raised to 120px (done 2026-10-08)**: owner feedback --
+    88px was still small. Icons are now 120px, dropping to 96px below a
+    700px viewport; style.css copied into the four project sites. The
+    mobile check used an iframe harness at a real 414px viewport
+    (scrollWidth 399, no overflow). Lesson for the lane: direct headless
+    screenshots below ~500px are laid out at the Windows minimum window
+    width and then cropped, which shows false clipping -- use the harness
+    (or a >=500px window) for narrow-viewport checks.
 
 ## Cross-lane notes
 
