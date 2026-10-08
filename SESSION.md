@@ -1083,6 +1083,16 @@ Remaining:
     (`methodology-contract.webp`, `reproducibility.webp`). The other three
     project folders still carry only cover + logo; wire the icons when the
     pages get their feature layout.
+74. **Designer icons wired into all four project pages (done 2026-10-08)**:
+    the owner delivered the full icon sets (Pulse 12, OrbitDB 11, XVector
+    10, Chaos 10; 449/440px transparent webp). Two filenames carried
+    typos and were renamed (`csrf-smuggling-guard.webp`,
+    `transactions.webp`). The capability tables on the three product pages
+    and the chaos "How it runs" list became feature-card grids
+    (`.feature-grid`/`.feature-card` in style.css, copied into each
+    self-contained site), with in-progress/not-yet cards dimmed. Every
+    icon reference resolves; sources ASCII clean; the Pulse render was
+    verified at 1440. Phase 1 pages are complete.
 
 ## Cross-lane notes
 
@@ -1609,6 +1619,11 @@ same pages resolve at xiom-lang.org/projects/<name>/. Pulse phase 2
 (release, demo deploy) runs through the pulse repo's
 `docs/OPS-REQUEST.md` section E on the owner's greenlight; nothing else is
 needed now, and no staging subdomain is wanted.
+
+Update 2026-10-08: all four pages are complete (designer feature icons
+wired, Support in nav and footer, downloads placeholder-only). The folders
+are ready for docroot mapping now; nothing is pending on the website side
+for phase 1.
 
 ## Rules
 
