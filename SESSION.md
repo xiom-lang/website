@@ -1074,6 +1074,15 @@ Remaining:
     linked mentions), the spec page, the homepage and its own page.
     docs/html regenerated; 100 pages, 0 broken; the correction is in the
     follow-up commit.
+73. **Chaos feature icons received (2026-10-08)**: the owner dropped ten
+    feature icons into `projects/chaos/img/` (arenas, dashboard,
+    digest-bindings, fairness, language-matrix, methodology contract,
+    offline-run, reproducibility, results, same-llm-all) matching the
+    design brief's list; they are committed but not yet wired into the
+    page. Two filenames carried typos and were renamed
+    (`methodology-contract.webp`, `reproducibility.webp`). The other three
+    project folders still carry only cover + logo; wire the icons when the
+    pages get their feature layout.
 
 ## Cross-lane notes
 
