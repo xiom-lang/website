@@ -2870,6 +2870,9 @@
 <blockquote>
 <p>If this is Equal, evaluate <code>f</code>; otherwise keep this ordering.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self != Equal =&gt; result == self</code></li>
+</ul>
 <h4 id="fn-minta-t-b-t-t"><code>fn min[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-minta-t-b-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Smaller of two values.</p>
@@ -2898,18 +2901,30 @@
 <blockquote>
 <p>Value that compares smaller under <code>compare</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b</code></li>
+</ul>
 <h4 id="fn-max_byta-t-b-t-compare-fnt-t-ordering-t"><code>fn max_by[T](a: T, b: T, compare: fn(&amp;T, &amp;T) -&gt; Ordering) -&gt; T</code><a class="headerlink" href="#fn-max_byta-t-b-t-compare-fnt-t-ordering-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Value that compares greater under <code>compare</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b</code></li>
+</ul>
 <h4 id="fn-max_inta-int-b-int-int"><code>fn max_int(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-max_inta-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Larger of two Ints.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= a &amp;&amp; result &gt;= b</code></li>
+</ul>
 <h4 id="fn-min_inta-int-b-int-int"><code>fn min_int(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-min_inta-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Smaller of two Ints.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &lt;= a &amp;&amp; result &lt;= b</code></li>
+</ul>
 <h4 id="fn-clamp_intvalue-int-min_val-int-max_val-int-int"><code>fn clamp_int(value: Int, min_val: Int, max_val: Int) -&gt; Int</code><a class="headerlink" href="#fn-clamp_intvalue-int-min_val-int-max_val-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clamp an Int into [min_val, max_val].</p>
@@ -2922,14 +2937,23 @@
 <blockquote>
 <p>Larger of two Float64s.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b</code></li>
+</ul>
 <h4 id="fn-min_floata-float64-b-float64-float64"><code>fn min_float(a: Float64, b: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-min_floata-float64-b-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Smaller of two Float64s.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b</code></li>
+</ul>
 <h4 id="fn-clamp_floatvalue-float64-min_val-float64-max_val-float64-float64"><code>fn clamp_float(value: Float64, min_val: Float64, max_val: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-clamp_floatvalue-float64-min_val-float64-max_val-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clamp a Float64 into [min_val, max_val].</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == value || result == min_val || result == max_val</code></li>
+</ul>
 <h4 id="type-reverse"><code>type Reverse</code><a class="headerlink" href="#type-reverse" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Reverse ordering wrapper</p>
@@ -2952,34 +2976,62 @@
 <blockquote>
 <p>Wrap a value so its ordering is reversed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.value == value</code></li>
+</ul>
 <h4 id="fn-min3ta-t-b-t-c-t-t"><code>fn min3[T](a: T, b: T, c: T) -&gt; T</code><a class="headerlink" href="#fn-min3ta-t-b-t-c-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Minimum of three values. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b || result == c</code></li>
+</ul>
 <h4 id="fn-max3ta-t-b-t-c-t-t"><code>fn max3[T](a: T, b: T, c: T) -&gt; T</code><a class="headerlink" href="#fn-max3ta-t-b-t-c-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Maximum of three values. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b || result == c</code></li>
+</ul>
 <h4 id="fn-is_betweentvalue-t-lo-t-hi-t-bool"><code>fn is_between[T](value: T, lo: T, hi: T) -&gt; Bool</code><a class="headerlink" href="#fn-is_betweentvalue-t-lo-t-hi-t-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if <code>value</code> is in the closed interval [lo, hi]. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(value.compare(lo) &lt; 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(value.compare(hi) &gt; 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(value.compare(lo) &gt;= 0 &amp;&amp; value.compare(hi) &lt;= 0) =&gt; (result == true)</code></li>
+</ul>
 <h4 id="fn-median3ta-t-b-t-c-t-t"><code>fn median3[T](a: T, b: T, c: T) -&gt; T</code><a class="headerlink" href="#fn-median3ta-t-b-t-c-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Median of three values (the value that would be in the middle when sorted). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b || result == c</code></li>
+</ul>
 <h4 id="fn-compare_intsa-int-b-int-int"><code>fn compare_ints(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-compare_intsa-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Compare two integers, returning -1, 0, or 1 like a comparator. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a &lt; b) =&gt; (result == -1)</code></li>
+<li><strong>Postcondition:</strong> <code>(a &gt; b) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(a == b) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-min_of_vectv-vect-optiont"><code>fn min_of_vec[T](v: &amp;Vec[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-min_of_vectv-vect-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Minimum element in a Vec, or None if empty. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h4 id="fn-max_of_vectv-vect-optiont"><code>fn max_of_vec[T](v: &amp;Vec[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-max_of_vectv-vect-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Maximum element in a Vec, or None if empty. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="contractsxi"><code>contracts.xi</code><a class="headerlink" href="#contractsxi" title="Permanent link">&para;</a></h2>
@@ -3328,12 +3380,17 @@
 <blockquote>
 <p>Decimal string for an Int.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == "0")</code></li>
+</ul>
 <h4 id="fn-to_int_from_strs-str-resultint-str"><code>fn to_int_from_str(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-to_int_from_strs-str-resultint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse an Int; Err with a message on bad input.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(s == "0") =&gt; (result.is_ok == true)</code></li>
 </ul>
 <h4 id="fn-to_float_from_strs-str-resultfloat64-str"><code>fn to_float_from_str(s: Str) -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-to_float_from_strs-str-resultfloat64-str" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3341,11 +3398,18 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(s == "1.5") =&gt; (result.is_ok == true)</code></li>
 </ul>
 <h4 id="fn-to_bool_from_strs-str-resultbool-str"><code>fn to_bool_from_str(s: Str) -&gt; Result[Bool, Str]</code><a class="headerlink" href="#fn-to_bool_from_strs-str-resultbool-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse "true"/"false"; Err on other input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s == "true") =&gt; (result.is_ok == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(s == "false") =&gt; (result.is_ok == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(s != "true" &amp;&amp; s != "false") =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-to_charx-int-char"><code>fn to_char(x: Int) -&gt; Char</code><a class="headerlink" href="#fn-to_charx-int-char" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert a code point to a Char.</p>
@@ -3575,30 +3639,57 @@
 <blockquote>
 <p>Returns the smaller of two <code>Int</code> values. Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b</code></li>
+<li><strong>Postcondition:</strong> <code>result &lt;= a &amp;&amp; result &lt;= b</code></li>
+</ul>
 <h4 id="fn-max_ofa-int-b-int-int"><code>fn max_of(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-max_ofa-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the larger of two <code>Int</code> values. Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= a &amp;&amp; result &gt;= b</code></li>
+</ul>
 <h4 id="fn-abs_intn-int-int"><code>fn abs_int(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-abs_intn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the absolute value of <code>n</code>. Complexity: O(1). Pure, no side effects. NOTE: <code>INT_MIN</code> has no positive representation; wraps on overflow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0) =&gt; (result == n)</code></li>
+</ul>
 <h4 id="fn-clamp_intv-int-lo-int-hi-int-int"><code>fn clamp_int(v: Int, lo: Int, hi: Int) -&gt; Int</code><a class="headerlink" href="#fn-clamp_intv-int-lo-int-hi-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clamps <code>v</code> to the inclusive range [<code>lo</code>, <code>hi</code>]. Returns <code>lo</code> if <code>v &lt; lo</code>, <code>hi</code> if <code>v &gt; hi</code>, otherwise <code>v</code>. Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == v || result == lo || result == hi</code></li>
+<li><strong>Postcondition:</strong> <code>(v &gt;= lo &amp;&amp; v &lt;= hi) =&gt; (result == v)</code></li>
+</ul>
 <h4 id="fn-bool_to_intb-bool-int"><code>fn bool_to_int(b: Bool) -&gt; Int</code><a class="headerlink" href="#fn-bool_to_intb-bool-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Converts a <code>Bool</code> to an <code>Int</code>: <code>true</code> -&gt; 1, <code>false</code> -&gt; 0. NOTE: XIOM does NOT support <code>b as Int</code>; this is the canonical conversion. Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(b == true) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(b == false) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-int_to_booln-int-bool"><code>fn int_to_bool(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-int_to_booln-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Converts an <code>Int</code> to a <code>Bool</code>: non-zero -&gt; <code>true</code>, zero -&gt; <code>false</code>. Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(n != 0) =&gt; (result == true)</code></li>
+</ul>
 <h4 id="fn-int_to_char_safen-int-optionchar"><code>fn int_to_char_safe(n: Int) -&gt; Option[Char]</code><a class="headerlink" href="#fn-int_to_char_safen-int-optionchar" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Safely converts an <code>Int</code> to a <code>Char</code>. Returns <code>None</code> if <code>n</code> is outside the valid Unicode code-point range (0..=0x10FFFF). Complexity: O(1). Pure, no side effects.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || n &gt; 1114111) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0 &amp;&amp; n &lt;= 1114111) =&gt; (result.is_some == true)</code></li>
+</ul>
 <h4 id="fn-slice_lents-slicet-int"><code>fn slice_len[T](s: &amp;Slice[T]) -&gt; Int</code><a class="headerlink" href="#fn-slice_lents-slicet-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the number of elements in the slice. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
@@ -3651,6 +3742,9 @@
 <blockquote>
 <p>Returns the contained <code>Ok</code> value, or <code>default</code> if the result is <code>Err</code>. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r.is_err == true) =&gt; (result == default)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="platformxi"><code>platform.xi</code><a class="headerlink" href="#platformxi" title="Permanent link">&para;</a></h2>

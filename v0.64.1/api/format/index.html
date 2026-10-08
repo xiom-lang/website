@@ -4009,6 +4009,12 @@
 <blockquote>
 <p>Create a progress bar over <code>total</code> units (clamped to &gt;= 0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(total &lt; 0) =&gt; (result.total == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(total &gt;= 0) =&gt; (result.total == total)</code></li>
+<li><strong>Postcondition:</strong> <code>result.done == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.width == 40</code></li>
+</ul>
 <h5 id="fn-progress_updatep-mut-progress-done-int-unit"><code>fn progress_update(p: &amp;mut Progress, done: Int) -&gt; Unit</code><a class="headerlink" href="#fn-progress_updatep-mut-progress-done-int-unit" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Advance the bar to <code>done</code> units (clamped to [0, total]).</p>
@@ -4021,10 +4027,16 @@
 <blockquote>
 <p>Finalize the bar: mark it complete (done = total). Rendering after this returns a full bar. No terminal I/O is performed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.done == p.total</code></li>
+</ul>
 <h5 id="fn-progress_percentp-progress-int"><code>fn progress_percent(p: &amp;Progress) -&gt; Int</code><a class="headerlink" href="#fn-progress_percentp-progress-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Percent complete, 0..100.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.total &lt;= 0) =&gt; (result == 100)</code></li>
+</ul>
 <h5 id="fn-progress_etap-progress-int"><code>fn progress_eta(p: &amp;Progress) -&gt; Int</code><a class="headerlink" href="#fn-progress_etap-progress-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Estimated seconds remaining, or -1 when unknown (nothing done yet).</p>
@@ -4055,6 +4067,10 @@
 <blockquote>
 <p>Create a new spinner with the default frame set: | / - .</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.index == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.frames.len() == 4</code></li>
+</ul>
 <h5 id="fn-spinner_ticksp-mut-spinner-str"><code>fn spinner_tick(sp: &amp;mut Spinner) -&gt; Str</code><a class="headerlink" href="#fn-spinner_ticksp-mut-spinner-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Advance the spinner and return its frame string.</p>
@@ -4063,102 +4079,177 @@
 <blockquote>
 <p>Current frame index of the spinner.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == sp.index</code></li>
+</ul>
 <h5 id="fn-ansi_reset-str_1"><code>fn ansi_reset() -&gt; Str</code><a class="headerlink" href="#fn-ansi_reset-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI reset attribute sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[0m"</code></li>
+</ul>
 <h5 id="fn-ansi_bold-str_1"><code>fn ansi_bold() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bold-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI bold attribute sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[1m"</code></li>
+</ul>
 <h5 id="fn-ansi_dim-str_1"><code>fn ansi_dim() -&gt; Str</code><a class="headerlink" href="#fn-ansi_dim-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI dim attribute sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[2m"</code></li>
+</ul>
 <h5 id="fn-ansi_italic-str_1"><code>fn ansi_italic() -&gt; Str</code><a class="headerlink" href="#fn-ansi_italic-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI italic attribute sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[3m"</code></li>
+</ul>
 <h5 id="fn-ansi_underline-str_1"><code>fn ansi_underline() -&gt; Str</code><a class="headerlink" href="#fn-ansi_underline-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI underline attribute sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[4m"</code></li>
+</ul>
 <h5 id="fn-ansi_blink-str_1"><code>fn ansi_blink() -&gt; Str</code><a class="headerlink" href="#fn-ansi_blink-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI blink attribute sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[5m"</code></li>
+</ul>
 <h5 id="fn-ansi_reverse-str_1"><code>fn ansi_reverse() -&gt; Str</code><a class="headerlink" href="#fn-ansi_reverse-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI reverse video attribute sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[7m"</code></li>
+</ul>
 <h5 id="fn-ansi_strike-str_1"><code>fn ansi_strike() -&gt; Str</code><a class="headerlink" href="#fn-ansi_strike-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI strikethrough attribute sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[9m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_black-str"><code>fn ansi_fg_black() -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_black-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI black foreground sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[30m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_red-str"><code>fn ansi_fg_red() -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_red-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI red foreground sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[31m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_green-str"><code>fn ansi_fg_green() -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_green-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI green foreground sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[32m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_yellow-str"><code>fn ansi_fg_yellow() -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_yellow-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI yellow foreground sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[33m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_blue-str"><code>fn ansi_fg_blue() -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_blue-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI blue foreground sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[34m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_magenta-str"><code>fn ansi_fg_magenta() -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_magenta-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI magenta foreground sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[35m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_cyan-str"><code>fn ansi_fg_cyan() -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_cyan-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI cyan foreground sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[36m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_white-str"><code>fn ansi_fg_white() -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_white-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI white foreground sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[37m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_black-str"><code>fn ansi_bg_black() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_black-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI black background sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[40m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_red-str"><code>fn ansi_bg_red() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_red-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI red background sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[41m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_green-str"><code>fn ansi_bg_green() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_green-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI green background sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[42m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_yellow-str"><code>fn ansi_bg_yellow() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_yellow-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI yellow background sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[43m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_blue-str"><code>fn ansi_bg_blue() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_blue-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI blue background sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[44m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_magenta-str"><code>fn ansi_bg_magenta() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_magenta-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI magenta background sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[45m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_cyan-str"><code>fn ansi_bg_cyan() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_cyan-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI cyan background sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[46m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_white-str"><code>fn ansi_bg_white() -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_white-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI white background sequence.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[47m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_256code-int-str"><code>fn ansi_fg_256(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_256code-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI 256-color foreground escape for code 0..255 (clamped).</p>
@@ -4247,74 +4338,135 @@
 <blockquote>
 <p>Center <code>s</code> in a field of <code>width</code> bytes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-text_lefts-str-width-int-str"><code>fn text_left(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-text_lefts-str-width-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Left-align <code>s</code> in a field of <code>width</code> bytes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-text_rights-str-width-int-str"><code>fn text_right(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-text_rights-str-width-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Right-align <code>s</code> in a field of <code>width</code> bytes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
+</ul>
 <h5 id="fn-text_justifys-str-width-int-str"><code>fn text_justify(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-text_justifys-str-width-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Justify <code>s</code> to fill <code>width</code> by distributing extra spaces between words. Single-word or already-too-long text is returned unchanged. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-text_wraps-str-width-int-vecstr"><code>fn text_wrap(s: Str, width: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-text_wraps-str-width-int-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap <code>s</code> into lines no longer than <code>width</code> at word boundaries. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.len() == 1)</code></li>
+</ul>
 <h5 id="fn-text_flowwords-vecstr-width-int-vecstr"><code>fn text_flow(words: &amp;Vec[Str], width: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-text_flowwords-vecstr-width-int-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pack words greedily into lines of at most <code>width</code> bytes. The input Vec is read directly; callers should prefer text_wrap (string-based) where the input is already a string.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(words.len() == 0) =&gt; (result.len() == 1)</code></li>
+</ul>
 <h5 id="fn-text_indents-str-n-int-str"><code>fn text_indent(s: Str, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-text_indents-str-n-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Prefix every line of <code>s</code> with <code>n</code> spaces.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result == s)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() &gt;= s.len())</code></li>
+</ul>
 <h5 id="fn-text_hanging_indents-str-n-int-str"><code>fn text_hanging_indent(s: Str, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-text_hanging_indents-str-n-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Indent every line except the first by <code>n</code> spaces.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result == s)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() &gt;= s.len())</code></li>
+</ul>
 <h5 id="fn-text_columnsitems-vecstr-cols-int-vecstr"><code>fn text_columns(items: &amp;Vec[Str], cols: Int) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-text_columnsitems-vecstr-cols-int-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lay <code>items</code> out in <code>cols</code> columns, row-major, padded to the widest item.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(items.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(items.len() &gt; 0 &amp;&amp; cols &gt;= 1) =&gt; (result.len() == (items.len() + cols - 1) / cols)</code></li>
+<li><strong>Postcondition:</strong> <code>(items.len() &gt; 0 &amp;&amp; cols &lt; 1) =&gt; (result.len() == items.len())</code></li>
+</ul>
 <h5 id="fn-text_ellipsiss-str-max_len-int-str"><code>fn text_ellipsis(s: Str, max_len: Int) -&gt; Str</code><a class="headerlink" href="#fn-text_ellipsiss-str-max_len-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Truncate <code>s</code> to <code>max_len</code> bytes with a trailing "..." (at least 3 bytes).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(max_len &gt;= 3 &amp;&amp; s.len() &lt;= max_len) =&gt; (result == s)</code></li>
+<li><strong>Postcondition:</strong> <code>(max_len &gt;= 3 &amp;&amp; s.len() &gt; max_len) =&gt; (result.len() == max_len)</code></li>
+</ul>
 <h5 id="fn-text_overlines-str-str"><code>fn text_overline(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-text_overlines-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Apply an overline decoration: a dash line above the text.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 2 * s.len() + 1</code></li>
+</ul>
 <h5 id="fn-text_underlines-str-str"><code>fn text_underline(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-text_underlines-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Apply an underline decoration: a dash line below the text.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 2 * s.len() + 1</code></li>
+</ul>
 <h5 id="fn-text_strikethroughs-str-str"><code>fn text_strikethrough(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-text_strikethroughs-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Apply a strikethrough decoration: each character followed by the combining long stroke overlay (U+0336).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 3 * s.len()</code></li>
+</ul>
 <h5 id="fn-text_quotes-str-str"><code>fn text_quote(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-text_quotes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap <code>s</code> in quotation marks.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == s.len() + 2</code></li>
+</ul>
 <h5 id="fn-text_blockquotelines-vecstr-str"><code>fn text_blockquote(lines: &amp;Vec[Str]) -&gt; Str</code><a class="headerlink" href="#fn-text_blockquotelines-vecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Join lines into a blockquote, prefixing each with "&gt; ".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(lines.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(lines.len() &gt; 0) =&gt; (result.len() &gt;= 2 * lines.len())</code></li>
+</ul>
 <h5 id="fn-text_paragraphs-str-width-int-str"><code>fn text_paragraph(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-text_paragraphs-str-width-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wrap <code>s</code> into a single justified paragraph of <code>width</code> columns.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-text_reflows-str-width-int-str"><code>fn text_reflow(s: Str, width: Int) -&gt; Str</code><a class="headerlink" href="#fn-text_reflows-str-width-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reflow <code>s</code> to <code>width</code>: words are repacked into lines of at most <code>width</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-text_measures-str-int"><code>fn text_measure(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-text_measures-str-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The display width of <code>s</code>: ASCII bytes count 1, 3-byte (CJK) characters count 2. Complexity: O(|s|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result &lt;= s.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

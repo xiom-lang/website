@@ -3883,26 +3883,46 @@
 <blockquote>
 <p>Creates a new semaphore with <code>permits</code> initial available permits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.count == permits</code></li>
+<li><strong>Postcondition:</strong> <code>result.max == permits</code></li>
+</ul>
 <h4 id="fn-sem_try_acquires-mut-semaphore-bool"><code>fn sem_try_acquire(s: &amp;mut Semaphore) -&gt; Bool</code><a class="headerlink" href="#fn-sem_try_acquires-mut-semaphore-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Attempts to acquire one permit. Returns <code>true</code> on success, <code>false</code> if none available. Non-blocking. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == false) =&gt; (s.count &lt;= 0)</code></li>
+</ul>
 <h4 id="fn-sem_acquires-mut-semaphore-bool"><code>fn sem_acquire(s: &amp;mut Semaphore) -&gt; Bool</code><a class="headerlink" href="#fn-sem_acquires-mut-semaphore-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Alias for <code>sem_try_acquire</code>. Non-blocking. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == false) =&gt; (s.count &lt;= 0)</code></li>
+</ul>
 <h4 id="fn-sem_releases-mut-semaphore"><code>fn sem_release(s: &amp;mut Semaphore)</code><a class="headerlink" href="#fn-sem_releases-mut-semaphore" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Releases one permit back to the semaphore, up to the maximum. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>s.count &lt;= s.max</code></li>
+</ul>
 <h4 id="fn-sem_availables-semaphore-int"><code>fn sem_available(s: &amp;Semaphore) -&gt; Int</code><a class="headerlink" href="#fn-sem_availables-semaphore-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the number of currently available permits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == s.count</code></li>
+</ul>
 <h4 id="fn-barrier_newn-int-barrier"><code>fn barrier_new(n: Int) -&gt; Barrier</code><a class="headerlink" href="#fn-barrier_newn-int-barrier" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Creates a new barrier for <code>n</code> threads. Wraps <code>Barrier.new</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>n &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.count == n</code></li>
+</ul>
 <h4 id="fn-barrier_waitb-mut-barrier-bool"><code>fn barrier_wait(b: &amp;mut Barrier) -&gt; Bool</code><a class="headerlink" href="#fn-barrier_waitb-mut-barrier-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Waits at the barrier. Returns <code>true</code> when this thread is the last to arrive and the barrier releases all waiters. Returns <code>false</code> otherwise. Complexity: O(1) lock operations; blocks until all threads arrive.</p>
@@ -3936,6 +3956,9 @@
 <blockquote>
 <p>Creates a new count-down latch initialised to <code>n</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.remaining == n</code></li>
+</ul>
 <h4 id="fn-cdl_count_downl-mut-countdownlatch"><code>fn cdl_count_down(l: &amp;mut CountDownLatch)</code><a class="headerlink" href="#fn-cdl_count_downl-mut-countdownlatch" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Decrements the latch counter by one. Does nothing if already zero. Complexity: O(1).</p>
@@ -3944,6 +3967,10 @@
 <blockquote>
 <p>Returns <code>true</code> if the latch has reached zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(l.remaining == 0) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(l.remaining != 0) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-cdl_wait_spinl-mut-countdownlatch"><code>fn cdl_wait_spin(l: &amp;mut CountDownLatch)</code><a class="headerlink" href="#fn-cdl_wait_spinl-mut-countdownlatch" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Spins until the latch reaches zero. Yields the thread between checks. Complexity: O(remaining) busy-wait iterations.</p>
