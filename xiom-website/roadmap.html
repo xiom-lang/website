@@ -99,23 +99,23 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
   <div class="content-section" id="verification-gates">
     <h2>Verification gates</h2>
-    <p>Every release runs the full gate set before publication. Rows fill automatically on page view from each repository's tracker; a row whose tracker has not published a value yet keeps the last verified snapshot (v0.61.0 compiler gates and the standard library corpus, checked 2026-09-22).</p>
+    <p>Every release runs the full gate set before publication. Rows fill automatically on page view from each repository's tracker -- compiler gates from the compiler repository, standard-library gates from the standard library repository. If a tracker is unreachable, the row keeps the fallback committed to this page, which is refreshed by hand and may lag the live trackers.</p>
     <table>
       <tr><th>Gate</th><th>Tests</th></tr>
-      <tr><td>End-to-end</td><td data-gate="e2e">2338 / 2338</td></tr>
+      <tr><td>End-to-end</td><td data-gate="e2e">2411 / 2411</td></tr>
       <tr><td>Checker</td><td data-gate="checker">195 / 195</td></tr>
-      <tr><td>Feature regression</td><td data-gate="feature">510</td></tr>
-      <tr><td>Robustness</td><td data-gate="robustness">63</td></tr>
-      <tr><td>Fuzz</td><td data-gate="fuzz">24</td></tr>
-      <tr><td>Performance and determinism</td><td data-gate="perf">2 / 2</td></tr>
-      <tr><td>Formatter</td><td data-gate="formatter">86</td></tr>
-      <tr><td>Language server</td><td data-gate="lsp">45</td></tr>
-      <tr><td>Standard library corpus (smoke, known-answer, probes)</td><td data-gate="corpus">949 / 949</td></tr>
+      <tr><td>Feature regression</td><td data-gate="feature">518 / 518</td></tr>
+      <tr><td>Robustness</td><td data-gate="robustness">63 / 63</td></tr>
+      <tr><td>Fuzz</td><td data-gate="fuzz">24 / 24</td></tr>
+      <tr><td>Performance and determinism</td><td data-gate="perf">3 / 3</td></tr>
+      <tr><td>Formatter</td><td data-gate="formatter">86 / 86</td></tr>
+      <tr><td>Language server</td><td data-gate="lsp">45 / 45</td></tr>
+      <tr><td>Standard library corpus (smoke, known-answer, probes)</td><td data-gate="corpus">954 / 954</td></tr>
       <tr><td>Standard library modules (type-check clean)</td><td data-gate="modules">509 / 509</td></tr>
-      <tr><td>Standard library probes</td><td data-gate="probes">208 / 208</td></tr>
+      <tr><td>Standard library probes</td><td data-gate="probes">258 / 258</td></tr>
       <tr><td>Standard library bare-name scan (hits / modules)</td><td data-gate="barename">0 / 509</td></tr>
     </table>
-    <p style="color:var(--muted);font-size:13px;">The snapshot counted 4,212 checks (3,263 compiler gate cases plus the 949-program corpus); live values replace the snapshot row by row as each repository publishes its tracker line, and extra labels are ignored until a matching row exists.</p>
+    <p style="color:var(--muted);font-size:13px;">Rows are replaced live from each repository's tracker as the page loads; the fallback committed here is refreshed by hand when the trackers move, so it can lag, and extra tracker labels are ignored until a matching row exists.</p>
   </div>
 
   <div class="content-section">
