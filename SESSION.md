@@ -1042,6 +1042,27 @@ Remaining:
     unreachable tracker leaves the hand-refreshed fallback, which may lag.
     The old "4,212 checks" count and the v0.61.0 / 2026-09-22 claim are
     gone. Links and ASCII checked.
+71. **Projects restructure: hub, subdomain sites, nav (done 2026-10-08)**:
+    the owner added chaos./orbitdb./xvector./pulse.xiom-lang.org, three
+    square covers, and relayed the Pulse lane's brief
+    (`docs/WEBSITE-RELAY-PULSE.md`; its fact sheet and gap list are the
+    claims contract). The nav now carries Projects where Prior art was
+    (Prior art is linked from Why's new "How XIOM compares" section) and
+    Versions is gone (linked from the download page's release row). New
+    `projects.html` hub: 2x2 square-cover cards for Pulse, OrbitDB,
+    XVector and Benchmark of Chaos with state chips and subdomain links;
+    the roadmap's benchmark+pulse sections became the same grid with short
+    state paragraphs. `projects/{pulse,orbitdb,xvector,chaos}/` are
+    self-contained phase-1 sites (index.html, style.css copy, cover,
+    logo). Pulse follows the claims contract: single binary, smoke 73/73
+    on Windows and Linux, 1h soak 13,198/13,198, JWT/CSRF, crash-safe
+    store, metrics, TLS via nginx -- and the gap list (56% internal bar,
+    no keep-alive, no receive timeouts, no SIGTERM drain, no RBAC, no CI,
+    placeholder downloads). The DBs are honest pre-alpha from their
+    roadmaps; Chaos is offline instructions-only. Verified 1440/414
+    renders; link check 100 pages, 0 broken; ASCII clean; old wide
+    benchmark cover removed. Each project page also carries the Open
+    Collective Support link in its nav and footer.
 
 ## Cross-lane notes
 
@@ -1551,6 +1572,24 @@ that lands without all three reads as undocumented on the site. Nothing to
 sync for v0.64.0: its notes list fixes and tooling only, and neither
 `AI_CONTEXT.md` mentions freestanding, `#[repr]` or atomics yet.
 
+### Relay to ops: project subdomain docroots (2026-10-08)
+
+The four project sites are live in the website repo, one self-contained
+folder each (index.html, style.css, img/ cover + logo; no parent assets):
+
+- chaos.xiom-lang.org   -> xiom-website/projects/chaos/
+- orbitdb.xiom-lang.org -> xiom-website/projects/orbitdb/
+- xvector.xiom-lang.org -> xiom-website/projects/xvector/
+- pulse.xiom-lang.org   -> xiom-website/projects/pulse/
+
+Please map the docroots in the deployed checkout (the hourly pull keeps
+them current), with TLS/HTTPS-redirect/HSTS as on the main site, and make
+sure webp is served with its content type. Until the mapping is live the
+same pages resolve at xiom-lang.org/projects/<name>/. Pulse phase 2
+(release, demo deploy) runs through the pulse repo's
+`docs/OPS-REQUEST.md` section E on the owner's greenlight; nothing else is
+needed now, and no staging subdomain is wanted.
+
 ## Rules
 
 - Pure ASCII files only; the org encoding gate rejects mojibake.
@@ -1635,7 +1674,9 @@ nav and the footer Project column on every page, and the missing
 Contributing nav item was restored on ten pages. Live Open Collective
 tier cards landed on the contributing page on 2026-10-07, and the
 paste-ready relay for the playground/registry lanes is ready in
-"Paste-ready prompts for other lanes". Registry publishing instructions
+"Paste-ready prompts for other lanes". The Projects restructure landed
+2026-10-08: nav slimming (Projects in; Prior art and Versions out), the
+projects.html hub and four phase-1 subdomain sites. Registry publishing instructions
 were aligned with the 2.x in-registry request flow on 2026-10-07, and the
 retired GitHub token template confirmed. The verification-gates fallback
 was refreshed to the 2026-10-08 tracker values on 2026-10-08.
@@ -1657,9 +1698,13 @@ Next, in order:
 5. If the compiler lane publishes a current specification revision, update
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
-6. Pulse: when the owner opens the repository, link its source, tracker and
-   evidence from the roadmap section (`roadmap.html#pulse`) and add the
-   dedicated page.
+6. Projects: phase-1 pages for all four subdomains live in the repo under
+   `xiom-website/projects/`; ops maps the docroots (relay above). When the
+   owner greenlights Pulse going public, follow the pulse repo's
+   `docs/OPS-REQUEST.md` section E (CI -> public -> rulesets -> dl -> demo
+   deploy) and wire the live badge/downloads per
+   `docs/WEBSITE-RELAY-PULSE.md`. Route new Pulse claims through the Pulse
+   lane before publishing them.
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS ships on all
