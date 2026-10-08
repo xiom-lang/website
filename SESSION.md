@@ -1063,6 +1063,17 @@ Remaining:
     renders; link check 100 pages, 0 broken; ASCII clean; old wide
     benchmark cover removed. Each project page also carries the Open
     Collective Support link in its nav and footer.
+72. **Projects nav swap corrected (done 2026-10-08)**: the first pass at
+    replacing Prior art with Projects matched the footer Language-column
+    anchors (identical text; those footers have mixed indentation) instead
+    of the navs, so the live navs briefly kept Prior art while the footers
+    lost it. Corrected with context-scoped edits on all twelve pages plus
+    the docs template: every nav carries Projects after Why, no relative
+    prior-art anchor remains in any page, and the footer Language column
+    consistently carries Projects. Prior art stays reachable from Why (two
+    linked mentions), the spec page, the homepage and its own page.
+    docs/html regenerated; 100 pages, 0 broken; the correction is in the
+    follow-up commit.
 
 ## Cross-lane notes
 
