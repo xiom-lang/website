@@ -1093,6 +1093,15 @@ Remaining:
     self-contained site), with in-progress/not-yet cards dimmed. Every
     icon reference resolves; sources ASCII clean; the Pulse render was
     verified at 1440. Phase 1 pages are complete.
+75. **Project subdomains live (done 2026-10-08)**: ops mapped all four
+    docroots into the published tree (`public_html/projects/<name>/`,
+    symlink; the hourly pull keeps them current). Independently verified
+    from this lane: chaos/orbitdb/xvector/pulse.xiom-lang.org all 200 with
+    the real page titles, `/img/` 403 (no listings), covers and feature
+    icons 200 with `image/webp`, HSTS max-age 31536000 and valid LE certs;
+    nginx -t clean. The hub and roadmap cards now resolve on the live
+    subdomains. Pulse demo/release stays phase 2 on the owner's greenlight
+    (`docs/OPS-REQUEST.md` section E in the pulse repo).
 
 ## Cross-lane notes
 
@@ -1625,6 +1634,9 @@ wired, Support in nav and footer, downloads placeholder-only). The folders
 are ready for docroot mapping now; nothing is pending on the website side
 for phase 1.
 
+Actioned 2026-10-08: ops mapped the docroots and all four subdomains are
+live and verified (item 75). This relay stays for reference.
+
 ## Rules
 
 - Pure ASCII files only; the org encoding gate rejects mojibake.
@@ -1711,7 +1723,8 @@ tier cards landed on the contributing page on 2026-10-07, and the
 paste-ready relay for the playground/registry lanes is ready in
 "Paste-ready prompts for other lanes". The Projects restructure landed
 2026-10-08: nav slimming (Projects in; Prior art and Versions out), the
-projects.html hub and four phase-1 subdomain sites. Registry publishing instructions
+projects.html hub and four phase-1 subdomain sites. All four subdomains
+went live the same day (ops mapping, verified from this lane). Registry publishing instructions
 were aligned with the 2.x in-registry request flow on 2026-10-07, and the
 retired GitHub token template confirmed. The verification-gates fallback
 was refreshed to the 2026-10-08 tracker values on 2026-10-08.
@@ -1734,7 +1747,8 @@ Next, in order:
    specs/ and the spec page and bump the revision label (0.3 carries a
    2026-09-20 maintenance note for 128-bit primitives).
 6. Projects: phase-1 pages for all four subdomains live in the repo under
-   `xiom-website/projects/`; ops maps the docroots (relay above). When the
+   `xiom-website/projects/`; the docroots are mapped and all four
+   subdomains are live (item 75). When the
    owner greenlights Pulse going public, follow the pulse repo's
    `docs/OPS-REQUEST.md` section E (CI -> public -> rulesets -> dl -> demo
    deploy) and wire the live badge/downloads per
