@@ -345,7 +345,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         <h4>Language</h4>
         <a href="{site_base}spec.html">Specification</a>
         <a href="{site_base}why.html">Why XIOM</a>
-        <a href="{site_base}prior-art.html">Prior art</a>
+        <a href="{site_base}projects.html">Projects</a>
         <a href="{site_base}roadmap.html">Roadmap</a>
         <a href="{site_base}history.html">History</a>
       </div>
