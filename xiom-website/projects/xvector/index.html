@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XVector -- XIOM vector database</title>
+<meta name="description" content="XVector, a vector database for the XIOM ecosystem: dense vectors, exact search, HNSW, payload filtering, WAL recovery. Experimental pre-alpha; phase 1 showcase.">
+<link rel="canonical" href="https://xvector.xiom-lang.org/">
+<meta property="og:title" content="XVector -- XIOM vector database">
+<meta property="og:description" content="A vector database engine for XIOM: what works today and what is next.">
+<meta property="og:url" content="https://xvector.xiom-lang.org/">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="https://xiom-lang.org/" class="logo">
+      <img src="img/xiom-logo_bg.png" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="https://xiom-lang.org/projects.html">Projects</a>
+      <a href="https://xiom-lang.org/">xiom-lang.org</a>
+    </div>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:40px;" id="main">
+
+  <div class="content-section">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;align-items:center;">
+      <img src="img/cover.webp" width="1254" height="1254" alt="XVector: a vector database for the XIOM ecosystem, with vector search, embeddings and multimodal panels." style="width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--line);">
+      <div>
+        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- experimental, pre-alpha</p>
+        <h1 style="margin-top:0;">XVector</h1>
+        <p>A vector database engine for the XIOM ecosystem: dense vectors with cosine, dot-product and euclidean metrics, exact flat search, an in-memory HNSW graph, payload filtering and WAL-backed durability -- built on the shared core primitives rather than around them.</p>
+        <p style="color:var(--muted);font-size:13px;">Phase 1 showcase: the repository is private during development, so there are no downloads and no release claims yet. The exact engine, the ANN index and the durability path are exercised by suites and probes in the private repository.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h2>What works today</h2>
+    <table>
+      <tr><th>Capability</th><th>State</th></tr>
+      <tr><td>Dense vector type and math; cosine, dot-product, euclidean metrics</td><td>working</td></tr>
+      <tr><td>Exact flat KNN and range search -- the validation oracle every index is measured against</td><td>working</td></tr>
+      <tr><td>In-memory HNSW graph -- hierarchical layers, greedy descent, bounded edges</td><td>working, being hardened (pruning, ef-parameter search, metric-agnostic traversal)</td></tr>
+      <tr><td>Payloads -- filter AST, pre-filtered search, payload hydration</td><td>working</td></tr>
+      <tr><td>WAL-backed upsert and recovery (vectors and metadata)</td><td>working</td></tr>
+      <tr><td>Collections, segments and a durable manifest</td><td>scaffolded against the roadmap, in progress</td></tr>
+      <tr><td>Metadata indexes (sorted keys) and a pre/post filter planner</td><td>not started</td></tr>
+      <tr><td>IVF index and sharding</td><td>on the roadmap</td></tr>
+    </table>
+  </div>
+
+  <div class="content-section">
+    <h2>What is next</h2>
+    <ul>
+      <li>Harden HNSW: neighbour pruning, recall harness, tombstones.</li>
+      <li>Persistence: file-backed segments, durable manifest, restart-clean recovery.</li>
+      <li>Then metadata indexes and the pre/post filter planner; IVF and sharding after that.</li>
+      <li>Phase 2: GitHub releases and mirror installers, once the repository opens and the gates pass.</li>
+    </ul>
+    <p style="color:var(--muted);font-size:13px;">Pre-alpha means pre-alpha: the exact core and filtering work today, but the durable, production-shaped engine is still being built.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Downloads</h2>
+    <p style="color:var(--muted);">Nothing to download yet. Phase 2 publishes GitHub releases and mirror installers for every OS, like the toolchain's.</p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
+      <p><a href="https://xiom-lang.org/projects.html" style="color:var(--signal);">Projects</a> -- <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

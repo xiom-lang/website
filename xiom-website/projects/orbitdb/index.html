@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OrbitDB -- XIOM embedded database</title>
+<meta name="description" content="OrbitDB, an embedded database engine in pure XIOM: B-tree, WAL, query engine, crash recovery. Experimental pre-alpha; phase 1 showcase.">
+<link rel="canonical" href="https://orbitdb.xiom-lang.org/">
+<meta property="og:title" content="OrbitDB -- XIOM embedded database">
+<meta property="og:description" content="An embedded database engine in pure XIOM: what works today and what is next.">
+<meta property="og:url" content="https://orbitdb.xiom-lang.org/">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="https://xiom-lang.org/" class="logo">
+      <img src="img/xiom-logo_bg.png" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="https://xiom-lang.org/projects.html">Projects</a>
+      <a href="https://xiom-lang.org/">xiom-lang.org</a>
+    </div>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:40px;" id="main">
+
+  <div class="content-section">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;align-items:center;">
+      <img src="img/cover.webp" width="1254" height="1254" alt="OrbitDB: an orbital ring and data blocks around a planet, surrounded by interface panels." style="width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--line);">
+      <div>
+        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- experimental, pre-alpha</p>
+        <h1 style="margin-top:0;">OrbitDB</h1>
+        <p>An embedded database engine in pure XIOM: B-tree index, write-ahead log, query engine, transactions and crash recovery, organised as a layered engine on the shared durable-systems substrate. It reuses the ecosystem's core primitives instead of copying them.</p>
+        <p style="color:var(--muted);font-size:13px;">Phase 1 showcase: the repository is private during development, so there are no downloads and no release claims yet. Every state below points at evidence in the private repository; nothing is said here that the repository does not show.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h2>What works today</h2>
+    <table>
+      <tr><th>Capability</th><th>State</th></tr>
+      <tr><td>In-memory engine -- flat-array B-tree (insert, search, delete), range queries, traversal</td><td>working, churn-proven against a model</td></tr>
+      <tr><td>Write-ahead log -- append, replay, truncate, durable segment file</td><td>working</td></tr>
+      <tr><td>Crash recovery -- disk WAL + page file, crash harnesses on Windows and WSL</td><td>working (torn-tail healing)</td></tr>
+      <tr><td>Query engine -- equality and range filters with limit and offset</td><td>working</td></tr>
+      <tr><td>Schema catalog and validation</td><td>working</td></tr>
+      <tr><td>Storage primitives -- pages, buffer pool, byte-packed tuple codec with CRC32C</td><td>working</td></tr>
+      <tr><td>Conformance suite</td><td>104 tests</td></tr>
+      <tr><td>Transactions -- isolation and crash-safe redo/undo</td><td>state machine only, not started</td></tr>
+      <tr><td>Pager integration and node-per-page B-tree</td><td>in progress</td></tr>
+      <tr><td>fsync-durable commits</td><td>waiting on the standard library's fsync row</td></tr>
+    </table>
+  </div>
+
+  <div class="content-section">
+    <h2>What is next</h2>
+    <ul>
+      <li>Move storage onto the shared pager and store B-tree nodes in pages.</li>
+      <li>Make durability literal: fsync on commit, checkpointing, LSN ordering, power-loss tests.</li>
+      <li>Then transactions with real isolation, a query planner and secondary indexes.</li>
+      <li>Phase 2: GitHub releases and mirror installers, once the repository opens and the gates pass.</li>
+    </ul>
+    <p style="color:var(--muted);font-size:13px;">Pre-alpha means pre-alpha: the in-memory core is done and the durable log and pages are landing, but nothing here is ready for production data.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Downloads</h2>
+    <p style="color:var(--muted);">Nothing to download yet. Phase 2 publishes GitHub releases and mirror installers for every OS, like the toolchain's.</p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
+      <p><a href="https://xiom-lang.org/projects.html" style="color:var(--signal);">Projects</a> -- <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

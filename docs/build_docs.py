@@ -287,12 +287,11 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <a href="{site_base}spec.html">Spec</a>
       <a href="https://docs.xiom-lang.org/">Docs</a>
       <a href="{site_base}why.html">Why</a>
-      <a href="{site_base}prior-art.html">Prior art</a>
+      <a href="{site_base}projects.html">Projects</a>
       <a href="{site_base}ecosystem.html">Ecosystem</a>
       <a href="https://registry.xiom-lang.org">Registry</a>
       <a href="{site_base}roadmap.html">Roadmap</a>
       <a href="{site_base}contributing.html">Contributing</a>
-      <a href="{site_base}versions.html">Versions</a>
       <a href="https://playground.xiom-lang.org">Playground</a>
       <a href="https://opencollective.com/xiom">Support</a>
     </div>

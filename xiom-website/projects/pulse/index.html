@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse -- XIOM web backend</title>
+<meta name="description" content="Pulse, the official XIOM web backend: single binary, HTTP/1.1, sessions and JWT, crash-safe storage, metrics. Honest beta; repository private until release.">
+<link rel="canonical" href="https://pulse.xiom-lang.org/">
+<meta property="og:title" content="Pulse -- XIOM web backend">
+<meta property="og:description" content="The official XIOM web backend: evidence-backed beta, what works today and what is next.">
+<meta property="og:url" content="https://pulse.xiom-lang.org/">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="https://xiom-lang.org/" class="logo">
+      <img src="img/xiom-logo_bg.png" alt="XIOM">
+      XIOM
+    </a>
+    <div class="navlinks">
+      <a href="https://xiom-lang.org/projects.html">Projects</a>
+      <a href="https://xiom-lang.org/">xiom-lang.org</a>
+    </div>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:40px;" id="main">
+
+  <div class="content-section">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;align-items:center;">
+      <img src="img/cover.webp" width="1254" height="1254" alt="PULSE: a glowing crystalline letter P with a heartbeat line above a planet horizon, ringed by holographic interface panels." style="width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--line);">
+      <div>
+        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- beta</p>
+        <h1 style="margin-top:0;">Pulse</h1>
+        <p>The official XIOM web backend: a single-binary HTTP/1.1 service built with the XIOM toolchain and running behind the front proxy on loopback by design. Open source, MIT OR Apache-2.0.</p>
+        <p style="color:var(--muted);font-size:13px;">Honest beta: the repository is private until the owner greenlights going public, and there are no downloads yet. Every number below is evidence-backed and reviewed by the Pulse lane; the gap list is just as real as the wins.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h2>What works today</h2>
+    <table>
+      <tr><th>Area</th><th>Evidence</th></tr>
+      <tr><td>Verified on Windows and Linux</td><td>HTTP smoke 73/73; three suites on both platforms; crash/reopen 6/6</td></tr>
+      <tr><td>Load behavior</td><td>1h soak: 13,198/13,198 requests, 0 errors; flat memory and handles; 64 simultaneous connections served</td></tr>
+      <tr><td>Sessions and request hardening</td><td>JWT HS256, CSRF protection, opt-in CORS; schema validation on the auth routes; Transfer-Encoding smuggling guard</td></tr>
+      <tr><td>Storage</td><td>Crash-safe append store by default; optional embedded xiom.kv backend (20m soak green, hard-kill reopen intact)</td></tr>
+      <tr><td>Observability</td><td>JSON access log and audit trail; Prometheus metrics (restricted at the proxy)</td></tr>
+      <tr><td>Rate limiting</td><td>Verified on both platforms</td></tr>
+      <tr><td>TLS</td><td>Verified through nginx: 11/11 end-to-end on Windows and Linux</td></tr>
+      <tr><td>Packaging</td><td>Docker image verified (deploy/Dockerfile)</td></tr>
+    </table>
+  </div>
+
+  <div class="content-section">
+    <h2>Honest beta -- what it does not do yet</h2>
+    <ul>
+      <li>About 56% of the team's strict production bar: not production-ready, not hardened, not battle-tested.</li>
+      <li>No keep-alive yet -- one request per connection (the front proxy mitigates).</li>
+      <li>No receive timeouts yet; avoid exposing it directly (the front proxy mitigates).</li>
+      <li>No graceful SIGTERM drain yet; restarts heal the store.</li>
+      <li>No credentials or RBAC: the login is a demo, not a security boundary.</li>
+      <li>No HTTP/2, SSE or WebSockets; TLS and proxying are the front proxy's job.</li>
+      <li>No CI and no published artifacts yet -- that is phase 2.</li>
+    </ul>
+  </div>
+
+  <div class="content-section">
+    <h2>Downloads</h2>
+    <p style="color:var(--muted);">Nothing to download yet. Phase 2 publishes GitHub releases and mirror installers for every OS, like the toolchain's.</p>
+    <div class="btn-group">
+      <span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">Windows -- soon</span>
+      <span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">Linux -- soon</span>
+      <span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">macOS -- soon</span>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h2>What is next</h2>
+    <ul>
+      <li>On the owner's greenlight: the repository goes public, CI cuts signed releases, and the mirror serves them.</li>
+      <li>The Pulse demo then serves this page itself, with a live status/version badge and demo widgets behind the proxy.</li>
+      <li>Until then, the hardening queue continues: chunked decoding, configuration validation, build proof without source roots.</li>
+    </ul>
+    <p style="color:var(--muted);font-size:13px;">Nothing here is a release or a stability promise; the beta label stays until the gap list above is cleared.</p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
+      <p><a href="https://xiom-lang.org/projects.html" style="color:var(--signal);">Projects</a> -- <a href="https://xiom-lang.org/" style="color:var(--signal);">xiom-lang.org</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
