@@ -1032,6 +1032,16 @@ Remaining:
     the walkthrough. Live endpoints checked: /publish 200, /login 200,
     /ui/templates/community-publish.yml 200, /account/requests 302
     (auth). docs/html regenerated; 95 pages, 0 broken; sources ASCII.
+70. **Verification-gates fallback refreshed (done 2026-10-08)**: the
+    fallback cells in roadmap.html were updated to what the two trackers
+    publish live (e2e 2411 / 2411, checker 195 / 195, feature 518 / 518,
+    robustness 63 / 63, fuzz 24 / 24, perf 3 / 3, formatter 86 / 86, lsp
+    45 / 45, corpus 954 / 954, modules 509 / 509, probes 258 / 258,
+    barename 0 / 509), and both notes were reworded: rows fill live from
+    the compiler and standard-library trackers on page view, and an
+    unreachable tracker leaves the hand-refreshed fallback, which may lag.
+    The old "4,212 checks" count and the v0.61.0 / 2026-09-22 claim are
+    gone. Links and ASCII checked.
 
 ## Cross-lane notes
 
@@ -1627,7 +1637,8 @@ tier cards landed on the contributing page on 2026-10-07, and the
 paste-ready relay for the playground/registry lanes is ready in
 "Paste-ready prompts for other lanes". Registry publishing instructions
 were aligned with the 2.x in-registry request flow on 2026-10-07, and the
-retired GitHub token template confirmed.
+retired GitHub token template confirmed. The verification-gates fallback
+was refreshed to the 2026-10-08 tracker values on 2026-10-08.
 
 Next, in order:
 1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
