@@ -5968,7 +5968,7 @@
 </ul>
 <h4 id="fn-str_splits-str-delimiter-str-vecstr"><code>fn str_split(s: Str, delimiter: Str) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-str_splits-str-delimiter-str-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Split on <code>delimiter</code> into parts (empty parts preserved).</p>
+<p>Split on <code>delimiter</code> into parts (empty parts preserved). Byte-compare scan: O(|s| * |delimiter|), no per-position slicing (ORBITDB relay 2026-10-08: the old slice-per-position scan was quadratic and made 5 MB WAL replays take ~44 s).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
@@ -6116,21 +6116,22 @@
 </ul>
 <h4 id="fn-str_repeats-str-n-int-str_1"><code>fn str_repeat(s: Str, n: Int) -&gt; Str</code><a class="headerlink" href="#fn-str_repeats-str-n-int-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Repeats <code>s</code> <code>n</code> times. Returns empty string if n &lt;= 0. O(n * |s|) using repeated concatenation.</p>
+<p>Repeats <code>s</code> <code>n</code> times. Returns empty string if n &lt;= 0. Doubling build: O(n * |s|) total copying (was quadratic accumulation).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>n &lt;= 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt;= 0 =&gt; result.len() == s.len() * n</code></li>
 </ul>
 <h4 id="fn-str_pad_lefts-str-width-int-pad-char-str_1"><code>fn str_pad_left(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_lefts-str-width-int-pad-char-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Left-pads <code>s</code> with <code>pad</code> until the string reaches <code>width</code> bytes. If <code>s</code> is already &gt;= <code>width</code> in bytes, returns <code>s</code> unchanged. O(width - |s|). Only handles single-byte pad characters correctly.</p>
+<p>Left-pads <code>s</code> with <code>pad</code> until the string reaches <code>width</code> bytes. If <code>s</code> is already &gt;= <code>width</code> in bytes, returns <code>s</code> unchanged. O(width - |s|); single-byte pad characters only (one small allocation, not one per pad byte as before).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>
 </ul>
 <h4 id="fn-str_pad_rights-str-width-int-pad-char-str_1"><code>fn str_pad_right(s: Str, width: Int, pad: Char) -&gt; Str</code><a class="headerlink" href="#fn-str_pad_rights-str-width-int-pad-char-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Right-pads <code>s</code> with <code>pad</code> until the string reaches <code>width</code> bytes. If <code>s</code> is already &gt;= <code>width</code> in bytes, returns <code>s</code> unchanged. O(width - |s|). Only handles single-byte pad characters correctly.</p>
+<p>Right-pads <code>s</code> with <code>pad</code> until the string reaches <code>width</code> bytes. If <code>s</code> is already &gt;= <code>width</code> in bytes, returns <code>s</code> unchanged. O(width - |s|); single-byte pad characters only (one small allocation).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len()</code></li>

@@ -2935,26 +2935,49 @@
 <blockquote>
 <p>Encodes bytes as an Ascii85 string ('!'..'u'; runs of four zero bytes collapse to 'z'). Empty input yields "". Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= ((data.len() + 3) / 4) * 5</code></li>
+</ul>
 <h5 id="fn-ascii85_decodes-str-resultvecuint8-str"><code>fn ascii85_decode(s: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-ascii85_decodes-str-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decodes an Ascii85 string back into bytes. Accepts 'z' for zero runs. Returns Err on an invalid character, a 'z' inside a group, an out-of-range group value, or a degenerate tail group. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_ok)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= 4 * s.len()</code></li>
+</ul>
 <h5 id="fn-ascii85_encode_strs-str-str"><code>fn ascii85_encode_str(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-ascii85_encode_strs-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Encodes a string's UTF-8 bytes as Ascii85. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-ascii85_decode_strs-str-resultstr-str"><code>fn ascii85_decode_str(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-ascii85_decode_strs-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decodes Ascii85 into a UTF-8 string (bytes copied verbatim; the caller is responsible for the UTF-8 validity of the decoded content). Returns Err on invalid Ascii85. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_ok)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= 4 * s.len()</code></li>
+</ul>
 <h5 id="fn-ascii85_encode_with_delimdata-vecuint8-str"><code>fn ascii85_encode_with_delim(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-ascii85_encode_with_delimdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Encodes bytes as Ascii85 wrapped in the Adobe delimiters "&lt;~" and "~&gt;". Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 4</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= ((data.len() + 3) / 4) * 5 + 4</code></li>
+</ul>
 <h5 id="fn-ascii85_decode_with_delims-str-resultvecuint8-str"><code>fn ascii85_decode_with_delim(s: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-ascii85_decode_with_delims-str-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decodes an Ascii85 string that is wrapped in the Adobe delimiters "&lt;~" and "~&gt;". Returns Err if the delimiters are missing or the payload is invalid. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() &lt; 4) =&gt; (result.is_err)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= 4 * s.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3359,34 +3382,63 @@
 <blockquote>
 <p>Splits a domain at the dot separators. Empty labels (e.g. a trailing dot) are preserved. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-idna_join_labelslabels-vecstr-str"><code>fn idna_join_labels(labels: &amp;Vec[Str]) -&gt; Str</code><a class="headerlink" href="#fn-idna_join_labelslabels-vecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Joins labels back into a domain with '.' separators. Complexity: O(n * total length).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(labels.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(labels.len() &gt; 0) =&gt; (result.len() &gt;= labels.len() - 1)</code></li>
+</ul>
 <h5 id="fn-idna_to_asciis-str-resultstr-str"><code>fn idna_to_ascii(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-idna_to_asciis-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts a Unicode domain to its ASCII A-label form: ASCII labels are lowercased and kept; non-ASCII labels are Punycode-encoded with the "xn--" prefix. Returns Err on an empty domain, an oversized label/domain, or a punycode failure. Complexity: O(sum of label^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_err)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 1 &amp;&amp; result.len() &lt;= 253</code></li>
+</ul>
 <h5 id="fn-idna_to_unicodes-str-resultstr-str"><code>fn idna_to_unicode(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-idna_to_unicodes-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts an A-label domain to Unicode: labels with the "xn--" prefix are Punycode-decoded, all others pass through. Returns Err on a punycode failure. Complexity: O(sum of label^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_ok)</code></li>
+</ul>
 <h5 id="fn-idna_is_valids-str-bool"><code>fn idna_is_valid(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-idna_is_valids-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reports whether a domain conforms to IDNA requirements: total length at most 253 bytes, every label 1..63 bytes, ASCII-only, LDH-shaped (or a valid "xn--" A-label whose payload decodes), and neither starting nor ending with a hyphen. Returns false for any violation. Complexity: O(total length + sum of label^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (s.len() &gt;= 1 &amp;&amp; s.len() &lt;= 253)</code></li>
+</ul>
 <h5 id="fn-idna_uts46_normalizes-str-resultstr-str"><code>fn idna_uts46_normalize(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-idna_uts46_normalizes-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Applies the simplified UTS-46 mapping to a domain string: ASCII uppercasing, fullwidth-to-ASCII and ideographic-space mapping, and rejection of control/surrogate characters. (NFC normalization is omitted; the code points are otherwise preserved.) Returns Err on a disallowed character. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_ok)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-idna_namepreps-str-resultstr-str"><code>fn idna_nameprep(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-idna_namepreps-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Applies the older Nameprep profile (RFC 3491 subset) to a domain string: case folding (ASCII lowercase), rejection of whitespace, control and surrogate characters. Returns Err on a disallowed character. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_ok)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= s.len()</code></li>
+</ul>
 <h5 id="fn-idna_is_bidi_valids-str-bool"><code>fn idna_is_bidi_valid(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-idna_is_bidi_valids-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reports whether <code>s</code> satisfies the IDNA bidi rule (RFC 5893 subset): a label containing an RTL code point must start with an RTL code point, end with an RTL code point or a digit, and contain no LTR letters; labels with no RTL code point are always acceptable. Applies to every dot-separated label. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3463,30 +3515,54 @@
 <blockquote>
 <p>The RFC-3492 bias adaptation function. Maps a delta to a new bias value. Complexity: O(log delta).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>numpoints &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>delta &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h5 id="fn-punycode_encode_digitd-int-char"><code>fn punycode_encode_digit(d: Int) -&gt; Char</code><a class="headerlink" href="#fn-punycode_encode_digitd-int-char" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Maps a 0-35 value to its Punycode digit character (a-z, then 0-9). Returns '\0' for a value outside 0..35. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(d &lt; 0 || d &gt; 35) =&gt; (result == ' ')</code></li>
+<li><strong>Postcondition:</strong> <code>(d &gt;= 0 &amp;&amp; d &lt;= 35) =&gt; (result != ' ')</code></li>
+</ul>
 <h5 id="fn-punycode_decode_digitc-char-int"><code>fn punycode_decode_digit(c: Char) -&gt; Int</code><a class="headerlink" href="#fn-punycode_decode_digitc-char-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Maps a Punycode digit character back to a 0-35 value; -1 for invalid. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 35</code></li>
+</ul>
 <h5 id="fn-punycode_encodes-str-resultstr-str"><code>fn punycode_encode(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-punycode_encodes-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Encodes a single Unicode label to Punycode (RFC 3492 section 6.3). Returns Err on an invalid code point or an arithmetic overflow. Complexity: O(n^2), n = label length in code points.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_ok)</code></li>
+</ul>
 <h5 id="fn-punycode_decodes-str-resultstr-str"><code>fn punycode_decode(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-punycode_decodes-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decodes a Punycode label to Unicode (RFC 3492 section 6.2). Returns Err on an invalid digit, a truncated sequence, an overflow, a basic decoded code point, or an invalid code point. Complexity: O(n^2), n = encoded length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result.is_ok)</code></li>
+</ul>
 <h5 id="fn-punycode_encode_domaindomain-str-resultstr-str"><code>fn punycode_encode_domain(domain: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-punycode_encode_domaindomain-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Encodes every label of a full domain: ASCII labels pass through unchanged, non-ASCII labels are Punycode-encoded and prefixed with "xn--" (RFC 3490 A-label form). Empty labels are preserved. Returns Err on a punycode failure. Complexity: O(sum of label^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(domain.len() == 0) =&gt; (result.is_ok)</code></li>
+</ul>
 <h5 id="fn-punycode_decode_domaindomain-str-resultstr-str"><code>fn punycode_decode_domain(domain: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-punycode_decode_domaindomain-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decodes every label of an A-label domain: labels starting with "xn--" (case-insensitive) are Punycode-decoded, all others pass through. Empty labels are preserved. Returns Err on a punycode failure. Complexity: O(sum of label^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(domain.len() == 0) =&gt; (result.is_ok)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

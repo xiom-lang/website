@@ -3197,14 +3197,24 @@
 <blockquote>
 <p>True when <code>x</code> is inside [start, end); does not consume the range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &lt; self.start) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &gt;= self.end) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-sumself-self-int"><code>fn sum(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-sumself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sum of the remaining integers (0 for an empty range).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-productself-self-int"><code>fn product(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-productself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Product of the remaining integers (1 for an empty range).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result == 1)</code></li>
+</ul>
 <h4 id="fn-nextself-self-optionint_1"><code>fn next(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nextself-self-optionint_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Yield the next integer; None after the inclusive end was reached.</p>
@@ -3241,6 +3251,9 @@
 <blockquote>
 <p>Drain the remaining integers into a Vec.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h4 id="fn-foldbself-self-init-b-f-fnb-int-b-b"><code>fn fold[B](self: Self, init: B, f: fn(B, Int) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldbself-self-init-b-f-fnb-int-b-b" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fold the remaining integers with <code>f</code>, starting from <code>init</code>.</p>
@@ -3249,34 +3262,59 @@
 <blockquote>
 <p>Number of remaining integers.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-maxself-self-optionint"><code>fn max(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-maxself-self-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Largest remaining integer, or None for an empty range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h4 id="fn-minself-self-optionint"><code>fn min(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-minself-self-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Smallest remaining integer, or None for an empty range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h4 id="fn-findself-self-predicate-fnint-bool-optionint"><code>fn find(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-findself-self-predicate-fnint-bool-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>First remaining integer satisfying <code>predicate</code>, or None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h4 id="fn-allself-self-predicate-fnint-bool-bool"><code>fn all(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-allself-self-predicate-fnint-bool-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when every remaining integer satisfies <code>predicate</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result == true)</code></li>
+</ul>
 <h4 id="fn-anyself-self-predicate-fnint-bool-bool"><code>fn any(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anyself-self-predicate-fnint-bool-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when at least one remaining integer satisfies <code>predicate</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-nthself-self-n-int-optionint"><code>fn nth(self: Self, n: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nthself-self-n-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Skip to and return the <code>n</code>-th remaining integer (0-based), or None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h4 id="fn-lastself-self-optionint"><code>fn last(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lastself-self-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Consume and return the final integer, or None for an empty range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h4 id="type-mapiter"><code>type MapIter</code><a class="headerlink" href="#type-mapiter" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Lazy map iterator, produced by <code>map</code>.</p>

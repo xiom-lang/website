@@ -3280,7 +3280,7 @@
 <h1 id="stdlibos"><code>stdlib.os</code><a class="headerlink" href="#stdlibos" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>OS Library</strong></p>
-<p>Generated from <code>v0.64.1</code>. 24 source files, 377 documented symbols.</p>
+<p>Generated from <code>v0.64.1</code>. 24 source files, 379 documented symbols.</p>
 </blockquote>
 <h2 id="argsxi"><code>args.xi</code><a class="headerlink" href="#argsxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-args_raw-vecstr"><code>fn args_raw() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-args_raw-vecstr" title="Permanent link">&para;</a></h5>
@@ -5018,6 +5018,20 @@
 <blockquote>
 <p>signal_raise sends a signal to the current process via the runtime raise() primitive. Complexity: O(1) syscall.</p>
 </blockquote>
+<h5 id="fn-signal_handlenum-int-cb-fnint-unit-resultunit-str"><code>fn signal_handle(num: Int, cb: fn(Int) -&gt; Unit) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-signal_handlenum-int-cb-fnint-unit-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>signal_handle installs a handler callback for <code>num</code>. NOT AVAILABLE yet: a working implementation needs a signal-safe runtime trampoline (sigaction plus a pending-flag poll); PULSE relay 2026-10-08 (SIGTERM graceful shutdown blocked). Currently a documented Err stub so callers can compile against the surface and degrade to no-handler behavior. Complexity: O(1).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_err == true</code></li>
+</ul>
+<h5 id="fn-signal_pending-resultint-str"><code>fn signal_pending() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-signal_pending-resultint-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>signal_pending polls for a signal delivered to the handler installed by signal_handle and clears the pending flag. NOT AVAILABLE yet (documented Err stub, see signal_handle). Complexity: O(1).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_err == true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

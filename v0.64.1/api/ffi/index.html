@@ -3051,7 +3051,7 @@
 </ul>
 <h4 id="fn-freeptr-uint8"><code>fn free(ptr: *UInt8)</code><a class="headerlink" href="#fn-freeptr-uint8" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Free a C-allocated pointer.</p>
+<p>Free a C-allocated pointer. Do not call inside a confined/unsafe block on v0.64.0: the guard allocator and libc free disagree (compiler finding B-05) and the guard heap can spin -- see the module header.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>ptr != null</code></li>

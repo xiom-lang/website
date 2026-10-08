@@ -2862,7 +2862,7 @@
 <h1 id="stdlibio"><code>stdlib.io</code><a class="headerlink" href="#stdlibio" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>I/O Library</strong></p>
-<p>Generated from <code>v0.64.1</code>. 5 source files, 115 documented symbols.</p>
+<p>Generated from <code>v0.64.1</code>. 5 source files, 116 documented symbols.</p>
 </blockquote>
 <h2 id="bufferxi"><code>buffer.xi</code><a class="headerlink" href="#bufferxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-buf_reader_newfd-int-bufreader"><code>fn buf_reader_new(fd: Int) -&gt; BufReader</code><a class="headerlink" href="#fn-buf_reader_newfd-int-bufreader" title="Permanent link">&para;</a></h5>
@@ -3078,6 +3078,13 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
 </ul>
+<h5 id="fn-fs_removepath-str-resultunit-str"><code>fn fs_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_removepath-str-resultunit-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Remove (delete) a file; Err on failure. Delegates to xiom.io.remove_file. Params: path - the file path. Returns: Ok(()) on success, Err on failure. Complexity: O(1). Bindings-lane relay 2026-10-08 (docs/BINDINGS-STDLIB-WISHLIST.md W-1).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; !io.file_exists(path)</code></li>
+</ul>
 <h5 id="fn-fs_copysrc-str-dst-str-resultunit-str"><code>fn fs_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fs_copysrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Copy a file to a new path. Params: src - the source path; dst - the destination path. Returns: Ok(()) on success, Err on failure. Complexity: O(n) where n is the source size.</p>
@@ -3254,7 +3261,7 @@
 </ul>
 <h4 id="fn-write_filepath-str-content-str-resultunit-ioerror"><code>fn write_file(path: Str, content: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_filepath-str-content-str-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Write (create/truncate) a file; Err with the OS message.</p>
+<p>Write (create/truncate) a file byte-exactly; Err with the OS message. Opened in binary mode so content is not newline-translated on Windows (ORBITDB relay 2026-10-08: text mode silently turned LF into CRLF).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
@@ -3262,7 +3269,7 @@
 </ul>
 <h4 id="fn-append_filepath-str-content-str-resultunit-ioerror"><code>fn append_file(path: Str, content: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-append_filepath-str-content-str-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Append to a file, creating it when missing; Err.</p>
+<p>Append to a file byte-exactly, creating it when missing; Err. Opened in binary mode so content is not newline-translated on Windows.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
@@ -3651,7 +3658,7 @@
 </ul>
 <h4 id="fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror"><code>fn write_file_bytes(path: Str, data: &amp;Vec[UInt8]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_bytespath-str-data-vecuint8-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>write_file_bytes writes raw bytes to a file, truncating if it exists. Complexity: O(n) where n = data.len().</p>
+<p>write_file_bytes writes raw bytes to a file, truncating if it exists. Opened in binary mode: bytes are stored exactly (no newline translation). Complexity: O(n) where n = data.len().</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; file_exists(path)</code></li>
@@ -3701,10 +3708,10 @@
 </ul>
 <h4 id="fn-read_file_linespath-str-resultvecstr-ioerror"><code>fn read_file_lines(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-read_file_linespath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>read_file_lines reads a file and returns its lines as a Vec[Str]. Trailing newline characters are stripped.  Complexity: O(n).</p>
+<p>read_file_lines reads a file and returns its lines as a Vec[Str]. Trailing newline characters are stripped; a trailing CR is removed from each line so CRLF files yield clean line values (ORBITDB relay 2026-10-08). Complexity: O(n).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 1</code></li>
 </ul>
 <h4 id="fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror"><code>fn write_file_lines(path: Str, lines: &amp;Vec[Str]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>

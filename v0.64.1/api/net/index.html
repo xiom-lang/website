@@ -3390,7 +3390,7 @@
 <h1 id="stdlibnet"><code>stdlib.net</code><a class="headerlink" href="#stdlibnet" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Networking Library</strong></p>
-<p>Generated from <code>v0.64.1</code>. 29 source files, 320 documented symbols.</p>
+<p>Generated from <code>v0.64.1</code>. 29 source files, 323 documented symbols.</p>
 </blockquote>
 <h2 id="addressxi"><code>address.xi</code><a class="headerlink" href="#addressxi" title="Permanent link">&para;</a></h2>
 <h5 id="type-address"><code>type Address</code><a class="headerlink" href="#type-address" title="Permanent link">&para;</a></h5>
@@ -4718,6 +4718,14 @@
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
+<h4 id="fn-write_allself-self-data-vecuint8-resultint-neterror"><code>fn write_all(self: Self, data: &amp;Vec[UInt8]) -&gt; Result[Int, NetError]</code><a class="headerlink" href="#fn-write_allself-self-data-vecuint8-resultint-neterror" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Write every byte, retrying after partial sends; Ok(total) or Err. Chunks the payload through a 64 KiB staging buffer and advances by the kernel-reported count, so payloads larger than the buffer and partial sends both complete. <code>write</code> keeps its documented single-send semantics.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h4 id="fn-closeself-self-resultunit-neterror"><code>fn close(self: Self) -&gt; Result[Unit, NetError]</code><a class="headerlink" href="#fn-closeself-self-resultunit-neterror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Close the stream; Err on failure.</p>
@@ -5275,6 +5283,51 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>((line.len() &lt; 5) =&gt; (result.is_none == true)) &amp;&amp; ((result.is_some == true) =&gt; (line.len() &gt;= 5))</code></li>
+</ul>
+<h5 id="type-serverrequest"><code>type ServerRequest</code><a class="headerlink" href="#type-serverrequest" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Parsed HTTP/1.x request head plus the body span inside the raw buffer. <code>body_len</code> is the Content-Length value (0 when the header is absent); the body bytes are [body_start, body_start + body_len) in that buffer.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>method</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>target</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>Str</code></td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td><code>Vec[(Str, Str)]</code></td>
+</tr>
+<tr>
+<td><code>body_start</code></td>
+<td><code>Int</code></td>
+</tr>
+<tr>
+<td><code>body_len</code></td>
+<td><code>Int</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="fn-server_parse_requestbytes-vecuint8-optionserverrequest"><code>fn server_parse_request(bytes: &amp;Vec[UInt8]) -&gt; Option[ServerRequest]</code><a class="headerlink" href="#fn-server_parse_requestbytes-vecuint8-optionserverrequest" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>server_parse_request parses raw HTTP/1.x request bytes (head + body) into method/target/version, a lowercased (name, value) header list and the body span. Returns None when the request line is malformed, the header block is not CRLF-terminated, a header has no colon, or a Content-Length value is missing/negative/not an integer. The request line is parsed by server_parse_request_line. Complexity: O(n). Pure.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(bytes.len() == 0) =&gt; (result.is_none == true)</code></li>
 </ul>
 <h5 id="fn-server_build_status_linecode-int-str"><code>fn server_build_status_line(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-server_build_status_linecode-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>

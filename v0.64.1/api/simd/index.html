@@ -2869,6 +2869,9 @@
 <blockquote>
 <p>Load <code>T</code> values from <code>base + index</code> for every index. Scalar fallback: generic memory loads are unavailable -- returns default <code>T()</code> values with one element per index (documented). Complexity: O(len(indices)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == indices.len()</code></li>
+</ul>
 <h5 id="fn-gather_load4tbase-int-i0-int-i1-int-i2-int-i3-int-t-t-t-t"><code>fn gather_load4[T](base: Int, i0: Int, i1: Int, i2: Int, i3: Int) -&gt; (T, T, T, T)</code><a class="headerlink" href="#fn-gather_load4tbase-int-i0-int-i1-int-i2-int-i3-int-t-t-t-t" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Load four <code>T</code> values; the tuple is the four gathered values. Scalar fallback: returns default <code>T()</code> values (documented). Complexity: O(1).</p>
@@ -2881,18 +2884,33 @@
 <blockquote>
 <p>Gather only the lanes where the mask is set. Scalar fallback: generic memory loads are unavailable -- returns default <code>T()</code> values, one per set lane (documented). Complexity: O(32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 32</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() == mask.mask_count(m)</code></li>
+</ul>
 <h5 id="fn-gather_compresstvalues-vect-m-mask-vect"><code>fn gather_compress[T](values: &amp;Vec[T], m: Mask) -&gt; Vec[T]</code><a class="headerlink" href="#fn-gather_compresstvalues-vect-m-mask-vect" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compact the set-lane values to the front. Fully implemented scalar fallback: the result holds <code>values[i]</code> for every set lane <code>i</code>, in lane order. Complexity: O(min(values, 32)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= values.len()</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 32</code></li>
+</ul>
 <h5 id="fn-gather_expandtvalues-vect-m-mask-vect"><code>fn gather_expand[T](values: &amp;Vec[T], m: Mask) -&gt; Vec[T]</code><a class="headerlink" href="#fn-gather_expandtvalues-vect-m-mask-vect" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Spread <code>values</code> back into set-lane positions. Fully implemented scalar fallback: the result has 32 lanes; lane <code>i</code> holds the next value from <code>values</code> when the mask bit is set and a default <code>T()</code> otherwise. Complexity: O(32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-gather_iotatbase-int-n-int-vect"><code>fn gather_iota[T](base: Int, n: Int) -&gt; Vec[T]</code><a class="headerlink" href="#fn-gather_iotatbase-int-n-int-vect" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Materialize the values <code>base + 0 .. base + n-1</code>. Scalar fallback: generic construction from an Int is unavailable -- returns default <code>T()</code> values, one per element (documented). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() == n)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2920,58 +2938,105 @@
 <blockquote>
 <p>Build a mask from an integer bit pattern. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.bits == bits</code></li>
+</ul>
 <h5 id="fn-mask_getm-mask-i-int-bool"><code>fn mask_get(m: Mask, i: Int) -&gt; Bool</code><a class="headerlink" href="#fn-mask_getm-mask-i-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read lane <code>i</code> of a mask (0..31). Out-of-range lanes read false. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt; 0 || i &gt; 31) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-mask_setm-mask-i-int-on-bool-mask"><code>fn mask_set(m: Mask, i: Int, on: Bool) -&gt; Mask</code><a class="headerlink" href="#fn-mask_setm-mask-i-int-on-bool-mask" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Set lane <code>i</code> of a mask (<code>on</code>) and return the new mask. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt; 0 || i &gt; 31) =&gt; (result.bits == m.bits)</code></li>
+<li><strong>Postcondition:</strong> <code>(on == true &amp;&amp; i &gt;= 0 &amp;&amp; i &lt;= 31) =&gt; (result.bits == (m.bits | (1 &lt;&lt; i)))</code></li>
+<li><strong>Postcondition:</strong> <code>(on == false &amp;&amp; i &gt;= 0 &amp;&amp; i &lt;= 31) =&gt; (result.bits == (m.bits &amp; (0 - 1 - (1 &lt;&lt; i))))</code></li>
+</ul>
 <h5 id="fn-mask_countm-mask-int"><code>fn mask_count(m: Mask) -&gt; Int</code><a class="headerlink" href="#fn-mask_countm-mask-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The number of set lanes. Complexity: O(32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 32</code></li>
+</ul>
 <h5 id="fn-mask_allm-mask-bool"><code>fn mask_all(m: Mask) -&gt; Bool</code><a class="headerlink" href="#fn-mask_allm-mask-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether every lane is set. Complexity: O(32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(m.bits == 4294967295) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-mask_anym-mask-bool"><code>fn mask_any(m: Mask) -&gt; Bool</code><a class="headerlink" href="#fn-mask_anym-mask-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether any lane is set. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(m.bits == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (m.bits != 0)</code></li>
+</ul>
 <h5 id="fn-mask_anda-mask-b-mask-mask"><code>fn mask_and(a: Mask, b: Mask) -&gt; Mask</code><a class="headerlink" href="#fn-mask_anda-mask-b-mask-mask" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise logical AND. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.bits == (a.bits &amp; b.bits)</code></li>
+</ul>
 <h5 id="fn-mask_ora-mask-b-mask-mask"><code>fn mask_or(a: Mask, b: Mask) -&gt; Mask</code><a class="headerlink" href="#fn-mask_ora-mask-b-mask-mask" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise logical OR. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.bits == (a.bits | b.bits)</code></li>
+</ul>
 <h5 id="fn-mask_xora-mask-b-mask-mask"><code>fn mask_xor(a: Mask, b: Mask) -&gt; Mask</code><a class="headerlink" href="#fn-mask_xora-mask-b-mask-mask" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise logical XOR. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.bits == (a.bits ^ b.bits)</code></li>
+</ul>
 <h5 id="fn-mask_notm-mask-mask"><code>fn mask_not(m: Mask) -&gt; Mask</code><a class="headerlink" href="#fn-mask_notm-mask-mask" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise logical NOT (32 lanes). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(m.bits == 0) =&gt; (result.bits == 4294967295)</code></li>
+<li><strong>Postcondition:</strong> <code>result.bits &gt;= 0</code></li>
+</ul>
 <h5 id="fn-mask_to_bitsm-mask-int"><code>fn mask_to_bits(m: Mask) -&gt; Int</code><a class="headerlink" href="#fn-mask_to_bitsm-mask-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The integer bit pattern of a mask. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == m.bits</code></li>
+</ul>
 <h5 id="fn-mask_from_bitsbits-int-mask"><code>fn mask_from_bits(bits: Int) -&gt; Mask</code><a class="headerlink" href="#fn-mask_from_bitsbits-int-mask" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Build a mask from an integer bit pattern. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.bits == bits</code></li>
+</ul>
 <h5 id="fn-mask_from_vecv-vecbool-mask"><code>fn mask_from_vec(v: &amp;Vec[Bool]) -&gt; Mask</code><a class="headerlink" href="#fn-mask_from_vecv-vecbool-mask" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Build a mask from a boolean vector (lane i = v[i]). Complexity: O(len(v)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.bits == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result.bits &gt;= 0</code></li>
+</ul>
 <h5 id="fn-mask_to_vecm-mask-vecbool"><code>fn mask_to_vec(m: Mask) -&gt; Vec[Bool]</code><a class="headerlink" href="#fn-mask_to_vecm-mask-vecbool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Expand a mask to a boolean vector of 32 lanes. Complexity: O(32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3381,18 +3446,30 @@
 <blockquote>
 <p>Build a vector from four lanes. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == a &amp;&amp; result.b == b &amp;&amp; result.c == c &amp;&amp; result.d == d</code></li>
+</ul>
 <h5 id="fn-f32x4_addx-f32x4-y-f32x4-f32x4"><code>fn f32x4_add(x: F32x4, y: F32x4) -&gt; F32x4</code><a class="headerlink" href="#fn-f32x4_addx-f32x4-y-f32x4-f32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise addition. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == x.a + y.a &amp;&amp; result.b == x.b + y.b &amp;&amp; result.c == x.c + y.c &amp;&amp; result.d == x.d + y.d</code></li>
+</ul>
 <h5 id="fn-f32x4_subx-f32x4-y-f32x4-f32x4"><code>fn f32x4_sub(x: F32x4, y: F32x4) -&gt; F32x4</code><a class="headerlink" href="#fn-f32x4_subx-f32x4-y-f32x4-f32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise subtraction. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == x.a - y.a &amp;&amp; result.b == x.b - y.b &amp;&amp; result.c == x.c - y.c &amp;&amp; result.d == x.d - y.d</code></li>
+</ul>
 <h5 id="fn-f32x4_mulx-f32x4-y-f32x4-f32x4"><code>fn f32x4_mul(x: F32x4, y: F32x4) -&gt; F32x4</code><a class="headerlink" href="#fn-f32x4_mulx-f32x4-y-f32x4-f32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise multiplication. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == x.a * y.a &amp;&amp; result.b == x.b * y.b &amp;&amp; result.c == x.c * y.c &amp;&amp; result.d == x.d * y.d</code></li>
+</ul>
 <h5 id="fn-f32x4_divx-f32x4-y-f32x4-f32x4"><code>fn f32x4_div(x: F32x4, y: F32x4) -&gt; F32x4</code><a class="headerlink" href="#fn-f32x4_divx-f32x4-y-f32x4-f32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise division. Complexity: O(1).</p>
@@ -3408,10 +3485,16 @@
 <blockquote>
 <p>Lane-wise minimum. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.a == x.a || result.a == y.a) &amp;&amp; (result.b == x.b || result.b == y.b) &amp;&amp; (result.c == x.c || result.c == y.c) &amp;&amp; (result.d == x.d || result.d == y.d)</code></li>
+</ul>
 <h5 id="fn-f32x4_maxx-f32x4-y-f32x4-f32x4"><code>fn f32x4_max(x: F32x4, y: F32x4) -&gt; F32x4</code><a class="headerlink" href="#fn-f32x4_maxx-f32x4-y-f32x4-f32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise maximum. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.a == x.a || result.a == y.a) &amp;&amp; (result.b == x.b || result.b == y.b) &amp;&amp; (result.c == x.c || result.c == y.c) &amp;&amp; (result.d == x.d || result.d == y.d)</code></li>
+</ul>
 <h5 id="fn-f32x4_dotx-f32x4-y-f32x4-float32"><code>fn f32x4_dot(x: F32x4, y: F32x4) -&gt; Float32</code><a class="headerlink" href="#fn-f32x4_dotx-f32x4-y-f32x4-float32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The dot product of two vectors. Complexity: O(1).</p>
@@ -3434,14 +3517,29 @@
 <blockquote>
 <p>Fill every lane with <code>v</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == v &amp;&amp; result.b == v &amp;&amp; result.c == v &amp;&amp; result.d == v</code></li>
+</ul>
 <h5 id="fn-f32x4_extractx-f32x4-i-int-float32"><code>fn f32x4_extract(x: F32x4, i: Int) -&gt; Float32</code><a class="headerlink" href="#fn-f32x4_extractx-f32x4-i-int-float32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read lane <code>i</code> (0..3). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt;= 0) =&gt; (result == x.a)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 1) =&gt; (result == x.b)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 2) =&gt; (result == x.c)</code></li>
+<li><strong>Postcondition:</strong> <code>(i &gt;= 3) =&gt; (result == x.d)</code></li>
+</ul>
 <h5 id="fn-f32x4_insertx-f32x4-i-int-v-float32-f32x4"><code>fn f32x4_insert(x: F32x4, i: Int, v: Float32) -&gt; F32x4</code><a class="headerlink" href="#fn-f32x4_insertx-f32x4-i-int-v-float32-f32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write lane <code>i</code> and return the vector. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt;= 0) =&gt; (result.a == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 1) =&gt; (result.b == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 2) =&gt; (result.c == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i &gt;= 3) =&gt; (result.d == v)</code></li>
+</ul>
 <h5 id="fn-f32x4_sumx-f32x4-float32"><code>fn f32x4_sum(x: F32x4) -&gt; Float32</code><a class="headerlink" href="#fn-f32x4_sumx-f32x4-float32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The sum of all lanes. Complexity: O(1).</p>
@@ -3450,34 +3548,61 @@
 <blockquote>
 <p>Build a vector from four integer lanes. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == a &amp;&amp; result.b == b &amp;&amp; result.c == c &amp;&amp; result.d == d</code></li>
+</ul>
 <h5 id="fn-i32x4_addx-i32x4-y-i32x4-i32x4"><code>fn i32x4_add(x: I32x4, y: I32x4) -&gt; I32x4</code><a class="headerlink" href="#fn-i32x4_addx-i32x4-y-i32x4-i32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise addition. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == x.a + y.a &amp;&amp; result.b == x.b + y.b &amp;&amp; result.c == x.c + y.c &amp;&amp; result.d == x.d + y.d</code></li>
+</ul>
 <h5 id="fn-i32x4_subx-i32x4-y-i32x4-i32x4"><code>fn i32x4_sub(x: I32x4, y: I32x4) -&gt; I32x4</code><a class="headerlink" href="#fn-i32x4_subx-i32x4-y-i32x4-i32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise subtraction. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == x.a - y.a &amp;&amp; result.b == x.b - y.b &amp;&amp; result.c == x.c - y.c &amp;&amp; result.d == x.d - y.d</code></li>
+</ul>
 <h5 id="fn-i32x4_mulx-i32x4-y-i32x4-i32x4"><code>fn i32x4_mul(x: I32x4, y: I32x4) -&gt; I32x4</code><a class="headerlink" href="#fn-i32x4_mulx-i32x4-y-i32x4-i32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise multiplication. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == x.a * y.a &amp;&amp; result.b == x.b * y.b &amp;&amp; result.c == x.c * y.c &amp;&amp; result.d == x.d * y.d</code></li>
+</ul>
 <h5 id="fn-i32x4_minx-i32x4-y-i32x4-i32x4"><code>fn i32x4_min(x: I32x4, y: I32x4) -&gt; I32x4</code><a class="headerlink" href="#fn-i32x4_minx-i32x4-y-i32x4-i32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise minimum. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.a == x.a || result.a == y.a) &amp;&amp; (result.b == x.b || result.b == y.b) &amp;&amp; (result.c == x.c || result.c == y.c) &amp;&amp; (result.d == x.d || result.d == y.d)</code></li>
+</ul>
 <h5 id="fn-i32x4_maxx-i32x4-y-i32x4-i32x4"><code>fn i32x4_max(x: I32x4, y: I32x4) -&gt; I32x4</code><a class="headerlink" href="#fn-i32x4_maxx-i32x4-y-i32x4-i32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise maximum. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.a == x.a || result.a == y.a) &amp;&amp; (result.b == x.b || result.b == y.b) &amp;&amp; (result.c == x.c || result.c == y.c) &amp;&amp; (result.d == x.d || result.d == y.d)</code></li>
+</ul>
 <h5 id="fn-i32x4_splatv-int-i32x4"><code>fn i32x4_splat(v: Int) -&gt; I32x4</code><a class="headerlink" href="#fn-i32x4_splatv-int-i32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fill every lane with <code>v</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == v &amp;&amp; result.b == v &amp;&amp; result.c == v &amp;&amp; result.d == v</code></li>
+</ul>
 <h5 id="fn-i32x4_extractx-i32x4-i-int-int"><code>fn i32x4_extract(x: I32x4, i: Int) -&gt; Int</code><a class="headerlink" href="#fn-i32x4_extractx-i32x4-i-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read lane <code>i</code> (0..3). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt;= 0) =&gt; (result == x.a)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 1) =&gt; (result == x.b)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 2) =&gt; (result == x.c)</code></li>
+<li><strong>Postcondition:</strong> <code>(i &gt;= 3) =&gt; (result == x.d)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3584,14 +3709,23 @@
 <blockquote>
 <p>Lane-wise addition. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == x.a0 + y.a0 &amp;&amp; result.a1 == x.a1 + y.a1 &amp;&amp; result.a2 == x.a2 + y.a2 &amp;&amp; result.a3 == x.a3 + y.a3 &amp;&amp; result.a4 == x.a4 + y.a4 &amp;&amp; result.a5 == x.a5 + y.a5 &amp;&amp; result.a6 == x.a6 + y.a6 &amp;&amp; result.a7 == x.a7 + y.a7</code></li>
+</ul>
 <h5 id="fn-f32x8_subx-f32x8-y-f32x8-f32x8"><code>fn f32x8_sub(x: F32x8, y: F32x8) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_subx-f32x8-y-f32x8-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise subtraction. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == x.a0 - y.a0 &amp;&amp; result.a1 == x.a1 - y.a1 &amp;&amp; result.a2 == x.a2 - y.a2 &amp;&amp; result.a3 == x.a3 - y.a3 &amp;&amp; result.a4 == x.a4 - y.a4 &amp;&amp; result.a5 == x.a5 - y.a5 &amp;&amp; result.a6 == x.a6 - y.a6 &amp;&amp; result.a7 == x.a7 - y.a7</code></li>
+</ul>
 <h5 id="fn-f32x8_mulx-f32x8-y-f32x8-f32x8"><code>fn f32x8_mul(x: F32x8, y: F32x8) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_mulx-f32x8-y-f32x8-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise multiplication. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == x.a0 * y.a0 &amp;&amp; result.a1 == x.a1 * y.a1 &amp;&amp; result.a2 == x.a2 * y.a2 &amp;&amp; result.a3 == x.a3 * y.a3 &amp;&amp; result.a4 == x.a4 * y.a4 &amp;&amp; result.a5 == x.a5 * y.a5 &amp;&amp; result.a6 == x.a6 * y.a6 &amp;&amp; result.a7 == x.a7 * y.a7</code></li>
+</ul>
 <h5 id="fn-f32x8_divx-f32x8-y-f32x8-f32x8"><code>fn f32x8_div(x: F32x8, y: F32x8) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_divx-f32x8-y-f32x8-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise division. Complexity: O(1).</p>
@@ -3607,22 +3741,51 @@
 <blockquote>
 <p>Lane-wise minimum. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.a0 == x.a0 || result.a0 == y.a0) &amp;&amp; (result.a1 == x.a1 || result.a1 == y.a1) &amp;&amp; (result.a2 == x.a2 || result.a2 == y.a2) &amp;&amp; (result.a3 == x.a3 || result.a3 == y.a3) &amp;&amp; (result.a4 == x.a4 || result.a4 == y.a4) &amp;&amp; (result.a5 == x.a5 || result.a5 == y.a5) &amp;&amp; (result.a6 == x.a6 || result.a6 == y.a6) &amp;&amp; (result.a7 == x.a7 || result.a7 == y.a7)</code></li>
+</ul>
 <h5 id="fn-f32x8_maxx-f32x8-y-f32x8-f32x8"><code>fn f32x8_max(x: F32x8, y: F32x8) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_maxx-f32x8-y-f32x8-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise maximum. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.a0 == x.a0 || result.a0 == y.a0) &amp;&amp; (result.a1 == x.a1 || result.a1 == y.a1) &amp;&amp; (result.a2 == x.a2 || result.a2 == y.a2) &amp;&amp; (result.a3 == x.a3 || result.a3 == y.a3) &amp;&amp; (result.a4 == x.a4 || result.a4 == y.a4) &amp;&amp; (result.a5 == x.a5 || result.a5 == y.a5) &amp;&amp; (result.a6 == x.a6 || result.a6 == y.a6) &amp;&amp; (result.a7 == x.a7 || result.a7 == y.a7)</code></li>
+</ul>
 <h5 id="fn-f32x8_splatv-float32-f32x8"><code>fn f32x8_splat(v: Float32) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_splatv-float32-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fill every lane with <code>v</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == v &amp;&amp; result.a1 == v &amp;&amp; result.a2 == v &amp;&amp; result.a3 == v &amp;&amp; result.a4 == v &amp;&amp; result.a5 == v &amp;&amp; result.a6 == v &amp;&amp; result.a7 == v</code></li>
+</ul>
 <h5 id="fn-f32x8_extractx-f32x8-i-int-float32"><code>fn f32x8_extract(x: F32x8, i: Int) -&gt; Float32</code><a class="headerlink" href="#fn-f32x8_extractx-f32x8-i-int-float32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read lane <code>i</code> (0..7). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt;= 0) =&gt; (result == x.a0)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 1) =&gt; (result == x.a1)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 2) =&gt; (result == x.a2)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 3) =&gt; (result == x.a3)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 4) =&gt; (result == x.a4)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 5) =&gt; (result == x.a5)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 6) =&gt; (result == x.a6)</code></li>
+<li><strong>Postcondition:</strong> <code>(i &gt;= 7) =&gt; (result == x.a7)</code></li>
+</ul>
 <h5 id="fn-f32x8_insertx-f32x8-i-int-v-float32-f32x8"><code>fn f32x8_insert(x: F32x8, i: Int, v: Float32) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_insertx-f32x8-i-int-v-float32-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write lane <code>i</code> and return the vector. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt;= 0) =&gt; (result.a0 == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 1) =&gt; (result.a1 == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 2) =&gt; (result.a2 == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 3) =&gt; (result.a3 == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 4) =&gt; (result.a4 == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 5) =&gt; (result.a5 == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 6) =&gt; (result.a6 == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(i &gt;= 7) =&gt; (result.a7 == v)</code></li>
+</ul>
 <h5 id="fn-f32x8_sumx-f32x8-float32"><code>fn f32x8_sum(x: F32x8) -&gt; Float32</code><a class="headerlink" href="#fn-f32x8_sumx-f32x8-float32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The sum of all lanes. Complexity: O(1).</p>
@@ -3649,22 +3812,44 @@
 <blockquote>
 <p>Lane-wise addition. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == x.a0 + y.a0 &amp;&amp; result.a1 == x.a1 + y.a1 &amp;&amp; result.a2 == x.a2 + y.a2 &amp;&amp; result.a3 == x.a3 + y.a3 &amp;&amp; result.a4 == x.a4 + y.a4 &amp;&amp; result.a5 == x.a5 + y.a5 &amp;&amp; result.a6 == x.a6 + y.a6 &amp;&amp; result.a7 == x.a7 + y.a7</code></li>
+</ul>
 <h5 id="fn-i32x8_subx-i32x8-y-i32x8-i32x8"><code>fn i32x8_sub(x: I32x8, y: I32x8) -&gt; I32x8</code><a class="headerlink" href="#fn-i32x8_subx-i32x8-y-i32x8-i32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise subtraction. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == x.a0 - y.a0 &amp;&amp; result.a1 == x.a1 - y.a1 &amp;&amp; result.a2 == x.a2 - y.a2 &amp;&amp; result.a3 == x.a3 - y.a3 &amp;&amp; result.a4 == x.a4 - y.a4 &amp;&amp; result.a5 == x.a5 - y.a5 &amp;&amp; result.a6 == x.a6 - y.a6 &amp;&amp; result.a7 == x.a7 - y.a7</code></li>
+</ul>
 <h5 id="fn-i32x8_mulx-i32x8-y-i32x8-i32x8"><code>fn i32x8_mul(x: I32x8, y: I32x8) -&gt; I32x8</code><a class="headerlink" href="#fn-i32x8_mulx-i32x8-y-i32x8-i32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise multiplication. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == x.a0 * y.a0 &amp;&amp; result.a1 == x.a1 * y.a1 &amp;&amp; result.a2 == x.a2 * y.a2 &amp;&amp; result.a3 == x.a3 * y.a3 &amp;&amp; result.a4 == x.a4 * y.a4 &amp;&amp; result.a5 == x.a5 * y.a5 &amp;&amp; result.a6 == x.a6 * y.a6 &amp;&amp; result.a7 == x.a7 * y.a7</code></li>
+</ul>
 <h5 id="fn-i32x8_splatv-int-i32x8"><code>fn i32x8_splat(v: Int) -&gt; I32x8</code><a class="headerlink" href="#fn-i32x8_splatv-int-i32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fill every lane with <code>v</code>. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == v &amp;&amp; result.a1 == v &amp;&amp; result.a2 == v &amp;&amp; result.a3 == v &amp;&amp; result.a4 == v &amp;&amp; result.a5 == v &amp;&amp; result.a6 == v &amp;&amp; result.a7 == v</code></li>
+</ul>
 <h5 id="fn-i32x8_extractx-i32x8-i-int-int"><code>fn i32x8_extract(x: I32x8, i: Int) -&gt; Int</code><a class="headerlink" href="#fn-i32x8_extractx-i32x8-i-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read lane <code>i</code> (0..7). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt;= 0) =&gt; (result == x.a0)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 1) =&gt; (result == x.a1)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 2) =&gt; (result == x.a2)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 3) =&gt; (result == x.a3)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 4) =&gt; (result == x.a4)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 5) =&gt; (result == x.a5)</code></li>
+<li><strong>Postcondition:</strong> <code>(i == 6) =&gt; (result == x.a6)</code></li>
+<li><strong>Postcondition:</strong> <code>(i &gt;= 7) =&gt; (result == x.a7)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

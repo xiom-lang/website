@@ -2865,7 +2865,8 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>width &gt; 0</code></li>
-<li><strong>Postcondition:</strong> <code>result.len() &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() &gt; 0) =&gt; (result.len() &gt; 0)</code></li>
 </ul>
 <h4 id="fn-trace_pointname-str-str"><code>fn trace_point(name: Str) -&gt; Str</code><a class="headerlink" href="#fn-trace_pointname-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -2925,30 +2926,51 @@
 <blockquote>
 <p>Disassemble raw bytes into mnemonic lines. Not supported in this build. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_err</code></li>
+</ul>
 <h5 id="fn-disasm_functionptr-int-length-int-resultvecstr-str"><code>fn disasm_function(ptr: Int, length: Int) -&gt; Result[Vec[Str], Str]</code><a class="headerlink" href="#fn-disasm_functionptr-int-length-int-resultvecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Disassemble <code>length</code> bytes at an address. Not supported in this build. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_err</code></li>
+</ul>
 <h5 id="fn-disasm_instruction_lengthcode-vecuint8-offset-int-resultint-str"><code>fn disasm_instruction_length(code: &amp;Vec[UInt8], offset: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-disasm_instruction_lengthcode-vecuint8-offset-int-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The byte length of the instruction at <code>offset</code>. Not supported in this build. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_err</code></li>
+</ul>
 <h5 id="fn-disasm_arch_supportedarch-str-bool"><code>fn disasm_arch_supported(arch: Str) -&gt; Bool</code><a class="headerlink" href="#fn-disasm_arch_supportedarch-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether an architecture string is supported by a disassembly backend. Always false in this build. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false</code></li>
+</ul>
 <h5 id="fn-disasm_syntaxarch-str-intel-bool-resultunit-str"><code>fn disasm_syntax(arch: Str, intel: Bool) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-disasm_syntaxarch-str-intel-bool-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Select Intel or AT&amp;T syntax for an architecture. Not supported in this build. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_err</code></li>
+</ul>
 <h5 id="fn-disasm_symbolizeaddr-int-optionstr"><code>fn disasm_symbolize(addr: Int) -&gt; Option[Str]</code><a class="headerlink" href="#fn-disasm_symbolizeaddr-int-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Resolve an address to a symbol name. No symbol table is loaded in this build, so this always returns None. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_none</code></li>
+</ul>
 <h5 id="fn-disasm_debug_infoaddr-int-optionstr-int"><code>fn disasm_debug_info(addr: Int) -&gt; Option[(Str, Int)]</code><a class="headerlink" href="#fn-disasm_debug_infoaddr-int-optionstr-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Source debug info (file, line) for an address. No debug info is loaded in this build, so this always returns None. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_none</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2984,46 +3006,80 @@
 <blockquote>
 <p>Current heap bytes in use. See the header note: counters are inert in this build. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == usage_bytes</code></li>
+</ul>
 <h5 id="fn-heap_allocations-int"><code>fn heap_allocations() -&gt; Int</code><a class="headerlink" href="#fn-heap_allocations-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Total allocation count since start or reset. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == alloc_count</code></li>
+</ul>
 <h5 id="fn-heap_frees-int"><code>fn heap_frees() -&gt; Int</code><a class="headerlink" href="#fn-heap_frees-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Total free count since start or reset. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == free_count</code></li>
+</ul>
 <h5 id="fn-heap_live_objects-int"><code>fn heap_live_objects() -&gt; Int</code><a class="headerlink" href="#fn-heap_live_objects-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Allocations minus frees. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == alloc_count - free_count</code></li>
+</ul>
 <h5 id="fn-heap_report-str"><code>fn heap_report() -&gt; Str</code><a class="headerlink" href="#fn-heap_report-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A human-readable heap summary. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 12</code></li>
+</ul>
 <h5 id="fn-heap_report_json-str"><code>fn heap_report_json() -&gt; Str</code><a class="headerlink" href="#fn-heap_report_json-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The heap summary as JSON. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 2</code></li>
+</ul>
 <h5 id="fn-heap_peak_usage-int"><code>fn heap_peak_usage() -&gt; Int</code><a class="headerlink" href="#fn-heap_peak_usage-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The highest heap bytes observed. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == peak_bytes</code></li>
+</ul>
 <h5 id="fn-heap_reset_stats"><code>fn heap_reset_stats()</code><a class="headerlink" href="#fn-heap_reset_stats" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Zero all counters, keeping the current usage. Callers can then observe deltas. In this build the counters are already inert. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>alloc_count == 0 &amp;&amp; free_count == 0 &amp;&amp; peak_bytes == usage_bytes</code></li>
+</ul>
 <h5 id="fn-heap_snapshot-vecheapentry"><code>fn heap_snapshot() -&gt; Vec[HeapEntry]</code><a class="headerlink" href="#fn-heap_snapshot-vecheapentry" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Capture all live allocations as entries. No live-allocation registry is available in this build, so the snapshot is empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h5 id="fn-heap_top_allocationsn-int-vecheapentry"><code>fn heap_top_allocations(n: Int) -&gt; Vec[HeapEntry]</code><a class="headerlink" href="#fn-heap_top_allocationsn-int-vecheapentry" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The <code>n</code> largest live allocations. Empty in this build (no live allocations are tracked). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h5 id="fn-heap_is_empty-bool"><code>fn heap_is_empty() -&gt; Bool</code><a class="headerlink" href="#fn-heap_is_empty-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when no live allocations remain. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alloc_count == free_count) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(alloc_count != free_count) =&gt; (result == false)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3050,26 +3106,47 @@
 <blockquote>
 <p>Capture the current call stack as symbol strings. Without a stack-walking intrinsic this returns the traced scope stack (deepest scope first); empty when tracing has not recorded any scopes. Complexity: O(scope depth).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= scope_stack.names.len()</code></li>
+<li><strong>Postcondition:</strong> <code>(scope_stack.names.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-trace_backtrace_symbolsframes-vecint-vecstr"><code>fn trace_backtrace_symbols(frames: &amp;Vec[Int]) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-trace_backtrace_symbolsframes-vecint-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Symbolize raw frame addresses as <code>0x</code> hex strings. Invalid or negative addresses render as "0x0". Complexity: O(frames).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == frames.len()</code></li>
+</ul>
 <h5 id="fn-trace_source_location-str"><code>fn trace_source_location() -&gt; Str</code><a class="headerlink" href="#fn-trace_source_location-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The current source location as "file:line". Without source-location intrinsics this returns the top of the traced scope stack (or "unknown"). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(scope_stack.names.len() == 0) =&gt; (result == "unknown")</code></li>
+<li><strong>Postcondition:</strong> <code>(result != "unknown") =&gt; (scope_stack.names.len() &gt; 0)</code></li>
+</ul>
 <h5 id="fn-trace_current_function-str"><code>fn trace_current_function() -&gt; Str</code><a class="headerlink" href="#fn-trace_current_function-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The name of the calling function: the top of the traced scope stack, or "unknown". Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(scope_stack.names.len() == 0) =&gt; (result == "unknown")</code></li>
+<li><strong>Postcondition:</strong> <code>(result != "unknown") =&gt; (scope_stack.names.len() &gt; 0)</code></li>
+</ul>
 <h5 id="fn-trace_current_file-str"><code>fn trace_current_file() -&gt; Str</code><a class="headerlink" href="#fn-trace_current_file-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The file of the calling site. Not available in this build -- "unknown". Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "unknown"</code></li>
+</ul>
 <h5 id="fn-trace_current_line-int"><code>fn trace_current_line() -&gt; Int</code><a class="headerlink" href="#fn-trace_current_line-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The line of the calling site. Not available in this build -- 0. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0</code></li>
+</ul>
 <h5 id="fn-trace_print"><code>fn trace_print()</code><a class="headerlink" href="#fn-trace_print" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Print the current backtrace to the console (io.println; a raw stderr writer is not exposed in this build). Complexity: O(scope depth).</p>
@@ -3082,22 +3159,38 @@
 <blockquote>
 <p>Whether tracing is currently enabled. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == tracing_enabled</code></li>
+</ul>
 <h5 id="fn-trace_set_enabledon-bool"><code>fn trace_set_enabled(on: Bool)</code><a class="headerlink" href="#fn-trace_set_enabledon-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Enable or disable tracing. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>tracing_enabled == on</code></li>
+</ul>
 <h5 id="fn-trace_depth-int"><code>fn trace_depth() -&gt; Int</code><a class="headerlink" href="#fn-trace_depth-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The current entry/exit nesting depth. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == trace_depth_value</code></li>
+</ul>
 <h5 id="fn-trace_entername-str"><code>fn trace_enter(name: Str)</code><a class="headerlink" href="#fn-trace_entername-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Record entry to a named scope: pushes <code>name</code> and increments the depth. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>scope_stack.names.len() &gt;= scope_stack.names.len()@pre</code></li>
+</ul>
 <h5 id="fn-trace_exitname-str"><code>fn trace_exit(name: Str)</code><a class="headerlink" href="#fn-trace_exitname-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Record exit from a named scope: pops the matching scope and decrements the depth (clamped at 0). No-op when the stack is empty. Complexity: O(scope depth).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>trace_depth_value &lt;= trace_depth_value@pre</code></li>
+<li><strong>Postcondition:</strong> <code>scope_stack.names.len() &lt;= scope_stack.names.len()@pre</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
