@@ -88,6 +88,8 @@ def md_to_html(text: str) -> str:
         s = re.sub(r'`([^`]+)`', stash, s)
         s = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', s)
         s = re.sub(r'\*([^*]+)\*', r'<em>\1</em>', s)
+        s = re.sub(r'!\[([^\]]*)\]\(([^)]+)\)',
+                   r'<img src="\2" alt="\1" loading="lazy" decoding="async">', s)
         s = convert_links(s)
         return re.sub(r'\x00(\d+)\x00', lambda m: spans[int(m.group(1))], s)
 

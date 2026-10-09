@@ -113,6 +113,7 @@ PAGE = """<!doctype html>
     </a>
     <div class="navlinks">
       <a href="../">Overview</a>
+      <a href="../demo/">Demo</a>
       <a href="index.html">Docs</a>
       <a href="../#install">Install</a>
       <a href="../#downloads">Downloads</a>
@@ -198,6 +199,22 @@ def main():
         css = fh.read()
     with open(css_dst, "w", encoding="ascii", newline="\n") as fh:
         fh.write(css)
+
+    # Product docs images, when the PULSE repo starts shipping them under
+    # docs/public/img (vendored as docs-src/img).
+    src_img = os.path.join(args.src, "img")
+    if os.path.isdir(src_img):
+        out_img = os.path.join(args.out, "img")
+        if not os.path.isdir(out_img):
+            os.makedirs(out_img)
+        for name in sorted(os.listdir(src_img)):
+            src_file = os.path.join(src_img, name)
+            if not os.path.isfile(src_file):
+                continue
+            with open(src_file, "rb") as fh:
+                data = fh.read()
+            with open(os.path.join(out_img, name), "wb") as fh:
+                fh.write(data)
 
     print("wrote {0} pages + style.css to {1}".format(written, args.out))
 
