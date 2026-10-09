@@ -1335,6 +1335,15 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     manual publish path), and the homepage first-person ("Why we're
     building this") is deliberate voice. Lane vocabulary stays inside
     SESSION.md and the relays only.
+93. **Console polish and handoff refresh (done 2026-10-09)**: the demo
+    console omits the empty HTTP/2 statusText cleanly (`f632843`; it
+    shows "HTTP 200 (27 ms)"), and the paste-ready prompt above was
+    rewritten for the post-Pulse state -- current HEAD, the PULSE CHAIN
+    paragraph, refreshed landings, the seven-item queue and the updated
+    mirror state. With the context window near capacity, the handoff
+    block is the operating document for the next session: read it first,
+    then verify the `f632843` deploy (live demo.js hash-match and the
+    console line format) before starting the queue.
 
 ## Cross-lane notes
 
@@ -2106,90 +2115,73 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-10-05): HEAD ac1b269. Copyright notices across the repo read
+State (2026-10-09): HEAD f632843. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
-be named as holder. Review rounds 1-2 are applied (honest claims, Why page
-rewritten around intent -> enforcement -> AI, spec page labelled Revision
-0.3 for the core language, 128-bit primitives documented, syntax examples
-aligned to canonical colons and semicolons). The snippet syntax lint runs in
-`docs.yml` and `docs-versioned.yml` and the corpus is clean. Landed since the
-last refresh: prior-art and History pages, unsafe guide, Contributing hub,
-error-code reference (L/P/T/E/C/W families, X reserved), debugger guide,
-MkDocs XIOM highlighting, version-teaching removal, footer rebuild with the
-eight social icons (mobile-sized), two-column index hero plus banners on six
-pages, the editor-support block (XIOM Toolchain 0.12.0 on both
-marketplaces), the verification trust-boundary section, the external-link
-fix, the toolchain-context and post-release-plan pages rendered from the
-compiler checkout, the release-notes system (schema v1 in
-`docs/release-notes-schema.md`, `js/release-notes.js`, panels on the
-download and versions pages, fully tested), installer resilience
-(mirror + GitHub, newer release wins; macOS shipping copy), the
-checksum-column copy correction from the live deploy verification, the
-owner's webp art refresh including the og-card webp switch, the
-ecosystem status pass with the live registry package count and the benchmark
-move to the roadmap, the weekly docs refresh with GitHub-first tag
-resolution, the compiler-relay semicolon rule, and the Registry 2.0 launch
-update. All guide syntax
-was audited against a local compiler build: `if let`, range expressions
-and the `Byte` alias are not implemented and the docs do not claim them.
-Commits carry `-s` sign-off. `docs/wikipedia-draft.md` is a planning sheet
-only and `docs/marketplace-publisher.md` holds the marketplace copy; neither
-is built into the site.
+be named as holder. Public copy passed a human-voice sweep (no internal
+lane/owner vocabulary outside SESSION.md; the Pulse hero, hub and Pulse
+head descriptions were refreshed). All guide syntax holds the
+no-unimplemented-features rule, and the snippet syntax lint in `docs.yml`
+and `docs-versioned.yml` stays clean. Commits carry `-s` sign-off;
+`docs/wikipedia-draft.md` is a planning sheet only and
+`docs/marketplace-publisher.md` holds the marketplace copy; neither is
+built into the site.
 
-The live deploy was verified on 2026-09-24 (item 28): the installer picks
-GitHub and installs v0.61.3, download.html lists four platforms, versions.html
-reads GitHub, and the notes toggle is honest until the next tag.
+PULSE CHAIN (complete as of 2026-10-09): the repo is public
+(xiom-projects/xiom-pulse), pulse-v0.1.0 is released (tag cc3e741;
+linux-x64 + windows-x64 zips + SHA256SUMS; no macOS), the dl namespace is
+live (/pulse/latest.json + /pulse/releases/pulse-v0.1.0/), and
+pulse.xiom-lang.org is served by Pulse itself (loopback behind nginx,
+static folder as fallback). Verified live: /health + /api/version JSON,
+hero badge "live demo v0.1.0", download buttons on dl (the page prefers
+dl's JSON and rewrites GitHub metadata onto dl paths when the mirror JSON
+lacks CORS), /docs/ (8 rendered pages; rebuild with
+`python docs/build_pulse_docs.py` after re-syncing docs-src), /demo/ (the
+interactive console page), install.sh + install.ps1 (text/plain; the PS
+one was tested end to end, the sh one still needs a Linux smoke), and the
+armor (PULSE_RATE_LIMIT=20 / PULSE_RATE_BURST=60 + nginx 5r/s burst 20,
+limit_conn 10 -> 429 on /api/ and /health). Unknown paths 404. Open:
+the 0.1.0 binary binds 0.0.0.0 (PULSE_BIND not honored -- Pulse lane, next
+build) and the kv flip gate waits on a >=24h soak. New Pulse claims route
+through the Pulse lane before publishing.
 
-Recent landings (2026-10-02..05): registry trust and "attacks this stops"
+Recent landings (2026-10-02..09): registry trust and "attacks this stops"
 sections, ecosystem contribution paths, playground 2.0/2.1 roadmap rows,
 live self-hosting and stdlib readiness meters with fetched verification
-gates (the stdlib meter accepts the tracker's fractional partial-credit
-format and per-pair annotations since `ac1b269`, live-verified), Instagram
-in the footer, the benchmark cover, and the installer stale-staging fix --
-all verified live. v0.64.0 was verified on the live site the day it shipped
+gates (fractional partial-credit formats accepted; fallback refreshed
+2026-10-08), Open Collective everywhere (footer icon, nav Support item,
+footer Support XIOM link, contributing-page tiers rendered live without a
+token), the Projects restructure (nav slimming: Projects in, Prior art
+moved to Why, Versions linked from the download page; the projects.html
+hub; four subdomain sites with designer covers and feature icons at 120px
+fluid), the full Pulse release + demo chain (the PULSE CHAIN paragraph
+above), the registry 2.x publishing instructions with the retired GitHub
+token template confirmed, and v0.64.0 verified live the day it shipped
 (dynamic download/versions pages, tag-pinned notes render, docs site
-serving v0.64.0 as latest). The Pulse cover and roadmap section landed
-later the same day. On 2026-10-06 the Open Collective icon joined the
-footer social row on every page and the contributing page gained a
-"Support the project" section. On 2026-10-07 Support was added to the top
-nav and the footer Project column on every page, and the missing
-Contributing nav item was restored on ten pages. Live Open Collective
-tier cards landed on the contributing page on 2026-10-07, and the
-paste-ready relay for the playground/registry lanes is ready in
-"Paste-ready prompts for other lanes". The Projects restructure landed
-2026-10-08: nav slimming (Projects in; Prior art and Versions out), the
-projects.html hub and four phase-1 subdomain sites. All four subdomains
-went live the same day (ops mapping, verified from this lane). Registry publishing instructions
-were aligned with the 2.x in-registry request flow on 2026-10-07, and the
-retired GitHub token template confirmed. The verification-gates fallback
-was refreshed to the 2026-10-08 tracker values on 2026-10-08.
+serving v0.64.0 as latest; the docs dispatch works). All verified live.
 
 Next, in order:
-1. Playground 2.2 (gamified learning): flip the roadmap row when levels,
+1. Pulse follow-ups: watch for the PULSE_BIND fix build and the kv 24h
+   soak gate (update the page note when it clears); re-sync `docs-src/`
+   and rebuild the docs on doc changes (`python
+   docs/build_pulse_docs.py`); route new claims through the Pulse lane.
+2. Playground 2.2 (gamified learning): flip the roadmap row when levels,
    streaks, badges and the certificate ship; the badge artwork is still to
    come.
-2. Next tagged release: re-verify the release-notes render (for v0.64.0 the
-   tag-pinned raw fallback rendered all five highlights live on 2026-10-05).
-   The mirror-side `release.json`/`"notes": true` publish still belongs to
-   whoever writes archives to the mirror.
-3. Draft "XIOM for game developers" once the owner provides engine facts
+3. Next tagged release (compiler): re-verify the release-notes render
+   (mirror first, tag-pinned raw fallback); the mirror-side
+   `release.json`/`"notes": true` publish stays owner-side.
+4. Draft "XIOM for game developers" once the owner provides engine facts
    (C# coverage on the Concepts page landed 2026-09-21).
-4. Benchmark showcase: when the owner says the benchmark repo and paper are
-   public, replace the roadmap "in preparation" wording
-   (`roadmap.html#benchmark`, cover image live) with the repository and
-   results links.
-5. If the compiler lane publishes a current specification revision, update
-   specs/ and the spec page and bump the revision label (0.3 carries a
-   2026-09-20 maintenance note for 128-bit primitives).
-6. Projects: phase-1 pages for all four subdomains live in the repo under
-   `xiom-website/projects/`; the docroots are mapped and all four
-   subdomains are live (item 75). When the
-   owner greenlights Pulse going public, follow the pulse repo's
-   `docs/OPS-REQUEST.md` section E (CI -> public -> rulesets -> dl -> demo
-   deploy) and wire the live badge/downloads per
-   `docs/WEBSITE-RELAY-PULSE.md`. Route new Pulse claims through the Pulse
-   lane before publishing them.
+5. Benchmark showcase: replace the roadmap "in preparation" wording with
+   the repository and results links once they are public
+   (`roadmap.html#projects`).
+6. Spec revision: update specs/ and the spec page when the compiler lane
+   publishes a current revision (0.3 carries a 2026-09-20 maintenance
+   note for 128-bit primitives).
+7. OrbitDB / XVector / Chaos: when a repo opens or a release is cut,
+   mirror the Pulse pattern (per-product dl namespace, docs render,
+   downloads wiring, armor, demo).
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS ships on all
@@ -2198,20 +2190,16 @@ releases now (Intel and Apple Silicon archives in v0.61.3), so the earlier
 pointers stay deferred until stdlib is 100%; registry correlation
 (`compiler` pin metadata) waits on the stdlib publish pass.
 
-Mirror state (owner/VPS and compiler lane, checked 2026-09-24): the mirror
-still serves v0.60.1 in `latest.json`/`releases/index.json` and sends no
-`Access-Control-Allow-Origin`; its archive writer must also publish
-`releases/<tag>/release.json` and set `"notes": true` per the release-notes
-schema. The website cannot write to the mirror (no credentials in any
-workflow). It no longer depends on the mirror being current: the installers
-and both release pages compare mirror and GitHub and use the newer release,
-and release notes fall back to the tag-pinned raw file. Proper fixes:
-regenerate `latest.json`/`index.json` on every tag, add
-`add_header Access-Control-Allow-Origin "https://xiom-lang.org";` for the
-JSON paths, and publish the notes file. The checksum column would also need
-ACAO on the `SHA256SUMS` files (or a tag-pinned checksums file in the
-compiler repository, read from raw.githubusercontent.com) to fill in
-browsers.
+Mirror state (owner/VPS, checked 2026-10-09): the compiler namespace is
+current (v0.64.1) and the pulse namespace is live; the mirror JSON paths
+still send no `Access-Control-Allow-Origin`, so the Pulse page rewrites
+the GitHub release metadata onto dl paths and the download page's
+checksum column needs raw fallbacks. The compiler archive writer should
+still publish `releases/<tag>/release.json` and set `"notes": true` per
+the release-notes schema, and adding ACAO for the JSON paths (compiler and
+product) would let browsers read the mirror directly. The website cannot
+write to the mirror (no credentials) and no longer depends on it being
+current.
 
 Rules: ASCII-only; never hardcode versions (read mirror JSON); pin GitHub
 Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
