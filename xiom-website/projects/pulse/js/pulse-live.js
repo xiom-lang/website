@@ -9,13 +9,16 @@ The badge is same-origin (the demo serves this page), so /health and
 never shows a version the service does not report. The downloads prefer
 the dl mirror (https://dl.xiom-lang.org/pulse/latest.json) and fall back
 to the GitHub release API, which is the documented source of the mirror;
-no version is ever hardcoded here. On any failure the authored "soon"
-markers stay and nothing is claimed.
+when the fallback runs, the asset URLs are rewritten onto the dl mirror
+paths so the buttons still point at dl even before the mirror learns to
+send CORS headers. No version is ever hardcoded here. On any failure the
+authored "soon" markers stay and nothing is claimed.
 */
 (function () {
   "use strict";
 
-  var DL_URL = "https://dl.xiom-lang.org/pulse/latest.json";
+  var DL_BASE = "https://dl.xiom-lang.org/pulse";
+  var DL_URL = DL_BASE + "/latest.json";
   var GH_URL = "https://api.github.com/repos/xiom-projects/xiom-pulse/releases/latest";
   var LABELS = { "windows-x64": "Windows x64", "linux-x64": "Linux x64", "macos": "macOS" };
 
@@ -120,7 +123,13 @@ markers stay and nothing is claimed.
           })
           .then(function (data) {
             var tag = data.tag_name || "";
-            fill(String(tag).replace(/^pulse-v/, ""), data.assets || [], "from the GitHub release (mirror catches up hourly)");
+            var assets = (data.assets || []).map(function (a) {
+              return {
+                name: a.name || "",
+                browser_download_url: DL_BASE + "/releases/" + tag + "/" + (a.name || "")
+              };
+            });
+            fill(String(tag).replace(/^pulse-v/, ""), assets, "from the dl mirror (release metadata via GitHub)");
           })
           .catch(function () {
             // The authored "soon" markers stay.
