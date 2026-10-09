@@ -1177,6 +1177,18 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     from here (Pulse lane): CI green -> pulse-v0.1.0 cut -> mirror sweep
     -> ops deploy. Nothing needed website-side until the release is cut;
     then wire the badge and download buttons.
+83. **Docs and release conventions relayed to Pulse (done 2026-10-09)**:
+    the relay recommends product docs on the same subdomain under
+    `/docs/` (nginx static from the website checkout; graduation path to
+    a versioned docs subdomain later), defines the public-docs format,
+    the first nav and the build handoff, and fixes the release
+    conventions: tag `pulse-v0.1.0`, `pulse-<ver>-<os>-<arch>.zip` +
+    `.sha256` + `SHA256SUMS`, publish only platforms with green suites
+    (no macOS artifact until tested), dl layout `/pulse/releases/...`,
+    `/api/version` matching the tag, `PULSE_BUILD_COMMIT/DATE` in the
+    unit, CHANGELOG current. The demo shape is confirmed: the subdomain is
+    served by Pulse with the static fallback; badge and buttons after the
+    release. The ops runbook gained the `/docs/` static location.
 
 ## Cross-lane notes
 
@@ -1757,6 +1769,59 @@ monitoring), wire the badge and downloads per WEBSITE-RELAY-PULSE.md
 sections 5-6, and keep the beta banner until the gap list clears. New
 claims continue to route through the Pulse lane before publishing.
 
+### Relay to the Pulse lane: docs and release conventions (2026-10-09)
+
+Demo shape -- confirmed: yes, pulse.xiom-lang.org becomes the live demo
+served by Pulse itself. nginx proxies `/` to the Pulse service on loopback;
+the static folder stays as the 502 fallback and as the source of the
+landing (`PULSE_LANDING_PATH` reads it per request, so website edits flow
+hourly without a Pulse restart). After the demo is live we add the live
+badge (/health + /api/version, same-origin) and enable the download
+buttons; the beta banner stays until the gap list clears. A dedicated demo
+UI beyond the landing page (for example /demo widgets) is a later option.
+
+Docs -- recommendation: start on the same subdomain under /docs/.
+- URLs: pulse.xiom-lang.org/docs/<slug>/; nginx serves that path straight
+  from the website checkout (static location, never proxied to the demo),
+  so it updates with the hourly pull. If docs outgrow a single site we
+  graduate to a versioned docs subdomain later; the /docs/ links can
+  redirect, so nothing breaks.
+- Content: keep authoring in the Pulse repo; split the public set from
+  the internal ops docs. Markdown, ASCII, YAML front matter (title,
+  description), relative links, images under docs/img/. Suggested first
+  nav: Introduction; Install (from the release artifact); Quick start;
+  Configuration (env table: PULSE_BIND, PULSE_LANDING_PATH,
+  PULSE_ASSETS_DIR, PULSE_CORS_ORIGIN, build vars); HTTP API (/health,
+  /api/version, /api/echo, /api/events); Operations (nginx + systemd
+  shape); Security and beta limits (keep the gap list in the docs too);
+  Release history. A docs/summary.md ordering file helps.
+- Build: phase A, send the public markdown; the website lane renders it
+  with the shared template and commits the built pages under
+  projects/pulse/docs/ on each release. If it grows, Pulse CI can build
+  the docs itself and publish to the docs root; the website lane wires
+  nav and style. Doc claims follow the same rule as the site: reviewable
+  against the fact sheet, gaps stated.
+
+Release/download conventions (so the buttons and mirror light up cleanly):
+- Tag `pulse-v0.1.0`; assets `pulse-<ver>-<os>-<arch>.zip` + `.sha256`,
+  plus a `SHA256SUMS` file (example: pulse-0.1.0-linux-x64.zip).
+- Publish only platforms with green suites. Windows and Linux are
+  covered; macOS is not in the fact sheet -- if untested, ship no macOS
+  artifact and the page keeps that button "soon". The page mirrors
+  exactly what is on dl: no artifact, no button.
+- CI publishes to GitHub releases; the dl mirror picks it up on the :17
+  sweep (manual fallback dl-deploy.sh). Layout:
+  dl.xiom-lang.org/pulse/releases/pulse-v0.1.0/... and
+  dl.xiom-lang.org/pulse/latest.json.
+- /api/version on the demo must report the same version as the tag; the
+  unit carries PULSE_BUILD_COMMIT/PULSE_BUILD_DATE for provenance.
+- Keep CHANGELOG.md current and put release highlights in the GitHub
+  release body (a machine-readable notes file is not needed yet; we can
+  add it later like the compiler's).
+- When the release is cut, relay back with the tag, artifact names and
+  demo status; the website lane then enables the buttons and the badge,
+  and the first docs render ships with the same release.
+
 ### Relay to ops: Pulse demo deployment runbook (2026-10-09, greenlit)
 
 Owner greenlit the live demo. Sequence first (owner/Pulse lane, per
@@ -1787,6 +1852,9 @@ until then, and stays as the fallback after.
    - `location /` -> proxy_pass http://127.0.0.1:<port>;
    - `location /img/` -> static from <published-tree>/projects/pulse
      (or let Pulse serve /assets/*);
+   - `location /docs/` -> static from <published-tree>/projects/pulse/docs
+     (product docs: nginx serves them directly, never proxied to the
+     demo);
    - `location /metrics` -> deny (ops network only);
    - `error_page 502 503 504 = @pulse_fallback;` with
      `location @pulse_fallback` serving the static
