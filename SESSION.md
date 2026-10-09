@@ -1150,6 +1150,18 @@ Remaining:
     systemd unit, env, fallback, monitoring) is recorded above, gated on
     the pulse-v0.1.0 artifacts reaching dl. Badge and download wiring
     happens after the demo and release exist; the beta banner stays.
+81. **Ops: rulesets done, dl product namespaces ready (done 2026-10-09)**:
+    branch rulesets are in place and the dl mirror now serves product
+    namespaces ahead of the Pulse release. Wiring targets for later:
+    `https://dl.xiom-lang.org/pulse/latest.json`; assets under
+    `/pulse/releases/pulse-v0.1.0/pulse-0.1.0-<os>-<arch>.zip` (+
+    `.sha256`); the compiler's `/latest.json` and `/releases/*` are
+    unchanged. Checked 2026-10-09 13:41 UTC: `pulse/latest.json` 404 (not
+    published yet), compiler `latest.json` 200. The demo deploy follows
+    the artifact and the static site stays the fallback. Nothing to do
+    website-side until the demo is live; then wire the live badge
+    (/health + /api/version, same-origin) and the download buttons to the
+    /pulse/ namespace; the beta banner stays.
 
 ## Cross-lane notes
 
