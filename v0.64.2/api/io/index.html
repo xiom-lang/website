@@ -3708,10 +3708,10 @@
 </ul>
 <h4 id="fn-read_file_linespath-str-resultvecstr-ioerror"><code>fn read_file_lines(path: Str) -&gt; Result[Vec[Str], IOError]</code><a class="headerlink" href="#fn-read_file_linespath-str-resultvecstr-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>read_file_lines reads a file and returns its lines as a Vec[Str]. Trailing newline characters are stripped; a trailing CR is removed from each line so CRLF files yield clean line values (ORBITDB relay 2026-10-08). Complexity: O(n).</p>
+<p>read_file_lines reads a file and returns its lines as a Vec[Str]. Trailing newline characters are stripped; a trailing CR is removed from each line so CRLF files yield clean line values (ORBITDB relay 2026-10-08). An empty (zero-byte) file yields Ok with zero lines. The read relies on the size reported by the file system (regular files); files that report size 0 (e.g. /proc entries) read as empty -- use the byte reader for those. Complexity: O(n).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= 1</code></li>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
 </ul>
 <h4 id="fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror"><code>fn write_file_lines(path: Str, lines: &amp;Vec[Str]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_file_linespath-str-lines-vecstr-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>

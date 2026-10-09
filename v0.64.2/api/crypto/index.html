@@ -3389,6 +3389,9 @@
 <blockquote>
 <p>SHA-256 digest (32 bytes).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h4 id="fn-sha256_accelerateddata-vecuint8-vecuint8"><code>fn sha256_accelerated(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha256_accelerateddata-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>SHA-256 using the hardware-accelerated path when available.</p>
@@ -3401,6 +3404,9 @@
 <blockquote>
 <p>Lowercase hex SHA-256 digest.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h4 id="fn-sha512data-vecuint8-vecuint8"><code>fn sha512(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha512data-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>SHA-512 digest (64 bytes).</p>
@@ -3428,6 +3434,9 @@
 <p>Spec: https://github.com/BLAKE3-team/BLAKE3-specs</p>
 <p>Single-chunk inputs (&lt;= 1024 bytes) compress the chunk directly with CHUNK_START|CHUNK_END|ROOT. Larger inputs are hashed through the binary tree: each 1024-byte chunk produces a leaf CV (chunk counter = chunk index), leaves are merged pairwise via parent nodes, and the root node carries the ROOT flag. The 32-byte digest is the root output words 7,6,5,4,3,2,1,0 serialized little-endian (reversed word order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h4 id="fn-hmac_sha256key-vecuint8-data-vecuint8-vecuint8"><code>fn hmac_sha256(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hmac_sha256key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>HMAC-SHA-256 of <code>data</code> with <code>key</code>.</p>
@@ -3865,42 +3874,74 @@
 <blockquote>
 <p>SHA-256 digest (32 bytes). Delegates to xiom.crypto.sha256. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-crypto_hash_sha512data-vecuint8-vecuint8"><code>fn crypto_hash_sha512(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_sha512data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>SHA-512 digest (64 bytes). Implemented locally with the corrected 64-bit rotate; the flat module's sha512 is not used (broken in the current build). Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h5 id="fn-crypto_hash_md5data-vecuint8-vecuint8"><code>fn crypto_hash_md5(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_md5data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>MD5 digest (16 bytes). Local implementation (the flat module's md5 fails its test vector in the current build). Legacy, interop only. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 16</code></li>
+</ul>
 <h5 id="fn-crypto_hash_sha256_hexdata-vecuint8-str"><code>fn crypto_hash_sha256_hex(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-crypto_hash_sha256_hexdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>SHA-256 digest as lowercase hex. Delegates to xiom.crypto.sha256_hex. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h5 id="fn-crypto_hash_sha512_hexdata-vecuint8-str"><code>fn crypto_hash_sha512_hex(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-crypto_hash_sha512_hexdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>SHA-512 digest as lowercase hex (128 characters). Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 128</code></li>
+</ul>
 <h5 id="fn-crypto_hash_hmac_sha256key-vecuint8-data-vecuint8-vecuint8"><code>fn crypto_hash_hmac_sha256(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_hmac_sha256key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Keyed SHA-256 MAC. Delegates to xiom.crypto.hmac_sha256. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-crypto_hash_hmac_sha512key-vecuint8-data-vecuint8-vecuint8"><code>fn crypto_hash_hmac_sha512(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_hmac_sha512key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Keyed SHA-512 MAC (RFC 2104), built on the local SHA-512. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h5 id="fn-crypto_hash_hmac_md5key-vecuint8-data-vecuint8-vecuint8"><code>fn crypto_hash_hmac_md5(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_hmac_md5key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Keyed MD5 MAC (RFC 2104). Legacy, interop only. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 16</code></li>
+</ul>
 <h5 id="fn-crypto_hash_pbkdf2_sha256password-vecuint8-salt-vecuint8-iterations-int-len-int-vecuint8"><code>fn crypto_hash_pbkdf2_sha256(password: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], iterations: Int, len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_pbkdf2_sha256password-vecuint8-salt-vecuint8-iterations-int-len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>PBKDF2-HMAC-SHA256 (RFC 2898): derive <code>len</code> key bytes from a password. Complexity: O(iterations * len / 32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(iterations &lt; 1 || len &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(iterations &gt;= 1 &amp;&amp; len &gt;= 1) =&gt; (result.len() == len)</code></li>
+</ul>
 <h5 id="fn-crypto_hash_hkdfikm-vecuint8-salt-vecuint8-info-vecuint8-len-int-vecuint8"><code>fn crypto_hash_hkdf(ikm: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], info: &amp;Vec[UInt8], len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_hkdfikm-vecuint8-salt-vecuint8-info-vecuint8-len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>HKDF (RFC 5869) with SHA-256. <code>salt</code> may be empty (defaults to zeros). Complexity: O(len / 32 + n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 1 || len &gt; 255 * 32) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 1 &amp;&amp; len &lt;= 255 * 32) =&gt; (result.len() == len)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

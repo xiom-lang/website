@@ -4222,42 +4222,78 @@
 <blockquote>
 <p>Best rational approximation of f via continued-fraction convergents. The first convergent that would overflow i64 (or the first exact one) is returned. Zero, NaN, and infinities map to 0/1 (documented). |f| must be &lt; 2^63 for the floor cast; larger magnitudes return the current convergent. Complexity: O(log |f|) iterations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f == 0) =&gt; (result.num == 0 &amp;&amp; result.den == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(f != f) =&gt; (result.num == 0 &amp;&amp; result.den == 1)</code></li>
+</ul>
 <h5 id="fn-fraction_adda-fraction-b-fraction-fraction"><code>fn fraction_add(a: Fraction, b: Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_adda-fraction-b-fraction-fraction" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>a + b. Pre-reduces by gcd(a.den, b.den) to limit overflow; the result is re-reduced. Cross-products may still overflow i64 for very large denominators (documented). Complexity: O(log max(a.den, b.den)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.den &gt; 0</code></li>
+</ul>
 <h5 id="fn-fraction_suba-fraction-b-fraction-fraction"><code>fn fraction_sub(a: Fraction, b: Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_suba-fraction-b-fraction-fraction" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>a - b. Complexity: O(log max(a.den, b.den)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>(a.num == b.num &amp;&amp; a.den == b.den) =&gt; (result.num == 0)</code></li>
+</ul>
 <h5 id="fn-fraction_mula-fraction-b-fraction-fraction"><code>fn fraction_mul(a: Fraction, b: Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_mula-fraction-b-fraction-fraction" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>a * b. Cross-cancels via gcd before multiplying, minimizing overflow. Complexity: O(log max(|num|, den)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>(a.num == 0) =&gt; (result.num == 0)</code></li>
+</ul>
 <h5 id="fn-fraction_diva-fraction-b-fraction-optionfraction"><code>fn fraction_div(a: Fraction, b: Fraction) -&gt; Option[Fraction]</code><a class="headerlink" href="#fn-fraction_diva-fraction-b-fraction-optionfraction" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>a / b as a / (b^-1). None when b is zero (no silent division by zero). Complexity: O(log max(|num|, den)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(b.num == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fraction_reducef-fraction-fraction"><code>fn fraction_reduce(f: Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_reducef-fraction-fraction" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Reduces f to lowest terms with a positive denominator. Identity when f already satisfies the module invariant. Complexity: O(log max(|num|,|den|)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.num == 0) =&gt; (result.num == 0 &amp;&amp; result.den == 1)</code></li>
+</ul>
 <h5 id="fn-fraction_to_floatf-fraction-float64"><code>fn fraction_to_float(f: Fraction) -&gt; Float64</code><a class="headerlink" href="#fn-fraction_to_floatf-fraction-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts to Float64 (numerator / denominator division). A zero denominator (invariant violation) returns 0.0 (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.num == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-fraction_to_strf-fraction-str"><code>fn fraction_to_str(f: Fraction) -&gt; Str</code><a class="headerlink" href="#fn-fraction_to_strf-fraction-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Renders as "num/den". Complexity: O(1) string building.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.num == 0 &amp;&amp; f.den == 1) =&gt; (result == "0/1")</code></li>
+</ul>
 <h5 id="fn-fraction_is_zerof-fraction-bool"><code>fn fraction_is_zero(f: Fraction) -&gt; Bool</code><a class="headerlink" href="#fn-fraction_is_zerof-fraction-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Returns true iff the numerator is zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.num == 0) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(f.num != 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-fraction_comparea-fraction-b-fraction-int"><code>fn fraction_compare(a: Fraction, b: Fraction) -&gt; Int</code><a class="headerlink" href="#fn-fraction_comparea-fraction-b-fraction-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Three-way comparison via gcd-reduced cross-multiplication: -1, 0, or 1. Valid because denominators are positive. Cross-products can overflow i64 for large fractions (documented). Complexity: O(log max(den)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>(a.num == 0 &amp;&amp; b.num == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.num == 0 &amp;&amp; b.num &gt; 0 &amp;&amp; a.den &gt; 0 &amp;&amp; b.den &gt; 0) =&gt; (result == -1)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

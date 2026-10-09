@@ -5934,10 +5934,11 @@
 </ul>
 <h5 id="fn-to_string_charc-char-str"><code>fn to_string_char(c: Char) -&gt; Str</code><a class="headerlink" href="#fn-to_string_charc-char-str" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Renders a character as a single-character UTF-8 string. Complexity: O(1).</p>
+<p>Renders a character as a single-character UTF-8 string. NOTE: U+0000 renders as "" -- the string backend truncates at a NUL byte at construction time; every other code point yields a 1-4 byte string. Complexity: O(1).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>(c != ' ') =&gt; (result.len() &gt;= 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(c == ' ') =&gt; (result.len() == 0)</code></li>
 </ul>
 <h5 id="fn-to_string_radixn-int-radix-int-str"><code>fn to_string_radix(n: Int, radix: Int) -&gt; Str</code><a class="headerlink" href="#fn-to_string_radixn-int-radix-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>

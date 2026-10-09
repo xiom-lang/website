@@ -2913,30 +2913,51 @@
 <blockquote>
 <p>Left fold over v with seed init: acc = f(acc, v[i]) for i in order. Returns the final accumulator. O(n). The combiner takes (acc, element).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result == init)</code></li>
+</ul>
 <h5 id="fn-iter_fold_rightv-vecint-init-int-f-fnint-int-int-int"><code>fn iter_fold_right(v: &amp;Vec[Int], init: Int, f: fn(Int, &amp;Int) -&gt; Int) -&gt; Int</code><a class="headerlink" href="#fn-iter_fold_rightv-vecint-init-int-f-fnint-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Right fold over v with seed init: acc = f(acc, v[i]) visiting elements from the last to the first. Returns the final accumulator. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result == init)</code></li>
+</ul>
 <h5 id="fn-iter_reducev-vecint-f-fnint-int-int-optionint"><code>fn iter_reduce(v: &amp;Vec[Int], f: fn(&amp;Int, &amp;Int) -&gt; Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_reducev-vecint-f-fnint-int-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fold using the first element as the seed; None if v is empty. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_sumv-vecint-int"><code>fn iter_sum(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-iter_sumv-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sum of all elements of an Int vector. O(n). Empty vector sums to 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-iter_productv-vecint-int"><code>fn iter_product(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-iter_productv-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Product of all elements of an Int vector. O(n). Empty vector is 1.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result == 1)</code></li>
+</ul>
 <h5 id="fn-iter_anyv-vecint-pred-fnint-bool-bool"><code>fn iter_any(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-iter_anyv-vecint-pred-fnint-bool-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if any element satisfies pred. O(n). Short-circuits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-iter_allv-vecint-pred-fnint-bool-bool"><code>fn iter_all(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-iter_allv-vecint-pred-fnint-bool-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if every element satisfies pred. O(n). Short-circuits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-iter_countv-vecint-int"><code>fn iter_count(v: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-iter_countv-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements in v. O(1).</p>
@@ -2955,30 +2976,51 @@
 <blockquote>
 <p>Element at index n, or None if out of bounds. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0 || n &gt;= v.len()) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_lastv-vecint-optionint"><code>fn iter_last(v: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_lastv-vecint-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Last element of v, or None if empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_positionv-vecint-pred-fnint-bool-optionint"><code>fn iter_position(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_positionv-vecint-pred-fnint-bool-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the first element satisfying pred, or None. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_maxv-vecint-optionint"><code>fn iter_max(v: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_maxv-vecint-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Maximum element of an Int vector, or None if empty. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_minv-vecint-optionint"><code>fn iter_min(v: &amp;Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_minv-vecint-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minimum element of an Int vector, or None if empty. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_partitionv-vecint-pred-fnint-bool-vecint-vecint"><code>fn iter_partition(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; (Vec[Int], Vec[Int])</code><a class="headerlink" href="#fn-iter_partitionv-vecint-pred-fnint-bool-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Split v into (matching, non-matching) vectors by pred. O(n). The first tuple element holds elements where pred is true, in order.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() + result._1.len() == v.len()</code></li>
+</ul>
 <h5 id="fn-iter_group_byv-vecint-key-fnint-int-vecvecint"><code>fn iter_group_by(v: &amp;Vec[Int], key: fn(&amp;Int) -&gt; Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-iter_group_byv-vecint-key-fnint-int-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Split v into contiguous groups of elements sharing an equal key value. Returns a vector of groups in original order. O(n). NOTE: nested Vec[Vec[Int]] element access is unreliable in the current compiler; treat the result as opaque and inspect group lengths only.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3053,26 +3095,46 @@
 <blockquote>
 <p>First element satisfying pred, or None. O(n). Short-circuits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_find_mapv-vecint-f-fnint-optionint-optionint"><code>fn iter_find_map(v: &amp;Vec[Int], f: fn(&amp;Int) -&gt; Option[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_find_mapv-vecint-f-fnint-optionint-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>First Some value produced by f over the elements, or None. O(n). Short-circuits on the first Some result.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_containsv-vecint-item-int-bool"><code>fn iter_contains(v: &amp;Vec[Int], item: Int) -&gt; Bool</code><a class="headerlink" href="#fn-iter_containsv-vecint-item-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if item occurs in v. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-iter_position_ofv-vecint-item-int-optionint"><code>fn iter_position_of(v: &amp;Vec[Int], item: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-iter_position_ofv-vecint-item-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the first occurrence of item, or None. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-iter_chunksv-vecint-n-int-vecvecint"><code>fn iter_chunks(v: &amp;Vec[Int], n: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-iter_chunksv-vecint-n-int-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Contiguous non-overlapping chunks of size n; the last chunk may be short. O(n). n &lt;= 0 yields an empty vector. Returns Vec[Vec[Int]]; nested element access is unreliable in the current compiler - treat as opaque.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0 || v.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0 &amp;&amp; v.len() &gt; 0) =&gt; (result.len() == (v.len() + n - 1) / n)</code></li>
+</ul>
 <h5 id="fn-iter_windowsv-vecint-n-int-vecvecint"><code>fn iter_windows(v: &amp;Vec[Int], n: Int) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-iter_windowsv-vecint-n-int-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All contiguous length-n slices of v. O(n * w). Returns Vec[Vec[Int]]; nested element access is unreliable in the current compiler. An empty result means n &lt;= 0 or n &gt; v.len().</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0 || n &gt; v.len()) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0 &amp;&amp; n &lt;= v.len()) =&gt; (result.len() == v.len() - n + 1)</code></li>
+</ul>
 <h5 id="fn-iter_cyclev-vecint-n-int-vecint"><code>fn iter_cycle(v: &amp;Vec[Int], n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_cyclev-vecint-n-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>v repeated n times concatenated. O(n * v.len()). n &lt;= 0 yields empty.</p>
@@ -3111,10 +3173,19 @@
 <blockquote>
 <p>Lexicographic comparison of a and b: -1, 0, or 1. O(min(len)). A prefix of the other compares smaller.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1 &amp;&amp; result &lt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == 0 &amp;&amp; b.len() &gt; 0) =&gt; (result == -1)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() &gt; 0 &amp;&amp; b.len() == 0) =&gt; (result == 1)</code></li>
+</ul>
 <h5 id="fn-iter_eqa-vecint-b-vecint-bool"><code>fn iter_eq(a: &amp;Vec[Int], b: &amp;Vec[Int]) -&gt; Bool</code><a class="headerlink" href="#fn-iter_eqa-vecint-b-vecint-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Element-wise equality of a and b (lengths must match). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3184,7 +3255,8 @@
 <p>Yield the next integer; None once <code>start &gt;= end</code>. Consumes from the front.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start@pre &gt;= self.end@pre) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start@pre &lt; self.end@pre) =&gt; (result.is_some == true)</code></li>
 </ul>
 <h4 id="fn-lenself-self-int"><code>fn len(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-lenself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3219,6 +3291,10 @@
 <blockquote>
 <p>Yield the next integer; None after the inclusive end was reached.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.done@pre == true) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.done@pre == false) =&gt; (result.is_some == true)</code></li>
+</ul>
 <h4 id="fn-mapuself-self-f-fnint-u-mapiterint-u"><code>fn map[U](self: Self, f: fn(Int) -&gt; U) -&gt; MapIter[Int, U]</code><a class="headerlink" href="#fn-mapuself-self-f-fnint-u-mapiterint-u" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Lazily apply <code>f</code> to each integer in the range.</p>
@@ -3231,14 +3307,23 @@
 <blockquote>
 <p>Pair each integer with its 0-based position.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.index == 0</code></li>
+</ul>
 <h4 id="fn-takeself-self-n-int-takeiterint"><code>fn take(self: Self, n: Int) -&gt; TakeIter[Int]</code><a class="headerlink" href="#fn-takeself-self-n-int-takeiterint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Yield at most the first <code>n</code> integers.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.remaining == n</code></li>
+</ul>
 <h4 id="fn-skipself-self-n-int-skipiterint"><code>fn skip(self: Self, n: Int) -&gt; SkipIter[Int]</code><a class="headerlink" href="#fn-skipself-self-n-int-skipiterint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Skip the first <code>n</code> integers.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.to_skip == n</code></li>
+</ul>
 <h4 id="fn-chainself-self-other-range-chainiterint-int"><code>fn chain(self: Self, other: Range) -&gt; ChainIter[Int, Int]</code><a class="headerlink" href="#fn-chainself-self-other-range-chainiterint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Continue with the integers of <code>other</code> after this range ends.</p>
@@ -3477,6 +3562,9 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[(Int, T)]</code>. No source comment yet.</p>
 <h4 id="fn-nexttself-self-optiont_1"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h4 id="fn-nexttself-self-optiont_2"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="fn-nextt-uself-self-optiont"><code>fn next[T, U](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nextt-uself-self-optiont" title="Permanent link">&para;</a></h4>
@@ -3489,10 +3577,19 @@
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;U) -&gt; Bool</code>; returns <code>FilterIter[U]</code>. No source comment yet.</p>
 <h4 id="fn-enumeratet-uself-self-enumerateiteru"><code>fn enumerate[T, U](self: Self) -&gt; EnumerateIter[U]</code><a class="headerlink" href="#fn-enumeratet-uself-self-enumerateiteru" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>EnumerateIter[U]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.index == 0</code></li>
+</ul>
 <h4 id="fn-taket-uself-self-n-int-takeiteru"><code>fn take[T, U](self: Self, n: Int) -&gt; TakeIter[U]</code><a class="headerlink" href="#fn-taket-uself-self-n-int-takeiteru" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[U]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.remaining == n</code></li>
+</ul>
 <h4 id="fn-skipt-uself-self-n-int-skipiteru"><code>fn skip[T, U](self: Self, n: Int) -&gt; SkipIter[U]</code><a class="headerlink" href="#fn-skipt-uself-self-n-int-skipiteru" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>SkipIter[U]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.to_skip == n</code></li>
+</ul>
 <h4 id="fn-chaint-uself-self-other-range-chainiteru-int"><code>fn chain[T, U](self: Self, other: Range) -&gt; ChainIter[U, Int]</code><a class="headerlink" href="#fn-chaint-uself-self-other-range-chainiteru-int" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>other: Range</code>; returns <code>ChainIter[U, Int]</code>. No source comment yet.</p>
 <h4 id="fn-zipt-uself-self-other-range-zipiteru-int"><code>fn zip[T, U](self: Self, other: Range) -&gt; ZipIter[U, Int]</code><a class="headerlink" href="#fn-zipt-uself-self-other-range-zipiteru-int" title="Permanent link">&para;</a></h4>
@@ -3527,10 +3624,19 @@
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>FilterIter[T]</code>. No source comment yet.</p>
 <h4 id="fn-enumeratetself-self-enumerateitert"><code>fn enumerate[T](self: Self) -&gt; EnumerateIter[T]</code><a class="headerlink" href="#fn-enumeratetself-self-enumerateitert" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>EnumerateIter[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.index == 0</code></li>
+</ul>
 <h4 id="fn-taketself-self-n-int-takeitert"><code>fn take[T](self: Self, n: Int) -&gt; TakeIter[T]</code><a class="headerlink" href="#fn-taketself-self-n-int-takeitert" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.remaining == n</code></li>
+</ul>
 <h4 id="fn-skiptself-self-n-int-skipitert"><code>fn skip[T](self: Self, n: Int) -&gt; SkipIter[T]</code><a class="headerlink" href="#fn-skiptself-self-n-int-skipitert" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>SkipIter[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.to_skip == n</code></li>
+</ul>
 <h4 id="fn-chaintself-self-other-range-chainitert-int"><code>fn chain[T](self: Self, other: Range) -&gt; ChainIter[T, Int]</code><a class="headerlink" href="#fn-chaintself-self-other-range-chainitert-int" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>other: Range</code>; returns <code>ChainIter[T, Int]</code>. No source comment yet.</p>
 <h4 id="fn-ziptself-self-other-range-zipitert-int"><code>fn zip[T](self: Self, other: Range) -&gt; ZipIter[T, Int]</code><a class="headerlink" href="#fn-ziptself-self-other-range-zipitert-int" title="Permanent link">&para;</a></h4>
@@ -3563,6 +3669,9 @@
 <p><em>Generated summary:</em> Method; takes <code>f: fn((Int, T)) -&gt; U</code>; returns <code>MapIter[(Int, T), U]</code>. No source comment yet.</p>
 <h4 id="fn-taketself-self-n-int-takeiterint-t"><code>fn take[T](self: Self, n: Int) -&gt; TakeIter[(Int, T)]</code><a class="headerlink" href="#fn-taketself-self-n-int-takeiterint-t" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[(Int, T)]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.remaining == n</code></li>
+</ul>
 <h4 id="fn-collecttself-self-vecint-t"><code>fn collect[T](self: Self) -&gt; Vec[(Int, T)]</code><a class="headerlink" href="#fn-collecttself-self-vecint-t" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[(Int, T)]</code>. No source comment yet.</p>
 <h4 id="fn-counttself-self-int_1"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int_1" title="Permanent link">&para;</a></h4>
@@ -3631,6 +3740,9 @@
 <p><em>Generated summary:</em> Method; takes <code>f: fn(T) -&gt; V</code>; returns <code>MapIter[T, V]</code>. No source comment yet.</p>
 <h4 id="fn-taket-uself-self-n-int-takeitert"><code>fn take[T, U](self: Self, n: Int) -&gt; TakeIter[T]</code><a class="headerlink" href="#fn-taket-uself-self-n-int-takeitert" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.remaining == n</code></li>
+</ul>
 <h4 id="fn-findt-uself-self-predicate-fnt-bool-optiont"><code>fn find[T, U](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Option[T]</code><a class="headerlink" href="#fn-findt-uself-self-predicate-fnt-bool-optiont" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="fn-allt-uself-self-predicate-fnt-bool-bool"><code>fn all[T, U](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-allt-uself-self-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h4>
@@ -3657,7 +3769,7 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[(T, U)]</code>. No source comment yet.</p>
 <h4 id="type-stepbyiter"><code>type StepByIter</code><a class="headerlink" href="#type-stepbyiter" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>StepBy -- yields every nth element (1-based step) Iterator taking every <code>step</code>-th element of an underlying iterator.</p>
+<p>StepBy -- yields every nth element (1-based step) Iterator taking every <code>step</code>-th element of an underlying Range.</p>
 </blockquote>
 <table>
 <thead>
@@ -3668,8 +3780,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>iter</code></td>
-<td><code>Iterator[T]</code></td>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
 </tr>
 <tr>
 <td><code>step</code></td>
@@ -3681,15 +3793,19 @@
 </tr>
 </tbody>
 </table>
-<h4 id="fn-step_bytself-self-step-int-stepbyitert"><code>fn step_by[T](self: Self, step: Int) -&gt; StepByIter[T]</code><a class="headerlink" href="#fn-step_bytself-self-step-int-stepbyitert" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>step: Int</code>; returns <code>StepByIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-step_byself-self-step-int-stepbyiterint"><code>fn step_by(self: Self, step: Int) -&gt; StepByIter[Int]</code><a class="headerlink" href="#fn-step_byself-self-step-int-stepbyiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Take every <code>step</code>-th element, starting with the first.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>step &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.step == step</code></li>
+<li><strong>Postcondition:</strong> <code>result.first == true</code></li>
 </ul>
 <h4 id="fn-nexttself-self-optiont_3"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_3" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <ul>
-<li><strong>Postcondition:</strong> <code>true</code></li>
+<li><strong>Precondition:</strong> <code>self.step &gt; 0</code></li>
 </ul>
 <h4 id="type-takewhileiter"><code>type TakeWhileIter</code><a class="headerlink" href="#type-takewhileiter" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3704,8 +3820,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>iter</code></td>
-<td><code>Iterator[T]</code></td>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
 </tr>
 <tr>
 <td><code>predicate</code></td>
@@ -3717,8 +3833,13 @@
 </tr>
 </tbody>
 </table>
-<h4 id="fn-take_whiletself-self-predicate-fnt-bool-takewhileitert"><code>fn take_while[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; TakeWhileIter[T]</code><a class="headerlink" href="#fn-take_whiletself-self-predicate-fnt-bool-takewhileitert" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>TakeWhileIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-take_whileself-self-predicate-fnint-bool-takewhileiterint"><code>fn take_while(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; TakeWhileIter[Int]</code><a class="headerlink" href="#fn-take_whileself-self-predicate-fnint-bool-takewhileiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Yield elements while <code>predicate</code> holds, then stop permanently.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.done == false</code></li>
+</ul>
 <h4 id="fn-nexttself-self-optiont_4"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_4" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <ul>
@@ -3737,8 +3858,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>iter</code></td>
-<td><code>Iterator[T]</code></td>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
 </tr>
 <tr>
 <td><code>predicate</code></td>
@@ -3750,8 +3871,13 @@
 </tr>
 </tbody>
 </table>
-<h4 id="fn-skip_whiletself-self-predicate-fnt-bool-skipwhileitert"><code>fn skip_while[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; SkipWhileIter[T]</code><a class="headerlink" href="#fn-skip_whiletself-self-predicate-fnt-bool-skipwhileitert" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>SkipWhileIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-skip_whileself-self-predicate-fnint-bool-skipwhileiterint"><code>fn skip_while(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; SkipWhileIter[Int]</code><a class="headerlink" href="#fn-skip_whileself-self-predicate-fnint-bool-skipwhileiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Skip elements while <code>predicate</code> holds, then yield the rest.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.skipped == false</code></li>
+</ul>
 <h4 id="fn-nexttself-self-optiont_5"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_5" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="type-inspectiter"><code>type InspectIter</code><a class="headerlink" href="#type-inspectiter" title="Permanent link">&para;</a></h4>
@@ -3767,8 +3893,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>iter</code></td>
-<td><code>Iterator[T]</code></td>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
 </tr>
 <tr>
 <td><code>f</code></td>
@@ -3776,18 +3902,28 @@
 </tr>
 </tbody>
 </table>
-<h4 id="fn-inspecttself-self-f-fnt-unit-inspectitert"><code>fn inspect[T](self: Self, f: fn(&amp;T) -&gt; Unit) -&gt; InspectIter[T]</code><a class="headerlink" href="#fn-inspecttself-self-f-fnt-unit-inspectitert" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>f: fn(&amp;T) -&gt; Unit</code>; returns <code>InspectIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-inspectself-self-f-fnint-unit-inspectiterint"><code>fn inspect(self: Self, f: fn(&amp;Int) -&gt; Unit) -&gt; InspectIter[Int]</code><a class="headerlink" href="#fn-inspectself-self-f-fnint-unit-inspectiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Call <code>f</code> on each element as it is consumed, passing it through unchanged.</p>
+</blockquote>
 <h4 id="fn-nexttself-self-optiont_6"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_6" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="fn-range_stepstart-int-end-int-step-int-vecint"><code>fn range_step(start: Int, end: Int, step: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-range_stepstart-int-end-int-step-int-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Create a Vec[Int] containing values from start to end advancing by step. Returns empty Vec if step &lt;= 0 or start &gt;= end. O(N). Collect [start, end) stepping by <code>step</code> into a Vec (empty when step &lt;= 0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(step &lt;= 0 || start &gt;= end) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(step &gt; 0 &amp;&amp; start &lt; end) =&gt; (result.len() == (end - start + step - 1) / step)</code></li>
+</ul>
 <h4 id="fn-repeat_nvalue-int-n-int-vecint"><code>fn repeat_n(value: Int, n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-repeat_nvalue-int-n-int-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Create a Vec[Int] containing <code>value</code> repeated <code>n</code> times. O(N). Returns empty Vec if n &lt;= 0. Vec with <code>value</code> repeated <code>n</code> times (empty when n &lt;= 0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() == n)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="mapxi"><code>map.xi</code><a class="headerlink" href="#mapxi" title="Permanent link">&para;</a></h2>
