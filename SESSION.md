@@ -1139,6 +1139,17 @@ Remaining:
     and claim updates; the website lane then sends ops the runbook and
     wires the live badge and downloads. Recorded under "Paste-ready
     prompts for other lanes".
+80. **Pulse claim deltas applied; demo greenlit; ops runbook ready (done
+    2026-10-09)**: per the Pulse lane's reply (WEBSITE-RELAY-PULSE.md
+    section 9) the Pulse page now reads smoke 78/78, the smuggling card
+    covers chunked request decoding plus the TE/CL guard, the kv note
+    reads 45m soak green, the flat-memory phrase is gone (no memory or
+    uptime claims while C-PULSE-14 is open), the internal bar reads about
+    55%, and the landed hardening items left the "what is next" list. The
+    owner greenlit the live demo; the ops deployment runbook (vhost,
+    systemd unit, env, fallback, monitoring) is recorded above, gated on
+    the pulse-v0.1.0 artifacts reaching dl. Badge and download wiring
+    happens after the demo and release exist; the beta banner stays.
 
 ## Cross-lane notes
 
@@ -1718,6 +1729,54 @@ We will then send ops the runbook (vhost, unit, env, fallback,
 monitoring), wire the badge and downloads per WEBSITE-RELAY-PULSE.md
 sections 5-6, and keep the beta banner until the gap list clears. New
 claims continue to route through the Pulse lane before publishing.
+
+### Relay to ops: Pulse demo deployment runbook (2026-10-09, greenlit)
+
+Owner greenlit the live demo. Sequence first (owner/Pulse lane, per
+OPS-REQUEST.md section E): CI release workflow -> repo public + main
+rulesets -> CI cuts `pulse-v0.1.0` -> dl publishes
+`pulse-0.1.0-<os>-<arch>.zip` + `.sha256`. Deploy below once the artifact
+is on the mirror; pulse.xiom-lang.org keeps serving the static folder
+until then, and stays as the fallback after.
+
+1. Install: fetch the linux-x64 zip + `.sha256` from dl (or GitHub
+   releases), verify SHA256, unpack to the Pulse service directory
+   (dedicated user, no capabilities).
+2. systemd unit `pulse-demo.service`:
+   - ExecStart=<pulse dir>/pulse_app
+   - Environment=PULSE_BIND=127.0.0.1:<port>   (loopback only)
+   - Environment=PULSE_LANDING_PATH=<published-tree>/projects/pulse/index.html
+     (the hourly-pulled website checkout; read per request, so page edits
+     flow without a restart)
+   - Environment=PULSE_ASSETS_DIR=<published-tree>/projects/pulse
+     (served at /assets/*; nginx serving /img/ directly is equally fine)
+   - Environment=PULSE_BUILD_COMMIT=<release commit>
+     Environment=PULSE_BUILD_DATE=<release date>   (for /api/version)
+   - Environment=PULSE_CORS_ORIGIN=pulse.xiom-lang.org,xiom-lang.org
+     (comma allowlist; only needed for hub-embed widgets -- the badge
+     fetch is same-origin and needs no CORS)
+   - Restart=always.
+3. nginx vhost for pulse.xiom-lang.org (TLS/HSTS as the main site):
+   - `location /` -> proxy_pass http://127.0.0.1:<port>;
+   - `location /img/` -> static from <published-tree>/projects/pulse
+     (or let Pulse serve /assets/*);
+   - `location /metrics` -> deny (ops network only);
+   - `error_page 502 503 504 = @pulse_fallback;` with
+     `location @pulse_fallback` serving the static
+     <published-tree>/projects/pulse/index.html, so the subdomain never
+     goes dark.
+4. Monitoring: keyword check `"status":"ok"` on /health, probe
+   /api/version, alert if the fallback serves for more than a few
+   minutes.
+5. Known beta limits (accepted for the demo): no keep-alive between the
+   proxy and the app, no receive timeouts -- never expose the port
+   directly; no graceful drain, so restarts drop in-flight requests
+   briefly and the store heals.
+
+When the demo is live and pulse-v0.1.0 is on dl, the website lane wires
+the live badge (/health + /api/version, same-origin) and the download
+buttons to the real artifact URLs; the beta banner stays until the Pulse
+lane clears its gap list.
 
 ## Rules
 
