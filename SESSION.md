@@ -1309,6 +1309,19 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     dim while a request is in flight. The ops relay is handed over as-is
     (rate limits, nginx limits, the install-script content-type nit and
     the PULSE_BIND 0.0.0.0 follow-up).
+91. **Demo armor complete (done 2026-10-09)**: ops set the app env
+    PULSE_RATE_LIMIT=20 / PULSE_RATE_BURST=60 (global token bucket,
+    service restarted, loopback healthy) and the nginx outer limits
+    (limit_req 5 r/s per IP, burst 20 nodelay, limit_conn 10, 429s on
+    /api/ and = /health; zones in
+    /etc/nginx/conf.d/xiom-pulse-zones.conf, removed on rollback).
+    Verified under parallel bursts from two IPs; UptimeRobot headroom
+    unaffected. /install.sh and /install.ps1 now serve text/plain, and
+    the routes are verified: /, /api/version and statics 200, /metrics
+    403, unknown paths 404 (the synthetic-200 fallback is gone), POST
+    /api/echo 200. The 0.0.0.0 bind nit stays with the Pulse lane for the
+    next build. Ops side complete; nothing pending website-side except
+    the scheduled demo-UX deploy check.
 
 ## Cross-lane notes
 
