@@ -1302,6 +1302,13 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     line; the inline echo widget is gone and pulse-live.js keeps the
     badge, the demo state and the downloads. Protection relay for ops is
     recorded above (Pulse rate limits plus nginx limit_req/limit_conn).
+90. **Demo buttons switched to the primary blue (done 2026-10-09)**: the
+    demo controls now use `.btn-primary` (the blue buttons from the other
+    pages); `button.btn-secondary` keeps a transparent-background reset so
+    both classes work on real `<button>` elements, and disabled buttons
+    dim while a request is in flight. The ops relay is handed over as-is
+    (rate limits, nginx limits, the install-script content-type nit and
+    the PULSE_BIND 0.0.0.0 follow-up).
 
 ## Cross-lane notes
 
