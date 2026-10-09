@@ -1163,6 +1163,21 @@ Remaining:
     (/health + /api/version, same-origin) and the download buttons to the
     /pulse/ namespace; the beta banner stays.
 
+Ops confirmed the concrete shape (2026-10-09): dedicated service user,
+systemd on 127.0.0.1:3500, nginx proxy with the static fallback,
+UptimeRobot keyword check on /health; the mirror sweeps at :17 and
+`/opt/xiom/bin/dl-deploy.sh` is the manual fallback.
+82. **Ops staged the demo chain (done 2026-10-09)**: mirror install
+    recorded (`8cac984`): compiler current (v0.64.1), pulse skipped
+    pre-release, product-aware include live (nginx -t clean);
+    `pulse/latest.json` 404 is the correct pre-release state. Mirror
+    sweeps at :17 (manual fallback `/opt/xiom/bin/dl-deploy.sh`). The
+    demo deploy block is staged: service user, systemd on 127.0.0.1:3500,
+    nginx proxy with static fallback, UptimeRobot keyword check. Sequence
+    from here (Pulse lane): CI green -> pulse-v0.1.0 cut -> mirror sweep
+    -> ops deploy. Nothing needed website-side until the release is cut;
+    then wire the badge and download buttons.
+
 ## Cross-lane notes
 
 Release-notes mirror publish cannot be a website job (found 2026-09-24): the
