@@ -1269,6 +1269,23 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     The ops relay below asks for static locations to win for the real
     files, the app proxied for /, /health and /api/*, and a fallback that
     never invents 200s for unknown paths.
+88. **Pulse live-demo page and docs image support (done 2026-10-09)**:
+    `/demo/` is a dedicated interactive page that runs one real
+    same-origin request per feature and prints the raw response -- health,
+    /api/version, POST /api/echo (message box) and the crash-safe event
+    store (append / list / count). The status line reports exactly what
+    /health answered: when the service is proxied it says so and the
+    cards work; while the vhost fallback answers it says the service is
+    not proxied and shows the real HTTP results. Linked from the Pulse
+    nav, the Try-it-live section and the docs nav; demo.js is
+    self-contained. The markdown renderer now renders images
+    (`![alt](img/x.png)`) and the Pulse docs builder copies docs-src/img
+    into the built docs, ready for the images PULSE flagged under
+    docs/public/img. Context for the "docs missing / images missing"
+    report: at 14:10 UTC the server checkout predated the docs commit, so
+    /docs/ fell through to the landing fallback and its relative images
+    resolved under /docs/ and failed; the 14:23 pull brings the real
+    directory.
 
 ## Cross-lane notes
 
@@ -1916,13 +1933,20 @@ Probe of pulse.xiom-lang.org (2026-10-09 14:10 UTC):
 Requested nginx shape once the app listens on 127.0.0.1:3500:
 - `location = /install.sh` and `location = /install.ps1` -> static from
   the checkout (must win over any fallback);
-- `location /docs/` -> static; `location /img/` -> static;
+- `location /docs/` and `location /demo/` -> static (real files win);
+- `location /img/` -> static;
 - `location = /health` and `location /api/` -> proxy to the app;
 - `location /metrics` -> deny;
 - `location /` -> proxy to the app (it serves the landing);
 - fallback only on upstream failure (502/503/504) and only for `/`:
   serve the static landing then; unknown paths should be a real 404 (or
   502), never a synthetic 200 landing.
+
+Note: `/docs/` and `/demo/` are ordinary directories in the checkout, so
+they serve as soon as the hourly pull updates the tree; the synthetic
+fallback only masks them when the path is missing (that is why the docs
+looked absent and their relative images broke at 14:10 UTC -- the
+checkout predated the docs commit).
 
 Until the app is proxied, the static vhost should use
 `try_files $uri $uri/ =404;` (no catch-all index) so only real files
