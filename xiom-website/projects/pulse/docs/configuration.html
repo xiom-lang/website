@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configuration -- Pulse docs</title>
+<meta name="description" content="Environment variables and the JSON config file.">
+<link rel="canonical" href="https://pulse.xiom-lang.org/docs/configuration.html">
+<link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../img/xiom-logo_bg.png" alt="XIOM">
+      Pulse docs
+    </a>
+    <div class="navlinks">
+      <a href="https://xiom-lang.org/projects.html">Projects</a>
+      <a href="../">Pulse</a>
+      <a href="index.html">Docs</a>
+      <a href="https://opencollective.com/xiom">Support</a>
+    </div>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:40px;">
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+    <nav aria-label="Documentation" style="flex:0 0 220px;min-width:200px;">
+      <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Documentation</p>
+      <a href="index.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Introduction</a>
+        <a href="install.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Install</a>
+        <a href="quickstart.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Quick start</a>
+        <a href="configuration.html" style="display:block;padding:4px 0;font-size:14px;color:var(--signal);font-weight:600;">Configuration</a>
+        <a href="http-api.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">HTTP API</a>
+        <a href="operations.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Operations</a>
+        <a href="security.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Security and beta limits</a>
+        <a href="releases.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Release history</a>
+    </nav>
+    <article class="content-section" style="flex:1 1 420px;min-width:280px;margin-top:0;">
+<h1>Configuration</h1>
+<p>PULSE reads configuration from environment variables, optionally overlaid by a JSON file (<code>PULSE_CONFIG</code>); environment variables win. Run <code>pulse_app --check-config</code> to dump the effective configuration. Invalid values fall back to the default and produce a warning (startup and <code>--check-config</code>).</p>
+<table>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td><code>PULSE_PORT</code></td>
+<td><code>8080</code></td>
+<td>listen port</td>
+</tr>
+<tr>
+<td><code>PULSE_BIND</code></td>
+<td><code>127.0.0.1</code></td>
+<td>listen address (loopback by design)</td>
+</tr>
+<tr>
+<td><code>PULSE_LOG</code></td>
+<td><code>1</code></td>
+<td><code>0</code> disables access-log lines</td>
+</tr>
+<tr>
+<td><code>PULSE_STORE_BACKEND</code></td>
+<td><code>jsonl</code></td>
+<td>event store backend: <code>jsonl</code> or <code>kv</code></td>
+</tr>
+<tr>
+<td><code>PULSE_STORE_PATH</code></td>
+<td><code>pulse-events.jsonl</code></td>
+<td>JSONL event store</td>
+</tr>
+<tr>
+<td><code>PULSE_KV_DIR</code></td>
+<td><code>pulse-kv</code></td>
+<td>kv segment directory (<code>kv</code> backend)</td>
+</tr>
+<tr>
+<td><code>PULSE_KV_PREFIX</code></td>
+<td><code>evt-</code></td>
+<td>kv sequence-key prefix</td>
+</tr>
+<tr>
+<td><code>PULSE_AUDIT_PATH</code></td>
+<td><code>pulse-audit.log</code></td>
+<td>audit trail</td>
+</tr>
+<tr>
+<td><code>PULSE_AUDIT_MAX_BYTES</code></td>
+<td><code>5000000</code></td>
+<td>audit rotation threshold (<code>0</code> = off)</td>
+</tr>
+<tr>
+<td><code>PULSE_CONFIG</code></td>
+<td>(unset)</td>
+<td>JSON config file (env wins)</td>
+</tr>
+<tr>
+<td><code>PULSE_ICON_PATH</code></td>
+<td><code>resources/img/pulse-ico.ico</code></td>
+<td><code>/favicon.ico</code> source</td>
+</tr>
+<tr>
+<td><code>PULSE_ASSETS_DIR</code></td>
+<td><code>resources/public</code></td>
+<td><code>/assets/*</code> showcase root</td>
+</tr>
+<tr>
+<td><code>PULSE_LANDING_PATH</code></td>
+<td>(unset)</td>
+<td>HTML file served at <code>/</code> (read per request)</td>
+</tr>
+<tr>
+<td><code>PULSE_JWT_SECRET</code></td>
+<td>dev default</td>
+<td><strong>set in production</strong> (HS256)</td>
+</tr>
+<tr>
+<td><code>PULSE_SESSION_TTL</code></td>
+<td><code>3600</code></td>
+<td>session seconds</td>
+</tr>
+<tr>
+<td><code>PULSE_RATE_LIMIT</code></td>
+<td><code>0</code></td>
+<td>global req/s cap; <code>0</code> = off</td>
+</tr>
+<tr>
+<td><code>PULSE_RATE_BURST</code></td>
+<td>= limit</td>
+<td>token-bucket capacity</td>
+</tr>
+<tr>
+<td><code>PULSE_CSRF</code></td>
+<td><code>1</code></td>
+<td><code>0</code> disables CSRF checks</td>
+</tr>
+<tr>
+<td><code>PULSE_CORS_ORIGIN</code></td>
+<td>(unset)</td>
+<td>CORS allowlist: comma-separated origins, or <code>*</code></td>
+</tr>
+</table>
+<p><code>PULSE_LANDING_PATH</code> is re-read on every request to <code>/</code>, so content pipelines can update the landing page without restarting the server.</p>
+<h2>JSON config file</h2>
+<p>Any of the documented keys can be set in the JSON file (<code>port</code>, <code>bind</code>, <code>log</code>, <code>store_backend</code>, <code>store_path</code>, <code>kv_dir</code>, <code>kv_prefix</code>, <code>audit_path</code>, <code>audit_max_bytes</code>, <code>config</code>, <code>icon_path</code>, <code>assets_dir</code>, <code>landing_path</code>, <code>jwt_secret</code>, <code>session_ttl</code>, <code>rate_limit</code>, <code>rate_burst</code>, <code>csrf</code>, <code>cors_origin</code>). Environment variables override the file.</p>
+<h2>Store backends</h2>
+<ul>
+<li><code>jsonl</code> (default): append-only file, crash-safe (a torn trailing line</li>
+</ul>
+<p>heals on the next append). Backup/restore by copying the file.</p>
+<ul>
+<li><code>kv</code>: embedded segment store under <code>PULSE_KV_DIR</code> (<code>evt-seg-*.kv</code>),</li>
+</ul>
+<p>sequence-keyed, with native compaction. Restore by copying the   directory back with the service stopped; verify with   <code>/api/events/count</code>.</p>
+<p><code>scripts/backup.sh</code> / <code>scripts/backup.ps1</code> snapshot the store and the audit log (kv-aware with <code>--kv-dir</code> / <code>-KvDir</code>; the kv dir is picked up automatically when <code>PULSE_STORE_BACKEND=kv</code>).</p>
+<h2>Build provenance</h2>
+<p><code>PULSE_BUILD_COMMIT</code> and <code>PULSE_BUILD_DATE</code> are optional and surface in <code>/api/version</code>; set them from the deployment pipeline so the running process reports exactly which release it is.</p>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
+      <p><a href="../" style="color:var(--signal);">Pulse</a> -- <a href="https://xiom-lang.org/projects.html" style="color:var(--signal);">Projects</a> -- <a href="https://opencollective.com/xiom" style="color:var(--signal);">Support XIOM</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

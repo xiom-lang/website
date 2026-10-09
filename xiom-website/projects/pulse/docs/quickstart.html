@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick start -- Pulse docs</title>
+<meta name="description" content="Run PULSE locally and make the first requests.">
+<link rel="canonical" href="https://pulse.xiom-lang.org/docs/quickstart.html">
+<link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../img/xiom-logo_bg.png" alt="XIOM">
+      Pulse docs
+    </a>
+    <div class="navlinks">
+      <a href="https://xiom-lang.org/projects.html">Projects</a>
+      <a href="../">Pulse</a>
+      <a href="index.html">Docs</a>
+      <a href="https://opencollective.com/xiom">Support</a>
+    </div>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:40px;">
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+    <nav aria-label="Documentation" style="flex:0 0 220px;min-width:200px;">
+      <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Documentation</p>
+      <a href="index.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Introduction</a>
+        <a href="install.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Install</a>
+        <a href="quickstart.html" style="display:block;padding:4px 0;font-size:14px;color:var(--signal);font-weight:600;">Quick start</a>
+        <a href="configuration.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Configuration</a>
+        <a href="http-api.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">HTTP API</a>
+        <a href="operations.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Operations</a>
+        <a href="security.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Security and beta limits</a>
+        <a href="releases.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Release history</a>
+    </nav>
+    <article class="content-section" style="flex:1 1 420px;min-width:280px;margin-top:0;">
+<h1>Quick start</h1>
+<p>Run the binary with defaults (loopback only):</p>
+<pre class="language-bash"><code>
+./pulse_app
+# pulse: listening on <span class='num'>127.0</span>.<span class='num'>0.1</span>:<span class='num'>8080</span>
+</code></pre>
+<p>Or check the effective configuration without binding:</p>
+<pre class="language-bash"><code>
+./pulse_app --check-config
+</code></pre>
+<p>Invalid values do not crash the server; they fall back to the default and are reported as warnings at startup and in <code>--check-config</code>.</p>
+<h2>First requests</h2>
+<pre class="language-bash"><code>
+curl -s http:<span class='cm'>//<span class='num'>127.0</span>.<span class='num'>0.1</span>:<span class='num'>8080</span>/health</span>
+# {<span class='str'>status</span>:<span class='str'>ok</span>}
+
+curl -s http:<span class='cm'>//<span class='num'>127.0</span>.<span class='num'>0.1</span>:<span class='num'>8080</span>/api/version</span>
+# {<span class='str'>name</span>:<span class='str'>xiom-pulse</span>,<span class='str'>version</span>:<span class='str'><span class='num'>0.1</span>.<span class='num'>0</span></span>,...}
+
+curl -s -X POST http:<span class='cm'>//<span class='num'>127.0</span>.<span class='num'>0.1</span>:<span class='num'>8080</span>/api/echo \</span>
+  -H 'Content-Type: application/json' --data '{<span class='str'>hello</span>:<span class='str'>pulse</span>}'
+# {<span class='str'>echo</span>:{<span class='str'>hello</span>:<span class='str'>pulse</span>}}
+
+curl -s -X POST http:<span class='cm'>//<span class='num'>127.0</span>.<span class='num'>0.1</span>:<span class='num'>8080</span>/api/events \</span>
+  -H 'Content-Type: application/json' --data '{<span class='str'>kind</span>:<span class='str'>note</span>,<span class='str'>msg</span>:<span class='str'>first</span>}'
+curl -s http:<span class='cm'>//<span class='num'>127.0</span>.<span class='num'>0.1</span>:<span class='num'>8080</span>/api/events/count</span>
+# {<span class='str'>count</span>:<span class='num'>1</span>}
+curl -s 'http:<span class='cm'>//<span class='num'>127.0</span>.<span class='num'>0.1</span>:<span class='num'>8080</span>/api/events?limit=<span class='num'>1</span>'</span>
+</code></pre>
+<p>The store defaults to <code>pulse-events.jsonl</code> in the working directory; the audit log defaults to <code>pulse-audit.log</code>. Point both at a data directory for a real deployment (see <a href="./configuration.html">Configuration</a>).</p>
+<h2>Stop</h2>
+<p><code>X-Pulse-Quit: 1</code> on <code>/health</code> is the test-only graceful shutdown hook. Production supervision should stop the process with the supervisor (no SIGTERM drain yet -- see <a href="./security.html">Security and beta limits</a>):</p>
+<pre class="language-bash"><code>
+curl -s -o /dev/null -H 'X-Pulse-Quit: <span class='num'>1</span>' http:<span class='cm'>//<span class='num'>127.0</span>.<span class='num'>0.1</span>:<span class='num'>8080</span>/health</span>
+</code></pre>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
+      <p><a href="../" style="color:var(--signal);">Pulse</a> -- <a href="https://xiom-lang.org/projects.html" style="color:var(--signal);">Projects</a> -- <a href="https://opencollective.com/xiom" style="color:var(--signal);">Support XIOM</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

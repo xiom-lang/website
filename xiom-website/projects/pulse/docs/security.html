@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security and beta limits -- Pulse docs</title>
+<meta name="description" content="Security posture and the honest gap list for 0.1.x.">
+<link rel="canonical" href="https://pulse.xiom-lang.org/docs/security.html">
+<link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../img/xiom-logo_bg.png" alt="XIOM">
+      Pulse docs
+    </a>
+    <div class="navlinks">
+      <a href="https://xiom-lang.org/projects.html">Projects</a>
+      <a href="../">Pulse</a>
+      <a href="index.html">Docs</a>
+      <a href="https://opencollective.com/xiom">Support</a>
+    </div>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:40px;">
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+    <nav aria-label="Documentation" style="flex:0 0 220px;min-width:200px;">
+      <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Documentation</p>
+      <a href="index.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Introduction</a>
+        <a href="install.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Install</a>
+        <a href="quickstart.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Quick start</a>
+        <a href="configuration.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Configuration</a>
+        <a href="http-api.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">HTTP API</a>
+        <a href="operations.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Operations</a>
+        <a href="security.html" style="display:block;padding:4px 0;font-size:14px;color:var(--signal);font-weight:600;">Security and beta limits</a>
+        <a href="releases.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Release history</a>
+    </nav>
+    <article class="content-section" style="flex:1 1 420px;min-width:280px;margin-top:0;">
+<h1>Security and beta limits</h1>
+<p>PULSE 0.1.x is an honest beta. This page states the security posture and the known gaps; do not deploy it as a hard production service yet.</p>
+<h2>Posture</h2>
+<ul>
+<li>TLS terminates at the proxy; PULSE binds loopback and never sees</li>
+</ul>
+<p>plaintext from the network.</p>
+<ul>
+<li><code>PULSE_JWT_SECRET</code> must be set from a secret store in any real</li>
+</ul>
+<p>deployment (the built-in default is for local development only).</p>
+<ul>
+<li>Sessions are CSRF-protected by default (<code>PULSE_CSRF=0</code> disables it</li>
+</ul>
+<p>only for controlled testing).</p>
+<ul>
+<li>CORS is opt-in and exact-match (comma-separated allowlist, or <code>*</code> for</li>
+</ul>
+<p>open demos); it is off by default.</p>
+<ul>
+<li>A global token-bucket rate limit is available (<code>PULSE_RATE_LIMIT</code>,</li>
+</ul>
+<p><code>PULSE_RATE_BURST</code>); per-client limits belong to the proxy.</p>
+<ul>
+<li>Request parsing is defensive: bounded header block (16 KiB guard, 100</li>
+</ul>
+<p>headers), 1 MiB decoded body cap, <code>Transfer-Encoding</code> + <code>Content-Length</code>   refused, other transfer codings <code>501</code>.</p>
+<ul>
+<li>Mutating requests are written to the audit log (with rotation).</li>
+</ul>
+<h2>Known limits (the gap list)</h2>
+<ul>
+<li>Single-threaded with no keep-alive and no receive timeouts: one slow</li>
+</ul>
+<p>client can hold the loop, and the proxy must enforce its own client   deadlines.</p>
+<ul>
+<li>No graceful shutdown drain on SIGTERM; restarts drop in-flight</li>
+</ul>
+<p>requests.</p>
+<ul>
+<li>A memory-growth issue in the request path is under investigation:</li>
+</ul>
+<p>RSS increases with served requests (about 32-48 KB per request on the   tested platforms). Run with a memory limit and a restart policy, and   alert on RSS growth (see <a href="./operations.html">Operations</a>).</p>
+<ul>
+<li>No credential/RBAC store: the login route is a demo; token issuance is</li>
+</ul>
+<p>not an identity system.</p>
+<ul>
+<li>No macOS artifacts yet; Windows and Linux are the tested platforms.</li>
+<li>No HTTP/2 or WebSockets; the proxy can terminate HTTP/2 to clients.</li>
+</ul>
+<p>Claims about this project should stay within this page and the release notes. If you find a security problem, please open a private report via the repository's security tab or contact the maintainers.</p>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
+      <p><a href="../" style="color:var(--signal);">Pulse</a> -- <a href="https://xiom-lang.org/projects.html" style="color:var(--signal);">Projects</a> -- <a href="https://opencollective.com/xiom" style="color:var(--signal);">Support XIOM</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

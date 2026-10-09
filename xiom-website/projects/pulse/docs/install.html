@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install -- Pulse docs</title>
+<meta name="description" content="Download and verify a PULSE release artifact.">
+<link rel="canonical" href="https://pulse.xiom-lang.org/docs/install.html">
+<link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../img/xiom-logo_bg.png" alt="XIOM">
+      Pulse docs
+    </a>
+    <div class="navlinks">
+      <a href="https://xiom-lang.org/projects.html">Projects</a>
+      <a href="../">Pulse</a>
+      <a href="index.html">Docs</a>
+      <a href="https://opencollective.com/xiom">Support</a>
+    </div>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:40px;">
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+    <nav aria-label="Documentation" style="flex:0 0 220px;min-width:200px;">
+      <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Documentation</p>
+      <a href="index.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Introduction</a>
+        <a href="install.html" style="display:block;padding:4px 0;font-size:14px;color:var(--signal);font-weight:600;">Install</a>
+        <a href="quickstart.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Quick start</a>
+        <a href="configuration.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Configuration</a>
+        <a href="http-api.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">HTTP API</a>
+        <a href="operations.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Operations</a>
+        <a href="security.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Security and beta limits</a>
+        <a href="releases.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Release history</a>
+    </nav>
+    <article class="content-section" style="flex:1 1 420px;min-width:280px;margin-top:0;">
+<h1>Install</h1>
+<p>PULSE ships as a single binary archive per platform. There is no installer and no runtime dependency beyond the C library the binary was built against (glibc 2.35+ on Linux).</p>
+<h2>Downloads</h2>
+<p>The canonical mirror is <code>dl.xiom-lang.org</code>; the GitHub release page carries the same files.</p>
+<pre><code>
+https:<span class='cm'>//dl.xiom-lang.org/pulse/releases/pulse-v0.<span class='num'>1.0</span>/pulse-<span class='num'>0.1</span>.<span class='num'>0</span>-linux-x64.zip</span>
+https:<span class='cm'>//dl.xiom-lang.org/pulse/releases/pulse-v0.<span class='num'>1.0</span>/pulse-<span class='num'>0.1</span>.<span class='num'>0</span>-windows-x64.zip</span>
+</code></pre>
+<p>Each archive contains <code>pulse_app</code> (Linux) or <code>pulse_app.exe</code> (Windows), <code>resources/img/pulse-ico.ico</code>, <code>README.md</code>, <code>LICENSE-MIT</code>, <code>LICENSE-APACHE</code> and <code>NOTICE</code>. Every release also ships per-asset <code>.sha256</code> files and a combined <code>SHA256SUMS</code>.</p>
+<h2>Verify</h2>
+<p>Linux:</p>
+<pre class="language-bash"><code>
+curl -LO https:<span class='cm'>//dl.xiom-lang.org/pulse/releases/pulse-v0.<span class='num'>1.0</span>/pulse-<span class='num'>0.1</span>.<span class='num'>0</span>-linux-x64.zip</span>
+curl -LO https:<span class='cm'>//dl.xiom-lang.org/pulse/releases/pulse-v0.<span class='num'>1.0</span>/SHA256SUMS</span>
+sha256sum -c --ignore-missing SHA256SUMS
+unzip pulse-<span class='num'>0.1</span>.<span class='num'>0</span>-linux-x64.zip -d pulse-<span class='num'>0.1</span>.<span class='num'>0</span>
+./pulse-<span class='num'>0.1</span>.<span class='num'>0</span>/pulse_app --version
+</code></pre>
+<p>Windows (PowerShell):</p>
+<pre class="language-powershell"><code>
+Invoke-WebRequest -Uri <span class='str'>https:<span class='cm'>//dl.xiom-lang.org/pulse/releases/pulse-v0.<span class='num'>1.0</span>/pulse-<span class='num'>0.1</span>.<span class='num'>0</span>-windows-x64.zip</span> -OutFile pulse.zip</span>
+Invoke-WebRequest -Uri <span class='str'>https:<span class='cm'>//dl.xiom-lang.org/pulse/releases/pulse-v0.<span class='num'>1.0</span>/SHA256SUMS</span> -OutFile SHA256SUMS</span>
+# compare the listed hash <span class='func'>with</span>(Get-FileHash pulse.zip -Algorithm SHA256).<span class='ty'>Hash</span>
+Expand-Archive pulse.zip -DestinationPath pulse-<span class='num'>0.1</span>.<span class='num'>0</span>
+.\pulse-<span class='num'>0.1</span>.<span class='num'>0</span>\pulse_app.exe --version
+</code></pre>
+<p><code>latest.json</code> at <code>https://dl.xiom-lang.org/pulse/latest.json</code> names the current tag and its assets.</p>
+<h2>Platforms</h2>
+<p>Linux x64 and Windows x64 are tested and shipped. macOS is not published yet (no artifact, no download button anywhere). Builds are cut from the release workflow only when the platform suite is green; see the <a href="./releases.html">Release history</a>.</p>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
+      <p><a href="../" style="color:var(--signal);">Pulse</a> -- <a href="https://xiom-lang.org/projects.html" style="color:var(--signal);">Projects</a> -- <a href="https://opencollective.com/xiom" style="color:var(--signal);">Support XIOM</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

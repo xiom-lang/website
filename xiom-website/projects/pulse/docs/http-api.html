@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTTP API -- Pulse docs</title>
+<meta name="description" content="Endpoints, request limits, and response semantics.">
+<link rel="canonical" href="https://pulse.xiom-lang.org/docs/http-api.html">
+<link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="../" class="logo">
+      <img src="../img/xiom-logo_bg.png" alt="XIOM">
+      Pulse docs
+    </a>
+    <div class="navlinks">
+      <a href="https://xiom-lang.org/projects.html">Projects</a>
+      <a href="../">Pulse</a>
+      <a href="index.html">Docs</a>
+      <a href="https://opencollective.com/xiom">Support</a>
+    </div>
+    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:40px;">
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+    <nav aria-label="Documentation" style="flex:0 0 220px;min-width:200px;">
+      <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Documentation</p>
+      <a href="index.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Introduction</a>
+        <a href="install.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Install</a>
+        <a href="quickstart.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Quick start</a>
+        <a href="configuration.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Configuration</a>
+        <a href="http-api.html" style="display:block;padding:4px 0;font-size:14px;color:var(--signal);font-weight:600;">HTTP API</a>
+        <a href="operations.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Operations</a>
+        <a href="security.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Security and beta limits</a>
+        <a href="releases.html" style="display:block;padding:4px 0;font-size:14px;color:var(--muted);">Release history</a>
+    </nav>
+    <article class="content-section" style="flex:1 1 420px;min-width:280px;margin-top:0;">
+<h1>HTTP API</h1>
+<p>All responses are JSON unless noted. <code>GET /health</code> returns <code>{"status":"ok"}</code>. Errors use a stable envelope: <code>{"error":{"code":"...","message":"..."}}</code>.</p>
+<h2>Public endpoints</h2>
+<table>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Notes</th>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/health</code></td>
+<td>liveness; keyword-friendly for monitors</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/version</code></td>
+<td><code>name</code>, <code>version</code> (+ <code>commit</code>/<code>build</code> when env-stamped)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/echo</code></td>
+<td>echoes the JSON body</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/items/:id</code></td>
+<td>path-parameter demo route</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/metrics</code></td>
+<td>Prometheus text (restrict at the proxy)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/favicon.ico</code></td>
+<td>from <code>PULSE_ICON_PATH</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/assets/*</code></td>
+<td>static files from <code>PULSE_ASSETS_DIR</code> (ETag, 304, Range)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/</code></td>
+<td><code>PULSE_LANDING_PATH</code> HTML (read per request)</td>
+</tr>
+</table>
+<h2>Sessions and tokens</h2>
+<table>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Notes</th>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/session/login</code></td>
+<td>demo login; sets session + CSRF cookies</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/session/logout</code></td>
+<td>requires the CSRF token</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/me</code></td>
+<td>session profile; 401 without a session</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/token</code></td>
+<td>issues an HS256 JWT</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/token/verify</code></td>
+<td>verifies a JWT; 401 on signature failure</td>
+</tr>
+</table>
+<h2>Events</h2>
+<table>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Notes</th>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/events</code></td>
+<td>append an event (audited)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/events</code></td>
+<td>list; <code>?limit=1..100</code>, <code>?kind=</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/events/count</code></td>
+<td><code>{"count":N}</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/events/compact</code></td>
+<td>rewrite without torn lines</td>
+</tr>
+</table>
+<h2>Request limits and semantics</h2>
+<ul>
+<li>Body cap: 1 MiB decoded; over-cap chunked bodies get <code>413</code>.</li>
+<li>Header block guard: 16 KiB read-loop guard plus a 100-header cap.</li>
+<li><code>Transfer-Encoding: chunked</code> requests are decoded (chunk extensions</li>
+</ul>
+<p>ignored, trailers validated and skipped).</p>
+<ul>
+<li><code>Transfer-Encoding</code> with <code>Content-Length</code> together is refused <code>400</code></li>
+</ul>
+<p>(request-smuggling shape); any coding other than <code>chunked</code> is <code>501</code>.</p>
+<ul>
+<li><code>Expect: 100-continue</code> is honored before the body is read.</li>
+<li>Unknown route <code>404</code>, wrong method <code>405</code>, bad JSON <code>400</code>.</li>
+<li>CORS is opt-in (<code>PULSE_CORS_ORIGIN</code>, comma-separated exact origins or</li>
+</ul>
+<p><code>*</code>); preflight <code>OPTIONS</code> answers <code>204</code>.</p>
+<ul>
+<li>Mutating requests are audited; session flows are CSRF-protected.</li>
+</ul>
+<p>Statuses: <code>200</code>, <code>204</code>, <code>400</code>, <code>401</code>, <code>403</code>, <code>404</code>, <code>405</code>, <code>413</code>, <code>500</code>, <code>501</code>.</p>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
+      <p>Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
+      <p><a href="../" style="color:var(--signal);">Pulse</a> -- <a href="https://xiom-lang.org/projects.html" style="color:var(--signal);">Projects</a> -- <a href="https://opencollective.com/xiom" style="color:var(--signal);">Support XIOM</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
