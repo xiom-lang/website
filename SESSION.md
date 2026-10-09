@@ -1344,6 +1344,38 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     block is the operating document for the next session: read it first,
     then verify the `f632843` deploy (live demo.js hash-match and the
     console line format) before starting the queue.
+94. **Pulse 0.1.2 state check, served-by badge, project art, docs sync
+    (done 2026-10-09)**: the release state was verified against the mirror
+    and the live service. pulse-v0.1.2 is the latest release (dl
+    latest.json + /pulse/releases/pulse-v0.1.2/; linux-x64 and windows-x64
+    zips + SHA256SUMS) and 0.2.0 is NOT out: no tag, no GitHub release, no
+    dl directory. The first 0.2.0 slate items (OpenAPI 3.1 at
+    /openapi.json; `pulse openapi` / `pulse routes`; smoke at 84) are
+    merged on main as [Unreleased], and the framework roadmap gates 0.2.0
+    on the three darwin fixes plus the rest of the slate (problem+json
+    fields, Link pagination, idempotency, /v1, the SSRF-guarded
+    xiom.http 0.1.4 wrapper, multipart). The demo still runs the 0.1.0
+    build (cc3e741); the 0.1.2 deploy is relayed to ops below. Serving
+    check: Pulse cannot serve xiom-lang.org, docs, orbitdb or xvector as
+    sites -- one instance serves one landing HTML at /, one /assets/*
+    tree and the JSON API, with TLS/HTTP2/keep-alive at the proxy and the
+    beta limits unchanged; only pulse.xiom-lang.org is (and stays) served
+    by Pulse. The Pulse footer now notes the running version next to the
+    Pulse icon, read live from /api/version and hidden while the demo
+    does not answer (no hardcoded version); stale 0.1.0 copy on the page
+    and the hub table was neutralized. Project art landed: the subdomain
+    favicons are the project marks (pulse, orbitdb, xvector, chaos; docs
+    template and demo page included), the roadmap and hub cards use the
+    new 512px alpha badges while the full covers stay as the project-page
+    heroes, and the xev / xiomengine / selfhost artwork is committed
+    unreferenced on purpose (the selfhost cover shows finished gates and
+    must not sit next to the in-progress meter). Docs: docs-src synced
+    for the 0.1.2 address-only PULSE_BIND notes and the eight docs pages
+    rebuilt with the Pulse favicon; the repo public set's Unreleased 0.2
+    rows are deferred until 0.2.0 ships (relay below). Verified before
+    starting: the live demo.js hash-matches HEAD f632843, /health and
+    /api/echo answer, and /api/events lists entries. Commits 87efc13,
+    d896a09, ecb78aa; the site publishes on the :23 pull.
 
 ## Cross-lane notes
 
@@ -2082,6 +2114,32 @@ the live badge (/health + /api/version, same-origin) and the download
 buttons to the real artifact URLs; the beta banner stays until the Pulse
 lane clears its gap list.
 
+### Relay to ops: deploy pulse-v0.1.2 to the demo (2026-10-09)
+
+The demo on pulse.xiom-lang.org still reports the 0.1.0 build
+(/api/version: version 0.1.0, commit cc3e741). pulse-v0.1.2 is the
+current release on dl (pulse-0.1.2-linux-x64.zip + .sha256, SHA256SUMS):
+verify the checksum, swap the service directory, keep
+PULSE_BIND=127.0.0.1 (0.1.2 warns when an addr:port value is put there --
+address only) and restart. Expected: /api/version reports 0.1.2 and the
+footer note on the landing page picks the version up automatically; no
+website change or redeploy is needed. The 0.1.2 build carries the Windows
+request-path memory fix (rebuilt on XIOM v0.64.2) and the registry
+session-store swap; the Linux RSS caveat and the 0.0.0.0 bind enforcement
+(C-PULSE-16) stay with the Pulse lane/upstream.
+
+### Relay to the Pulse lane: docs public set ahead of releases (2026-10-09)
+
+The vendored docs-src now carries the 0.1.2-scoped changes (the
+address-only PULSE_BIND paragraph and the operations env wording) and the
+docs site is rebuilt with the Pulse favicon. The repo's docs/public set on
+main also documents [Unreleased] 0.2 features (the /openapi.json row,
+PULSE_OPENAPI_PATH, the CLI section); we defer those until the 0.2.0 tag
+so the docs never describe an endpoint the current demo 404s. If you
+prefer them rendered earlier with an "unreleased" marker, say so and we
+sync them with the next docs build; otherwise the docs catch up with the
+0.2.0 release.
+
 ## Rules
 
 - Pure ASCII files only; the org encoding gate rejects mojibake.
@@ -2115,56 +2173,59 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-10-09): HEAD f632843. Copyright notices across the repo read
+State (2026-10-09): HEAD ecb78aa. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
-be named as holder. Public copy passed a human-voice sweep (no internal
-lane/owner vocabulary outside SESSION.md; the Pulse hero, hub and Pulse
-head descriptions were refreshed). All guide syntax holds the
-no-unimplemented-features rule, and the snippet syntax lint in `docs.yml`
-and `docs-versioned.yml` stays clean. Commits carry `-s` sign-off;
+be named as holder. Public copy holds the human-voice sweep (no internal
+lane/owner vocabulary outside SESSION.md) and the no-unimplemented-features
+rule across the guides; the snippet syntax lint in `docs.yml` and
+`docs-versioned.yml` stays clean. Commits carry `-s` sign-off;
 `docs/wikipedia-draft.md` is a planning sheet only and
 `docs/marketplace-publisher.md` holds the marketplace copy; neither is
 built into the site.
 
-PULSE CHAIN (complete as of 2026-10-09): the repo is public
-(xiom-projects/xiom-pulse), pulse-v0.1.0 is released (tag cc3e741;
-linux-x64 + windows-x64 zips + SHA256SUMS; no macOS), the dl namespace is
-live (/pulse/latest.json + /pulse/releases/pulse-v0.1.0/), and
-pulse.xiom-lang.org is served by Pulse itself (loopback behind nginx,
-static folder as fallback). Verified live: /health + /api/version JSON,
-hero badge "live demo v0.1.0", download buttons on dl (the page prefers
-dl's JSON and rewrites GitHub metadata onto dl paths when the mirror JSON
-lacks CORS), /docs/ (8 rendered pages; rebuild with
-`python docs/build_pulse_docs.py` after re-syncing docs-src), /demo/ (the
-interactive console page), install.sh + install.ps1 (text/plain; the PS
-one was tested end to end, the sh one still needs a Linux smoke), and the
-armor (PULSE_RATE_LIMIT=20 / PULSE_RATE_BURST=60 + nginx 5r/s burst 20,
-limit_conn 10 -> 429 on /api/ and /health). Unknown paths 404. Open:
-the 0.1.0 binary binds 0.0.0.0 (PULSE_BIND not honored -- Pulse lane, next
-build) and the kv flip gate waits on a >=24h soak. New Pulse claims route
+PULSE STATE (2026-10-09): pulse-v0.1.2 is the latest release (dl
+latest.json + /pulse/releases/pulse-v0.1.2/; linux-x64 + windows-x64 +
+SHA256SUMS) and 0.2.0 is NOT out (no tag, no release, no dl directory).
+The demo on pulse.xiom-lang.org still runs the 0.1.0 build (cc3e741); the
+0.1.2 deploy is relayed to ops in SESSION.md (expected: /api/version
+reports 0.1.2 and the new footer note picks the version up by itself).
+First 0.2.0 slate items (OpenAPI 3.1 /openapi.json, `pulse openapi`/
+`routes`, smoke at 84) are merged on main as [Unreleased]; the framework
+roadmap gates 0.2.0 on the three darwin fixes plus problem+json fields,
+Link pagination, idempotency, /v1, the SSRF-guarded xiom.http 0.1.4
+wrapper and multipart uploads. Serving verdict: one Pulse instance serves
+one landing HTML, one /assets/* tree and the API -- it does NOT serve the
+other sites (xiom-lang.org, docs, orbitdb, xvector stay on nginx static),
+so the served-by footer note (Pulse icon + live version, hidden when the
+demo is down) lives only on the Pulse footer. New Pulse claims route
 through the Pulse lane before publishing.
 
-Recent landings (2026-10-02..09): registry trust and "attacks this stops"
-sections, ecosystem contribution paths, playground 2.0/2.1 roadmap rows,
-live self-hosting and stdlib readiness meters with fetched verification
-gates (fractional partial-credit formats accepted; fallback refreshed
-2026-10-08), Open Collective everywhere (footer icon, nav Support item,
-footer Support XIOM link, contributing-page tiers rendered live without a
-token), the Projects restructure (nav slimming: Projects in, Prior art
-moved to Why, Versions linked from the download page; the projects.html
-hub; four subdomain sites with designer covers and feature icons at 120px
-fluid), the full Pulse release + demo chain (the PULSE CHAIN paragraph
-above), the registry 2.x publishing instructions with the retired GitHub
-token template confirmed, and v0.64.0 verified live the day it shipped
-(dynamic download/versions pages, tag-pinned notes render, docs site
-serving v0.64.0 as latest; the docs dispatch works). All verified live.
+Recent landings (2026-10-09): the served-by footer note on the Pulse
+landing; project favicons on all four subdomains (demo page and docs build
+included); the new 512px alpha badges on roadmap.html#projects and
+projects.html with the full covers kept as the project-page heroes; the
+docs-src 0.1.2 BIND notes synced and the eight docs pages rebuilt; xev /
+xiomengine / selfhost artwork committed unreferenced. Earlier in the day:
+the full Pulse release + demo chain, the Projects restructure, Open
+Collective everywhere, the live self-hosting and stdlib readiness meters,
+registry trust sections, and v0.64.0/v0.64.2 verified live the days they
+shipped (dynamic download/versions pages, tag-pinned notes render).
+
+Before starting the queue: verify the ecb78aa deploy on the :23 pull --
+the Pulse landing footer shows the served-by note (Pulse icon + running
+version; v0.1.0 until ops deploys 0.1.2), roadmap.html#projects and
+projects.html show the new badges, and the subdomain favicons resolve
+(pulse, orbitdb, xvector, chaos). When ops lands 0.1.2, re-check the demo
+console line ("HTTP 200 (N ms)") and the footer version.
 
 Next, in order:
-1. Pulse follow-ups: watch for the PULSE_BIND fix build and the kv 24h
-   soak gate (update the page note when it clears); re-sync `docs-src/`
-   and rebuild the docs on doc changes (`python
-   docs/build_pulse_docs.py`); route new claims through the Pulse lane.
+1. Pulse follow-ups: confirm the ops 0.1.2 deploy; watch for 0.2.0 (the
+   darwin gates + the slate; re-sync `docs-src/` and rebuild with
+   `python docs/build_pulse_docs.py` when the public set ships -- the
+   Unreleased OpenAPI/CLI rows are deferred until then); the kv flip
+   gate still waits on a >=24h soak; keep routing new claims through the
+   Pulse lane.
 2. Playground 2.2 (gamified learning): flip the roadmap row when levels,
    streaks, badges and the certificate ship; the badge artwork is still to
    come.
@@ -2185,13 +2246,13 @@ Next, in order:
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS ships on all
-releases now (Intel and Apple Silicon archives in v0.61.3), so the earlier
-"wait for RELEASE_BUILD_MACOS" note is closed; ecosystem/registry doc
-pointers stay deferred until stdlib is 100%; registry correlation
-(`compiler` pin metadata) waits on the stdlib publish pass.
+compiler releases now (Intel and Apple Silicon archives in v0.64.2), so
+the earlier "wait for RELEASE_BUILD_MACOS" note is closed; ecosystem/
+registry doc pointers stay deferred until stdlib is 100%; registry
+correlation (`compiler` pin metadata) waits on the stdlib publish pass.
 
 Mirror state (owner/VPS, checked 2026-10-09): the compiler namespace is
-current (v0.64.1) and the pulse namespace is live; the mirror JSON paths
+current (v0.64.2) and the pulse namespace is live (pulse-v0.1.2); the mirror JSON paths
 still send no `Access-Control-Allow-Origin`, so the Pulse page rewrites
 the GitHub release metadata onto dl paths and the download page's
 checksum column needs raw fallbacks. The compiler archive writer should
