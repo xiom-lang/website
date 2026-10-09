@@ -3382,10 +3382,16 @@
 <blockquote>
 <p>FNV-1a 32-bit hash. Algorithm: hash = (hash XOR byte) * FNV Prime, with 32-bit wrapping. Offset basis: 0x811C9DC5, prime: 0x01000193. Complexity: O(n), n = data length. Security: Non-cryptographic. Excellent distribution for hash tables.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 2166136261)</code></li>
+</ul>
 <h4 id="fn-fnv1a64data-vecuint8-int"><code>fn fnv1a64(data: &amp;Vec[UInt8]) -&gt; Int</code><a class="headerlink" href="#fn-fnv1a64data-vecuint8-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>FNV-1a 64-bit hash. Offset basis: 0xCBF29CE484222325, prime: 0x00000100000001B3. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 14695981039346656037)</code></li>
+</ul>
 <h4 id="fn-fnv1_64data-vecuint8-int"><code>fn fnv1_64(data: &amp;Vec[UInt8]) -&gt; Int</code><a class="headerlink" href="#fn-fnv1_64data-vecuint8-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>FNV-1 64-bit hash (multiply first, then XOR -- non-alternate variant). Offset basis: 0xCBF29CE484222325, prime: 0x00000100000001B3. Complexity: O(n), n = data length.</p>
@@ -3394,6 +3400,9 @@
 <blockquote>
 <p>MurmurHash3 32-bit (x86_32 variant). Processes 4-byte blocks with fmix32 finalization. Test vector: murmur3_32("hello", 0) == 0x248BFA47. Complexity: O(n), n = data length. Security: Non-cryptographic. Good avalanche characteristics.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-_rotl32x-int-r-int-int"><code>fn _rotl32(x: Int, r: Int) -&gt; Int</code><a class="headerlink" href="#fn-_rotl32x-int-r-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Helper: rotates left within 32 bits.</p>
@@ -3420,22 +3429,37 @@
 <blockquote>
 <p>CRC32-IEEE 802.3 (polynomial 0xEDB88320, reflected). Generates lookup table lazily on first call. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-hash_bytes_to_hexdata-vecuint8-str"><code>fn hash_bytes_to_hex(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-hash_bytes_to_hexdata-vecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Converts a byte vector to a lowercase hexadecimal string. Delegates to xiom.encoding.hex_encode.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h4 id="fn-combine_hashesa-int-b-int-int"><code>fn combine_hashes(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-combine_hashesa-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Boost-style hash combination. Combines two hash values into one using a mixing function. Formula: a ^ (b + 0x9e3779b9 + (a &lt;&lt; 6) + (a &gt;&gt; 2)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a == 0 &amp;&amp; b == 0) =&gt; (result == 2654435769)</code></li>
+</ul>
 <h4 id="fn-string_hashs-str-int"><code>fn string_hash(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-string_hashs-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>DJB2 hash over string characters. Alias for djb2.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result == 5381)</code></li>
+</ul>
 <h4 id="fn-xxhash64data-vecuint8-seed-int-int"><code>fn xxhash64(data: &amp;Vec[UInt8], seed: Int) -&gt; Int</code><a class="headerlink" href="#fn-xxhash64data-vecuint8-seed-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>xxHash64 (seed 0 compatible with the reference implementation; 64-bit results wrap naturally in i64 arithmetic -- masks are no-ops at 64 bits).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 17241709254077376921)</code></li>
+</ul>
 <h4 id="fn-fnv1_32s-str-int"><code>fn fnv1_32(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-fnv1_32s-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>FNV-1 32-bit (multiply before XOR, unlike FNV-1a).</p>
