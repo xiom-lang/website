@@ -1255,6 +1255,20 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     honestly meanwhile (JSON parse fails, so the badge and the Try-it-live
     widget stay hidden). Once ops flips the proxy, the badge and widget
     activate with no site change.
+87. **Pulse presented as a standalone project; vhost fallback found
+    (done 2026-10-09)**: the Pulse site now navigates as its own product
+    -- PULSE wordmark with the XIOM mark, Overview / Docs / Install /
+    Downloads / Support nav, GitHub CTA, and a footer that says it is a
+    separate project moving to its own home when it graduates; the docs
+    pages got the same chrome. Internal links stay relative, so the future
+    domain move is a DNS/docroot change. Live probe found the nginx vhost
+    returning the landing HTML for every unknown path, including
+    /install.sh and /install.ps1 (the one-liners would pipe HTML to sh)
+    and /api/version (relative assets resolve under /api/, which is why
+    that page renders unstyled); /style.css and /img/ serve correctly.
+    The ops relay below asks for static locations to win for the real
+    files, the app proxied for /, /health and /api/*, and a fallback that
+    never invents 200s for unknown paths.
 
 ## Cross-lane notes
 
@@ -1887,6 +1901,34 @@ Release/download conventions (so the buttons and mirror light up cleanly):
 - When the release is cut, relay back with the tag, artifact names and
   demo status; the website lane then enables the buttons and the badge,
   and the first docs render ships with the same release.
+
+### Relay to ops: pulse vhost fallback must not swallow real paths (2026-10-09)
+
+Probe of pulse.xiom-lang.org (2026-10-09 14:10 UTC):
+- `/style.css` -> 200 text/css and `/img/*` fine (static serving works).
+- `/health`, `/api/version`, `/install.sh`, `/install.ps1` -> 200
+  text/html with the landing page body: the fallback answers every
+  unknown path. `POST /api/echo` -> 405 from nginx.
+- Consequences seen by the owner: /api/version renders the landing
+  unstyled (relative style.css resolves under /api/), and the install
+  one-liners would pipe HTML into sh/iex.
+
+Requested nginx shape once the app listens on 127.0.0.1:3500:
+- `location = /install.sh` and `location = /install.ps1` -> static from
+  the checkout (must win over any fallback);
+- `location /docs/` -> static; `location /img/` -> static;
+- `location = /health` and `location /api/` -> proxy to the app;
+- `location /metrics` -> deny;
+- `location /` -> proxy to the app (it serves the landing);
+- fallback only on upstream failure (502/503/504) and only for `/`:
+  serve the static landing then; unknown paths should be a real 404 (or
+  502), never a synthetic 200 landing.
+
+Until the app is proxied, the static vhost should use
+`try_files $uri $uri/ =404;` (no catch-all index) so only real files
+return 200. After the proxy flip, verify: `/health` is JSON
+`{"status":"ok"}`, `/api/version` is JSON, `POST /api/echo` echoes, and
+the page shows the live badge with the Try-it-live box active.
 
 ### Relay to ops: Pulse demo deployment runbook (2026-10-09, greenlit)
 
