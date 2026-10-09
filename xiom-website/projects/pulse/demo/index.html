@@ -33,39 +33,39 @@
 
   <div class="content-section">
     <h1 style="margin-top:0;">Live demo</h1>
-    <p>This page calls the Pulse service running behind this subdomain -- same origin, no keys. Each card hits one endpoint and shows the raw response, so you can see what the framework actually does. The service is beta: it says so, and the <a href="../#gap" style="color:var(--signal);">gap list</a> is part of the product.</p>
-    <p style="color:var(--muted);font-size:13px;" data-demo-status>Checking the service...</p>
+    <p>This page calls the Pulse service running behind this subdomain -- same origin, no keys -- and prints the raw response, so you can see what the framework actually does. It is a shared, beta service: notes appended below are visible to other visitors, and any limit hit is shown honestly.</p>
+    <p class="demo-status" data-demo-status><span class="demo-dot"></span><span data-demo-status-text>Checking the service...</span></p>
   </div>
 
   <div class="content-section">
-    <h2>Try the endpoints</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <h4>Health</h4>
-        <p><code>GET /health</code> -- the check the proxy and uptime monitors use.</p>
-        <p><button class="btn-secondary" type="button" data-demo-action="health">Check</button></p>
-        <pre style="text-align:left;"><code data-demo-out="health">not checked yet</code></pre>
+    <h2>Endpoints</h2>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <p class="demo-path">GET /health</p>
+        <p class="demo-desc">The check the proxy and uptime monitors use.</p>
+        <p class="demo-controls"><button class="btn-secondary" type="button" data-demo-action="health">Check</button></p>
+        <pre class="demo-out"><code data-demo-out="health"></code></pre>
       </div>
-      <div class="feature-card">
-        <h4>Version</h4>
-        <p><code>GET /api/version</code> -- what the live badge reads.</p>
-        <p><button class="btn-secondary" type="button" data-demo-action="version">Fetch</button></p>
-        <pre style="text-align:left;"><code data-demo-out="version">not fetched yet</code></pre>
+      <div class="demo-card">
+        <p class="demo-path">GET /api/version</p>
+        <p class="demo-desc">What the live badge reads -- version, commit and build date.</p>
+        <p class="demo-controls"><button class="btn-secondary" type="button" data-demo-action="version">Fetch</button></p>
+        <pre class="demo-out"><code data-demo-out="version"></code></pre>
       </div>
-      <div class="feature-card">
-        <h4>Echo</h4>
-        <p><code>POST /api/echo</code> -- send JSON, get it back.</p>
-        <p><input type="text" data-demo-input="echo" maxlength="200" placeholder="Type a message" aria-label="Message to echo" style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);color:inherit;padding:8px 10px;font-size:13px;max-width:100%;"> <button class="btn-secondary" type="button" data-demo-action="echo">Send</button></p>
-        <pre style="text-align:left;"><code data-demo-out="echo">nothing sent yet</code></pre>
+      <div class="demo-card">
+        <p class="demo-path">POST /api/echo</p>
+        <p class="demo-desc">Send a message; the service echoes it back as JSON.</p>
+        <p class="demo-controls"><input type="text" data-demo-input="echo" maxlength="200" placeholder="Type a message" aria-label="Message to echo" style="background:var(--panel-raised);border:1px solid var(--line);border-radius:var(--radius);color:inherit;padding:8px 10px;font-size:13px;min-width:180px;max-width:100%;"><button class="btn-secondary" type="button" data-demo-action="echo">Send</button></p>
+        <pre class="demo-out"><code data-demo-out="echo"></code></pre>
       </div>
-      <div class="feature-card">
-        <h4>Event store</h4>
-        <p><code>POST /api/events</code> appends to the crash-safe store; <code>GET /api/events</code> lists it.</p>
-        <p><input type="text" data-demo-input="events" maxlength="120" placeholder="Note for the board" aria-label="Event note" style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);color:inherit;padding:8px 10px;font-size:13px;max-width:100%;"> <button class="btn-secondary" type="button" data-demo-action="append">Append</button> <button class="btn-secondary" type="button" data-demo-action="list">List</button> <button class="btn-secondary" type="button" data-demo-action="count">Count</button></p>
-        <pre style="text-align:left;"><code data-demo-out="events">nothing yet</code></pre>
+      <div class="demo-card">
+        <p class="demo-path">POST /api/events | GET /api/events</p>
+        <p class="demo-desc">Append a note to the crash-safe store, then list or count. Other visitors see the same board.</p>
+        <p class="demo-controls"><input type="text" data-demo-input="events" maxlength="120" placeholder="Note for the board" aria-label="Event note" style="background:var(--panel-raised);border:1px solid var(--line);border-radius:var(--radius);color:inherit;padding:8px 10px;font-size:13px;min-width:180px;max-width:100%;"><button class="btn-secondary" type="button" data-demo-action="append">Append</button><button class="btn-secondary" type="button" data-demo-action="list">List</button><button class="btn-secondary" type="button" data-demo-action="count">Count</button></p>
+        <pre class="demo-out"><code data-demo-out="events"></code></pre>
       </div>
     </div>
-    <p style="color:var(--muted);font-size:13px;">Notes appended here land in the demo's event file and are visible to other visitors; it resets with the demo service. Metrics are Prometheus text but stay restricted at the proxy.</p>
+    <p style="color:var(--muted);font-size:13px;">Metrics are Prometheus text but stay restricted at the proxy. Requests are rate limited by the service; if a call is limited, its status shows up in the console above.</p>
   </div>
 
 </main>

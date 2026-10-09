@@ -4,8 +4,10 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 The Pulse live-demo page: each button runs one real request against the
 service behind this subdomain (same-origin, so no CORS) and prints the
-raw response. When the service is not reachable through the proxy yet,
-every card reports exactly what it got instead of pretending.
+raw response with its status and timing. Health and version run once on
+load so the page never starts empty. When the service is not reachable
+through the proxy, every console says exactly what it got instead of
+pretending; buttons disable while their request is in flight.
 */
 (function () {
   "use strict";
@@ -15,41 +17,23 @@ every card reports exactly what it got instead of pretending.
     if (node) node.textContent = text;
   }
 
-  function show(name, res, body) {
+  function show(name, res, body, ms) {
     var pretty = body;
     try { pretty = JSON.stringify(JSON.parse(body), null, 2); } catch (e) { /* raw text is fine */ }
-    out(name, "HTTP " + res.status + " " + res.statusText + "\n" + pretty);
+    out(name, "HTTP " + res.status + " " + res.statusText + " (" + ms + " ms)\n" + pretty);
   }
 
   function request(name, path, options) {
+    var started = Date.now();
     out(name, "requesting " + path + " ...");
     return fetch(path, options || { cache: "no-store" })
       .then(function (res) {
-        return res.text().then(function (body) { show(name, res, body); });
+        return res.text().then(function (body) {
+          show(name, res, body, Date.now() - started);
+        });
       })
       .catch(function (err) {
         out(name, "request failed: " + err);
-      });
-  }
-
-  function statusLine() {
-    var node = document.querySelector("[data-demo-status]");
-    if (!node) return;
-    fetch("/health", { cache: "no-store" })
-      .then(function (res) {
-        return res.text().then(function (body) {
-          var ok = false;
-          try { ok = JSON.parse(body).status === "ok"; } catch (e) { ok = false; }
-          if (ok) {
-            node.textContent = "The Pulse service is answering here; the cards below run against it.";
-            out("health", "HTTP " + res.status + "\n" + body);
-          } else {
-            node.textContent = "The service is not proxied on this host yet: /health answered HTTP " + res.status + " with " + res.headers.get("content-type") + ". The cards below show exactly what each call returns.";
-          }
-        });
-      })
-      .catch(function () {
-        node.textContent = "Could not reach /health from this page.";
       });
   }
 
@@ -78,12 +62,51 @@ every card reports exactly what it got instead of pretending.
     if (name === "count") return request("events", "/api/events/count");
   }
 
+  function statusLine() {
+    var status = document.querySelector("[data-demo-status]");
+    var text = document.querySelector("[data-demo-status-text]");
+    if (!status || !text) return;
+    fetch("/health", { cache: "no-store" })
+      .then(function (res) {
+        return res.text().then(function (body) {
+          var ok = false;
+          try { ok = JSON.parse(body).status === "ok"; } catch (e) { ok = false; }
+          if (!ok) {
+            text.textContent = "The service is not proxied on this host yet: /health answered HTTP " +
+              res.status + " (" + (res.headers.get("content-type") || "unknown type") +
+              "). The consoles below show exactly what each call returns.";
+            return;
+          }
+          status.className = "demo-status is-live";
+          fetch("/api/version", { cache: "no-store" })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (info) {
+              var v = info && info.version ? " -- v" + info.version : "";
+              var b = info && info.build ? ", build " + info.build : "";
+              text.textContent = "The service is answering" + v + b + ".";
+            })
+            .catch(function () {
+              text.textContent = "The service is answering.";
+            });
+        });
+      })
+      .catch(function () {
+        text.textContent = "Could not reach /health from this page.";
+      });
+  }
+
   var buttons = document.querySelectorAll("[data-demo-action]");
   for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener("click", function (ev) {
-      action(ev.currentTarget.getAttribute("data-demo-action"));
+      var btn = ev.currentTarget;
+      btn.disabled = true;
+      action(btn.getAttribute("data-demo-action")).then(function () {
+        btn.disabled = false;
+      });
     });
   }
 
   statusLine();
+  action("health");
+  action("version");
 })();

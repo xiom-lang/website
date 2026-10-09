@@ -137,11 +137,9 @@ authored "soon" markers stay and nothing is claimed.
       });
   }
 
-  function loadDemo() {
-    var note = document.querySelector("[data-pulse-demo-note]");
-    var widget = document.querySelector("[data-pulse-demo]");
-    if (!widget) return;
-
+  function loadDemoState() {
+    var node = document.querySelector("[data-pulse-demo-state]");
+    if (!node) return;
     fetch("/health", { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("health HTTP " + res.status);
@@ -149,44 +147,22 @@ authored "soon" markers stay and nothing is claimed.
       })
       .then(function (data) {
         if (!data || data.status !== "ok") throw new Error("not ok");
-        if (note) note.hidden = true;
-        widget.hidden = false;
+        return fetch("/api/version", { cache: "no-store" })
+          .then(function (res) { return res.ok ? res.json() : null; })
+          .then(function (info) {
+            var v = info && info.version ? " -- v" + info.version : "";
+            node.textContent = "The demo service is answering" + v + "; open the page to try the endpoints.";
+            node.hidden = false;
+          });
       })
       .catch(function () {
-        // The note stays visible until the demo answers.
+        // Stays hidden until the demo answers.
       });
-
-    var form = document.querySelector("[data-pulse-echo-form]");
-    if (!form) return;
-    form.addEventListener("submit", function (ev) {
-      ev.preventDefault();
-      var input = form.querySelector("[data-pulse-echo-input]");
-      var out = document.querySelector("[data-pulse-echo-output]");
-      var text = input ? input.value : "";
-      if (out) out.textContent = "sending...";
-      fetch("/api/echo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
-        cache: "no-store"
-      })
-        .then(function (res) {
-          return res.text().then(function (body) {
-            if (!out) return;
-            var shown = body;
-            try { shown = JSON.stringify(JSON.parse(body), null, 2); } catch (e) { /* raw text is fine */ }
-            out.textContent = "HTTP " + res.status + " " + res.statusText + "\n" + shown;
-          });
-        })
-        .catch(function () {
-          if (out) out.textContent = "The demo is not reachable from this copy of the page (it runs on pulse.xiom-lang.org).";
-        });
-    });
   }
 
   function load() {
     loadBadge();
-    loadDemo();
+    loadDemoState();
     loadDownloads();
   }
 
