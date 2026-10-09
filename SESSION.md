@@ -1234,6 +1234,27 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     re-sync docs-src from the pulse repo, then run
     `python docs/build_pulse_docs.py`. Link check: 32 pages, 0 broken;
     quickstart render verified.
+86. **Demo env corrected by ops; live state checked (done 2026-10-09)**:
+    `src/config.xi` parses PULSE_BIND as an address (default 127.0.0.1)
+    with PULSE_PORT separate (default 8080); the earlier combined
+    address:port shape made the app listen on 8080 while nginx proxied
+    3500. Ops fixed the unit on the VPS to `PULSE_BIND=127.0.0.1` +
+    `PULSE_PORT=3500`; the runbook above now uses both variables. Live
+    state at 14:10 UTC: `dl.xiom-lang.org/pulse/latest.json` is populated
+    (both zips + SHA256SUMS, published 13:48; asset HEAD 200), and the
+    page's downloads now point at dl: because the mirror sends no CORS
+    (no Access-Control-Allow-Origin on the JSON), the script falls back to
+    the GitHub release metadata and rewrites each asset URL onto the dl
+    mirror path, so the buttons hit dl without waiting on a headers fix.
+    Ops should still add ACAO for `/pulse/latest.json` (and the other
+    product/compiler JSON paths) so the mirror is readable directly.
+    nginx on pulse.xiom-lang.org is still static with a landing fallback:
+    `/health` returns the landing HTML 200, POST `/api/echo` is 405,
+    unknown paths return the landing 200, `/metrics` is 403 -- the Pulse
+    proxy is not switched on for `/` and `/api/*` yet. The page degrades
+    honestly meanwhile (JSON parse fails, so the badge and the Try-it-live
+    widget stay hidden). Once ops flips the proxy, the badge and widget
+    activate with no site change.
 
 ## Cross-lane notes
 
@@ -1881,7 +1902,8 @@ until then, and stays as the fallback after.
    (dedicated user, no capabilities).
 2. systemd unit `pulse-demo.service`:
    - ExecStart=<pulse dir>/pulse_app
-   - Environment=PULSE_BIND=127.0.0.1:<port>   (loopback only)
+   - Environment=PULSE_BIND=127.0.0.1       (address; default 127.0.0.1)
+   - Environment=PULSE_PORT=3500            (port; default 8080)
    - Environment=PULSE_LANDING_PATH=<published-tree>/projects/pulse/index.html
      (the hourly-pulled website checkout; read per request, so page edits
      flow without a restart)
