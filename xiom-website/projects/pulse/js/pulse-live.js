@@ -1,0 +1,189 @@
+/*
+Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
+SPDX-License-Identifier: MIT OR Apache-2.0
+
+Pulse page wiring: the live demo badge and the release downloads.
+
+The badge is same-origin (the demo serves this page), so /health and
+/api/version need no CORS; it stays hidden until the demo answers, and it
+never shows a version the service does not report. The downloads prefer
+the dl mirror (https://dl.xiom-lang.org/pulse/latest.json) and fall back
+to the GitHub release API, which is the documented source of the mirror;
+no version is ever hardcoded here. On any failure the authored "soon"
+markers stay and nothing is claimed.
+*/
+(function () {
+  "use strict";
+
+  var DL_URL = "https://dl.xiom-lang.org/pulse/latest.json";
+  var GH_URL = "https://api.github.com/repos/xiom-projects/xiom-pulse/releases/latest";
+  var LABELS = { "windows-x64": "Windows x64", "linux-x64": "Linux x64", "macos": "macOS" };
+
+  function el(tag, text) {
+    var node = document.createElement(tag);
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function loadBadge() {
+    var node = document.querySelector("[data-pulse-badge]");
+    if (!node) return;
+    fetch("/health", { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("health HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data || data.status !== "ok") throw new Error("not ok");
+        return fetch("/api/version", { cache: "no-store" })
+          .then(function (res) { return res.ok ? res.json() : null; })
+          .then(function (info) {
+            var v = info && info.version ? " v" + info.version : "";
+            node.textContent = "live demo" + v;
+            node.hidden = false;
+          });
+      })
+      .catch(function () {
+        // Stays hidden until the demo is live.
+      });
+  }
+
+  function pickAsset(assets, os) {
+    var suffix = "-" + os + ".zip";
+    for (var i = 0; i < assets.length; i++) {
+      var name = assets[i].name || "";
+      if (name.slice(-suffix.length) === suffix) return assets[i];
+    }
+    return null;
+  }
+
+  function pickSums(assets) {
+    for (var i = 0; i < assets.length; i++) {
+      if (assets[i].name === "SHA256SUMS") return assets[i];
+    }
+    return null;
+  }
+
+  function assetUrl(asset) {
+    return asset.browser_download_url || asset.url;
+  }
+
+  function fill(version, assets, source) {
+    var slots = document.querySelectorAll("[data-pulse-slot]");
+    for (var i = 0; i < slots.length; i++) {
+      var os = slots[i].getAttribute("data-pulse-slot");
+      var match = os === "macos"
+        ? (pickAsset(assets, "macos-arm64") || pickAsset(assets, "macos-x64") || pickAsset(assets, "macos"))
+        : pickAsset(assets, os);
+      if (!match) continue;
+      slots[i].innerHTML = "";
+      var a = el("a", LABELS[os] || os);
+      a.className = "btn-primary";
+      a.href = assetUrl(match);
+      slots[i].appendChild(a);
+    }
+
+    var line = document.querySelector("[data-pulse-release]");
+    if (line && version) {
+      line.innerHTML = "";
+      line.appendChild(document.createTextNode("Release v" + version + " -- " + source + ". "));
+      var sums = pickSums(assets);
+      if (sums) {
+        var link = el("a", "SHA256SUMS");
+        link.href = assetUrl(sums);
+        link.setAttribute("style", "color:var(--signal);");
+        line.appendChild(link);
+      }
+      line.hidden = false;
+    }
+  }
+
+  function loadDownloads() {
+    if (!document.querySelector("[data-pulse-downloads]")) return;
+    fetch(DL_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("dl HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var tag = data.tag || data.version || "";
+        fill(String(tag).replace(/^pulse-v/, ""), data.assets || [], "from the mirror");
+      })
+      .catch(function () {
+        fetch(GH_URL, {
+          headers: { "Accept": "application/vnd.github+json" },
+          cache: "no-store"
+        })
+          .then(function (res) {
+            if (!res.ok) throw new Error("gh HTTP " + res.status);
+            return res.json();
+          })
+          .then(function (data) {
+            var tag = data.tag_name || "";
+            fill(String(tag).replace(/^pulse-v/, ""), data.assets || [], "from the GitHub release (mirror catches up hourly)");
+          })
+          .catch(function () {
+            // The authored "soon" markers stay.
+          });
+      });
+  }
+
+  function loadDemo() {
+    var note = document.querySelector("[data-pulse-demo-note]");
+    var widget = document.querySelector("[data-pulse-demo]");
+    if (!widget) return;
+
+    fetch("/health", { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("health HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data || data.status !== "ok") throw new Error("not ok");
+        if (note) note.hidden = true;
+        widget.hidden = false;
+      })
+      .catch(function () {
+        // The note stays visible until the demo answers.
+      });
+
+    var form = document.querySelector("[data-pulse-echo-form]");
+    if (!form) return;
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var input = form.querySelector("[data-pulse-echo-input]");
+      var out = document.querySelector("[data-pulse-echo-output]");
+      var text = input ? input.value : "";
+      if (out) out.textContent = "sending...";
+      fetch("/api/echo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+        cache: "no-store"
+      })
+        .then(function (res) {
+          return res.text().then(function (body) {
+            if (!out) return;
+            var shown = body;
+            try { shown = JSON.stringify(JSON.parse(body), null, 2); } catch (e) { /* raw text is fine */ }
+            out.textContent = "HTTP " + res.status + " " + res.statusText + "\n" + shown;
+          });
+        })
+        .catch(function () {
+          if (out) out.textContent = "The demo is not reachable from this copy of the page (it runs on pulse.xiom-lang.org).";
+        });
+    });
+  }
+
+  function load() {
+    loadBadge();
+    loadDemo();
+    loadDownloads();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", load);
+  } else {
+    load();
+  }
+})();

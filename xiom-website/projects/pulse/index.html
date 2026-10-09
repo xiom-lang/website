@@ -37,9 +37,10 @@
       <img src="img/cover.webp" width="1254" height="1254" alt="PULSE: a glowing crystalline letter P with a heartbeat line above a planet horizon, ringed by holographic interface panels." style="width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--line);">
       <div>
         <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- beta</p>
+        <p data-pulse-badge hidden style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin:6px 0 0;">live demo</p>
         <h1 style="margin-top:0;">Pulse</h1>
         <p>The official XIOM web backend: a single-binary HTTP/1.1 service built with the XIOM toolchain and running behind the front proxy on loopback by design. Open source, MIT OR Apache-2.0.</p>
-        <p style="color:var(--muted);font-size:13px;">Honest beta: the repository is private until the owner greenlights going public, and there are no downloads yet. Every number below is evidence-backed and reviewed by the Pulse lane; the gap list is just as real as the wins.</p>
+        <p style="color:var(--muted);font-size:13px;">Honest beta: the repository is public and pulse-v0.1.0 is the first release. Every number below is evidence-backed and reviewed by the Pulse lane; the gap list is just as real as the wins.</p>
       </div>
     </div>
   </div>
@@ -120,25 +121,48 @@
       <li>No graceful SIGTERM drain yet; restarts heal the store.</li>
       <li>No credentials or RBAC: the login is a demo, not a security boundary.</li>
       <li>No HTTP/2, SSE or WebSockets; TLS and proxying are the front proxy's job.</li>
-      <li>No CI and no published artifacts yet -- that is phase 2.</li>
     </ul>
   </div>
 
   <div class="content-section">
-    <h2>Downloads</h2>
-    <p style="color:var(--muted);">Nothing to download yet. Phase 2 publishes GitHub releases and mirror installers for every OS, like the toolchain's.</p>
-    <div class="btn-group">
-      <span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">Windows -- soon</span>
-      <span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">Linux -- soon</span>
-      <span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">macOS -- soon</span>
+    <h2>One-line install</h2>
+    <p>The installer resolves the latest release, verifies its SHA256, installs it for your user (no administrator or root needed) and puts a <code>pulse</code> command on your PATH. Only platforms that passed the release suites are offered -- macOS is not published yet.</p>
+    <pre><code><span class="cm"># Windows PowerShell</span>
+irm https://pulse.xiom-lang.org/install.ps1 | iex
+
+<span class="cm"># Linux</span>
+curl -fsSL https://pulse.xiom-lang.org/install.sh | sh</code></pre>
+    <p style="color:var(--muted);font-size:13px;">Where it lands: <code>%LOCALAPPDATA%\pulse</code> on Windows (<code>-NoPath</code> skips the PATH edit; reopen the terminal afterwards) and <code>~/.local/share/pulse</code> on Linux, with <code>~/.local/bin/pulse</code> linked. It lands as both <code>pulse</code> and the original <code>pulse_app</code> name. Read <a href="install.ps1" style="color:var(--signal);">install.ps1</a> or <a href="install.sh" style="color:var(--signal);">install.sh</a> before piping if you prefer; afterwards <code>pulse --version</code> confirms the build.</p>
+  </div>
+
+  <div class="content-section" id="demo">
+    <h2>Try it live</h2>
+    <p data-pulse-demo-note>The interactive demo runs on the live service; this section activates once the demo deployment is up (the same-origin <code>/health</code> and <code>/api/echo</code> endpoints answer here).</p>
+    <div data-pulse-demo hidden>
+      <p>This page is served by the running Pulse demo. Send a message and the service echoes it back -- same origin, no keys:</p>
+      <form data-pulse-echo-form>
+        <p><input type="text" data-pulse-echo-input maxlength="200" placeholder="Type a message" aria-label="Message to echo" style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);color:inherit;padding:10px 12px;font-size:14px;min-width:220px;max-width:100%;"> <button class="btn-primary" type="submit">Send</button></p>
+      </form>
+      <pre><code data-pulse-echo-output></code></pre>
     </div>
+  </div>
+
+  <div class="content-section">
+    <h2>Downloads</h2>
+    <p style="color:var(--muted);">Downloads come from the release pipeline: <a href="https://github.com/xiom-projects/xiom-pulse/releases" style="color:var(--signal);">releases on GitHub</a>, mirrored at <a href="https://dl.xiom-lang.org/pulse/latest.json" style="color:var(--signal);">dl.xiom-lang.org/pulse</a> (hourly). Buttons appear from the latest release itself -- nothing is hardcoded here.</p>
+    <div class="btn-group" data-pulse-downloads>
+      <span data-pulse-slot="windows-x64"><span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">Windows -- soon</span></span>
+      <span data-pulse-slot="linux-x64"><span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">Linux -- soon</span></span>
+      <span data-pulse-slot="macos"><span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">macOS -- soon</span></span>
+    </div>
+    <p style="color:var(--muted);font-size:13px;" data-pulse-release hidden></p>
   </div>
 
   <div class="content-section">
     <h2>What is next</h2>
     <ul>
-      <li>On the owner's greenlight: the repository goes public, CI cuts signed releases, and the mirror serves them.</li>
-      <li>The Pulse demo then serves this page itself, with a live status/version badge and demo widgets behind the proxy.</li>
+      <li>The repository is public and pulse-v0.1.0 is cut; the mirror catches up hourly, and the demo deployment follows.</li>
+      <li>The demo then serves this page itself, with the live status/version badge behind the proxy.</li>
       <li>Chunked request decoding, configuration validation and the source-roots build proof have landed; the queue continues with chunked responses and a long soak of the optional kv backend.</li>
     </ul>
     <p style="color:var(--muted);font-size:13px;">Nothing here is a release or a stability promise; the beta label stays until the gap list above is cleared.</p>
@@ -154,6 +178,8 @@
     </div>
   </div>
 </footer>
+
+<script src="js/pulse-live.js"></script>
 
 </body>
 </html>
