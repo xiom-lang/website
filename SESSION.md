@@ -1189,6 +1189,36 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     unit, CHANGELOG current. The demo shape is confirmed: the subdomain is
     served by Pulse with the static fallback; badge and buttons after the
     release. The ops runbook gained the `/docs/` static location.
+84. **Pulse release wiring, installers and live demo widget (done
+    2026-10-09)**: pulse-v0.1.0 is public on GitHub
+    (xiom-projects/xiom-pulse, tag cc3e741; linux-x64 + windows-x64 zips,
+    per-asset `.sha256`, `SHA256SUMS`; no macOS). The page gained:
+    - `js/pulse-live.js`: downloads prefer
+      dl.xiom-lang.org/pulse/latest.json and fall back to the GitHub
+      release API (the documented mirror source; no version hardcoded),
+      filling Windows/Linux buttons, the release line and SHA256SUMS;
+      macOS keeps its "soon" marker. The live badge fetches same-origin
+      /health + /api/version and stays hidden until the demo answers.
+    - A "Try it live" section that activates when /health answers and
+      POSTs /api/echo from the page (same-origin; honest fallback note
+      until the demo deploys).
+    - "One-line install" with install.sh (Linux) and install.ps1
+      (Windows): resolve the latest tag, prefer dl then GitHub, verify
+      SHA256 from SHA256SUMS, install to `~/.local/share/pulse` with a
+      `~/.local/bin/pulse` link, or `%LOCALAPPDATA%\pulse` with a
+      `pulse.exe` copy and a user PATH edit unless `-NoPath`.
+      install.ps1 tested end to end on Windows (sha256 verified;
+      `pulse --version` -> xiom-pulse 0.1.0). install.sh is POSIX sh but
+      this machine has no working Linux shell (WSL has no distro), so it
+      needs `sh -n` plus one smoke run on Linux from ops or the Pulse
+      lane.
+    - Copy refresh: hero, gap list ("no CI/artifacts" bullet removed),
+      hub and roadmap state text now say Pulse is public with its first
+      release.
+    Verified renders (install section, demo widget hidden until live,
+    GitHub-fallback buttons); the :17 mirror sweep switches the buttons to
+    dl once it lands. Ops runbook gained static locations for
+    /install.sh and /install.ps1.
 
 ## Cross-lane notes
 
@@ -1855,6 +1885,9 @@ until then, and stays as the fallback after.
    - `location /docs/` -> static from <published-tree>/projects/pulse/docs
      (product docs: nginx serves them directly, never proxied to the
      demo);
+   - `location = /install.sh` and `location = /install.ps1` -> static from
+     <published-tree>/projects/pulse (the one-liners must keep working
+     after the demo takes over /);
    - `location /metrics` -> deny (ops network only);
    - `error_page 502 503 504 = @pulse_fallback;` with
      `location @pulse_fallback` serving the static
