@@ -2,11 +2,13 @@
 Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 SPDX-License-Identifier: MIT OR Apache-2.0
 
-Pulse page wiring: the live demo badge and the release downloads.
+Pulse page wiring: the live demo badge, the served-by footer note and
+the release downloads.
 
-The badge is same-origin (the demo serves this page), so /health and
-/api/version need no CORS; it stays hidden until the demo answers, and it
-never shows a version the service does not report. The downloads prefer
+The badge and the footer note are same-origin (the demo serves this
+page), so /health and /api/version need no CORS; they stay hidden until
+the demo answers, and they never show a version the service does not
+report. The downloads prefer
 the dl mirror (https://dl.xiom-lang.org/pulse/latest.json) and fall back
 to the GitHub release API, which is the documented source of the mirror;
 when the fallback runs, the asset URLs are rewritten onto the dl mirror
@@ -28,9 +30,11 @@ authored "soon" markers stay and nothing is claimed.
     return node;
   }
 
-  function loadBadge() {
-    var node = document.querySelector("[data-pulse-badge]");
-    if (!node) return;
+  function loadLive() {
+    var badge = document.querySelector("[data-pulse-badge]");
+    var state = document.querySelector("[data-pulse-demo-state]");
+    var served = document.querySelector("[data-pulse-served]");
+    if (!badge && !state && !served) return;
     fetch("/health", { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("health HTTP " + res.status);
@@ -39,15 +43,26 @@ authored "soon" markers stay and nothing is claimed.
       .then(function (data) {
         if (!data || data.status !== "ok") throw new Error("not ok");
         return fetch("/api/version", { cache: "no-store" })
-          .then(function (res) { return res.ok ? res.json() : null; })
-          .then(function (info) {
-            var v = info && info.version ? " v" + info.version : "";
-            node.textContent = "live demo" + v;
-            node.hidden = false;
-          });
+          .then(function (res) { return res.ok ? res.json() : null; });
+      })
+      .then(function (info) {
+        var version = info && info.version ? info.version : "";
+        if (badge) {
+          badge.textContent = "live demo" + (version ? " v" + version : "");
+          badge.hidden = false;
+        }
+        if (state) {
+          state.textContent = "The demo service is answering" + (version ? " -- v" + version : "") + "; open the page to try the endpoints.";
+          state.hidden = false;
+        }
+        if (served) {
+          var span = served.querySelector("[data-pulse-served-version]");
+          if (span) span.textContent = version ? " v" + version : "";
+          served.hidden = false;
+        }
       })
       .catch(function () {
-        // Stays hidden until the demo is live.
+        // Everything stays hidden until the demo is live.
       });
   }
 
@@ -137,32 +152,8 @@ authored "soon" markers stay and nothing is claimed.
       });
   }
 
-  function loadDemoState() {
-    var node = document.querySelector("[data-pulse-demo-state]");
-    if (!node) return;
-    fetch("/health", { cache: "no-store" })
-      .then(function (res) {
-        if (!res.ok) throw new Error("health HTTP " + res.status);
-        return res.json();
-      })
-      .then(function (data) {
-        if (!data || data.status !== "ok") throw new Error("not ok");
-        return fetch("/api/version", { cache: "no-store" })
-          .then(function (res) { return res.ok ? res.json() : null; })
-          .then(function (info) {
-            var v = info && info.version ? " -- v" + info.version : "";
-            node.textContent = "The demo service is answering" + v + "; open the page to try the endpoints.";
-            node.hidden = false;
-          });
-      })
-      .catch(function () {
-        // Stays hidden until the demo answers.
-      });
-  }
-
   function load() {
-    loadBadge();
-    loadDemoState();
+    loadLive();
     loadDownloads();
   }
 
