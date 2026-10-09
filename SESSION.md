@@ -1322,6 +1322,19 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     /api/echo 200. The 0.0.0.0 bind nit stays with the Pulse lane for the
     next build. Ops side complete; nothing pending website-side except
     the scheduled demo-UX deploy check.
+92. **Public copy human-voice pass (done 2026-10-09)**: swept every public
+    surface (main pages, the four project sites, the demo page, the Pulse
+    docs sources, docs/language) for agent-flavored wording. One real
+    leak fixed: the Pulse hero said the numbers were "reviewed by the
+    Pulse lane" -- now "come from the release suites and are re-checked at
+    each release". Stale head copy refreshed: the Pulse meta no longer
+    says "repository private until release", and the hub
+    description/OG description no longer claim "Phase 1 showcases" and
+    "without release claims". The remaining "owner" and "lane" matches
+    are technical terms (ownership semantics, SIMD lanes, the registry's
+    manual publish path), and the homepage first-person ("Why we're
+    building this") is deliberate voice. Lane vocabulary stays inside
+    SESSION.md and the relays only.
 
 ## Cross-lane notes
 
