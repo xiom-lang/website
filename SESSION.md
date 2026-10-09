@@ -1286,6 +1286,22 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     /docs/ fell through to the landing fallback and its relative images
     resolved under /docs/ and failed; the 14:23 pull brings the real
     directory.
+89. **Pulse demo verified live; demo UX rebuilt; protection relayed (done
+    2026-10-09)**: the 14:23 live check passed -- root hash-matches HEAD,
+    /docs/ and /docs/quickstart.html 200, /demo/ 200, /health and
+    /api/version are JSON (the live badge is visible; version 0.1.0,
+    commit cc3e741, build 2026-10-09), the download buttons point at
+    dl.xiom-lang.org/pulse/releases, and /install.sh + /install.ps1 serve
+    the real scripts (`application/octet-stream`; fine for `curl | sh`,
+    noted for ops). The demo page was rebuilt for UX: method+path chips,
+    left-aligned wrapped consoles with status and timing, health/version
+    auto-run on load, in-flight button guards, a live status line with a
+    verified-green dot, and a button reset so `.btn-secondary` works on
+    `<button>` elements (the UA background was hiding the labels). The
+    index's Try-it-live section now aims visitors at /demo/ with a status
+    line; the inline echo widget is gone and pulse-live.js keeps the
+    badge, the demo state and the downloads. Protection relay for ops is
+    recorded above (Pulse rate limits plus nginx limit_req/limit_conn).
 
 ## Cross-lane notes
 
@@ -1953,6 +1969,21 @@ Until the app is proxied, the static vhost should use
 return 200. After the proxy flip, verify: `/health` is JSON
 `{"status":"ok"}`, `/api/version` is JSON, `POST /api/echo` echoes, and
 the page shows the live badge with the Try-it-live box active.
+
+### Relay to ops: demo abuse protection (2026-10-09)
+
+The demo is a public shared store; add outer limits even though Pulse
+rate-limits:
+- Pulse: set `PULSE_RATE_LIMIT` (global req/s; 0 = off) and
+  `PULSE_RATE_BURST` (token bucket) in the demo unit.
+- nginx: `limit_req_zone` + `limit_req` and `limit_conn` for `/api/` and
+  `/health` on the pulse vhost.
+- Nits: `/install.sh` and `/install.ps1` serve
+  `application/octet-stream` (works for `curl | sh`); setting
+  `default_type text/plain;` for those locations lets browsers display
+  them. The 0.1.0 binary binds 0.0.0.0 (`PULSE_BIND` not honored) -- the
+  firewall covers it externally; the Pulse lane should honor the bind in
+  the next build.
 
 ### Relay to ops: Pulse demo deployment runbook (2026-10-09, greenlit)
 
