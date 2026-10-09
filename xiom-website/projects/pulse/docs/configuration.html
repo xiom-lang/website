@@ -6,7 +6,7 @@
 <title>Configuration -- Pulse docs</title>
 <meta name="description" content="Environment variables and the JSON config file.">
 <link rel="canonical" href="https://pulse.xiom-lang.org/docs/configuration.html">
-<link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
+<link rel="icon" type="image/x-icon" href="../img/pulse.ico">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -147,6 +147,7 @@
 <td>CORS allowlist: comma-separated origins, or <code>*</code></td>
 </tr>
 </table>
+<p><code>PULSE_BIND</code> takes the <strong>address only</strong> (<code>127.0.0.1</code>, <code>::1</code>, <code>0.0.0.0</code> in containers); the port belongs to <code>PULSE_PORT</code>. A combined value such as <code>127.0.0.1:3500</code> is reported as a validation warning -- never put a port in <code>PULSE_BIND</code>.</p>
 <p><code>PULSE_LANDING_PATH</code> is re-read on every request to <code>/</code>, so content pipelines can update the landing page without restarting the server.</p>
 <h2>JSON config file</h2>
 <p>Any of the documented keys can be set in the JSON file (<code>port</code>, <code>bind</code>, <code>log</code>, <code>store_backend</code>, <code>store_path</code>, <code>kv_dir</code>, <code>kv_prefix</code>, <code>audit_path</code>, <code>audit_max_bytes</code>, <code>config</code>, <code>icon_path</code>, <code>assets_dir</code>, <code>landing_path</code>, <code>jwt_secret</code>, <code>session_ttl</code>, <code>rate_limit</code>, <code>rate_burst</code>, <code>csrf</code>, <code>cors_origin</code>). Environment variables override the file.</p>

@@ -6,7 +6,7 @@
 <title>Operations -- Pulse docs</title>
 <meta name="description" content="Proxy, systemd, backups, and monitoring for a PULSE deployment.">
 <link rel="canonical" href="https://pulse.xiom-lang.org/docs/operations.html">
-<link rel="icon" type="image/x-icon" href="../img/xiom-icon.ico">
+<link rel="icon" type="image/x-icon" href="../img/pulse.ico">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -63,7 +63,7 @@ MemoryMax=512M
 [Install]
 WantedBy=multi-user.target
 </code></pre>
-<p><code>/etc/pulse.env</code> carries <code>PULSE_PORT</code>, <code>PULSE_BIND=127.0.0.1</code>, <code>PULSE_STORE_PATH</code>, <code>PULSE_AUDIT_PATH</code>, <code>PULSE_JWT_SECRET</code> (from your secret store), <code>PULSE_LANDING_PATH</code> / <code>PULSE_ASSETS_DIR</code> when serving a showcase, and <code>PULSE_BUILD_COMMIT</code> / <code>PULSE_BUILD_DATE</code> for provenance. There is no graceful SIGTERM drain yet: restarts drop in-flight requests briefly; <code>Restart=always</code> covers it.</p>
+<p><code>/etc/pulse.env</code> carries <code>PULSE_PORT</code> (e.g. <code>3500</code>), <code>PULSE_BIND=127.0.0.1</code> (address only -- the port goes in <code>PULSE_PORT</code>), <code>PULSE_STORE_PATH</code>, <code>PULSE_AUDIT_PATH</code>, <code>PULSE_JWT_SECRET</code> (from your secret store), <code>PULSE_LANDING_PATH</code> / <code>PULSE_ASSETS_DIR</code> when serving a showcase, and <code>PULSE_BUILD_COMMIT</code> / <code>PULSE_BUILD_DATE</code> for provenance. There is no graceful SIGTERM drain yet: restarts drop in-flight requests briefly; <code>Restart=always</code> covers it.</p>
 <h2>nginx</h2>
 <pre class="language-nginx"><code>
 server {
