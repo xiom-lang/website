@@ -1128,6 +1128,17 @@ Remaining:
     390px, 80px floor. style.css copied into the four project sites;
     phone-sized renders of the hub and Pulse checked side by side (covers
     fill the column, text wraps, footers intact).
+79. **Phase 2 readiness relay to the Pulse lane (done 2026-10-09)**: the
+    website lane confirmed phase 1 live and ready for the demo hosting
+    plan -- Pulse serves the landing on loopback behind nginx (assets
+    static from the hourly-pulled checkout), the static folder is the
+    502 fallback, systemd env points PULSE_LANDING_PATH into the website
+    tree, release pinned from the dl artifact, /health and /api/version
+    monitored. The relay asks Pulse to reply with the greenlight, the
+    final endpoint/binding facts, the release tag and artifact naming,
+    and claim updates; the website lane then sends ops the runbook and
+    wires the live badge and downloads. Recorded under "Paste-ready
+    prompts for other lanes".
 
 ## Cross-lane notes
 
@@ -1662,6 +1673,51 @@ for phase 1.
 
 Actioned 2026-10-08: ops mapped the docroots and all four subdomains are
 live and verified (item 75). This relay stays for reference.
+
+### Relay to the Pulse lane: phase 2 readiness (2026-10-09)
+
+Website lane here -- phase 1 is done and live, and we are ready for the
+phase 2 wiring whenever you are. We own the ops coordination; nothing is
+needed from you until you greenlight, but here is the state and the
+inputs we will want from you.
+
+Live now (static, strictly per your claims contract):
+pulse.xiom-lang.org serves the marketing page built from
+WEBSITE-RELAY-PULSE.md -- fact sheet and gap list only, disabled download
+buttons, Support links, favicon, responsive icons. The same folder is the
+fallback for the demo deployment. The hub and roadmap link here, and the
+other three project sites are live too.
+
+We are ready to coordinate with ops on the demo shape we proposed:
+- nginx on pulse.xiom-lang.org: `/` proxied to Pulse on loopback
+  (PULSE_BIND); `/img/` static from the hourly-pulled website checkout;
+  `/api/*` and `/health` proxied; `/metrics` restricted; 502/503/504
+  served by the static folder as fallback.
+- systemd unit with PULSE_LANDING_PATH pointed at
+  `.../public_html/projects/pulse/index.html` (read per request, so
+  website edits keep flowing on the hourly pull), PULSE_ASSETS_DIR as
+  agreed, PULSE_CORS_ORIGIN=https://pulse.xiom-lang.org (plus
+  https://xiom-lang.org if the hub ever embeds live widgets),
+  Restart=always. No graceful drain yet, so deploys drop in-flight
+  requests briefly and the store heals -- accepted for a demo, noted in
+  the runbook.
+- Release pinning from the dl artifact (SHA256-verified); monitoring via a
+  keyword check on /health and a probe of /api/version.
+
+When you are ready, please relay back to the website lane with:
+1. the greenlight for the phase-2 sequence (OPS-REQUEST.md section E:
+   CI -> repo public -> rulesets -> dl -> ops deploy -> site wiring);
+2. the exact demo endpoint list and any bound facts that changed (bind,
+   landing/assets paths, CORS origins);
+3. the release tag and artifact naming, so we can wire the download
+   buttons to the real dl URLs;
+4. any claim updates for the fact sheet, and confirmation that the page
+   may fetch /health and /api/version for the live badge.
+
+We will then send ops the runbook (vhost, unit, env, fallback,
+monitoring), wire the badge and downloads per WEBSITE-RELAY-PULSE.md
+sections 5-6, and keep the beta banner until the gap list clears. New
+claims continue to route through the Pulse lane before publishing.
 
 ## Rules
 
