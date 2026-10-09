@@ -1219,6 +1219,21 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     GitHub-fallback buttons); the :17 mirror sweep switches the buttons to
     dl once it lands. Ops runbook gained static locations for
     /install.sh and /install.ps1.
+85. **Pulse docs rendered and published in-repo (done 2026-10-09)**: the
+    PULSE lane delivered the phase-A public docs under `docs/public/`
+    (commit `1efbf18`; 8 pages plus summary.md; ASCII, YAML front matter,
+    relative links). The website lane vendored them to
+    `xiom-website/projects/pulse/docs-src/`, added
+    `docs/build_pulse_docs.py` (reuses `md_to_html` from build_docs.py;
+    renders the shared template with a docs sidebar, favicon, Support
+    footer, ASCII enforced) and built 8 flat pages plus style.css into
+    `xiom-website/projects/pulse/docs/`, served at
+    pulse.xiom-lang.org/docs/ (the /docs/ static location is already in
+    the ops runbook). The Pulse page nav gained Docs, and the install
+    note links the documentation. Rebuild flow on future doc changes:
+    re-sync docs-src from the pulse repo, then run
+    `python docs/build_pulse_docs.py`. Link check: 32 pages, 0 broken;
+    quickstart render verified.
 
 ## Cross-lane notes
 
