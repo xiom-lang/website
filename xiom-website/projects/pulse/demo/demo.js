@@ -20,7 +20,8 @@ pretending; buttons disable while their request is in flight.
   function show(name, res, body, ms) {
     var pretty = body;
     try { pretty = JSON.stringify(JSON.parse(body), null, 2); } catch (e) { /* raw text is fine */ }
-    out(name, "HTTP " + res.status + " " + res.statusText + " (" + ms + " ms)\n" + pretty);
+    var statusText = res.statusText ? " " + res.statusText : "";
+    out(name, "HTTP " + res.status + statusText + " (" + ms + " ms)\n" + pretty);
   }
 
   function request(name, path, options) {
