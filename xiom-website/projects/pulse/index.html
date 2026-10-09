@@ -46,7 +46,7 @@
 
   <div class="content-section">
     <h2>What works today</h2>
-    <p>Verified on Windows and Linux: HTTP smoke 73/73, three suites on both platforms, crash/reopen 6/6.</p>
+    <p>Verified on Windows and Linux: HTTP smoke 78/78, three suites on both platforms, crash/reopen 6/6.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <img src="img/single-binary.webp" alt="" loading="lazy" decoding="async">
@@ -66,12 +66,12 @@
       <div class="feature-card">
         <img src="img/csrf-smuggling-guard.webp" alt="" loading="lazy" decoding="async">
         <h4>Smuggling guard</h4>
-        <p>Transfer-Encoding guard and schema validation on the auth routes.</p>
+        <p>Chunked request decoding, a TE/CL smuggling guard, and schema validation on the auth routes.</p>
       </div>
       <div class="feature-card">
         <img src="img/crash-safe-append-store.webp" alt="" loading="lazy" decoding="async">
         <h4>Crash-safe store</h4>
-        <p>Append store by default; optional embedded xiom.kv backend (20m soak green, hard-kill reopen intact).</p>
+        <p>Append store by default; optional embedded xiom.kv backend (45m soak green, hard-kill reopen intact).</p>
       </div>
       <div class="feature-card">
         <img src="img/rate-limiting.webp" alt="" loading="lazy" decoding="async">
@@ -106,7 +106,7 @@
       <div class="feature-card">
         <img src="img/load-soak.webp" alt="" loading="lazy" decoding="async">
         <h4>Load soak</h4>
-        <p>1h: 13,198/13,198 requests, 0 errors; flat memory and handles; 64 simultaneous connections served.</p>
+        <p>1h: 13,198/13,198 requests, 0 errors; 64 simultaneous connections served.</p>
       </div>
     </div>
   </div>
@@ -114,7 +114,7 @@
   <div class="content-section">
     <h2>Honest beta -- what it does not do yet</h2>
     <ul>
-      <li>About 56% of the team's strict production bar: not production-ready, not hardened, not battle-tested.</li>
+      <li>About 55% of the team's strict production bar: not production-ready, not hardened, not battle-tested.</li>
       <li>No keep-alive yet -- one request per connection (the front proxy mitigates).</li>
       <li>No receive timeouts yet; avoid exposing it directly (the front proxy mitigates).</li>
       <li>No graceful SIGTERM drain yet; restarts heal the store.</li>
@@ -139,7 +139,7 @@
     <ul>
       <li>On the owner's greenlight: the repository goes public, CI cuts signed releases, and the mirror serves them.</li>
       <li>The Pulse demo then serves this page itself, with a live status/version badge and demo widgets behind the proxy.</li>
-      <li>Until then, the hardening queue continues: chunked decoding, configuration validation, build proof without source roots.</li>
+      <li>Chunked request decoding, configuration validation and the source-roots build proof have landed; the queue continues with chunked responses and a long soak of the optional kv backend.</li>
     </ul>
     <p style="color:var(--muted);font-size:13px;">Nothing here is a release or a stability promise; the beta label stays until the gap list above is cleared.</p>
   </div>
