@@ -1365,9 +1365,10 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     does not answer (no hardcoded version); stale 0.1.0 copy on the page
     and the hub table was neutralized. Project art landed: the subdomain
     favicons are the project marks (pulse, orbitdb, xvector, chaos; docs
-    template and demo page included), the roadmap and hub cards use the
-    new 512px alpha badges while the full covers stay as the project-page
-    heroes, and the xev / xiomengine / selfhost artwork is committed (the
+    template and demo page included), the roadmap cards use the 512px
+    badges at half width and the hub keeps the full covers (the final
+    split, item 96), which also stay as the project-page heroes, and the
+    xev / xiomengine / selfhost artwork is committed (the
     xev/xiomengine set stays unreferenced; the selfhost cover goes onto
     the roadmap per item 95). Docs: docs-src synced for the 0.1.2
     address-only PULSE_BIND notes and the eight docs pages rebuilt with
@@ -1389,6 +1390,12 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     63 files; largest 804 KB), well inside plain-git limits, and LFS
     would complicate the hourly pull deploy, the Actions checkouts and
     the gh-pages docs pipeline for no gain. Commits 5aed8af, 4729e66.
+96. **Hub keeps the covers; roadmap icons at half width (done 2026-10-09)**:
+    the owner's final split for the project art: projects.html returns to
+    the 1254px covers (the badge swap from item 94 is undone there), and
+    the roadmap project cards keep the 512px badges, now displayed at 50%
+    width, centered (border:0;width:50%;margin:0 auto on the four card
+    images). Commit 93d2e3b.
 
 ## Cross-lane notes
 
@@ -2186,7 +2193,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-10-09): HEAD 4729e66. Copyright notices across the repo read
+State (2026-10-09): HEAD 93d2e3b. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Public copy holds the human-voice sweep (no internal
@@ -2216,8 +2223,8 @@ through the Pulse lane before publishing.
 
 Recent landings (2026-10-09): the served-by footer note on the Pulse
 landing; project favicons on all four subdomains (demo page and docs build
-included); the new 512px alpha badges on roadmap.html#projects and
-projects.html with the full covers kept as the project-page heroes; the
+included); the 512px badges on roadmap.html#projects at half width;
+projects.html and the project pages keep the full covers; the
 docs-src 0.1.2 BIND notes synced and the eight docs pages rebuilt; xev /
 xiomengine artwork committed unreferenced; the selfhost cover above the
 Self-hosting section on roadmap.html; the four project sites' feature art
@@ -2227,12 +2234,12 @@ Collective everywhere, the live self-hosting and stdlib readiness meters,
 registry trust sections, and v0.64.0/v0.64.2 verified live the days they
 shipped (dynamic download/versions pages, tag-pinned notes render).
 
-Before starting the queue: verify the 4729e66 deploy on the :23 pull --
+Before starting the queue: verify the 93d2e3b deploy on the :23 pull --
 the Pulse landing footer shows the served-by note (Pulse icon + running
-version; v0.1.0 until ops deploys 0.1.2), roadmap.html#projects and
-projects.html show the new badges, the subdomain favicons resolve
-(pulse, orbitdb, xvector, chaos), and the selfhost cover renders above
-the Self-hosting section. When ops lands 0.1.2, re-check the demo
+version; v0.1.0 until ops deploys 0.1.2), roadmap.html#projects shows
+the half-width badges, projects.html and the project pages keep the
+covers, the subdomain favicons resolve (pulse, orbitdb, xvector,
+chaos), and the selfhost cover renders above the Self-hosting section. When ops lands 0.1.2, re-check the demo
 console line ("HTTP 200 (N ms)") and the footer version.
 
 Next, in order:
