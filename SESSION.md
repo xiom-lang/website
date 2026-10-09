@@ -1118,6 +1118,16 @@ Remaining:
     screenshots below ~500px are laid out at the Windows minimum window
     width and then cropped, which shows false clipping -- use the harness
     (or a >=500px window) for narrow-viewport checks.
+78. **Responsive pass on the project pages (done 2026-10-09)**: measured
+    every project page in a 390px iframe harness -- no page-level overflow
+    anywhere (document scrollWidth 375; the nav strip and the hub's
+    "State at a glance" table scroll inside their own containers via the
+    existing mobile table rule). The feature icons were fixed-size, which
+    is what read as "not responsive", so they now scale fluidly:
+    `width: clamp(80px, 22vw, 120px)` -- 120px on desktop, about 86px at
+    390px, 80px floor. style.css copied into the four project sites;
+    phone-sized renders of the hub and Pulse checked side by side (covers
+    fill the column, text wraps, footers intact).
 
 ## Cross-lane notes
 
