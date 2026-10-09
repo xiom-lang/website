@@ -1367,15 +1367,28 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     favicons are the project marks (pulse, orbitdb, xvector, chaos; docs
     template and demo page included), the roadmap and hub cards use the
     new 512px alpha badges while the full covers stay as the project-page
-    heroes, and the xev / xiomengine / selfhost artwork is committed
-    unreferenced on purpose (the selfhost cover shows finished gates and
-    must not sit next to the in-progress meter). Docs: docs-src synced
-    for the 0.1.2 address-only PULSE_BIND notes and the eight docs pages
-    rebuilt with the Pulse favicon; the repo public set's Unreleased 0.2
-    rows are deferred until 0.2.0 ships (relay below). Verified before
-    starting: the live demo.js hash-matches HEAD f632843, /health and
-    /api/echo answer, and /api/events lists entries. Commits 87efc13,
-    d896a09, ecb78aa; the site publishes on the :23 pull.
+    heroes, and the xev / xiomengine / selfhost artwork is committed (the
+    xev/xiomengine set stays unreferenced; the selfhost cover goes onto
+    the roadmap per item 95). Docs: docs-src synced for the 0.1.2
+    address-only PULSE_BIND notes and the eight docs pages rebuilt with
+    the Pulse favicon; the repo public set's Unreleased 0.2 rows are
+    deferred until 0.2.0 ships (relay below). Verified before starting:
+    the live demo.js hash-matches HEAD f632843, /health and /api/echo
+    answer, and /api/events lists entries. Commits 87efc13, d896a09,
+    ecb78aa; the site publishes on the :23 pull.
+95. **Selfhost cover on the roadmap; feature-art refresh; no LFS (done
+    2026-10-09)**: the owner directed the selfhost cover onto the page, so
+    it now sits above the Self-hosting heading on roadmap.html as a
+    responsive, card-framed illustration (max-width 560px, lazy, alt
+    text describes the concept art); the section paragraph and the live
+    gate meter keep the honest in-progress state. The four project sites'
+    feature images were re-exported by the owner (42 files, ~2.64 MB ->
+    ~2.44 MB, same names, no markup or dimension changes that matter) and
+    are committed. Images stay in plain git, no Git LFS: the site carries
+    ~19 MB of web art (root img 12.5 MB / 57 files, project art 6.4 MB /
+    63 files; largest 804 KB), well inside plain-git limits, and LFS
+    would complicate the hourly pull deploy, the Actions checkouts and
+    the gh-pages docs pipeline for no gain. Commits 5aed8af, 4729e66.
 
 ## Cross-lane notes
 
@@ -2173,7 +2186,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-10-09): HEAD ecb78aa. Copyright notices across the repo read
+State (2026-10-09): HEAD 4729e66. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Public copy holds the human-voice sweep (no internal
@@ -2206,17 +2219,20 @@ landing; project favicons on all four subdomains (demo page and docs build
 included); the new 512px alpha badges on roadmap.html#projects and
 projects.html with the full covers kept as the project-page heroes; the
 docs-src 0.1.2 BIND notes synced and the eight docs pages rebuilt; xev /
-xiomengine / selfhost artwork committed unreferenced. Earlier in the day:
+xiomengine artwork committed unreferenced; the selfhost cover above the
+Self-hosting section on roadmap.html; the four project sites' feature art
+re-exported (~2.44 MB). Earlier in the day:
 the full Pulse release + demo chain, the Projects restructure, Open
 Collective everywhere, the live self-hosting and stdlib readiness meters,
 registry trust sections, and v0.64.0/v0.64.2 verified live the days they
 shipped (dynamic download/versions pages, tag-pinned notes render).
 
-Before starting the queue: verify the ecb78aa deploy on the :23 pull --
+Before starting the queue: verify the 4729e66 deploy on the :23 pull --
 the Pulse landing footer shows the served-by note (Pulse icon + running
 version; v0.1.0 until ops deploys 0.1.2), roadmap.html#projects and
-projects.html show the new badges, and the subdomain favicons resolve
-(pulse, orbitdb, xvector, chaos). When ops lands 0.1.2, re-check the demo
+projects.html show the new badges, the subdomain favicons resolve
+(pulse, orbitdb, xvector, chaos), and the selfhost cover renders above
+the Self-hosting section. When ops lands 0.1.2, re-check the demo
 console line ("HTTP 200 (N ms)") and the footer version.
 
 Next, in order:
@@ -2268,7 +2284,9 @@ Actions refs to full SHAs; commit identity is repo-local (Lefteris Notas
 commits with `git commit -s`; keep the site static and honest - no claim the
 implementation does not support; every new flag/attribute ships docs in the
 same commit (compiler `AI_CONTEXT.md`, `docs/AI_CONTEXT.md` here, and the
-matching language-guide page).
+matching language-guide page); keep web art in plain git -- no Git LFS
+(the site carries ~19 MB of images, well inside plain-git limits, and
+LFS would complicate the pull deploy; see item 95).
 ```
 
 ## Relay from the compiler lane (2026-09-25)
