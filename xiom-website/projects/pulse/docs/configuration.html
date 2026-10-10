@@ -107,6 +107,11 @@
 <td><code>/favicon.ico</code> source</td>
 </tr>
 <tr>
+<td><code>PULSE_OPENAPI_PATH</code></td>
+<td><code>resources/openapi.json</code></td>
+<td>served OpenAPI contract</td>
+</tr>
+<tr>
 <td><code>PULSE_ASSETS_DIR</code></td>
 <td><code>resources/public</code></td>
 <td><code>/assets/*</code> showcase root</td>
@@ -146,11 +151,36 @@
 <td>(unset)</td>
 <td>CORS allowlist: comma-separated origins, or <code>*</code></td>
 </tr>
+<tr>
+<td><code>PULSE_UPLOAD_DIR</code></td>
+<td><code>uploads</code></td>
+<td>multipart upload target (generated names)</td>
+</tr>
+<tr>
+<td><code>PULSE_UPLOAD_MAX_BYTES</code></td>
+<td><code>1048576</code></td>
+<td>per-part upload cap (1 MiB)</td>
+</tr>
+<tr>
+<td><code>PULSE_UPLOAD_MAX_PARTS</code></td>
+<td><code>8</code></td>
+<td>parts per upload request (clamped 1..64)</td>
+</tr>
+<tr>
+<td><code>PULSE_HTTP_ALLOWLIST</code></td>
+<td>(unset)</td>
+<td>outbound SSRF allowlist (comma-separated hosts, exact or subdomain); unset = blocklist mode</td>
+</tr>
+<tr>
+<td><code>PULSE_HTTP_MAX_BYTES</code></td>
+<td><code>262144</code></td>
+<td>outbound HTTP response size cap</td>
+</tr>
 </table>
 <p><code>PULSE_BIND</code> takes the <strong>address only</strong> (<code>127.0.0.1</code>, <code>::1</code>, <code>0.0.0.0</code> in containers); the port belongs to <code>PULSE_PORT</code>. A combined value such as <code>127.0.0.1:3500</code> is reported as a validation warning -- never put a port in <code>PULSE_BIND</code>.</p>
 <p><code>PULSE_LANDING_PATH</code> is re-read on every request to <code>/</code>, so content pipelines can update the landing page without restarting the server.</p>
 <h2>JSON config file</h2>
-<p>Any of the documented keys can be set in the JSON file (<code>port</code>, <code>bind</code>, <code>log</code>, <code>store_backend</code>, <code>store_path</code>, <code>kv_dir</code>, <code>kv_prefix</code>, <code>audit_path</code>, <code>audit_max_bytes</code>, <code>config</code>, <code>icon_path</code>, <code>assets_dir</code>, <code>landing_path</code>, <code>jwt_secret</code>, <code>session_ttl</code>, <code>rate_limit</code>, <code>rate_burst</code>, <code>csrf</code>, <code>cors_origin</code>). Environment variables override the file.</p>
+<p>Any of the documented keys can be set in the JSON file (<code>port</code>, <code>bind</code>, <code>log</code>, <code>store_backend</code>, <code>store_path</code>, <code>kv_dir</code>, <code>kv_prefix</code>, <code>audit_path</code>, <code>audit_max_bytes</code>, <code>config</code>, <code>icon_path</code>, <code>assets_dir</code>, <code>landing_path</code>, <code>jwt_secret</code>, <code>session_ttl</code>, <code>rate_limit</code>, <code>rate_burst</code>, <code>csrf</code>, <code>cors_origin</code>, <code>upload_dir</code>, <code>upload_max_bytes</code>, <code>upload_max_parts</code>, <code>http_allowlist</code>, <code>http_max_bytes</code>). Environment variables override the file.</p>
 <h2>Store backends</h2>
 <ul>
 <li><code>jsonl</code> (default): append-only file, crash-safe (a torn trailing line</li>

@@ -6,8 +6,17 @@ description: Endpoints, request limits, and response semantics.
 # HTTP API
 
 All responses are JSON unless noted. `GET /health` returns
-`{"status":"ok"}`. Errors use a stable envelope:
-`{"error":{"code":"...","message":"..."}}`.
+`{"status":"ok"}`. Errors use a stable envelope with the HTTP status
+mirrored additively:
+`{"error":{"status":404,"code":"not_found","message":"..."}}`.
+
+## Versioning
+
+Every route also resolves under the `/v1` alias: `/v1/api/events` is
+equivalent to `/api/events` (query strings preserved), `/v1/health` to
+`/health`, and so on. New surfaces are introduced under `/v1` first;
+the canonical `/api` paths remain stable during beta. Pagination `Link`
+headers preserve whichever prefix the client used.
 
 ## Public endpoints
 
@@ -18,6 +27,7 @@ All responses are JSON unless noted. `GET /health` returns
 | POST | `/api/echo` | echoes the JSON body |
 | GET | `/api/items/:id` | path-parameter demo route |
 | GET | `/metrics` | Prometheus text (restrict at the proxy) |
+| GET | `/openapi.json` | OpenAPI 3.1 contract (version substituted at serve time) |
 | GET | `/favicon.ico` | from `PULSE_ICON_PATH` |
 | GET | `/assets/*` | static files from `PULSE_ASSETS_DIR` (ETag, 304, Range) |
 | GET | `/` | `PULSE_LANDING_PATH` HTML (read per request) |
@@ -36,10 +46,52 @@ All responses are JSON unless noted. `GET /health` returns
 
 | Method | Path | Notes |
 |---|---|---|
-| POST | `/api/events` | append an event (audited) |
-| GET | `/api/events` | list; `?limit=1..100`, `?kind=` |
+| POST | `/api/events` | append an event (audited; optional `Idempotency-Key`) |
+| GET | `/api/events` | list; `?limit=1..100`, `?kind=`, `?before=` (pagination) |
 | GET | `/api/events/count` | `{"count":N}` |
 | POST | `/api/events/compact` | rewrite without torn lines |
+| POST | `/api/uploads` | `multipart/form-data` upload (0.2; `/v1/api/uploads`) |
+
+### Pagination
+
+Events page newest-first. Every stored event carries a durable sequence
+cursor (`seq`, written since 0.2; older records fall back to their
+position among valid records). `GET /api/events` returns the newest page
+(`{"count":N,"events":[...],"next_cursor":K}`). When an older page
+exists, `next_cursor` is the cursor of the page's oldest event and the
+response carries an RFC 8288 header:
+
+```
+Link: </api/events?limit=10&before=42>; rel="next"
+```
+
+Follow it (or call `?before=<next_cursor>` yourself; `kind` is preserved
+in the link) until `next_cursor` is `0`. A malformed cursor is rejected
+`400` with code `invalid_cursor`. Both store backends page identically.
+
+### Idempotent writes
+
+`POST /api/events` accepts an optional `Idempotency-Key` header (1-200
+visible characters). Repeating a request with the same key does not
+append a second event: the original sequence is replayed with
+`"deduplicated":true` and the count stays unchanged. The key is stored
+inside the event record (`idem`), so the guarantee survives restarts on
+both backends; a malformed key is `400 invalid_idempotency_key`.
+
+### Uploads
+
+`POST /api/uploads` accepts `multipart/form-data` (one or more file
+parts; parts without a filename are ignored). Files are written under
+`PULSE_UPLOAD_DIR` (default `uploads/`) with generated names -- client
+filenames are never path components, only a sanitized extension
+survives -- and the response lists `name` / `original` / `bytes` /
+`content_type` per file. Caps: `PULSE_UPLOAD_MAX_BYTES` per part
+(default 1 MiB) and `PULSE_UPLOAD_MAX_PARTS` (default 8); the HTTP
+core's decoded-body cap still bounds the whole request. Errors: `415
+unsupported_media_type` (not multipart / no boundary), `400
+boundary_not_found` or `400 malformed` (broken framing), `413
+part_too_large` / `413 too_many_parts`. This is a 0.2 surface: it is
+reachable at `/api/uploads` and `/v1/api/uploads`.
 
 ## Request limits and semantics
 
@@ -57,3 +109,11 @@ All responses are JSON unless noted. `GET /health` returns
 
 Statuses: `200`, `204`, `400`, `401`, `403`, `404`, `405`, `413`, `500`,
 `501`.
+
+## CLI
+
+`pulse_app openapi` prints the same contract document to stdout;
+`pulse_app routes` prints the route table (`METHOD PATH` per line);
+`pulse_app version` and `pulse_app check-config` mirror the `--version`
+and `--check-config` flags. `openapi` exits 1 when the document cannot
+be read; `check-config` exits 1 when a configured file is unreadable.

@@ -63,7 +63,7 @@ MemoryMax=512M
 [Install]
 WantedBy=multi-user.target
 </code></pre>
-<p><code>/etc/pulse.env</code> carries <code>PULSE_PORT</code> (e.g. <code>3500</code>), <code>PULSE_BIND=127.0.0.1</code> (address only -- the port goes in <code>PULSE_PORT</code>), <code>PULSE_STORE_PATH</code>, <code>PULSE_AUDIT_PATH</code>, <code>PULSE_JWT_SECRET</code> (from your secret store), <code>PULSE_LANDING_PATH</code> / <code>PULSE_ASSETS_DIR</code> when serving a showcase, and <code>PULSE_BUILD_COMMIT</code> / <code>PULSE_BUILD_DATE</code> for provenance. There is no graceful SIGTERM drain yet: restarts drop in-flight requests briefly; <code>Restart=always</code> covers it.</p>
+<p><code>/etc/pulse.env</code> carries <code>PULSE_PORT</code> (e.g. <code>3500</code>), <code>PULSE_BIND=127.0.0.1</code> (address only -- the port goes in <code>PULSE_PORT</code>), <code>PULSE_STORE_PATH</code>, <code>PULSE_AUDIT_PATH</code>, <code>PULSE_JWT_SECRET</code> (from your secret store), <code>PULSE_LANDING_PATH</code> / <code>PULSE_ASSETS_DIR</code> when serving a showcase, <code>PULSE_UPLOAD_DIR</code> when uploads are enabled, and <code>PULSE_BUILD_COMMIT</code> / <code>PULSE_BUILD_DATE</code> for provenance. There is no graceful SIGTERM drain yet: restarts drop in-flight requests briefly; <code>Restart=always</code> covers it.</p>
 <h2>nginx</h2>
 <pre class="language-nginx"><code>
 server {
@@ -88,6 +88,10 @@ server {
 <li>Restore: stop the service, copy the snapshot back over the store path</li>
 </ul>
 <p>(or the kv directory), start, and verify with <code>/api/events/count</code>.   The JSONL store tolerates a torn tail, so a slightly-live copy is safe.</p>
+<ul>
+<li>Uploads: <code>PULSE_UPLOAD_DIR</code> holds uploaded files (generated names) and</li>
+</ul>
+<p>is <strong>not</strong> part of the built-in snapshot -- include it in your backup   policy when uploads are enabled.</p>
 <h2>Monitoring</h2>
 <ul>
 <li>Liveness: keyword check on <code>GET /health</code>.</li>

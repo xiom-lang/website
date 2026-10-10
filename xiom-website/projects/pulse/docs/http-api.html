@@ -44,7 +44,9 @@
     </nav>
     <article class="content-section" style="flex:1 1 420px;min-width:280px;margin-top:0;">
 <h1>HTTP API</h1>
-<p>All responses are JSON unless noted. <code>GET /health</code> returns <code>{"status":"ok"}</code>. Errors use a stable envelope: <code>{"error":{"code":"...","message":"..."}}</code>.</p>
+<p>All responses are JSON unless noted. <code>GET /health</code> returns <code>{"status":"ok"}</code>. Errors use a stable envelope with the HTTP status mirrored additively: <code>{"error":{"status":404,"code":"not_found","message":"..."}}</code>.</p>
+<h2>Versioning</h2>
+<p>Every route also resolves under the <code>/v1</code> alias: <code>/v1/api/events</code> is equivalent to <code>/api/events</code> (query strings preserved), <code>/v1/health</code> to <code>/health</code>, and so on. New surfaces are introduced under <code>/v1</code> first; the canonical <code>/api</code> paths remain stable during beta. Pagination <code>Link</code> headers preserve whichever prefix the client used.</p>
 <h2>Public endpoints</h2>
 <table>
 <tr>
@@ -76,6 +78,11 @@
 <td>GET</td>
 <td><code>/metrics</code></td>
 <td>Prometheus text (restrict at the proxy)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/openapi.json</code></td>
+<td>OpenAPI 3.1 contract (version substituted at serve time)</td>
 </tr>
 <tr>
 <td>GET</td>
@@ -136,12 +143,12 @@
 <tr>
 <td>POST</td>
 <td><code>/api/events</code></td>
-<td>append an event (audited)</td>
+<td>append an event (audited; optional <code>Idempotency-Key</code>)</td>
 </tr>
 <tr>
 <td>GET</td>
 <td><code>/api/events</code></td>
-<td>list; <code>?limit=1..100</code>, <code>?kind=</code></td>
+<td>list; <code>?limit=1..100</code>, <code>?kind=</code>, <code>?before=</code> (pagination)</td>
 </tr>
 <tr>
 <td>GET</td>
@@ -153,7 +160,22 @@
 <td><code>/api/events/compact</code></td>
 <td>rewrite without torn lines</td>
 </tr>
+<tr>
+<td>POST</td>
+<td><code>/api/uploads</code></td>
+<td><code>multipart/form-data</code> upload (0.2; <code>/v1/api/uploads</code>)</td>
+</tr>
 </table>
+<h3>Pagination</h3>
+<p>Events page newest-first. Every stored event carries a durable sequence cursor (<code>seq</code>, written since 0.2; older records fall back to their position among valid records). <code>GET /api/events</code> returns the newest page (<code>{"count":N,"events":[...],"next_cursor":K}</code>). When an older page exists, <code>next_cursor</code> is the cursor of the page's oldest event and the response carries an RFC 8288 header:</p>
+<pre><code>
+Link: &lt;/api/events?limit=<span class='num'>10</span>&amp;before=<span class='num'>42</span>&gt;; rel=<span class='str'>next</span>
+</code></pre>
+<p>Follow it (or call <code>?before=&lt;next_cursor&gt;</code> yourself; <code>kind</code> is preserved in the link) until <code>next_cursor</code> is <code>0</code>. A malformed cursor is rejected <code>400</code> with code <code>invalid_cursor</code>. Both store backends page identically.</p>
+<h3>Idempotent writes</h3>
+<p><code>POST /api/events</code> accepts an optional <code>Idempotency-Key</code> header (1-200 visible characters). Repeating a request with the same key does not append a second event: the original sequence is replayed with <code>"deduplicated":true</code> and the count stays unchanged. The key is stored inside the event record (<code>idem</code>), so the guarantee survives restarts on both backends; a malformed key is <code>400 invalid_idempotency_key</code>.</p>
+<h3>Uploads</h3>
+<p><code>POST /api/uploads</code> accepts <code>multipart/form-data</code> (one or more file parts; parts without a filename are ignored). Files are written under <code>PULSE_UPLOAD_DIR</code> (default <code>uploads/</code>) with generated names -- client filenames are never path components, only a sanitized extension survives -- and the response lists <code>name</code> / <code>original</code> / <code>bytes</code> / <code>content_type</code> per file. Caps: <code>PULSE_UPLOAD_MAX_BYTES</code> per part (default 1 MiB) and <code>PULSE_UPLOAD_MAX_PARTS</code> (default 8); the HTTP core's decoded-body cap still bounds the whole request. Errors: <code>415 unsupported_media_type</code> (not multipart / no boundary), <code>400 boundary_not_found</code> or <code>400 malformed</code> (broken framing), <code>413 part_too_large</code> / <code>413 too_many_parts</code>. This is a 0.2 surface: it is reachable at <code>/api/uploads</code> and <code>/v1/api/uploads</code>.</p>
 <h2>Request limits and semantics</h2>
 <ul>
 <li>Body cap: 1 MiB decoded; over-cap chunked bodies get <code>413</code>.</li>
@@ -175,6 +197,8 @@
 <li>Mutating requests are audited; session flows are CSRF-protected.</li>
 </ul>
 <p>Statuses: <code>200</code>, <code>204</code>, <code>400</code>, <code>401</code>, <code>403</code>, <code>404</code>, <code>405</code>, <code>413</code>, <code>500</code>, <code>501</code>.</p>
+<h2>CLI</h2>
+<p><code>pulse_app openapi</code> prints the same contract document to stdout; <code>pulse_app routes</code> prints the route table (<code>METHOD PATH</code> per line); <code>pulse_app version</code> and <code>pulse_app check-config</code> mirror the <code>--version</code> and <code>--check-config</code> flags. <code>openapi</code> exits 1 when the document cannot be read; <code>check-config</code> exits 1 when a configured file is unreadable.</p>
     </article>
   </div>
 </main>
