@@ -108,7 +108,7 @@ PAGE = """<!doctype html>
 <nav>
   <div class="wrap">
     <a href="../" class="logo">
-      <img src="../img/xiom-logo_bg.png" alt="">
+      <img src="../img/pulse.ico" alt="">
       PULSE docs
     </a>
     <div class="navlinks">
