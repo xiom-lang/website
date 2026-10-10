@@ -1439,10 +1439,11 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     -1549-website-2 (mirror follow-ups: release.json, notes true, JSON
     CORS) beside the ack. The stdlib release-notes fragment ask is
     verified done (the stdlib repo ships release-notes/<tag>.md per tag);
-    the stale-archive README check rides the error-code item. Other lanes
+    the stale-archive README check rides the error-code item.     Other lanes
     are onboarding in parallel on the same shared clone; the doorbell is
-    a recurring 3-hour cron check that pulls xiom-relays, processes items
-    to the website lane and updates statuses.
+    a recurring 3-hour cron check (at :17) that pulls xiom-relays,
+    processes items to the website lane and updates statuses. Cron tasks
+    expire after 7 days: re-create the doorbell when needed.
 
 ## Cross-lane notes
 
