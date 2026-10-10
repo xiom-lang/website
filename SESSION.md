@@ -1466,6 +1466,15 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      Bus transitions done: 1600-pulse fixed (commit 2a25464), 1633-pulse
      acked+fixed; new items REL-20261010-1658-website[-2/-3]. Mirror and
      buttons verify at the :17/:23 pulls (wakeup set).
+     Verified at 17:40: the mirror serves pulse-v0.2.0 (linux + windows),
+     the live docs render the 0.2.0 release notes, the landing carries the
+     refreshed copy and the pulse.ico nav, and the subdomain navs are live
+     (orbitdb spot-checked). The demo redeploy was rolled back by ops:
+     0.2.0 crash-loops with SIGILL on the VPS (pulse bug item), so the
+     footer/badge keep showing the running 0.1.0 and the redeploy waits on
+     a re-cut; the ops FYI item REL-20261010-1721-ops-2 was acked. The
+     openapi packaging bug was fixed by pulse (f15a6b0) -- verify at the
+     re-cut.
 101. **Project icons and names in the subdomain navs (2026-10-10)**: each
      project site now shows its own mark and name in the nav (pulse.ico +
      PULSE; orbitdb.ico + OrbitDB; xvector.ico + XVector; chaos.ico +
@@ -2376,23 +2385,24 @@ rule across the guides; the snippet syntax lint in `docs.yml` and
 `docs/marketplace-publisher.md` holds the marketplace copy; neither is
 built into the site.
 
-PULSE STATE (2026-10-10): pulse-v0.2.0 shipped (tag e31d396, run
-38067869734; linux-x64 + windows-x64 + .sha256 + SHA256SUMS + provenance);
-macOS is deferred to the next release (dark buttons stay dark) once the
-darwin items land. The demo on pulse.xiom-lang.org still runs the 0.1.0
-build; the ops redeploy target is pulse-v0.2.0 (skip 0.1.2; keep the
-loopback bind + firewall armor -- PULSE_BIND still binds wildcard in
-0.2.0, verified locally). docs-src was synced at the cut and the eight
-docs pages rebuilt (2a25464); the released zip omits
-resources/openapi.json so /openapi.json 500s in the artifact (pulse bug
-item; the demo redeploy inherits it until the packaging fix). Mirror:
-0.2.0 lands with linux-x64 + windows-x64 at the :17 sweep. Serving
-verdict (re-tested on the 0.2.0 windows artifact): one instance serves
-one landing HTML + one /assets/* tree (ETag/304) + the API; nothing
-outside /assets resolves (style.css and img/... at the root 404,
-roadmap.html and /demo/ 404), so the five multi-page sites cannot be
-served by Pulse -- nginx keeps the sites, Pulse keeps its own landing and
-API. New Pulse claims route through the Pulse lane before publishing.
+PULSE STATE (2026-10-10): pulse-v0.2.0 shipped (tag e31d396; linux-x64 +
+windows-x64 + .sha256 + SHA256SUMS + provenance) and is live on the
+mirror (latest.json verified 17:40). macOS is deferred to the next
+release (dark buttons stay dark). Ops installed 0.2.0 on the demo but it
+crash-looped with SIGILL on the VPS, so the demo was rolled back to
+0.1.0 and the redeploy is on hold until pulse re-cuts (pulse bug item;
+the footer/badge keep showing the running 0.1.0). docs-src was synced at
+the cut and the eight docs pages rebuilt (2a25464); the released zip
+omits resources/openapi.json so /openapi.json 500s in the artifact
+(pulse marked the fix fixed at f15a6b0; verify at the re-cut).
+PULSE_BIND still binds wildcard in 0.2.0 (verified locally), so the
+demo armor stays. Serving verdict (re-tested on the 0.2.0 windows
+artifact): one instance serves one landing HTML + one /assets/* tree
+(ETag/304) + the API; nothing outside /assets resolves (style.css and
+img/... at the root 404, roadmap.html and /demo/ 404), so the five
+multi-page sites cannot be served by Pulse -- nginx keeps the sites,
+Pulse keeps its own landing and API. New Pulse claims route through the
+Pulse lane before publishing.
 
 Recent landings (2026-10-09/10): the 0.2.0 cut processed end to end
 (docs synced + rebuilt, landing claims refreshed, serving re-tested,
@@ -2454,8 +2464,8 @@ registry doc pointers stay deferred until stdlib is 100%; registry
 correlation (`compiler` pin metadata) waits on the stdlib publish pass.
 
 Mirror state (owner/VPS, checked 2026-10-09): the compiler namespace is
-current (v0.64.2) and the pulse namespace carries 0.2.0 after the :17
-sweep (verify latest.json); the mirror JSON paths
+current (v0.64.2) and the pulse namespace carries pulse-v0.2.0
+(linux-x64 + windows-x64; verified 2026-10-10); the mirror JSON paths
 still send no `Access-Control-Allow-Origin`, so the Pulse page rewrites
 the GitHub release metadata onto dl paths and the download page's
 checksum column needs raw fallbacks. The compiler archive writer should
