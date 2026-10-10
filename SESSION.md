@@ -1415,6 +1415,34 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     provenance ask for a one-off stdlib patch, and the :17/:23 pull
     timing note. Section 14's ops actions are relayed; no website-side
     blockers for the four-leg tag.
+99. **Relay bus onboarding (2026-10-10)**: xiom-relays is the cross-lane
+    channel now (private repo, one item per issue; README/PROTOCOL read,
+    stdlib-only CLI). The working instructions carry the two bus lines:
+    new `AGENTS.md` at the repo root plus the first Rules bullet, pull
+    xiom-relays and process items for the website lane at session start
+    and before finishing any task; never edit another lane item -- open a
+    new item instead. Rollout ack sent to owner (REL-20261010-1549-website).
+    The open cross-lane entries were migrated, one per entry, all pushed
+    on the bus (id prefix REL-20261010-): stdlib bug -1549-website-10
+    (no-NASM crypto stubs, high) and wishlists -1550-website
+    (accelerated-path evidence) and -1550-website-2 (xiom-std toolchain
+    pin metadata); compiler bugs -1549-website-7 (scripting findings) and
+    -1549-website-8 (error-code follow-ups) plus wishlist -1549-website-9
+    (optional gates tracker line); packages wishlist -1550-website-3
+    (public README); registry wishlist -1550-website-4 (Open Collective
+    parity -- the playground rollout and both banner headers are verified
+    landed, those entries stay closed); ops items -1549-website-3 (demo
+    still 0.1.0: deploy 0.1.2 or skip to 0.2.0), -4 (0.2.0 cut ops
+    actions), -5 (optional immutable rule for hashed docs assets); pulse
+    item -1549-website-6 (0.2.0 cut coordination: final docs ping plus
+    claim deltas; supersedes the two older pulse relays); owner items
+    -1549-website-2 (mirror follow-ups: release.json, notes true, JSON
+    CORS) beside the ack. The stdlib release-notes fragment ask is
+    verified done (the stdlib repo ships release-notes/<tag>.md per tag);
+    the stale-archive README check rides the error-code item. Other lanes
+    are onboarding in parallel on the same shared clone; the doorbell is
+    a recurring 3-hour cron check that pulls xiom-relays, processes items
+    to the website lane and updates statuses.
 
 ## Cross-lane notes
 
@@ -1544,6 +1572,8 @@ already removed the sha256 stub; these AES/CT entries may be in the same
 family. Related reviewer asks, still open for the stdlib lane: per-symbol
 "NASM-backed" flags in the generated API and published differential-test
 evidence between accelerated and portable paths.
+[On the relay bus: REL-20261010-1549-website-10 (bug, high),
+REL-20261010-1550-website (wishlist).]
 
 Error-code follow-ups (compiler lane, 2026-09-21): the website reference now
 documents the codes the compiler actually emits (L001, P001, T001, E001, C001,
@@ -1556,6 +1586,7 @@ whether default builds should fail; (c) `--explain` resolves
 `docs/error_codes/{code}.md` from the current directory and archives do not
 ship it, so installed users cannot use it -- ship the directory or embed the
 text; (d) the stale archive README below.
+[On the relay bus: REL-20261010-1549-website-8 (bug).]
 
 Debugger symbol surface (compiler lane, question 2026-09-22): XIOM has no
 symbol-control attributes today (`#[no_mangle]`, `#[export_name]`,
@@ -1569,6 +1600,8 @@ names the XIOM Foundation as copyright holder, points at
 `NgonArt_STUDIO/XIOM`, claims version 0.20.0 and self-hosting. The compiler
 lane should refresh the README that goes into the archives before the next
 tag; the website must not reflect any of it.
+[Tracked on the relay bus as REL-20261010-1549-website-8 (d): verify the
+current archives.]
 
 The v0.60.1 archives contain only `bin/xiom(.exe)`; the release workflow now
 builds the nine tool crates and a pinned z3, so the next tag is the first
@@ -1665,6 +1698,8 @@ your layout.
    EUR 100, Silver EUR 250, Gold EUR 500 per month), check the pre-filled
    links resolve to the collective, run your link checker, and confirm no
    page-load third-party script or iframe was added.
+[Playground rollout and both banner headers verified landed; the registry
+remainder is on the relay bus: REL-20261010-1550-website-4 (wishlist).]
 
 ### Playground lane: banner header
 
@@ -1730,6 +1765,8 @@ implement the publisher for the next release:
 
 No website deploy is needed: the pages fetch notes by tag at runtime. If
 nothing is published, the pages simply link the changelog.
+[Compiler-side contract live; the mirror-side remainder is on the relay
+bus: REL-20261010-1549-website-2 (owner).]
 
 ### Stdlib lane: release-notes fragment
 
@@ -1746,6 +1783,9 @@ Also for the next publish: pass the toolchain pin as package metadata on
 `xiom-std` (the field the registry serves as `compiler`, per version). The
 registry already supports it; `xiom-std@0.61.3` has no value yet, so there is
 nothing to correlate until the publish pass emits it.
+[Verified done: the stdlib repo ships release-notes/<tag>.md per tag; the
+xiom-std pin-metadata remainder is on the relay bus:
+REL-20261010-1550-website-2 (wishlist).]
 
 ### Registry lane: release notes when tagged releases exist
 
@@ -1789,6 +1829,7 @@ discover it later.
 process. They are kept public for transparency and describe how the work is
 coordinated, not the product story; the product story is what ships:
 verified, signed and immutable releases.
+[On the relay bus: REL-20261010-1550-website-3 (wishlist).]
 
 ### Compiler lane: scripting findings (2026-09-27)
 
@@ -1822,7 +1863,8 @@ known limitations until fixed.
    earlier 25-60 s timeouts were machine load, per the compiler diagnosis),
    `run --watch` re-runs on change, shebang via
    `#!/usr/bin/env -S xiom run`, and the example set (hello, values,
-   while-sum, files, env/exit, spawn) is green end to end.
+    while-sum, files, env/exit, spawn) is green end to end.
+[On the relay bus: REL-20261010-1549-website-7 (bug).]
 
 ### Ops lane: URL routing and cache headers (2026-09-28, actioned)
 
@@ -1837,7 +1879,8 @@ too). `/download` and `/install` resolve directly, and `dl.xiom-lang.org/`
 Open question back to ops: MkDocs assets are content-hashed, so they could
 be immutable long-cache. The website recommends a narrow immutable rule for
 those hashed asset directories only, leaving HTML and the fixed-name site
-assets revalidating; nothing depends on it. The directory stubs stay for
+assets revalidating; nothing depends on it.
+[On the relay bus: REL-20261010-1549-website-5 (optional).] The directory stubs stay for
 the trailing-slash forms (`/download/` answers once the stub deploys) and as
 belt-and-braces.
 
@@ -1879,6 +1922,7 @@ X/Y, formatter X/Y, lsp X/Y.**
 
 Add or refresh it whenever the release gate run completes; if a better file
 than the selfhost tracker should carry it, say so and we re-point.
+[On the relay bus: REL-20261010-1549-website-9 (wishlist, optional).]
 
 ### Stdlib lane: readiness tracker lines (2026-10-02; format widened 2026-10-05)
 
@@ -2173,6 +2217,7 @@ restart stay; no config changes). Website side is auto where it matters
 (download buttons and the footer note read latest.json and
 /api/version, so macOS lights up by itself); the docs-src re-sync and the
 macOS copy claims happen at the cut.
+[On the relay bus: REL-20261010-1549-website-4.]
 
 ### Relay to ops: deploy pulse-v0.1.2 to the demo (2026-10-09)
 
@@ -2187,6 +2232,8 @@ website change or redeploy is needed. The 0.1.2 build carries the Windows
 request-path memory fix (rebuilt on XIOM v0.64.2) and the registry
 session-store swap; the Linux RSS caveat and the 0.0.0.0 bind enforcement
 (C-PULSE-16) stay with the Pulse lane/upstream.
+[On the relay bus: REL-20261010-1549-website-3 (deploy 0.1.2 now, or go
+straight to 0.2.0 at the cut).]
 
 ### Relay to the Pulse lane: docs public set ahead of releases (2026-10-09)
 
@@ -2199,6 +2246,8 @@ so the docs never describe an endpoint the current demo 404s. If you
 prefer them rendered earlier with an "unreleased" marker, say so and we
 sync them with the next docs build; otherwise the docs catch up with the
 0.2.0 release.
+[Superseded on the relay bus by REL-20261010-1549-website-6 (0.2.0 cut
+coordination).]
 
 ### Relay to the Pulse lane: 0.2.0 release coordination (2026-10-10)
 
@@ -2242,9 +2291,15 @@ Interop extras acknowledged: XVector scenario 2 at 42/42, the ORBITDB
 hard-kill twin runners green on both platforms, and C-PULSE-18
 (`time.sleep_ms` no-op on v0.64.2) -- the last is compiler/stdlib lane
 material, not website surface.
+[On the relay bus: REL-20261010-1549-website-6.]
 
 ## Rules
 
+- Cross-lane coordination goes through the private relay bus
+  (`E:\xiom-lang\xiom-relays`; README + PROTOCOL there): pull it and
+  process items addressed to the website lane at session start and before
+  finishing any task (`python tools/relay.py view --lane website`); never
+  edit another lane's item -- open a new item instead.
 - Pure ASCII files only; the org encoding gate rejects mojibake.
 - Never hardcode versions in pages; read `latest.json` / `index.json`.
 - No secrets, no environment-specific URLs beyond `xiom-lang.org` and
@@ -2270,7 +2325,10 @@ material, not website surface.
 
 ```
 Work in E:\xiom-lang\website (website lane) for the XIOM project. Read
-SESSION.md and DEPLOY.md before acting. Deploys are pull-based: push to main
+SESSION.md and DEPLOY.md before acting. Cross-lane coordination goes
+through the private xiom-relays repo: pull it and process items addressed
+to the website lane (`python tools/relay.py view --lane website`) at
+session start and before finishing any task. Deploys are pull-based: push to main
 publishes the site within the hour (web-deploy.sh, cron minute 23) and the
 docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
@@ -2322,7 +2380,8 @@ Collective everywhere, the live self-hosting and stdlib readiness meters,
 registry trust sections, and v0.64.0/v0.64.2 verified live the days they
 shipped (dynamic download/versions pages, tag-pinned notes render).
 
-Before starting the queue: verify the 93d2e3b deploy on the :23 pull --
+Before starting the queue: pull xiom-relays and process items to the
+website lane, then verify the 93d2e3b deploy on the :23 pull --
 the Pulse landing footer shows the served-by note (Pulse icon + running
 version; v0.1.0 until ops deploys 0.1.2), roadmap.html#projects shows
 the half-width badges, projects.html and the project pages keep the
@@ -2381,7 +2440,9 @@ implementation does not support; every new flag/attribute ships docs in the
 same commit (compiler `AI_CONTEXT.md`, `docs/AI_CONTEXT.md` here, and the
 matching language-guide page); keep web art in plain git -- no Git LFS
 (the site carries ~19 MB of images, well inside plain-git limits, and
-LFS would complicate the pull deploy; see item 95).
+LFS would complicate the pull deploy; see item 95); cross-lane
+coordination goes through xiom-relays (one item per issue; never edit
+another lane's item -- open a new item instead).
 ```
 
 ## Relay from the compiler lane (2026-09-25)
