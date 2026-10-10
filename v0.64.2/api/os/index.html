@@ -3294,14 +3294,24 @@
 <blockquote>
 <p>True when args contains exactly <code>flag</code>. Complexity: O(n * flag.len()). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(args.len() == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (args.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-option_valueargs-vecstr-key-str-optionstr"><code>fn option_value(args: &amp;Vec[Str], key: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-option_valueargs-vecstr-key-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value for <code>key</code>: supports both <code>--key=value</code> and <code>--key value</code>. Later occurrences win (last-one-wins convention, matching most CLI frameworks). Returns None when absent. Complexity: O(n * key.len()). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(args.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-positionalsargs-vecstr-vecstr"><code>fn positionals(args: &amp;Vec[Str]) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-positionalsargs-vecstr-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Positional arguments: every entry that does not start with '--' and is not consumed as a spaced-option value of a preceding '--key'. Note this simple scanner treats any '--' entry as a flag/key, never as a negative number or literal. Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= args.len()</code></li>
+</ul>
 <h5 id="fn-args_has_flagflag-str-bool"><code>fn args_has_flag(flag: Str) -&gt; Bool</code><a class="headerlink" href="#fn-args_has_flagflag-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convenience: flag lookup over the process's own arguments.</p>
@@ -3322,26 +3332,44 @@
 <blockquote>
 <p>dir_create creates a single directory. Delegates to io.create_dir. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-dir_create_allpath-str-resultunit-str"><code>fn dir_create_all(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_create_allpath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_create_all creates a directory and all missing parents. Delegates to io.create_dir_all. Complexity: O(depth) syscalls.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h5 id="fn-dir_listpath-str-resultvecstr-str"><code>fn dir_list(path: Str) -&gt; Result[Vec[Str], Str]</code><a class="headerlink" href="#fn-dir_listpath-str-resultvecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_list returns the names of entries in a directory. Delegates to io.list_dir. Complexity: O(n) syscalls.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-dir_existspath-str-bool"><code>fn dir_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_existspath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_exists returns true if path exists and is a directory. Delegates to io.is_dir. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-dir_removepath-str-resultunit-str"><code>fn dir_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_removepath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_remove removes an empty directory. Delegates to io.remove_file (which handles both files and dirs via the C runtime). Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-dir_temp-str"><code>fn dir_temp() -&gt; Str</code><a class="headerlink" href="#fn-dir_temp-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_temp returns the system temporary directory. Delegates to env.temp_dir. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == env.temp_dir()</code></li>
+</ul>
 <h5 id="fn-dir_home-optionstr"><code>fn dir_home() -&gt; Option[Str]</code><a class="headerlink" href="#fn-dir_home-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_home returns the current user's home directory, if known. Delegates to env.home_dir. Complexity: O(1).</p>
@@ -3350,6 +3378,9 @@
 <blockquote>
 <p>dir_is_empty returns true if a directory contains no entries. Complexity: O(n) syscalls.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-dir_joina-str-b-str-str"><code>fn dir_join(a: Str, b: Str) -&gt; Str</code><a class="headerlink" href="#fn-dir_joina-str-b-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_join joins two path components with the OS separator. Delegates to io.join_paths. Complexity: O(1).</p>
@@ -3358,6 +3389,9 @@
 <blockquote>
 <p>dir_parent returns the parent directory of path, or None if there is none. Delegates to fs.fs_parent_dir. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3513,10 +3547,19 @@
 <blockquote>
 <p>Return the symbolic name for an errno code. Parameters: code -- the errno number. Returns: the symbolic name (e.g. "ENOENT"), or "EUNKNOWN". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(code == 2) =&gt; (result == "ENOENT")</code></li>
+<li><strong>Postcondition:</strong> <code>(code == 1) =&gt; (result == "EPERM")</code></li>
+<li><strong>Postcondition:</strong> <code>(code == 0) =&gt; (result == "EUNKNOWN")</code></li>
+</ul>
 <h5 id="fn-strerrorcode-int-str"><code>fn strerror(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-strerrorcode-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the human-readable message for an errno code. Parameters: code -- the errno number. Returns: the descriptive message, or "unknown error". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(code == 2) =&gt; (result == "no such file or directory")</code></li>
+<li><strong>Postcondition:</strong> <code>(code == 0) =&gt; (result == "unknown error")</code></li>
+</ul>
 <h5 id="fn-perrormsg-str-unit"><code>fn perror(msg: Str) -&gt; Unit</code><a class="headerlink" href="#fn-perrormsg-str-unit" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Print msg plus the current errno message. Parameters: msg -- the prefix message. Returns: Unit. Prints "msg: <errno message>" (stdout; the runtime exposes no stderr writer). Complexity: O(1). Pure.</p>
@@ -3549,6 +3592,9 @@
 <blockquote>
 <p>Format an errno code as "name (code): message". Parameters: code -- the errno number. Returns: the formatted string. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(code == 2) =&gt; (result == "ENOENT (2): no such file or directory")</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3727,50 +3773,86 @@
 <blockquote>
 <p>file_read reads an entire file as text. Delegates to io.read_file. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_writepath-str-content-str-resultunit-str"><code>fn file_write(path: Str, content: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_writepath-str-content-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_write writes text to a file, truncating if it exists. Delegates to io.write_file. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_appendpath-str-content-str-resultunit-str"><code>fn file_append(path: Str, content: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_appendpath-str-content-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_append appends text to a file, creating it if needed. Delegates to io.append_file. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_existspath-str-bool"><code>fn file_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-file_existspath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_exists returns true if path exists (file or directory). Implemented locally via io.metadata to avoid a same-name delegation. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-file_removepath-str-resultunit-str"><code>fn file_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_removepath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_remove deletes a file. Delegates to io.remove_file. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_copysrc-str-dst-str-resultunit-str"><code>fn file_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_copysrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_copy copies a file from src to dst. Delegates to io.copy_file. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(src.len() == 0 || dst.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_renamesrc-str-dst-str-resultunit-str"><code>fn file_rename(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_renamesrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_rename renames (moves) a file or directory. Delegates to io.rename. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(src.len() == 0 || dst.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_sizepath-str-resultint-str"><code>fn file_size(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-file_sizepath-str-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_size returns the size of a file in bytes. Implemented locally via io.metadata. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_extensionpath-str-optionstr"><code>fn file_extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_extensionpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_extension returns the extension of path's file name (text after the last dot), or None. Delegates to fs.fs_extension. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-file_stempath-str-optionstr"><code>fn file_stem(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_stempath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_stem returns path without its last extension. Delegates to fs.fs_stem. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-file_namepath-str-optionstr"><code>fn file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_namepath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_name returns the file-name portion of path, or None. Delegates to fs.fs_file_name. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-file_parentpath-str-optionstr"><code>fn file_parent(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_parentpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_parent returns the directory portion of path, or None. Delegates to fs.fs_parent_dir. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3943,38 +4025,65 @@
 <blockquote>
 <p>fs_file_name returns the file-name portion of path (after the last '/' or '\'), or None if path is empty or ends in a separator.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fs_parent_dirpath-str-optionstr"><code>fn fs_parent_dir(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_parent_dirpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_parent_dir returns the directory portion of path (everything before the last '/' or '\'), or None if path has no parent.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fs_extensionpath-str-optionstr"><code>fn fs_extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_extensionpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_extension returns the extension (text after the last dot in the file name), or None if there is no dot or the dot is leading/trailing. "a/b.tar.gz" -&gt; Some("gz"); "a/b" -&gt; None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fs_stempath-str-optionstr"><code>fn fs_stem(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_stempath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_stem returns the path with the last extension stripped, or the path unchanged if it has no extension. "a/b.tar.gz" -&gt; "a/b.tar".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fs_is_hiddenpath-str-bool"><code>fn fs_is_hidden(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_is_hiddenpath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_is_hidden returns true if the file name starts with a dot, except for the special entries "." and "..".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-fs_join_partsparts-vecstr-str"><code>fn fs_join_parts(parts: Vec[Str]) -&gt; Str</code><a class="headerlink" href="#fn-fs_join_partsparts-vecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_join_parts joins the given components with the OS path separator (env.path_separator: "\" on Windows, "/" elsewhere).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(parts.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-fs_normalizepath-str-str"><code>fn fs_normalize(path: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_normalizepath-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_normalize collapses duplicate separators and resolves "." and ".." lexically, without touching the filesystem. Leading "/" and "C:\"-style drive prefixes are preserved. "a/b/../c//d/./e" -&gt; "a/c/d/e".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-fs_with_extensionpath-str-new_ext-str-str"><code>fn fs_with_extension(path: Str, new_ext: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_with_extensionpath-str-new_ext-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_with_extension replaces the extension of path with new_ext, or appends it if path has no extension. "a/b.txt" + "md" -&gt; "a/b.md".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-fs_splitpath-str-str-str"><code>fn fs_split(path: Str) -&gt; (Str, Str)</code><a class="headerlink" href="#fn-fs_splitpath-str-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_split returns (dir, file) -- the directory and file-name portions.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result._0 == "" &amp;&amp; result._1 == "")</code></li>
+</ul>
 <h5 id="fn-fs_unique_pathdir-str-name-str-str"><code>fn fs_unique_path(dir: Str, name: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_unique_pathdir-str-name-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_unique_path returns dir/name if it does not exist, otherwise appends " (1)", " (2)", ... up to a maximum of 1000 attempts.</p>
@@ -4783,26 +4892,44 @@
 <blockquote>
 <p>platform_arch returns the target architecture ("x86_64", ...). Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-platform_family-str"><code>fn platform_family() -&gt; Str</code><a class="headerlink" href="#fn-platform_family-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_family returns "unix" or "windows". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "windows" || result == "unix"</code></li>
+</ul>
 <h5 id="fn-platform_is_windows-bool"><code>fn platform_is_windows() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_windows-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_is_windows returns true on Windows. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (platform_name() == "windows")</code></li>
+</ul>
 <h5 id="fn-platform_is_linux-bool"><code>fn platform_is_linux() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_linux-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_is_linux returns true on Linux. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (platform_name() == "linux")</code></li>
+</ul>
 <h5 id="fn-platform_is_macos-bool"><code>fn platform_is_macos() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_macos-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_is_macos returns true on macOS. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (platform_name() == "macos")</code></li>
+</ul>
 <h5 id="fn-platform_is_unix-bool"><code>fn platform_is_unix() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_unix-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_is_unix returns true on Linux or macOS. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (platform_name() != "windows")</code></li>
+</ul>
 <h5 id="fn-platform_hostname-resultstr-str"><code>fn platform_hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-platform_hostname-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_hostname returns the system hostname. Implemented locally via the env.TEMP-free C getenv-free approach: reads the COMPUTERNAME variable (Windows) or HOSTNAME (Unix) as a best effort. Complexity: O(1).</p>
@@ -4811,6 +4938,9 @@
 <blockquote>
 <p>platform_os_version returns a best-effort OS version string derived from environment constants. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == env.OS</code></li>
+</ul>
 <h5 id="fn-platform_user_name-optionstr"><code>fn platform_user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-platform_user_name-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_user_name returns the current user name from the USERNAME (Windows) or USER (Unix) environment variable. Complexity: O(1).</p>

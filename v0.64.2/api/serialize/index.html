@@ -3076,7 +3076,7 @@
 </ul>
 <h5 id="fn-json_parses-str-resultjsonvalue-str"><code>fn json_parse(s: Str) -&gt; Result[JsonValue, Str]</code><a class="headerlink" href="#fn-json_parses-str-resultjsonvalue-str" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Parse <code>s</code> into a JsonValue tree. Returns Err with a descriptive message on malformed input or trailing garbage. Complexity: O(n), n = input length.</p>
+<p>Parse <code>s</code> into a JsonValue tree. Returns Err with a descriptive message on malformed input or trailing garbage, and for input nested deeper than the 128-level cap (<code>_JSON_MAX_DEPTH</code>). Complexity: O(n), n = input length.</p>
 <p>NOTE: the name <code>json_parse</code> collides with the parent module's own json_parse and direct calls can misresolve under the current compiler (BUG 25 #1). The parsing logic lives in the uniquely-named helpers above.</p>
 </blockquote>
 <ul>
