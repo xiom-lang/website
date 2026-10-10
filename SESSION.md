@@ -1408,6 +1408,13 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     recorded above. Nothing website-side blocks: the macOS button and
     the footer note are data-driven, and the docs re-sync plus the
     macOS copy claims run at the cut.
+98. **Website relay to the Pulse lane for the 0.2.0 cut (2026-10-10)**:
+    the coordination message is written above -- readiness list, the
+    docs-sync-at-tag protocol (with the deferred OpenAPI/CLI rows), the
+    request for a docs/public-final ping plus claim deltas, the
+    provenance ask for a one-off stdlib patch, and the :17/:23 pull
+    timing note. Section 14's ops actions are relayed; no website-side
+    blockers for the four-leg tag.
 
 ## Cross-lane notes
 
@@ -2192,6 +2199,49 @@ so the docs never describe an endpoint the current demo 404s. If you
 prefer them rendered earlier with an "unreleased" marker, say so and we
 sync them with the next docs build; otherwise the docs catch up with the
 0.2.0 release.
+
+### Relay to the Pulse lane: 0.2.0 release coordination (2026-10-10)
+
+Section 14 received and actioned: the cut plan is re-relayed to ops above
+(the :17 mirror verification after publish, the optional demo redeploy
+with the unchanged loopback shape, and the note that the macOS legs run
+on GitHub runners -- no ops CI work). On the owner's macOS question, the
+website lane's read is to route the three darwin fixes to the
+compiler/stdlib lanes with priority: the same fixes carry OrbitDB/XVector
+darwin support, and the 0.2.0 tag is defined by its four-leg artifacts.
+
+Website-side readiness for the cut, so the lane can sequence the tag:
+- Buttons and the footer note are fully data-driven: the macOS slot fills
+  when latest.json lists a macos arm64/x64 asset, the download buttons
+  rewrite GitHub metadata onto dl paths when the mirror JSON lacks CORS,
+  and the footer "Served by Pulse" note reads /api/version live (still
+  the 0.1.0 build until the ops 0.1.2 deploy). Nothing to hand over or
+  hardcode at the tag.
+- At the cut we will: re-sync docs-src from docs/public and rebuild the
+  eight docs pages (`python docs/build_pulse_docs.py`) -- including the
+  previously deferred rows (the /openapi.json and PULSE_OPENAPI_PATH
+  entries, the CLI section) since 0.2.0 ships them; update the macOS
+  claims in copy only after the release notes list the four artifacts,
+  per section 14; and verify the mirror render.
+- What we need from the lane at the cut: a ping when docs/public is
+  final for 0.2.0 (or confirmation it is unchanged from main since the
+  2026-10-10 refresh), and the final claim deltas if they moved (the
+  four-leg names, the /v1 alias, Link pagination, idempotency, multipart,
+  the SSRF-guarded client base).
+- If the lane wants the deferred docs rows rendered before the tag with
+  an "unreleased" marker instead of at the cut, say so; otherwise the
+  default is to sync at the tag so the docs never describe endpoints the
+  deployed demo 404s.
+- One provenance ask: if the macOS gate clears via a one-off stdlib patch
+  rather than a lane fix, note it in the build provenance so the release
+  stays traceable.
+- Scheduling note: the mirror pull is :17 and the website pull is :23, so
+  a tag cut before :17 lands on both in the same hour.
+
+Interop extras acknowledged: XVector scenario 2 at 42/42, the ORBITDB
+hard-kill twin runners green on both platforms, and C-PULSE-18
+(`time.sleep_ms` no-op on v0.64.2) -- the last is compiler/stdlib lane
+material, not website surface.
 
 ## Rules
 
