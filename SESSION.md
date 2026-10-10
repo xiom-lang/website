@@ -1396,6 +1396,18 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     the roadmap project cards keep the 512px badges, now displayed at 50%
     width, centered (border:0;width:50%;margin:0 auto on the four card
     images). Commit 93d2e3b.
+97. **Pulse 0.2.0 cut plan relayed; macOS decision pending (2026-10-10)**:
+    the Pulse lane reported 0.2.0 content complete on main (OpenAPI 3.1
+    + full CLI + /v1 alias, paginated events with Link, idempotent
+    writes, bounded multipart uploads, SSRF-guarded HTTP client base;
+    interop probes green; release dry-run green on linux + windows) and
+    wrote the cut plan in docs/WEBSITE-RELAY-PULSE.md section 14. The
+    tag stays blocked on the three upstream darwin fixes; the owner was
+    asked to route them to the compiler/stdlib lanes (or authorize a
+    one-off stdlib patch, or cut without macOS). The relay to ops is
+    recorded above. Nothing website-side blocks: the macOS button and
+    the footer note are data-driven, and the docs re-sync plus the
+    macOS copy claims run at the cut.
 
 ## Cross-lane notes
 
@@ -2134,6 +2146,27 @@ the live badge (/health + /api/version, same-origin) and the download
 buttons to the real artifact URLs; the beta banner stays until the Pulse
 lane clears its gap list.
 
+### Relay to ops: pulse-v0.2.0 cut plan (relayed 2026-10-10)
+
+Relaying the Pulse lane's docs/WEBSITE-RELAY-PULSE.md section 14. The cut
+is blocked on the macOS gate: the three upstream darwin fixes (stdlib
+runtime/xiom_runtime.c `_SC_AVPHYS_PAGES` guard, stdlib
+runtime/fp128_helpers.c aarch64 guard, compiler codegen
+`@llvm.memset.p0i8.i64` emission) have not landed, and 0.2.0 is reserved
+for the four-leg release (`pulse-0.2.0-{linux-x64,windows-x64,macos-x64,
+macos-arm64}.zip` + .sha256 + SHA256SUMS + provenance). The Pulse release
+workflow already carries the macOS legs (macos-15-intel + macos-14, fleet
++ package) behind the RELEASE_BUILD_MACOS repo variable, and the manual
+dry run on main went green for linux + windows; no ops CI work is needed
+for macOS (GitHub runners build it). Ops actions after the Pulse lane
+tags (unchanged shape): verify the :17 mirror refresh shows latest.json
+at 0.2.0 with all four platforms, and optionally redeploy the demo to
+0.2.0 (loopback bind, `PULSE_BIND=127.0.0.1` address-only, MemoryMax +
+restart stay; no config changes). Website side is auto where it matters
+(download buttons and the footer note read latest.json and
+/api/version, so macOS lights up by itself); the docs-src re-sync and the
+macOS copy claims happen at the cut.
+
 ### Relay to ops: deploy pulse-v0.1.2 to the demo (2026-10-09)
 
 The demo on pulse.xiom-lang.org still reports the 0.1.0 build
@@ -2210,11 +2243,16 @@ SHA256SUMS) and 0.2.0 is NOT out (no tag, no release, no dl directory).
 The demo on pulse.xiom-lang.org still runs the 0.1.0 build (cc3e741); the
 0.1.2 deploy is relayed to ops in SESSION.md (expected: /api/version
 reports 0.1.2 and the new footer note picks the version up by itself).
-First 0.2.0 slate items (OpenAPI 3.1 /openapi.json, `pulse openapi`/
-`routes`, smoke at 84) are merged on main as [Unreleased]; the framework
-roadmap gates 0.2.0 on the three darwin fixes plus problem+json fields,
-Link pagination, idempotency, /v1, the SSRF-guarded xiom.http 0.1.4
-wrapper and multipart uploads. Serving verdict: one Pulse instance serves
+0.2.0 content is complete on main (OpenAPI 3.1, full CLI, /v1 alias,
+paginated events with Link, idempotent writes, bounded multipart uploads,
+SSRF-guarded HTTP client base; interop probes green; release dry-run
+green on linux + windows) but NOT tagged: 0.2.0 is defined as a four-leg
+release and the macOS legs stay gated on the three upstream darwin fixes
+until the owner routes them to the compiler/stdlib lanes (or authorizes
+a one-off stdlib patch; cutting without macOS spends the tag). At the
+cut: verify the :17 mirror shows all four platforms, optionally redeploy
+the demo, re-sync docs-src and update the macOS claims then -- the
+buttons follow latest.json. Serving verdict: one Pulse instance serves
 one landing HTML, one /assets/* tree and the API -- it does NOT serve the
 other sites (xiom-lang.org, docs, orbitdb, xvector stay on nginx static),
 so the served-by footer note (Pulse icon + live version, hidden when the
@@ -2243,12 +2281,12 @@ chaos), and the selfhost cover renders above the Self-hosting section. When ops 
 console line ("HTTP 200 (N ms)") and the footer version.
 
 Next, in order:
-1. Pulse follow-ups: confirm the ops 0.1.2 deploy; watch for 0.2.0 (the
-   darwin gates + the slate; re-sync `docs-src/` and rebuild with
-   `python docs/build_pulse_docs.py` when the public set ships -- the
-   Unreleased OpenAPI/CLI rows are deferred until then); the kv flip
-   gate still waits on a >=24h soak; keep routing new claims through the
-   Pulse lane.
+1. Pulse follow-ups: confirm the ops 0.1.2 deploy; watch for the 0.2.0
+   tag (macOS gate pending the owner's routing decision; at the cut --
+   verify the mirror shows the four platforms, re-sync `docs-src/` and
+   rebuild with `python docs/build_pulse_docs.py`, update the macOS copy
+   claims per the release notes); the kv flip gate still waits on a
+   >=24h soak; keep routing new claims through the Pulse lane.
 2. Playground 2.2 (gamified learning): flip the roadmap row when levels,
    streaks, badges and the certificate ship; the badge artwork is still to
    come.
