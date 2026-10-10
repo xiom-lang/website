@@ -1444,6 +1444,28 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
     a recurring 3-hour cron check (at :17) that pulls xiom-relays,
     processes items to the website lane and updates statuses. Cron tasks
     expire after 7 days: re-create the doorbell when needed.
+100. **0.2.0 cut processed; serving re-tested; three findings filed
+     (2026-10-10)**: pulse-v0.2.0 published (linux+windows; macOS deferred
+     to the next release; tag e31d396, run 38067869734). The two cut
+     items were processed on the bus: docs/public synced (7 files:
+     OpenAPI/CLI, /v1, pagination, idempotency, multipart, outbound-client
+     groundwork, releases.md 0.2.0, install examples) and the eight docs
+     pages rebuilt (2a25464); the landing What-is-next bullets refreshed
+     (shipped slate, macOS deferral, wildcard-bind + kv soak queue).
+     Serving re-tested locally against the sha256-verified windows zip:
+     a single adapted page works (landing + /assets with ETag/304 +
+     favicon + /v1 + API), but nothing outside /assets resolves
+     (style.css/img at the root 404, roadmap.html and /demo/ 404) -- the
+     five multi-page sites still cannot be served by Pulse; only the
+     landing+assets dogfood model holds. Findings filed: pulse bug (the
+     release zip omits resources/openapi.json, so /openapi.json 500s in
+     the artifact; the demo redeploy inherits it), ops update (two-leg
+     cut; skip 0.1.2 and redeploy to 0.2.0; PULSE_BIND still wildcard ->
+     keep the armor), ops bug (relay.py cannot address a base id while a
+     -2 sibling exists; worked around by hand for REL-20261010-1633-pulse).
+     Bus transitions done: 1600-pulse fixed (commit 2a25464), 1633-pulse
+     acked+fixed; new items REL-20261010-1658-website[-2/-3]. Mirror and
+     buttons verify at the :17/:23 pulls (wakeup set).
 
 ## Cross-lane notes
 
@@ -2346,29 +2368,27 @@ rule across the guides; the snippet syntax lint in `docs.yml` and
 `docs/marketplace-publisher.md` holds the marketplace copy; neither is
 built into the site.
 
-PULSE STATE (2026-10-09): pulse-v0.1.2 is the latest release (dl
-latest.json + /pulse/releases/pulse-v0.1.2/; linux-x64 + windows-x64 +
-SHA256SUMS) and 0.2.0 is NOT out (no tag, no release, no dl directory).
-The demo on pulse.xiom-lang.org still runs the 0.1.0 build (cc3e741); the
-0.1.2 deploy is relayed to ops in SESSION.md (expected: /api/version
-reports 0.1.2 and the new footer note picks the version up by itself).
-0.2.0 content is complete on main (OpenAPI 3.1, full CLI, /v1 alias,
-paginated events with Link, idempotent writes, bounded multipart uploads,
-SSRF-guarded HTTP client base; interop probes green; release dry-run
-green on linux + windows) but NOT tagged: 0.2.0 is defined as a four-leg
-release and the macOS legs stay gated on the three upstream darwin fixes
-until the owner routes them to the compiler/stdlib lanes (or authorizes
-a one-off stdlib patch; cutting without macOS spends the tag). At the
-cut: verify the :17 mirror shows all four platforms, optionally redeploy
-the demo, re-sync docs-src and update the macOS claims then -- the
-buttons follow latest.json. Serving verdict: one Pulse instance serves
-one landing HTML, one /assets/* tree and the API -- it does NOT serve the
-other sites (xiom-lang.org, docs, orbitdb, xvector stay on nginx static),
-so the served-by footer note (Pulse icon + live version, hidden when the
-demo is down) lives only on the Pulse footer. New Pulse claims route
-through the Pulse lane before publishing.
+PULSE STATE (2026-10-10): pulse-v0.2.0 shipped (tag e31d396, run
+38067869734; linux-x64 + windows-x64 + .sha256 + SHA256SUMS + provenance);
+macOS is deferred to the next release (dark buttons stay dark) once the
+darwin items land. The demo on pulse.xiom-lang.org still runs the 0.1.0
+build; the ops redeploy target is pulse-v0.2.0 (skip 0.1.2; keep the
+loopback bind + firewall armor -- PULSE_BIND still binds wildcard in
+0.2.0, verified locally). docs-src was synced at the cut and the eight
+docs pages rebuilt (2a25464); the released zip omits
+resources/openapi.json so /openapi.json 500s in the artifact (pulse bug
+item; the demo redeploy inherits it until the packaging fix). Mirror:
+0.2.0 lands with linux-x64 + windows-x64 at the :17 sweep. Serving
+verdict (re-tested on the 0.2.0 windows artifact): one instance serves
+one landing HTML + one /assets/* tree (ETag/304) + the API; nothing
+outside /assets resolves (style.css and img/... at the root 404,
+roadmap.html and /demo/ 404), so the five multi-page sites cannot be
+served by Pulse -- nginx keeps the sites, Pulse keeps its own landing and
+API. New Pulse claims route through the Pulse lane before publishing.
 
-Recent landings (2026-10-09): the served-by footer note on the Pulse
+Recent landings (2026-10-09/10): the 0.2.0 cut processed end to end
+(docs synced + rebuilt, landing claims refreshed, serving re-tested,
+three findings filed); the served-by footer note on the Pulse
 landing; project favicons on all four subdomains (demo page and docs build
 included); the 512px badges on roadmap.html#projects at half width;
 projects.html and the project pages keep the full covers; the
@@ -2382,21 +2402,24 @@ registry trust sections, and v0.64.0/v0.64.2 verified live the days they
 shipped (dynamic download/versions pages, tag-pinned notes render).
 
 Before starting the queue: pull xiom-relays and process items to the
-website lane, then verify the 93d2e3b deploy on the :23 pull --
-the Pulse landing footer shows the served-by note (Pulse icon + running
-version; v0.1.0 until ops deploys 0.1.2), roadmap.html#projects shows
-the half-width badges, projects.html and the project pages keep the
-covers, the subdomain favicons resolve (pulse, orbitdb, xvector,
-chaos), and the selfhost cover renders above the Self-hosting section. When ops lands 0.1.2, re-check the demo
-console line ("HTTP 200 (N ms)") and the footer version.
+website lane, then verify the latest deploy (2a25464) on the :23 pull --
+the Pulse docs pages show the 0.2.0 release notes, the landing claims and
+the served-by footer note (icon + running version) render,
+roadmap.html#projects shows the half-width badges, projects.html and the
+project pages keep the covers, the subdomain favicons resolve (pulse,
+orbitdb, xvector, chaos), and the selfhost cover renders above the
+Self-hosting section. Check the dl mirror shows 0.2.0 (linux + windows)
+and, when ops redeploys the demo, the footer version and the console
+line. The artifact's /openapi.json is a known 500 until the packaging
+fix.
 
 Next, in order:
-1. Pulse follow-ups: confirm the ops 0.1.2 deploy; watch for the 0.2.0
-   tag (macOS gate pending the owner's routing decision; at the cut --
-   verify the mirror shows the four platforms, re-sync `docs-src/` and
-   rebuild with `python docs/build_pulse_docs.py`, update the macOS copy
-   claims per the release notes); the kv flip gate still waits on a
-   >=24h soak; keep routing new claims through the Pulse lane.
+1. Pulse follow-ups: watch the 0.2.0 rollout -- mirror 0.2.0 + the ops
+   demo redeploy to pulse-v0.2.0; the /openapi.json packaging fix (pulse
+   bug item); the macOS ship gate (compiler archive carrying the memset
+   fix + the runtime patch already in); re-sync `docs-src/` again when
+   the next public set ships. The kv flip gate still waits on a >=24h
+   soak; keep routing new claims through the Pulse lane.
 2. Playground 2.2 (gamified learning): flip the roadmap row when levels,
    streaks, badges and the certificate ship; the badge artwork is still to
    come.
@@ -2423,7 +2446,8 @@ registry doc pointers stay deferred until stdlib is 100%; registry
 correlation (`compiler` pin metadata) waits on the stdlib publish pass.
 
 Mirror state (owner/VPS, checked 2026-10-09): the compiler namespace is
-current (v0.64.2) and the pulse namespace is live (pulse-v0.1.2); the mirror JSON paths
+current (v0.64.2) and the pulse namespace carries 0.2.0 after the :17
+sweep (verify latest.json); the mirror JSON paths
 still send no `Access-Control-Allow-Origin`, so the Pulse page rewrites
 the GitHub release metadata onto dl paths and the download page's
 checksum column needs raw fallbacks. The compiler archive writer should
