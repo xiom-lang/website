@@ -1466,6 +1466,14 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      Bus transitions done: 1600-pulse fixed (commit 2a25464), 1633-pulse
      acked+fixed; new items REL-20261010-1658-website[-2/-3]. Mirror and
      buttons verify at the :17/:23 pulls (wakeup set).
+101. **Project icons and names in the subdomain navs (2026-10-10)**: each
+     project site now shows its own mark and name in the nav (pulse.ico +
+     PULSE; orbitdb.ico + OrbitDB; xvector.ico + XVector; chaos.ico +
+     Chaos), and the three logos that linked to xiom-lang.org now link to
+     the site's own root (the xiom-lang.org nav link stays). The demo page
+     and the docs template follow with the Pulse icon, and the eight docs
+     pages were rebuilt. The now-unused XIOM logo copies stay in the
+     project img folders.
 
 ## Cross-lane notes
 
