@@ -1494,6 +1494,27 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      (`nav .wrap` height fix + `.logo`/`.logo img`) to the generated
      `docs/style.css`; the eight pages were rebuilt. The demo page
      inherits the pulse stylesheet.
+103. **Asset stamp refresh + XiomEngine wired in (2026-10-11)**: the
+     site-wide `?v=` stamp was stale since 2026-09-28 even though
+     `style.css`, several scripts and banner/story images changed on
+     10-09, which is why some mobile clients kept rendering the older
+     cached pages; the stamp is now `?v=20261011` everywhere (all root
+     pages, including the og-card, banner and story/why images and the js
+     bundles) and projects.html gained the stamp it had been missing
+     entirely. The subdomain pages now version their stylesheet and
+     scripts too (pulse root, demo, orbitdb, xvector, chaos), and the
+     docs template writes the stamped link with the eight pages rebuilt
+     (5c68bfe). XiomEngine (the game engine) is wired in as the fifth
+     project (2586166): hub card with the cover, roadmap card with the
+     badge at half width, a state-table row, and the meta/og updates
+     (four -> five). New self-contained subdomain scaffold at
+     projects/xiomengine/ (nav icon, cover, deliberately short honest
+     copy -- in development, repository private; no features, screenshots
+     or dates claimed). The live subdomain still shows the hosting
+     provider's Coming Soon placeholder; the docroot mapping is filed to
+     ops on the bus. The ico in Downloads\png-to-ico is byte-identical
+     to the committed xiomengine.ico, so nothing needed copying. New
+     standing rule: bump the asset stamp on any css/script/image change.
 
 ## Cross-lane notes
 
@@ -2351,6 +2372,10 @@ material, not website surface.
   process items addressed to the website lane at session start and before
   finishing any task (`python tools/relay.py view --lane website`); never
   edit another lane's item -- open a new item instead.
+- Asset version stamp: any change to `style.css`, a script or a stamped
+  image requires bumping the `?v=YYYYMMDD` stamp across the site (root
+  pages, the subdomain stylesheet/script links, and the docs template);
+  it is the only cache-bust the site has.
 - Toolchain hygiene (ops broadcast 2026-10-11, high): never delete or
   downgrade the shared toolchain homes (`%LOCALAPPDATA%\xiom*`, WSL
   `~/.local/share/xiom`, `~/xiom`); treat directories without the website
@@ -2420,7 +2445,11 @@ multi-page sites cannot be served by Pulse -- nginx keeps the sites,
 Pulse keeps its own landing and API. New Pulse claims route through the
 Pulse lane before publishing.
 
-Recent landings (2026-10-09/10): the 0.2.0 cut processed end to end
+Recent landings (2026-10-11): the asset version stamp refreshed to
+20261011 (stale since 09-28 -- mobile clients were rendering cached
+pages) and XiomEngine added as the fifth project (hub, roadmap,
+subdomain scaffold; docroot relayed to ops). (2026-10-09/10): the 0.2.0
+cut processed end to end
 (docs synced + rebuilt, landing claims refreshed, serving re-tested,
 three findings filed); the served-by footer note on the Pulse
 landing; project favicons on all four subdomains (demo page and docs build
@@ -2468,9 +2497,11 @@ Next, in order:
 6. Spec revision: update specs/ and the spec page when the compiler lane
    publishes a current revision (0.3 carries a 2026-09-20 maintenance
    note for 128-bit primitives).
-7. OrbitDB / XVector / Chaos: when a repo opens or a release is cut,
-   mirror the Pulse pattern (per-product dl namespace, docs render,
-   downloads wiring, armor, demo).
+7. OrbitDB / XVector / Chaos / XiomEngine: when a repo opens or a
+   release is cut, mirror the Pulse pattern (per-product dl namespace,
+   docs render, downloads wiring, armor, demo). XiomEngine's docroot
+   mapping is filed to ops (the live host still shows the hosting
+   placeholder); its copy expands when the owner provides engine facts.
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS ships on all
@@ -2499,9 +2530,10 @@ implementation does not support; every new flag/attribute ships docs in the
 same commit (compiler `AI_CONTEXT.md`, `docs/AI_CONTEXT.md` here, and the
 matching language-guide page); keep web art in plain git -- no Git LFS
 (the site carries ~19 MB of images, well inside plain-git limits, and
-LFS would complicate the pull deploy; see item 95); cross-lane
-coordination goes through xiom-relays (one item per issue; never edit
-another lane's item -- open a new item instead).
+LFS would complicate the pull deploy; see item 95); bump the asset
+version stamp (`?v=YYYYMMDD`) whenever css/scripts/images change;
+cross-lane coordination goes through xiom-relays (one item per issue;
+never edit another lane's item -- open a new item instead).
 ```
 
 ## Relay from the compiler lane (2026-09-25)
