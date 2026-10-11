@@ -3254,21 +3254,21 @@
 <p>The time between <code>a</code> and <code>b</code>. Params: a - the later instant; b - the earlier instant. Returns: a - b. Complexity: O(1).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result.secs == a.t - b.t &amp;&amp; result.nanos == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result == Duration.from_millis(a.t - b.t)</code></li>
 </ul>
 <h5 id="fn-instant_addi-instant-d-duration-instant"><code>fn instant_add(i: Instant, d: Duration) -&gt; Instant</code><a class="headerlink" href="#fn-instant_addi-instant-d-duration-instant" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p><code>i</code> advanced by <code>d</code>. Params: i - the instant; d - the duration to add. Returns: i + d. Complexity: O(1).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result.t == i.t + d.secs</code></li>
+<li><strong>Postcondition:</strong> <code>result.t == i.t + d.as_millis()</code></li>
 </ul>
 <h5 id="fn-instant_subi-instant-d-duration-instant"><code>fn instant_sub(i: Instant, d: Duration) -&gt; Instant</code><a class="headerlink" href="#fn-instant_subi-instant-d-duration-instant" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p><code>i</code> moved back by <code>d</code>. Params: i - the instant; d - the duration to subtract. Returns: i - d. Complexity: O(1).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result.t == i.t - d.secs</code></li>
+<li><strong>Postcondition:</strong> <code>result.t == i.t - d.as_millis()</code></li>
 </ul>
 <h5 id="fn-instant_comparea-instant-b-instant-int"><code>fn instant_compare(a: Instant, b: Instant) -&gt; Int</code><a class="headerlink" href="#fn-instant_comparea-instant-b-instant-int" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3279,17 +3279,17 @@
 </ul>
 <h5 id="fn-instant_to_millisi-instant-int"><code>fn instant_to_millis(i: Instant) -&gt; Int</code><a class="headerlink" href="#fn-instant_to_millisi-instant-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p><code>i</code> as milliseconds since an arbitrary origin. Params: i - the instant. Returns: the underlying second reading scaled to milliseconds. Complexity: O(1).</p>
+<p><code>i</code> as milliseconds since an arbitrary origin. Params: i - the instant. Returns: the underlying millisecond reading. Complexity: O(1).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result == i.t * 1000</code></li>
+<li><strong>Postcondition:</strong> <code>result == i.t</code></li>
 </ul>
 <h5 id="fn-instant_from_millisms-int-instant"><code>fn instant_from_millis(ms: Int) -&gt; Instant</code><a class="headerlink" href="#fn-instant_from_millisms-int-instant" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>An instant from a millisecond reading. Params: ms - a millisecond reading from the same arbitrary origin. Returns: the corresponding Instant. Complexity: O(1).</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>result.t == ms / 1000</code></li>
+<li><strong>Postcondition:</strong> <code>result.t == ms</code></li>
 </ul>
 <hr />
 <hr />
@@ -3492,7 +3492,7 @@
 </table>
 <h4 id="fn-now-instant"><code>fn now() -&gt; Instant</code><a class="headerlink" href="#fn-now-instant" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>The current monotonic instant (second resolution), backed by the runtime monotonic clock; immune to wall-clock adjustments. Prefer <code>xiom.time.monotonic_ms</code> for millisecond resolution.</p>
+<p>The current monotonic instant (millisecond resolution), backed by the runtime monotonic clock (<code>xiom_async_now_ms</code>); immune to wall-clock adjustments. <code>t</code> is milliseconds from the monotonic origin.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.t &gt;= 0</code></li>
@@ -3500,22 +3500,22 @@
 </ul>
 <h4 id="fn-elapsedself-self-duration"><code>fn elapsed(self: Self) -&gt; Duration</code><a class="headerlink" href="#fn-elapsedself-self-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Time elapsed since this instant (monotonic clock, second resolution).</p>
+<p>Time elapsed since this instant (monotonic clock, millisecond resolution).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-duration_sinceself-self-earlier-instant-duration"><code>fn duration_since(self: Self, earlier: Instant) -&gt; Duration</code><a class="headerlink" href="#fn-duration_sinceself-self-earlier-instant-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Time from <code>earlier</code> to this instant.</p>
+<p>Time from <code>earlier</code> to this instant (millisecond resolution).</p>
 </blockquote>
 <h4 id="fn-addself-self-d-duration-instant"><code>fn add(self: Self, d: Duration) -&gt; Instant</code><a class="headerlink" href="#fn-addself-self-d-duration-instant" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Instant shifted forward by <code>d</code>.</p>
+<p>Instant shifted forward by <code>d</code> (millisecond precision).</p>
 </blockquote>
 <h4 id="fn-subself-self-d-duration-instant"><code>fn sub(self: Self, d: Duration) -&gt; Instant</code><a class="headerlink" href="#fn-subself-self-d-duration-instant" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Instant shifted backward by <code>d</code>.</p>
+<p>Instant shifted backward by <code>d</code> (millisecond precision).</p>
 </blockquote>
 <h4 id="type-systemtime"><code>type SystemTime</code><a class="headerlink" href="#type-systemtime" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3658,21 +3658,21 @@
 </blockquote>
 <h4 id="fn-sleepdur-duration"><code>fn sleep(dur: Duration)</code><a class="headerlink" href="#fn-sleepdur-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>=== Sleep / Wait ===</p>
+<p>=== Sleep / Wait === Sleep for the given duration (blocking; millisecond resolution -- a sub-millisecond duration returns immediately, and the nanos field is truncated to whole milliseconds).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-sleep_msms-int"><code>fn sleep_ms(ms: Int)</code><a class="headerlink" href="#fn-sleep_msms-int" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Sleep for <code>ms</code> milliseconds (blocking).</p>
+<p>Sleep for <code>ms</code> milliseconds (blocking; millisecond resolution). A non-positive value returns immediately.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
 </ul>
 <h4 id="fn-sleep_untilinstant-instant"><code>fn sleep_until(instant: Instant)</code><a class="headerlink" href="#fn-sleep_untilinstant-instant" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Sleep until the given monotonic instant.</p>
+<p>Sleep until the given monotonic instant (millisecond resolution -- <code>instant.t</code> is a monotonic millisecond reading, so this compares the same clock the instant was taken from).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>

@@ -3769,7 +3769,7 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[(T, U)]</code>. No source comment yet.</p>
 <h4 id="type-stepbyiter"><code>type StepByIter</code><a class="headerlink" href="#type-stepbyiter" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>StepBy -- yields every nth element (1-based step) Iterator taking every <code>step</code>-th element of an underlying iterator.</p>
+<p>StepBy -- yields every nth element (1-based step) Iterator taking every <code>step</code>-th element of an underlying Range.</p>
 </blockquote>
 <table>
 <thead>
@@ -3780,8 +3780,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>iter</code></td>
-<td><code>Iterator[T]</code></td>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
 </tr>
 <tr>
 <td><code>step</code></td>
@@ -3793,15 +3793,19 @@
 </tr>
 </tbody>
 </table>
-<h4 id="fn-step_bytself-self-step-int-stepbyitert"><code>fn step_by[T](self: Self, step: Int) -&gt; StepByIter[T]</code><a class="headerlink" href="#fn-step_bytself-self-step-int-stepbyitert" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>step: Int</code>; returns <code>StepByIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-step_byself-self-step-int-stepbyiterint"><code>fn step_by(self: Self, step: Int) -&gt; StepByIter[Int]</code><a class="headerlink" href="#fn-step_byself-self-step-int-stepbyiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Take every <code>step</code>-th element, starting with the first.</p>
+</blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>step &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.step == step</code></li>
+<li><strong>Postcondition:</strong> <code>result.first == true</code></li>
 </ul>
 <h4 id="fn-nexttself-self-optiont_3"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_3" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <ul>
-<li><strong>Postcondition:</strong> <code>true</code></li>
+<li><strong>Precondition:</strong> <code>self.step &gt; 0</code></li>
 </ul>
 <h4 id="type-takewhileiter"><code>type TakeWhileIter</code><a class="headerlink" href="#type-takewhileiter" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3816,8 +3820,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>iter</code></td>
-<td><code>Iterator[T]</code></td>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
 </tr>
 <tr>
 <td><code>predicate</code></td>
@@ -3829,8 +3833,13 @@
 </tr>
 </tbody>
 </table>
-<h4 id="fn-take_whiletself-self-predicate-fnt-bool-takewhileitert"><code>fn take_while[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; TakeWhileIter[T]</code><a class="headerlink" href="#fn-take_whiletself-self-predicate-fnt-bool-takewhileitert" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>TakeWhileIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-take_whileself-self-predicate-fnint-bool-takewhileiterint"><code>fn take_while(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; TakeWhileIter[Int]</code><a class="headerlink" href="#fn-take_whileself-self-predicate-fnint-bool-takewhileiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Yield elements while <code>predicate</code> holds, then stop permanently.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.done == false</code></li>
+</ul>
 <h4 id="fn-nexttself-self-optiont_4"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_4" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <ul>
@@ -3849,8 +3858,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>iter</code></td>
-<td><code>Iterator[T]</code></td>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
 </tr>
 <tr>
 <td><code>predicate</code></td>
@@ -3862,8 +3871,13 @@
 </tr>
 </tbody>
 </table>
-<h4 id="fn-skip_whiletself-self-predicate-fnt-bool-skipwhileitert"><code>fn skip_while[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; SkipWhileIter[T]</code><a class="headerlink" href="#fn-skip_whiletself-self-predicate-fnt-bool-skipwhileitert" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>SkipWhileIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-skip_whileself-self-predicate-fnint-bool-skipwhileiterint"><code>fn skip_while(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; SkipWhileIter[Int]</code><a class="headerlink" href="#fn-skip_whileself-self-predicate-fnint-bool-skipwhileiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Skip elements while <code>predicate</code> holds, then yield the rest.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.skipped == false</code></li>
+</ul>
 <h4 id="fn-nexttself-self-optiont_5"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_5" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="type-inspectiter"><code>type InspectIter</code><a class="headerlink" href="#type-inspectiter" title="Permanent link">&para;</a></h4>
@@ -3879,8 +3893,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>iter</code></td>
-<td><code>Iterator[T]</code></td>
+<td><code>next_fn</code></td>
+<td><code>fn() -&gt; Option[T]</code></td>
 </tr>
 <tr>
 <td><code>f</code></td>
@@ -3888,8 +3902,10 @@
 </tr>
 </tbody>
 </table>
-<h4 id="fn-inspecttself-self-f-fnt-unit-inspectitert"><code>fn inspect[T](self: Self, f: fn(&amp;T) -&gt; Unit) -&gt; InspectIter[T]</code><a class="headerlink" href="#fn-inspecttself-self-f-fnt-unit-inspectitert" title="Permanent link">&para;</a></h4>
-<p><em>Generated summary:</em> Method; takes <code>f: fn(&amp;T) -&gt; Unit</code>; returns <code>InspectIter[T]</code>. No source comment yet.</p>
+<h4 id="fn-inspectself-self-f-fnint-unit-inspectiterint"><code>fn inspect(self: Self, f: fn(&amp;Int) -&gt; Unit) -&gt; InspectIter[Int]</code><a class="headerlink" href="#fn-inspectself-self-f-fnint-unit-inspectiterint" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Call <code>f</code> on each element as it is consumed, passing it through unchanged.</p>
+</blockquote>
 <h4 id="fn-nexttself-self-optiont_6"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_6" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="fn-range_stepstart-int-end-int-step-int-vecint"><code>fn range_step(start: Int, end: Int, step: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-range_stepstart-int-end-int-step-int-vecint" title="Permanent link">&para;</a></h4>

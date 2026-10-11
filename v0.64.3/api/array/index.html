@@ -2876,6 +2876,9 @@
 <blockquote>
 <p>Fold the elements with <code>f</code>, starting from <code>init</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(N == 0) =&gt; (result == init)</code></li>
+</ul>
 <h4 id="fn-as_slicet-narr-nt-slicet"><code>fn as_slice[T, N](arr: &amp;[N]T) -&gt; Slice[T]</code><a class="headerlink" href="#fn-as_slicet-narr-nt-slicet" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Borrow the array as a Slice.</p>
@@ -3117,10 +3120,11 @@
 </ul>
 <h5 id="fn-array_zipn-ma-nint-b-nint-vecint-int"><code>fn array_zip[N, M](a: &amp;[N]Int, b: &amp;[N]Int) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-array_zipn-ma-nint-b-nint-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>(a[i], b[i]) pairs, truncated to the shorter array. O(min(N, M)). Returns Vec[(Int, Int)]. NOTE: the M &lt; N direction does not truncate on v0.64.1 (filed finding p_array_zip_no_truncate.xi); the clause covers the N &lt;= M direction only.</p>
+<p>(a[i], b[i]) pairs, truncated to the shorter array. O(min(N, M)). Returns Vec[(Int, Int)]. Both truncation directions are claimed now that the const-generic truncate is fixed (compiler m237, verified on v0.64.2).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(N &lt;= M) =&gt; (result.len() == N)</code></li>
+<li><strong>Postcondition:</strong> <code>(M &lt;= N) =&gt; (result.len() == M)</code></li>
 </ul>
 <hr />
 <hr />

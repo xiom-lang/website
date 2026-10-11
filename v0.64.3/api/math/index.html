@@ -4457,54 +4457,104 @@
 <blockquote>
 <p>Logistic map x_{k+1} = r x (1 - x) iterated n steps from x0. Returns the orbit (x0, x1, ..., x_{n-1}); empty for n &lt;= 0. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() == n)</code></li>
+</ul>
 <h5 id="fn-lorenz_systemsigma-float64-rho-float64-beta-float64-x0-vecfloat64-steps-int-dt-float64-vecvecfloat64"><code>fn lorenz_system(sigma: Float64, rho: Float64, beta: Float64, x0: &amp;Vec[Float64], steps: Int, dt: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-lorenz_systemsigma-float64-rho-float64-beta-float64-x0-vecfloat64-steps-int-dt-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lorenz system dx/dt = sigma(y-x), dy/dt = x(rho-z) - y, dz/dt = xy - beta z integrated by explicit Euler. Returns steps + 1 rows of 3 components; empty for steps &lt;= 0. Complexity: O(steps).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(steps &lt;= 0 || x0.len() != 3) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(steps &gt; 0 &amp;&amp; x0.len() == 3) =&gt; (result.len() == steps + 1)</code></li>
+</ul>
 <h5 id="fn-rossler_systema-float64-b-float64-c-float64-x0-vecfloat64-steps-int-dt-float64-vecvecfloat64"><code>fn rossler_system(a: Float64, b: Float64, c: Float64, x0: &amp;Vec[Float64], steps: Int, dt: Float64) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-rossler_systema-float64-b-float64-c-float64-x0-vecfloat64-steps-int-dt-float64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rossler system dx/dt = -y - z, dy/dt = x + a y, dz/dt = b + z(x - c) integrated by explicit Euler. Returns steps + 1 rows of 3 components; empty for steps &lt;= 0. Complexity: O(steps).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(steps &lt;= 0 || x0.len() != 3) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(steps &gt; 0 &amp;&amp; x0.len() == 3) =&gt; (result.len() == steps + 1)</code></li>
+</ul>
 <h5 id="fn-henon_mapa-float64-b-float64-x0-float64-y0-float64-n-int-vecfloat64-float64"><code>fn henon_map(a: Float64, b: Float64, x0: Float64, y0: Float64, n: Int) -&gt; Vec[(Float64, Float64)]</code><a class="headerlink" href="#fn-henon_mapa-float64-b-float64-x0-float64-y0-float64-n-int-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Henon map x' = 1 - a x^2 + y, y' = b x iterated n steps. Returns the orbit as (x, y) pairs; empty for n &lt;= 0. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() == n)</code></li>
+</ul>
 <h5 id="fn-bifurcation_diagramr_min-float64-r_max-float64-steps-int-transients-int-vecfloat64-float64"><code>fn bifurcation_diagram(r_min: Float64, r_max: Float64, steps: Int, transients: Int) -&gt; Vec[(Float64, Float64)]</code><a class="headerlink" href="#fn-bifurcation_diagramr_min-float64-r_max-float64-steps-int-transients-int-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bifurcation-diagram points of the logistic map: for <code>steps</code> parameter values uniformly spread over [r_min, r_max], discard <code>transients</code> iterations then capture 10 orbit points as (r, x) pairs. Empty for degenerate input. Complexity: O(steps * (transients + 10)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(steps &lt;= 0 || r_max &lt; r_min) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(steps &gt; 0 &amp;&amp; r_max &gt;= r_min) =&gt; (result.len() == steps * 10)</code></li>
+</ul>
 <h5 id="fn-lyapunov_exponentorbit-vecfloat64-float64"><code>fn lyapunov_exponent(orbit: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-lyapunov_exponentorbit-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Estimated largest Lyapunov exponent of a 1-D time series from the mean log expansion ratio |x_{k+1} - x_k| / |x_k - x_{k-1}|. NaN for fewer than 3 points or a zero difference (documented). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(orbit.len() &lt; 3) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-strange_attractordynamics-fnvecfloat64-vecfloat64-x0-vecfloat64-n-int-vecvecfloat64"><code>fn strange_attractor(dynamics: fn(&amp;Vec[Float64]) -&gt; Vec[Float64], x0: &amp;Vec[Float64], n: Int) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-strange_attractordynamics-fnvecfloat64-vecfloat64-x0-vecfloat64-n-int-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Trajectory of a chaotic attractor under the discrete dynamics map x &lt;- dynamics(x), n steps. Returns n + 1 states; empty for n &lt;= 0. Complexity: O(n * cost(dynamics)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0) =&gt; (result.len() == n + 1)</code></li>
+</ul>
 <h5 id="fn-fractal_dimensionpoints-vecfloat64-float64-float64"><code>fn fractal_dimension(points: &amp;Vec[(Float64, Float64)]) -&gt; Float64</code><a class="headerlink" href="#fn-fractal_dimensionpoints-vecfloat64-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Box-counting fractal dimension of a 2-D point set: for four box sizes the occupied-box counts are fit by least squares on log-log scales. NaN for fewer than 2 points. Complexity: O(4 * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(points.len() &lt; 2) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-mandelbrot_setc_re-float64-c_im-float64-max_iter-int-int"><code>fn mandelbrot_set(c_re: Float64, c_im: Float64, max_iter: Int) -&gt; Int</code><a class="headerlink" href="#fn-mandelbrot_setc_re-float64-c_im-float64-max_iter-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape iterations of c under z &lt;- z^2 + c from z = 0; max_iter means the point is inside the set. Complexity: O(max_iter).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(max_iter &gt;= 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= max_iter)</code></li>
+<li><strong>Postcondition:</strong> <code>(c_re == 0 &amp;&amp; c_im == 0 &amp;&amp; max_iter &gt; 0) =&gt; (result == max_iter)</code></li>
+</ul>
 <h5 id="fn-julia_setc_re-float64-c_im-float64-z_re-float64-z_im-float64-max_iter-int-int"><code>fn julia_set(c_re: Float64, c_im: Float64, z_re: Float64, z_im: Float64, max_iter: Int) -&gt; Int</code><a class="headerlink" href="#fn-julia_setc_re-float64-c_im-float64-z_re-float64-z_im-float64-max_iter-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Escape iterations of z0 under z &lt;- z^2 + c for fixed parameter c; max_iter means the point is inside the Julia set. Complexity: O(max_iter).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(max_iter &gt;= 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= max_iter)</code></li>
+<li><strong>Postcondition:</strong> <code>(c_re == 0 &amp;&amp; c_im == 0 &amp;&amp; z_re == 0 &amp;&amp; z_im == 0 &amp;&amp; max_iter &gt; 0) =&gt; (result == max_iter)</code></li>
+</ul>
 <h5 id="fn-burning_shipc_re-float64-c_im-float64-max_iter-int-int"><code>fn burning_ship(c_re: Float64, c_im: Float64, max_iter: Int) -&gt; Int</code><a class="headerlink" href="#fn-burning_shipc_re-float64-c_im-float64-max_iter-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Burning-ship fractal escape count: z &lt;- (|re z| + i |im z|)^2 + c. Complexity: O(max_iter).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(max_iter &gt;= 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= max_iter)</code></li>
+<li><strong>Postcondition:</strong> <code>(c_re == 0 &amp;&amp; c_im == 0 &amp;&amp; max_iter &gt; 0) =&gt; (result == max_iter)</code></li>
+</ul>
 <h5 id="fn-newton_fractalcoeffs-vecfloat64-z-float64-max_iter-int-int"><code>fn newton_fractal(coeffs: &amp;Vec[Float64], z: Float64, max_iter: Int) -&gt; Int</code><a class="headerlink" href="#fn-newton_fractalcoeffs-vecfloat64-z-float64-max_iter-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the root that a point converges to under Newton iteration on the polynomial a x^2 + b x + c (given as coeffs [a, b, c]). Returns 0 or 1 for a non-degenerate quadratic (documented restriction to degree &lt;= 2). Complexity: O(iters).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>(coeffs.len() &lt; 3) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-tent_mapmu-float64-x0-float64-n-int-vecfloat64"><code>fn tent_map(mu: Float64, x0: Float64, n: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-tent_mapmu-float64-x0-float64-n-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tent map x_{k+1} = mu * min(x, 1 - x) iterated n steps from x0. Returns the orbit; empty for n &lt;= 0. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() == n)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4950,14 +5000,23 @@
 <blockquote>
 <p>Positive infinity. Constructor fn (no literal syntax; BUG 3 -- see header).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt; 1</code></li>
+</ul>
 <h5 id="fn-neg_infinity-float64"><code>fn neg_infinity() -&gt; Float64</code><a class="headerlink" href="#fn-neg_infinity-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Negative infinity. Constructor fn (no literal syntax; BUG 3 -- see header).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &lt; -1</code></li>
+</ul>
 <h5 id="fn-nan-float64"><code>fn nan() -&gt; Float64</code><a class="headerlink" href="#fn-nan-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>NAN (not-a-number) -- constructor fn (no NaN literal syntax exists; a const initializer can't hold the <code>0.0 / 0.0</code> expression -- const-fold handles literals only). IEEE semantics verified: <code>nan() != nan()</code> is true and math.is_nan(nan()) is true since BUG 19's fcmp-one/Str+Float64-concat defects were fixed (2026-08-11, <code>9c3a2f9e</code>/<code>88f924ea</code>).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result != result</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5047,62 +5106,128 @@
 <blockquote>
 <p>Split x into (fraction, exponent) with x == fraction * 2^exponent and fraction in [0.5, 1). frexp(8.0) == (0.5, 4), frexp(0.0) == (0.0, 0). Exact. Complexity: O(1074) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result._0 == 0 &amp;&amp; result._1 == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 8) =&gt; (result._0 == 0.5 &amp;&amp; result._1 == 4)</code></li>
+</ul>
 <h5 id="fn-ldexpx-float64-n-int-float64"><code>fn ldexp(x: Float64, n: Int) -&gt; Float64</code><a class="headerlink" href="#fn-ldexpx-float64-n-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>x * 2^n with a single rounding. For n beyond the representable exponent range the result is +-inf (n &gt; 1100) or 0.0 (n &lt; -1100); subnormal results flush correctly. Exact for all finite representable outcomes. Complexity: O(1074 + 1024).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 1100 &amp;&amp; x != 0) =&gt; (result &gt; 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 || result &lt; -100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &lt; -1100 &amp;&amp; x != 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-ilogbx-float64-int"><code>fn ilogb(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-ilogbx-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binary exponent of x: the e with |x| == m * 2^e and 1 &lt;= m &lt; 2. ilogb(8.0) == 3, ilogb(0.5) == -1. For x == 0 returns INT_MIN (C FP_ILOGB0), for +-inf returns INT_MAX (C FP_ILOGB... convention). Complexity: O(1074) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == -9223372036854775808)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 8) =&gt; (result == 3)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 0.5) =&gt; (result == -1)</code></li>
+</ul>
 <h5 id="fn-logbx-float64-float64"><code>fn logb(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-logbx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binary exponent of x as a float: logb(8.0) == 3.0. For x == 0 returns -inf, for +-inf returns +inf (C semantics). Complexity: O(1074) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result &lt; -100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 8) =&gt; (result == 3)</code></li>
+</ul>
 <h5 id="fn-scalbnx-float64-n-int-float64"><code>fn scalbn(x: Float64, n: Int) -&gt; Float64</code><a class="headerlink" href="#fn-scalbnx-float64-n-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>x * 2^n (FLT_RADIX == 2). Same semantics as ldexp. Complexity: O(ldexp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 1.5 &amp;&amp; n == 1) =&gt; (result == 3)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-scalblnx-float64-n-int64-float64"><code>fn scalbln(x: Float64, n: Int64) -&gt; Float64</code><a class="headerlink" href="#fn-scalblnx-float64-n-int64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>x * 2^n with a long (Int64) exponent. Same semantics as ldexp. Complexity: O(ldexp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 1.5 &amp;&amp; n == 1) =&gt; (result == 3)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-significandx-float64-float64"><code>fn significand(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-significandx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Normalized fraction of x in [0.5, 1), sign preserved (frexp fraction). significand(8.0) == 0.5, significand(0.0) == 0.0; +-inf pass through. Complexity: O(1074) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 8) =&gt; (result == 0.5)</code></li>
+</ul>
 <h5 id="fn-exponentx-float64-int"><code>fn exponent(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-exponentx-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Binary exponent of x. Alias of ilogb: exponent(8.0) == 3, exponent(0) == INT_MIN, exponent(+-inf) == INT_MAX. Complexity: O(ilogb).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 8) =&gt; (result == 3)</code></li>
+</ul>
 <h5 id="fn-frexp_purex-float64-float64-int"><code>fn frexp_pure(x: Float64) -&gt; (Float64, Int)</code><a class="headerlink" href="#fn-frexp_purex-float64-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>frexp without libm. Identical semantics to frexp (the algorithm is exact integer scaling; no libm involved). Complexity: O(1074) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result._0 == 0 &amp;&amp; result._1 == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 8) =&gt; (result._0 == 0.5 &amp;&amp; result._1 == 4)</code></li>
+</ul>
 <h5 id="fn-ldexp_purex-float64-n-int-float64"><code>fn ldexp_pure(x: Float64, n: Int) -&gt; Float64</code><a class="headerlink" href="#fn-ldexp_purex-float64-n-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ldexp without libm. x * 2^n via exact frexp decomposition and power-of-two scaling (all intermediate steps are exact or correctly flushed). For n &gt; 1100 returns +-inf, for n &lt; -1100 returns 0.0. Complexity: O(1074).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 1100 &amp;&amp; x != 0) =&gt; (result &gt; 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 || result &lt; -100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &lt; -1100 &amp;&amp; x != 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 1.5 &amp;&amp; n == 1) =&gt; (result == 3)</code></li>
+</ul>
 <h5 id="fn-is_normalx-float64-bool"><code>fn is_normal(x: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-is_normalx-float64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff x is a normal (non-subnormal, non-zero, finite) Float64: 2^-1022 &lt;= |x| &lt; +inf. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 1) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-is_subnormalx-float64-bool"><code>fn is_subnormal(x: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-is_subnormalx-float64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff x is a subnormal Float64: 0 &lt; |x| &lt; 2^-1022. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 1) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-classifyx-float64-floatclass"><code>fn classify(x: Float64) -&gt; FloatClass</code><a class="headerlink" href="#fn-classifyx-float64-floatclass" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Classify x into the FloatClass taxonomy: NaN, Infinity, Normal, Subnormal, Zero. NaN classification is unreachable from code compiled by this compiler (BUG 19 cannot produce NaN), but is detected if one arrives. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == FloatClass.Zero)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 1) =&gt; (result == FloatClass.Normal)</code></li>
+</ul>
 <h5 id="fn-nextafterx-float64-y-float64-float64"><code>fn nextafter(x: Float64, y: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-nextafterx-float64-y-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Next representable Float64 from x toward y. Exact for all finite normal and subnormal values; delegates to math.primitives.nextafter (the same arithmetic ulp walk). nextafter(max, +inf) == +inf. TODO(compiler): an exact implementation normally uses a float&lt;-&gt;int bitcast; the arithmetic form is exact for finite values (see primitives).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == y) =&gt; (result == x)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &lt; y) =&gt; (result &gt; x)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &gt; y) =&gt; (result &lt; x)</code></li>
+</ul>
 <h5 id="fn-nexttowardx-float64-y-float64-float64"><code>fn nexttoward(x: Float64, y: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-nexttowardx-float64-y-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Next representable Float64 from x toward y. Float64 has no distinct long double, so this is the same operation as nextafter.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == y) =&gt; (result == x)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &lt; y) =&gt; (result &gt; x)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5525,14 +5650,23 @@
 <blockquote>
 <p>Present value of an annuity and lump sum: PV = -(FV + pmt<em>((1+r)^n-1)/r) / (1+r)^n. r == 0 uses PV = -(FV + pmt</em>n). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(rate == 0) =&gt; (result == -(fv + pmt * nper))</code></li>
+</ul>
 <h5 id="fn-fvrate-float64-nper-float64-pmt-float64-pv-float64-float64"><code>fn fv(rate: Float64, nper: Float64, pmt: Float64, pv: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-fvrate-float64-nper-float64-pmt-float64-pv-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Future value of an annuity and lump sum: FV = PV (1+r)^n + pmt<em>((1+r)^n-1) / r. r == 0 uses FV = PV + pmt</em>n. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(rate == 0) =&gt; (result == pv + pmt * nper)</code></li>
+</ul>
 <h5 id="fn-npvrate-float64-cashflows-vecfloat64-float64"><code>fn npv(rate: Float64, cashflows: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-npvrate-float64-cashflows-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Net present value of a cashflow series discounted from t = 0 (the first element is the undiscounted cashflow at time zero). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(cashflows.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-irrcashflows-vecfloat64-float64"><code>fn irr(cashflows: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-irrcashflows-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Internal rate of return: the rate r with npv(r, cashflows) == 0, found by bisection over [-0.99, 10] (200 iterations). NaN when no sign change exists. Complexity: O(iters * n).</p>
@@ -5541,22 +5675,40 @@
 <blockquote>
 <p>Modified internal rate of return: MIRR = ((FV_positive / PV_negative)^(1/n) - 1) where positive cashflows compound at reinvest_rate and negative ones discount at finance_rate. NaN when no negative cashflow exists. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(cashflows.len() == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-pmtrate-float64-nper-float64-pv-float64-fv-float64-float64"><code>fn pmt(rate: Float64, nper: Float64, pv: Float64, fv: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-pmtrate-float64-nper-float64-pv-float64-fv-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Periodic payment of an annuity: pmt = (fv - pv (1+r)^n) r / ((1+r)^n - 1); r == 0 uses (fv - pv)/n. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(nper == 0) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(rate == 0 &amp;&amp; nper != 0) =&gt; (result == (fv - pv) / nper)</code></li>
+</ul>
 <h5 id="fn-ipmtrate-float64-per-int-nper-float64-pv-float64-float64"><code>fn ipmt(rate: Float64, per: Int, nper: Float64, pv: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-ipmtrate-float64-per-int-nper-float64-pv-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Interest portion of the payment in period per (1-based) for a loan of pv amortized at rate over nper periods (fv = 0). Complexity: O(per).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(per &lt; 1) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(rate == 0 &amp;&amp; per &gt;= 1 &amp;&amp; nper != 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-ppmtrate-float64-per-int-nper-float64-pv-float64-float64"><code>fn ppmt(rate: Float64, per: Int, nper: Float64, pv: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-ppmtrate-float64-per-int-nper-float64-pv-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Principal portion of the payment in period per. Complexity: O(per).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(per &lt; 1) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-nperrate-float64-pmt-float64-pv-float64-fv-float64-float64"><code>fn nper(rate: Float64, pmt: Float64, pv: Float64, fv: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-nperrate-float64-pmt-float64-pv-float64-fv-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of periods to reach fv from pv paying pmt per period: n = ln((pmt - fv r) / (pmt + pv r)) / ln(1 + r). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(rate == 0 &amp;&amp; pmt == 0) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(rate == 0 &amp;&amp; pmt != 0) =&gt; (result == -(pv + fv) / pmt)</code></li>
+</ul>
 <h5 id="fn-ratenper-float64-pmt-float64-pv-float64-fv-float64-float64"><code>fn rate(nper: Float64, pmt: Float64, pv: Float64, fv: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-ratenper-float64-pmt-float64-pv-float64-fv-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Interest rate implied by an annuity: bisection on the fv identity over [-0.999, 10] (200 iterations). NaN when no root exists. Complexity: O(200).</p>
@@ -5569,10 +5721,17 @@
 <blockquote>
 <p>Present value of a level perpetuity pmt / rate. NaN for rate &lt;= 0. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(rate &lt;= 0) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(rate &gt; 0) =&gt; (result == pmt / rate)</code></li>
+</ul>
 <h5 id="fn-bond_priceface-float64-coupon-float64-ytm-float64-n-int-freq-int-float64"><code>fn bond_price(face: Float64, coupon: Float64, ytm: Float64, n: Int, freq: Int) -&gt; Float64</code><a class="headerlink" href="#fn-bond_priceface-float64-coupon-float64-ytm-float64-n-int-freq-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Price of a coupon bond with face, annual coupon rate, yield to maturity, n years and freq coupons per year. Complexity: O(n * freq).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(face &lt;= 0 || freq &lt;= 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-bond_yieldface-float64-coupon-float64-price-float64-n-int-freq-int-float64"><code>fn bond_yield(face: Float64, coupon: Float64, price: Float64, n: Int, freq: Int) -&gt; Float64</code><a class="headerlink" href="#fn-bond_yieldface-float64-coupon-float64-price-float64-n-int-freq-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Yield to maturity of a coupon bond, found by bisection on the price equation over [-0.999, 10] (200 iterations). NaN when no root exists. Complexity: O(200 * n * freq).</p>
@@ -5625,42 +5784,74 @@
 <blockquote>
 <p>Compound annual growth rate (end/begin)^(1/years) - 1. NaN for years &lt;= 0 or non-positive begin. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(begin_value &lt;= 0 || years &lt;= 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-sharpe_ratioreturns-vecfloat64-rf-float64-float64"><code>fn sharpe_ratio(returns: &amp;Vec[Float64], rf: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sharpe_ratioreturns-vecfloat64-rf-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sharpe ratio (mean(returns) - rf) / sample_stddev(returns). NaN for fewer than 2 returns. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(returns.len() &lt; 2) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-sortino_ratioreturns-vecfloat64-rf-float64-float64"><code>fn sortino_ratio(returns: &amp;Vec[Float64], rf: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-sortino_ratioreturns-vecfloat64-rf-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sortino ratio (mean(returns) - rf) / downside_deviation(returns, rf), where the downside deviation is the sqrt of the mean of squared returns below rf. NaN for fewer than 2 returns. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(returns.len() &lt; 2) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-calmar_ratioreturns-vecfloat64-max_drawdown-float64-float64"><code>fn calmar_ratio(returns: &amp;Vec[Float64], max_drawdown: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-calmar_ratioreturns-vecfloat64-max_drawdown-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Calmar ratio annualized mean return / |max drawdown|. NaN for a zero drawdown or fewer than 2 returns. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(returns.len() &lt; 2 || max_drawdown == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-value_at_riskreturns-vecfloat64-alpha-float64-method-int-float64"><code>fn value_at_risk(returns: &amp;Vec[Float64], alpha: Float64, method: Int) -&gt; Float64</code><a class="headerlink" href="#fn-value_at_riskreturns-vecfloat64-alpha-float64-method-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value at risk at confidence alpha: method 0 = historical quantile, method 1 = parametric (normal) quantile. Returns a positive loss. Complexity: O(n log n) historical / O(n) parametric.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(returns.len() == 0) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(returns.len() &gt; 0 &amp;&amp; (alpha &lt;= 0 || alpha &gt;= 1)) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-cvarreturns-vecfloat64-alpha-float64-float64"><code>fn cvar(returns: &amp;Vec[Float64], alpha: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-cvarreturns-vecfloat64-alpha-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Conditional value at risk: mean of the returns below the alpha-VaR level. NaN for fewer than 1 tail observation. Complexity: O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(returns.len() == 0) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(returns.len() &gt; 0 &amp;&amp; (alpha &lt;= 0 || alpha &gt;= 1)) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-drawdownreturns-vecfloat64-vecfloat64"><code>fn drawdown(returns: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-drawdownreturns-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Drawdown series of the returns (cumulative product minus 1, then peak-to-trough). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(returns.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-betaasset_returns-vecfloat64-market_returns-vecfloat64-float64"><code>fn beta(asset_returns: &amp;Vec[Float64], market_returns: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-betaasset_returns-vecfloat64-market_returns-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Systematic risk of an asset versus the market: covariance / market variance. NaN for fewer than 2 observations or zero market variance. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(asset_returns.len() &lt; 2 || market_returns.len() != asset_returns.len()) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-alphaasset_returns-vecfloat64-market_returns-vecfloat64-rf-float64-float64"><code>fn alpha(asset_returns: &amp;Vec[Float64], market_returns: &amp;Vec[Float64], rf: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-alphaasset_returns-vecfloat64-market_returns-vecfloat64-rf-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Jensen's alpha: mean(asset) - (rf + beta * (mean(market) - rf)). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(asset_returns.len() == 0 || market_returns.len() != asset_returns.len()) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-treynor_ratioreturns-vecfloat64-beta-float64-rf-float64-float64"><code>fn treynor_ratio(returns: &amp;Vec[Float64], beta: Float64, rf: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-treynor_ratioreturns-vecfloat64-beta-float64-rf-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Treynor ratio (mean(returns) - rf) / beta. NaN for beta &lt;= 0. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(returns.len() == 0 || beta &lt;= 0) =&gt; (result != result)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5669,26 +5860,50 @@
 <blockquote>
 <p>Membership degrees of the universe elements under the membership fn. Returns an empty vector for an empty universe. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == universe.len()</code></li>
+</ul>
 <h5 id="fn-membershipset-vecfloat64-element-int-float64"><code>fn membership(set: &amp;Vec[Float64], element: Int) -&gt; Float64</code><a class="headerlink" href="#fn-membershipset-vecfloat64-element-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Membership degree of element in a fuzzy set; elements outside the set's range yield 0.0 (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(element &lt; 0 || element &gt;= set.len()) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-fuzzy_logica-float64-b-float64-op-str-float64"><code>fn fuzzy_logic(a: Float64, b: Float64, op: Str) -&gt; Float64</code><a class="headerlink" href="#fn-fuzzy_logica-float64-b-float64-op-str-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Triangular norm/conorm or negation of two truth values, selected by op: "and" -&gt; min, "or" -&gt; max, "not" -&gt; 1 - a, "prod" -&gt; a<em>b, "sum" -&gt; a + b - a</em>b (probabilistic or). Unknown op returns NaN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(op == "and") =&gt; (result &lt;= a &amp;&amp; result &lt;= b)</code></li>
+<li><strong>Postcondition:</strong> <code>(op == "or") =&gt; (result &gt;= a &amp;&amp; result &gt;= b)</code></li>
+<li><strong>Postcondition:</strong> <code>(op == "not") =&gt; (result == 1 - a)</code></li>
+<li><strong>Postcondition:</strong> <code>(op == "prod") =&gt; (result == a * b)</code></li>
+<li><strong>Postcondition:</strong> <code>(op == "sum") =&gt; (result == a + b - a * b)</code></li>
+</ul>
 <h5 id="fn-fuzzy_intersectiona-vecfloat64-b-vecfloat64-vecfloat64"><code>fn fuzzy_intersection(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-fuzzy_intersectiona-vecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pointwise minimum (intersection) of two fuzzy sets; empty on length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == b.len()) =&gt; (result.len() == a.len())</code></li>
+</ul>
 <h5 id="fn-fuzzy_uniona-vecfloat64-b-vecfloat64-vecfloat64"><code>fn fuzzy_union(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-fuzzy_uniona-vecfloat64-b-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pointwise maximum (union) of two fuzzy sets; empty on length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == b.len()) =&gt; (result.len() == a.len())</code></li>
+</ul>
 <h5 id="fn-fuzzy_complementa-vecfloat64-vecfloat64"><code>fn fuzzy_complement(a: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-fuzzy_complementa-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pointwise complement 1 - a of a fuzzy set. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == a.len()</code></li>
+</ul>
 <h5 id="fn-fuzzy_relationr-vecvecfloat64-bool"><code>fn fuzzy_relation(r: &amp;Vec[Vec[Float64]]) -&gt; Bool</code><a class="headerlink" href="#fn-fuzzy_relationr-vecvecfloat64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Validates that every membership degree of the fuzzy relation matrix lies in [0, 1]. TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the relation is a Vec[Vec[Float64]] whose element reads return garbage (BUG 23 #1 residual; verified by minimal probe). Keep the frozen signature; revisit when nested float Vec reads land.</p>
@@ -5701,26 +5916,48 @@
 <blockquote>
 <p>Centroid (center-of-gravity) defuzzification of a fuzzy set over the universe values: sum(u_i m_i) / sum(m_i). NaN when the total membership is zero or the lengths differ. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(set.len() != universe.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(set.len() == 0 || universe.len() == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-fuzzy_inferencerules-vecstr-facts-vecfloat64-vecfloat64"><code>fn fuzzy_inference(rules: &amp;Vec[Str], facts: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-fuzzy_inferencerules-vecstr-facts-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Aggregated conclusion degrees from fuzzy rules ("a:b:s" = antecedent, consequent, strength): out[j] = max over rules with consequent j of min(facts[a], s). NaN facts propagate as NaN conclusions. Complexity: O(rules).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(rules.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(rules.len() &gt; 0) =&gt; (result.len() == facts.len())</code></li>
+</ul>
 <h5 id="fn-mamdanirules-vecstr-inputs-vecfloat64-vecfloat64"><code>fn mamdani(rules: &amp;Vec[Str], inputs: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-mamdanirules-vecstr-inputs-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mamdani-style inference: min implication with max aggregation over the same "a:b:s" rule convention (alias of fuzzy_inference). Complexity: O(rules).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(rules.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(rules.len() &gt; 0) =&gt; (result.len() == inputs.len())</code></li>
+</ul>
 <h5 id="fn-sugenorules-vecstr-inputs-vecfloat64-float64"><code>fn sugeno(rules: &amp;Vec[Str], inputs: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-sugenorules-vecstr-inputs-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sugeno-style weighted crisp output: rules are decimal strengths s_i and the result is sum(s_i * inputs_i) / sum(s_i). NaN when the weight sum is zero or the rule format is invalid. Complexity: O(rules).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(rules.len() == 0 || inputs.len() == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-fuzzy_controlsetpoint-float64-measurement-float64-kp-float64-ki-float64-float64"><code>fn fuzzy_control(setpoint: Float64, measurement: Float64, kp: Float64, ki: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-fuzzy_controlsetpoint-float64-measurement-float64-kp-float64-ki-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fuzzy logic controller output (position form): kp * error + ki * error with error = setpoint - measurement (integral term approximated proportionally; documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(setpoint == measurement) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-fuzzy_decisionalternatives-vecfloat64-weights-vecfloat64-int"><code>fn fuzzy_decision(alternatives: &amp;Vec[Float64], weights: &amp;Vec[Float64]) -&gt; Int</code><a class="headerlink" href="#fn-fuzzy_decisionalternatives-vecfloat64-weights-vecfloat64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the best fuzzy-weighted alternative: argmax of alternatives_i * weights_i. Returns -1 for empty or mismatched input. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alternatives.len() != weights.len() || alternatives.len() == 0) =&gt; (result == -1)</code></li>
+<li><strong>Postcondition:</strong> <code>(alternatives.len() == weights.len() &amp;&amp; alternatives.len() &gt; 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt; alternatives.len())</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5749,22 +5986,44 @@
 <blockquote>
 <p>Grand-coalition value v(all players) and a feasible imputation: the tuple is (grand_coalition_value, equal-share imputation value). Complexity: O(1) plus the cost of v on the grand coalition.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result._1 == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result._1 == result._0 / (?))</code></li>
+</ul>
 <h5 id="fn-shapley_valuev-fnvecint-float64-n-int-vecfloat64"><code>fn shapley_value(v: fn(&amp;Vec[Int]) -&gt; Float64, n: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-shapley_valuev-fnvecint-float64-n-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Shapley value of each of the n players: the average marginal contribution over all player permutations (exact for n &lt;= 6 via permutations_enum, approximate for larger n by iterating cyclic shifts). Complexity: O(n! * n) exact / O(n^2) approximate.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 0) =&gt; (result.len() == n)</code></li>
+</ul>
 <h5 id="fn-game_corev-fnvecint-float64-n-int-vecvecfloat64"><code>fn game_core(v: fn(&amp;Vec[Int]) -&gt; Float64, n: Int) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-game_corev-fnvecint-float64-n-int-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Imputations in the core of a cooperative game. For n == 2 the core is the set of allocations (x1, x2) with x1 + x2 = v({0,1}) and x_i &gt;= v({i}); the function returns a sample of its extreme points. For other n the function returns a documented greedy sample. Complexity: O(2^n * v) for small n.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 1) =&gt; (result.len() == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 2) =&gt; (result.len() == 2)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt; 2) =&gt; (result.len() == 1)</code></li>
+</ul>
 <h5 id="fn-auctionbids-vecfloat64-reserve-float64-float64-int"><code>fn auction(bids: &amp;Vec[Float64], reserve: Float64) -&gt; (Float64, Int)</code><a class="headerlink" href="#fn-auctionbids-vecfloat64-reserve-float64-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Winning price and winner index of a first-price auction with a reserve: the highest bid at or above the reserve wins at its own bid. Returns (price, winner_index) or (0, -1) when no bid clears the reserve. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result._1 &gt;= 0) =&gt; (result._0 &gt;= reserve &amp;&amp; result._1 &lt; bids.len())</code></li>
+<li><strong>Postcondition:</strong> <code>(result._1 == -1) =&gt; (result._0 == 0)</code></li>
+</ul>
 <h5 id="fn-mechanism_designtype_space-vecfloat64-values-fnint-float64-vecfloat64"><code>fn mechanism_design(type_space: &amp;Vec[Float64], values: fn(Int) -&gt; Float64) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-mechanism_designtype_space-vecfloat64-values-fnint-float64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dominant-strategy incentive-compatible allocation: bidder i receives a share of the type-space value proportional to values(i). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(type_space.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(type_space.len() &gt; 0) =&gt; (result.len() == type_space.len())</code></li>
+</ul>
 <h5 id="fn-evolutionary_gamepayoffs-vecvecfloat64-population-vecfloat64-vecfloat64"><code>fn evolutionary_game(payoffs: &amp;Vec[Vec[Float64]], population: &amp;Vec[Float64]) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-evolutionary_gamepayoffs-vecvecfloat64-population-vecfloat64-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Next-generation population shares under replicator dynamics: x_i' = x_i (f_i - mean) where f_i is the i-th strategy's expected payoff. TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the payoff matrix is a Vec[Vec[Float64]] whose element reads return garbage (BUG 23 #1 residual; verified by minimal probe). Keep the frozen signature; revisit when nested float Vec reads land.</p>
@@ -5777,6 +6036,9 @@
 <blockquote>
 <p>Payoffs of the one-shot prisoner's dilemma: the tuple is (mutual_cooperation, mutual_defection) payoff. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 == cooperate &amp;&amp; result._1 == defect</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5815,130 +6077,245 @@
 <blockquote>
 <p>Create an empty graph. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.n == 0 &amp;&amp; result.edges.len() == 0 &amp;&amp; result.weights.len() == 0</code></li>
+</ul>
 <h5 id="fn-graph_add_vertexg-mut-weightedgraph-v-int-bool"><code>fn graph_add_vertex(g: &amp;mut WeightedGraph, v: Int) -&gt; Bool</code><a class="headerlink" href="#fn-graph_add_vertexg-mut-weightedgraph-v-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add vertex v (grows n to v + 1; vertices are implicit ids). Returns true. Complexity: O(v - n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v &lt; 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(v &gt;= 0) =&gt; (result == true &amp;&amp; g.n &gt; v)</code></li>
+</ul>
 <h5 id="fn-graph_add_edgeg-mut-weightedgraph-u-int-v-int-bool"><code>fn graph_add_edge(g: &amp;mut WeightedGraph, u: Int, v: Int) -&gt; Bool</code><a class="headerlink" href="#fn-graph_add_edgeg-mut-weightedgraph-u-int-v-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add an unweighted edge (u, v) (weight 1.0). Adds the vertices first; an undirected graph also stores the reverse edge. Returns false for negative ids. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(u &lt; 0 || v &lt; 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(u &gt;= 0 &amp;&amp; v &gt;= 0) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-graph_add_weighted_edgeg-mut-weightedgraph-u-int-v-int-w-float64-bool"><code>fn graph_add_weighted_edge(g: &amp;mut WeightedGraph, u: Int, v: Int, w: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-graph_add_weighted_edgeg-mut-weightedgraph-u-int-v-int-w-float64-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add a weighted edge (u, v) with weight w (rounded to 1e-5 resolution). Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(u &lt; 0 || v &lt; 0 || w != w) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(u &gt;= 0 &amp;&amp; v &gt;= 0 &amp;&amp; w == w) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-graph_remove_vertexg-mut-weightedgraph-v-int-bool"><code>fn graph_remove_vertex(g: &amp;mut WeightedGraph, v: Int) -&gt; Bool</code><a class="headerlink" href="#fn-graph_remove_vertexg-mut-weightedgraph-v-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove vertex v and all incident edges. Returns false when v is absent. Complexity: O(edges).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v &lt; 0 || v &gt;= g.n) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(v &gt;= 0 &amp;&amp; v &lt; g.n) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-graph_remove_edgeg-mut-weightedgraph-u-int-v-int-bool"><code>fn graph_remove_edge(g: &amp;mut WeightedGraph, u: Int, v: Int) -&gt; Bool</code><a class="headerlink" href="#fn-graph_remove_edgeg-mut-weightedgraph-u-int-v-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove the edge (u, v); an undirected graph removes the reverse too. Returns false when no such edge exists. Complexity: O(edges).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(u &lt; 0 || v &lt; 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (graph_has_edge(g, u, v) == false)</code></li>
+</ul>
 <h5 id="fn-graph_has_vertexg-weightedgraph-v-int-bool"><code>fn graph_has_vertex(g: &amp;WeightedGraph, v: Int) -&gt; Bool</code><a class="headerlink" href="#fn-graph_has_vertexg-weightedgraph-v-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether v is present. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (v &gt;= 0 &amp;&amp; v &lt; g.n)</code></li>
+</ul>
 <h5 id="fn-graph_has_edgeg-weightedgraph-u-int-v-int-bool"><code>fn graph_has_edge(g: &amp;WeightedGraph, u: Int, v: Int) -&gt; Bool</code><a class="headerlink" href="#fn-graph_has_edgeg-weightedgraph-u-int-v-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether the edge (u, v) is present (either direction for undirected). Complexity: O(edges).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.edges.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-graph_degreeg-weightedgraph-v-int-int"><code>fn graph_degree(g: &amp;WeightedGraph, v: Int) -&gt; Int</code><a class="headerlink" href="#fn-graph_degreeg-weightedgraph-v-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Degree of vertex v (undirected degree counts once per incident edge). Complexity: O(edges).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v &lt; 0 || v &gt;= g.n) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(v &gt;= 0 &amp;&amp; v &lt; g.n) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-graph_verticesg-weightedgraph-vecint"><code>fn graph_vertices(g: &amp;WeightedGraph) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-graph_verticesg-weightedgraph-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All vertices as ids [0, n - 1]. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == g.n</code></li>
+</ul>
 <h5 id="fn-graph_edgesg-weightedgraph-vecint-int"><code>fn graph_edges(g: &amp;WeightedGraph) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-graph_edgesg-weightedgraph-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All edges as (u, v) pairs (duplicated pairs for undirected graphs, one per stored direction). Complexity: O(edges).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == g.edges.len()</code></li>
+</ul>
 <h5 id="fn-graph_adjacentg-weightedgraph-u-int-v-int-bool"><code>fn graph_adjacent(g: &amp;WeightedGraph, u: Int, v: Int) -&gt; Bool</code><a class="headerlink" href="#fn-graph_adjacentg-weightedgraph-u-int-v-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether u and v are neighbors. Complexity: O(edges).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.edges.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-graph_dfsg-weightedgraph-start-int-vecint"><code>fn graph_dfs(g: &amp;WeightedGraph, start: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-graph_dfsg-weightedgraph-start-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Depth-first vertex order from start. Returns the empty vector for a start outside the graph. Complexity: O(V + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(start &lt; 0 || start &gt;= g.n) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(start &gt;= 0 &amp;&amp; start &lt; g.n) =&gt; (result.len() &gt;= 1 &amp;&amp; result.len() &lt;= g.n)</code></li>
+</ul>
 <h5 id="fn-graph_bfsg-weightedgraph-start-int-vecint"><code>fn graph_bfs(g: &amp;WeightedGraph, start: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-graph_bfsg-weightedgraph-start-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Breadth-first vertex order from start. Complexity: O(V + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(start &lt; 0 || start &gt;= g.n) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(start &gt;= 0 &amp;&amp; start &lt; g.n) =&gt; (result.len() &gt;= 1 &amp;&amp; result.len() &lt;= g.n)</code></li>
+</ul>
 <h5 id="fn-graph_dijkstrag-weightedgraph-source-int-vecfloat64"><code>fn graph_dijkstra(g: &amp;WeightedGraph, source: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-graph_dijkstrag-weightedgraph-source-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Shortest-path distances from source via Dijkstra's algorithm (edge-list scanning; O(V^2 + E) worst case). Unreachable vertices get _INF. Complexity: O(V^2 + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(source &lt; 0 || source &gt;= g.n) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(source &gt;= 0 &amp;&amp; source &lt; g.n) =&gt; (result.len() == g.n)</code></li>
+</ul>
 <h5 id="fn-graph_bellman_fordg-weightedgraph-source-int-optionvecfloat64"><code>fn graph_bellman_ford(g: &amp;WeightedGraph, source: Int) -&gt; Option[Vec[Float64]]</code><a class="headerlink" href="#fn-graph_bellman_fordg-weightedgraph-source-int-optionvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Shortest-path distances from source via Bellman-Ford; None when a negative cycle is reachable. Complexity: O(V * E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(source &lt; 0 || source &gt;= g.n) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-graph_floyd_warshallg-weightedgraph-vecvecfloat64"><code>fn graph_floyd_warshall(g: &amp;WeightedGraph) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-graph_floyd_warshallg-weightedgraph-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All-pairs shortest-path distances via repeated Bellman-Ford-style edge relaxation from every source. The result is a Vec[Vec[Float64]] distance matrix (callers can only rely on its shape; element reads of module-returned nested float Vecs are unreliable in this compiler build). Complexity: O(V^2 * E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == g.n</code></li>
+</ul>
 <h5 id="fn-graph_astarg-weightedgraph-start-int-goal-int-h-fnint-int-float64-optionvecint"><code>fn graph_astar(g: &amp;WeightedGraph, start: Int, goal: Int, h: fn(Int, Int) -&gt; Float64) -&gt; Option[Vec[Int]]</code><a class="headerlink" href="#fn-graph_astarg-weightedgraph-start-int-goal-int-h-fnint-int-float64-optionvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A* path from start to goal using the heuristic h(vertex, goal); returns the vertex sequence (inclusive) or None when no path exists. Complexity: O(V^2 + E) (linear scan open set).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(start &lt; 0 || start &gt;= g.n || goal &lt; 0 || goal &gt;= g.n) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-graph_primg-weightedgraph-optionvecint-int"><code>fn graph_prim(g: &amp;WeightedGraph) -&gt; Option[Vec[(Int, Int)]]</code><a class="headerlink" href="#fn-graph_primg-weightedgraph-optionvecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minimum spanning tree edges by Prim's algorithm (edge-list scanning); None for a disconnected or empty graph. Complexity: O(V^2 + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(g.n == 1) =&gt; (result.is_some == true)</code></li>
+</ul>
 <h5 id="fn-graph_kruskalg-weightedgraph-optionvecint-int"><code>fn graph_kruskal(g: &amp;WeightedGraph) -&gt; Option[Vec[(Int, Int)]]</code><a class="headerlink" href="#fn-graph_kruskalg-weightedgraph-optionvecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minimum spanning tree edges by Kruskal's algorithm (union-find with min-weight edge selection; compares scaled-integer weights directly). None for a disconnected graph. Complexity: O(V * E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(g.n == 1) =&gt; (result.is_some == true)</code></li>
+</ul>
 <h5 id="fn-graph_tarjan_sccg-weightedgraph-vecvecint"><code>fn graph_tarjan_scc(g: &amp;WeightedGraph) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-graph_tarjan_sccg-weightedgraph-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Strongly connected components by Tarjan's algorithm (iterative). Each component is one inner vector. Complexity: O(V + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(g.n &gt; 0) =&gt; (result.len() &gt;= 1 &amp;&amp; result.len() &lt;= g.n)</code></li>
+</ul>
 <h5 id="fn-graph_kosaraju_sccg-weightedgraph-vecvecint"><code>fn graph_kosaraju_scc(g: &amp;WeightedGraph) -&gt; Vec[Vec[Int]]</code><a class="headerlink" href="#fn-graph_kosaraju_sccg-weightedgraph-vecvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Strongly connected components by Kosaraju's algorithm (two DFS passes). Complexity: O(V + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(g.n &gt; 0) =&gt; (result.len() &gt;= 1 &amp;&amp; result.len() &lt;= g.n)</code></li>
+</ul>
 <h5 id="fn-graph_topological_sortg-weightedgraph-optionvecint"><code>fn graph_topological_sort(g: &amp;WeightedGraph) -&gt; Option[Vec[Int]]</code><a class="headerlink" href="#fn-graph_topological_sortg-weightedgraph-optionvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Linear ordering of a directed acyclic graph (Kahn's algorithm); None when the graph has a cycle. Complexity: O(V + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result.is_some == true)</code></li>
+</ul>
 <h5 id="fn-graph_is_connectedg-weightedgraph-bool"><code>fn graph_is_connected(g: &amp;WeightedGraph) -&gt; Bool</code><a class="headerlink" href="#fn-graph_is_connectedg-weightedgraph-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether the graph is connected (a single BFS reaches every vertex). Complexity: O(V + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n &lt;= 1) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-graph_is_cyclicg-weightedgraph-bool"><code>fn graph_is_cyclic(g: &amp;WeightedGraph) -&gt; Bool</code><a class="headerlink" href="#fn-graph_is_cyclicg-weightedgraph-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether the graph contains a cycle (DFS with colors; undirected uses the parent check). Complexity: O(V + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-graph_is_bipartiteg-weightedgraph-bool"><code>fn graph_is_bipartite(g: &amp;WeightedGraph) -&gt; Bool</code><a class="headerlink" href="#fn-graph_is_bipartiteg-weightedgraph-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether the vertices split into two independent sets (BFS 2-coloring). Complexity: O(V + E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result == true)</code></li>
+</ul>
 <h5 id="fn-graph_isomorphicg1-weightedgraph-g2-weightedgraph-bool"><code>fn graph_isomorphic(g1: &amp;WeightedGraph, g2: &amp;WeightedGraph) -&gt; Bool</code><a class="headerlink" href="#fn-graph_isomorphicg1-weightedgraph-g2-weightedgraph-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether g1 and g2 are isomorphic. Checks vertex count, edge count, and degree sequence; for n &lt;= 6 an exact permutation test is performed. Complexity: O(n! * n^2) for small n, O(n^2) otherwise.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g1.n != g2.n) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(g1.edges.len() != g2.edges.len()) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-graph_colorg-weightedgraph-vecint"><code>fn graph_color(g: &amp;WeightedGraph) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-graph_colorg-weightedgraph-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Greedy vertex coloring (smallest available color per vertex in id order). Returns one color per vertex (0-based). Complexity: O(V * E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == g.n</code></li>
+</ul>
 <h5 id="fn-graph_max_flowg-weightedgraph-s-int-t-int-float64"><code>fn graph_max_flow(g: &amp;WeightedGraph, s: Int, t: Int) -&gt; Float64</code><a class="headerlink" href="#fn-graph_max_flowg-weightedgraph-s-int-t-int-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Maximum flow from s to t by Edmonds-Karp (BFS augmenting paths) over the edge list with parallel residual-capacity tracking. Complexity: O(V * E^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s &lt; 0 || s &gt;= g.n || t &lt; 0 || t &gt;= g.n || s == t) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(s &gt;= 0 &amp;&amp; s &lt; g.n &amp;&amp; t &gt;= 0 &amp;&amp; t &lt; g.n &amp;&amp; s != t) =&gt; (result &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-graph_min_cutg-weightedgraph-s-int-t-int-vecint"><code>fn graph_min_cut(g: &amp;WeightedGraph, s: Int, t: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-graph_min_cutg-weightedgraph-s-int-t-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minimum s-t cut: the vertices reachable from s in the residual graph after the maximum flow (the S side of the min cut). Complexity: O(V * E^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s &lt; 0 || s &gt;= g.n || t &lt; 0 || t &gt;= g.n) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(s &gt;= 0 &amp;&amp; s &lt; g.n &amp;&amp; t &gt;= 0 &amp;&amp; t &lt; g.n) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-graph_hamiltonian_pathg-weightedgraph-optionvecint"><code>fn graph_hamiltonian_path(g: &amp;WeightedGraph) -&gt; Option[Vec[Int]]</code><a class="headerlink" href="#fn-graph_hamiltonian_pathg-weightedgraph-optionvecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hamiltonian path if one exists (exhaustive DFS; practical for n &lt;= 12). Complexity: O(n!).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result.is_some == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(g.n &gt; 12) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-graph_tspg-weightedgraph-vecint"><code>fn graph_tsp(g: &amp;WeightedGraph) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-graph_tspg-weightedgraph-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Traveling-salesperson tour by the nearest-neighbor heuristic: visits every vertex once starting from vertex 0 and returns to the start. Returns the tour as a vertex sequence (length n + 1). Complexity: O(n^2 + n * E).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(g.n == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(g.n &gt; 0) =&gt; (result.len() == g.n + 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(g.n &gt; 0) =&gt; (result[0] == 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -6014,6 +6391,9 @@
 <blockquote>
 <p>Shannon entropy H(p) = -sum p_i log2 p_i (bits). NaN for a negative probability. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(probs.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-joint_entropyp_joint-vecvecfloat64-float64"><code>fn joint_entropy(p_joint: &amp;Vec[Vec[Float64]]) -&gt; Float64</code><a class="headerlink" href="#fn-joint_entropyp_joint-vecvecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Entropy of a joint distribution over pairs: H(X, Y) = -sum p_ij log2 p_ij. TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the joint distribution is a Vec[Vec[Float64]] whose element reads return garbage (BUG 23 #1 residual; verified by minimal probe). Keep the frozen signature; revisit when nested float Vec reads land.</p>
@@ -6030,22 +6410,37 @@
 <blockquote>
 <p>Kullback-Leibler divergence D(p || q) = sum p_i log2(p_i / q_i) (bits). NaN for a zero q_i with positive p_i. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.len() != q.len()) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-js_divergencep-vecfloat64-q-vecfloat64-float64"><code>fn js_divergence(p: &amp;Vec[Float64], q: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-js_divergencep-vecfloat64-q-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Jensen-Shannon divergence JSD(p || q) = 0.5 D(p || m) + 0.5 D(q || m) with m = (p + q)/2 (bits; values in [0, 1]). NaN on length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.len() != q.len()) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-cross_entropyp-vecfloat64-q-vecfloat64-float64"><code>fn cross_entropy(p: &amp;Vec[Float64], q: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-cross_entropyp-vecfloat64-q-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cross entropy H(p, q) = -sum p_i log2 q_i (bits). NaN for a zero q_i with positive p_i. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.len() != q.len()) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-perplexityprobs-vecfloat64-float64"><code>fn perplexity(probs: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-perplexityprobs-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Perplexity = 2^H (exponential of the entropy in bits). NaN for negative probabilities. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(probs.len() == 0) =&gt; (result == 1)</code></li>
+</ul>
 <h5 id="fn-self_informationp-float64-float64"><code>fn self_information(p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-self_informationp-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Self information -log2(p) of a single event (bits). p &lt;= 0 returns +inf. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p &lt;= 0) =&gt; (result &gt; 1)</code></li>
+</ul>
 <h5 id="fn-entropy_ratep_transition-vecvecfloat64-stationary-vecfloat64-float64"><code>fn entropy_rate(p_transition: &amp;Vec[Vec[Float64]], stationary: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-entropy_ratep_transition-vecvecfloat64-stationary-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Entropy rate of a stationary Markov source: sum_j s_j H(row j of the transition matrix). TODO(compiler): NOT IMPLEMENTABLE - the transition matrix is a Vec[Vec[Float64]] whose element reads return garbage in this compiler build.</p>
@@ -6058,14 +6453,23 @@
 <blockquote>
 <p>Lower bound on the average code length for a distribution: its entropy (bits). NaN for negative probabilities. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(dist.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-huffman_codingprobs-vecfloat64-vecint-str"><code>fn huffman_coding(probs: &amp;Vec[Float64]) -&gt; Vec[(Int, Str)]</code><a class="headerlink" href="#fn-huffman_codingprobs-vecfloat64-vecint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Prefix-free Huffman code for a probability distribution. The result holds (symbol index, codeword) pairs with codewords of "0"/"1"; NaN inputs or an empty distribution yield an empty result. Complexity: O(n^2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(probs.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-arithmetic_codingprobs-vecfloat64-seq-vecint-float64"><code>fn arithmetic_coding(probs: &amp;Vec[Float64], seq: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-arithmetic_codingprobs-vecfloat64-seq-vecint-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Arithmetic coding of the symbol sequence seq under the distribution probs: returns the midpoint of the final code interval in [0, 1). Invalid symbols (outside the distribution) contribute nothing (documented). Complexity: O(len(seq) * n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(seq.len() == 0) =&gt; (result == 0.5)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -6210,74 +6614,148 @@
 <blockquote>
 <p>Logistic sigmoid 1/(1+exp(-x)). Saturated to 1 for large x and to 0 for very negative x. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x != x) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &gt;= 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &lt; 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt; 1)</code></li>
+</ul>
 <h5 id="fn-activation_tanhx-float64-float64"><code>fn activation_tanh(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-activation_tanhx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hyperbolic tangent activation tanh(x) = (1 - exp(-2x))/(1 + exp(-2x)), stable for all x. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x != x) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &gt;= 0) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &lt; 0) =&gt; (result &gt;= -1 &amp;&amp; result &lt;= 0)</code></li>
+</ul>
 <h5 id="fn-activation_relux-float64-float64"><code>fn activation_relu(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-activation_relux-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rectified linear unit max(0, x). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x != x) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &gt; 0) =&gt; (result == x)</code></li>
+<li><strong>Postcondition:</strong> <code>(x &lt;= 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-activation_gelux-float64-float64"><code>fn activation_gelu(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-activation_gelux-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Gaussian error linear unit 0.5 x (1 + erf(x / sqrt(2))). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x != x) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-activation_swishx-float64-float64"><code>fn activation_swish(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-activation_swishx-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Swish activation x * sigmoid(x). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(x != x) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-loss_msey_true-vecfloat64-y_pred-vecfloat64-float64"><code>fn loss_mse(y_true: &amp;Vec[Float64], y_pred: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-loss_msey_true-vecfloat64-y_pred-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mean squared error of y_true vs y_pred. NaN on length mismatch or NaN input. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == 0 &amp;&amp; y_pred.len() == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-loss_maey_true-vecfloat64-y_pred-vecfloat64-float64"><code>fn loss_mae(y_true: &amp;Vec[Float64], y_pred: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-loss_maey_true-vecfloat64-y_pred-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mean absolute error of y_true vs y_pred. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == 0 &amp;&amp; y_pred.len() == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-loss_hubery_true-vecfloat64-y_pred-vecfloat64-delta-float64-float64"><code>fn loss_huber(y_true: &amp;Vec[Float64], y_pred: &amp;Vec[Float64], delta: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-loss_hubery_true-vecfloat64-y_pred-vecfloat64-delta-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Huber loss with threshold delta: quadratic inside delta, linear outside. NaN for delta &lt;= 0. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(delta &lt;= 0) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == 0 &amp;&amp; y_pred.len() == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-loss_cross_entropyy_true-vecfloat64-y_pred-vecfloat64-float64"><code>fn loss_cross_entropy(y_true: &amp;Vec[Float64], y_pred: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-loss_cross_entropyy_true-vecfloat64-y_pred-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Categorical cross entropy -sum y_true_i log(y_pred_i). NaN for zero predictions with positive target or length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == 0 &amp;&amp; y_pred.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-loss_hingey_true-vecfloat64-y_pred-vecfloat64-float64"><code>fn loss_hinge(y_true: &amp;Vec[Float64], y_pred: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-loss_hingey_true-vecfloat64-y_pred-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Hinge loss sum max(0, 1 - y_true_i * y_pred_i) (targets in {-1, +1}). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == 0 &amp;&amp; y_pred.len() == 0) =&gt; (result != result)</code></li>
+</ul>
 <h5 id="fn-metric_accuracyy_true-vecint-y_pred-vecint-float64"><code>fn metric_accuracy(y_true: &amp;Vec[Int], y_pred: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-metric_accuracyy_true-vecint-y_pred-vecint-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fraction of correct predictions (labels in {0, 1}). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == 0 &amp;&amp; y_pred.len() == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() &gt; 0 &amp;&amp; y_true.len() == y_pred.len()) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-metric_precisiony_true-vecint-y_pred-vecint-float64"><code>fn metric_precision(y_true: &amp;Vec[Int], y_pred: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-metric_precisiony_true-vecint-y_pred-vecint-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Precision of the positive class (labels in {0, 1}): TP / (TP + FP). Returns 0 when no positive prediction exists (documented). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == y_pred.len()) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-metric_recally_true-vecint-y_pred-vecint-float64"><code>fn metric_recall(y_true: &amp;Vec[Int], y_pred: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-metric_recally_true-vecint-y_pred-vecint-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Recall of the positive class (labels in {0, 1}): TP / (TP + FN). Returns 0 when no positive label exists (documented). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == y_pred.len()) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-metric_f1y_true-vecint-y_pred-vecint-float64"><code>fn metric_f1(y_true: &amp;Vec[Int], y_pred: &amp;Vec[Int]) -&gt; Float64</code><a class="headerlink" href="#fn-metric_f1y_true-vecint-y_pred-vecint-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>F1 score: harmonic mean of precision and recall. Returns 0 when both are zero (documented). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == y_pred.len()) =&gt; (result &gt;= 0 &amp;&amp; result &lt;= 1)</code></li>
+</ul>
 <h5 id="fn-metric_aucy_true-vecint-y_pred-vecfloat64-float64"><code>fn metric_auc(y_true: &amp;Vec[Int], y_pred: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-metric_aucy_true-vecint-y_pred-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Area under the ROC curve computed by the rank-sum (Mann-Whitney) formula: AUC = (sum of ranks of positives - P(P+1)/2) / (P * N). NaN on length mismatch or empty classes. Complexity: O(n log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(y_true.len() != y_pred.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(y_true.len() == y_pred.len()) =&gt; (result != result || (result &gt;= 0 &amp;&amp; result &lt;= 1))</code></li>
+</ul>
 <h5 id="fn-regularization_l1weights-vecfloat64-lambda-float64-float64"><code>fn regularization_l1(weights: &amp;Vec[Float64], lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-regularization_l1weights-vecfloat64-lambda-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>L1 penalty lambda * sum |w_i|. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(weights.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-regularization_l2weights-vecfloat64-lambda-float64-float64"><code>fn regularization_l2(weights: &amp;Vec[Float64], lambda: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-regularization_l2weights-vecfloat64-lambda-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>L2 penalty lambda * sum w_i^2. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(weights.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-regularization_elastic_netweights-vecfloat64-lambda1-float64-lambda2-float64-float64"><code>fn regularization_elastic_net(weights: &amp;Vec[Float64], lambda1: Float64, lambda2: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-regularization_elastic_netweights-vecfloat64-lambda1-float64-lambda2-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Elastic-net penalty lambda1 * L1 + lambda2 * L2. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(weights.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-normalization_batchx-vecvecfloat64-vecvecfloat64"><code>fn normalization_batch(x: &amp;Vec[Vec[Float64]]) -&gt; Vec[Vec[Float64]]</code><a class="headerlink" href="#fn-normalization_batchx-vecvecfloat64-vecvecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Batch normalization over the batch dimension (per-feature mean/variance, with epsilon 1e-5 stabilization; no learned scale/shift). NaN for empty input. Complexity: O(batch * features). TODO(compiler): NOT IMPLEMENTABLE in this compiler build - the batch/feature matrix is a Vec[Vec[Float64]] whose element reads return garbage (BUG 23 #1 residual; verified by minimal probe). Keep the frozen signature; revisit when nested float Vec reads land.</p>
@@ -6286,54 +6764,112 @@
 <blockquote>
 <p>Layer normalization of a feature vector: (x - mean) / sqrt(var + eps). NaN for empty input. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(x.len() &gt; 0) =&gt; (result.len() == x.len())</code></li>
+</ul>
 <h5 id="fn-normalization_groupx-vecfloat64-groups-int-vecfloat64"><code>fn normalization_group(x: &amp;Vec[Float64], groups: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-normalization_groupx-vecfloat64-groups-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Group normalization: channels (vector positions) are split into <code>groups</code> contiguous groups, each normalized to zero mean and unit variance. NaN for groups &lt;= 0 or a non-divisible length. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(groups &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(x.len() == 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(groups &gt; 0 &amp;&amp; x.len() &gt; 0) =&gt; (result.len() == 0 || result.len() == x.len())</code></li>
+</ul>
 <h5 id="fn-dropoutx-vecfloat64-rate-float64-seed-int-vecfloat64"><code>fn dropout(x: &amp;Vec[Float64], rate: Float64, seed: Int) -&gt; Vec[Float64]</code><a class="headerlink" href="#fn-dropoutx-vecfloat64-rate-float64-seed-int-vecfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Training-time dropout: each element is kept with probability 1 - rate (scaled by 1/(1 - rate)); the RNG is seeded with <code>seed</code> for reproducible masks. NaN for rate outside [0, 1). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(rate &lt; 0 || rate &gt;= 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(rate &gt;= 0 &amp;&amp; rate &lt; 1) =&gt; (result.len() == x.len())</code></li>
+</ul>
 <h5 id="fn-kernel_rbfx-vecfloat64-y-vecfloat64-gamma-float64-float64"><code>fn kernel_rbf(x: &amp;Vec[Float64], y: &amp;Vec[Float64], gamma: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-kernel_rbfx-vecfloat64-y-vecfloat64-gamma-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Radial basis function kernel exp(-gamma * ||x - y||^2). NaN on length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() != y.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(x.len() == 0 &amp;&amp; y.len() == 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(x.len() == y.len() &amp;&amp; gamma &gt;= 0) =&gt; (result &lt;= 1 || result != result)</code></li>
+</ul>
 <h5 id="fn-kernel_polynomialx-vecfloat64-y-vecfloat64-degree-int-coef0-float64-float64"><code>fn kernel_polynomial(x: &amp;Vec[Float64], y: &amp;Vec[Float64], degree: Int, coef0: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-kernel_polynomialx-vecfloat64-y-vecfloat64-degree-int-coef0-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Polynomial kernel (dot(x, y) + coef0)^degree. NaN on length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() != y.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(x.len() == y.len() &amp;&amp; degree == 0) =&gt; (result == 1)</code></li>
+</ul>
 <h5 id="fn-kernel_sigmoidx-vecfloat64-y-vecfloat64-gamma-float64-coef0-float64-float64"><code>fn kernel_sigmoid(x: &amp;Vec[Float64], y: &amp;Vec[Float64], gamma: Float64, coef0: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-kernel_sigmoidx-vecfloat64-y-vecfloat64-gamma-float64-coef0-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sigmoid kernel tanh(gamma * dot(x, y) + coef0). NaN on length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x.len() != y.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(x.len() == y.len()) =&gt; (result &gt;= -1 &amp;&amp; result &lt;= 1 || result != result)</code></li>
+</ul>
 <h5 id="fn-distance_euclideana-vecfloat64-b-vecfloat64-float64"><code>fn distance_euclidean(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-distance_euclideana-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Euclidean distance ||a - b||. NaN on length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == b.len()) =&gt; (result &gt;= 0 || result != result)</code></li>
+</ul>
 <h5 id="fn-distance_manhattana-vecfloat64-b-vecfloat64-float64"><code>fn distance_manhattan(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-distance_manhattana-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Manhattan (L1) distance sum |a_i - b_i|. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == b.len()) =&gt; (result &gt;= 0 || result != result)</code></li>
+</ul>
 <h5 id="fn-distance_cosinea-vecfloat64-b-vecfloat64-float64"><code>fn distance_cosine(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-distance_cosinea-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cosine distance 1 - cos_similarity. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == b.len()) =&gt; (result != result || (result &gt;= 0 &amp;&amp; result &lt;= 2))</code></li>
+</ul>
 <h5 id="fn-distance_minkowskia-vecfloat64-b-vecfloat64-p-float64-float64"><code>fn distance_minkowski(a: &amp;Vec[Float64], b: &amp;Vec[Float64], p: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-distance_minkowskia-vecfloat64-b-vecfloat64-p-float64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minkowski distance (sum |a_i - b_i|^p)^(1/p). NaN for p &lt;= 0 or length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(p &lt;= 0) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == b.len() &amp;&amp; a.len() == 0 &amp;&amp; p &gt; 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-similarity_cosinea-vecfloat64-b-vecfloat64-float64"><code>fn similarity_cosine(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-similarity_cosinea-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Cosine similarity dot(a, b) / (||a|| ||b||). NaN for zero norms or length mismatch. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == b.len()) =&gt; (result != result || (result &gt;= -1 &amp;&amp; result &lt;= 1))</code></li>
+</ul>
 <h5 id="fn-similarity_jaccarda-vecfloat64-b-vecfloat64-float64"><code>fn similarity_jaccard(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-similarity_jaccarda-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Jaccard similarity for non-negative vectors: sum min(a, b) / sum max(a, b). Returns 1 for two zero vectors (documented). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result == 1)</code></li>
+</ul>
 <h5 id="fn-similarity_dicea-vecfloat64-b-vecfloat64-float64"><code>fn similarity_dice(a: &amp;Vec[Float64], b: &amp;Vec[Float64]) -&gt; Float64</code><a class="headerlink" href="#fn-similarity_dicea-vecfloat64-b-vecfloat64-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dice coefficient 2 * sum min(a, b) / (sum a + sum b). Returns 1 for two zero vectors (documented). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len() != b.len()) =&gt; (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(a.len() == 0 &amp;&amp; b.len() == 0) =&gt; (result == 1)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

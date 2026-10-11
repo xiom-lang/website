@@ -3294,22 +3294,38 @@
 <blockquote>
 <p>True when args contains exactly <code>flag</code>. Complexity: O(n * flag.len()). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(args.len() == 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (args.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-option_valueargs-vecstr-key-str-optionstr"><code>fn option_value(args: &amp;Vec[Str], key: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-option_valueargs-vecstr-key-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value for <code>key</code>: supports both <code>--key=value</code> and <code>--key value</code>. Later occurrences win (last-one-wins convention, matching most CLI frameworks). Returns None when absent. Complexity: O(n * key.len()). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(args.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-positionalsargs-vecstr-vecstr"><code>fn positionals(args: &amp;Vec[Str]) -&gt; Vec[Str]</code><a class="headerlink" href="#fn-positionalsargs-vecstr-vecstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Positional arguments: every entry that does not start with '--' and is not consumed as a spaced-option value of a preceding '--key'. Note this simple scanner treats any '--' entry as a flag/key, never as a negative number or literal. Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= args.len()</code></li>
+</ul>
 <h5 id="fn-args_has_flagflag-str-bool"><code>fn args_has_flag(flag: Str) -&gt; Bool</code><a class="headerlink" href="#fn-args_has_flagflag-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convenience: flag lookup over the process's own arguments.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (args_raw().len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-args_optionkey-str-optionstr"><code>fn args_option(key: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-args_optionkey-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convenience: option lookup over the process's own arguments.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(args_raw().len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3318,46 +3334,79 @@
 <blockquote>
 <p>dir_current returns the current working directory. Delegates to env.current_dir. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-dir_createpath-str-resultunit-str"><code>fn dir_create(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_createpath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_create creates a single directory. Delegates to io.create_dir. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-dir_create_allpath-str-resultunit-str"><code>fn dir_create_all(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_create_allpath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_create_all creates a directory and all missing parents. Delegates to io.create_dir_all. Complexity: O(depth) syscalls.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_ok == true)</code></li>
+</ul>
 <h5 id="fn-dir_listpath-str-resultvecstr-str"><code>fn dir_list(path: Str) -&gt; Result[Vec[Str], Str]</code><a class="headerlink" href="#fn-dir_listpath-str-resultvecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_list returns the names of entries in a directory. Delegates to io.list_dir. Complexity: O(n) syscalls.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-dir_existspath-str-bool"><code>fn dir_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_existspath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_exists returns true if path exists and is a directory. Delegates to io.is_dir. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-dir_removepath-str-resultunit-str"><code>fn dir_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-dir_removepath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_remove removes an empty directory. Delegates to io.remove_file (which handles both files and dirs via the C runtime). Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-dir_temp-str"><code>fn dir_temp() -&gt; Str</code><a class="headerlink" href="#fn-dir_temp-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_temp returns the system temporary directory. Delegates to env.temp_dir. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == env.temp_dir()</code></li>
+</ul>
 <h5 id="fn-dir_home-optionstr"><code>fn dir_home() -&gt; Option[Str]</code><a class="headerlink" href="#fn-dir_home-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_home returns the current user's home directory, if known. Delegates to env.home_dir. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-dir_is_emptypath-str-bool"><code>fn dir_is_empty(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-dir_is_emptypath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_is_empty returns true if a directory contains no entries. Complexity: O(n) syscalls.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-dir_joina-str-b-str-str"><code>fn dir_join(a: Str, b: Str) -&gt; Str</code><a class="headerlink" href="#fn-dir_joina-str-b-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_join joins two path components with the OS separator. Delegates to io.join_paths. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == a.len() + b.len() + 1</code></li>
+</ul>
 <h5 id="fn-dir_parentpath-str-optionstr"><code>fn dir_parent(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-dir_parentpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>dir_parent returns the parent directory of path, or None if there is none. Delegates to fs.fs_parent_dir. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3394,18 +3443,30 @@
 <blockquote>
 <p>All environment variables as (name, value) pairs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h4 id="fn-args-vecstr"><code>fn args() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-args-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Process arguments (UTF-8, lossy).</p>
+<p>Process arguments (UTF-8, lossy; stable across calls).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == io.args().len()</code></li>
+</ul>
 <h4 id="fn-args_os-vecstr"><code>fn args_os() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-args_os-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Process arguments (OS-native strings; same representation here).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == args().len()</code></li>
+</ul>
 <h4 id="fn-current_exe-resultstr-str"><code>fn current_exe() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-current_exe-resultstr-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Path of the running executable, or Err with the OS message.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; args().len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-current_dir-resultstr-str"><code>fn current_dir() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-current_dir-resultstr-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Process working directory, or Err with the OS message.</p>
@@ -3439,42 +3500,72 @@
 <blockquote>
 <p>Per-user data directory, or None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_none == true) =&gt; (home_dir().is_none == true)</code></li>
+</ul>
 <h4 id="fn-cache_dir-optionstr"><code>fn cache_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-cache_dir-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Per-user cache directory, or None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_none == true) =&gt; (home_dir().is_none == true)</code></li>
+</ul>
 <h4 id="fn-config_dir-optionstr"><code>fn config_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-config_dir-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Per-user configuration directory, or None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_none == true) =&gt; (home_dir().is_none == true)</code></li>
+</ul>
 <h4 id="fn-executable_dir-optionstr"><code>fn executable_dir() -&gt; Option[Str]</code><a class="headerlink" href="#fn-executable_dir-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Directory containing the running executable, or None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_some == true) =&gt; (current_exe().is_ok == true)</code></li>
+</ul>
 <h4 id="fn-join_pathsa-str-b-str-str"><code>fn join_paths(a: Str, b: Str) -&gt; Str</code><a class="headerlink" href="#fn-join_pathsa-str-b-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Join two path fragments with the platform separator.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == a.len() + b.len() + 1</code></li>
+</ul>
 <h4 id="fn-path_separator-str"><code>fn path_separator() -&gt; Str</code><a class="headerlink" href="#fn-path_separator-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Platform path separator ("/" or "\").</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 1</code></li>
+</ul>
 <h4 id="fn-var_orname-str-default-str-str"><code>fn var_or(name: Str, default: Str) -&gt; Str</code><a class="headerlink" href="#fn-var_orname-str-default-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>var_or returns the value of the environment variable name, or default if the variable is not set. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(var_opt(name).is_none == true) =&gt; (result == default)</code></li>
+</ul>
 <h4 id="fn-has_varname-str-bool"><code>fn has_var(name: Str) -&gt; Bool</code><a class="headerlink" href="#fn-has_varname-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>has_var returns true if the environment variable name is set. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (var_opt(name).is_some == true)</code></li>
+</ul>
 <h4 id="fn-all_var_names-vecstr"><code>fn all_var_names() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-all_var_names-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>all_var_names returns an empty vector on all platforms -- the Xiom runtime does not support iterating over environment variables via the C standard library.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h4 id="fn-all_var_values-vecstr"><code>fn all_var_values() -&gt; Vec[Str]</code><a class="headerlink" href="#fn-all_var_values-vecstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>all_var_values returns an empty vector on all platforms -- see all_var_names for rationale.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 0</code></li>
+</ul>
 <h4 id="fn-set_var_if_absentname-str-value-str"><code>fn set_var_if_absent(name: Str, value: Str)</code><a class="headerlink" href="#fn-set_var_if_absentname-str-value-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>set_var_if_absent sets name to value only if name is not already set. Complexity: O(1).  WARNING: setenv is not available on Windows MSVC.</p>
@@ -3487,14 +3578,23 @@
 <blockquote>
 <p>args_len returns the number of command-line arguments. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == io.args().len()</code></li>
+</ul>
 <h4 id="fn-arg_ati-int-optionstr"><code>fn arg_at(i: Int) -&gt; Option[Str]</code><a class="headerlink" href="#fn-arg_ati-int-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>arg_at returns the i-th command-line argument, or None if i is out of bounds.  Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt; 0 || i &gt;= io.args().len()) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h4 id="fn-arg_containss-str-bool"><code>fn arg_contains(s: Str) -&gt; Bool</code><a class="headerlink" href="#fn-arg_containss-str-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>arg_contains returns true if any command-line argument equals s. Complexity: O(n) where n = arg count.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(io.args().len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-current_dir_str-str"><code>fn current_dir_str() -&gt; Str</code><a class="headerlink" href="#fn-current_dir_str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>current_dir_str returns the current working directory as a Str, or "." if the OS call fails.  Wraps getcwd directly. Complexity: O(1).</p>
@@ -3513,10 +3613,19 @@
 <blockquote>
 <p>Return the symbolic name for an errno code. Parameters: code -- the errno number. Returns: the symbolic name (e.g. "ENOENT"), or "EUNKNOWN". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(code == 2) =&gt; (result == "ENOENT")</code></li>
+<li><strong>Postcondition:</strong> <code>(code == 1) =&gt; (result == "EPERM")</code></li>
+<li><strong>Postcondition:</strong> <code>(code == 0) =&gt; (result == "EUNKNOWN")</code></li>
+</ul>
 <h5 id="fn-strerrorcode-int-str"><code>fn strerror(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-strerrorcode-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the human-readable message for an errno code. Parameters: code -- the errno number. Returns: the descriptive message, or "unknown error". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(code == 2) =&gt; (result == "no such file or directory")</code></li>
+<li><strong>Postcondition:</strong> <code>(code == 0) =&gt; (result == "unknown error")</code></li>
+</ul>
 <h5 id="fn-perrormsg-str-unit"><code>fn perror(msg: Str) -&gt; Unit</code><a class="headerlink" href="#fn-perrormsg-str-unit" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Print msg plus the current errno message. Parameters: msg -- the prefix message. Returns: Unit. Prints "msg: <errno message>" (stdout; the runtime exposes no stderr writer). Complexity: O(1). Pure.</p>
@@ -3549,6 +3658,9 @@
 <blockquote>
 <p>Format an errno code as "name (code): message". Parameters: code -- the errno number. Returns: the formatted string. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(code == 2) =&gt; (result == "ENOENT (2): no such file or directory")</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3727,50 +3839,86 @@
 <blockquote>
 <p>file_read reads an entire file as text. Delegates to io.read_file. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_writepath-str-content-str-resultunit-str"><code>fn file_write(path: Str, content: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_writepath-str-content-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_write writes text to a file, truncating if it exists. Delegates to io.write_file. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_appendpath-str-content-str-resultunit-str"><code>fn file_append(path: Str, content: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_appendpath-str-content-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_append appends text to a file, creating it if needed. Delegates to io.append_file. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_existspath-str-bool"><code>fn file_exists(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-file_existspath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_exists returns true if path exists (file or directory). Implemented locally via io.metadata to avoid a same-name delegation. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-file_removepath-str-resultunit-str"><code>fn file_remove(path: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_removepath-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_remove deletes a file. Delegates to io.remove_file. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_copysrc-str-dst-str-resultunit-str"><code>fn file_copy(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_copysrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_copy copies a file from src to dst. Delegates to io.copy_file. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(src.len() == 0 || dst.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_renamesrc-str-dst-str-resultunit-str"><code>fn file_rename(src: Str, dst: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-file_renamesrc-str-dst-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_rename renames (moves) a file or directory. Delegates to io.rename. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(src.len() == 0 || dst.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_sizepath-str-resultint-str"><code>fn file_size(path: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-file_sizepath-str-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_size returns the size of a file in bytes. Implemented locally via io.metadata. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-file_extensionpath-str-optionstr"><code>fn file_extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_extensionpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_extension returns the extension of path's file name (text after the last dot), or None. Delegates to fs.fs_extension. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-file_stempath-str-optionstr"><code>fn file_stem(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_stempath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_stem returns path without its last extension. Delegates to fs.fs_stem. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-file_namepath-str-optionstr"><code>fn file_name(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_namepath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_name returns the file-name portion of path, or None. Delegates to fs.fs_file_name. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-file_parentpath-str-optionstr"><code>fn file_parent(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-file_parentpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>file_parent returns the directory portion of path, or None. Delegates to fs.fs_parent_dir. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3943,42 +4091,72 @@
 <blockquote>
 <p>fs_file_name returns the file-name portion of path (after the last '/' or '\'), or None if path is empty or ends in a separator.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fs_parent_dirpath-str-optionstr"><code>fn fs_parent_dir(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_parent_dirpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_parent_dir returns the directory portion of path (everything before the last '/' or '\'), or None if path has no parent.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fs_extensionpath-str-optionstr"><code>fn fs_extension(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_extensionpath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_extension returns the extension (text after the last dot in the file name), or None if there is no dot or the dot is leading/trailing. "a/b.tar.gz" -&gt; Some("gz"); "a/b" -&gt; None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fs_stempath-str-optionstr"><code>fn fs_stem(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-fs_stempath-str-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_stem returns the path with the last extension stripped, or the path unchanged if it has no extension. "a/b.tar.gz" -&gt; "a/b.tar".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-fs_is_hiddenpath-str-bool"><code>fn fs_is_hidden(path: Str) -&gt; Bool</code><a class="headerlink" href="#fn-fs_is_hiddenpath-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_is_hidden returns true if the file name starts with a dot, except for the special entries "." and "..".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-fs_join_partsparts-vecstr-str"><code>fn fs_join_parts(parts: Vec[Str]) -&gt; Str</code><a class="headerlink" href="#fn-fs_join_partsparts-vecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_join_parts joins the given components with the OS path separator (env.path_separator: "\" on Windows, "/" elsewhere).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(parts.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-fs_normalizepath-str-str"><code>fn fs_normalize(path: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_normalizepath-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_normalize collapses duplicate separators and resolves "." and ".." lexically, without touching the filesystem. Leading "/" and "C:\"-style drive prefixes are preserved. "a/b/../c//d/./e" -&gt; "a/c/d/e".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-fs_with_extensionpath-str-new_ext-str-str"><code>fn fs_with_extension(path: Str, new_ext: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_with_extensionpath-str-new_ext-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_with_extension replaces the extension of path with new_ext, or appends it if path has no extension. "a/b.txt" + "md" -&gt; "a/b.md".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.len() &gt;= 1)</code></li>
+</ul>
 <h5 id="fn-fs_splitpath-str-str-str"><code>fn fs_split(path: Str) -&gt; (Str, Str)</code><a class="headerlink" href="#fn-fs_splitpath-str-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_split returns (dir, file) -- the directory and file-name portions.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result._0 == "" &amp;&amp; result._1 == "")</code></li>
+</ul>
 <h5 id="fn-fs_unique_pathdir-str-name-str-str"><code>fn fs_unique_path(dir: Str, name: Str) -&gt; Str</code><a class="headerlink" href="#fn-fs_unique_pathdir-str-name-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>fs_unique_path returns dir/name if it does not exist, otherwise appends " (1)", " (2)", ... up to a maximum of 1000 attempts.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4391,7 +4569,7 @@
 </ul>
 <h4 id="fn-raise_signalsignal-int"><code>fn raise_signal(signal: Int)</code><a class="headerlink" href="#fn-raise_signalsignal-int" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>Raise a signal in the current process (POSIX; unsupported on Windows).</p>
+<p>Raise a signal in the current process (POSIX; a no-op on Windows, where the CRT raise() fail-fasts on unsupported numbers).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>signal &gt; 0</code></li>
@@ -4497,26 +4675,44 @@
 <blockquote>
 <p>is_unix returns true if the platform is linux or macos.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (env.OS == "linux" || env.OS == "macos")</code></li>
+</ul>
 <h4 id="fn-user_name-optionstr"><code>fn user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-user_name-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>user_name returns the current user name by reading the USERNAME (Windows) or USER (Unix) environment variable.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_some == true) =&gt; (env.var_opt("USERNAME").is_some == true || env.var_opt("USER").is_some == true)</code></li>
+</ul>
 <h4 id="fn-total_memory_mb-int"><code>fn total_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-total_memory_mb-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>total_memory_mb returns total system memory in MiB. Wraps total_memory() / (1024 * 1024).  Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+</ul>
 <h4 id="fn-free_memory_mb-int"><code>fn free_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-free_memory_mb-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>free_memory_mb returns free system memory in MiB. Wraps free_memory() / (1024 * 1024).  Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+</ul>
 <h4 id="fn-page_size-int"><code>fn page_size() -&gt; Int</code><a class="headerlink" href="#fn-page_size-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>page_size returns the system page size in bytes. Returns 4096 -- the runtime does not expose sysconf(_SC_PAGESIZE).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 4096</code></li>
+</ul>
 <h4 id="fn-terminal_width-optionint"><code>fn terminal_width() -&gt; Option[Int]</code><a class="headerlink" href="#fn-terminal_width-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>terminal_width returns the terminal width in columns, if detectable. The Xiom runtime does not expose TIOCGWINSZ -- always returns None.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_none == true</code></li>
+</ul>
 <h4 id="fn-sleep_millisms-int"><code>fn sleep_millis(ms: Int)</code><a class="headerlink" href="#fn-sleep_millisms-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>sleep_millis sleeps for at least the given number of milliseconds. Uses busy-wait; usleep is not available on Windows MSVC.</p>
@@ -4525,6 +4721,9 @@
 <blockquote>
 <p>current_exe_path returns the path of the currently running executable. Delegates to env.current_exe().  Returns None on failure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_some == true) =&gt; (env.current_exe().is_ok == true)</code></li>
+</ul>
 <h4 id="fn-process_id-int"><code>fn process_id() -&gt; Int</code><a class="headerlink" href="#fn-process_id-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>process_id returns the current process ID via the xiom_getpid runtime intrinsic.</p>
@@ -4536,6 +4735,9 @@
 <blockquote>
 <p>cpu_model returns a human-readable CPU model string. The Xiom runtime does not expose CPUID or /proc/cpuinfo. Always returns "unknown".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "unknown"</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="pathxi"><code>path.xi</code><a class="headerlink" href="#pathxi" title="Permanent link">&para;</a></h2>
@@ -4783,26 +4985,44 @@
 <blockquote>
 <p>platform_arch returns the target architecture ("x86_64", ...). Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-platform_family-str"><code>fn platform_family() -&gt; Str</code><a class="headerlink" href="#fn-platform_family-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_family returns "unix" or "windows". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "windows" || result == "unix"</code></li>
+</ul>
 <h5 id="fn-platform_is_windows-bool"><code>fn platform_is_windows() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_windows-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_is_windows returns true on Windows. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (platform_name() == "windows")</code></li>
+</ul>
 <h5 id="fn-platform_is_linux-bool"><code>fn platform_is_linux() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_linux-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_is_linux returns true on Linux. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (platform_name() == "linux")</code></li>
+</ul>
 <h5 id="fn-platform_is_macos-bool"><code>fn platform_is_macos() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_macos-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_is_macos returns true on macOS. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (platform_name() == "macos")</code></li>
+</ul>
 <h5 id="fn-platform_is_unix-bool"><code>fn platform_is_unix() -&gt; Bool</code><a class="headerlink" href="#fn-platform_is_unix-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_is_unix returns true on Linux or macOS. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (platform_name() != "windows")</code></li>
+</ul>
 <h5 id="fn-platform_hostname-resultstr-str"><code>fn platform_hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-platform_hostname-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_hostname returns the system hostname. Implemented locally via the env.TEMP-free C getenv-free approach: reads the COMPUTERNAME variable (Windows) or HOSTNAME (Unix) as a best effort. Complexity: O(1).</p>
@@ -4811,6 +5031,9 @@
 <blockquote>
 <p>platform_os_version returns a best-effort OS version string derived from environment constants. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == env.OS</code></li>
+</ul>
 <h5 id="fn-platform_user_name-optionstr"><code>fn platform_user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-platform_user_name-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_user_name returns the current user name from the USERNAME (Windows) or USER (Unix) environment variable. Complexity: O(1).</p>
@@ -4823,22 +5046,37 @@
 <blockquote>
 <p>proc_is_running returns true if the process with the given pid is still alive. Delegates to xiom.process.is_running, which wraps the xiom_process_running runtime intrinsic. Pids must be positive.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(pid &lt;= 0) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-proc_exit_code_successcode-int-bool"><code>fn proc_exit_code_success(code: Int) -&gt; Bool</code><a class="headerlink" href="#fn-proc_exit_code_successcode-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>proc_exit_code_success returns true when the exit code indicates success (code == 0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (code == 0)</code></li>
+</ul>
 <h5 id="fn-proc_signal_namesig-int-str"><code>fn proc_signal_name(sig: Int) -&gt; Str</code><a class="headerlink" href="#fn-proc_signal_namesig-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>proc_signal_name maps a POSIX signal number to its conventional name, or returns "SIG" + the number for unknown signals.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-proc_status_textcode-int-str"><code>fn proc_status_text(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-proc_status_textcode-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>proc_status_text formats a process exit code as "exit(<code>)". The runtime does not expose wait-status decoding (WIFSIGNALED etc.), so signals cannot be distinguished here.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 7</code></li>
+</ul>
 <h5 id="fn-proc_command_existscmd-str-bool"><code>fn proc_command_exists(cmd: Str) -&gt; Bool</code><a class="headerlink" href="#fn-proc_command_existscmd-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>proc_command_exists returns true if the named command can be found on the system PATH. Delegates to xiom.process.command_exists, which runs "where <name>" (Windows) or "which <name>" (Unix) via the shell. Spawning the command itself is not a reliable existence probe, since the system()-based spawn reports the command's exit code rather than a spawn failure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(cmd.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4947,6 +5185,9 @@
 <blockquote>
 <p>Get the full path of the currently running executable. Delegates to xiom.env.current_exe() which reads argv[0]. Returns Some(path) on success, None if the path cannot be determined.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_some == true) =&gt; (xiom.env.current_exe().is_ok == true)</code></li>
+</ul>
 <h4 id="fn-spawn_commandcmd-str-args-vecstr-resultint-str"><code>fn spawn_command(cmd: Str, args: &amp;Vec[Str]) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-spawn_commandcmd-str-args-vecstr-resultint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Spawn a command with arguments; Ok(pid) or Err.</p>
@@ -4998,26 +5239,44 @@
 <blockquote>
 <p>signal_name returns the canonical name for a signal number, or "unknown" for numbers outside the table. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-signal_codename-str-optionint"><code>fn signal_code(name: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-signal_codename-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>signal_code returns the signal number for a canonical name, or None. Matching is case-insensitive on the letters. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_some == true) =&gt; (name.len() &gt;= 2)</code></li>
+</ul>
 <h5 id="fn-signal_is_ignorablenum-int-bool"><code>fn signal_is_ignorable(num: Int) -&gt; Bool</code><a class="headerlink" href="#fn-signal_is_ignorablenum-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>signal_is_ignorable returns true for signals that can be ignored (not SIGKILL or SIGSTOP). Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (num != 9 &amp;&amp; num != 19 &amp;&amp; num &gt; 0)</code></li>
+</ul>
 <h5 id="fn-signal_is_catchablenum-int-bool"><code>fn signal_is_catchable(num: Int) -&gt; Bool</code><a class="headerlink" href="#fn-signal_is_catchablenum-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>signal_is_catchable returns true for signals a process can install a handler for (not SIGKILL or SIGSTOP). Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (num != 9 &amp;&amp; num != 19 &amp;&amp; num &gt; 0)</code></li>
+</ul>
 <h5 id="fn-signal_default_actionnum-int-str"><code>fn signal_default_action(num: Int) -&gt; Str</code><a class="headerlink" href="#fn-signal_default_actionnum-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>signal_default_action returns the default disposition ("term", "core", "stop", "cont", "ignore", or "unknown"). Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-signal_raisenum-int-resultunit-str"><code>fn signal_raise(num: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-signal_raisenum-int-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>signal_raise sends a signal to the current process via the runtime raise() primitive. Complexity: O(1) syscall.</p>
+<p>signal_raise sends a signal to the current process via the libc raise() primitive. POSIX only: on Windows the CRT raise() only knows its own small signal set and fail-fasts on unsupported numbers, so this documented-Err stub returns Err there (same stance as xiom.os.raise_signal). Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(num &lt;= 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-signal_handlenum-int-cb-fnint-unit-resultunit-str"><code>fn signal_handle(num: Int, cb: fn(Int) -&gt; Unit) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-signal_handlenum-int-cb-fnint-unit-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>signal_handle installs a handler callback for <code>num</code>. NOT AVAILABLE yet: a working implementation needs a signal-safe runtime trampoline (sigaction plus a pending-flag poll); PULSE relay 2026-10-08 (SIGTERM graceful shutdown blocked). Currently a documented Err stub so callers can compile against the surface and degrade to no-handler behavior. Complexity: O(1).</p>
@@ -5100,50 +5359,86 @@
 <blockquote>
 <p>sysinfo_cpu_count returns the number of logical CPUs. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 1</code></li>
+</ul>
 <h5 id="fn-sysinfo_total_memory-int"><code>fn sysinfo_total_memory() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_total_memory-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>sysinfo_total_memory returns total system memory in bytes. Complexity: O(1) syscall.</p>
+<p>sysinfo_total_memory returns total system memory in bytes (-1 when the runtime cannot determine it). Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+</ul>
 <h5 id="fn-sysinfo_free_memory-int"><code>fn sysinfo_free_memory() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_free_memory-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>sysinfo_free_memory returns free system memory in bytes. Complexity: O(1) syscall.</p>
+<p>sysinfo_free_memory returns free system memory in bytes (-1 when the runtime cannot determine it). Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+</ul>
 <h5 id="fn-sysinfo_total_memory_mb-int"><code>fn sysinfo_total_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_total_memory_mb-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>sysinfo_total_memory_mb returns total system memory in MiB. Complexity: O(1).</p>
+<p>sysinfo_total_memory_mb returns total system memory in MiB (-1 when the runtime cannot determine it). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+</ul>
 <h5 id="fn-sysinfo_free_memory_mb-int"><code>fn sysinfo_free_memory_mb() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_free_memory_mb-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>sysinfo_free_memory_mb returns free system memory in MiB. Complexity: O(1).</p>
+<p>sysinfo_free_memory_mb returns free system memory in MiB (-1 when the runtime cannot determine it). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+</ul>
 <h5 id="fn-sysinfo_page_size-int"><code>fn sysinfo_page_size() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_page_size-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>sysinfo_page_size returns the system page size in bytes (4096 on the supported runtimes). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 4096</code></li>
+</ul>
 <h5 id="fn-sysinfo_hostname-resultstr-str"><code>fn sysinfo_hostname() -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-sysinfo_hostname-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>sysinfo_hostname returns the system hostname from the COMPUTERNAME (Windows) or HOSTNAME (Unix) environment variable. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-sysinfo_os_name-str"><code>fn sysinfo_os_name() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_os_name-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>sysinfo_os_name returns the OS name. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == env.OS</code></li>
+</ul>
 <h5 id="fn-sysinfo_os_version-str"><code>fn sysinfo_os_version() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_os_version-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>sysinfo_os_version returns a best-effort OS version string derived from environment constants. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == env.OS</code></li>
+</ul>
 <h5 id="fn-sysinfo_process_id-int"><code>fn sysinfo_process_id() -&gt; Int</code><a class="headerlink" href="#fn-sysinfo_process_id-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>sysinfo_process_id returns the current process ID. Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt; 0</code></li>
+</ul>
 <h5 id="fn-sysinfo_user_name-optionstr"><code>fn sysinfo_user_name() -&gt; Option[Str]</code><a class="headerlink" href="#fn-sysinfo_user_name-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>sysinfo_user_name returns the current user name from the USERNAME (Windows) or USER (Unix) environment variable. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.is_some == true) =&gt; (env.var_opt("USERNAME").is_some == true || env.var_opt("USER").is_some == true)</code></li>
+</ul>
 <h5 id="fn-sysinfo_cpu_model-str"><code>fn sysinfo_cpu_model() -&gt; Str</code><a class="headerlink" href="#fn-sysinfo_cpu_model-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>sysinfo_cpu_model returns a CPU model string. The runtime does not expose CPUID; always returns "unknown". Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "unknown"</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5156,38 +5451,65 @@
 <blockquote>
 <p>term_clear_screen returns the ANSI escape sequence that clears the screen and homes the cursor.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[2J[H"</code></li>
+</ul>
 <h5 id="fn-term_set_foregroundcolor-int-str"><code>fn term_set_foreground(color: Int) -&gt; Str</code><a class="headerlink" href="#fn-term_set_foregroundcolor-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_set_foreground returns the ANSI 256-color foreground escape for the given color index (0..255).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 9</code></li>
+</ul>
 <h5 id="fn-term_reset-str"><code>fn term_reset() -&gt; Str</code><a class="headerlink" href="#fn-term_reset-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_reset returns the ANSI sequence that resets all attributes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == fmt_term.ansi_reset()</code></li>
+</ul>
 <h5 id="fn-term_bold-str"><code>fn term_bold() -&gt; Str</code><a class="headerlink" href="#fn-term_bold-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_bold returns the ANSI sequence enabling bold.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == fmt_term.ansi_bold()</code></li>
+</ul>
 <h5 id="fn-term_dim-str"><code>fn term_dim() -&gt; Str</code><a class="headerlink" href="#fn-term_dim-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_dim returns the ANSI sequence enabling dim intensity.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == fmt_term.ansi_dim()</code></li>
+</ul>
 <h5 id="fn-term_underline-str"><code>fn term_underline() -&gt; Str</code><a class="headerlink" href="#fn-term_underline-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_underline returns the ANSI sequence enabling underline.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == fmt_term.ansi_underline()</code></li>
+</ul>
 <h5 id="fn-term_cursor_hide-str"><code>fn term_cursor_hide() -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_hide-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_cursor_hide returns the ANSI sequence that hides the cursor.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[?25l"</code></li>
+</ul>
 <h5 id="fn-term_cursor_show-str"><code>fn term_cursor_show() -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_show-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_cursor_show returns the ANSI sequence that shows the cursor.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == "[?25h"</code></li>
+</ul>
 <h5 id="fn-term_cursor_moverow-int-col-int-str"><code>fn term_cursor_move(row: Int, col: Int) -&gt; Str</code><a class="headerlink" href="#fn-term_cursor_moverow-int-col-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_cursor_move returns the ANSI sequence that moves the cursor to the given 1-based row and column.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 6</code></li>
+</ul>
 <h5 id="fn-term_width-int"><code>fn term_width() -&gt; Int</code><a class="headerlink" href="#fn-term_width-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>term_width returns the terminal width in columns. Delegates to xiom.os.terminal.terminal_width; the runtime does not expose TIOCGWINSZ/GetConsoleScreenBufferInfo, so 0 means "unknown".</p>

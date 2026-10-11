@@ -3155,42 +3155,81 @@
 <blockquote>
 <p>Whether an algorithm identifier is implemented. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result == false)</code></li>
+</ul>
 <h5 id="fn-aead_nonce_sizealg-int-int"><code>fn aead_nonce_size(alg: Int) -&gt; Int</code><a class="headerlink" href="#fn-aead_nonce_sizealg-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Nonce length in bytes for an algorithm (12 for all supported algorithms). Returns 0 for unknown algorithms. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &gt;= 1 &amp;&amp; alg &lt;= 3) =&gt; (result == 12)</code></li>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-aead_tag_sizealg-int-int"><code>fn aead_tag_size(alg: Int) -&gt; Int</code><a class="headerlink" href="#fn-aead_tag_sizealg-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Tag length in bytes for an algorithm (16 for all supported algorithms). Returns 0 for unknown algorithms. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &gt;= 1 &amp;&amp; alg &lt;= 3) =&gt; (result == 16)</code></li>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-aead_key_sizealg-int-int"><code>fn aead_key_size(alg: Int) -&gt; Int</code><a class="headerlink" href="#fn-aead_key_sizealg-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Key length in bytes for an algorithm: 16 (AES-128-GCM), 32 otherwise. Returns 0 for unknown algorithms. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg == 1) =&gt; (result == 16)</code></li>
+<li><strong>Postcondition:</strong> <code>(alg == 2 || alg == 3) =&gt; (result == 32)</code></li>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-aead_generate_noncealg-int-vecuint8"><code>fn aead_generate_nonce(alg: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-aead_generate_noncealg-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Generate a random nonce of the right size for an algorithm. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &gt;= 1 &amp;&amp; alg &lt;= 3) =&gt; (result.len() == 12)</code></li>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-aead_encryptalg-int-key-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-resultvecuint8-str"><code>fn aead_encrypt(alg: Int, key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], data: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aead_encryptalg-int-key-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Encrypt <code>data</code> with associated data <code>aad</code> under <code>key</code>/<code>nonce</code>; returns the ciphertext with the 16-byte authentication tag appended. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() == data.len() + 16)</code></li>
+</ul>
 <h5 id="fn-aead_decryptalg-int-key-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-tag-vecuint8-resultvecuint8-str"><code>fn aead_decrypt(alg: Int, key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], data: &amp;Vec[UInt8], aad: &amp;Vec[UInt8], tag: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aead_decryptalg-int-key-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-tag-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Verify the tag and decrypt. <code>data</code> is the ciphertext with the 16-byte tag appended; <code>tag</code> is the expected tag (the trailing bytes of <code>data</code>). Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(key.len() != aead_key_size(alg) &amp;&amp; alg &gt;= 1 &amp;&amp; alg &lt;= 3) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-aead_sealalg-int-key-vecuint8-data-vecuint8-aad-vecuint8-resultvecuint8-str"><code>fn aead_seal(alg: Int, key: &amp;Vec[UInt8], data: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aead_sealalg-int-key-vecuint8-data-vecuint8-aad-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Encrypt with a freshly generated nonce prepended: nonce || ciphertext || tag. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() &gt;= 28)</code></li>
+</ul>
 <h5 id="fn-aead_openalg-int-key-vecuint8-sealed-vecuint8-aad-vecuint8-resultvecuint8-str"><code>fn aead_open(alg: Int, key: &amp;Vec[UInt8], sealed: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aead_openalg-int-key-vecuint8-sealed-vecuint8-aad-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decrypt a sealed message (nonce || ciphertext || tag). Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(alg &gt;= 1 &amp;&amp; alg &lt;= 3 &amp;&amp; sealed.len() &lt; 28) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-aead_encrypt_detachedalg-int-key-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-resultvecuint8-vecuint8-str"><code>fn aead_encrypt_detached(alg: Int, key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], data: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Result[(Vec[UInt8], Vec[UInt8]), Str]</code><a class="headerlink" href="#fn-aead_encrypt_detachedalg-int-key-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-resultvecuint8-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Encrypt and return the ciphertext and tag separately; the tuple is (ciphertext, tag). Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(alg &lt; 1 || alg &gt; 3) =&gt; (result.is_err == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3278,18 +3317,30 @@
 <blockquote>
 <p>ChaCha20 stream cipher context from a key and nonce.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state.len() == 16</code></li>
+</ul>
 <h4 id="fn-chacha20_processstate-chacha20-data-vecuint8-vecuint8"><code>fn chacha20_process(state: &amp;ChaCha20, data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-chacha20_processstate-chacha20-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Process data through the ChaCha20 state (XOR keystream). This function takes ownership of the state and consumes it. For a non-consuming version, use the module-level chacha20_encrypt/chacha20_decrypt.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == data.len()</code></li>
+</ul>
 <h4 id="fn-chacha20_encryptkey-vecuint8-nonce-vecuint8-data-vecuint8-vecuint8"><code>fn chacha20_encrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-chacha20_encryptkey-vecuint8-nonce-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Encrypt plaintext using ChaCha20 with the given key and nonce. key: 32 bytes (256 bits) nonce: 12 bytes (96 bits) data: plaintext to encrypt Returns: ciphertext (same length as plaintext)</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == data.len()</code></li>
+</ul>
 <h4 id="fn-chacha20_decryptkey-vecuint8-nonce-vecuint8-data-vecuint8-vecuint8"><code>fn chacha20_decrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-chacha20_decryptkey-vecuint8-nonce-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Decrypt ciphertext using ChaCha20 with the given key and nonce. key: 32 bytes (256 bits) nonce: 12 bytes (96 bits) data: ciphertext to decrypt Returns: plaintext (same length as ciphertext) Note: This is identical to chacha20_encrypt -- ChaCha20 is a stream cipher.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == data.len()</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="cipherxi"><code>cipher.xi</code><a class="headerlink" href="#cipherxi" title="Permanent link">&para;</a></h2>
@@ -3297,90 +3348,180 @@
 <blockquote>
 <p>Raw AES block encryption (16 bytes in -&gt; 16 bytes out, no padding/mode). Added as a public primitive so MAC modules (CBC-MAC, CMAC) can reuse the verified block cipher. Returns Err on invalid key length. Complexity: O(1) (fixed 10-14 rounds).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(block.len() != 16) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() == 16)</code></li>
+</ul>
 <h5 id="fn-aes_block_decryptkey-vecuint8-block-vecuint8-resultvecuint8-str"><code>fn aes_block_decrypt(key: &amp;Vec[UInt8], block: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_block_decryptkey-vecuint8-block-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Raw AES block decryption (16 bytes in -&gt; 16 bytes out). See aes_block_encrypt. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(block.len() != 16) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() == 16)</code></li>
+</ul>
 <h5 id="fn-aes_encrypt_ecbkey-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn aes_encrypt_ecb(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_encrypt_ecbkey-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-ECB encrypt with PKCS#7 padding. Implemented locally on the verified AES block primitive (the flat module's aes_decrypt miscompiles its length check in the current build, so delegation is unsafe). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() % 16 == 0 &amp;&amp; result.len() &gt;= 16)</code></li>
+</ul>
 <h5 id="fn-aes_decrypt_ecbkey-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn aes_decrypt_ecb(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_decrypt_ecbkey-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-ECB decrypt with padding removal. Local implementation (see aes_encrypt_ecb). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() % 16 != 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-aes_encrypt_cbckey-vecuint8-iv-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn aes_encrypt_cbc(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_encrypt_cbckey-vecuint8-iv-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-CBC encrypt with PKCS#7 padding. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(iv.len() != 16) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() % 16 == 0 &amp;&amp; result.len() &gt;= 16)</code></li>
+</ul>
 <h5 id="fn-aes_decrypt_cbckey-vecuint8-iv-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn aes_decrypt_cbc(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_decrypt_cbckey-vecuint8-iv-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-CBC decrypt with padding removal. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(iv.len() != 16) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() % 16 != 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-aes_encrypt_ctrkey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8"><code>fn aes_encrypt_ctr(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-aes_encrypt_ctrkey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-CTR encrypt (stream cipher, no padding; decrypt is identical). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() != 0) =&gt; (result.len() == data.len())</code></li>
+</ul>
 <h5 id="fn-aes_decrypt_ctrkey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8"><code>fn aes_decrypt_ctr(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-aes_decrypt_ctrkey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-CTR decrypt (same keystream as encrypt). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() != 0) =&gt; (result.len() == data.len())</code></li>
+</ul>
 <h5 id="fn-aes_encrypt_gcmkey-vecuint8-iv-vecuint8-data-vecuint8-aad-vecuint8-vecuint8"><code>fn aes_encrypt_gcm(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-aes_encrypt_gcmkey-vecuint8-iv-vecuint8-data-vecuint8-aad-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-GCM encrypt (combined form: ciphertext with the 16-byte tag appended). Implemented locally (the flat module's gcm name collides here). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(iv.len() != 12) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(key.len() == 16 || key.len() == 24 || key.len() == 32) &amp;&amp; iv.len() == 12 =&gt; (result.len() == data.len() + 16)</code></li>
+</ul>
 <h5 id="fn-aes_decrypt_gcmkey-vecuint8-iv-vecuint8-data-vecuint8-aad-vecuint8-tag-vecuint8-resultvecuint8-str"><code>fn aes_decrypt_gcm(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8], aad: &amp;Vec[UInt8], tag: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_decrypt_gcmkey-vecuint8-iv-vecuint8-data-vecuint8-aad-vecuint8-tag-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-GCM decrypt and verify the tag. The ciphertext <code>data</code> carries the 16-byte tag appended (see aes_encrypt_gcm). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(iv.len() != 12) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(tag.len() != 16) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-aes_encrypt_cfbkey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8"><code>fn aes_encrypt_cfb(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-aes_encrypt_cfbkey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-CFB128 encrypt (stream, no padding). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() != 0) =&gt; (result.len() == data.len())</code></li>
+</ul>
 <h5 id="fn-aes_encrypt_ofbkey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8"><code>fn aes_encrypt_ofb(key: &amp;Vec[UInt8], iv: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-aes_encrypt_ofbkey-vecuint8-iv-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AES-OFB encrypt (stream, no padding; decrypt is identical). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() != 0) =&gt; (result.len() == data.len())</code></li>
+</ul>
 <h5 id="fn-aes_generate_key-vecuint8"><code>fn aes_generate_key() -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-aes_generate_key-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Generate a random 256-bit AES key from the system CSPRNG. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-aes_key_from_passphrasepassphrase-vecuint8-salt-vecuint8-iterations-int-vecuint8"><code>fn aes_key_from_passphrase(passphrase: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], iterations: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-aes_key_from_passphrasepassphrase-vecuint8-salt-vecuint8-iterations-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Derive a 32-byte AES key from a passphrase using PBKDF2-HMAC-SHA256. Complexity: O(iterations).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(iterations &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(iterations &gt;= 1) =&gt; (result.len() == 32)</code></li>
+</ul>
 <h5 id="fn-chacha20_encryptkey-vecuint8-nonce-vecuint8-counter-int-data-vecuint8-vecuint8"><code>fn chacha20_encrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], counter: Int, data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-chacha20_encryptkey-vecuint8-nonce-vecuint8-counter-int-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ChaCha20 stream encrypt with an explicit 32-bit block counter. Built on xiom.chacha (the counter is seeded into the public ChaCha20 state). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == data.len()</code></li>
+</ul>
 <h5 id="fn-chacha20_decryptkey-vecuint8-nonce-vecuint8-counter-int-data-vecuint8-vecuint8"><code>fn chacha20_decrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], counter: Int, data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-chacha20_decryptkey-vecuint8-nonce-vecuint8-counter-int-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ChaCha20 stream decrypt (identical to encrypt). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == data.len()</code></li>
+</ul>
 <h5 id="fn-chacha20poly1305_encryptkey-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-vecuint8"><code>fn chacha20poly1305_encrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], data: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-chacha20poly1305_encryptkey-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ChaCha20-Poly1305 AEAD encrypt (RFC 8439): returns ciphertext with the 16-byte tag appended. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 32) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(nonce.len() != 12) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(key.len() == 32 &amp;&amp; nonce.len() == 12) =&gt; (result.len() == data.len() + 16)</code></li>
+</ul>
 <h5 id="fn-chacha20poly1305_decryptkey-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-tag-vecuint8-resultvecuint8-str"><code>fn chacha20poly1305_decrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], data: &amp;Vec[UInt8], aad: &amp;Vec[UInt8], tag: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-chacha20poly1305_decryptkey-vecuint8-nonce-vecuint8-data-vecuint8-aad-vecuint8-tag-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ChaCha20-Poly1305 AEAD decrypt and verify the tag. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(nonce.len() != 12) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(tag.len() != 16) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() == data.len())</code></li>
+</ul>
 <h5 id="fn-des_encryptkey-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn des_encrypt(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-des_encryptkey-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Legacy single-DES encrypt (ECB, 8-byte blocks, PKCS#7 padding). Delegates to xiom.des. Interop only. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 8) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() % 8 == 0)</code></li>
+</ul>
 <h5 id="fn-des_decryptkey-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn des_decrypt(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-des_decryptkey-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Legacy single-DES decrypt (ECB, padding removal). Interop only. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 8) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() % 8 != 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-triple_des_encryptkey-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn triple_des_encrypt(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-triple_des_encryptkey-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>3DES-EDE encrypt (3 x 8-byte keys, PKCS#7 padding). Delegates to xiom.des. Interop only. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 24) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() % 8 == 0)</code></li>
+</ul>
 <h5 id="fn-triple_des_decryptkey-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn triple_des_decrypt(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-triple_des_decryptkey-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>3DES-EDE decrypt (padding removal). Interop only. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 24) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() % 8 != 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3389,6 +3530,9 @@
 <blockquote>
 <p>SHA-256 digest (32 bytes).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h4 id="fn-sha256_accelerateddata-vecuint8-vecuint8"><code>fn sha256_accelerated(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha256_accelerateddata-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>SHA-256 using the hardware-accelerated path when available.</p>
@@ -3401,6 +3545,9 @@
 <blockquote>
 <p>Lowercase hex SHA-256 digest.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h4 id="fn-sha512data-vecuint8-vecuint8"><code>fn sha512(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha512data-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>SHA-512 digest (64 bytes).</p>
@@ -3428,6 +3575,9 @@
 <p>Spec: https://github.com/BLAKE3-team/BLAKE3-specs</p>
 <p>Single-chunk inputs (&lt;= 1024 bytes) compress the chunk directly with CHUNK_START|CHUNK_END|ROOT. Larger inputs are hashed through the binary tree: each 1024-byte chunk produces a leaf CV (chunk counter = chunk index), leaves are merged pairwise via parent nodes, and the root node carries the ROOT flag. The 32-byte digest is the root output words 7,6,5,4,3,2,1,0 serialized little-endian (reversed word order).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h4 id="fn-hmac_sha256key-vecuint8-data-vecuint8-vecuint8"><code>fn hmac_sha256(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-hmac_sha256key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>HMAC-SHA-256 of <code>data</code> with <code>key</code>.</p>
@@ -3446,18 +3596,35 @@
 <blockquote>
 <p>AES encrypt with the given key; Err on bad key/data lengths.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() % 16 == 0 &amp;&amp; result.len() &gt;= 16)</code></li>
+</ul>
 <h4 id="fn-aes_decryptkey-vecuint8-ciphertext-vecuint8-resultvecuint8-str"><code>fn aes_decrypt(key: &amp;Vec[UInt8], ciphertext: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_decryptkey-vecuint8-ciphertext-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>AES decrypt with the given key; Err on bad key/data or padding.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(ciphertext.len() % 16 != 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-aes_encrypt_gcmkey-vecuint8-nonce-vecuint8-plaintext-vecuint8-aad-vecuint8-resultvecuint8-vecuint8-str"><code>fn aes_encrypt_gcm(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], plaintext: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Result[(Vec[UInt8], Vec[UInt8]), Str]</code><a class="headerlink" href="#fn-aes_encrypt_gcmkey-vecuint8-nonce-vecuint8-plaintext-vecuint8-aad-vecuint8-resultvecuint8-vecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>AES-GCM encrypt: Ok((ciphertext, tag)); Err on bad lengths.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(nonce.len() != 12) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-aes_decrypt_gcmkey-vecuint8-nonce-vecuint8-ciphertext-vecuint8-tag-vecuint8-aad-vecuint8-resultvecuint8-str"><code>fn aes_decrypt_gcm(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], ciphertext: &amp;Vec[UInt8], tag: &amp;Vec[UInt8], aad: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-aes_decrypt_gcmkey-vecuint8-nonce-vecuint8-ciphertext-vecuint8-tag-vecuint8-aad-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>AES-GCM decrypt and verify the tag; Err on failure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() != 16 &amp;&amp; key.len() != 24 &amp;&amp; key.len() != 32) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(nonce.len() != 12) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(tag.len() != 16) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="type-keypair"><code>type KeyPair</code><a class="headerlink" href="#type-keypair" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Asymmetric (RSA)</p>
@@ -3484,22 +3651,37 @@
 <blockquote>
 <p>Generate an RSA key pair of <code>bits</code> bits; Err on failure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(bits &lt; 16 || bits &gt; 32) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-rsa_encryptpublic_key-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn rsa_encrypt(public_key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-rsa_encryptpublic_key-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>RSA encrypt with a public key; Err on failure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(public_key.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-rsa_decryptprivate_key-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn rsa_decrypt(private_key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-rsa_decryptprivate_key-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>RSA decrypt with a private key; Err on failure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(private_key.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-rsa_signprivate_key-vecuint8-data-vecuint8-resultvecuint8-str"><code>fn rsa_sign(private_key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-rsa_signprivate_key-vecuint8-data-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>RSA signature over <code>data</code>; Err on failure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(private_key.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-rsa_verifypublic_key-vecuint8-data-vecuint8-signature-vecuint8-resultbool-str"><code>fn rsa_verify(public_key: &amp;Vec[UInt8], data: &amp;Vec[UInt8], signature: &amp;Vec[UInt8]) -&gt; Result[Bool, Str]</code><a class="headerlink" href="#fn-rsa_verifypublic_key-vecuint8-data-vecuint8-signature-vecuint8-resultbool-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Verify an RSA signature; Ok(true/false) or Err.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(public_key.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-pbkdf2password-str-salt-vecuint8-iterations-int-key_len-int-vecuint8"><code>fn pbkdf2(password: &amp;Str, salt: &amp;Vec[UInt8], iterations: Int, key_len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-pbkdf2password-str-salt-vecuint8-iterations-int-key_len-int-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Key Derivation</p>
@@ -3513,14 +3695,26 @@
 <blockquote>
 <p>Argon2 key derivation with the given memory/iteration/parallelism costs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(iterations &lt; 1 &amp;&amp; memory &lt; 1024) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(iterations &gt;= 1 || memory &gt;= 1024) =&gt; (result.len() == 32)</code></li>
+</ul>
 <h4 id="fn-os_secure_random_bytescount-int-vecuint8"><code>fn os_secure_random_bytes(count: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-os_secure_random_bytescount-int-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>OS-entropy CSPRNG draw (ProcessPrng/RtlGenRandom on Windows, /dev/urandom on Unix), degrading to the legacy PRNG only when no OS source answers (degraded mode documented -- do not treat as secure). Backs secure_random_bytes since the confined-block growth fix (COMPILER_BUGS.md R4, 041e8bb3) removed the multi-draw AV; also used for the legacy fallback's one-time process seed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(count &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(count &gt; 0) =&gt; (result.len() == count)</code></li>
+</ul>
 <h4 id="fn-secure_random_bytescount-int-vecuint8"><code>fn secure_random_bytes(count: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-secure_random_bytescount-int-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>OS-entropy random bytes (the CSPRNG source for the crypto modules).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(count &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(count &gt; 0) =&gt; (result.len() == count)</code></li>
+</ul>
 <h4 id="fn-constant_time_comparea-vecuint8-b-vecuint8-bool"><code>fn constant_time_compare(a: &amp;Vec[UInt8], b: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-constant_time_comparea-vecuint8-b-vecuint8-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the byte strings are equal, in constant time.</p>
@@ -3535,6 +3729,11 @@
 <p>RFC 5869 test case 1: IKM  = 0x0b0b0b... (22 times) salt = 0x000102030405060708090a0b0c info = 0xf0f1f2f3f4f5f6f7f8f9 L    = 42 OKM  = 3cb25f25faacd57a90434f64d0362f2a 2d2d0a90cf1a5a4c5db02d56ecc4c5bf 34007208d5b887185865</p>
 <p>Security notes: - Extract step concentrates entropy from IKM. - Salt should be random but not secret; can be all-zeros. - Info binds derived key to context; must be unique per key.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(okm_len &lt; 1) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(okm_len &gt; 8160) =&gt; (result.is_err == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Ok(_)) =&gt; (result.len() == okm_len)</code></li>
+</ul>
 <h4 id="fn-chacha20_poly1305_encryptkey-vecuint8-nonce-vecuint8-aad-vecuint8-plaintext-vecuint8-ciphertext-mut-vecuint8-tag-mut-vecuint8-bool"><code>fn chacha20_poly1305_encrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], aad: &amp;Vec[UInt8], plaintext: &amp;Vec[UInt8], ciphertext: &amp;mut Vec[UInt8], tag: &amp;mut Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-chacha20_poly1305_encryptkey-vecuint8-nonce-vecuint8-aad-vecuint8-plaintext-vecuint8-ciphertext-mut-vecuint8-tag-mut-vecuint8-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>ChaCha20-Poly1305 AEAD (RFC 8439 Section 2.8)</p>
@@ -3544,6 +3743,10 @@
 <p>RFC 8439 test vector (Section 2.8.2): key = 808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f nonce = 070000004041424344454647 aad = 50515253c0c1c2c3c4c5c6c7 plaintext = "Ladies and Gentlemen of the class of '99..." ciphertext = d31a8d34648e60db7b86afbc53ef7ec2... tag = 1ae10b594f09e26a7e902ecbd0600691</p>
 <p>Security notes: - Nonce MUST be unique for every message under the same key. - Nonce reuse completely breaks confidentiality AND authenticity. - The 16-byte tag provides 128-bit authentication strength.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() == 32 &amp;&amp; nonce.len() == 12) =&gt; (ciphertext.len() == plaintext.len())</code></li>
+<li><strong>Postcondition:</strong> <code>(key.len() == 32 &amp;&amp; nonce.len() == 12) =&gt; (tag.len() == 16)</code></li>
+</ul>
 <h4 id="fn-chacha20_poly1305_decryptkey-vecuint8-nonce-vecuint8-aad-vecuint8-ciphertext-vecuint8-tag-vecuint8-plaintext-mut-vecuint8-bool"><code>fn chacha20_poly1305_decrypt(key: &amp;Vec[UInt8], nonce: &amp;Vec[UInt8], aad: &amp;Vec[UInt8], ciphertext: &amp;Vec[UInt8], tag: &amp;Vec[UInt8], plaintext: &amp;mut Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-chacha20_poly1305_decryptkey-vecuint8-nonce-vecuint8-aad-vecuint8-ciphertext-vecuint8-tag-vecuint8-plaintext-mut-vecuint8-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>ChaCha20-Poly1305 AEAD -- Decrypt</p>
@@ -3551,6 +3754,9 @@
 <p>Key: 32 bytes. Nonce: 12 bytes. AAD: authenticated but unencrypted data. ciphertext: encrypted data to authenticate and decrypt. tag: 16-byte authentication tag to verify. plaintext: out-param, populated with decrypted data on success. Returns: true if authentication passed and decryption succeeded.</p>
 <p>Security notes: - Decryption only proceeds if tag verification passes (encrypt-then-MAC). - Constant-time tag comparison prevents timing oracle attacks.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (plaintext.len() == ciphertext.len())</code></li>
+</ul>
 <h4 id="fn-sha224data-vecuint8-vecuint8"><code>fn sha224(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-sha224data-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>SHA-224 delegates to the runtime C path (xiom_sha224_hash in runtime/sha256_sw.c). The previous XIOM-side state marshalling around xiom_sha256_sw_compress miscompiles (zero-offset store corruption into the malloc'd state buffer; probed 2026-08-24 -- wrong digests for any non-empty message while empty passed). Same architecture as sha256 below.</p>
@@ -3572,34 +3778,59 @@
 <blockquote>
 <p>Apply the X25519 clamping rules to a 32-byte scalar. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-curve25519_base_point-vecuint8"><code>fn curve25519_base_point() -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-curve25519_base_point-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The standard Curve25519 base point encoding: u = 9. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32 &amp;&amp; result[0] == 9</code></li>
+</ul>
 <h5 id="fn-curve25519_scalar_multscalar-vecuint8-point-vecuint8-vecuint8"><code>fn curve25519_scalar_mult(scalar: &amp;Vec[UInt8], point: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-curve25519_scalar_multscalar-vecuint8-point-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Scalar multiplication of a point on Curve25519 (X25519 ladder). <code>scalar</code> and <code>point</code> are 32-byte little-endian encodings; returns the X coordinate little-endian. The caller should clamp the scalar first. Complexity: O(255) field multiplications.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-secp256k1_generator-vecuint8-vecuint8"><code>fn secp256k1_generator() -&gt; (Vec[UInt8], Vec[UInt8])</code><a class="headerlink" href="#fn-secp256k1_generator-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>secp256k1 generator point; the tuple is (x, y). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() == 32 &amp;&amp; result._1.len() == 32</code></li>
+</ul>
 <h5 id="fn-secp256k1_point_adda-vecuint8-b-vecuint8-vecuint8-vecuint8"><code>fn secp256k1_point_add(a: &amp;Vec[UInt8], b: &amp;Vec[UInt8]) -&gt; (Vec[UInt8], Vec[UInt8])</code><a class="headerlink" href="#fn-secp256k1_point_adda-vecuint8-b-vecuint8-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>secp256k1 point addition; the tuple is (x, y). Returns the point at infinity as (0, 0). Complexity: O(1) field operations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() == 32 &amp;&amp; result._1.len() == 32</code></li>
+</ul>
 <h5 id="fn-secp256k1_point_mulscalar-vecuint8-point-vecuint8-vecuint8-vecuint8"><code>fn secp256k1_point_mul(scalar: &amp;Vec[UInt8], point: &amp;Vec[UInt8]) -&gt; (Vec[UInt8], Vec[UInt8])</code><a class="headerlink" href="#fn-secp256k1_point_mulscalar-vecuint8-point-vecuint8-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>secp256k1 scalar multiplication (double-and-add); the tuple is (x, y). Complexity: O(256) point operations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() == 32 &amp;&amp; result._1.len() == 32</code></li>
+</ul>
 <h5 id="fn-p256_curve_order-vecuint8"><code>fn p256_curve_order() -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-p256_curve_order-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The P-256 group order n. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-curve_ordercurve-int-vecuint8"><code>fn curve_order(curve: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-curve_ordercurve-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Group order for a named curve: 1 = secp256k1, 2 = P-256, 4 = Ed25519. Returns an empty vector for Curve25519 (no standard group order). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(curve == 1 || curve == 2 || curve == 4) =&gt; (result.len() == 32)</code></li>
+<li><strong>Postcondition:</strong> <code>(curve != 1 &amp;&amp; curve != 2 &amp;&amp; curve != 4) =&gt; (result.len() == 0)</code></li>
+</ul>
 <h5 id="fn-curve_point_on_curvecurve-int-x-vecuint8-y-vecuint8-bool"><code>fn curve_point_on_curve(curve: Int, x: &amp;Vec[UInt8], y: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-curve_point_on_curvecurve-int-x-vecuint8-y-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Test whether (x, y) satisfies the curve equation for a named curve (1 = secp256k1, 2 = P-256). Complexity: O(1) field operations.</p>
@@ -3608,6 +3839,9 @@
 <blockquote>
 <p>Test whether a scalar is a valid private key for a named curve (1 = secp256k1, 2 = P-256, 3 = Curve25519): 1 &lt;= scalar &lt; n. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(scalar.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3616,18 +3850,30 @@
 <blockquote>
 <p>Encrypt a single 64-bit block with DES (FIPS 46-3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(block == 81985529216486895 &amp;&amp; key == 1383827165325090801) =&gt; (result == -8797760620317723643)</code></li>
+</ul>
 <h4 id="fn-des_decrypt_blockblock-int-key-int-int"><code>fn des_decrypt_block(block: Int, key: Int) -&gt; Int</code><a class="headerlink" href="#fn-des_decrypt_blockblock-int-key-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Decrypt a single 64-bit block with DES (FIPS 46-3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(block == -8797760620317723643 &amp;&amp; key == 1383827165325090801) =&gt; (result == 81985529216486895)</code></li>
+</ul>
 <h4 id="fn-des3_encrypt_blockblock-int-k1-int-k2-int-k3-int-int"><code>fn des3_encrypt_block(block: Int, k1: Int, k2: Int, k3: Int) -&gt; Int</code><a class="headerlink" href="#fn-des3_encrypt_blockblock-int-k1-int-k2-int-k3-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Encrypt a 64-bit block with Triple-DES EDE: C = E_K3(D_K2(E_K1(P))). When K1 == K2 == K3 this degenerates to single DES.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(k1 == k2 &amp;&amp; k2 == k3) =&gt; (result == des_encrypt_block(block, k1))</code></li>
+</ul>
 <h4 id="fn-des3_decrypt_blockblock-int-k1-int-k2-int-k3-int-int"><code>fn des3_decrypt_block(block: Int, k1: Int, k2: Int, k3: Int) -&gt; Int</code><a class="headerlink" href="#fn-des3_decrypt_blockblock-int-k1-int-k2-int-k3-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Decrypt a 64-bit block with Triple-DES EDE: P = D_K1(E_K2(D_K3(C))).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(k1 == k2 &amp;&amp; k2 == k3) =&gt; (result == des_decrypt_block(block, k1))</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="eccxi"><code>ecc.xi</code><a class="headerlink" href="#eccxi" title="Permanent link">&para;</a></h2>
@@ -3762,38 +4008,66 @@
 <p>Small Test Curve: y2 = x3 + 2x + 2  mod 17</p>
 <p>Order 19 (prime). Generator: (5, 1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.p == 17 &amp;&amp; result.a == 2 &amp;&amp; result.b == 2 &amp;&amp; result.n == 19 &amp;&amp; result.gx == 5 &amp;&amp; result.gy == 1</code></li>
+</ul>
 <h4 id="fn-curve_secp256k1-eccurve"><code>fn curve_secp256k1() -&gt; EcCurve</code><a class="headerlink" href="#fn-curve_secp256k1-eccurve" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>The secp256k1 curve parameters.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.p == 0 &amp;&amp; result.a == 0 &amp;&amp; result.b == 7 &amp;&amp; result.n == 0 &amp;&amp; result.gx == 0 &amp;&amp; result.gy == 0</code></li>
+</ul>
 <h4 id="fn-ec_is_on_curvepoint-ecpoint-curve-eccurve-bool"><code>fn ec_is_on_curve(point: &amp;EcPoint, curve: &amp;EcCurve) -&gt; Bool</code><a class="headerlink" href="#fn-ec_is_on_curvepoint-ecpoint-curve-eccurve-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Point Operations</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(point.x == 5 &amp;&amp; point.y == 1 &amp;&amp; curve.p == 17 &amp;&amp; curve.a == 2 &amp;&amp; curve.b == 2) =&gt; (result == true)</code></li>
+</ul>
 <h4 id="fn-ec_negpoint-ecpointopt-curve-eccurve-ecpointopt"><code>fn ec_neg(point: EcPointOpt, curve: &amp;EcCurve) -&gt; EcPointOpt</code><a class="headerlink" href="#fn-ec_negpoint-ecpointopt-curve-eccurve-ecpointopt" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Negate a point (None for the point at infinity).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(point.is_some == false) =&gt; (result.is_some == false)</code></li>
+</ul>
 <h4 id="fn-ec_doublepoint-ecpoint-curve-eccurve-ecpointopt"><code>fn ec_double(point: &amp;EcPoint, curve: &amp;EcCurve) -&gt; EcPointOpt</code><a class="headerlink" href="#fn-ec_doublepoint-ecpoint-curve-eccurve-ecpointopt" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Point doubling; None for the point at infinity.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(point.y == 0 &amp;&amp; curve.p != 0) =&gt; (result.is_some == false)</code></li>
+</ul>
 <h4 id="fn-ec_addp-ecpointopt-q-ecpointopt-curve-eccurve-ecpointopt"><code>fn ec_add(p: EcPointOpt, q: EcPointOpt, curve: &amp;EcCurve) -&gt; EcPointOpt</code><a class="headerlink" href="#fn-ec_addp-ecpointopt-q-ecpointopt-curve-eccurve-ecpointopt" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Point addition; None when the result is the point at infinity.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(p.is_some == false) =&gt; (result.is_some == q.is_some)</code></li>
+<li><strong>Postcondition:</strong> <code>(q.is_some == false) =&gt; (result.is_some == p.is_some)</code></li>
+</ul>
 <h4 id="fn-ec_mulk-int-point-ecpoint-curve-eccurve-ecpointopt"><code>fn ec_mul(k: Int, point: &amp;EcPoint, curve: &amp;EcCurve) -&gt; EcPointOpt</code><a class="headerlink" href="#fn-ec_mulk-int-point-ecpoint-curve-eccurve-ecpointopt" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Scalar multiplication <code>k * point</code>; None for the point at infinity.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(k &lt;= 0) =&gt; (result.is_some == false)</code></li>
+</ul>
 <h4 id="fn-ed25519_keygen-ed25519keypair"><code>fn ed25519_keygen() -&gt; Ed25519KeyPair</code><a class="headerlink" href="#fn-ed25519_keygen-ed25519keypair" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Generate an Ed25519 key pair.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.private_key.len() == 32 &amp;&amp; result.public_key.len() == 32</code></li>
+</ul>
 <h4 id="fn-ed25519_signmessage-vecint-keypair-ed25519keypair-ed25519signature"><code>fn ed25519_sign(message: &amp;Vec[Int], keypair: &amp;Ed25519KeyPair) -&gt; Ed25519Signature</code><a class="headerlink" href="#fn-ed25519_signmessage-vecint-keypair-ed25519keypair-ed25519signature" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Ed25519 signature over the message.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.r.len() == 32 &amp;&amp; result.s.len() == 32</code></li>
+</ul>
 <h4 id="fn-ed25519_verifymessage-vecint-signature-ed25519signature-public_key-vecuint8-bool"><code>fn ed25519_verify(message: &amp;Vec[Int], signature: &amp;Ed25519Signature, public_key: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-ed25519_verifymessage-vecint-signature-ed25519signature-public_key-vecuint8-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the signature verifies under the public key.</p>
@@ -3811,6 +4085,7 @@
 <p>Scalar multiply point (px, py) by scalar k. Fills out_x, out_y with 32-byte little-endian results. Returns false on error (invalid inputs).</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>out_x.len() &gt;= 32 &amp;&amp; out_y.len() &gt;= 32</code></li>
 <li><strong>Precondition:</strong> <code>k.len() &gt;= 32</code></li>
 <li><strong>Precondition:</strong> <code>px.len() &gt;= 32</code></li>
 <li><strong>Precondition:</strong> <code>py.len() &gt;= 32</code></li>
@@ -3820,6 +4095,7 @@
 <p>Multiply the secp256k1 base point (generator G) by scalar k. Fills out_x, out_y with 32-byte little-endian results.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>out_x.len() &gt;= 32 &amp;&amp; out_y.len() &gt;= 32</code></li>
 <li><strong>Precondition:</strong> <code>k.len() &gt;= 32</code></li>
 </ul>
 <h4 id="fn-ed25519_pubkey_bytesprivate_key-vecuint8-public_key-mut-vecuint8-bool"><code>fn ed25519_pubkey_bytes(private_key: &amp;Vec[UInt8], public_key: &amp;mut Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-ed25519_pubkey_bytesprivate_key-vecuint8-public_key-mut-vecuint8-bool" title="Permanent link">&para;</a></h4>
@@ -3834,6 +4110,7 @@
 <p>Sign a message with an Ed25519 private key (32 bytes). Writes the 64-byte signature into <code>signature</code>.</p>
 </blockquote>
 <ul>
+<li><strong>Postcondition:</strong> <code>signature.len() &gt;= 64</code></li>
 <li><strong>Precondition:</strong> <code>private_key.len() &gt;= 32</code></li>
 </ul>
 <h4 id="fn-ed25519_verify_bytesmessage-vecuint8-public_key-vecuint8-signature-vecuint8-bool"><code>fn ed25519_verify_bytes(message: &amp;Vec[UInt8], public_key: &amp;Vec[UInt8], signature: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-ed25519_verify_bytesmessage-vecuint8-public_key-vecuint8-signature-vecuint8-bool" title="Permanent link">&para;</a></h4>
@@ -3865,42 +4142,74 @@
 <blockquote>
 <p>SHA-256 digest (32 bytes). Delegates to xiom.crypto.sha256. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-crypto_hash_sha512data-vecuint8-vecuint8"><code>fn crypto_hash_sha512(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_sha512data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>SHA-512 digest (64 bytes). Implemented locally with the corrected 64-bit rotate; the flat module's sha512 is not used (broken in the current build). Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h5 id="fn-crypto_hash_md5data-vecuint8-vecuint8"><code>fn crypto_hash_md5(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_md5data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>MD5 digest (16 bytes). Local implementation (the flat module's md5 fails its test vector in the current build). Legacy, interop only. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 16</code></li>
+</ul>
 <h5 id="fn-crypto_hash_sha256_hexdata-vecuint8-str"><code>fn crypto_hash_sha256_hex(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-crypto_hash_sha256_hexdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>SHA-256 digest as lowercase hex. Delegates to xiom.crypto.sha256_hex. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h5 id="fn-crypto_hash_sha512_hexdata-vecuint8-str"><code>fn crypto_hash_sha512_hex(data: &amp;Vec[UInt8]) -&gt; Str</code><a class="headerlink" href="#fn-crypto_hash_sha512_hexdata-vecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>SHA-512 digest as lowercase hex (128 characters). Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 128</code></li>
+</ul>
 <h5 id="fn-crypto_hash_hmac_sha256key-vecuint8-data-vecuint8-vecuint8"><code>fn crypto_hash_hmac_sha256(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_hmac_sha256key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Keyed SHA-256 MAC. Delegates to xiom.crypto.hmac_sha256. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 32</code></li>
+</ul>
 <h5 id="fn-crypto_hash_hmac_sha512key-vecuint8-data-vecuint8-vecuint8"><code>fn crypto_hash_hmac_sha512(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_hmac_sha512key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Keyed SHA-512 MAC (RFC 2104), built on the local SHA-512. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 64</code></li>
+</ul>
 <h5 id="fn-crypto_hash_hmac_md5key-vecuint8-data-vecuint8-vecuint8"><code>fn crypto_hash_hmac_md5(key: &amp;Vec[UInt8], data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_hmac_md5key-vecuint8-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Keyed MD5 MAC (RFC 2104). Legacy, interop only. Complexity: O(n), n = input length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 16</code></li>
+</ul>
 <h5 id="fn-crypto_hash_pbkdf2_sha256password-vecuint8-salt-vecuint8-iterations-int-len-int-vecuint8"><code>fn crypto_hash_pbkdf2_sha256(password: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], iterations: Int, len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_pbkdf2_sha256password-vecuint8-salt-vecuint8-iterations-int-len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>PBKDF2-HMAC-SHA256 (RFC 2898): derive <code>len</code> key bytes from a password. Complexity: O(iterations * len / 32).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(iterations &lt; 1 || len &lt; 1) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(iterations &gt;= 1 &amp;&amp; len &gt;= 1) =&gt; (result.len() == len)</code></li>
+</ul>
 <h5 id="fn-crypto_hash_hkdfikm-vecuint8-salt-vecuint8-info-vecuint8-len-int-vecuint8"><code>fn crypto_hash_hkdf(ikm: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], info: &amp;Vec[UInt8], len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-crypto_hash_hkdfikm-vecuint8-salt-vecuint8-info-vecuint8-len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>HKDF (RFC 5869) with SHA-256. <code>salt</code> may be empty (defaults to zeros). Complexity: O(len / 32 + n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(len &lt; 1 || len &gt; 255 * 32) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(len &gt;= 1 &amp;&amp; len &lt;= 255 * 32) =&gt; (result.len() == len)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -4262,10 +4571,16 @@
 <blockquote>
 <p>Fisher-Yates shuffle in place using the CSPRNG. Complexity: O(n), n = vector length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == v.len()@pre</code></li>
+</ul>
 <h5 id="fn-crypto_random_choicetv-vect-optiont"><code>fn crypto_random_choice[T](v: &amp;Vec[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-crypto_random_choicetv-vect-optiont" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pick a uniformly random element, or None for an empty vector. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v.len() == 0) =&gt; (result.is_none == true)</code></li>
+</ul>
 <h5 id="fn-crypto_seed_from_entropy-uint64"><code>fn crypto_seed_from_entropy() -&gt; UInt64</code><a class="headerlink" href="#fn-crypto_seed_from_entropy-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Seed value gathered from system entropy (8 bytes). Complexity: O(1).</p>
@@ -4342,6 +4657,9 @@
 <blockquote>
 <p>Derive the public key (n, e) from a key pair. The public key can be safely shared; the private exponent d stays inside the RsaKeyPair.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.n == pair.n &amp;&amp; result.e == pair.e</code></li>
+</ul>
 <h4 id="fn-rsa_keygenbits-int-resultrsakeypair-str"><code>fn rsa_keygen(bits: Int) -&gt; Result[RsaKeyPair, Str]</code><a class="headerlink" href="#fn-rsa_keygenbits-int-resultrsakeypair-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Generate an RSA key pair with approximately <code>bits</code> bits of modulus.</p>
@@ -4349,6 +4667,9 @@
 <p>Parameters: bits: desired modulus size in bits (recommended: 16-30 for this impl) Returns: Result[RsaKeyPair, Str] -- the key pair or an error message</p>
 <p>Complexity: O(2^(bits/2)) for primality testing due to trial division. Keep bits &lt;= 30 for reasonable performance.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(bits &lt; 8 || bits &gt; 30) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h4 id="fn-rsa_encryptmsg-int-key-rsapublickey-int"><code>fn rsa_encrypt(msg: Int, key: &amp;RsaPublicKey) -&gt; Int</code><a class="headerlink" href="#fn-rsa_encryptmsg-int-key-rsapublickey-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Encrypt a message using RSA.</p>
@@ -4356,12 +4677,18 @@
 <p>Parameters: msg: plaintext message (Int, must be &lt; n) key: RSA public key (n, e) Returns: ciphertext (Int)</p>
 <p>Note: In real RSA, messages are padded and encoded as integers &lt; n. This raw implementation encrypts a single integer value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(msg == 0 &amp;&amp; key.e &gt; 0 &amp;&amp; key.n &gt; 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-rsa_decryptct-int-key-rsakeypair-int"><code>fn rsa_decrypt(ct: Int, key: &amp;RsaKeyPair) -&gt; Int</code><a class="headerlink" href="#fn-rsa_decryptct-int-key-rsakeypair-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Decrypt a ciphertext using RSA.</p>
 <p>m == c^d mod n</p>
 <p>Parameters: ct: ciphertext (Int, must be &lt; n) key: RSA key pair (n, e, d) Returns: plaintext (Int)</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(ct == 0 &amp;&amp; key.d &gt; 0 &amp;&amp; key.n &gt; 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-rsa_signmsg-int-key-rsakeypair-int"><code>fn rsa_sign(msg: Int, key: &amp;RsaKeyPair) -&gt; Int</code><a class="headerlink" href="#fn-rsa_signmsg-int-key-rsakeypair-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sign a message using RSA (textbook/Raw RSA signature).</p>
@@ -4369,12 +4696,18 @@
 <p>Parameters: msg: message to sign (Int) key: RSA key pair (n, e, d) Returns: signature (Int)</p>
 <p>Security note: Real RSA signing uses PSS padding and hashes the message before signing. This raw version is for education only.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(msg == 0 &amp;&amp; key.d &gt; 0 &amp;&amp; key.n &gt; 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-rsa_verifymsg-int-sig-int-key-rsapublickey-bool"><code>fn rsa_verify(msg: Int, sig: Int, key: &amp;RsaPublicKey) -&gt; Bool</code><a class="headerlink" href="#fn-rsa_verifymsg-int-sig-int-key-rsapublickey-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Verify an RSA signature.</p>
 <p>m' == sig^e mod n; returns (m' == msg)</p>
 <p>Parameters: msg: original message (Int) sig: signature to verify (Int) key: RSA public key (n, e) Returns: true if signature is valid</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(msg == 0 &amp;&amp; sig == 0 &amp;&amp; key.e &gt; 0 &amp;&amp; key.n &gt; 0) =&gt; (result == true)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="shaxi"><code>sha.xi</code><a class="headerlink" href="#shaxi" title="Permanent link">&para;</a></h2>
@@ -4497,6 +4830,9 @@
 <blockquote>
 <p>Generate a new Ed25519 keypair; the tuple is (sk, pk). Blocked in the current build (see module header).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() == 32 &amp;&amp; result._1.len() == 0</code></li>
+</ul>
 <h5 id="fn-ed25519_signsk-vecuint8-msg-vecuint8-vecuint8"><code>fn ed25519_sign(sk: &amp;Vec[UInt8], msg: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-ed25519_signsk-vecuint8-msg-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sign a message with an Ed25519 secret key (64-byte signature). Blocked in the current build (see module header).</p>
@@ -4522,18 +4858,30 @@
 <blockquote>
 <p>Deterministically expand a 32-byte seed; the tuple is (sk, pk). Blocked in the current build (see module header).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() == seed.len() &amp;&amp; result._1.len() == 0</code></li>
+</ul>
 <h5 id="fn-rsa_signkey-vecuint8-msg-vecuint8-hash-int-resultvecuint8-str"><code>fn rsa_sign(key: &amp;Vec[UInt8], msg: &amp;Vec[UInt8], hash: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-rsa_signkey-vecuint8-msg-vecuint8-hash-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>RSASSA-PKCS1-v1_5-style sign. Delegates to xiom.crypto.rsa_sign (raw textbook RSA over the small generated keys); the <code>hash</code> identifier is advisory (the flat implementation does not embed a digest identifier). Complexity: O(bitlen^3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(key.len() == 0) =&gt; (result.is_err == true)</code></li>
+</ul>
 <h5 id="fn-rsa_verifykey-vecuint8-msg-vecuint8-sig-vecuint8-hash-int-bool"><code>fn rsa_verify(key: &amp;Vec[UInt8], msg: &amp;Vec[UInt8], sig: &amp;Vec[UInt8], hash: Int) -&gt; Bool</code><a class="headerlink" href="#fn-rsa_verifykey-vecuint8-msg-vecuint8-sig-vecuint8-hash-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Verify an RSA signature. Returns false on any error. Complexity: O(bitlen^3).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (crypto.rsa_verify(key, msg, sig).is_ok == true)</code></li>
+</ul>
 <h5 id="fn-ecdsa_signcurve-int-sk-vecuint8-msg-vecuint8-vecuint8-vecuint8"><code>fn ecdsa_sign(curve: Int, sk: &amp;Vec[UInt8], msg: &amp;Vec[UInt8]) -&gt; (Vec[UInt8], Vec[UInt8])</code><a class="headerlink" href="#fn-ecdsa_signcurve-int-sk-vecuint8-msg-vecuint8-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ECDSA sign; the tuple is (r, s). Blocked in the current build.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() == 0 &amp;&amp; result._1.len() == 0</code></li>
+</ul>
 <h5 id="fn-ecdsa_verifycurve-int-pk-vecuint8-msg-vecuint8-r-vecuint8-s-vecuint8-bool"><code>fn ecdsa_verify(curve: Int, pk: &amp;Vec[UInt8], msg: &amp;Vec[UInt8], r: &amp;Vec[UInt8], s: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-ecdsa_verifycurve-int-pk-vecuint8-msg-vecuint8-r-vecuint8-s-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Verify an ECDSA signature. Blocked in the current build.</p>
@@ -4545,6 +4893,9 @@
 <blockquote>
 <p>DSA sign; the tuple is (r, s). Blocked in the current build.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() == 0 &amp;&amp; result._1.len() == 0</code></li>
+</ul>
 <h5 id="fn-dsa_verifyp-vecuint8-q-vecuint8-g-vecuint8-y-vecuint8-msg-vecuint8-r-vecuint8-s-vecuint8-bool"><code>fn dsa_verify(p: &amp;Vec[UInt8], q: &amp;Vec[UInt8], g: &amp;Vec[UInt8], y: &amp;Vec[UInt8], msg: &amp;Vec[UInt8], r: &amp;Vec[UInt8], s: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-dsa_verifyp-vecuint8-q-vecuint8-g-vecuint8-y-vecuint8-msg-vecuint8-r-vecuint8-s-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Verify a DSA signature. Blocked in the current build.</p>

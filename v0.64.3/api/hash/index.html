@@ -3168,6 +3168,9 @@
 <blockquote>
 <p>CityHash64 of a byte string.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 11160318154034397263)</code></li>
+</ul>
 <h5 id="fn-city64_with_seeddata-vecuint8-seed-uint64-uint64"><code>fn city64_with_seed(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-city64_with_seeddata-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>CityHash64WithSeed: HashLen16(CityHash64(s) - k2, seed).</p>
@@ -3176,6 +3179,9 @@
 <blockquote>
 <p>CityHash128 of a byte string; returns [low, high].</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.len() == 2)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3244,38 +3250,65 @@
 <blockquote>
 <p>FarmHash 64-bit digest over <code>data</code> (no seed). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-farmhash64_seeddata-vecuint8-seed-uint64-uint64"><code>fn farmhash64_seed(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-farmhash64_seeddata-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>FarmHash 64-bit digest with a single seed. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(seed == 11160318154034397263) =&gt; (result == farmhash64(data))</code></li>
+</ul>
 <h5 id="fn-farmhash64_seed2data-vecuint8-seed1-uint64-seed2-uint64-uint64"><code>fn farmhash64_seed2(data: &amp;Vec[UInt8], seed1: UInt64, seed2: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-farmhash64_seed2data-vecuint8-seed1-uint64-seed2-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>FarmHash 64-bit digest with two seeds. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(seed1 == 11160318154034397263 &amp;&amp; seed2 == 13011662864482103923) =&gt; (result == farmhash64(data))</code></li>
+</ul>
 <h5 id="fn-farmhash32data-vecuint8-uint32"><code>fn farmhash32(data: &amp;Vec[UInt8]) -&gt; UInt32</code><a class="headerlink" href="#fn-farmhash32data-vecuint8-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>FarmHash 32-bit digest over <code>data</code> (Murmur-style 4-byte mixing). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 3325044303)</code></li>
+</ul>
 <h5 id="fn-farmhash128data-vecuint8-uint64-uint64"><code>fn farmhash128(data: &amp;Vec[UInt8]) -&gt; (UInt64, UInt64)</code><a class="headerlink" href="#fn-farmhash128data-vecuint8-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>FarmHash 128-bit digest as two 64-bit words. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result._0 == 0 &amp;&amp; result._1 == 0)</code></li>
+</ul>
 <h5 id="fn-farmhash128_seeddata-vecuint8-seed1-uint64-seed2-uint64-uint64-uint64"><code>fn farmhash128_seed(data: &amp;Vec[UInt8], seed1: UInt64, seed2: UInt64) -&gt; (UInt64, UInt64)</code><a class="headerlink" href="#fn-farmhash128_seeddata-vecuint8-seed1-uint64-seed2-uint64-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>FarmHash 128-bit digest seeded with two 64-bit words. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed1 == 14097894508562428199 &amp;&amp; seed2 == 13011662864482103923) =&gt; (result._0 == 0 &amp;&amp; result._1 == 0)</code></li>
+</ul>
 <h5 id="fn-farmhash_fingerprint32data-vecuint8-uint32"><code>fn farmhash_fingerprint32(data: &amp;Vec[UInt8]) -&gt; UInt32</code><a class="headerlink" href="#fn-farmhash_fingerprint32data-vecuint8-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>32-bit fingerprint, stable across runs for the same data. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == farmhash32(data)</code></li>
+</ul>
 <h5 id="fn-farmhash_fingerprint64data-vecuint8-uint64"><code>fn farmhash_fingerprint64(data: &amp;Vec[UInt8]) -&gt; UInt64</code><a class="headerlink" href="#fn-farmhash_fingerprint64data-vecuint8-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>64-bit fingerprint, stable across runs for the same data. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == farmhash64(data)</code></li>
+</ul>
 <h5 id="fn-farmhash_fingerprint128data-vecuint8-uint64-uint64"><code>fn farmhash_fingerprint128(data: &amp;Vec[UInt8]) -&gt; (UInt64, UInt64)</code><a class="headerlink" href="#fn-farmhash_fingerprint128data-vecuint8-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>128-bit fingerprint, stable across runs for the same data. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result._0 == 0 &amp;&amp; result._1 == 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3335,22 +3368,37 @@
 <blockquote>
 <p>Create a hasher with the default seed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.state == 5381</code></li>
+</ul>
 <h4 id="fn-writeself-self-bytes-vecuint8"><code>fn write(self: Self, bytes: &amp;Vec[UInt8])</code><a class="headerlink" href="#fn-writeself-self-bytes-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Feed bytes into the hasher.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(bytes.len() == 0) =&gt; (self.state == self.state@pre)</code></li>
+</ul>
 <h4 id="fn-write_intself-self-n-int"><code>fn write_int(self: Self, n: Int)</code><a class="headerlink" href="#fn-write_intself-self-n-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Feed an Int into the hasher.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (self.state == self.state@pre * 33 * 33 * 33 * 33 * 33 * 33 * 33 * 33)</code></li>
+</ul>
 <h4 id="fn-write_strself-self-s-str"><code>fn write_str(self: Self, s: Str)</code><a class="headerlink" href="#fn-write_strself-self-s-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Feed the bytes of a string into the hasher.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (self.state == self.state@pre)</code></li>
+</ul>
 <h4 id="fn-finishself-self-int"><code>fn finish(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-finishself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Finalize and return the 64-bit hash.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == self.state</code></li>
+</ul>
 <h4 id="fn-hashself-self-uint64"><code>fn hash(self: Self) -&gt; UInt64</code><a class="headerlink" href="#fn-hashself-self-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Hash implementations for standard types === Full DJB2 hash computation. Each type hashes its bytes directly.</p>
@@ -3364,20 +3412,26 @@
 </blockquote>
 <h4 id="fn-hash_valuetvalue-t-int"><code>fn hash_value[T](value: T) -&gt; Int</code><a class="headerlink" href="#fn-hash_valuetvalue-t-int" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>=== Free functions === NOTE: these dispatch to the concrete 0-arg <code>.hash()</code> methods (Int/Bool) like the sibling <code>hash</code> below. The hasher-based <code>Hash</code> interface (hash(self, hasher)) is defined above but has no concrete impls yet; calling through it from a &amp;T receiver produced invalid IR (ptr-&gt;i64) -- keep by-value params until the interface path is complete.</p>
+<p>=== Free functions === NOTE: these dispatch to the concrete 0-arg <code>.hash()</code> methods (Int/Bool) like the sibling <code>hash</code> below. The hasher-based <code>Hash</code> interface (hash(self, hasher)) is defined above but has no concrete impls yet; calling through it from a &amp;T receiver produced invalid IR (ptr-&gt;i64) -- keep by-value params until the interface path is complete. CAVEAT (REL-20261011-1053-stdlib): zero-arg <code>.hash()</code> on scalar receivers lowers to a compiler BUILTIN identity that shadows the concrete Int.hash/Bool.hash methods, and the explicit-receiver form (<code>Bool.hash(x)</code>) does not type-check -- so those two methods are unreachable today; treat <code>.hash()</code> on Int/Bool as the identity.</p>
 </blockquote>
 <h4 id="fn-hash_combineseed-int-hash-int-int"><code>fn hash_combine(seed: Int, hash: Int) -&gt; Int</code><a class="headerlink" href="#fn-hash_combineseed-int-hash-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Combine two hashes into one (order-dependent).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == seed ^ (hash + 2654435769 + (seed &lt;&lt; 6) + (seed &gt;&gt; 2))</code></li>
+</ul>
 <h4 id="fn-hashtvalue-t-uint64"><code>fn hash[T](value: T) -&gt; UInt64</code><a class="headerlink" href="#fn-hashtvalue-t-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Hash any <code>Hash</code>-implementing value.</p>
 </blockquote>
 <h4 id="fn-sip_hashdata-vecuint8-uint64"><code>fn sip_hash(data: &amp;Vec[UInt8]) -&gt; UInt64</code><a class="headerlink" href="#fn-sip_hashdata-vecuint8-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>SipHash-2-4 of the bytes (64-bit).</p>
+<p>Default-hasher digest of the bytes (64-bit; DJB2-based, seed 5381).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 5381)</code></li>
+</ul>
 <h4 id="fn-fnv1a32data-vecuint8-int"><code>fn fnv1a32(data: &amp;Vec[UInt8]) -&gt; Int</code><a class="headerlink" href="#fn-fnv1a32data-vecuint8-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>FNV-1a 32-bit hash. Algorithm: hash = (hash XOR byte) * FNV Prime, with 32-bit wrapping. Offset basis: 0x811C9DC5, prime: 0x01000193. Complexity: O(n), n = data length. Security: Non-cryptographic. Excellent distribution for hash tables.</p>
@@ -3396,6 +3450,9 @@
 <blockquote>
 <p>FNV-1 64-bit hash (multiply first, then XOR -- non-alternate variant). Offset basis: 0xCBF29CE484222325, prime: 0x00000100000001B3. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 14695981039346656037)</code></li>
+</ul>
 <h4 id="fn-murmur3_32data-vecuint8-seed-int-int"><code>fn murmur3_32(data: &amp;Vec[UInt8], seed: Int) -&gt; Int</code><a class="headerlink" href="#fn-murmur3_32data-vecuint8-seed-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>MurmurHash3 32-bit (x86_32 variant). Processes 4-byte blocks with fmix32 finalization. Test vector: murmur3_32("hello", 0) == 0x248BFA47. Complexity: O(n), n = data length. Security: Non-cryptographic. Good avalanche characteristics.</p>
@@ -3407,10 +3464,16 @@
 <blockquote>
 <p>Helper: rotates left within 32 bits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 4294967295</code></li>
+</ul>
 <h4 id="fn-xxhash32data-vecuint8-seed-int-int"><code>fn xxhash32(data: &amp;Vec[UInt8], seed: Int) -&gt; Int</code><a class="headerlink" href="#fn-xxhash32data-vecuint8-seed-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>xxHash32 -- Yann Collet's fast non-cryptographic hash. Prime constants and avalanche per original xxHash specification. Complexity: O(n), n = data length. Processes 4-byte lanes + tail.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 46947589)</code></li>
+</ul>
 <h4 id="fn-djb2s-str-int"><code>fn djb2(s: Str) -&gt; Int</code><a class="headerlink" href="#fn-djb2s-str-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>DJB2 string hash (Dan Bernstein). Start with 5381, for each char: hash = hash * 33 + char_code. Complexity: O(n), n = string length.</p>
@@ -3464,6 +3527,9 @@
 <blockquote>
 <p>FNV-1 32-bit (multiply before XOR, unlike FNV-1a).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result == 2166136261)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="highwayxi"><code>highway.xi</code><a class="headerlink" href="#highwayxi" title="Permanent link">&para;</a></h2>
@@ -3493,14 +3559,23 @@
 <blockquote>
 <p>64-bit HighwayHash over <code>data</code> with a 256-bit key. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; key0 == 0 &amp;&amp; key1 == 0 &amp;&amp; key2 == 0 &amp;&amp; key3 == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-highway128data-vecuint8-key0-uint64-key1-uint64-key2-uint64-key3-uint64-hh128"><code>fn highway128(data: &amp;Vec[UInt8], key0: UInt64, key1: UInt64, key2: UInt64, key3: UInt64) -&gt; Hh128</code><a class="headerlink" href="#fn-highway128data-vecuint8-key0-uint64-key1-uint64-key2-uint64-key3-uint64-hh128" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>128-bit HighwayHash digest returned as a two-field struct (low, high). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; key0 == 0 &amp;&amp; key1 == 0 &amp;&amp; key2 == 0 &amp;&amp; key3 == 0) =&gt; (result.low == 0 &amp;&amp; result.high == 0)</code></li>
+</ul>
 <h5 id="fn-highway256data-vecuint8-key0-uint64-key1-uint64-key2-uint64-key3-uint64-uint64-uint64-uint64-uint64"><code>fn highway256(data: &amp;Vec[UInt8], key0: UInt64, key1: UInt64, key2: UInt64, key3: UInt64) -&gt; (UInt64, UInt64, UInt64, UInt64)</code><a class="headerlink" href="#fn-highway256data-vecuint8-key0-uint64-key1-uint64-key2-uint64-key3-uint64-uint64-uint64-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>256-bit HighwayHash digest as four 64-bit lanes (v0, v1, v2, v3). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; key0 == 0 &amp;&amp; key1 == 0 &amp;&amp; key2 == 0 &amp;&amp; key3 == 0) =&gt; (result._0 == 0 &amp;&amp; result._1 == 0 &amp;&amp; result._2 == 0 &amp;&amp; result._3 == 0)</code></li>
+</ul>
 <h5 id="fn-highway_hashdata-vecuint8-key-vecuint64-uint64"><code>fn highway_hash(data: &amp;Vec[UInt8], key: Vec[UInt64]) -&gt; UInt64</code><a class="headerlink" href="#fn-highway_hashdata-vecuint8-key-vecuint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>64-bit HighwayHash taking the four key words as a vector; traps if key.len() != 4 (a programming error). Complexity: O(n).</p>
@@ -3512,6 +3587,9 @@
 <blockquote>
 <p>Rehashes <code>data</code> with the given key and compares against <code>expected</code>. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (highway64(data, key0, key1, key2, key3) == expected)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3531,22 +3609,37 @@
 <blockquote>
 <p>MetroHash64 v1 64-bit digest over <code>data</code>. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 1424585646250073642)</code></li>
+</ul>
 <h5 id="fn-metrohash64_2data-vecuint8-seed-uint64-uint64"><code>fn metrohash64_2(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-metrohash64_2data-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>MetroHash64 v2 64-bit digest (fixed-width, seedable). Uses the same lane construction as v1 with a length-aware final fold. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 10609503177815982367)</code></li>
+</ul>
 <h5 id="fn-metrohash128data-vecuint8-seed-uint64-uint64-uint64"><code>fn metrohash128(data: &amp;Vec[UInt8], seed: UInt64) -&gt; (UInt64, UInt64)</code><a class="headerlink" href="#fn-metrohash128data-vecuint8-seed-uint64-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>MetroHash128 128-bit digest as two 64-bit words (low, high). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result._0 == 15501793526115052243 &amp;&amp; result._1 == 15803394812975393499)</code></li>
+</ul>
 <h5 id="fn-metrohash128crcdata-vecuint8-seed-uint64-uint64-uint64"><code>fn metrohash128crc(data: &amp;Vec[UInt8], seed: UInt64) -&gt; (UInt64, UInt64)</code><a class="headerlink" href="#fn-metrohash128crcdata-vecuint8-seed-uint64-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>MetroHash128 with CRC32 hardware acceleration when available. This pure fallback is identical to metrohash128 (no CRC32 instruction dependency). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result._0 == 15501793526115052243 &amp;&amp; result._1 == 15803394812975393499)</code></li>
+</ul>
 <h5 id="fn-metrohash32data-vecuint8-seed-uint32-uint32"><code>fn metrohash32(data: &amp;Vec[UInt8], seed: UInt32) -&gt; UInt32</code><a class="headerlink" href="#fn-metrohash32data-vecuint8-seed-uint32-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>MetroHash32 compact 32-bit digest for small tables: 4-byte word mixing with a 32-bit fold. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 3325044303)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3557,11 +3650,15 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() == 2</code></li>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result[0] == 0 &amp;&amp; result[1] == 0)</code></li>
 </ul>
 <h5 id="fn-murmur2_64data-vecuint8-seed-uint64-uint64"><code>fn murmur2_64(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-murmur2_64data-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>MurmurHash64A of a byte string with the given seed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3606,18 +3703,30 @@
 <blockquote>
 <p>32-bit SpookyHash over <code>data</code> (no seed): the low 32 bits of the unseeded 64-bit digest. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 2527699791)</code></li>
+</ul>
 <h5 id="fn-spooky64data-vecuint8-seed-uint64-uint64"><code>fn spooky64(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-spooky64data-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>64-bit SpookyHash over <code>data</code> with a single seed. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 7998934647782875983)</code></li>
+</ul>
 <h5 id="fn-spooky128data-vecuint8-seed1-uint64-seed2-uint64-uint64-uint64"><code>fn spooky128(data: &amp;Vec[UInt8], seed1: UInt64, seed2: UInt64) -&gt; (UInt64, UInt64)</code><a class="headerlink" href="#fn-spooky128data-vecuint8-seed1-uint64-seed2-uint64-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>128-bit SpookyHash digest as two 64-bit words (hash1, hash2). Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed1 == 0 &amp;&amp; seed2 == 0) =&gt; (result._0 == 7998934647782875983 &amp;&amp; result._1 == 4075846211105015352)</code></li>
+</ul>
 <h5 id="fn-spooky_shortdata-vecuint8-uint64"><code>fn spooky_short(data: &amp;Vec[UInt8]) -&gt; UInt64</code><a class="headerlink" href="#fn-spooky_shortdata-vecuint8-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fast path 64-bit hash for messages of 8 bytes or fewer: a compact byte-wise rotate-multiply mix with an fmix64 avalanche. Complexity: O(n), n &lt;= 8.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 1089434361029156075)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3637,26 +3746,44 @@
 <blockquote>
 <p>t1ha0 latency-optimised portable 64-bit hash: single lane, 8-byte word mixing with a byte-wise tail fold. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 10933658489082281350)</code></li>
+</ul>
 <h5 id="fn-t1ha1data-vecuint8-seed-uint64-uint64"><code>fn t1ha1(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-t1ha1data-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>t1ha1 64-bit hash, well-tuned for medium inputs: two-lane 16-byte block mixing. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 4316337340695492422)</code></li>
+</ul>
 <h5 id="fn-t1ha2data-vecuint8-seed-uint64-uint64"><code>fn t1ha2(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-t1ha2data-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>t1ha2 64-bit hash, strongest avalanche of the family: two lanes, 32-byte block mixing with cross-lane addition. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 11078758155858103790)</code></li>
+</ul>
 <h5 id="fn-t1ha2_atoncedata-vecuint8-uint64"><code>fn t1ha2_atonce(data: &amp;Vec[UInt8]) -&gt; UInt64</code><a class="headerlink" href="#fn-t1ha2_atoncedata-vecuint8-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>t1ha2 one-shot 64-bit hash with implicit zero seed. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 11078758155858103790)</code></li>
+</ul>
 <h5 id="fn-t1ha2_atonce128data-vecuint8-uint64-uint64"><code>fn t1ha2_atonce128(data: &amp;Vec[UInt8]) -&gt; (UInt64, UInt64)</code><a class="headerlink" href="#fn-t1ha2_atonce128data-vecuint8-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>t1ha2 one-shot 128-bit digest as two 64-bit words. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result._0 == 11078758155858103790 &amp;&amp; result._1 == 8848935107335307795)</code></li>
+</ul>
 <h5 id="fn-t1ha_ia32data-vecuint8-seed-uint64-uint64"><code>fn t1ha_ia32(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-t1ha_ia32data-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>t1ha variant tuned for IA-32 targets: smaller state, 4-byte word mixing. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 8660465418582960253)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3665,10 +3792,16 @@
 <blockquote>
 <p>XXH64 of a byte string with the given seed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 17241709254077376921)</code></li>
+</ul>
 <h5 id="fn-xxh32data-vecuint8-seed-uint32-uint32"><code>fn xxh32(data: &amp;Vec[UInt8], seed: UInt32) -&gt; UInt32</code><a class="headerlink" href="#fn-xxh32data-vecuint8-seed-uint32-uint32" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>XXH32 of a byte string with the given seed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 46947589)</code></li>
+</ul>
 <h5 id="type-xxh128"><code>type Xxh128</code><a class="headerlink" href="#type-xxh128" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>---- 128-bit ----</p>
@@ -3695,18 +3828,30 @@
 <blockquote>
 <p>XXH3-64, seed 0. Verified against xxHash v0.8.3 reference: "" -&gt; 0x2d06800538d394c2, "a" -&gt; 0xe6c632b61e964e1f, "abc" -&gt; 0x78af5f94892f3950.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result == 3244421341483603138)</code></li>
+</ul>
 <h5 id="fn-xxh3_64_with_seeddata-vecuint8-seed-uint64-uint64"><code>fn xxh3_64_with_seed(data: &amp;Vec[UInt8], seed: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-xxh3_64_with_seeddata-vecuint8-seed-uint64-uint64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>XXH3-64 with an explicit 64-bit seed (v0.8.3 seeded-secret semantics).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result == 3244421341483603138)</code></li>
+</ul>
 <h5 id="fn-xxh3_128data-vecuint8-xxh128"><code>fn xxh3_128(data: &amp;Vec[UInt8]) -&gt; Xxh128</code><a class="headerlink" href="#fn-xxh3_128data-vecuint8-xxh128" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>XXH3-128, seed 0. Verified against xxHash v0.8.3 reference: "" -&gt; (0x6001c324468d497f, 0x99aa06d3014798d8), "a" -&gt; (0xe6c632b61e964e1f, 0xa96faf705af16834).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0) =&gt; (result.low64 == 6918025063187695999 &amp;&amp; result.high64 == 11072670137173121240)</code></li>
+</ul>
 <h5 id="fn-xxh3_128_with_seeddata-vecuint8-seed-uint64-xxh128"><code>fn xxh3_128_with_seed(data: &amp;Vec[UInt8], seed: UInt64) -&gt; Xxh128</code><a class="headerlink" href="#fn-xxh3_128_with_seeddata-vecuint8-seed-uint64-xxh128" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>XXH3-128 with an explicit 64-bit seed (v0.8.3 seeded-secret semantics).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(data.len() == 0 &amp;&amp; seed == 0) =&gt; (result.low64 == 6918025063187695999 &amp;&amp; result.high64 == 11072670137173121240)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
