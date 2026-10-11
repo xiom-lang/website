@@ -1515,6 +1515,11 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      ops on the bus. The ico in Downloads\png-to-ico is byte-identical
      to the committed xiomengine.ico, so nothing needed copying. New
      standing rule: bump the asset stamp on any css/script/image change.
+     Same-hour update: ops mapped the docroot (REL-20261011-1822-ops)
+     and the site is live -- title, nav icon, cover and the stamped
+     stylesheet verified on https://xiomengine.xiom-lang.org/, and the
+     hub card plus roadmap badge resolve; the request item
+     (REL-20261011-1812-website) is verified and closed.
 
 ## Cross-lane notes
 
