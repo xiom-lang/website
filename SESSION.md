@@ -2340,6 +2340,11 @@ material, not website surface.
   process items addressed to the website lane at session start and before
   finishing any task (`python tools/relay.py view --lane website`); never
   edit another lane's item -- open a new item instead.
+- Toolchain hygiene (ops broadcast 2026-10-11, high): never delete or
+  downgrade the shared toolchain homes (`%LOCALAPPDATA%\xiom*`, WSL
+  `~/.local/share/xiom`, `~/xiom`); treat directories without the website
+  lane name as read-only; any install/uninstall/cleanup test runs against
+  an isolated `XIOM_HOME` and is announced with a `to: all` bus item.
 - Pure ASCII files only; the org encoding gate rejects mojibake.
 - Never hardcode versions in pages; read `latest.json` / `index.json`.
 - No secrets, no environment-specific URLs beyond `xiom-lang.org` and
