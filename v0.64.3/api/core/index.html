@@ -3422,18 +3422,30 @@
 <blockquote>
 <p>=== Collection contract methods ===</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(items.len() &lt;= 1) =&gt; (result == true)</code></li>
+</ul>
 <h4 id="fn-alltitems-slicet-predicate-fnt-bool-bool"><code>fn all[T](items: &amp;Slice[T], predicate: fn(T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-alltitems-slicet-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when every element satisfies <code>predicate</code> (true when empty).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(items.len() == 0) =&gt; (result == true)</code></li>
+</ul>
 <h4 id="fn-nonetitems-slicet-predicate-fnt-bool-bool"><code>fn none[T](items: &amp;Slice[T], predicate: fn(T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-nonetitems-slicet-predicate-fnt-bool-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when no element satisfies <code>predicate</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(items.len() == 0) =&gt; (result == true)</code></li>
+</ul>
 <h4 id="fn-containstitems-slicet-value-t-bool"><code>fn contains[T](items: &amp;Slice[T], value: T) -&gt; Bool</code><a class="headerlink" href="#fn-containstitems-slicet-value-t-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>value</code> occurs in the slice.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(items.len() == 0) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-dereftself-self-t"><code>fn deref[T](self: Self) -&gt; &amp;T</code><a class="headerlink" href="#fn-dereftself-self-t" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>&amp;T</code>. No source comment yet.</p>
 <ul>
@@ -3694,50 +3706,94 @@
 <blockquote>
 <p>Returns the number of elements in the slice. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == s.len()</code></li>
+</ul>
 <h4 id="fn-slice_is_emptyts-slicet-bool"><code>fn slice_is_empty[T](s: &amp;Slice[T]) -&gt; Bool</code><a class="headerlink" href="#fn-slice_is_emptyts-slicet-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns <code>true</code> if the slice has zero elements. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (s.len() == 0)</code></li>
+</ul>
 <h4 id="fn-slice_firstts-slicet-optiont"><code>fn slice_first[T](s: &amp;Slice[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-slice_firstts-slicet-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the first element of the slice, or <code>None</code> if empty. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result is None)</code></li>
+<li><strong>Postcondition:</strong> <code>(s.len() &gt; 0) =&gt; (result is Some(_))</code></li>
+</ul>
 <h4 id="fn-slice_getts-slicet-i-int-optiont"><code>fn slice_get[T](s: &amp;Slice[T], i: Int) -&gt; Option[T]</code><a class="headerlink" href="#fn-slice_getts-slicet-i-int-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the element at index <code>i</code>, or <code>None</code> if out of bounds. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &lt; 0 || i &gt;= s.len()) =&gt; (result is None)</code></li>
+<li><strong>Postcondition:</strong> <code>(i &gt;= 0 &amp;&amp; i &lt; s.len()) =&gt; (result is Some(_))</code></li>
+</ul>
 <h4 id="fn-slice_to_vects-slicet-vect"><code>fn slice_to_vec[T](s: &amp;Slice[T]) -&gt; Vec[T]</code><a class="headerlink" href="#fn-slice_to_vects-slicet-vect" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Copies all elements from the slice into a new <code>Vec[T]</code>. Complexity: O(n) time and memory. Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == s.len()</code></li>
+</ul>
 <h4 id="fn-min_slicets-slicet-optiont"><code>fn min_slice[T](s: &amp;Slice[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-min_slicets-slicet-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Finds the minimum element in the slice using <code>Ord.compare</code>. Returns <code>None</code> if the slice is empty. Complexity: O(n) comparisons. Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result is None)</code></li>
+<li><strong>Postcondition:</strong> <code>(s.len() &gt; 0) =&gt; (result is Some(_))</code></li>
+</ul>
 <h4 id="fn-max_slicets-slicet-optiont"><code>fn max_slice[T](s: &amp;Slice[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-max_slicets-slicet-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Finds the maximum element in the slice using <code>Ord.compare</code>. Returns <code>None</code> if the slice is empty. Complexity: O(n) comparisons. Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result is None)</code></li>
+<li><strong>Postcondition:</strong> <code>(s.len() &gt; 0) =&gt; (result is Some(_))</code></li>
+</ul>
 <h4 id="fn-sum_slices-sliceint-int"><code>fn sum_slice(s: &amp;Slice[Int]) -&gt; Int</code><a class="headerlink" href="#fn-sum_slices-sliceint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sums all <code>Int</code> elements in the slice. Returns 0 if the slice is empty. Complexity: O(n). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(s.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h4 id="fn-option_is_someto-optiont-bool"><code>fn option_is_some[T](o: &amp;Option[T]) -&gt; Bool</code><a class="headerlink" href="#fn-option_is_someto-optiont-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns <code>true</code> if the option is <code>Some</code>. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(o is Some(_)) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(o is None) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-option_is_noneto-optiont-bool"><code>fn option_is_none[T](o: &amp;Option[T]) -&gt; Bool</code><a class="headerlink" href="#fn-option_is_noneto-optiont-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns <code>true</code> if the option is <code>None</code>. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(o is None) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(o is Some(_)) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-result_is_okt-er-resultt-e-bool"><code>fn result_is_ok[T, E](r: &amp;Result[T, E]) -&gt; Bool</code><a class="headerlink" href="#fn-result_is_okt-er-resultt-e-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns <code>true</code> if the result is <code>Ok</code>. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r is Ok(_)) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(r is Err(_)) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-result_is_errt-er-resultt-e-bool"><code>fn result_is_err[T, E](r: &amp;Result[T, E]) -&gt; Bool</code><a class="headerlink" href="#fn-result_is_errt-er-resultt-e-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns <code>true</code> if the result is <code>Err</code>. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r is Err(_)) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(r is Ok(_)) =&gt; (result == false)</code></li>
+</ul>
 <h4 id="fn-result_unwrap_ort-er-resultt-e-default-t-t"><code>fn result_unwrap_or[T, E](r: Result[T, E], default: T) -&gt; T</code><a class="headerlink" href="#fn-result_unwrap_ort-er-resultt-e-default-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the contained <code>Ok</code> value, or <code>default</code> if the result is <code>Err</code>. Complexity: O(1). Thread-safe: reads immutable shared data.</p>
