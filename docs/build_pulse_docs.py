@@ -197,6 +197,14 @@ def main():
     css_dst = os.path.join(args.out, "style.css")
     with open(css_src, "r", encoding="utf-8") as fh:
         css = fh.read()
+    # These pages live on the project subdomain: enlarge the nav mark
+    # beyond the main-site size without touching the shared stylesheet.
+    css += (
+        "\nnav .wrap { height: auto; min-height: var(--nav-height);"
+        " padding-top: 16px; padding-bottom: 16px; }\n"
+        ".logo { font-size: 22px; gap: 14px; }\n"
+        ".logo img { width: 96px; height: 96px; }\n"
+    )
     with open(css_dst, "w", encoding="ascii", newline="\n") as fh:
         fh.write(css)
 
