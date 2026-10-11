@@ -1483,6 +1483,17 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      and the docs template follow with the Pulse icon, and the eight docs
      pages were rebuilt. The now-unused XIOM logo copies stay in the
      project img folders.
+102. **Subdomain nav marks enlarged 4x (2026-10-11)**: the project nav
+     logo went from 24px to 96px (with the lockup text 18px -> 22px and
+     14px gap) on all four subdomain stylesheets; the shared base
+     `nav .wrap` rule switched from a fixed `height` to `min-height` +
+     16px vertical padding so the taller mark fits, and the existing
+     <=860px wrap rule still handles narrow screens. The docs pages copy
+     the main stylesheet (xiom-lang.org keeps its 24px mark), so the docs
+     build now appends a project-scoped override
+     (`nav .wrap` height fix + `.logo`/`.logo img`) to the generated
+     `docs/style.css`; the eight pages were rebuilt. The demo page
+     inherits the pulse stylesheet.
 
 ## Cross-lane notes
 
