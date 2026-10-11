@@ -101,7 +101,7 @@ PAGE = """<!doctype html>
 <meta name="description" content="{description}">
 <link rel="canonical" href="https://pulse.xiom-lang.org/docs/{canonical}">
 <link rel="icon" type="image/x-icon" href="../img/pulse.ico">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261011">
 </head>
 <body>
 
