@@ -1520,6 +1520,20 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      stylesheet verified on https://xiomengine.xiom-lang.org/, and the
      hub card plus roadmap badge resolve; the request item
      (REL-20261011-1812-website) is verified and closed.
+104. **Doorbell period (2026-10-12..15)**: the bus stayed quiet for the
+     website lane; every doorbell cycle was processed. Two stdlib
+     wishlists were verified and closed: accelerated-path transparency
+     (docs/ACCELERATED.md marker inventory verified + the wave-132
+     differential probe ran green locally, exit 0) and the xiom-std pin
+     metadata (the live registry now serves compiler per version --
+     0.64.4 -> v0.64.3 -- and the publish workflow passes --compiler).
+     The pulse openapi packaging bug stays fixed-and-unverified: no
+     re-cut has happened (pulse-v0.2.0 @ 2026-10-10 16:33 is still the
+     mirror artifact and the demo remains on the rolled-back 0.1.0).
+     Other lanes' broadcasts (compiler v0.64.4 wave staged with Gate A
+     green; the xvector/pulse/engine production-grade requirement relays;
+     the engine ask ledger) need no website action. Reminder: the
+     doorbell cron task expires ~2026-10-17; re-create it (item 99).
 
 ## Cross-lane notes
 
@@ -2420,7 +2434,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-10-09): HEAD 93d2e3b. Copyright notices across the repo read
+State (2026-10-15): HEAD 171ee4b. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Public copy holds the human-voice sweep (no internal
@@ -2440,7 +2454,9 @@ crash-looped with SIGILL on the VPS, so the demo was rolled back to
 the footer/badge keep showing the running 0.1.0). docs-src was synced at
 the cut and the eight docs pages rebuilt (2a25464); the released zip
 omits resources/openapi.json so /openapi.json 500s in the artifact
-(pulse marked the fix fixed at f15a6b0; verify at the re-cut).
+(pulse marked the fix fixed at f15a6b0; verify at the re-cut). No
+re-cut as of 2026-10-15: 0.2.0 (Oct 10 16:33) is still the mirror
+artifact and the demo stays on 0.1.0.
 PULSE_BIND still binds wildcard in 0.2.0 (verified locally), so the
 demo armor stays. Serving verdict (re-tested on the 0.2.0 windows
 artifact): one instance serves one landing HTML + one /assets/* tree
@@ -2450,7 +2466,9 @@ multi-page sites cannot be served by Pulse -- nginx keeps the sites,
 Pulse keeps its own landing and API. New Pulse claims route through the
 Pulse lane before publishing.
 
-Recent landings (2026-10-11): the asset version stamp refreshed to
+Recent landings (2026-10-15): the doorbell period was quiet -- two
+stdlib wishlists verified and closed; no re-cut, nothing else moved.
+(2026-10-11): the asset version stamp refreshed to
 20261011 (stale since 09-28 -- mobile clients were rendering cached
 pages) and XiomEngine added as the fifth project (hub, roadmap,
 subdomain scaffold; docroot relayed to ops). (2026-10-09/10): the 0.2.0
@@ -2470,16 +2488,16 @@ registry trust sections, and v0.64.0/v0.64.2 verified live the days they
 shipped (dynamic download/versions pages, tag-pinned notes render).
 
 Before starting the queue: pull xiom-relays and process items to the
-website lane, then verify the latest deploy (2a25464) on the :23 pull --
-the Pulse docs pages show the 0.2.0 release notes, the landing claims and
-the served-by footer note (icon + running version) render,
-roadmap.html#projects shows the half-width badges, projects.html and the
-project pages keep the covers, the subdomain favicons resolve (pulse,
-orbitdb, xvector, chaos), and the selfhost cover renders above the
-Self-hosting section. Check the dl mirror shows 0.2.0 (linux + windows)
-and, when ops redeploys the demo, the footer version and the console
-line. The artifact's /openapi.json is a known 500 until the packaging
-fix.
+website lane; re-create the doorbell cron if it has expired (~Oct 17).
+Verify the latest deploy (171ee4b) on the :23 pull -- the xiomengine
+site (title, nav icon, cover, stamped stylesheet) and its hub card /
+roadmap badge are live (verified 2026-10-11); the asset stamp reads
+20261011 across the site; the Pulse docs show the 0.2.0 release notes,
+the served-by footer note (icon + running version) renders, and the
+subdomain navs carry their own marks (pulse, orbitdb, xvector, chaos,
+xiomengine). The dl mirror shows pulse 0.2.0 (linux + windows) but the
+demo stays on 0.1.0 until the re-cut; the artifact's /openapi.json is a
+known 500 until then.
 
 Next, in order:
 1. Pulse follow-ups: watch the 0.2.0 rollout -- mirror 0.2.0 + the ops
@@ -2504,9 +2522,9 @@ Next, in order:
    note for 128-bit primitives).
 7. OrbitDB / XVector / Chaos / XiomEngine: when a repo opens or a
    release is cut, mirror the Pulse pattern (per-product dl namespace,
-   docs render, downloads wiring, armor, demo). XiomEngine's docroot
-   mapping is filed to ops (the live host still shows the hosting
-   placeholder); its copy expands when the owner provides engine facts.
+   docs render, downloads wiring, armor, demo). XiomEngine's docroot is
+   mapped and live; its copy expands when the owner provides engine
+   facts (the engine lane's requirement relay is the first fact source).
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS ships on all
