@@ -1550,6 +1550,31 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      archive reaching dl; not there yet). This session holds no doorbell
      cron; the recurring check stays with the previous session until
      ~Oct 17 (re-create when it lapses).
+106. **Pulse 0.2.1 cut processed and live (2026-10-15 evening)**: the
+     re-cut landed and the whole chain verified the same evening.
+     pulse-v0.2.1 published on GitHub 21:23Z (tag 0e83c4b2; linux-x64 +
+     windows-x64 on the v0.64.5 toolchain; the SIGILL fix; macOS
+     deferred per the release notes, now targeted at v0.64.6). Website
+     cut duties done: docs-src re-synced from docs/public (5 files:
+     index, configuration, http-api, security, releases) and the eight
+     docs pages rebuilt (466c9c9) -- static site mode, the P8 game
+     control plane (/api/game/*), the helmet header set and the 0.2.1
+     entry now render; link check 110 pages, 0 broken; landing copy
+     needed no change. The openapi packaging bug is verified fixed
+     (0.2.1 zip sha256 matches the cut item, resources/openapi.json
+     shipped, local GET /openapi.json 200, OpenAPI 3.1.0) -- the bus
+     item is verified and closed; REL-20261011-1124-pulse moved to
+     fixed (docs picked up). Live by 21:36Z: the mirror serves
+     pulse-v0.2.1 and compiler v0.64.5, and the ops demo redeploy is
+     done (version 0.2.1, /health ok, GET /openapi.json 200);
+     REL-20261010-1721-ops-2 moved acked -> fixed. Finding filed to ops
+     (REL-20261015-2137-website): /api/version still reports the 0.1.0
+     provenance (commit cc3e741, build 2026-10-09) instead of the 0.2.1
+     cut values. PULSE_BIND still binds wildcard in 0.2.1 (local check:
+     127.0.0.1 -> 0.0.0.0 listen), so the demo armor stays; PULSE_SITE_DIR
+     (new in 0.2.1) could change the multi-page serving verdict -- re-test
+     before relying on it. The rebuilt docs pages go live with the
+     22:23Z pull.
 
 ## Cross-lane notes
 
@@ -2450,7 +2475,7 @@ docs-versioned push trigger republishes docs.xiom-lang.org; the docs docroot
 switch is DONE and live. The owner account has a ruleset bypass, so direct
 pushes to main are expected.
 
-State (2026-10-15): HEAD 171ee4b. Copyright notices across the repo read
+State (2026-10-15): HEAD 466c9c9. Copyright notices across the repo read
 "Copyright (c) 2026 Eleftherios Notas and The XIOM Authors" per
 xiom-lang/.github docs/LICENSING.md section 8; the XIOM Foundation must not
 be named as holder. Public copy holds the human-voice sweep (no internal
@@ -2461,29 +2486,31 @@ rule across the guides; the snippet syntax lint in `docs.yml` and
 `docs/marketplace-publisher.md` holds the marketplace copy; neither is
 built into the site.
 
-PULSE STATE (2026-10-10): pulse-v0.2.0 shipped (tag e31d396; linux-x64 +
-windows-x64 + .sha256 + SHA256SUMS + provenance) and is live on the
-mirror (latest.json verified 17:40). macOS is deferred to the next
-release (dark buttons stay dark). Ops installed 0.2.0 on the demo but it
-crash-looped with SIGILL on the VPS, so the demo was rolled back to
-0.1.0 and the redeploy is on hold until pulse re-cuts (pulse bug item;
-the footer/badge keep showing the running 0.1.0). docs-src was synced at
-the cut and the eight docs pages rebuilt (2a25464); the released zip
-omits resources/openapi.json so /openapi.json 500s in the artifact
-(pulse marked the fix fixed at f15a6b0; verify at the re-cut). No
-re-cut as of 2026-10-15: 0.2.0 (Oct 10 16:33) is still the mirror
-artifact and the demo stays on 0.1.0.
-PULSE_BIND still binds wildcard in 0.2.0 (verified locally), so the
-demo armor stays. Serving verdict (re-tested on the 0.2.0 windows
-artifact): one instance serves one landing HTML + one /assets/* tree
-(ETag/304) + the API; nothing outside /assets resolves (style.css and
-img/... at the root 404, roadmap.html and /demo/ 404), so the five
-multi-page sites cannot be served by Pulse -- nginx keeps the sites,
-Pulse keeps its own landing and API. New Pulse claims route through the
-Pulse lane before publishing.
+PULSE STATE (2026-10-15): pulse-v0.2.1 is released and live end to end
+(tag 0e83c4b2; GitHub 21:23Z; linux-x64 + windows-x64 on the v0.64.5
+toolchain; the SIGILL fix). The mirror serves pulse-v0.2.1 and compiler
+v0.64.5; the ops demo redeploy is done (version 0.2.1, /health ok, GET
+/openapi.json 200 -- the 0.2.0 packaging bug is verified fixed on the
+zip and live). Website cut duties are done: docs-src re-synced from
+docs/public (5 files) and the eight docs pages rebuilt (466c9c9) --
+static site mode, the P8 game control plane (/api/game/*), the helmet
+header set and the 0.2.1 entry render; the pages go live with the
+22:23Z pull. macOS stays deferred (release notes target the v0.64.6
+toolchain; buttons dark). Open bus item: REL-20261015-2137-website to
+ops (the demo /api/version still reports 0.1.0 provenance: commit
+cc3e741, build 2026-10-09); REL-20261010-1721-ops-2 is fixed and closes
+after the ops check. PULSE_BIND still binds wildcard in 0.2.1 (local
+check: 127.0.0.1 -> 0.0.0.0), so the demo armor stays. Serving verdict
+(re-tested on 0.2.0): one instance serves one landing HTML + one
+/assets/* tree + the API; the five multi-page sites stay on nginx --
+PULSE_SITE_DIR (new in 0.2.1) could change this, re-test before relying
+on it. New Pulse claims route through the Pulse lane before publishing.
 
-Recent landings (2026-10-15): the doorbell period was quiet -- two
-stdlib wishlists verified and closed; no re-cut, nothing else moved.
+Recent landings (2026-10-15): the 0.2.1 cut landed in the evening and
+was processed the same session (items 105/106: docs synced + rebuilt
+466c9c9, openapi verified fixed, demo redeployed and verified, bus
+updated); the doorbell period had two stdlib wishlists verified and
+closed and nothing else moved.
 (2026-10-11): the asset version stamp refreshed to
 20261011 (stale since 09-28 -- mobile clients were rendering cached
 pages) and XiomEngine added as the fifth project (hub, roadmap,
@@ -2505,23 +2532,23 @@ shipped (dynamic download/versions pages, tag-pinned notes render).
 
 Before starting the queue: pull xiom-relays and process items to the
 website lane; re-create the doorbell cron if it has expired (~Oct 17).
-Verify the latest deploy (171ee4b) on the :23 pull -- the xiomengine
-site (title, nav icon, cover, stamped stylesheet) and its hub card /
-roadmap badge are live (verified 2026-10-11); the asset stamp reads
-20261011 across the site; the Pulse docs show the 0.2.0 release notes,
-the served-by footer note (icon + running version) renders, and the
-subdomain navs carry their own marks (pulse, orbitdb, xvector, chaos,
-xiomengine). The dl mirror shows pulse 0.2.0 (linux + windows) but the
-demo stays on 0.1.0 until the re-cut; the artifact's /openapi.json is a
-known 500 until then.
+Verify the latest deploy on the :23 pull (466c9c9) -- the Pulse docs
+show the 0.2.1 release notes and the served-by footer note renders the
+running 0.2.1; the xiomengine site, the asset stamp (20261011) and the
+subdomain navs with their own marks are live. The mirror serves pulse
+0.2.1 and compiler v0.64.5; the demo is on 0.2.1 with /openapi.json
+200. Watch REL-20261015-2137-website (demo provenance) and the ops
+close of REL-20261010-1721-ops-2.
 
 Next, in order:
-1. Pulse follow-ups: watch the 0.2.0 rollout -- mirror 0.2.0 + the ops
-   demo redeploy to pulse-v0.2.0; the /openapi.json packaging fix (pulse
-   bug item); the macOS ship gate (compiler archive carrying the memset
-   fix + the runtime patch already in); re-sync `docs-src/` again when
-   the next public set ships. The kv flip gate still waits on a >=24h
-   soak; keep routing new claims through the Pulse lane.
+1. Pulse follow-ups: the 0.2.1 rollout is done and verified (above);
+   open ends are the demo provenance item (REL-20261015-2137-website)
+   and re-syncing `docs-src/` at the next public set. The macOS gate
+   now targets the v0.64.6 toolchain. The kv flip gate still waits on a
+   >=24h soak; the wildcard-bind bug persists in 0.2.1 (keep the armor);
+   PULSE_SITE_DIR (new) could change the multi-page serving verdict --
+   re-test before relying on it; keep routing new claims through the
+   Pulse lane.
 2. Playground 2.2 (gamified learning): flip the roadmap row when levels,
    streaks, badges and the certificate ship; the badge artwork is still to
    come.
@@ -2549,9 +2576,9 @@ the earlier "wait for RELEASE_BUILD_MACOS" note is closed; ecosystem/
 registry doc pointers stay deferred until stdlib is 100%; registry
 correlation (`compiler` pin metadata) waits on the stdlib publish pass.
 
-Mirror state (owner/VPS, checked 2026-10-09): the compiler namespace is
-current (v0.64.2) and the pulse namespace carries pulse-v0.2.0
-(linux-x64 + windows-x64; verified 2026-10-10); the mirror JSON paths
+Mirror state (owner/VPS, checked 2026-10-15): the compiler namespace is
+current (v0.64.5) and the pulse namespace carries pulse-v0.2.1
+(linux-x64 + windows-x64; sha256 verified); the mirror JSON paths
 still send no `Access-Control-Allow-Origin`, so the Pulse page rewrites
 the GitHub release metadata onto dl paths and the download page's
 checksum column needs raw fallbacks. The compiler archive writer should
