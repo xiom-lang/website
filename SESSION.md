@@ -1580,6 +1580,26 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      max-age=3600 on HTML, /favicon.ico route, JSON 404s, octet-stream
      install scripts); the prompt carries the full list. The rebuilt
      docs pages go live with the 22:23Z pull.
+107. **Served-by-Pulse dogfood wiring (2026-10-15/16)**: the owner asked
+     for the visible flex -- the site should say it is served by Pulse.
+     Shipped the readiness (8782a34): js/served-by.js plus the script
+     include on the 13 main pages (index, download, versions,
+     contributing, ecosystem, history, prior-art, privacy, projects,
+     roadmap, spec, terms, why). The note renders "Served by Pulse
+     <version>" in the footer legal row ONLY when /api/version answers
+     same-origin and adds nothing otherwise, so there is no false-claim
+     window before the origin switch or while the static fallback
+     serves. Verified headless: with the 0.2.1 binary in site mode the
+     note shows 0.2.1 on index and download; against a plain static
+     server it is fully absent. Tested setting for the switch:
+     PULSE_SITE_MAX_AGE=0 keeps ETag revalidation (the 3600 default
+     caches HTML for an hour). Bus: REL-20261015-2156-website proposes
+     the apex switch to ops (new pulse-site instance, nginx edge with
+     gzip_proxied + static 502 fallback, only = /api/version and
+     = /health exposed, demo unit untouched) and -2 is the pulse
+     wishlist for the bare-directory 301 gap. The note activates
+     automatically when ops flips the vhost; no website deploy at
+     switch time.
 
 ## Cross-lane notes
 
@@ -2516,8 +2536,11 @@ carries Cache-Control max-age=3600 (set PULSE_SITE_MAX_AGE=0 to
 approximate no-cache+revalidate), /favicon.ico always serves the Pulse
 icon (app route, 187 KB), 404s are JSON unless a 404.html exists, and
 /install.sh|ps1 serve octet-stream (as on the main-site nginx).
-xiom-lang.org and the demo vhost stay on the current setup. New Pulse
-claims route through the Pulse lane before publishing.
+xiom-lang.org and the demo vhost stay on the current setup. The
+served-by-Pulse footer note is wired and self-hiding (8782a34); it
+activates when ops switches the apex origin (REL-20261015-2156-website
+proposes the shape). New Pulse claims route through the Pulse lane
+before publishing.
 
 Recent landings (2026-10-15): the 0.2.1 cut landed in the evening and
 was processed the same session (items 105/106: docs synced + rebuilt
@@ -2561,8 +2584,10 @@ Next, in order:
    >=24h soak; the wildcard-bind bug persists in 0.2.1 (keep the armor);
    PULSE_SITE_DIR now serves the whole multi-page site (re-tested
    2026-10-15; see the serving verdict above for the nginx differences
-   to resolve before any switch); keep routing new claims through the
-   Pulse lane.
+   to resolve before any switch; the apex dogfood switch is proposed in
+   REL-20261015-2156-website -- the footer note self-activates when ops
+   flips the vhost, then re-verify the note); keep routing new claims
+   through the Pulse lane.
 2. Playground 2.2 (gamified learning): flip the roadmap row when levels,
    streaks, badges and the certificate ship; the badge artwork is still to
    come.
