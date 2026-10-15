@@ -1534,6 +1534,22 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      green; the xvector/pulse/engine production-grade requirement relays;
      the engine ask ledger) need no website action. Reminder: the
      doorbell cron task expires ~2026-10-17; re-create it (item 99).
+105. **Session pick-up and bus processing (2026-10-15)**: the start-up
+     check came back green with no site changes needed. Live spot-check:
+     xiomengine.xiom-lang.org serves the real page (title, nav icon,
+     cover, style.css?v=20261011), the main site and all five project
+     subdomains carry the 20261011 stamp and their own nav marks, the
+     Pulse landing carries the served-by note and the docs render the
+     0.2.0 release notes, /api/version reports the running 0.1.0 demo,
+     and the mirror serves pulse-v0.2.0 and compiler v0.64.4. Bus:
+     REL-20261011-1822-ops (xiomengine docroot) moved acked -> fixed with
+     the re-verification (ops may close); REL-20261010-1721-ops-2 and
+     REL-20261011-1124-pulse stay acked on purpose until the ops 0.2.1
+     demo redeploy and the docs-src re-sync that follows the next pulse
+     cut (ops REL-20261015-1933: the redeploy is gated on the v0.64.5
+     archive reaching dl; not there yet). This session holds no doorbell
+     cron; the recurring check stays with the previous session until
+     ~Oct 17 (re-create when it lapses).
 
 ## Cross-lane notes
 
