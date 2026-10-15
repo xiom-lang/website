@@ -176,11 +176,26 @@
 <td><code>262144</code></td>
 <td>outbound HTTP response size cap</td>
 </tr>
+<tr>
+<td><code>PULSE_SITE_DIR</code></td>
+<td>(unset)</td>
+<td>static-site root; serves unmatched GET/HEAD + <code>/assets/*</code> (clean URLs, <code>404.html</code>, <code>application/wasm</code>)</td>
+</tr>
+<tr>
+<td><code>PULSE_SITE_MAX_AGE</code></td>
+<td><code>3600</code></td>
+<td>site <code>Cache-Control</code> max-age seconds</td>
+</tr>
+<tr>
+<td><code>PULSE_CSP</code></td>
+<td>(unset)</td>
+<td><code>Content-Security-Policy</code> header value; unset = no CSP header</td>
+</tr>
 </table>
 <p><code>PULSE_BIND</code> takes the <strong>address only</strong> (<code>127.0.0.1</code>, <code>::1</code>, <code>0.0.0.0</code> in containers); the port belongs to <code>PULSE_PORT</code>. A combined value such as <code>127.0.0.1:3500</code> is reported as a validation warning -- never put a port in <code>PULSE_BIND</code>.</p>
 <p><code>PULSE_LANDING_PATH</code> is re-read on every request to <code>/</code>, so content pipelines can update the landing page without restarting the server.</p>
 <h2>JSON config file</h2>
-<p>Any of the documented keys can be set in the JSON file (<code>port</code>, <code>bind</code>, <code>log</code>, <code>store_backend</code>, <code>store_path</code>, <code>kv_dir</code>, <code>kv_prefix</code>, <code>audit_path</code>, <code>audit_max_bytes</code>, <code>config</code>, <code>icon_path</code>, <code>assets_dir</code>, <code>landing_path</code>, <code>jwt_secret</code>, <code>session_ttl</code>, <code>rate_limit</code>, <code>rate_burst</code>, <code>csrf</code>, <code>cors_origin</code>, <code>upload_dir</code>, <code>upload_max_bytes</code>, <code>upload_max_parts</code>, <code>http_allowlist</code>, <code>http_max_bytes</code>). Environment variables override the file.</p>
+<p>Any of the documented keys can be set in the JSON file (<code>port</code>, <code>bind</code>, <code>log</code>, <code>store_backend</code>, <code>store_path</code>, <code>kv_dir</code>, <code>kv_prefix</code>, <code>audit_path</code>, <code>audit_max_bytes</code>, <code>config</code>, <code>icon_path</code>, <code>assets_dir</code>, <code>landing_path</code>, <code>jwt_secret</code>, <code>session_ttl</code>, <code>rate_limit</code>, <code>rate_burst</code>, <code>csrf</code>, <code>cors_origin</code>, <code>upload_dir</code>, <code>upload_max_bytes</code>, <code>upload_max_parts</code>, <code>http_allowlist</code>, <code>http_max_bytes</code>, <code>site_dir</code>, <code>site_max_age</code>, <code>csp</code>). Environment variables override the file.</p>
 <h2>Store backends</h2>
 <ul>
 <li><code>jsonl</code> (default): append-only file, crash-safe (a torn trailing line</li>

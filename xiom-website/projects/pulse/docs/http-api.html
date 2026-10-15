@@ -176,6 +176,39 @@ Link: &lt;/api/events?limit=<span class='num'>10</span>&amp;before=<span class='
 <p><code>POST /api/events</code> accepts an optional <code>Idempotency-Key</code> header (1-200 visible characters). Repeating a request with the same key does not append a second event: the original sequence is replayed with <code>"deduplicated":true</code> and the count stays unchanged. The key is stored inside the event record (<code>idem</code>), so the guarantee survives restarts on both backends; a malformed key is <code>400 invalid_idempotency_key</code>.</p>
 <h3>Uploads</h3>
 <p><code>POST /api/uploads</code> accepts <code>multipart/form-data</code> (one or more file parts; parts without a filename are ignored). Files are written under <code>PULSE_UPLOAD_DIR</code> (default <code>uploads/</code>) with generated names -- client filenames are never path components, only a sanitized extension survives -- and the response lists <code>name</code> / <code>original</code> / <code>bytes</code> / <code>content_type</code> per file. Caps: <code>PULSE_UPLOAD_MAX_BYTES</code> per part (default 1 MiB) and <code>PULSE_UPLOAD_MAX_PARTS</code> (default 8); the HTTP core's decoded-body cap still bounds the whole request. Errors: <code>415 unsupported_media_type</code> (not multipart / no boundary), <code>400 boundary_not_found</code> or <code>400 malformed</code> (broken framing), <code>413 part_too_large</code> / <code>413 too_many_parts</code>. This is a 0.2 surface: it is reachable at <code>/api/uploads</code> and <code>/v1/api/uploads</code>.</p>
+<h3>Serving a site</h3>
+<p>With <code>PULSE_SITE_DIR</code> set, the binary serves a pre-built static site: any <code>GET</code>/<code>HEAD</code> that matches no API route is resolved against the site root -- exact file, clean URL (<code>/about</code> -> <code>about.html</code>), directory index (<code>/docs/</code> -> <code>docs/index.html</code>). Missing paths serve <code>404.html</code> with status <code>404</code> (plain JSON when that file is absent), <code>.wasm</code> is served as <code>application/wasm</code>, and caching is controlled by <code>PULSE_SITE_MAX_AGE</code> (default 3600s). API routes (<code>/api/*</code>, <code>/v1/*</code>, <code>/health</code>, <code>/metrics</code>, <code>/openapi.json</code>, <code>/favicon.ico</code>) always take precedence, and path traversal is rejected by the static engine.</p>
+<h2>Game control plane (<code>/api/game/*</code>)</h2>
+<p>The P8 contract for XIOM Engine game servers (server-to-server; the realtime plane stays engine-owned). A game server calls <code>register</code> once, then presents its <strong>per-server bearer token</strong> on every call.</p>
+<ul>
+<li><code>POST /api/game/register</code> -- `{protocol_version, build, map, mode,</li>
+</ul>
+<p>capacity?, region?, game_endpoint?, query_endpoint?}<code> -&gt; </code>server_id<code>,   </code>server_token<code>, </code>config_revision<code>, </code>heartbeat_cadence_secs`.</p>
+<ul>
+<li><code>POST /api/game/heartbeat</code> -- `{players?, tick_rate?, frame_time_ms?,</li>
+</ul>
+<p>uptime_sec?}<code>; the response carries </code>commands<code> (</code>drain_requested<code>,   </code>shutdown`) so control-plane -> server delivery needs no inbound   route.</p>
+<ul>
+<li><code>GET /api/game/config?build=</code> -- config document with `ETag:</li>
+</ul>
+<p>"rev-N"<code> (304 on </code>If-None-Match<code>); a build that matches neither   </code>min_build<code> nor </code>current_build<code> gets </code>409 incompatible_build`.</p>
+<ul>
+<li><code>GET /api/game/compat?build=</code> -- <code>min_build</code>, <code>current_build</code>,</li>
+</ul>
+<p><code>protocol_version</code>, <code>compatible</code> (exact-match fact; the engine owns   richer ordering).</p>
+<ul>
+<li><code>POST /api/game/match-report</code> -- final match record; requires</li>
+</ul>
+<p><code>Idempotency-Key</code> (duplicates replay <code>deduplicated:true</code>).</p>
+<ul>
+<li><code>POST /api/game/telemetry</code> -- batched telemetry; requires</li>
+</ul>
+<p><code>Idempotency-Key</code> (same duplicate semantics).</p>
+<ul>
+<li><code>POST /api/game/admin/command</code> -- ops-gated (<code>PULSE_GAME_ADMIN_TOKEN</code>)</li>
+</ul>
+<p>state change: <code>{server_id, state: active|drain_requested|shutdown}</code>;   <code>403 admin_disabled</code> when no token is configured.</p>
+<p>Storage: append-only kind-tagged JSONL at <code>PULSE_GAME_PATH</code> (default <code>pulse-game.jsonl</code>; latest-wins per <code>server_id</code>); the config document lives at <code>PULSE_GAME_CONFIG_PATH</code> (default <code>pulse-game-config.json</code>, <code>revision</code> field feeds the ETag). Advertised cadence: <code>PULSE_GAME_HEARTBEAT_SECS</code> (default 15).</p>
 <h2>Request limits and semantics</h2>
 <ul>
 <li>Body cap: 1 MiB decoded; over-cap chunked bodies get <code>413</code>.</li>
@@ -198,7 +231,7 @@ Link: &lt;/api/events?limit=<span class='num'>10</span>&amp;before=<span class='
 </ul>
 <p>Statuses: <code>200</code>, <code>204</code>, <code>400</code>, <code>401</code>, <code>403</code>, <code>404</code>, <code>405</code>, <code>413</code>, <code>500</code>, <code>501</code>.</p>
 <h2>CLI</h2>
-<p><code>pulse_app openapi</code> prints the same contract document to stdout; <code>pulse_app routes</code> prints the route table (<code>METHOD PATH</code> per line); <code>pulse_app version</code> and <code>pulse_app check-config</code> mirror the <code>--version</code> and <code>--check-config</code> flags. <code>openapi</code> exits 1 when the document cannot be read; <code>check-config</code> exits 1 when a configured file is unreadable.</p>
+<p><code>pulse_app openapi</code> prints the same contract document to stdout; <code>pulse_app openapi --check</code> verifies the document still covers every router route (exit 1 and the missing list on drift); <code>pulse_app routes</code> prints the route table (<code>METHOD PATH</code> per line); <code>pulse_app version</code> and <code>pulse_app check-config</code> mirror the <code>--version</code> and <code>--check-config</code> flags. <code>openapi</code> exits 1 when the document cannot be read; <code>check-config</code> exits 1 when a configured file is unreadable.</p>
     </article>
   </div>
 </main>
