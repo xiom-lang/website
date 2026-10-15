@@ -1571,10 +1571,15 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      (REL-20261015-2137-website): /api/version still reports the 0.1.0
      provenance (commit cc3e741, build 2026-10-09) instead of the 0.2.1
      cut values. PULSE_BIND still binds wildcard in 0.2.1 (local check:
-     127.0.0.1 -> 0.0.0.0 listen), so the demo armor stays; PULSE_SITE_DIR
-     (new in 0.2.1) could change the multi-page serving verdict -- re-test
-     before relying on it. The rebuilt docs pages go live with the
-     22:23Z pull.
+     127.0.0.1 -> 0.0.0.0 listen), so the demo armor stays. PULSE_SITE_DIR
+     was re-tested against the full site tree: site mode now serves the
+     whole multi-page site correctly (clean URLs, directory indexes,
+     MIME types, ranges, API precedence), so the old "cannot serve the
+     multi-page sites" verdict is superseded -- with nginx differences
+     to resolve before any switch (no trailing-slash 301, no gzip,
+     max-age=3600 on HTML, /favicon.ico route, JSON 404s, octet-stream
+     install scripts); the prompt carries the full list. The rebuilt
+     docs pages go live with the 22:23Z pull.
 
 ## Cross-lane notes
 
@@ -2501,10 +2506,18 @@ ops (the demo /api/version still reports 0.1.0 provenance: commit
 cc3e741, build 2026-10-09); REL-20261010-1721-ops-2 is fixed and closes
 after the ops check. PULSE_BIND still binds wildcard in 0.2.1 (local
 check: 127.0.0.1 -> 0.0.0.0), so the demo armor stays. Serving verdict
-(re-tested on 0.2.0): one instance serves one landing HTML + one
-/assets/* tree + the API; the five multi-page sites stay on nginx --
-PULSE_SITE_DIR (new in 0.2.1) could change this, re-test before relying
-on it. New Pulse claims route through the Pulse lane before publishing.
+(RE-TESTED 2026-10-15, 0.2.1 artifact, PULSE_SITE_DIR at the full
+xiom-website tree): site mode serves the whole multi-page site -- clean
+URLs, directory indexes, correct MIME types, query strings, Range/206,
+ETag/Last-Modified, API routes win, traversal rejected. Differences vs
+nginx to resolve before any switch: bare directory URLs do NOT 301
+(relative assets break; nginx 301s), no gzip (nginx compresses), HTML
+carries Cache-Control max-age=3600 (set PULSE_SITE_MAX_AGE=0 to
+approximate no-cache+revalidate), /favicon.ico always serves the Pulse
+icon (app route, 187 KB), 404s are JSON unless a 404.html exists, and
+/install.sh|ps1 serve octet-stream (as on the main-site nginx).
+xiom-lang.org and the demo vhost stay on the current setup. New Pulse
+claims route through the Pulse lane before publishing.
 
 Recent landings (2026-10-15): the 0.2.1 cut landed in the evening and
 was processed the same session (items 105/106: docs synced + rebuilt
@@ -2546,8 +2559,9 @@ Next, in order:
    and re-syncing `docs-src/` at the next public set. The macOS gate
    now targets the v0.64.6 toolchain. The kv flip gate still waits on a
    >=24h soak; the wildcard-bind bug persists in 0.2.1 (keep the armor);
-   PULSE_SITE_DIR (new) could change the multi-page serving verdict --
-   re-test before relying on it; keep routing new claims through the
+   PULSE_SITE_DIR now serves the whole multi-page site (re-tested
+   2026-10-15; see the serving verdict above for the nginx differences
+   to resolve before any switch); keep routing new claims through the
    Pulse lane.
 2. Playground 2.2 (gamified learning): flip the roadmap row when levels,
    streaks, badges and the certificate ship; the badge artwork is still to
