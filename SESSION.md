@@ -1600,6 +1600,26 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      wishlist for the bare-directory 301 gap. The note activates
      automatically when ops flips the vhost; no website deploy at
      switch time.
+108. **Project status pass: pulse / orbitdb / xvector (2026-10-16)**:
+     owner asked for the status check so the pages stay current.
+     PULSE is public and current (0.2.1 live; the top-tier #1-class
+     directive, the pulse-sails/xiom.pulse extraction and Beacon
+     staging are internal plan items -- docs/ROADMAP-TOP-TIER.md and
+     the bus -- nothing published or needed on the site yet).
+     ORBITDB / XVECTOR remain private and pre-alpha with no releases,
+     but both formally planned tier lines on 2026-10-16 (OrbitDB
+     Satellite = embedded engine / Station = PostgreSQL-class server
+     tier; XVector mote = embedded package / lattice = scale-out
+     server), the stdlib file_lock landed (wave 152) unblocking
+     OrbitDB's M3 remainder, and the fsync/sync-write primitives landed
+     (waves 115-118) so the 'gated on the standard library's fsync row'
+     copy was outdated. Applied copy corrections (123eee7; 7 spots:
+     projects.html, roadmap.html, the OrbitDB page -- fsync/sync-write
+     primitives now in place, and 'tagged releases' phrasing for
+     Pulse). Tier-direction copy is held for lane confirmation:
+     REL-20261016-1724-website (orbitdb) and -2 (xvector) carry the
+     proposed wording; no tier names published before their OK. No
+     stamp bump (HTML-only content changes).
 
 ## Cross-lane notes
 
@@ -2607,6 +2627,9 @@ Next, in order:
    docs render, downloads wiring, armor, demo). XiomEngine's docroot is
    mapped and live; its copy expands when the owner provides engine
    facts (the engine lane's requirement relay is the first fact source).
+   The 2026-10-16 tier-plan copy (OrbitDB Satellite/Station, XVector
+   mote/lattice) is filed to both lanes for public-wording confirmation
+   (REL-20261016-1724-website[-2]); publish on their reply (item 108).
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS ships on all
