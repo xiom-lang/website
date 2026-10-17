@@ -1666,6 +1666,22 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      revalidation-first HTML (never max-age), the immutable option for
      stamped asset URLs, and the iOS note; SESSION.md gained the matching
      rule. Site commit a6fb4d1.
+111. **End of day 2026-10-17 (paused for the night)**: everything is
+     committed and pushed (site 1d03b59; relays clean). Live verified at
+     ~21:36Z: the package/standalone blocks render on all three pages
+     (Pulse Package/Beacon, OrbitDB Standalone/Station, XVector
+     mote-tier-pending) and the demo reports clean 0.2.1 provenance
+     (9ac3016e / 2026-10-15; REL-20261015-2137-website closed). Ops' HTML
+     cache fix is partly live: xiom-lang.org/projects.html now sends
+     Cache-Control: no-cache, but orbitdb.xiom-lang.org and
+     xvector.xiom-lang.org still show ETag only -- ops acked
+     REL-20261017-1427-website and will mark it fixed after the
+     five-domain verify; re-check tomorrow and let ops close. Open for
+     tomorrow: the stdlib status rows (item 109, queue 8); the pulse 0.2.2
+     cut (site-mode 301 re-verify; the package version-identity fix rides
+     0.2.2); the doorbell cron from the prior session expires today -- the
+     next active session should re-create it (item 99). No nightly cron or
+     wakeup scheduled; the owner returns in the morning.
 
 ## Cross-lane notes
 
