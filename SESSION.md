@@ -1620,6 +1620,33 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      REL-20261016-1724-website (orbitdb) and -2 (xvector) carry the
      proposed wording; no tier names published before their OK. No
      stamp bump (HTML-only content changes).
+109. **Tier codenames published + project status refresh (2026-10-17)**:
+     applied the approved lane copy (7fbe16f) for the owner's package/
+     standalone ask. Pulse: the site now reads "One core, two forms" --
+     Beacon (the embeddable protocol core, published as xiom.pulse on
+     the registry 2026-10-17, 0.2.0) and Station (the standalone
+     service); the smoke row was refreshed to 119/119 (0.2.1 release
+     notes). OrbitDB: the approved two-tier paragraph (Satellite =
+     embedded release line, Station = server tier, both pre-alpha) plus
+     a tier-map line; status rows carried (conformance 160/160, crash
+     recovery 25/25, real fsync end-to-end with the power-loss matrix
+     and pager remaining, v2 container default, v0.64.5 pin, readiness
+     77.5/100); the fsync card was un-pended and the phase-1 wording
+     retired. XVector: the exact approved what-is-next line and hub
+     clause plus a tier-map line (mote = embedded engine registry tier;
+     lattice = scale-out server tier, standalone releases); the chip now
+     reads "experimental, release candidate" (the lane's word, not GA,
+     no public release); the stale phase-1 grid was replaced with the
+     public-safe rc set (typed filters, collections/sealed segments/
+     snapshots, range/pagination/batch/delete-by-filter, SQ8, in-process
+     HTTP surface, daemon with scopes/limits/metrics, threads) -- no
+     internal slice names. Hub and roadmap cards all carry their tier
+     clause; projects.html carries the tier-codename note. Bus: the two
+     approval items moved acked -> fixed (92da482); the five stdlib
+     status rows were acked and their application is queued (the gate
+     table fallbacks need the corpus/bare-name counts before a
+     consistent update; modules 509 -> 532, probes 258 -> 355, coverage
+     72.6%, 0.64.6 live).
 
 ## Cross-lane notes
 
@@ -2559,8 +2586,11 @@ icon (app route, 187 KB), 404s are JSON unless a 404.html exists, and
 xiom-lang.org and the demo vhost stay on the current setup. The
 served-by-Pulse footer note is wired and self-hiding (8782a34); it
 activates when ops switches the apex origin (REL-20261015-2156-website
-proposes the shape). New Pulse claims route through the Pulse lane
-before publishing.
+proposes the shape). The registry carries the Beacon package
+(xiom.pulse 0.2.0, 2026-10-17); the site publishes the tier identity
+Beacon (package) / Station (standalone), and the DB pages carry
+Satellite/Station and mote/lattice (7fbe16f). New Pulse claims route
+through the Pulse lane before publishing.
 
 Recent landings (2026-10-15): the 0.2.1 cut landed in the evening and
 was processed the same session (items 105/106: docs synced + rebuilt
@@ -2628,8 +2658,14 @@ Next, in order:
    mapped and live; its copy expands when the owner provides engine
    facts (the engine lane's requirement relay is the first fact source).
    The 2026-10-16 tier-plan copy (OrbitDB Satellite/Station, XVector
-   mote/lattice) is filed to both lanes for public-wording confirmation
-   (REL-20261016-1724-website[-2]); publish on their reply (item 108).
+   mote/lattice) was confirmed by both lanes and applied 2026-10-17
+   (7fbe16f; item 109); the Pulse Beacon/Station identity is published
+   the same day (xiom.pulse 0.2.0 is live on the registry).
+8. Stdlib status rows: apply REL-20261017-1247 plus the 1312/1318/1335/
+   1411 addenda to the roadmap's Standard-library section and the gate
+   table fallbacks (modules 509 -> 532, probes 258 -> 355, coverage
+   72.6%; ask the lane for current corpus/bare-name counts before
+   touching those two rows). The 0.64.6 public-safe one-liner is in 1247.
 
 Cross-lane: playground owns its copy fixes (Never Crash, stats bar,
 audience framing) per the brief already delivered; macOS ships on all
