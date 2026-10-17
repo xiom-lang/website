@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XVector -- XIOM vector database</title>
-<meta name="description" content="XVector, a vector database for the XIOM ecosystem: dense vectors, exact search, HNSW, payload filtering, WAL recovery. Experimental pre-alpha; phase 1 showcase.">
+<meta name="description" content="XVector, a vector database for the XIOM ecosystem: dense vectors, exact flat and HNSW ANN search, typed filters, WAL recovery, sealed segments. Experimental release candidate; embedded engine plus a scale-out tier in development.">
 <link rel="canonical" href="https://xvector.xiom-lang.org/">
 <meta property="og:title" content="XVector -- XIOM vector database">
 <meta property="og:description" content="A vector database engine for XIOM: what works today and what is next.">
@@ -36,16 +36,17 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;align-items:center;">
       <img src="img/cover.webp" width="1254" height="1254" alt="XVector: a vector database for the XIOM ecosystem, with vector search, embeddings and multimodal panels." style="width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--line);">
       <div>
-        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- experimental, pre-alpha</p>
+        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- experimental, release candidate</p>
         <h1 style="margin-top:0;">XVector</h1>
         <p>A vector database engine for the XIOM ecosystem: dense vectors with cosine, dot-product and euclidean metrics, exact flat search, an in-memory HNSW graph, payload filtering and WAL-backed durability -- built on the shared core primitives rather than around them.</p>
-        <p style="color:var(--muted);font-size:13px;">Phase 1 showcase: the repository is private during development, so there are no downloads and no release claims yet. The exact engine, the ANN index and the durability path are exercised by suites and probes in the private repository.</p>
+        <p style="color:var(--muted);font-size:13px;">Status: the repository is private during development, so there are no public downloads or releases yet. The engine is at release candidate internally; the exact search, the ANN index and the durability path are exercised by suites and probes in the private repository.</p>
       </div>
     </div>
   </div>
 
   <div class="content-section">
     <h2>What works today</h2>
+    <p>Verified on Windows and Linux. The capability set below is at release candidate, not general availability; the suites and probes live in the repository.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <img src="img/dense-vectors.webp" alt="" loading="lazy" decoding="async">
@@ -64,28 +65,28 @@
       </div>
       <div class="feature-card">
         <img src="img/top-k-results.webp" alt="" loading="lazy" decoding="async">
-        <h4>Top-K results</h4>
-        <p>Bounded top-K heap with the len() <= k invariant.</p>
+        <h4>Top-K and ranges</h4>
+        <p>Bounded top-K heap; range queries, pagination, batch and delete-by-filter.</p>
       </div>
       <div class="feature-card">
         <img src="img/hnsw-graph.webp" alt="" loading="lazy" decoding="async">
-        <h4>HNSW graph</h4>
-        <p>Hierarchical layers with greedy descent and bounded edges; pruning and ef-parameter search are being hardened.</p>
+        <h4>HNSW ANN search</h4>
+        <p>Hierarchical layers with greedy descent and bounded edges.</p>
       </div>
       <div class="feature-card">
         <img src="img/payload-filtering.webp" alt="" loading="lazy" decoding="async">
-        <h4>Payload filtering</h4>
-        <p>Filter AST, pre-filtered search and payload hydration.</p>
+        <h4>Typed filters</h4>
+        <p>Typed filters, a payload index, pre-filtered search and payload hydration.</p>
       </div>
       <div class="feature-card">
         <img src="img/wal-backend-upsert.webp" alt="" loading="lazy" decoding="async">
-        <h4>WAL-backed writes</h4>
-        <p>Upsert and recovery for vectors and metadata.</p>
+        <h4>WAL durability</h4>
+        <p>WAL durability and recovery for vectors and metadata.</p>
       </div>
-      <div class="feature-card feature-card--pending">
+      <div class="feature-card">
         <img src="img/collections-segments.webp" alt="" loading="lazy" decoding="async">
         <h4>Collections and segments</h4>
-        <p>Scaffolded against the roadmap; the durable manifest is in progress.</p>
+        <p>Multi-collection registry; sealed segments with roll and union reads; snapshots.</p>
       </div>
       <div class="feature-card feature-card--pending">
         <img src="img/recall.webp" alt="" loading="lazy" decoding="async">
@@ -98,17 +99,16 @@
         <p>Image, text, audio, 3D and video embeddings -- on the roadmap.</p>
       </div>
     </div>
+    <p style="color:var(--muted);font-size:13px;">Also in the release-candidate surface: opt-in SQ8 quantization, an in-process HTTP service surface, a served daemon with API scopes, limits and metrics, and thread support.</p>
   </div>
 
   <div class="content-section">
     <h2>What is next</h2>
     <ul>
-      <li>Harden HNSW: neighbour pruning, recall harness, tombstones.</li>
-      <li>Persistence: file-backed segments, durable manifest, restart-clean recovery.</li>
-      <li>Then metadata indexes and the pre/post filter planner; IVF and sharding after that.</li>
+      <li>Product architecture: the embedded engine is the mote tier; the scale-out lattice tier -- a stateless collection router with online move/drain, replicas next -- is in active development on the same engine.</li>
       <li>Phase 2: GitHub releases and mirror installers, once the repository opens and the gates pass.</li>
     </ul>
-    <p style="color:var(--muted);font-size:13px;">Pre-alpha means pre-alpha: the exact core and filtering work today, but the durable, production-shaped engine is still being built.</p>
+    <p style="color:var(--muted);font-size:13px;">Tier map: mote is the embedded engine registry tier; lattice is the scale-out server tier with standalone releases. Release candidate internally, not GA: there is no public release yet, and nothing here claims production readiness.</p>
   </div>
 
   <div class="content-section">

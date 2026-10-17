@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OrbitDB -- XIOM embedded database</title>
-<meta name="description" content="OrbitDB, an embedded database engine in pure XIOM: B-tree, WAL, query engine, crash recovery. Experimental pre-alpha; phase 1 showcase.">
+<meta name="description" content="OrbitDB, an embedded database engine in pure XIOM: B-tree, WAL, query engine, crash recovery. Experimental pre-alpha; embedded engine plus a planned server tier.">
 <link rel="canonical" href="https://orbitdb.xiom-lang.org/">
 <meta property="og:title" content="OrbitDB -- XIOM embedded database">
 <meta property="og:description" content="An embedded database engine in pure XIOM: what works today and what is next.">
@@ -39,13 +39,14 @@
         <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- experimental, pre-alpha</p>
         <h1 style="margin-top:0;">OrbitDB</h1>
         <p>An embedded database engine in pure XIOM: B-tree index, write-ahead log, query engine, transactions and crash recovery, organised as a layered engine on the shared durable-systems substrate. It reuses the ecosystem's core primitives instead of copying them.</p>
-        <p style="color:var(--muted);font-size:13px;">Phase 1 showcase: the repository is private during development, so there are no downloads and no release claims yet. Every state below points at evidence in the private repository; nothing is said here that the repository does not show.</p>
+        <p style="color:var(--muted);font-size:13px;">Status: the repository is private during development, so there are no downloads and no release claims yet. Every state below points at evidence in the private repository; nothing is said here that the repository does not show.</p>
       </div>
     </div>
   </div>
 
   <div class="content-section">
     <h2>What works today</h2>
+    <p>Verified on Windows and WSL: conformance 160/160, crash recovery 25/25, fuzz and soak green. Pinned to the official v0.64.5 toolchain; readiness is scored 77.5/100 in the repository's production-readiness record.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <img src="img/b-tree.webp" alt="" loading="lazy" decoding="async">
@@ -65,7 +66,7 @@
       <div class="feature-card">
         <img src="img/crash-recovery.webp" alt="" loading="lazy" decoding="async">
         <h4>Crash recovery</h4>
-        <p>Disk WAL and page file with crash harnesses on Windows and WSL; torn-tail healing.</p>
+        <p>Disk WAL and page file with crash harnesses on Windows and WSL (25/25 on both); torn-tail healing.</p>
       </div>
       <div class="feature-card">
         <img src="img/query-filter.webp" alt="" loading="lazy" decoding="async">
@@ -80,7 +81,7 @@
       <div class="feature-card">
         <img src="img/pages-n-buffer-pool.webp" alt="" loading="lazy" decoding="async">
         <h4>Pages and buffer pool</h4>
-        <p>Storage primitives, page files and the buffer pool.</p>
+        <p>Storage primitives, page files and the buffer pool; the v2 byte container is the default (v1 auto-detected, migrates on write).</p>
       </div>
       <div class="feature-card">
         <img src="img/tuple-code-crc32c.webp" alt="" loading="lazy" decoding="async">
@@ -90,30 +91,30 @@
       <div class="feature-card">
         <img src="img/conformance-suite.webp" alt="" loading="lazy" decoding="async">
         <h4>Conformance suite</h4>
-        <p>104 tests.</p>
+        <p>160/160 checks on Windows and WSL.</p>
       </div>
       <div class="feature-card feature-card--pending">
         <img src="img/transactions.webp" alt="" loading="lazy" decoding="async">
         <h4>Transactions</h4>
         <p>State machine only -- no isolation or crash-safe redo/undo yet.</p>
       </div>
-      <div class="feature-card feature-card--pending">
+      <div class="feature-card">
         <img src="img/fsync-durability.webp" alt="" loading="lazy" decoding="async">
         <h4>fsync durability</h4>
-        <p>The standard library's fsync and sync-write primitives landed and back the durable log path; commit-time hardening and power-loss tests are the remaining steps.</p>
+        <p>The standard library's fsync and sync-write primitives landed and now back ORBITDB's durable log path; the remaining steps are the power-loss test matrix and the pager.</p>
       </div>
     </div>
   </div>
 
   <div class="content-section">
     <h2>What is next</h2>
+    <p>Two-tier direction: the embedded engine (Satellite) continues as the release line while a server tier (Station) is planned on the same engine; Station v1 is trusted-network/local-only until the TLS server side lands (both tiers pre-alpha today).</p>
+    <p style="color:var(--muted);font-size:13px;">Tier map: Satellite is the embedded engine registry tier; Station is the server tier with standalone releases.</p>
     <ul>
-      <li>Move storage onto the shared pager and store B-tree nodes in pages.</li>
-      <li>Make durability literal: fsync on commit, checkpointing, LSN ordering, power-loss tests.</li>
-      <li>Then transactions with real isolation, a query planner and secondary indexes.</li>
+      <li>Pager next (the current storage milestone), then a refactor pass, then the Station prerequisites.</li>
       <li>Phase 2: GitHub releases and mirror installers, once the repository opens and the gates pass.</li>
     </ul>
-    <p style="color:var(--muted);font-size:13px;">Pre-alpha means pre-alpha: the in-memory core is done and the durable log and pages are landing, but nothing here is ready for production data.</p>
+    <p style="color:var(--muted);font-size:13px;">Pre-alpha means pre-alpha: the engine's core, durable log and pages work today, but nothing here is ready for production data.</p>
   </div>
 
   <div class="content-section">
