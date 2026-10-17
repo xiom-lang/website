@@ -103,33 +103,54 @@ curl -sI https://xiom-lang.org/install.sh | head -3
 curl -sI https://xiom-lang.org/install.ps1 | head -3
 ```
 
-## Static asset caching
+## Cache policy
 
-Asset URLs are not content-hashed (`/style.css`, `/js/lightbox.js`,
-`/img/*.webp`), and files are replaced in place on every deploy, so the
-static tree must revalidate rather than cache blindly. That is now the case:
-the `xiom-static` Hestia template pair (assigned to `xiom-lang.org` and
-`docs.xiom-lang.org`, applied 2026-09-28) sends `Cache-Control: no-cache`
-with a past `Expires`; `ETag`/`Last-Modified` answer `304` for unchanged
-files (verified with conditional requests). HTML headers are unchanged.
+Files are replaced in place on every deploy and asset URLs are not
+content-hashed, so the policy is revalidation-first:
 
-- Why this setting: before the change, CSS, JS and images carried
-  `Expires: 2037` + `max-age=315360000` while HTML had no cache header --
-  Safari kept a stale stylesheet with fresh text, and also kept a cached 404
-  for a URL that had since been fixed.
-- `no-store` is not needed (it would waste the revalidation path); `no-cache`
-  plus ETags is the correct setting while filenames are stable.
-- One-time bump applied 2026-09-28: `?v=20260928` on `style.css`, the JS
-  includes and the images that changed since (story and pillar icons,
-  `og-card.webp`, the refreshed banners). Pre-fix clients held a 10-year
-  entry for those exact URLs and never re-requested them, so the header
-  change alone could not reach them. HTML always revalidates, so a future
-  bump would propagate on the next visit; bump again only when a fixed-name
-  asset must bypass an old cache immediately.
-- MkDocs assets under `docs.xiom-lang.org` (`assets/stylesheets/main.<hash>.*`)
-  are content-hashed, so long-caching them is safe; if we want that
-  optimisation, scope an immutable rule to those hashed asset directories
-  and leave HTML and the fixed-name site assets revalidating.
+- **HTML: `Cache-Control: no-cache` on every response.** Browsers must
+  revalidate each page view; `ETag`/`Last-Modified` answer `304` when the
+  page is unchanged, so the cost is one conditional request. Never add
+  `max-age` to HTML: a per-page `max-age=N` only bounds staleness to N --
+  it cannot make deploys appear instantly, and on iOS Safari it is exactly
+  what keeps an old page alive after an update. If a client still shows an
+  old page once the header is correct, that is a local cache (hard
+  refresh / clear website data), not the origin.
+- **Fixed-name assets (`style.css`, `js/*`, `img/*`): `no-cache` + a past
+  `Expires`.** The `xiom-static` Hestia template pair (assigned to
+  `xiom-lang.org` and `docs.xiom-lang.org`, applied 2026-09-28) sends this;
+  `ETag`/`Last-Modified` answer `304` (verified with conditional
+  requests). `no-store` is not needed -- it would waste the revalidation
+  path.
+- **The `?v=YYYYMMDD` stamp is the cache-bust.** Bump it whenever a
+  referenced file changes and bump every page that references it (rule in
+  SESSION.md). Assets are replaced in place, so the stamp is what makes a
+  fixed-name change reach clients that already hold the old bytes.
+- **Project subdomains:** they serve the same static tree and need the
+  same `text/html: no-cache` rule. This was missing as of 2026-10-17 -- a
+  client that had visited earlier kept old orbitdb/xvector pages after
+  the 14:19Z deploy because their HTML carried only `ETag`/`Last-Modified`.
+  Tracked in `REL-20261017-1427-website`; verify with
+  `curl -sI https://orbitdb.xiom-lang.org/ | grep -i cache-control`.
+- **Long-lived caching (optional, not enabled):** once every referenced
+  asset URL carries a `?v=` stamp, the edge can send
+  `Cache-Control: public, max-age=31536000, immutable` for requests whose
+  query contains `v=` -- safe only while the stamp-bump rule holds. HTML
+  stays `no-cache` in every case.
+- MkDocs assets under `docs.xiom-lang.org`
+  (`assets/stylesheets/main.<hash>.*`) are content-hashed, so an immutable
+  rule scoped to those directories is safe; leave HTML and the fixed-name
+  site assets revalidating.
+
+History: before the 2026-09-28 change, CSS, JS and images carried
+`Expires: 2037` + `max-age=315360000` while HTML had no cache header --
+Safari kept a stale stylesheet with fresh text, and also kept a cached 404
+for a URL that had since been fixed. The one-time bump applied then
+(`?v=20260928` on `style.css`, the JS includes and the images that had
+changed since -- story and pillar icons, `og-card.webp`, the refreshed
+banners) was needed because pre-fix clients held a 10-year entry for those
+exact URLs and never re-requested them; the header change alone could not
+reach them.
 
 ## URL routing
 

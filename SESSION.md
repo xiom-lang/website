@@ -1647,6 +1647,25 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      table fallbacks need the corpus/bare-name counts before a
      consistent update; modules 509 -> 532, probes 258 -> 355, coverage
      72.6%, 0.64.6 live).
+110. **Package/standalone statuses + HTML cache gap (2026-10-17)**: owner
+     follow-up on the tier pass. All three project pages now carry an
+     explicit hero block: Pulse -- Package xiom.pulse (Beacon, live on
+     the registry) / Standalone Station (live, beta); OrbitDB -- Package
+     xiom.orbitdb (Satellite, live on the registry, incubating; published
+     14:18Z today in eco-v0.1.196) / Standalone Station (pending);
+     XVector -- Package xiom.vectors (the published contract for mote;
+     the mote-tier engine package pending) / Standalone lattice (in
+     development). Hub + roadmap cards and the projects.html tier note
+     carry the same live/pending facts; the XVector state row now reads
+     release candidate. The owner's "pulse fresh, the other two stale"
+     report was the cache gap, not the deploy: HTML returns ETag/Last-
+     Modified but no Cache-Control (assets are correct), so browsers
+     cache pages heuristically; filed REL-20261017-1427-website to ops
+     for text/html no-cache across the template pair and project
+     subdomains. Cache policy tightened: DEPLOY.md documents
+     revalidation-first HTML (never max-age), the immutable option for
+     stamped asset URLs, and the iOS note; SESSION.md gained the matching
+     rule. Site commit a6fb4d1.
 
 ## Cross-lane notes
 
@@ -2508,6 +2527,13 @@ material, not website surface.
   image requires bumping the `?v=YYYYMMDD` stamp across the site (root
   pages, the subdomain stylesheet/script links, and the docs template);
   it is the only cache-bust the site has.
+- Cache policy: HTML must revalidate on every view (`Cache-Control:
+  no-cache` + ETag/304; never add `max-age` to HTML -- a per-page max-age
+  only bounds staleness and is what keeps old pages alive on iOS Safari).
+  Fixed-name assets stay `no-cache` + the `?v=` stamp; long-lived
+  immutable caching is allowed only for stamped or content-hashed asset
+  URLs. The project subdomains were missing the HTML header as of
+  2026-10-17; tracked in `REL-20261017-1427-website`.
 - Toolchain hygiene (ops broadcast 2026-10-11, high): never delete or
   downgrade the shared toolchain homes (`%LOCALAPPDATA%\xiom*`, WSL
   `~/.local/share/xiom`, `~/xiom`); treat directories without the website
