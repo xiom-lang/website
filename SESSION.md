@@ -1682,6 +1682,26 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      0.2.2); the doorbell cron from the prior session expires today -- the
      next active session should re-create it (item 99). No nightly cron or
      wakeup scheduled; the owner returns in the morning.
+112. **Linux ARM64 on the download page and installer (2026-10-18)**:
+     the mirror's v0.64.7 carries xiom-0.64.7-linux-arm64.tar.gz (the
+     release notes name host-arch targeting as the "linux-arm64 enabler"),
+     but download.html only knew windows-x64/linux-x64/macos-x64/
+     macos-arm64, and install.sh still refused non-x64 Linux ("Only
+     x86_64 Linux builds are published today"). Added the Linux ARM64 row
+     to the table with its asset match and SHA256SUMS key, updated the
+     lede/meta wording, and removed the installer gate (header now says
+     Linux x64/arm64). The table note now names the WebAssembly build
+     (xiom-wasm: .wasm plus JS bindings and typings) and the VS Code
+     .vsix as additional release artifacts listed on the release page --
+     not wired into the dynamic fetch (owner note "no need to fetch
+     them"). Verified: headless render against the live release data
+     shows the arm64 row with the v0.64.7 URL and 25.40 MB (the SHA cell
+     falls back to SHA256SUMS while the mirror blocks CORS); an isolated
+     WSL Ubuntu run with a uname->aarch64 shim (temp HOME/XIOM_HOME, no
+     shared homes touched) installed the pinned v0.64.7 arm64 archive end
+     to end -- download, SHA256 OK, 9 tools linked. Site commit f8540b7.
+     Windows ARM64 remains unshipped; install.ps1's x64-only warning is
+     correct.
 
 ## Cross-lane notes
 
