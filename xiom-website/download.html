@@ -7,12 +7,12 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 <head>
 <meta charset="UTF-8">
 <title>XIOM -- Download</title>
-<meta name="description" content="Download the XIOM compiler and standard library for Windows and Linux, with SHA256 checksums, mirror downloads, and build-provenance attestations.">
+<meta name="description" content="Download the XIOM compiler and standard library for Windows, Linux (x86_64 and ARM64) and macOS, with SHA256 checksums, mirror downloads, and build-provenance attestations.">
 <link rel="canonical" href="https://xiom-lang.org/download.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="XIOM">
 <meta property="og:title" content="XIOM -- Download">
-<meta property="og:description" content="Download the XIOM compiler and standard library for Windows and Linux, with SHA256 checksums, mirror downloads, and build-provenance attestations.">
+<meta property="og:description" content="Download the XIOM compiler and standard library for Windows, Linux (x86_64 and ARM64) and macOS, with SHA256 checksums, mirror downloads, and build-provenance attestations.">
 <meta property="og:url" content="https://xiom-lang.org/download.html">
 <meta property="og:image" content="https://xiom-lang.org/img/og-card.webp?v=20261011">
 <meta property="og:image:width" content="1200">
@@ -49,7 +49,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
   <div class="wrap">
     <div class="eyebrow" id="release-line">latest release -- loading...</div>
     <h1>Download XIOM</h1>
-    <p class="lede">Pre-built toolchains for Windows, Linux and macOS (Intel and Apple Silicon). Every archive ships with the standard library, checksums, and build-provenance attestations. Building from source is always available.</p>
+    <p class="lede">Pre-built toolchains for Windows, Linux (x86_64 and ARM64) and macOS (Intel and Apple Silicon). Every archive ships with the standard library, checksums, and build-provenance attestations. Building from source is always available.</p>
   </div>
 </header>
 
@@ -92,6 +92,13 @@ SPDX-License-Identifier: MIT OR Apache-2.0
         <td id="size-linux-x64">see release</td>
         <td id="sha-linux-x64" class="sha">-</td>
       </tr>
+      <tr id="row-linux-arm64">
+        <td><strong>Linux</strong></td>
+        <td>ARM64</td>
+        <td><a id="dl-linux-arm64" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">xiom-linux-arm64.tar.gz</a></td>
+        <td id="size-linux-arm64">see release</td>
+        <td id="sha-linux-arm64" class="sha">-</td>
+      </tr>
       <tr id="row-macos-x64" style="display:none;">
         <td><strong>macOS</strong></td>
         <td>Intel</td>
@@ -112,7 +119,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
         <td>-</td>
       </tr>
     </table>
-    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. The expected SHA256 column is filled from <code>SHA256SUMS</code> when the browser can read it; otherwise the column points you at <code>SHA256SUMS</code> to check manually. Archives unpack to <code>bin/</code> (toolchain executables) and <code>lib/</code> (standard library and runtime).</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. The expected SHA256 column is filled from <code>SHA256SUMS</code> when the browser can read it; otherwise the column points you at <code>SHA256SUMS</code> to check manually. Archives unpack to <code>bin/</code> (toolchain executables) and <code>lib/</code> (standard library and runtime). The same release also carries the WebAssembly build (<code>xiom-wasm</code>: <code>.wasm</code> plus JS bindings and typings) and the VS Code extension (<code>.vsix</code>); those files are listed on the release page.</p>
   </div>
 
   <div class="content-section">
@@ -286,7 +293,7 @@ cargo test --workspace --lib</code></pre>
     if (size) size.textContent = humanSize(asset.size);
   }
 
-  var SHA_CELLS = ["windows-x64", "linux-x64", "macos-x64", "macos-arm64"];
+  var SHA_CELLS = ["windows-x64", "linux-x64", "linux-arm64", "macos-x64", "macos-arm64"];
 
   function loadChecksums(assets) {
     var sums = null;
@@ -336,6 +343,7 @@ cargo test --workspace --lib</code></pre>
     var assets = rel.assets || [];
     showAsset(assets, "dl-windows-x64", "size-windows-x64", "row-windows-x64", /windows-x64\.zip$/);
     showAsset(assets, "dl-linux-x64", "size-linux-x64", "row-linux-x64", /linux-x64\.tar\.gz$/);
+    showAsset(assets, "dl-linux-arm64", "size-linux-arm64", "row-linux-arm64", /linux-arm64\.tar\.gz$/);
     showAsset(assets, "dl-macos-x64", "size-macos-x64", "row-macos-x64", /macos-x64\.tar\.gz$/);
     showAsset(assets, "dl-macos-arm64", "size-macos-arm64", "row-macos-arm64", /macos-arm64\.tar\.gz$/);
     showAsset(assets, "dl-checksums", null, null, /^SHA256SUMS$/);

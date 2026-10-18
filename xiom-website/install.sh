@@ -2,7 +2,7 @@
 # Copyright (c) 2026 Eleftherios Notas and The XIOM Authors
 # SPDX-License-Identifier: MIT OR Apache-2.0
 #
-# XIOM toolchain installer for Linux x64 and macOS (x64/arm64).
+# XIOM toolchain installer for Linux (x64/arm64) and macOS (x64/arm64).
 # Uses the dl.xiom-lang.org mirror and the GitHub releases API, picking
 # whichever release is newer, verifies the SHA256, installs into
 # ${XIOM_HOME:-$HOME/.local/share/xiom}, and links every bin/xiom* tool into
@@ -58,10 +58,6 @@ case "$(uname -m)" in
   arm64|aarch64) ARCH="arm64" ;;
   *) die "unsupported architecture: $(uname -m)" ;;
 esac
-
-if [ "$OS" = "linux" ] && [ "$ARCH" != "x64" ]; then
-  die "Only x86_64 Linux builds are published today (detected $(uname -m))."
-fi
 
 command -v curl >/dev/null 2>&1 || die "curl is required"
 command -v tar >/dev/null 2>&1 || die "tar is required"
