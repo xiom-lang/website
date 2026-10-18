@@ -1716,6 +1716,20 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      note, the hub/roadmap cards and the projects tier note -- all
      "pending" wording is gone (grep 0). The standalone lattice tier
      stays in development. Site commit e1296a6.
+114. **End of day 2026-10-18 (paused for the night)**: site clean at
+     88204f2; the XVector package status is live and verified ("live on
+     the registry", no pending wording). Cache headers: only
+     xiom-lang.org/projects.html sends Cache-Control: no-cache; the four
+     project subdomains still return none, and REL-20261017-1427-website
+     is still acked (ops constructed the fix; the five-domain run and the
+     fixed mark are pending) -- re-check tomorrow. Relays: git fetch shows
+     0/0; `git pull --ff-only` in the shared clone failed again with
+     "Cannot fast-forward to multiple branches" (fetch + status is the
+     workaround); one packages item was mid-edit by another lane in the
+     shared tree (left untouched). Open for tomorrow: the stdlib status
+     rows (item 109, queue 8), the pulse 0.2.2 cut watch (site-mode 301,
+     version-identity fix), and the doorbell re-create (the prior cron
+     expired). No nightly cron or wakeup scheduled.
 
 ## Cross-lane notes
 
