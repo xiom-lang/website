@@ -1702,6 +1702,20 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      to end -- download, SHA256 OK, 9 tools linked. Site commit f8540b7.
      Windows ARM64 remains unshipped; install.ps1's x64-only warning is
      correct.
+113. **XVector mote package released (2026-10-18)**: xiom.vectors 0.2.0
+     is live on the registry (published 15:55:48Z, eco-v0.1.198, stage
+     incubating) -- the mote artifact: the embedded engine facade/core,
+     vectors/types, payload/query/index, durability (WAL/manifest/
+     segments), observability, the core shim and the in-process HTTP
+     surface; lattice-only modules (router/replica/httpd) are excluded;
+     deps xiom.wal 0.1.0 + xiom.metrics 0.2.0 + xiom.rate 0.2.0 +
+     xiom.std; suite 177/177 x2 on v0.64.7. Updated the status
+     everywhere: the XVector page hero (package line now live/incubating
+     and in-process only; the status paragraph no longer claims "no
+     public releases"), the What-works intro, the What-is-next closing
+     note, the hub/roadmap cards and the projects tier note -- all
+     "pending" wording is gone (grep 0). The standalone lattice tier
+     stays in development. Site commit e1296a6.
 
 ## Cross-lane notes
 
