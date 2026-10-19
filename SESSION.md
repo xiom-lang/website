@@ -1730,6 +1730,21 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      rows (item 109, queue 8), the pulse 0.2.2 cut watch (site-mode 301,
      version-identity fix), and the doorbell re-create (the prior cron
      expired). No nightly cron or wakeup scheduled.
+115. **Relay check + stdlib fallbacks (2026-10-19)**: compiler v0.64.8
+     released (tag 4d040604b) and the mirror swept it (latest.json
+     v0.64.8); the download/versions pages are data-driven and need no
+     change (the ARM64 row picks the new tag automatically). The stdlib
+     tracker now reads 87.6% (8 of 10 gates), corpus 956/956, modules
+     533/533, probes 368/368, barename 0/533, compiler pin v0.64.8, and
+     says xiom-std 0.64.8 is live after the ops trusted-publisher mapping
+     fix (the 17:55/18:05 stdlib 403 items are to packages, not us).
+     Refreshed the roadmap fallbacks from the tracker -- corpus, modules,
+     probes and barename cells plus the 542 modules / 6,575 public
+     functions state row (44fac90) -- and moved the five stdlib status
+     items acked -> fixed on the bus (d8e4377). Cache: the four project
+     subdomains still lack Cache-Control; REL-20261017-1427-website stays
+     acked (ops' five-domain run pending). Doorbell re-created
+     (cron 17 */3 * * *, next fire 2026-10-19T21:17Z, expires ~Oct 26).
 
 ## Cross-lane notes
 
