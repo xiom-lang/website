@@ -1745,6 +1745,27 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      subdomains still lack Cache-Control; REL-20261017-1427-website stays
      acked (ops' five-domain run pending). Doorbell re-created
      (cron 17 */3 * * *, next fire 2026-10-19T21:17Z, expires ~Oct 26).
+116. **Canonical domains migration (2026-10-21)**: ops opened
+     REL-20261021-1434-ops: xiom-engine.com / xiom-orbitdb.com /
+     xiom-xvector.com / xiom-pulse.com are live with vhosts + certs
+     (currently a ~2.5 KB Coming Soon placeholder); the demo stays on
+     pulse.xiom-lang.org; chaos and dl unchanged; releases stay on dl.
+     Implemented (site 1183833): canonical + og:url on the four product
+     pages; pulse docs canonicals -> xiom-pulse.com/docs/... (template
+     updated, 8 pages rebuilt; the vendored docs-src "Live demo" line now
+     points at /demo/ -- a pulse-lane sync must carry it upstream); hub
+     and roadmap cards link/label the new domains (Pulse card names the
+     demo host); pulse product<->demo cross-links (absolute demo buttons;
+     demo nav -> xiom-pulse.com; install commands -> xiom-pulse.com/
+     install.*); served-by footer link -> xiom-pulse.com with the
+     ?v=20261021 stamp bump on the 13 pages; DEPLOY cache example updated.
+     Link check 110 pages, 0 broken; no README badges referenced the
+     subdomains. Bus: acked then fixed with the refs + the ops steps
+     (c6a5d00): point the four docroots, 301 /demo/ on xiom-pulse.com to
+     the demo host, then 301 the three old subdomains path-preserving
+     (never redirect pulse). Watch the next :19 deploy against a Coming
+     Soon window and verify the four new hosts + the demo once ops flips
+     the docroots.
 
 ## Cross-lane notes
 
