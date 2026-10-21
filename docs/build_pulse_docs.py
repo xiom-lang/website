@@ -99,24 +99,24 @@ PAGE = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} -- Pulse docs</title>
 <meta name="description" content="{description}">
-<link rel="canonical" href="https://xiom-pulse.com/docs/{canonical}">
-<link rel="icon" type="image/x-icon" href="../img/pulse.ico">
+<link rel="canonical" href="https://docs.xiom-pulse.com/{canonical}">
+<link rel="icon" type="image/x-icon" href="img/pulse.ico">
 <link rel="stylesheet" href="style.css?v=20261011">
 </head>
 <body>
 
 <nav>
   <div class="wrap">
-    <a href="../" class="logo">
-      <img src="../img/pulse.ico" alt="">
+    <a href="https://xiom-pulse.com/" class="logo">
+      <img src="img/pulse.ico" alt="">
       PULSE docs
     </a>
     <div class="navlinks">
-      <a href="../">Overview</a>
+      <a href="https://xiom-pulse.com/">Overview</a>
       <a href="https://pulse.xiom-lang.org/demo/">Demo</a>
       <a href="index.html">Docs</a>
-      <a href="../#install">Install</a>
-      <a href="../#downloads">Downloads</a>
+      <a href="https://xiom-pulse.com/#install">Install</a>
+      <a href="https://xiom-pulse.com/#downloads">Downloads</a>
       <a href="https://opencollective.com/xiom">Support</a>
     </div>
     <a class="nav-cta" href="https://github.com/xiom-projects/xiom-pulse">GitHub</a>
@@ -139,7 +139,7 @@ PAGE = """<!doctype html>
   <div class="wrap">
     <div style="border-top:1px solid var(--line);padding-top:24px;margin-top:48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;">
       <p>Pulse is a separate open-source project built with XIOM. Copyright (c) 2026 Eleftherios Notas and The XIOM Authors. Dual-licensed MIT or Apache-2.0.</p>
-      <p><a href="../" style="color:var(--signal);">Pulse</a> -- <a href="https://xiom-lang.org/" style="color:var(--signal);">An XIOM project</a> -- <a href="https://opencollective.com/xiom" style="color:var(--signal);">Support XIOM</a></p>
+      <p><a href="https://xiom-pulse.com/" style="color:var(--signal);">Pulse</a> -- <a href="https://xiom-lang.org/" style="color:var(--signal);">An XIOM project</a> -- <a href="https://opencollective.com/xiom" style="color:var(--signal);">Support XIOM</a></p>
     </div>
   </div>
 </footer>
@@ -223,6 +223,18 @@ def main():
                 data = fh.read()
             with open(os.path.join(out_img, name), "wb") as fh:
                 fh.write(data)
+
+    # Copy the product icon next to the pages so the docs host is
+    # self-contained (docs.xiom-pulse.com serves this directory as its root).
+    icon_src = os.path.join(os.path.dirname(args.out), "img", "pulse.ico")
+    if os.path.isfile(icon_src):
+        out_img = os.path.join(args.out, "img")
+        if not os.path.isdir(out_img):
+            os.makedirs(out_img)
+        with open(icon_src, "rb") as fh:
+            data = fh.read()
+        with open(os.path.join(out_img, "pulse.ico"), "wb") as fh:
+            fh.write(data)
 
     print("wrote {0} pages + style.css to {1}".format(written, args.out))
 
