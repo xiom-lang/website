@@ -1766,6 +1766,22 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      (never redirect pulse). Watch the next :19 deploy against a Coming
      Soon window and verify the four new hosts + the demo once ops flips
      the docroots.
+117. **Docs subdomains (2026-10-21, owner note)**: the owner clarified the
+     product docs live on docs.<product-domain> (not /docs/ under the
+     product site), releases stay on dl.xiom-lang.org, and xiom-engine
+     stays as-is (a possible NGONART move is undecided). The four docs
+     hosts resolve to the VPS, but HTTPS serves the Hestia panel
+     self-signed certificate (subject=issuer CN=panel.lakesidegames.local,
+     no SANs) and :80 shows a placeholder. Made the Pulse docs
+     subdomain-ready (9555bdb): self-contained docs dir (icon copied in),
+     canonicals -> https://docs.xiom-pulse.com/..., absolute nav to
+     xiom-pulse.com / pulse.xiom-lang.org/demo/; the product page, demo
+     page and docs nav link to the docs host. Link check 110 pages, 0
+     broken. Bus: REL-20261021-1450-website asks ops for the docs vhosts +
+     LE certs (supersedes the docs-canonical part of
+     REL-20261021-1434-ops); the OrbitDB/XVector/Engine docs hosts stay
+     reserved until their docs exist. Watch: the new Docs links land at
+     the next :19 deploy, so the certs need to be valid by then.
 
 ## Cross-lane notes
 
