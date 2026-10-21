@@ -2601,7 +2601,10 @@ material, not website surface.
   (`E:\xiom-lang\xiom-relays`; README + PROTOCOL there): pull it and
   process items addressed to the website lane at session start and before
   finishing any task (`python tools/relay.py view --lane website`); never
-  edit another lane's item -- open a new item instead.
+  edit another lane's item -- open a new item instead. On the shared clone
+  use `git fetch origin && git merge --ff-only origin/main` for the pull:
+  the plain `git pull --ff-only` errors `Cannot fast-forward to multiple
+  branches` (confirmed for all lanes by REL-20261021-1122-orbitdb-5).
 - Asset version stamp: any change to `style.css`, a script or a stamped
   image requires bumping the `?v=YYYYMMDD` stamp across the site (root
   pages, the subdomain stylesheet/script links, and the docs template);
