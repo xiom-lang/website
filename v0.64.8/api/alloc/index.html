@@ -2804,14 +2804,31 @@
 <blockquote>
 <p>Layout with the given size and natural (8-byte) alignment.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>size &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.size == size</code></li>
+<li><strong>Postcondition:</strong> <code>result.align == 8</code></li>
+</ul>
 <h4 id="fn-with_alignself-self-align-int-layout"><code>fn with_align(self: Self, align: Int) -&gt; Layout</code><a class="headerlink" href="#fn-with_alignself-self-align-int-layout" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Same size with the given alignment.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>align &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.size == self.size</code></li>
+<li><strong>Postcondition:</strong> <code>result.align == align</code></li>
+</ul>
 <h4 id="fn-padded_sizeself-self-int"><code>fn padded_size(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-padded_sizeself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Size rounded up to a multiple of the alignment.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>self.size &gt;= 0</code></li>
+<li><strong>Precondition:</strong> <code>self.align &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= self.size</code></li>
+<li><strong>Postcondition:</strong> <code>result % self.align == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result &lt; self.size + self.align</code></li>
+</ul>
 <h4 id="type-allocerror"><code>type AllocError</code><a class="headerlink" href="#type-allocerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Allocation failure with a human-readable message.</p>

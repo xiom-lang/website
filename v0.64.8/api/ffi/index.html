@@ -3014,6 +3014,9 @@
 <blockquote>
 <p>Set the errno value (byte-wise 64-bit little-endian store). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>code &gt;= 0</code></li>
+</ul>
 <h5 id="fn-errno_strerrorcode-int-str"><code>fn errno_strerror(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-errno_strerrorcode-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Human-readable message for an error code. Complexity: O(1).</p>
@@ -3029,10 +3032,16 @@
 <blockquote>
 <p>Last recorded errno (snapshot). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == last_errno</code></li>
+</ul>
 <h5 id="fn-errno_is_errorcode-int-bool"><code>fn errno_is_error(code: Int) -&gt; Bool</code><a class="headerlink" href="#fn-errno_is_errorcode-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Whether a code represents an error (non-zero). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (code != 0)</code></li>
+</ul>
 <h5 id="fn-errno_namecode-int-str"><code>fn errno_name(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-errno_namecode-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Symbolic name for an error code (for example "ENOENT"). Unknown codes map to "UNKNOWN". Complexity: O(1).</p>
@@ -3227,6 +3236,10 @@
 <blockquote>
 <p>Copy all bytes from a SafePtr into a Vec[Int]. Each byte becomes a separate Int element. Result length equals ptr.size.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>ptr.size &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() == ptr.size</code></li>
+</ul>
 <h4 id="fn-ptr_read_u8p-uint8-int"><code>fn ptr_read_u8(p: *UInt8) -&gt; Int</code><a class="headerlink" href="#fn-ptr_read_u8p-uint8-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Raw unsafe read of a UInt8 at pointer p. SAFETY: caller must ensure p points to valid memory. No bounds check.</p>
@@ -3318,14 +3331,23 @@
 <blockquote>
 <p>Reset the buffer length to zero.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>buf.data.len() == 0</code></li>
+</ul>
 <h4 id="fn-buffer_lenbuf-ffibuffer-int"><code>fn buffer_len(buf: &amp;FFIBuffer) -&gt; Int</code><a class="headerlink" href="#fn-buffer_lenbuf-ffibuffer-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Current buffer length in bytes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-buffer_is_emptybuf-ffibuffer-bool"><code>fn buffer_is_empty(buf: &amp;FFIBuffer) -&gt; Bool</code><a class="headerlink" href="#fn-buffer_is_emptybuf-ffibuffer-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the buffer is empty.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (buf.data.len() == 0)</code></li>
+</ul>
 <h4 id="type-ffierror"><code>type FFIError</code><a class="headerlink" href="#type-ffierror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>---- FFIError -- C error code translation ------------------------------------------------------------------------</p>
@@ -3352,6 +3374,10 @@
 <blockquote>
 <p>C convention: negative return code = error.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>code &lt; 0 =&gt; result is Err(_)</code></li>
+<li><strong>Postcondition:</strong> <code>code &gt;= 0 =&gt; result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-ffi_check_ptrptr-uint8-msg-str-resultuint8-ffierror"><code>fn ffi_check_ptr(ptr: *UInt8, msg: Str) -&gt; Result[*UInt8, FFIError]</code><a class="headerlink" href="#fn-ffi_check_ptrptr-uint8-msg-str-resultuint8-ffierror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>C convention: null pointer = error.</p>
@@ -3363,10 +3389,17 @@
 <blockquote>
 <p>C convention: non-zero return = error.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>code != 0 =&gt; result is Err(_)</code></li>
+<li><strong>Postcondition:</strong> <code>code == 0 =&gt; result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-ffi_ok-int"><code>fn ffi_ok() -&gt; Int</code><a class="headerlink" href="#fn-ffi_ok-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>FFI success code (0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0</code></li>
+</ul>
 <h4 id="fn-ffi_errorcode-int-msg-str-ffierror"><code>fn ffi_error(code: Int, msg: Str) -&gt; FFIError</code><a class="headerlink" href="#fn-ffi_errorcode-int-msg-str-ffierror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>FFI error value from a code and message.</p>

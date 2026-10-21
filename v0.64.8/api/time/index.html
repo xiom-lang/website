@@ -3030,50 +3030,106 @@
 <blockquote>
 <p>The current local date and time. Returns: the current date/time (the runtime clock is UTC; local is a documented alias in this build). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.hour &amp;&amp; result.hour &lt; 24</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.minute &amp;&amp; result.minute &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.second &amp;&amp; result.second &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.weekday &amp;&amp; result.weekday &lt; 7</code></li>
+</ul>
 <h5 id="fn-chrono_from_timestampts-int-datetime"><code>fn chrono_from_timestamp(ts: Int) -&gt; DateTime</code><a class="headerlink" href="#fn-chrono_from_timestampts-int-datetime" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The DateTime at Unix timestamp <code>ts</code>. Params: ts - seconds since the Unix epoch. Returns: the UTC date/time at that instant. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.hour &amp;&amp; result.hour &lt; 24</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.minute &amp;&amp; result.minute &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.second &amp;&amp; result.second &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.weekday &amp;&amp; result.weekday &lt; 7</code></li>
+</ul>
 <h5 id="fn-chrono_to_timestampdt-datetime-int"><code>fn chrono_to_timestamp(dt: &amp;DateTime) -&gt; Int</code><a class="headerlink" href="#fn-chrono_to_timestampdt-datetime-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The Unix timestamp of <code>dt</code>. Params: dt - the date/time. Returns: seconds since the Unix epoch. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(0 &lt;= dt.second &amp;&amp; dt.second &lt; 60) =&gt; ((result - dt.second) % 60 == 0)</code></li>
+</ul>
 <h5 id="fn-chrono_add_secondsdt-datetime-n-int-datetime"><code>fn chrono_add_seconds(dt: &amp;DateTime, n: Int) -&gt; DateTime</code><a class="headerlink" href="#fn-chrono_add_secondsdt-datetime-n-int-datetime" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p><code>dt</code> advanced by <code>n</code> seconds. Params: dt - the date/time; n - the second offset. Returns: the shifted date/time. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>chrono_to_timestamp(&amp;result) == chrono_to_timestamp(dt) + n</code></li>
+</ul>
 <h5 id="fn-chrono_add_daysdt-datetime-n-int-datetime"><code>fn chrono_add_days(dt: &amp;DateTime, n: Int) -&gt; DateTime</code><a class="headerlink" href="#fn-chrono_add_daysdt-datetime-n-int-datetime" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p><code>dt</code> advanced by <code>n</code> days. Params: dt - the date/time; n - the day offset. Returns: the shifted date/time. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>chrono_to_timestamp(&amp;result) == chrono_to_timestamp(dt) + n * 86400</code></li>
+</ul>
 <h5 id="fn-chrono_add_monthsdt-datetime-n-int-datetime"><code>fn chrono_add_months(dt: &amp;DateTime, n: Int) -&gt; DateTime</code><a class="headerlink" href="#fn-chrono_add_monthsdt-datetime-n-int-datetime" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p><code>dt</code> advanced by <code>n</code> months, clamping the day. Params: dt - the date/time; n - the month offset. Returns: the shifted date/time with the day clamped to the target month. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>result.hour == dt.hour &amp;&amp; result.minute == dt.minute &amp;&amp; result.second == dt.second</code></li>
+</ul>
 <h5 id="fn-chrono_add_yearsdt-datetime-n-int-datetime"><code>fn chrono_add_years(dt: &amp;DateTime, n: Int) -&gt; DateTime</code><a class="headerlink" href="#fn-chrono_add_yearsdt-datetime-n-int-datetime" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p><code>dt</code> advanced by <code>n</code> years, clamping Feb 29. Params: dt - the date/time; n - the year offset. Returns: the shifted date/time with the day clamped for non-leap years. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>result.hour == dt.hour &amp;&amp; result.minute == dt.minute &amp;&amp; result.second == dt.second</code></li>
+</ul>
 <h5 id="fn-chrono_diffa-datetime-b-datetime-duration"><code>fn chrono_diff(a: &amp;DateTime, b: &amp;DateTime) -&gt; Duration</code><a class="headerlink" href="#fn-chrono_diffa-datetime-b-datetime-duration" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The elapsed time between <code>a</code> and <code>b</code>. Params: a - the later date/time; b - the earlier date/time. Returns: a - b as a Duration. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.nanos == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.secs == chrono_to_timestamp(a) - chrono_to_timestamp(b)</code></li>
+</ul>
 <h5 id="fn-chrono_weekdaydt-datetime-int"><code>fn chrono_weekday(dt: &amp;DateTime) -&gt; Int</code><a class="headerlink" href="#fn-chrono_weekdaydt-datetime-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The day of the week of <code>dt</code>. Params: dt - the date/time. Returns: 0 for Sunday through 6 for Saturday. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>0 &lt;= dt.weekday &amp;&amp; dt.weekday &lt; 7</code></li>
+</ul>
 <h5 id="fn-chrono_comparea-datetime-b-datetime-int"><code>fn chrono_compare(a: &amp;DateTime, b: &amp;DateTime) -&gt; Int</code><a class="headerlink" href="#fn-chrono_comparea-datetime-b-datetime-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Compare two date/times. Params: a - the left operand; b - the right operand. Returns: negative, zero, or positive for a before, equal, after b. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(0 - 1) &lt;= result &amp;&amp; result &lt;= 1</code></li>
+</ul>
 <h5 id="fn-chrono_timezone_offsetdt-datetime-int"><code>fn chrono_timezone_offset(dt: &amp;DateTime) -&gt; Int</code><a class="headerlink" href="#fn-chrono_timezone_offsetdt-datetime-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The UTC offset of <code>dt</code> in seconds. Params: dt - the date/time. Returns: 0 (the runtime clock is UTC). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0</code></li>
+</ul>
 <h5 id="fn-chrono_utc_now-datetime"><code>fn chrono_utc_now() -&gt; DateTime</code><a class="headerlink" href="#fn-chrono_utc_now-datetime" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The current UTC date and time. Returns: the current date/time in UTC. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.hour &amp;&amp; result.hour &lt; 24</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.minute &amp;&amp; result.minute &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.second &amp;&amp; result.second &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.weekday &amp;&amp; result.weekday &lt; 7</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3382,14 +3438,29 @@
 <blockquote>
 <p>Parse a YYYY-MM-DD string into a Date. Params: s - the date string. Returns: Some(Date) on success, None on malformed or out-of-range input. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (1 &lt;= result.value.month &amp;&amp; result.value.month &lt;= 12)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (1 &lt;= result.value.day &amp;&amp; result.value.day &lt;= 31)</code></li>
+</ul>
 <h5 id="fn-iso8601_week_dated-date-int-int-int"><code>fn iso8601_week_date(d: &amp;Date) -&gt; (Int, Int, Int)</code><a class="headerlink" href="#fn-iso8601_week_dated-date-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>(year, week, weekday) in ISO week numbering. Params: d - the date. Returns: the ISO week year, ISO week number (1-53), and ISO weekday (1 = Monday .. 7 = Sunday). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>1 &lt;= d.month &amp;&amp; d.month &lt;= 12</code></li>
+<li><strong>Precondition:</strong> <code>1 &lt;= d.day &amp;&amp; d.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>result._1 &gt;= 1 &amp;&amp; result._1 &lt;= 53</code></li>
+<li><strong>Postcondition:</strong> <code>result._2 &gt;= 1 &amp;&amp; result._2 &lt;= 7</code></li>
+</ul>
 <h5 id="fn-iso8601_ordinal_dated-date-int-int"><code>fn iso8601_ordinal_date(d: &amp;Date) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-iso8601_ordinal_dated-date-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>(year, day_of_year) in ordinal form. Params: d - the date. Returns: the year and the day of the year (1-366). Complexity: O(month).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>1 &lt;= d.month &amp;&amp; d.month &lt;= 12</code></li>
+<li><strong>Precondition:</strong> <code>1 &lt;= d.day &amp;&amp; d.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>result._1 &gt;= 1 &amp;&amp; result._1 &lt;= 366</code></li>
+</ul>
 <h5 id="fn-timestamp_iso8601ts-int-str"><code>fn timestamp_iso8601(ts: Int) -&gt; Str</code><a class="headerlink" href="#fn-timestamp_iso8601ts-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format the Unix timestamp <code>ts</code> as an ISO-8601 string. Params: ts - seconds since the Unix epoch. Returns: "YYYY-MM-DDTHH:MM:SS" in UTC. Complexity: O(1).</p>
@@ -3435,22 +3506,40 @@
 <blockquote>
 <p>Duration of <code>s</code> whole seconds.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.secs == s &amp;&amp; result.nanos == 0</code></li>
+</ul>
 <h4 id="fn-from_secs_f64secs-float64-duration"><code>fn from_secs_f64(secs: Float64) -&gt; Duration</code><a class="headerlink" href="#fn-from_secs_f64secs-float64-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Duration from fractional seconds (truncated toward zero).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(secs &gt;= 0) =&gt; (0 &lt;= result.nanos &amp;&amp; result.nanos &lt; NANOS_PER_SEC)</code></li>
+</ul>
 <h4 id="fn-from_millisms-int-duration"><code>fn from_millis(ms: Int) -&gt; Duration</code><a class="headerlink" href="#fn-from_millisms-int-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Duration of <code>ms</code> milliseconds.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.as_nanos() == ms * NANOS_PER_MILLI</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.nanos &amp;&amp; result.nanos &lt; NANOS_PER_SEC</code></li>
+</ul>
 <h4 id="fn-from_microsus-int-duration"><code>fn from_micros(us: Int) -&gt; Duration</code><a class="headerlink" href="#fn-from_microsus-int-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Duration of <code>us</code> microseconds.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.as_nanos() == us * NANOS_PER_MICRO</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.nanos &amp;&amp; result.nanos &lt; NANOS_PER_SEC</code></li>
+</ul>
 <h4 id="fn-from_nanosns-int-duration"><code>fn from_nanos(ns: Int) -&gt; Duration</code><a class="headerlink" href="#fn-from_nanosns-int-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Duration of <code>ns</code> nanoseconds.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.as_nanos() == ns</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.nanos &amp;&amp; result.nanos &lt; NANOS_PER_SEC</code></li>
+</ul>
 <h4 id="fn-as_secsself-self-int"><code>fn as_secs(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-as_secsself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Whole seconds of the duration.</p>
@@ -3459,22 +3548,38 @@
 <blockquote>
 <p>Whole milliseconds of the duration.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>0 &lt;= self.nanos &amp;&amp; self.nanos &lt; NANOS_PER_SEC</code></li>
+</ul>
 <h4 id="fn-as_microsself-self-int"><code>fn as_micros(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-as_microsself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Whole microseconds of the duration.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>0 &lt;= self.nanos &amp;&amp; self.nanos &lt; NANOS_PER_SEC</code></li>
+</ul>
 <h4 id="fn-as_nanosself-self-int"><code>fn as_nanos(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-as_nanosself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Total nanoseconds of the duration.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>0 &lt;= self.nanos &amp;&amp; self.nanos &lt; NANOS_PER_SEC</code></li>
+</ul>
 <h4 id="fn-as_secs_f64self-self-float64"><code>fn as_secs_f64(self: Self) -&gt; Float64</code><a class="headerlink" href="#fn-as_secs_f64self-self-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Duration as fractional seconds.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>0 &lt;= self.nanos &amp;&amp; self.nanos &lt; NANOS_PER_SEC</code></li>
+</ul>
 <h4 id="fn-subsec_nanosself-self-int"><code>fn subsec_nanos(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-subsec_nanosself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Nanosecond remainder within the current second.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>0 &lt;= self.nanos &amp;&amp; self.nanos &lt; NANOS_PER_SEC</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result &amp;&amp; result &lt; NANOS_PER_SEC</code></li>
+</ul>
 <h4 id="fn-addself-self-other-duration-duration"><code>fn add(self: Self, other: Duration) -&gt; Duration</code><a class="headerlink" href="#fn-addself-self-other-duration-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sum of two durations.</p>
@@ -3508,10 +3613,18 @@
 <blockquote>
 <p>Checked sum; None on overflow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (0 &lt;= result.value.nanos &amp;&amp; result.value.nanos &lt; NANOS_PER_SEC)</code></li>
+</ul>
 <h4 id="fn-checked_subself-self-other-duration-optionduration"><code>fn checked_sub(self: Self, other: Duration) -&gt; Option[Duration]</code><a class="headerlink" href="#fn-checked_subself-self-other-duration-optionduration" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Checked difference; None when it would be negative.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; self.as_nanos() &lt; other.as_nanos()</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; self.as_nanos() &gt;= other.as_nanos()</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (0 &lt;= result.value.nanos &amp;&amp; result.value.nanos &lt; NANOS_PER_SEC)</code></li>
+</ul>
 <h4 id="fn-monotonic_ms-int"><code>fn monotonic_ms() -&gt; Int</code><a class="headerlink" href="#fn-monotonic_ms-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Monotonic clock reading in milliseconds since an unspecified epoch. Never decreases and is unaffected by wall-clock adjustments, so it is the supported source for elapsed-time measurement. Backed by the runtime's <code>xiom_async_now_ms</code> (QueryPerformanceCounter on Windows, CLOCK_MONOTONIC on POSIX, <code>clock()</code> fallback); the same source as <code>xiom.async.async_now_ms</code> and <code>xiom.async.timer.Stopwatch</code>. Complexity: O(1). Thread-safe.</p>
@@ -3552,19 +3665,30 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.nanos &amp;&amp; result.nanos &lt; NANOS_PER_SEC</code></li>
 </ul>
 <h4 id="fn-duration_sinceself-self-earlier-instant-duration"><code>fn duration_since(self: Self, earlier: Instant) -&gt; Duration</code><a class="headerlink" href="#fn-duration_sinceself-self-earlier-instant-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Time from <code>earlier</code> to this instant (millisecond resolution).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.nanos &amp;&amp; result.nanos &lt; NANOS_PER_SEC</code></li>
+<li><strong>Postcondition:</strong> <code>result.as_nanos() == (self.t - earlier.t) * NANOS_PER_MILLI</code></li>
+</ul>
 <h4 id="fn-addself-self-d-duration-instant"><code>fn add(self: Self, d: Duration) -&gt; Instant</code><a class="headerlink" href="#fn-addself-self-d-duration-instant" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Instant shifted forward by <code>d</code> (millisecond precision).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>d.as_millis() &gt;= 0 =&gt; result.t &gt;= self.t</code></li>
+</ul>
 <h4 id="fn-subself-self-d-duration-instant"><code>fn sub(self: Self, d: Duration) -&gt; Instant</code><a class="headerlink" href="#fn-subself-self-d-duration-instant" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Instant shifted backward by <code>d</code> (millisecond precision).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>d.as_millis() &gt;= 0 =&gt; result.t &lt;= self.t</code></li>
+</ul>
 <h4 id="type-systemtime"><code>type SystemTime</code><a class="headerlink" href="#type-systemtime" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== SystemTime -- wall clock time ===</p>
@@ -3593,6 +3717,7 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result.nanos == 0</code></li>
 </ul>
 <h4 id="fn-unix_epoch-systemtime"><code>fn unix_epoch() -&gt; SystemTime</code><a class="headerlink" href="#fn-unix_epoch-systemtime" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3604,6 +3729,7 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.is_ok == (self.secs &gt; earlier.secs || (self.secs == earlier.secs &amp;&amp; self.nanos &gt;= earlier.nanos))</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_ok =&gt; (0 &lt;= result.value.nanos &amp;&amp; result.value.nanos &lt; NANOS_PER_SEC)</code></li>
 </ul>
 <h4 id="fn-secs_since_epochself-self-int"><code>fn secs_since_epoch(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-secs_since_epochself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3657,6 +3783,12 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.hour &amp;&amp; result.hour &lt; 24</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.minute &amp;&amp; result.minute &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.second &amp;&amp; result.second &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.weekday &amp;&amp; result.weekday &lt; 7</code></li>
 </ul>
 <h4 id="fn-yearself-self-int"><code>fn year(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-yearself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3673,37 +3805,74 @@
 <blockquote>
 <p>Day-of-month component 1..31 (UTC).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result &amp;&amp; result &lt;= 31</code></li>
+</ul>
 <h4 id="fn-hourself-self-int"><code>fn hour(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-hourself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Hour component 0..23 (UTC).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result &amp;&amp; result &lt; 24</code></li>
+</ul>
 <h4 id="fn-minuteself-self-int"><code>fn minute(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-minuteself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Minute component 0..59 (UTC).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result &amp;&amp; result &lt; 60</code></li>
+</ul>
 <h4 id="fn-secondself-self-int"><code>fn second(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-secondself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Second component 0..59 (UTC).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result &amp;&amp; result &lt; 60</code></li>
+</ul>
 <h4 id="fn-weekdayself-self-int"><code>fn weekday(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-weekdayself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Numeric day of week.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result &amp;&amp; result &lt; 7</code></li>
+</ul>
 <h4 id="fn-utc_now-datetime"><code>fn utc_now() -&gt; DateTime</code><a class="headerlink" href="#fn-utc_now-datetime" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Current UTC DateTime (alias of <code>DateTime.now</code>).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.hour &amp;&amp; result.hour &lt; 24</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.minute &amp;&amp; result.minute &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.second &amp;&amp; result.second &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.weekday &amp;&amp; result.weekday &lt; 7</code></li>
 </ul>
 <h4 id="fn-datetime_from_epochepoch-int-datetime"><code>fn datetime_from_epoch(epoch: Int) -&gt; DateTime</code><a class="headerlink" href="#fn-datetime_from_epochepoch-int-datetime" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>DateTime from a Unix epoch (seconds since 1970-01-01T00:00:00Z) in UTC. Public wrapper over the calendar decomposition; local-time conversion in xiom.time.tz builds on it.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.hour &amp;&amp; result.hour &lt; 24</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.minute &amp;&amp; result.minute &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.second &amp;&amp; result.second &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.weekday &amp;&amp; result.weekday &lt; 7</code></li>
+</ul>
 <h4 id="fn-local_now-datetime"><code>fn local_now() -&gt; DateTime</code><a class="headerlink" href="#fn-local_now-datetime" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>local_now is the UTC alias for backward compatibility; real local wall-clock conversion lives in xiom.time.tz (tzdata phase 1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.hour &amp;&amp; result.hour &lt; 24</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.minute &amp;&amp; result.minute &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.second &amp;&amp; result.second &lt; 60</code></li>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result.weekday &amp;&amp; result.weekday &lt; 7</code></li>
+</ul>
 <h4 id="fn-sleepdur-duration"><code>fn sleep(dur: Duration)</code><a class="headerlink" href="#fn-sleepdur-duration" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Sleep / Wait === Sleep for the given duration (blocking; millisecond resolution -- a sub-millisecond duration returns immediately, and the nanos field is truncated to whole milliseconds).</p>
@@ -3753,14 +3922,23 @@
 </table>
 <h4 id="fn-date_newyear-int-month-int-day-int-date_1"><code>fn date_new(year: Int, month: Int, day: Int) -&gt; Date</code><a class="headerlink" href="#fn-date_newyear-int-month-int-day-int-date_1" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>date_new creates a Date from year, month, day. Complexity: O(1). No validation performed.</p>
+<p>date_new creates a Date from year, month, day. The caller supplies a calendar month (1-12) and day (1-31); the fields are stored unchanged, with no further validation. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>1 &lt;= month &amp;&amp; month &lt;= 12</code></li>
+<li><strong>Precondition:</strong> <code>1 &lt;= day &amp;&amp; day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>result.year == year</code></li>
+<li><strong>Postcondition:</strong> <code>result.month == month</code></li>
+<li><strong>Postcondition:</strong> <code>result.day == day</code></li>
+</ul>
 <h4 id="fn-date_now-date_1"><code>fn date_now() -&gt; Date</code><a class="headerlink" href="#fn-date_now-date_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_now returns the current date computed from the Unix timestamp. Complexity: O(1). Uses time(0) for the system clock.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
 </ul>
 <h4 id="fn-date_yeard-date-int"><code>fn date_year(d: &amp;Date) -&gt; Int</code><a class="headerlink" href="#fn-date_yeard-date-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3770,46 +3948,83 @@
 <blockquote>
 <p>date_month returns the month field of a Date (1-12). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>1 &lt;= d.month &amp;&amp; d.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result &amp;&amp; result &lt;= 12</code></li>
+</ul>
 <h4 id="fn-date_dayd-date-int"><code>fn date_day(d: &amp;Date) -&gt; Int</code><a class="headerlink" href="#fn-date_dayd-date-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_day returns the day-of-month field of a Date (1-31). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>1 &lt;= d.day &amp;&amp; d.day &lt;= 31</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result &amp;&amp; result &lt;= 31</code></li>
+</ul>
 <h4 id="fn-date_is_leap_yearyear-int-bool"><code>fn date_is_leap_year(year: Int) -&gt; Bool</code><a class="headerlink" href="#fn-date_is_leap_yearyear-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_is_leap_year returns true if the given year is a leap year in the proleptic Gregorian calendar. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (year % 400 == 0 || (year % 4 == 0 &amp;&amp; year % 100 != 0))</code></li>
+</ul>
 <h4 id="fn-date_days_in_monthyear-int-month-int-int_1"><code>fn date_days_in_month(year: Int, month: Int) -&gt; Int</code><a class="headerlink" href="#fn-date_days_in_monthyear-int-month-int-int_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_days_in_month returns the number of days in the given month of the given year (1..31).  Valid for proleptic Gregorian. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>28 &lt;= result &amp;&amp; result &lt;= 31</code></li>
+</ul>
 <h4 id="fn-date_day_of_weekyear-int-month-int-day-int-int"><code>fn date_day_of_week(year: Int, month: Int, day: Int) -&gt; Int</code><a class="headerlink" href="#fn-date_day_of_weekyear-int-month-int-day-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_day_of_week returns the day of the week for the given date using Zeller's congruence (Gregorian).  0 = Sunday, ..., 6 = Saturday. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>0 &lt;= result &amp;&amp; result &lt;= 6</code></li>
+</ul>
 <h4 id="fn-date_day_of_yearyear-int-month-int-day-int-int"><code>fn date_day_of_year(year: Int, month: Int, day: Int) -&gt; Int</code><a class="headerlink" href="#fn-date_day_of_yearyear-int-month-int-day-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_day_of_year returns the ordinal day of the year (1-366) for the given date. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(1 &lt;= day &amp;&amp; day &lt;= 31 &amp;&amp; 1 &lt;= month &amp;&amp; month &lt;= 12) =&gt; (1 &lt;= result &amp;&amp; result &lt;= 366)</code></li>
+</ul>
 <h4 id="fn-date_iso8601d-date-str_1"><code>fn date_iso8601(d: &amp;Date) -&gt; Str</code><a class="headerlink" href="#fn-date_iso8601d-date-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_iso8601 formats a Date as a zero-padded "YYYY-MM-DD" string. Complexity: O(1).  No dynamic allocation overhead beyond str_concat.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(0 &lt;= d.year &amp;&amp; d.year &lt;= 9999) =&gt; result.len() == 10</code></li>
+</ul>
 <h4 id="fn-date_from_iso8601s-str-optiondate"><code>fn date_from_iso8601(s: Str) -&gt; Option[Date]</code><a class="headerlink" href="#fn-date_from_iso8601s-str-optiondate" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_from_iso8601 parses a "YYYY-MM-DD" string into a Date. Returns None if the format is malformed or values out of range. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (1 &lt;= result.value.month &amp;&amp; result.value.month &lt;= 12)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (1 &lt;= result.value.day &amp;&amp; result.value.day &lt;= 31)</code></li>
+</ul>
 <h4 id="fn-date_add_daysd-date-days-int-date"><code>fn date_add_days(d: &amp;Date, days: Int) -&gt; Date</code><a class="headerlink" href="#fn-date_add_daysd-date-days-int-date" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_add_days returns a new Date offset by the given number of days. Handles negative days correctly.  Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+</ul>
 <h4 id="fn-date_diff_daysa-date-b-date-int_1"><code>fn date_diff_days(a: &amp;Date, b: &amp;Date) -&gt; Int</code><a class="headerlink" href="#fn-date_diff_daysa-date-b-date-int_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_diff_days returns the number of days between a and b (a - b). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.year == b.year &amp;&amp; a.month == b.month &amp;&amp; a.day == b.day) =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-date_comparea-date-b-date-int_1"><code>fn date_compare(a: &amp;Date, b: &amp;Date) -&gt; Int</code><a class="headerlink" href="#fn-date_comparea-date-b-date-int_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_compare compares two dates. Returns -1 if a &lt; b, 0 if equal, 1 if a &gt; b.  Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(0 - 1) &lt;= result &amp;&amp; result &lt;= 1</code></li>
+</ul>
 <h4 id="fn-unix_timestamp-int"><code>fn unix_timestamp() -&gt; Int</code><a class="headerlink" href="#fn-unix_timestamp-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>unix_timestamp returns the current Unix timestamp (seconds since epoch). Delegates to the C time(2) call.  Complexity: O(1).</p>
@@ -3821,22 +4036,38 @@
 <blockquote>
 <p>timestamp_to_date converts a Unix timestamp (seconds) to a Date. Uses the existing civil_from_days calendar decomposition. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.month &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>1 &lt;= result.day &amp;&amp; result.day &lt;= 31</code></li>
+</ul>
 <h4 id="fn-date_to_timestampd-date-int_1"><code>fn date_to_timestamp(d: &amp;Date) -&gt; Int</code><a class="headerlink" href="#fn-date_to_timestampd-date-int_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>date_to_timestamp converts a Date to a Unix timestamp (0:00:00 UTC). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result % SECS_PER_DAY == 0</code></li>
+</ul>
 <h4 id="fn-iso8601_now-str"><code>fn iso8601_now() -&gt; Str</code><a class="headerlink" href="#fn-iso8601_now-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>iso8601_now returns the current date as an ISO-8601 "YYYY-MM-DD" string. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 10</code></li>
+</ul>
 <h4 id="fn-format_timestampts-int-str"><code>fn format_timestamp(ts: Int) -&gt; Str</code><a class="headerlink" href="#fn-format_timestampts-int-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>format_timestamp formats a Unix timestamp as a human-readable date-time string "YYYY-MM-DD HH:MM:SS" (UTC). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 19</code></li>
+</ul>
 <h4 id="fn-strftimespec-str-d-date-str"><code>fn strftime(spec: Str, d: &amp;Date) -&gt; Str</code><a class="headerlink" href="#fn-strftimespec-str-d-date-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Format a Date per the supported conversion set (see the module comment).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>spec.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h4 id="type-dateparse"><code>type DateParse</code><a class="headerlink" href="#type-dateparse" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse a date per the supported conversion set (see the module comment). Returns None when the input does not match the spec, the month/day are out of range, or the spec uses an unsupported conversion. Result struct instead of Option[Date]: Option-of-struct payloads collide with Option[Int] in combined programs (COMPILER_BUGS.md BUG 12 family).</p>
@@ -3863,6 +4094,11 @@
 <blockquote>
 <p>Parse a date/time string with a strftime-style spec; unparsed fields are left at their defaults with the error set.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_ok =&gt; (1 &lt;= result.date.month &amp;&amp; result.date.month &lt;= 12)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_ok =&gt; (1 &lt;= result.date.day &amp;&amp; result.date.day &lt;= 31)</code></li>
+<li><strong>Postcondition:</strong> <code>!result.is_ok =&gt; (result.date.month == 1 &amp;&amp; result.date.day == 1)</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="tzxi"><code>tz.xi</code><a class="headerlink" href="#tzxi" title="Permanent link">&para;</a></h2>
@@ -3870,22 +4106,41 @@
 <blockquote>
 <p>Local offset from UTC in seconds at an explicit Unix epoch (DST-aware). Positive means local time is ahead of UTC.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_ok =&gt; ((0 - 43200) &lt;= result.value &amp;&amp; result.value &lt;= 50400)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_err =&gt; result.error.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-tz_local_offset_secs-resultint-str"><code>fn tz_local_offset_secs() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-tz_local_offset_secs-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Current local offset from UTC in seconds (DST-aware for the host zone).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_ok =&gt; ((0 - 43200) &lt;= result.value &amp;&amp; result.value &lt;= 50400)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_err =&gt; result.error.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-tz_is_dst-resultbool-str"><code>fn tz_is_dst() -&gt; Result[Bool, Str]</code><a class="headerlink" href="#fn-tz_is_dst-resultbool-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when the host zone is currently observing daylight saving time.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_err =&gt; result.error.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-tz_local_epoch_secs-resultint-str"><code>fn tz_local_epoch_secs() -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-tz_local_epoch_secs-resultint-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Current local Unix epoch (UTC seconds + local offset).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_err =&gt; result.error.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-tz_local_now-resultdatetime-str"><code>fn tz_local_now() -&gt; Result[DateTime, Str]</code><a class="headerlink" href="#fn-tz_local_now-resultdatetime-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Current local wall-clock DateTime for the host zone.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_ok =&gt; (1 &lt;= result.value.month &amp;&amp; result.value.month &lt;= 12)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_ok =&gt; (1 &lt;= result.value.day &amp;&amp; result.value.day &lt;= 31)</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_err =&gt; result.error.len() &gt; 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

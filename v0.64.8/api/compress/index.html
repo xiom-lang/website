@@ -3077,6 +3077,9 @@
 <blockquote>
 <p>Stream-decompress between two file descriptors: reads all bytes from <code>reader</code>, decompresses them (custom NOT-RFC-7932 frame; real brotli: registry package <code>xiom.brotli</code>), writes the result to <code>writer</code>, and returns the number of bytes written. Errors surface as Err.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3103,10 +3106,16 @@
 <blockquote>
 <p>Streaming gzip compressor with the default level.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.level == 6</code></li>
+</ul>
 <h4 id="fn-with_levellevel-int-gzipcompressor"><code>fn with_level(level: Int) -&gt; GzipCompressor</code><a class="headerlink" href="#fn-with_levellevel-int-gzipcompressor" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Streaming gzip compressor with a level 0..9.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.level &gt;= 0 &amp;&amp; result.level &lt;= 9</code></li>
+</ul>
 <h4 id="fn-gzip_compressdata-vecuint8-resultvecuint8-str"><code>fn gzip_compress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_compressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Gzip functions === Aggregate facade: delegate to the real sublib implementations (xiom.compress.gzip). The earlier RLE-based duplicates trapped on empty input (requires: data.len() &gt; 0) and were not gzip-compatible.</p>
@@ -3125,10 +3134,18 @@
 <blockquote>
 <p>Capped variant: hard ceiling on decompressed size (bomb guard).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; max_out &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= max_out</code></li>
+</ul>
 <h4 id="fn-deflate_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn deflate_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-deflate_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Capped variant: hard ceiling on decompressed size (bomb guard).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; max_out &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= max_out</code></li>
+</ul>
 <h4 id="fn-gzip_decompressdata-vecuint8-resultvecuint8-str"><code>fn gzip_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Decompress gzip data; Err on malformed input.</p>
@@ -3254,30 +3271,53 @@
 <blockquote>
 <p>LZ77 compression using a simple sliding-window search. Emits tokens as flat triples in a Vec[Int]: [literal_len, match_offset, match_length, ...]. A match_offset of 0 means no match found; literal_len bytes follow directly. Window size limits the backward search distance. Complexity: O(n * window), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 3 * data.len()</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() % 3 == 0</code></li>
+</ul>
 <h4 id="fn-lz77_decompresstokens-vecint-resultvecuint8-str"><code>fn lz77_decompress(tokens: &amp;Vec[Int]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz77_decompresstokens-vecint-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>LZ77 decompression of token triples produced by lz77_compress. Each triple: [literal_len, data, match_length_or_zero]. If literal_len == 0: data = match_offset, third = match_length. If literal_len == 1: data = literal byte, third = 0. Complexity: O(t), t = number of tokens.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>tokens.len() == 0 =&gt; result is Ok(_)</code></li>
+</ul>
 <h4 id="fn-rle_encode_bytesdata-vecuint8-vecuint8"><code>fn rle_encode_bytes(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-rle_encode_bytesdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Simple byte-level run-length encoding. Format: [count: UInt8, byte: UInt8] for runs of identical bytes. Count represents the number of repetitions (1 means 1 byte). Differs from rle_encode which uses control-byte format with bit 7 markers. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() % 2 == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 2 * data.len()</code></li>
+</ul>
 <h4 id="fn-huffman_freqsdata-vecuint8-vecint"><code>fn huffman_freqs(data: &amp;Vec[UInt8]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-huffman_freqsdata-vecuint8-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Builds a 256-slot frequency table for Huffman coding. Each slot i contains the count of byte value i in the input. Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 256</code></li>
+</ul>
 <h4 id="fn-compress_gzip_strs-str-resultvecuint8-str"><code>fn compress_gzip_str(s: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-compress_gzip_strs-str-resultvecuint8-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Compresses a UTF-8 string using gzip. Converts Str to bytes, then wraps gzip_compress. Complexity: O(n), n = string length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result is Err(_)</code></li>
+</ul>
 <h4 id="fn-decompress_gzip_strdata-vecuint8-resultstr-str"><code>fn decompress_gzip_str(data: &amp;Vec[UInt8]) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-decompress_gzip_strdata-vecuint8-resultstr-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Decompresses gzip data to a UTF-8 string. Wraps gzip_decompress and converts the result to Str. Complexity: O(n), n = compressed data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; data.len() &gt;= 18</code></li>
+</ul>
 <h4 id="fn-compress_ratiooriginal-int-compressed-int-float64"><code>fn compress_ratio(original: Int, compressed: Int) -&gt; Float64</code><a class="headerlink" href="#fn-compress_ratiooriginal-int-compressed-int-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Alias for compression_ratio. Returns original / compressed as Float64. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>original &gt;= 0 =&gt; result &gt;= 0</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="crc32xi"><code>crc32.xi</code><a class="headerlink" href="#crc32xi" title="Permanent link">&para;</a></h2>
@@ -3334,6 +3374,9 @@
 <blockquote>
 <p>Stream-compress between two file descriptors: reads all bytes from <code>reader</code>, compresses them, writes the container to <code>writer</code>, and returns the number of bytes written. Errors (empty input, read/write failures) are returned as Err.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
 <h5 id="fn-deflate_length_base_table-vecint"><code>fn deflate_length_base_table() -&gt; Vec[Int]</code><a class="headerlink" href="#fn-deflate_length_base_table-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>RFC 1951 3.2.5 literal/length base values; index i is code 257 + i (29 entries covering codes 257..285). O(29).</p>
@@ -3420,10 +3463,16 @@
 <blockquote>
 <p>Gzip a file to <code>&lt;path&gt;.gz</code>. Returns Err when the source cannot be read or the target cannot be written.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; io.file_exists(path + ".gz")</code></li>
+</ul>
 <h5 id="fn-gzip_decompress_filepath-str-resultvecuint8-str"><code>fn gzip_decompress_file(path: Str) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-gzip_decompress_filepath-str-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Gunzip a file into raw bytes. Returns Err on read failures or invalid gzip data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-gzip_validatedata-vecuint8-bool"><code>fn gzip_validate(data: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-gzip_validatedata-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sanity-check magic, method, and the minimum trailer footprint. O(1).</p>
@@ -3465,50 +3514,89 @@
 <blockquote>
 <p>Derive the canonical prefix-free codes from per-symbol code lengths. Canonical order: shorter codes first, ties by symbol index. O(256).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 256</code></li>
+</ul>
 <h5 id="fn-huffman_buildfrequencies-vecint-huffmantree"><code>fn huffman_build(frequencies: &amp;Vec[Int]) -&gt; HuffmanTree</code><a class="headerlink" href="#fn-huffman_buildfrequencies-vecint-huffmantree" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Build a Huffman tree from a 256-slot frequency table (index = byte value). The tree holds per-symbol code lengths and canonical codes. Empty or single-symbol inputs are handled (single symbol gets length 1). Complexity: O(n^2) in the number of distinct symbols (&lt;= 256).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.code_lengths.len() == 256</code></li>
+<li><strong>Postcondition:</strong> <code>result.max_len &gt;= 0</code></li>
+</ul>
 <h5 id="fn-huffman_code_lengthstree-huffmantree-vecint"><code>fn huffman_code_lengths(tree: HuffmanTree) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-huffman_code_lengthstree-huffmantree-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Extract the per-symbol code lengths as a fresh 256-slot Vec[Int].</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 256</code></li>
+</ul>
 <h5 id="fn-huffman_table_newcodelengths-vecint-vecint"><code>fn huffman_table_new(codelengths: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-huffman_table_newcodelengths-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pack a flat canonical decode table: entries [0..255] are the canonical codes, entries [256..511] are the matching code lengths. O(512).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 512</code></li>
+</ul>
 <h5 id="fn-huffman_encode_symboltree-huffmantree-sym-int-vecbool"><code>fn huffman_encode_symbol(tree: HuffmanTree, sym: Int) -&gt; Vec[Bool]</code><a class="headerlink" href="#fn-huffman_encode_symboltree-huffmantree-sym-int-vecbool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the code bits of one symbol as booleans, MSB first. An uncovered symbol yields an empty Vec (documented).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(sym &lt; 0 || sym &gt; 255) =&gt; result.len() == 0</code></li>
+</ul>
 <h5 id="fn-huffman_encodetree-huffmantree-data-vecuint8-vecuint8"><code>fn huffman_encode(tree: HuffmanTree, data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-huffman_encodetree-huffmantree-data-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pack <code>data</code> into an MSB-first bit stream using the tree's codes. O(n * avg code length). Requires the tree to cover every input byte.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result.len() == 0</code></li>
+</ul>
 <h5 id="fn-huffman_decodetree-huffmantree-bits-vecuint8-len-int-resultvecuint8-str"><code>fn huffman_decode(tree: HuffmanTree, bits: &amp;Vec[UInt8], len: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-huffman_decodetree-huffmantree-bits-vecuint8-len-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decode exactly <code>len</code> bits of the MSB-first stream back into bytes. Returns Err on invalid bit patterns or stream exhaustion.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; len &lt;= 0 || result.len() &lt;= len</code></li>
+</ul>
 <h5 id="fn-huffman_compressdata-vecuint8-vecuint8"><code>fn huffman_compress(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-huffman_compressdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>One-shot Huffman compression: builds the frequency table and tree, packs the bits, and emits the self-describing container (header documented at the top of this module). Empty input yields a valid empty container.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 260</code></li>
+<li><strong>Postcondition:</strong> <code>data.len() == 0 =&gt; result.len() == 260</code></li>
+</ul>
 <h5 id="fn-huffman_decompressdata-vecuint8-resultvecuint8-str"><code>fn huffman_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-huffman_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress Huffman-coded data; Err on malformed input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= _HUFF_DEFAULT_CAP</code></li>
+</ul>
 <h5 id="fn-huffman_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn huffman_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-huffman_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on output size. The container's declared length is rejected up-front when it exceeds the cap; the decode loop re-checks per symbol, so a lying header cannot allocate past the cap.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= max_out</code></li>
+</ul>
 <h5 id="fn-rle_compressdata-vecuint8-vecuint8"><code>fn rle_compress(data: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-rle_compressdata-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Byte-level run-length encoding: [count: UInt8, byte: UInt8] pairs for runs of identical bytes (count 1..255; runs longer than 255 split). Complexity: O(n), n = data length.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() % 2 == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 2 * data.len()</code></li>
+</ul>
 <h5 id="fn-rle_decompressdata-vecuint8-resultvecuint8-str"><code>fn rle_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-rle_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Undo byte-level run-length encoding (rle_compress format). Returns Err on a truncated pair (odd trailing byte) or a zero count.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &gt;= data.len() / 2</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3593,26 +3681,46 @@
 <blockquote>
 <p>Compress <code>data</code> with a greedy 32KiB sliding-window search into the control-byte token stream documented above. O(n * 32768).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= 2 * data.len()</code></li>
+</ul>
 <h5 id="fn-lz77_decompressdata-vecuint8-resultvecuint8-str"><code>fn lz77_decompress(data: &amp;Vec[UInt8]) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz77_decompressdata-vecuint8-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress LZ77 data; Err on malformed input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.len() &lt;= _LZ77_DEFAULT_CAP</code></li>
+</ul>
 <h5 id="fn-lz77_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str"><code>fn lz77_decompress_capped(data: &amp;Vec[UInt8], max_out: Int) -&gt; Result[Vec[UInt8], Str]</code><a class="headerlink" href="#fn-lz77_decompress_cappeddata-vecuint8-max_out-int-resultvecuint8-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decompress with a hard ceiling on output size. Every expansion step is checked BEFORE writing, so a hostile token stream cannot allocate beyond the cap even momentarily. Returns Err("lz77: output exceeds cap") when exceeded.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; max_out &lt; 0 || result.len() &lt;= max_out</code></li>
+</ul>
 <h5 id="fn-lz77_find_longest_matchdata-vecuint8-pos-int-window-int-int-int"><code>fn lz77_find_longest_match(data: &amp;Vec[UInt8], pos: Int, window: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-lz77_find_longest_matchdata-vecuint8-pos-int-window-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Locate the longest match for the byte at <code>pos</code> searching back at most <code>window</code> positions. Returns (length, distance); (0, 0) when no match of length &gt;= 3 exists. Out-of-range positions yield (0, 0). Complexity: O(window * match_length).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 258</code></li>
+<li><strong>Postcondition:</strong> <code>result._0 == 0 =&gt; result._1 == 0</code></li>
+</ul>
 <h5 id="fn-lz77_token_encodelength-int-distance-int-int"><code>fn lz77_token_encode(length: Int, distance: Int) -&gt; Int</code><a class="headerlink" href="#fn-lz77_token_encodelength-int-distance-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pack a (length, distance) pair into a single token: (length &lt;&lt; 16) | distance. Both fields are clamped to 16 bits (0..65535). Pure-Int token.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 4294967295</code></li>
+</ul>
 <h5 id="fn-lz77_token_decodetoken-int-int-int"><code>fn lz77_token_decode(token: Int) -&gt; (Int, Int)</code><a class="headerlink" href="#fn-lz77_token_decodetoken-int-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unpack a token produced by lz77_token_encode into (length, distance).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 65535</code></li>
+<li><strong>Postcondition:</strong> <code>result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 65535</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

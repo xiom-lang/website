@@ -2868,10 +2868,16 @@
 <blockquote>
 <p>Apply <code>f</code> to every element, returning a new array.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == N</code></li>
+</ul>
 <h4 id="fn-zipt-u-na-nt-b-nu-nt-u"><code>fn zip[T, U, N](a: [N]T, b: [N]U) -&gt; [N](T, U)</code><a class="headerlink" href="#fn-zipt-u-na-nt-b-nu-nt-u" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Pair the elements of two arrays positionally.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == N</code></li>
+</ul>
 <h4 id="fn-foldt-b-narr-nt-init-b-f-fnb-t-b-b"><code>fn fold[T, B, N](arr: [N]T, init: B, f: fn(B, T) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldt-b-narr-nt-init-b-f-fnb-t-b-b" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fold the elements with <code>f</code>, starting from <code>init</code>.</p>
@@ -2899,10 +2905,16 @@
 <blockquote>
 <p>Array of shared references to each element.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == N</code></li>
+</ul>
 <h4 id="fn-each_mutt-narr-mut-nt-nmut-t"><code>fn each_mut[T, N](arr: &amp;mut [N]T) -&gt; [N]&amp;mut T</code><a class="headerlink" href="#fn-each_mutt-narr-mut-nt-nmut-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Array of mutable references to each element.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == N</code></li>
+</ul>
 <h4 id="fn-fillt-narr-mut-nt-value-t"><code>fn fill[T, N](arr: &amp;mut [N]T, value: T)</code><a class="headerlink" href="#fn-fillt-narr-mut-nt-value-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Set every element to a clone of <code>value</code>.</p>
@@ -3025,6 +3037,9 @@
 <blockquote>
 <p>Append value to the end of a. O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() == a.len()@pre + 1</code></li>
+</ul>
 <h5 id="fn-array_popa-mut-vecint-optionint"><code>fn array_pop(a: &amp;mut Vec[Int]) -&gt; Option[Int]</code><a class="headerlink" href="#fn-array_popa-mut-vecint-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the last element, or None if a is empty. O(1).</p>
@@ -3036,10 +3051,19 @@
 <blockquote>
 <p>Insert value at idx, shifting later elements right. O(n). No-op when idx is outside [0, len].</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>idx &lt; 0 || idx &gt; a.len()@pre =&gt; a.len() == a.len()@pre</code></li>
+<li><strong>Postcondition:</strong> <code>idx &gt;= 0 &amp;&amp; idx &lt;= a.len()@pre =&gt; a.len() == a.len()@pre + 1</code></li>
+</ul>
 <h5 id="fn-array_removea-mut-vecint-idx-int-optionint"><code>fn array_remove(a: &amp;mut Vec[Int], idx: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-array_removea-mut-vecint-idx-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the element at idx, or None if out of bounds. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>idx &lt; 0 || idx &gt;= a.len()@pre =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; a.len() == a.len()@pre</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; a.len() == a.len()@pre - 1</code></li>
+</ul>
 <h5 id="fn-array_resizea-mut-vecint-n-int-fill-int"><code>fn array_resize(a: &amp;mut Vec[Int], n: Int, fill: Int)</code><a class="headerlink" href="#fn-array_resizea-mut-vecint-n-int-fill-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Resize a to n elements, padding new slots with fill. O(n). Negative n is a no-op; shrinking drops trailing elements.</p>
@@ -3058,10 +3082,16 @@
 <blockquote>
 <p>Append all elements of b to a. O(b.len()).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() == a.len()@pre + b.len()</code></li>
+</ul>
 <h5 id="fn-array_sorta-mut-vecint"><code>fn array_sort(a: &amp;mut Vec[Int])</code><a class="headerlink" href="#fn-array_sorta-mut-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sort a in place. O(n log n), stable, O(n) space.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.len() == a.len()@pre</code></li>
+</ul>
 <h5 id="fn-array_searcha-vecint-item-int-optionint"><code>fn array_search(a: &amp;Vec[Int], item: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-array_searcha-vecint-item-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Index of the first occurrence of item, or None. O(n).</p>

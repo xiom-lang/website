@@ -3857,6 +3857,9 @@
 <blockquote>
 <p>Test whether (x, y) satisfies the curve equation for a named curve (1 = secp256k1, 2 = P-256). Complexity: O(1) field operations.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>curve == 1 || curve == 2</code></li>
+</ul>
 <h5 id="fn-curve_scalar_validcurve-int-scalar-vecuint8-bool"><code>fn curve_scalar_valid(curve: Int, scalar: &amp;Vec[UInt8]) -&gt; Bool</code><a class="headerlink" href="#fn-curve_scalar_validcurve-int-scalar-vecuint8-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Test whether a scalar is a valid private key for a named curve (1 = secp256k1, 2 = P-256, 3 = Curve25519): 1 &lt;= scalar &lt; n. Complexity: O(1).</p>
@@ -4318,6 +4321,10 @@
 <blockquote>
 <p>Memory-hard scrypt key derivation (RFC 7914). Uses PBKDF2-HMAC-SHA256 for the outer/inner hashes and Salsa20/8 for the block mix. <code>n</code> must be a power of two; it is clamped to 2^18 and r*p to 256. Complexity: O(n * r * p).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>key_len &lt; 1 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>key_len &gt;= 1 =&gt; result.len() == key_len</code></li>
+</ul>
 <h5 id="fn-argon2idpassword-vecuint8-salt-vecuint8-memory-int-iterations-int-parallelism-int-key_len-int-vecuint8"><code>fn argon2id(password: &amp;Vec[UInt8], salt: &amp;Vec[UInt8], memory: Int, iterations: Int, parallelism: Int, key_len: Int) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-argon2idpassword-vecuint8-salt-vecuint8-memory-int-iterations-int-parallelism-int-key_len-int-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Argon2id-style key derivation. This is a DOCUMENTED APPROXIMATION: it derives via PBKDF2-HMAC-SHA256 with the memory budget folded into the iteration count (matching the pattern of the flat argon2 helper). A full RFC 9106 implementation (BLAKE2b blocks + memory-hard passes) is not practical in pure XIOM. Do not use where exact Argon2id compatibility is required. Complexity: O(iterations * memory / 1024 + iterations).</p>
@@ -4359,6 +4366,9 @@
 <blockquote>
 <p>Generate a new X25519 keypair; the tuple is (sk, pk). NOTE: Vec-tuple returns miscompile in the current build; prefer x25519_public_key on a random secret. Complexity: O(255) field operations.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0.len() == 32 &amp;&amp; result._1.len() == 32</code></li>
+</ul>
 <h5 id="fn-x25519_public_keysk-vecuint8-vecuint8"><code>fn x25519_public_key(sk: &amp;Vec[UInt8]) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-x25519_public_keysk-vecuint8-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Derive the X25519 public key from a secret key. Complexity: O(255) field operations.</p>

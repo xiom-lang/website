@@ -2896,10 +2896,16 @@
 <blockquote>
 <p>Whether backtrace capture is currently enabled. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == capture_enabled</code></li>
+</ul>
 <h5 id="fn-error_set_backtrace_enabledon-bool"><code>fn error_set_backtrace_enabled(on: Bool)</code><a class="headerlink" href="#fn-error_set_backtrace_enabledon-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Enable or disable backtrace capture. When disabled, <code>error_with_backtrace</code> attaches no frames. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>capture_enabled == on</code></li>
+</ul>
 <h5 id="fn-error_backtrace_framese-bterror-vecint"><code>fn error_backtrace_frames(e: BtError) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-error_backtrace_framese-bterror-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The raw frame addresses of an error backtrace (empty when none captured). Complexity: O(frames).</p>
@@ -3176,14 +3182,22 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= self.errors.len() - 1</code></li>
 </ul>
-<h4 id="fn-wrap_errort-eresult-resultt-e-context-str-resultt-str"><code>fn wrap_error[T, E](result: Result[T, E], context: Str) -&gt; Result[T, Str]</code><a class="headerlink" href="#fn-wrap_errort-eresult-resultt-e-context-str-resultt-str" title="Permanent link">&para;</a></h4>
+<h4 id="fn-wrap_errort-er-resultt-e-context-str-resultt-str"><code>fn wrap_error[T, E](r: Result[T, E], context: Str) -&gt; Result[T, Str]</code><a class="headerlink" href="#fn-wrap_errort-er-resultt-e-context-str-resultt-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Wrap the Err payload of <code>result</code> with a context message, preserving Ok values unchanged. The Err message becomes just <code>context</code> -- the richer <code>context + ": " + e.description()</code> form needs the <code>E: Error</code> bound, which the checker's builtin-interface matching does not support yet (C001: bound resolves against the OK type; interface-as-value gap). The <code>Error</code> interface with <code>Option[Error]</code> returns also defaults to i64 (unknown-type warning). Re-enrich once the checker closes those gaps.</p>
 </blockquote>
-<h4 id="fn-contextt-eresult-resultt-e-msg-str-resultt-str"><code>fn context[T, E](result: Result[T, E], msg: Str) -&gt; Result[T, Str]</code><a class="headerlink" href="#fn-contextt-eresult-resultt-e-msg-str-resultt-str" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_ok == r.is_ok</code></li>
+<li><strong>Postcondition:</strong> <code>r.is_err =&gt; result.value == context</code></li>
+</ul>
+<h4 id="fn-contextt-er-resultt-e-msg-str-resultt-str"><code>fn context[T, E](r: Result[T, E], msg: Str) -&gt; Result[T, Str]</code><a class="headerlink" href="#fn-contextt-er-resultt-e-msg-str-resultt-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Wrap a Result error with an additional context message.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_ok == r.is_ok</code></li>
+<li><strong>Postcondition:</strong> <code>r.is_err =&gt; result.value == msg</code></li>
+</ul>
 <h4 id="type-backtrace"><code>type Backtrace</code><a class="headerlink" href="#type-backtrace" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Captured call-site frames (best-effort, platform dependent).</p>

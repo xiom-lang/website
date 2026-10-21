@@ -2885,6 +2885,10 @@
 <blockquote>
 <p>Return the next 32-bit output word. <code>pos</code> tracks the position within the 64-word keystream window (16 words per block, 4 blocks per window); the block counter advances at each 16-word boundary.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>r.state.len() == 16</code></li>
+<li><strong>Precondition:</strong> <code>r.pos &gt;= 0 &amp;&amp; r.pos &lt; 64</code></li>
+</ul>
 <h5 id="fn-chacha_rng_next_intr-mut-chacharng-int"><code>fn chacha_rng_next_int(r: &amp;mut ChaChaRng) -&gt; Int</code><a class="headerlink" href="#fn-chacha_rng_next_intr-mut-chacharng-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value as a signed i64 in [0, 2^32).</p>
@@ -2961,6 +2965,10 @@
 <blockquote>
 <p>Return the next 32-bit output word, tempering with: y ^= y &gt;&gt; 11; y ^= (y &lt;&lt; 7) &amp; 0x9d2c5680; y ^= (y &lt;&lt; 15) &amp; 0xefc60000; y ^= y &gt;&gt; 18.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>r.state.len() == 624</code></li>
+<li><strong>Precondition:</strong> <code>r.index &gt;= 0 &amp;&amp; r.index &lt;= 624</code></li>
+</ul>
 <h5 id="fn-mt19937_next_intr-mut-mt19937-int"><code>fn mt19937_next_int(r: &amp;mut Mt19937) -&gt; Int</code><a class="headerlink" href="#fn-mt19937_next_intr-mut-mt19937-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value as a signed i64 in [0, 2^32).</p>
@@ -3029,6 +3037,9 @@
 <blockquote>
 <p>Return the next 32-bit output word. xorshifted = ((oldstate &gt;&gt; 18) ^ oldstate) &gt;&gt; 27; rot = oldstate &gt;&gt; 59; output = (xorshifted &gt;&gt; rot) | (xorshifted &lt;&lt; ((-rot) &amp; 31)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &lt; 4294967296</code></li>
+</ul>
 <h5 id="fn-pcg_next_intr-mut-pcg-int"><code>fn pcg_next_int(r: &amp;mut Pcg) -&gt; Int</code><a class="headerlink" href="#fn-pcg_next_intr-mut-pcg-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the next value as a signed i64 in [0, 2^32).</p>
@@ -3248,6 +3259,9 @@
 <blockquote>
 <p>Reseed the global RNG from an explicit value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>state() != 0</code></li>
+</ul>
 <h4 id="fn-state-int"><code>fn state() -&gt; Int</code><a class="headerlink" href="#fn-state-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns an opaque snapshot of the global RNG state. Pass the value to <code>set_state</code> to restore the exact stream position; snapshots are implementation-specific and only valid for this module. The global state is never zero. Complexity: O(1).</p>
@@ -3292,6 +3306,10 @@
 <blockquote>
 <p>Returns the next pseudo-random integer from this Xorshift64 generator. Uses triple-xorshift: x ^= x &lt;&lt; 13; x ^= x &gt;&gt; 7; x ^= x &lt;&lt; 17.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>self.state != 0</code></li>
+<li><strong>Postcondition:</strong> <code>result != 0</code></li>
+</ul>
 <h4 id="fn-random_choicetitems-vect-optiont"><code>fn random_choice[T](items: &amp;Vec[T]) -&gt; Option[&amp;T]</code><a class="headerlink" href="#fn-random_choicetitems-vect-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns a random element from a vector. Returns None if the vector is empty. Wraps the existing pick function. Complexity: O(1).</p>

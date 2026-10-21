@@ -2854,6 +2854,9 @@
 <blockquote>
 <p>Opaque identity that prevents the optimizer from eliding the value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == value</code></li>
+</ul>
 <h4 id="fn-bench_ops_per_sec_nsresult-benchresult-int"><code>fn bench_ops_per_sec_ns(result: &amp;BenchResult) -&gt; Int</code><a class="headerlink" href="#fn-bench_ops_per_sec_nsresult-benchresult-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns operations per second based on <code>mean_ns</code>. Returns 0 if <code>mean_ns</code> is 0 to avoid division by zero. Complexity: O(1). Pure.</p>
@@ -2925,6 +2928,9 @@
 <blockquote>
 <p>Times a single invocation of <code>f</code> and returns the elapsed nanoseconds. Complexity: runs <code>f</code> exactly once. Defect fix 2026-10-08 (wave 91): used to call <code>run_bench("", f)</code>, which violated run_bench's own <code>requires: name.len() &gt; 0</code> at runtime.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-bench_reportresults-vecbenchresult-str"><code>fn bench_report(results: Vec[BenchResult]) -&gt; Str</code><a class="headerlink" href="#fn-bench_reportresults-vecbenchresult-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Generates a table report with columns: name, mean, min, max, ops/s. Complexity: O(n).</p>

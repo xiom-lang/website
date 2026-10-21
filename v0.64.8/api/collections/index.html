@@ -2854,14 +2854,23 @@
 <blockquote>
 <p>Sort elements in ascending order. O(N log N) avg.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_sort_desctv-mut-vect"><code>fn vec_sort_desc[T](v: &amp;mut Vec[T])</code><a class="headerlink" href="#fn-vec_sort_desctv-mut-vect" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sort elements in descending order. O(N log N) avg.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_containstv-vect-value-t-bool"><code>fn vec_contains[T](v: &amp;Vec[T], value: T) -&gt; Bool</code><a class="headerlink" href="#fn-vec_containstv-vect-value-t-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if the value is present. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h4 id="fn-vec_deduptv-mut-vect"><code>fn vec_dedup[T](v: &amp;mut Vec[T])</code><a class="headerlink" href="#fn-vec_deduptv-mut-vect" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Remove consecutive duplicate elements. O(N).</p>
@@ -2960,14 +2969,23 @@
 <blockquote>
 <p>Returns true if the key exists in the map. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h4 id="fn-map_get_ork-vm-mapk-v-key-k-default-v-v"><code>fn map_get_or[K, V](m: &amp;Map[K, V], key: &amp;K, default: V) -&gt; V</code><a class="headerlink" href="#fn-map_get_ork-vm-mapk-v-key-k-default-v-v" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Get value by key, or return <code>default</code> if not found. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>!m.contains(key) =&gt; result == default</code></li>
+</ul>
 <h4 id="fn-map_remove_keyk-vm-mut-mapk-v-key-k-optionv"><code>fn map_remove_key[K, V](m: &amp;mut Map[K, V], key: &amp;K) -&gt; Option[V]</code><a class="headerlink" href="#fn-map_remove_keyk-vm-mut-mapk-v-key-k-optionv" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Remove a key-value pair. Returns the value if the key was present. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>!m.contains(key)</code></li>
+</ul>
 <h4 id="fn-map_cleark-vm-mut-mapk-v"><code>fn map_clear[K, V](m: &amp;mut Map[K, V])</code><a class="headerlink" href="#fn-map_cleark-vm-mut-mapk-v" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Remove all entries from the map. O(1).</p>
@@ -2979,6 +2997,11 @@
 <blockquote>
 <p>Insert a key-value pair only if the key is not already present. Returns true if inserted, false if key already existed. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.contains(&amp;key)</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; m.len() == m.len()@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; m.len() == m.len()@pre</code></li>
+</ul>
 <h4 id="fn-map_mergek-va-mapk-v-b-mapk-v-mapk-v"><code>fn map_merge[K, V](a: &amp;Map[K, V], b: &amp;Map[K, V]) -&gt; Map[K, V]</code><a class="headerlink" href="#fn-map_mergek-va-mapk-v-b-mapk-v-mapk-v" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Merge two maps into a new map. Entries from <code>b</code> overwrite those from <code>a</code> on key collision. O(N-M).</p>
@@ -2991,14 +3014,23 @@
 <blockquote>
 <p>Insert a value into the set. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == s.len()@pre || s.len() == s.len()@pre + 1</code></li>
+</ul>
 <h4 id="fn-set_containsts-sett-value-t-bool"><code>fn set_contains[T](s: &amp;Set[T], value: &amp;T) -&gt; Bool</code><a class="headerlink" href="#fn-set_containsts-sett-value-t-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if the value is in the set. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result == false</code></li>
+</ul>
 <h4 id="fn-set_removets-mut-sett-value-t"><code>fn set_remove[T](s: &amp;mut Set[T], value: &amp;T)</code><a class="headerlink" href="#fn-set_removets-mut-sett-value-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Remove a value from the set. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == s.len()@pre || s.len() == s.len()@pre - 1</code></li>
+</ul>
 <h4 id="fn-set_lents-sett-int"><code>fn set_len[T](s: &amp;Set[T]) -&gt; Int</code><a class="headerlink" href="#fn-set_lents-sett-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of elements in the set. O(1).</p>
@@ -3032,6 +3064,10 @@
 <blockquote>
 <p>Returns true if <code>sub</code> is a subset of <code>sup</code> (all elements of sub are in sup). O(N-M).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sub.len() == 0 =&gt; result == true</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; sub.len() &lt;= sup.len()</code></li>
+</ul>
 <h4 id="fn-set_is_emptyts-sett-bool"><code>fn set_is_empty[T](s: &amp;Set[T]) -&gt; Bool</code><a class="headerlink" href="#fn-set_is_emptyts-sett-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if the set contains no elements. O(1).</p>
@@ -3057,6 +3093,9 @@
 <blockquote>
 <p>Sort a vector using a custom comparator. Delegates to xiom.sort.sort_by. O(N log N) average, O(N2) worst. Unstable. NOTE: the comparator must be a NAMED function -- inline lambdas crash the current runtime (see xiom.sort comparator note).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == v.len()@pre</code></li>
+</ul>
 <h4 id="fn-vec_window_maxv-vecint-k-int-vecint"><code>fn vec_window_max(v: &amp;Vec[Int], k: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_window_maxv-vecint-k-int-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sliding-window maximum: for each window of size <code>k</code> starting at index 0, the maximum element of that window. O(N-K) with O(K) extra space.</p>
@@ -3166,6 +3205,9 @@
 <blockquote>
 <p>Element at index i, or <code>default</code> if out of bounds. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>i &lt; 0 || i &gt;= v.len()@pre =&gt; result == default</code></li>
+</ul>
 <h4 id="fn-vec_leftv-vecint-i-int-vecint"><code>fn vec_left(v: &amp;Vec[Int], i: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-vec_leftv-vecint-i-int-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Left part of a vector: elements [0, i), clamped to the valid range. O(N).</p>

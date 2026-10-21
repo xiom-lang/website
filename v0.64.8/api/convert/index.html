@@ -4693,6 +4693,9 @@
 <blockquote>
 <p>Unicode code point of a Char.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 1114111</code></li>
+</ul>
 <h4 id="fn-int_to_charn-int-optionchar"><code>fn int_to_char(n: Int) -&gt; Option[Char]</code><a class="headerlink" href="#fn-int_to_charn-int-optionchar" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Char for a valid Unicode scalar value, or None.</p>
@@ -4741,6 +4744,10 @@
 <blockquote>
 <p>The current calendar date, computed from the Unix clock. Returns: today's Date (UTC). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.month &gt;= 1 &amp;&amp; result.month &lt;= 12</code></li>
+<li><strong>Postcondition:</strong> <code>result.day &gt;= 1 &amp;&amp; result.day &lt;= 31</code></li>
+</ul>
 <h5 id="fn-date_iso8601d-date-str"><code>fn date_iso8601(d: &amp;Date) -&gt; Str</code><a class="headerlink" href="#fn-date_iso8601d-date-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format a date as ISO 8601 "YYYY-MM-DD", zero-padded. Parameters: d -- the date to format. Returns: the formatted string (always 10 bytes). Complexity: O(1).</p>
@@ -4787,6 +4794,11 @@
 <blockquote>
 <p>The current date-time value (UTC clock). Returns: a DateTime for the current instant. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.hour &gt;= 0 &amp;&amp; result.hour &lt;= 23</code></li>
+<li><strong>Postcondition:</strong> <code>result.minute &gt;= 0 &amp;&amp; result.minute &lt;= 59</code></li>
+<li><strong>Postcondition:</strong> <code>result.second &gt;= 0 &amp;&amp; result.second &lt;= 59</code></li>
+</ul>
 <h5 id="fn-datetime_iso8601dt-datetime-str"><code>fn datetime_iso8601(dt: &amp;DateTime) -&gt; Str</code><a class="headerlink" href="#fn-datetime_iso8601dt-datetime-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Format a date-time as ISO 8601 "YYYY-MM-DDTHH:MM:SS", zero-padded. Parameters: dt -- the date-time value. Returns: the formatted string (always 19 bytes). Complexity: O(1).</p>
@@ -5112,6 +5124,9 @@
 <blockquote>
 <p>Return a character's code point as an integer. Parameters: c -- the character. Returns: the Unicode code point of c. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == to_int_from_char(c)</code></li>
+</ul>
 <h5 id="fn-from_boolb-bool-int"><code>fn from_bool(b: Bool) -&gt; Int</code><a class="headerlink" href="#fn-from_boolb-bool-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Render a boolean as 0 or 1. Parameters: b -- the boolean. Returns: 1 when true, 0 when false. Complexity: O(1).</p>
@@ -6037,6 +6052,9 @@
 <blockquote>
 <p>Truncates a float toward zero. Behavior for NaN and out-of-range values is undefined (use the checked/saturating variants for those inputs). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-to_int_saturatingf-float64-int"><code>fn to_int_saturating(f: Float64) -&gt; Int</code><a class="headerlink" href="#fn-to_int_saturatingf-float64-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Truncates a float toward zero, clamping to INT_MAX/INT_MIN on overflow. NaN yields 0. Complexity: O(1).</p>
@@ -6059,6 +6077,9 @@
 <blockquote>
 <p>Returns a character's code point as an integer. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -6222,6 +6243,9 @@
 <blockquote>
 <p>Resolve a relative URI against a base URI (RFC 3986 S5). Parameters: base -- the absolute base URI; rel -- the reference (may be absolute or relative). Returns: Ok(resolved) on success; Err when parsing fails. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -6271,6 +6295,9 @@
 <blockquote>
 <p>Assemble a URL string from its parts. Parameters: scheme -- e.g. "https"; host -- e.g. "example.com"; port -- 0 means "no explicit port"; path -- must start with "/"; query -- the raw query string without '?' (empty means none). Returns: the assembled URL. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= scheme.len() + host.len() + 4</code></li>
+</ul>
 <h5 id="fn-url_encodes-str-str"><code>fn url_encode(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-url_encodes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Percent-encode a URL (unreserved characters A-Z a-z 0-9 - _ . ~ pass through; everything else becomes %HH). Parameters: s -- the text to encode. Returns: the percent-encoded string. Complexity: O(n).</p>

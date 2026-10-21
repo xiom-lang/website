@@ -2928,7 +2928,7 @@
 <h1 id="stdlibserialize"><code>stdlib.serialize</code><a class="headerlink" href="#stdlibserialize" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Serialization Library</strong></p>
-<p>Generated from <code>v0.64.8</code>. 8 source files, 118 documented symbols.</p>
+<p>Generated from <code>v0.64.8</code>. 8 source files, 126 documented symbols.</p>
 </blockquote>
 <h2 id="csvxi"><code>csv.xi</code><a class="headerlink" href="#csvxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-csv_parsetext-str-resultvecvecstr-str"><code>fn csv_parse(text: Str) -&gt; Result[Vec[Vec[Str]], Str]</code><a class="headerlink" href="#fn-csv_parsetext-str-resultvecvecstr-str" title="Permanent link">&para;</a></h5>
@@ -3109,10 +3109,16 @@
 <blockquote>
 <p>Serialize <code>v</code> as compact JSON (no insignificant whitespace). Complexity: O(n), n = number of nodes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-json_prettyv-jsonvalue-str"><code>fn json_pretty(v: JsonValue) -&gt; Str</code><a class="headerlink" href="#fn-json_prettyv-jsonvalue-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Serialize <code>v</code> as indented JSON (2 spaces per level). Complexity: O(n), n = number of nodes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-json_getv-jsonvalue-key-str-optionjsonvalue"><code>fn json_get(v: JsonValue, key: Str) -&gt; Option[JsonValue]</code><a class="headerlink" href="#fn-json_getv-jsonvalue-key-str-optionjsonvalue" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The value under <code>key</code>, if <code>v</code> is an object and the key is present. Complexity: O(k), k = number of keys.</p>
@@ -3144,6 +3150,84 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>json_type(result) == "object"</code></li>
+</ul>
+<h5 id="type-jsonobjectbuilder"><code>type JsonObjectBuilder</code><a class="headerlink" href="#type-jsonobjectbuilder" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>In-place object builder: one Map, no copy per key. Call <code>build()</code> to return a JsonValue. Avoids the O(n^2) copy churn of <code>json_set</code>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entries</code></td>
+<td><code>Map[Str, JsonValue]</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="fn-json_object_builder_new-jsonobjectbuilder"><code>fn json_object_builder_new() -&gt; JsonObjectBuilder</code><a class="headerlink" href="#fn-json_object_builder_new-jsonobjectbuilder" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>New empty JSON object builder.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.entries.len() == 0</code></li>
+</ul>
+<h5 id="fn-putself-self-key-str-value-jsonvalue"><code>fn put(self: Self, key: Str, value: JsonValue)</code><a class="headerlink" href="#fn-putself-self-key-str-value-jsonvalue" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Insert or replace one key in the object builder.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.entries.contains(&amp;key)</code></li>
+</ul>
+<h5 id="fn-buildself-self-jsonvalue"><code>fn build(self: Self) -&gt; JsonValue</code><a class="headerlink" href="#fn-buildself-self-jsonvalue" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Wrap the object builder's entries as a JSON object.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>json_type(result) == "object"</code></li>
+</ul>
+<h5 id="type-jsonarraybuilder"><code>type JsonArrayBuilder</code><a class="headerlink" href="#type-jsonarraybuilder" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>In-place array builder: one Vec, no copy per item.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>items</code></td>
+<td><code>Vec[JsonValue]</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="fn-json_array_builder_new-jsonarraybuilder"><code>fn json_array_builder_new() -&gt; JsonArrayBuilder</code><a class="headerlink" href="#fn-json_array_builder_new-jsonarraybuilder" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>New empty JSON array builder.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.items.len() == 0</code></li>
+</ul>
+<h5 id="fn-pushself-self-item-jsonvalue"><code>fn push(self: Self, item: JsonValue)</code><a class="headerlink" href="#fn-pushself-self-item-jsonvalue" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Append one item to the array builder.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.items.len() &gt;= 1</code></li>
+</ul>
+<h5 id="fn-buildself-self-jsonvalue_1"><code>fn build(self: Self) -&gt; JsonValue</code><a class="headerlink" href="#fn-buildself-self-jsonvalue_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Wrap the array builder's items as a JSON array.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>json_type(result) == "array"</code></li>
 </ul>
 <h5 id="fn-json_array_new-jsonvalue"><code>fn json_array_new() -&gt; JsonValue</code><a class="headerlink" href="#fn-json_array_new-jsonvalue" title="Permanent link">&para;</a></h5>
 <blockquote>
@@ -3436,6 +3520,9 @@
 <blockquote>
 <p>=== JsonValue methods ===</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-getself-self-key-str-optionjsonvalue"><code>fn get(self: Self, key: Str) -&gt; Option[JsonValue]</code><a class="headerlink" href="#fn-getself-self-key-str-optionjsonvalue" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Object member by key, or None.</p>

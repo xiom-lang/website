@@ -4551,18 +4551,30 @@
 <blockquote>
 <p>Set bit <code>i</code>. False (no change) when <code>i</code> is out of range or already set.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; bitset_get(b, i) == true</code></li>
+</ul>
 <h5 id="fn-bitset_clearb-mut-bitset-i-int-bool"><code>fn bitset_clear(b: &amp;mut BitSet, i: Int) -&gt; Bool</code><a class="headerlink" href="#fn-bitset_clearb-mut-bitset-i-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Clear bit <code>i</code>. False (no change) when <code>i</code> is out of range or already clear.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; bitset_get(b, i) == false</code></li>
+</ul>
 <h5 id="fn-bitset_getb-bitset-i-int-bool"><code>fn bitset_get(b: &amp;BitSet, i: Int) -&gt; Bool</code><a class="headerlink" href="#fn-bitset_getb-bitset-i-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when bit <code>i</code> is set (false out of range).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; bitset_count(b) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-bitset_fillb-mut-bitset"><code>fn bitset_fill(b: &amp;mut BitSet)</code><a class="headerlink" href="#fn-bitset_fillb-mut-bitset" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Set every bit in the universe. Bits beyond <code>nbits</code> stay zero.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>bitset_count(b) == b.nbits</code></li>
+</ul>
 <h5 id="fn-bitset_clear_allb-mut-bitset"><code>fn bitset_clear_all(b: &amp;mut BitSet)</code><a class="headerlink" href="#fn-bitset_clear_allb-mut-bitset" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Clear every bit.</p>
@@ -4602,18 +4614,33 @@
 <blockquote>
 <p>Union as a fresh set (universe = max of the operands').</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.nbits &gt;= a.nbits</code></li>
+<li><strong>Postcondition:</strong> <code>result.nbits &gt;= b.nbits</code></li>
+</ul>
 <h5 id="fn-bitset_anda-bitset-b-bitset-bitset"><code>fn bitset_and(a: &amp;BitSet, b: &amp;BitSet) -&gt; BitSet</code><a class="headerlink" href="#fn-bitset_anda-bitset-b-bitset-bitset" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Intersection as a fresh set (universe = max of the operands').</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.nbits &gt;= a.nbits</code></li>
+<li><strong>Postcondition:</strong> <code>result.nbits &gt;= b.nbits</code></li>
+</ul>
 <h5 id="fn-bitset_andnota-bitset-b-bitset-bitset"><code>fn bitset_andnot(a: &amp;BitSet, b: &amp;BitSet) -&gt; BitSet</code><a class="headerlink" href="#fn-bitset_andnota-bitset-b-bitset-bitset" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Difference a \ b as a fresh set (universe = max of the operands').</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.nbits &gt;= a.nbits</code></li>
+<li><strong>Postcondition:</strong> <code>result.nbits &gt;= b.nbits</code></li>
+</ul>
 <h5 id="fn-bitset_is_subseta-bitset-b-bitset-bool"><code>fn bitset_is_subset(a: &amp;BitSet, b: &amp;BitSet) -&gt; Bool</code><a class="headerlink" href="#fn-bitset_is_subseta-bitset-b-bitset-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when every set bit of <code>a</code> is also set in <code>b</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; bitset_count(a) &lt;= bitset_count(b)</code></li>
+</ul>
 <h5 id="fn-bitset_equala-bitset-b-bitset-bool"><code>fn bitset_equal(a: &amp;BitSet, b: &amp;BitSet) -&gt; Bool</code><a class="headerlink" href="#fn-bitset_equala-bitset-b-bitset-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when both sets hold the same bits.</p>
@@ -4625,10 +4652,16 @@
 <blockquote>
 <p>In-place union <code>dst |= src</code>; returns true when <code>dst</code> gained bits. Grows <code>dst</code>'s universe (never shrinks it) when <code>src</code> is wider.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>dst.nbits &gt;= src.nbits</code></li>
+</ul>
 <h5 id="fn-bitset_and_intodst-mut-bitset-src-bitset-bool"><code>fn bitset_and_into(dst: &amp;mut BitSet, src: &amp;BitSet) -&gt; Bool</code><a class="headerlink" href="#fn-bitset_and_intodst-mut-bitset-src-bitset-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>In-place intersection <code>dst &amp;= src</code>; returns true when <code>dst</code> lost bits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>bitset_count(dst) &lt;= dst.nbits</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5076,6 +5109,9 @@
 <blockquote>
 <p>True if the key is present in the cache.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (lru_find(c, key) &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-lru_sizec-lrucache-int"><code>fn lru_size(c: &amp;LruCache) -&gt; Int</code><a class="headerlink" href="#fn-lru_sizec-lrucache-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of entries currently cached.</p>
@@ -5167,6 +5203,9 @@
 <blockquote>
 <p>True if the key is present in the cache.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; c.keys.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-lfu_sizec-lfucache-int"><code>fn lfu_size(c: &amp;LfuCache) -&gt; Int</code><a class="headerlink" href="#fn-lfu_sizec-lfucache-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of entries currently cached.</p>
@@ -5260,6 +5299,9 @@
 <blockquote>
 <p>True if <code>key</code> is cached (does not change recency).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; c.t1k.len() + c.t2k.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-arc_sizec-arccache-int"><code>fn arc_size(c: &amp;ArcCache) -&gt; Int</code><a class="headerlink" href="#fn-arc_sizec-arccache-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of cached entries.</p>
@@ -5346,6 +5388,10 @@
 <blockquote>
 <p>Documented key equality: component-wise compare of the first <code>arity</code> components. False when either key has fewer than <code>arity</code> components.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>arity &lt;= 0 =&gt; result</code></li>
+<li><strong>Postcondition:</strong> <code>result =&gt; a.len() &gt;= arity &amp;&amp; b.len() &gt;= arity</code></li>
+</ul>
 <h5 id="fn-ckmap_putm-mut-compositekeymap-key-vecint-value-int"><code>fn ckmap_put(m: &amp;mut CompositeKeyMap, key: &amp;Vec[Int], value: Int)</code><a class="headerlink" href="#fn-ckmap_putm-mut-compositekeymap-key-vecint-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert or update <code>key</code> -&gt; <code>value</code>. The first <code>arity</code> components of <code>key</code> are the key; <code>key</code> must carry at least <code>arity</code> components.</p>
@@ -5404,6 +5450,9 @@
 <blockquote>
 <p>True when arena entry <code>e</code> is live.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; e &gt;= 0 &amp;&amp; e &lt; m.live.len()</code></li>
+</ul>
 <h5 id="fn-ckmap_entry_keym-compositekeymap-e-int-vecint"><code>fn ckmap_entry_key(m: &amp;CompositeKeyMap, e: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-ckmap_entry_keym-compositekeymap-e-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Key components of arena entry <code>e</code> (empty when <code>e</code> is out of range).</p>
@@ -5468,10 +5517,16 @@
 <blockquote>
 <p>Enqueue from any producer. False if full or closed. Params: q - the queue; item - value to enqueue. Returns: true on success, false when full or closed. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-mpmc_popq-mut-concurrentqueue-optionint"><code>fn mpmc_pop(q: &amp;mut ConcurrentQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-mpmc_popq-mut-concurrentqueue-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dequeue from any consumer. None if empty or closed. Params: q - the queue. Returns: the oldest item, or None when empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-mpsc_queue_newcapacity-int-concurrentqueue"><code>fn mpsc_queue_new(capacity: Int) -&gt; ConcurrentQueue</code><a class="headerlink" href="#fn-mpsc_queue_newcapacity-int-concurrentqueue" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create a multi-producer single-consumer queue with <code>capacity</code> slots. Params: capacity - number of buffered slots (clamped to &gt;= 1). Returns: a new MPSC queue. Complexity: O(capacity).</p>
@@ -5483,10 +5538,16 @@
 <blockquote>
 <p>Enqueue from any producer. False if full or closed. Params: q - the queue; item - value to enqueue. Returns: true on success, false when full or closed. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-mpsc_popq-mut-concurrentqueue-optionint"><code>fn mpsc_pop(q: &amp;mut ConcurrentQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-mpsc_popq-mut-concurrentqueue-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dequeue from the single consumer end. None if empty or closed. Params: q - the queue. Returns: the oldest item, or None when empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-spmc_queue_newcapacity-int-concurrentqueue"><code>fn spmc_queue_new(capacity: Int) -&gt; ConcurrentQueue</code><a class="headerlink" href="#fn-spmc_queue_newcapacity-int-concurrentqueue" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create a single-producer multi-consumer queue with <code>capacity</code> slots. Params: capacity - number of buffered slots (clamped to &gt;= 1). Returns: a new SPMC queue. Complexity: O(capacity).</p>
@@ -5498,10 +5559,16 @@
 <blockquote>
 <p>Enqueue from the single producer end. False if full or closed. Params: q - the queue; item - value to enqueue. Returns: true on success, false when full or closed. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-spmc_popq-mut-concurrentqueue-optionint"><code>fn spmc_pop(q: &amp;mut ConcurrentQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-spmc_popq-mut-concurrentqueue-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dequeue from any consumer. None if empty or closed. Params: q - the queue. Returns: the oldest item, or None when empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="type-concurrentstack"><code>type ConcurrentStack</code><a class="headerlink" href="#type-concurrentstack" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mutex-protected LIFO stack.</p>
@@ -5567,14 +5634,23 @@
 <blockquote>
 <p>Create a concurrent counter starting at zero. Returns: a counter whose value is 0. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.c.load() == 0</code></li>
+</ul>
 <h5 id="fn-ccounter_addc-mut-concurrentcounter-delta-int"><code>fn ccounter_add(c: &amp;mut ConcurrentCounter, delta: Int)</code><a class="headerlink" href="#fn-ccounter_addc-mut-concurrentcounter-delta-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Atomically add <code>delta</code> to the counter. Params: c - the counter; delta - signed increment. Complexity: O(1) (fetch_add).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>ccounter_get(c) == c.c.load()</code></li>
+</ul>
 <h5 id="fn-ccounter_getc-concurrentcounter-int"><code>fn ccounter_get(c: &amp;ConcurrentCounter) -&gt; Int</code><a class="headerlink" href="#fn-ccounter_getc-concurrentcounter-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read the current counter value. Params: c - the counter. Returns: the current value. Complexity: O(1) (atomic load).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == c.c.load()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5785,18 +5861,31 @@
 <blockquote>
 <p>Create a new empty dense set. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.bits.len() == 0</code></li>
+</ul>
 <h5 id="fn-dense_adds-mut-denseset-value-int"><code>fn dense_add(s: &amp;mut DenseSet, value: Int)</code><a class="headerlink" href="#fn-dense_adds-mut-denseset-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add a value to the set (no-op if already present). Negative values are rejected (the bitmap cannot represent them). O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>value &gt;= 0 =&gt; dense_contains(s, value)</code></li>
+</ul>
 <h5 id="fn-dense_containss-denseset-value-int-bool"><code>fn dense_contains(s: &amp;DenseSet, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-dense_containss-denseset-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether a value is present. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; dense_size(s) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-dense_removes-mut-denseset-value-int"><code>fn dense_remove(s: &amp;mut DenseSet, value: Int)</code><a class="headerlink" href="#fn-dense_removes-mut-denseset-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a value from the set (no-op if absent). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>dense_contains(s, value) == false</code></li>
+</ul>
 <h5 id="fn-dense_sizes-denseset-int"><code>fn dense_size(s: &amp;DenseSet) -&gt; Int</code><a class="headerlink" href="#fn-dense_sizes-denseset-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements in the set. O(1).</p>
@@ -5808,6 +5897,9 @@
 <blockquote>
 <p>Iterate all elements in ascending order. O(bits + n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == dense_size(s)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -6152,6 +6244,9 @@
 <blockquote>
 <p>Decrease a node's key. Params: h - the heap; node - a FibNode handle (arena index of a node allocated by fheap_push); new_key - the smaller key. Out-of-range handles and non-decreasing keys are ignored. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>h.keys.len() == h.keys.len()@pre</code></li>
+</ul>
 <h5 id="fn-fheap_lenh-fibheap-int"><code>fn fheap_len(h: &amp;FibHeap) -&gt; Int</code><a class="headerlink" href="#fn-fheap_lenh-fibheap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements. Params: h - the heap. Returns: the number of elements currently stored. Complexity: O(1).</p>
@@ -6456,6 +6551,9 @@
 <blockquote>
 <p>True when <code>key</code> has a bucket.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (_gf_find(g, key) &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-group_fold_sizeg-groupfold-int"><code>fn group_fold_size(g: &amp;GroupFold) -&gt; Int</code><a class="headerlink" href="#fn-group_fold_sizeg-groupfold-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of buckets (distinct keys).</p>
@@ -6474,6 +6572,9 @@
 <blockquote>
 <p>Sum of <code>key</code>'s values (0 when the key has no bucket).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>!group_fold_contains(g, key) =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-group_fold_ming-groupfold-key-int-optionint"><code>fn group_fold_min(g: &amp;GroupFold, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-group_fold_ming-groupfold-key-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Smallest value folded into <code>key</code> (None when the key has no bucket).</p>
@@ -6574,22 +6675,38 @@
 <blockquote>
 <p>Create an empty HAMT (a single empty root table node). Returns a fresh Hamt with size 0. O(1) time, O(1) memory.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root &gt;= 0</code></li>
+</ul>
 <h5 id="fn-hamt_inserth-mut-hamt-key-int-value-int-bool"><code>fn hamt_insert(h: &amp;mut Hamt, key: Int, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-hamt_inserth-mut-hamt-key-int-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert <code>key</code> -&gt; <code>value</code>. Returns false if the key already exists (the map keeps the original value). True on a fresh insert. O(log_32 n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>hamt_contains(h, key)</code></li>
+</ul>
 <h5 id="fn-hamt_geth-hamt-key-int-optionint"><code>fn hamt_get(h: &amp;Hamt, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-hamt_geth-hamt-key-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value stored for <code>key</code>, or None if the key is absent. O(log_32 n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == hamt_contains(h, key)</code></li>
+</ul>
 <h5 id="fn-hamt_containsh-hamt-key-int-bool"><code>fn hamt_contains(h: &amp;Hamt, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-hamt_containsh-hamt-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if <code>key</code> is present in the map. O(log_32 n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; hamt_size(h) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-hamt_removeh-mut-hamt-key-int-bool"><code>fn hamt_remove(h: &amp;mut Hamt, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-hamt_removeh-mut-hamt-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code>. Returns true if it was present. O(log_32 n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>hamt_contains(h, key) == false</code></li>
+</ul>
 <h5 id="fn-hamt_sizeh-hamt-int"><code>fn hamt_size(h: &amp;Hamt) -&gt; Int</code><a class="headerlink" href="#fn-hamt_sizeh-hamt-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of key/value pairs in the map. O(1).</p>
@@ -6818,22 +6935,38 @@
 <blockquote>
 <p>Create a new empty HAMT map (a single empty root table node). Returns: a fresh Hamt with 0 entries. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root &gt;= 0</code></li>
+</ul>
 <h5 id="fn-hamt_inserth-mut-hamt-key-int-value-int"><code>fn hamt_insert(h: &amp;mut Hamt, key: Int, value: Int)</code><a class="headerlink" href="#fn-hamt_inserth-mut-hamt-key-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert or update <code>key</code> -&gt; <code>value</code>. Params: h - the map; key - Int key; value - Int value. Re-inserting an existing key updates its value in place. Complexity: O(log_32 n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>hamt_contains(h, key)</code></li>
+</ul>
 <h5 id="fn-hamt_geth-hamt-key-int-optionint_1"><code>fn hamt_get(h: &amp;Hamt, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-hamt_geth-hamt-key-int-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Get the value for a key. None when absent. Params: h - the map; key - Int key. Returns: Some(value) if present, None otherwise. Complexity: O(log_32 n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == hamt_contains(h, key)</code></li>
+</ul>
 <h5 id="fn-hamt_containsh-hamt-key-int-bool_1"><code>fn hamt_contains(h: &amp;Hamt, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-hamt_containsh-hamt-key-int-bool_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether a key is present. Params: h - the map; key - Int key. Returns: true if <code>key</code> maps to a value. Complexity: O(log_32 n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; hamt_size(h) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-hamt_removeh-mut-hamt-key-int"><code>fn hamt_remove(h: &amp;mut Hamt, key: Int)</code><a class="headerlink" href="#fn-hamt_removeh-mut-hamt-key-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a key. Params: h - the map; key - Int key. Absent keys are a no-op. Arena memory is retained. Complexity: O(log_32 n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>hamt_contains(h, key) == false</code></li>
+</ul>
 <h5 id="fn-hamt_sizeh-hamt-int_1"><code>fn hamt_size(h: &amp;Hamt) -&gt; Int</code><a class="headerlink" href="#fn-hamt_sizeh-hamt-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of entries. Params: h - the map. Returns: the number of key/value pairs. Complexity: O(1).</p>
@@ -6879,18 +7012,31 @@
 <blockquote>
 <p>Create a new empty hash set. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.cap &gt;= 1</code></li>
+</ul>
 <h5 id="fn-hashset_inserts-mut-hashset-value-int"><code>fn hashset_insert(s: &amp;mut HashSet, value: Int)</code><a class="headerlink" href="#fn-hashset_inserts-mut-hashset-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert <code>value</code> if it is not already present. O(1) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>hashset_contains(s, value)</code></li>
+</ul>
 <h5 id="fn-hashset_containss-hashset-value-int-bool"><code>fn hashset_contains(s: &amp;HashSet, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-hashset_containss-hashset-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if <code>value</code> is present. O(1) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; hashset_size(s) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-hashset_removes-mut-hashset-value-int"><code>fn hashset_remove(s: &amp;mut HashSet, value: Int)</code><a class="headerlink" href="#fn-hashset_removes-mut-hashset-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>value</code> if present. O(n) worst case (table rebuild).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>hashset_contains(s, value) == false</code></li>
+</ul>
 <h5 id="fn-hashset_sizes-hashset-int"><code>fn hashset_size(s: &amp;HashSet) -&gt; Int</code><a class="headerlink" href="#fn-hashset_sizes-hashset-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements in the set. O(1).</p>
@@ -6946,6 +7092,10 @@
 <blockquote>
 <p>Insert a key into the heap.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pheap_size(h) == pheap_size(h)@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>h.keys.len() == h.keys.len()@pre + 3</code></li>
+</ul>
 <h5 id="fn-pheap_find_minh-pheap-optionint"><code>fn pheap_find_min(h: &amp;PHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pheap_find_minh-pheap-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minimum key, or None if the heap is empty.</p>
@@ -6957,6 +7107,10 @@
 <blockquote>
 <p>Remove and return the minimum key, or None if empty. Children of the removed root are merged pairwise (left-to-right pass).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; pheap_size(h) == pheap_size(h)@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; pheap_size(h) == pheap_size(h)@pre</code></li>
+</ul>
 <h5 id="fn-pheap_sizeh-pheap-int"><code>fn pheap_size(h: &amp;PHeap) -&gt; Int</code><a class="headerlink" href="#fn-pheap_sizeh-pheap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of reachable nodes in the heap.</p>
@@ -7032,6 +7186,9 @@
 <blockquote>
 <p>Insert a key into the heap.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>h.n == h.n@pre + 1</code></li>
+</ul>
 <h5 id="fn-fib_heap_find_minh-fibheap-optionint"><code>fn fib_heap_find_min(h: &amp;FibHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-fib_heap_find_minh-fibheap-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minimum key, or None if the heap is empty.</p>
@@ -7043,6 +7200,10 @@
 <blockquote>
 <p>Remove and return the minimum key, or None if empty. Consolidates the root list so future extract-mins stay amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; h.n == h.n@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; h.n == h.n@pre</code></li>
+</ul>
 <h5 id="fn-fib_heap_sizeh-fibheap-int"><code>fn fib_heap_size(h: &amp;FibHeap) -&gt; Int</code><a class="headerlink" href="#fn-fib_heap_sizeh-fibheap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of keys in the heap.</p>
@@ -7061,6 +7222,9 @@
 <blockquote>
 <p>Decrease the key of <code>node</code> to <code>new_key</code>. Returns false if the node index is out of range or the new key is not smaller.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; h.keys[node] == new_key</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -7109,14 +7273,23 @@
 <blockquote>
 <p>Create a new empty persistent vector. Returns: an empty PVec. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.items.len() == 0</code></li>
+</ul>
 <h5 id="fn-pvec_pushv-mut-pvec-value-int"><code>fn pvec_push(v: &amp;mut PVec, value: Int)</code><a class="headerlink" href="#fn-pvec_pushv-mut-pvec-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Append a value, returning a new version (copy-on-write). Params: v - the vector; value - Int element to append. The backing Vec is rebuilt, leaving any previously captured PVec intact. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.items.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-pvec_getv-pvec-idx-int-optionint"><code>fn pvec_get(v: &amp;PVec, idx: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pvec_getv-pvec-idx-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Get the value at an index. None when out of range. Params: v - the vector; idx - zero-based index. Returns: Some(element) if idx is in range, None otherwise. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == (idx &gt;= 0 &amp;&amp; idx &lt; v.items.len())</code></li>
+</ul>
 <h5 id="fn-pvec_lenv-pvec-int"><code>fn pvec_len(v: &amp;PVec) -&gt; Int</code><a class="headerlink" href="#fn-pvec_lenv-pvec-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements. Params: v - the vector. Returns: the number of elements. Complexity: O(1).</p>
@@ -7128,18 +7301,34 @@
 <blockquote>
 <p>Create a new empty persistent map. Returns: an empty PMap. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == result.values.len()</code></li>
+</ul>
 <h5 id="fn-pmap_putm-mut-pmap-key-int-value-int"><code>fn pmap_put(m: &amp;mut PMap, key: Int, value: Int)</code><a class="headerlink" href="#fn-pmap_putm-mut-pmap-key-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert or update a key (copy-on-write). Params: m - the map; key - Int key; value - Int value. The backing arenas are rebuilt, leaving any previously captured PMap intact. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pmap_get(m, key).is_some</code></li>
+<li><strong>Postcondition:</strong> <code>m.keys.len() == m.values.len()</code></li>
+</ul>
 <h5 id="fn-pmap_getm-pmap-key-int-optionint"><code>fn pmap_get(m: &amp;PMap, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pmap_getm-pmap-key-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Get the value for a key. None when absent. Params: m - the map; key - Int key. Returns: Some(value) if present, None otherwise. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some =&gt; m.keys.len() == m.values.len()</code></li>
+<li><strong>Postcondition:</strong> <code>result.is_some =&gt; m.keys.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-pmap_removem-mut-pmap-key-int"><code>fn pmap_remove(m: &amp;mut PMap, key: Int)</code><a class="headerlink" href="#fn-pmap_removem-mut-pmap-key-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a key (copy-on-write). Params: m - the map; key - Int key. Absent keys produce an equivalent copy. Prior versions stay intact. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pmap_get(m, key).is_some == false</code></li>
+<li><strong>Postcondition:</strong> <code>m.keys.len() == m.values.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -7199,22 +7388,39 @@
 <blockquote>
 <p>Create an empty interval tree. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root == -1</code></li>
+</ul>
 <h5 id="fn-interval_insertt-mut-intervaltree-start-int-end-int-value-int"><code>fn interval_insert(t: &amp;mut IntervalTree, start: Int, end: Int, value: Int)</code><a class="headerlink" href="#fn-interval_insertt-mut-intervaltree-start-int-end-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert the interval [start, end] (inclusive) with its value. Duplicate intervals are allowed. An interval with start &gt; end is rejected (ignored). O(h) with h the tree height (O(log n) expected).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>start &lt;= end =&gt; interval_contains_point(t, start)</code></li>
+<li><strong>Postcondition:</strong> <code>interval_size(t) &lt;= t.starts.len()</code></li>
+</ul>
 <h5 id="fn-interval_queryt-intervaltree-point-int-vecint"><code>fn interval_query(t: &amp;IntervalTree, point: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-interval_queryt-intervaltree-point-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Values of the intervals containing <code>point</code> (inclusive bounds). O(log n + k) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= interval_size(t)</code></li>
+</ul>
 <h5 id="fn-interval_range_queryt-intervaltree-start-int-end-int-vecint"><code>fn interval_range_query(t: &amp;IntervalTree, start: Int, end: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-interval_range_queryt-intervaltree-start-int-end-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Values of the intervals overlapping [start, end] (inclusive; an interval [a, b] overlaps when a &lt;= end and b &gt;= start). O(log n + k) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= interval_size(t)</code></li>
+</ul>
 <h5 id="fn-interval_removet-mut-intervaltree-start-int-end-int-bool"><code>fn interval_remove(t: &amp;mut IntervalTree, start: Int, end: Int) -&gt; Bool</code><a class="headerlink" href="#fn-interval_removet-mut-intervaltree-start-int-end-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove the first interval matching [start, end]. Returns true if one was found. Intervals are removed lazily (skipped by later queries). O(n) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>interval_size(t) &lt;= t.starts.len()</code></li>
+</ul>
 <h5 id="fn-interval_sizet-intervaltree-int"><code>fn interval_size(t: &amp;IntervalTree) -&gt; Int</code><a class="headerlink" href="#fn-interval_sizet-intervaltree-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of live intervals. O(1).</p>
@@ -7226,10 +7432,16 @@
 <blockquote>
 <p>True if any live interval contains <code>point</code>. O(log n + k) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; interval_size(t) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-interval_overlapst-intervaltree-start-int-end-int-bool"><code>fn interval_overlaps(t: &amp;IntervalTree, start: Int, end: Int) -&gt; Bool</code><a class="headerlink" href="#fn-interval_overlapst-intervaltree-start-int-end-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if any live interval overlaps the range [start, end]. O(log n + k) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; interval_size(t) &gt;= 1</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -7288,6 +7500,9 @@
 <blockquote>
 <p>Insert or overwrite <code>key</code> -&gt; <code>value</code>. A re-insert of an existing key updates its value without changing its insertion position. O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>int_map_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-int_map_getm-intmap-key-int-optionint"><code>fn int_map_get(m: &amp;IntMap, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-int_map_getm-intmap-key-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value for <code>key</code>, or None if absent. O(1) amortized.</p>
@@ -7299,6 +7514,9 @@
 <blockquote>
 <p>True if <code>key</code> is present. O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (_imap_find(m, key) &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-int_map_removem-mut-intmap-key-int-bool"><code>fn int_map_remove(m: &amp;mut IntMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-int_map_removem-mut-intmap-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code>. Returns true if it was present. O(n) amortized (order compaction).</p>
@@ -7355,6 +7573,9 @@
 <blockquote>
 <p>Insert or overwrite <code>key</code> -&gt; <code>value</code>. A re-insert of an existing key updates its value without changing its insertion position. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>string_map_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-string_map_getm-orderedstringmap-key-str-optionint"><code>fn string_map_get(m: &amp;OrderedStringMap, key: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-string_map_getm-orderedstringmap-key-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value for <code>key</code>, or None if absent. O(n).</p>
@@ -7366,6 +7587,9 @@
 <blockquote>
 <p>True if <code>key</code> is present. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; m.keys.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-string_map_removem-mut-orderedstringmap-key-str-bool"><code>fn string_map_remove(m: &amp;mut OrderedStringMap, key: Str) -&gt; Bool</code><a class="headerlink" href="#fn-string_map_removem-mut-orderedstringmap-key-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code>. Returns true if it was present. O(n).</p>
@@ -7433,18 +7657,32 @@
 <blockquote>
 <p>Create a new empty k-d tree. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root == -1</code></li>
+</ul>
 <h5 id="fn-kdtree_insertt-mut-kdtree-x-int-y-int-value-int"><code>fn kdtree_insert(t: &amp;mut KdTree, x: Int, y: Int, value: Int)</code><a class="headerlink" href="#fn-kdtree_insertt-mut-kdtree-x-int-y-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert a point (x, y) with its value. Duplicate points are allowed and each insertion creates a new node. O(h) expected, O(n) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>kdtree_size(t) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-kdtree_nearestt-kdtree-x-int-y-int-optionint"><code>fn kdtree_nearest(t: &amp;KdTree, x: Int, y: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-kdtree_nearestt-kdtree-x-int-y-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value of the point nearest to (x, y), or None if the tree is empty. Ties are broken toward the point visited first. O(n) worst case, O(log n) expected.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; t.root == -1</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; kdtree_size(t) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-kdtree_ranget-kdtree-x1-int-y1-int-x2-int-y2-int-vecint"><code>fn kdtree_range(t: &amp;KdTree, x1: Int, y1: Int, x2: Int, y2: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-kdtree_ranget-kdtree-x1-int-y1-int-x2-int-y2-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Values of all points inside the rectangle [x1, x2] x [y1, y2] (inclusive). Empty regions yield an empty Vec. O(n) worst case.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= kdtree_size(t)</code></li>
+</ul>
 <h5 id="fn-kdtree_sizet-kdtree-int"><code>fn kdtree_size(t: &amp;KdTree) -&gt; Int</code><a class="headerlink" href="#fn-kdtree_sizet-kdtree-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of stored points. O(1).</p>
@@ -7527,18 +7765,30 @@
 <blockquote>
 <p>Insert or update <code>key</code> -&gt; <code>value</code>. New keys are appended in insertion order; updating keeps the existing position. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lhmap_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-lhmap_getm-lhmap-key-int-optionint_1"><code>fn lhmap_get(m: &amp;LhMap, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_getm-lhmap-key-int-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value for <code>key</code>, or None when absent. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == lhmap_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-lhmap_containsm-lhmap-key-int-bool_1"><code>fn lhmap_contains(m: &amp;LhMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lhmap_containsm-lhmap-key-int-bool_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if <code>key</code> is present. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; lhmap_size(m) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-lhmap_removem-mut-lhmap-key-int"><code>fn lhmap_remove(m: &amp;mut LhMap, key: Int)</code><a class="headerlink" href="#fn-lhmap_removem-mut-lhmap-key-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code> if present, preserving the relative order of the remaining entries. O(n). Unit wrapper over the canonical Bool-returning function.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>lhmap_contains(m, key) == false</code></li>
+</ul>
 <h5 id="fn-lhmap_sizem-lhmap-int_1"><code>fn lhmap_size(m: &amp;LhMap) -&gt; Int</code><a class="headerlink" href="#fn-lhmap_sizem-lhmap-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of entries in the map. O(1).</p>
@@ -7550,14 +7800,23 @@
 <blockquote>
 <p>First key in insertion order, or None when the map is empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; lhmap_size(m) == 0</code></li>
+</ul>
 <h5 id="fn-lhmap_lastm-lhmap-optionint_1"><code>fn lhmap_last(m: &amp;LhMap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lhmap_lastm-lhmap-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Last key in insertion order, or None when the map is empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; lhmap_size(m) == 0</code></li>
+</ul>
 <h5 id="fn-lhmap_iterm-lhmap-vecint_1"><code>fn lhmap_iter(m: &amp;LhMap) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-lhmap_iterm-lhmap-vecint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All keys in insertion order. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == lhmap_size(m)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -7611,10 +7870,16 @@
 <blockquote>
 <p>Add <code>value</code> to the front of the list. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>l.size == l.size@pre + 1</code></li>
+</ul>
 <h5 id="fn-ll_push_backl-mut-linkedlist-value-int"><code>fn ll_push_back(l: &amp;mut LinkedList, value: Int)</code><a class="headerlink" href="#fn-ll_push_backl-mut-linkedlist-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add <code>value</code> to the back of the list. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>l.size == l.size@pre + 1</code></li>
+</ul>
 <h5 id="fn-ll_pop_frontl-mut-linkedlist-optionint"><code>fn ll_pop_front(l: &amp;mut LinkedList) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ll_pop_frontl-mut-linkedlist-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the front value. None if the list is empty. O(1).</p>
@@ -7681,10 +7946,16 @@
 <blockquote>
 <p>Get the value for <code>key</code>, marking it recently used. None if absent. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; c.keys.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-lru_putc-mut-lrucache-key-int-value-int_1"><code>fn lru_put(c: &amp;mut LruCache, key: Int, value: Int)</code><a class="headerlink" href="#fn-lru_putc-mut-lrucache-key-int-value-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert or update <code>key</code> -&gt; <code>value</code>, evicting the least-recently-used entry when full. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>c.keys.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-lru_containsc-mut-lrucache-key-int-bool"><code>fn lru_contains(c: &amp;mut LruCache, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-lru_containsc-mut-lrucache-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether <code>key</code> is present (does not change recency). O(n).</p>
@@ -7897,10 +8168,16 @@
 <blockquote>
 <p>Get the value for a key. Complexity: O(1) average.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; m.used &gt;= 1</code></li>
+</ul>
 <h5 id="fn-map_containsm-hashintmap-key-int-bool"><code>fn map_contains(m: &amp;HashIntMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-map_containsm-hashintmap-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether a key is present. Complexity: O(1) average.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (map_get(m, key).is_some)</code></li>
+</ul>
 <h5 id="fn-map_removem-mut-hashintmap-key-int-bool"><code>fn map_remove(m: &amp;mut HashIntMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-map_removem-mut-hashintmap-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a key, returning whether it was present (the bucket becomes a tombstone). Complexity: O(1) average.</p>
@@ -7933,6 +8210,10 @@
 <blockquote>
 <p>Rebuild the table IN PLACE at the same capacity, clearing tombstones and restoring contiguous probe sequences. Call after heavy delete+insert workloads, where tombstone density between automatic grows can degrade lookups toward O(capacity) linear scans. Complexity: O(capacity).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.states.len() == m.states.len()@pre</code></li>
+<li><strong>Postcondition:</strong> <code>m.used == m.used@pre</code></li>
+</ul>
 <h5 id="fn-map_is_emptym-hashintmap-bool"><code>fn map_is_empty(m: &amp;HashIntMap) -&gt; Bool</code><a class="headerlink" href="#fn-map_is_emptym-hashintmap-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether the HashIntMap has no entries. Complexity: O(1).</p>
@@ -7986,22 +8267,38 @@
 <blockquote>
 <p>Create a new empty chaining hash map. Returns: a map with a small initial table and zero entries. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.count == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.buckets.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-hashmap_putm-mut-hashmap-key-int-value-int"><code>fn hashmap_put(m: &amp;mut HashMap, key: Int, value: Int)</code><a class="headerlink" href="#fn-hashmap_putm-mut-hashmap-key-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert or update <code>key</code> -&gt; <code>value</code>. Params: m - the map; key - Int key; value - Int value. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>hashmap_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-hashmap_getm-hashmap-key-int-optionint"><code>fn hashmap_get(m: &amp;HashMap, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-hashmap_getm-hashmap-key-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Get the value for a key. None when absent. Params: m - the map; key - Int key. Returns: Some(value) if present, None otherwise. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == hashmap_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-hashmap_containsm-hashmap-key-int-bool"><code>fn hashmap_contains(m: &amp;HashMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-hashmap_containsm-hashmap-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether a key is present. Params: m - the map; key - Int key. Returns: true if <code>key</code> maps to a value. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; hashmap_size(m) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-hashmap_removem-mut-hashmap-key-int-bool"><code>fn hashmap_remove(m: &amp;mut HashMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-hashmap_removem-mut-hashmap-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a key, returning whether it was present. Params: m - the map; key - Int key. Returns: true if the key was present and is now removed. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; hashmap_contains(m, key) == false</code></li>
+</ul>
 <h5 id="fn-hashmap_sizem-hashmap-int"><code>fn hashmap_size(m: &amp;HashMap) -&gt; Int</code><a class="headerlink" href="#fn-hashmap_sizem-hashmap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of entries. Params: m - the map. Returns: the number of live key/value pairs. Complexity: O(1).</p>
@@ -8054,14 +8351,24 @@
 <blockquote>
 <p>Create a bounded MPMC queue with <code>capacity</code> slots. Params: capacity - number of buffered slots (clamped to &gt;= 1). Returns: a queue able to hold up to <code>capacity</code> items. Complexity: O(capacity) to pre-fill the ring.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result.buf.len() == result.cap</code></li>
+</ul>
 <h5 id="fn-mpmc_pushq-mut-mpmcqueue-value-int-bool"><code>fn mpmc_push(q: &amp;mut MpmcQueue, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-mpmc_pushq-mut-mpmcqueue-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Try to enqueue <code>value</code>. Fails (false) when the queue is full. Params: q - the queue; value - item to enqueue. Returns: true on success, false when full. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-mpmc_popq-mut-mpmcqueue-optionint"><code>fn mpmc_pop(q: &amp;mut MpmcQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-mpmc_popq-mut-mpmcqueue-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Try to dequeue a value. None when the queue is empty. Params: q - the queue. Returns: the oldest buffered item, or None when empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-mpmc_sizeq-mpmcqueue-int"><code>fn mpmc_size(q: &amp;MpmcQueue) -&gt; Int</code><a class="headerlink" href="#fn-mpmc_sizeq-mpmcqueue-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of buffered elements (approximate under concurrent access). Params: q - the queue. Returns: an approximation of the number of items currently buffered. Complexity: O(1).</p>
@@ -8107,14 +8414,24 @@
 <blockquote>
 <p>Create a bounded MPSC queue with <code>capacity</code> slots. Params: capacity - number of buffered slots (clamped to &gt;= 1). Returns: a queue able to hold up to <code>capacity</code> items. Complexity: O(capacity) to pre-fill the ring.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result.buf.len() == result.cap</code></li>
+</ul>
 <h5 id="fn-mpsc_pushq-mut-mpscqueue-value-int-bool"><code>fn mpsc_push(q: &amp;mut MpscQueue, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-mpsc_pushq-mut-mpscqueue-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Try to enqueue <code>value</code> from any producer. Fails (false) when full. Params: q - the queue; value - item to enqueue. Returns: true on success, false when full. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-mpsc_popq-mut-mpscqueue-optionint"><code>fn mpsc_pop(q: &amp;mut MpscQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-mpsc_popq-mut-mpscqueue-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Try to dequeue a value from the single consumer end. None when empty. Params: q - the queue. Returns: the oldest buffered item, or None when empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-mpsc_sizeq-mpscqueue-int"><code>fn mpsc_size(q: &amp;MpscQueue) -&gt; Int</code><a class="headerlink" href="#fn-mpsc_sizeq-mpscqueue-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of buffered elements (approximate under concurrent access). Params: q - the queue. Returns: an approximation of the number of items currently buffered. Complexity: O(1).</p>
@@ -8156,14 +8473,25 @@
 <blockquote>
 <p>Create a pool with <code>capacity</code> handles.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.next == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.free.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.capacity == capacity</code></li>
+</ul>
 <h5 id="fn-pool_acquirep-mut-objectpool-optionint"><code>fn pool_acquire(p: &amp;mut ObjectPool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pool_acquirep-mut-objectpool-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Acquire a handle (None when the pool is exhausted).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; p.free.len() == 0 &amp;&amp; p.next &gt;= p.capacity</code></li>
+</ul>
 <h5 id="fn-pool_releasep-mut-objectpool-handle-int-bool"><code>fn pool_release(p: &amp;mut ObjectPool, handle: Int) -&gt; Bool</code><a class="headerlink" href="#fn-pool_releasep-mut-objectpool-handle-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Release a handle back to the pool. Returns false on out-of-range or double-release.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; p.free.len() &gt;= 1</code></li>
+</ul>
 <h5 id="fn-pool_in_usep-objectpool-int"><code>fn pool_in_use(p: &amp;ObjectPool) -&gt; Int</code><a class="headerlink" href="#fn-pool_in_usep-objectpool-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of handles currently in use.</p>
@@ -8267,14 +8595,24 @@
 <blockquote>
 <p>Create a new empty octree (root region starts at (0, 0, 0, 1, 1, 1) and grows on demand). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root &gt;= 0</code></li>
+</ul>
 <h5 id="fn-octree_insertt-mut-octree-x-int-y-int-z-int-value-int"><code>fn octree_insert(t: &amp;mut Octree, x: Int, y: Int, z: Int, value: Int)</code><a class="headerlink" href="#fn-octree_insertt-mut-octree-x-int-y-int-z-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert a point (x, y, z) with its value. Duplicate points are allowed. O(depth) where depth grows logarithmically with the distance from the initial root region.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>octree_size(t) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-octree_queryt-octree-x-int-y-int-z-int-optionint"><code>fn octree_query(t: &amp;Octree, x: Int, y: Int, z: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-octree_queryt-octree-x-int-y-int-z-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value stored at the point (x, y, z), or None if no point with those exact coordinates is stored. O(depth).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; octree_size(t) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-octree_sizet-octree-int"><code>fn octree_size(t: &amp;Octree) -&gt; Int</code><a class="headerlink" href="#fn-octree_sizet-octree-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of stored points. O(1).</p>
@@ -8290,18 +8628,30 @@
 <blockquote>
 <p>Create an empty pairing heap. Returns: an empty PHeap-backed heap. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.keys.len() == 0</code></li>
+</ul>
 <h5 id="fn-pheap_pushh-mut-pheap-priority-int"><code>fn pheap_push(h: &amp;mut PHeap, priority: Int)</code><a class="headerlink" href="#fn-pheap_pushh-mut-pheap-priority-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert a priority. Params: h - the heap; priority - Int priority to insert. Complexity: O(log n) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pheap_size(h) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-pheap_poph-mut-pheap-optionint"><code>fn pheap_pop(h: &amp;mut PHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pheap_poph-mut-pheap-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the minimum priority, or None if the heap is empty. Params: h - the heap. Returns: the minimum priority, or None when empty. Complexity: O(log n) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; pheap_size(h) == 0</code></li>
+</ul>
 <h5 id="fn-pheap_peekh-pheap-optionint"><code>fn pheap_peek(h: &amp;PHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pheap_peekh-pheap-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the minimum priority without removing it, or None if empty. Params: h - the heap. Returns: the minimum priority, or None when empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; pheap_size(h) == 0</code></li>
+</ul>
 <h5 id="fn-pheap_sizeh-pheap-int_1"><code>fn pheap_size(h: &amp;PHeap) -&gt; Int</code><a class="headerlink" href="#fn-pheap_sizeh-pheap-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of priorities in the heap. Params: h - the heap. Returns: the number of reachable priorities. Complexity: O(n) (reachable-node walk).</p>
@@ -8313,14 +8663,23 @@
 <blockquote>
 <p>Meld two heaps into one; <code>a</code> and <code>b</code> are consumed. Params: a - the receiving heap; b - the heap to drain. Returns: the merged heap (the same structure as <code>a</code>). Complexity: O(n log n) (drains <code>b</code> via extract-min + insert).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pheap_is_empty(b)</code></li>
+</ul>
 <h5 id="fn-pheap_decrease_keyh-mut-pheap-node-int-new_priority-int"><code>fn pheap_decrease_key(h: &amp;mut PHeap, node: Int, new_priority: Int)</code><a class="headerlink" href="#fn-pheap_decrease_keyh-mut-pheap-node-int-new_priority-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lower the priority of an existing node. Params: h - the heap; node - arena index of a node allocated by pheap_push; new_priority - the smaller priority. Out-of-range handles and non-decreasing priorities are ignored. The arena is rebuilt afterwards, so all node handles become stale. Complexity: O(n log n) worst-case (full rebuild).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>h.keys.len() % 3 == 0</code></li>
+</ul>
 <h5 id="fn-pheap_is_emptyh-pheap-bool_1"><code>fn pheap_is_empty(h: &amp;PHeap) -&gt; Bool</code><a class="headerlink" href="#fn-pheap_is_emptyh-pheap-bool_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if the heap has no priorities. Params: h - the heap. Returns: true when the heap is empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (pheap_size(h) == 0)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -8456,18 +8815,31 @@
 <blockquote>
 <p>Create a new empty priority queue. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.data.len() == 0</code></li>
+</ul>
 <h5 id="fn-pqueue_pushq-mut-intmaxheap-value-int"><code>fn pqueue_push(q: &amp;mut IntMaxHeap, value: Int)</code><a class="headerlink" href="#fn-pqueue_pushq-mut-intmaxheap-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert <code>value</code> into the queue. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>pqueue_len(q) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-pqueue_popq-mut-intmaxheap-optionint"><code>fn pqueue_pop(q: &amp;mut IntMaxHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pqueue_popq-mut-intmaxheap-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the highest-priority (largest) element. None if empty. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; pqueue_len(q) == 0</code></li>
+</ul>
 <h5 id="fn-pqueue_peekq-intmaxheap-optionint"><code>fn pqueue_peek(q: &amp;IntMaxHeap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-pqueue_peekq-intmaxheap-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the highest-priority element without removing it. None if empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; pqueue_len(q) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; pqueue_len(q) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-pqueue_lenq-intmaxheap-int"><code>fn pqueue_len(q: &amp;IntMaxHeap) -&gt; Int</code><a class="headerlink" href="#fn-pqueue_lenq-intmaxheap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements in the queue. O(1).</p>
@@ -8552,14 +8924,24 @@
 <blockquote>
 <p>Create a new empty quadtree (root region starts at (0, 0, 1, 1) and grows on demand). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root &gt;= 0</code></li>
+</ul>
 <h5 id="fn-quadtree_insertt-mut-quadtree-x-int-y-int-value-int"><code>fn quadtree_insert(t: &amp;mut Quadtree, x: Int, y: Int, value: Int)</code><a class="headerlink" href="#fn-quadtree_insertt-mut-quadtree-x-int-y-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert a point (x, y) with its value. Duplicate points are allowed. O(depth) where depth grows logarithmically with the distance from the initial root region.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>quadtree_size(t) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-quadtree_queryt-quadtree-x-int-y-int-optionint"><code>fn quadtree_query(t: &amp;Quadtree, x: Int, y: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-quadtree_queryt-quadtree-x-int-y-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value stored at the point (x, y), or None if no point with those exact coordinates is stored. O(depth).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; quadtree_size(t) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-quadtree_sizet-quadtree-int"><code>fn quadtree_size(t: &amp;Quadtree) -&gt; Int</code><a class="headerlink" href="#fn-quadtree_sizet-quadtree-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of stored points. O(1).</p>
@@ -8604,6 +8986,9 @@
 <blockquote>
 <p>Append an item to the back of the queue.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.items.len() == q.items.len()@pre + 1</code></li>
+</ul>
 <h5 id="fn-workqueue_popq-mut-workqueue-optionint"><code>fn workqueue_pop(q: &amp;mut WorkQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-workqueue_popq-mut-workqueue-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the front item. None if empty.</p>
@@ -8670,10 +9055,17 @@
 <blockquote>
 <p>Append an item to the back of the deque.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>d.tail == d.tail@pre + 1</code></li>
+</ul>
 <h5 id="fn-deque_push_frontd-mut-deque-item-int"><code>fn deque_push_front(d: &amp;mut Deque, item: Int)</code><a class="headerlink" href="#fn-deque_push_frontd-mut-deque-item-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Prepend an item to the front of the deque.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>d.head == 0</code></li>
+<li><strong>Postcondition:</strong> <code>d.tail == d.items.len()</code></li>
+</ul>
 <h5 id="fn-deque_pop_frontd-mut-deque-optionint_1"><code>fn deque_pop_front(d: &amp;mut Deque) -&gt; Option[Int]</code><a class="headerlink" href="#fn-deque_pop_frontd-mut-deque-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the front item. None if empty.</p>
@@ -8745,10 +9137,16 @@
 <blockquote>
 <p>Push <code>item</code> from the producer side. Returns false when the ring is full.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; r.cap &gt; 0</code></li>
+</ul>
 <h5 id="fn-spsc_ring_popr-mut-spscring-optionint"><code>fn spsc_ring_pop(r: &amp;mut SpscRing) -&gt; Option[Int]</code><a class="headerlink" href="#fn-spsc_ring_popr-mut-spscring-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Pop an item from the consumer side. None when empty.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; r.cap &gt; 0</code></li>
+</ul>
 <h5 id="fn-spsc_ring_lenr-spscring-int"><code>fn spsc_ring_len(r: &amp;SpscRing) -&gt; Int</code><a class="headerlink" href="#fn-spsc_ring_lenr-spscring-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of items currently in the ring (approximate under concurrency).</p>
@@ -8825,18 +9223,31 @@
 <blockquote>
 <p>Create a new empty radix trie (root node only). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root &gt;= 0</code></li>
+</ul>
 <h5 id="fn-radix_insertr-mut-radixtrie-key-str-value-int"><code>fn radix_insert(r: &amp;mut RadixTrie, key: Str, value: Int)</code><a class="headerlink" href="#fn-radix_insertr-mut-radixtrie-key-str-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert <code>key</code> with its value. Empty keys are rejected. Inserting an existing key is a no-op (the original value is kept). O(L) where L is the key length (amortized).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>string.str_len(key) &gt; 0 =&gt; radix_contains(r, key)</code></li>
+</ul>
 <h5 id="fn-radix_containsr-radixtrie-key-str-bool"><code>fn radix_contains(r: &amp;RadixTrie, key: Str) -&gt; Bool</code><a class="headerlink" href="#fn-radix_containsr-radixtrie-key-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether <code>key</code> is stored (exact match). Empty keys are absent. O(L).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; radix_size(r) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-radix_remover-mut-radixtrie-key-str-bool"><code>fn radix_remove(r: &amp;mut RadixTrie, key: Str) -&gt; Bool</code><a class="headerlink" href="#fn-radix_remover-mut-radixtrie-key-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code>, returning whether it was present. The node is marked non-terminal; its label and children remain in the arena. O(L).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; radix_contains(r, key) == false</code></li>
+</ul>
 <h5 id="fn-radix_longest_prefixr-radixtrie-key-str-int"><code>fn radix_longest_prefix(r: &amp;RadixTrie, key: Str) -&gt; Int</code><a class="headerlink" href="#fn-radix_longest_prefixr-radixtrie-key-str-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length of the longest stored key that is a prefix of <code>key</code> (0 if none). O(L).</p>
@@ -8891,18 +9302,32 @@
 <blockquote>
 <p>Create a new empty interval tree. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.starts.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.starts.len() == result.alive.len()</code></li>
+</ul>
 <h5 id="fn-interval_insertt-mut-intervalset-start-int-end-int-value-int"><code>fn interval_insert(t: &amp;mut IntervalSet, start: Int, end: Int, value: Int)</code><a class="headerlink" href="#fn-interval_insertt-mut-intervalset-start-int-end-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert an interval with its value. Duplicate intervals are allowed; an interval with start &gt; end is rejected (ignored). O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>start &lt;= end =&gt; interval_query(t, start).len() &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>t.starts.len() == t.alive.len()</code></li>
+</ul>
 <h5 id="fn-interval_queryt-intervalset-point-int-vecint"><code>fn interval_query(t: &amp;IntervalSet, point: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-interval_queryt-intervalset-point-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Values of the live intervals covering <code>point</code> (inclusive on both ends). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= t.alive.len()</code></li>
+</ul>
 <h5 id="fn-interval_removet-mut-intervalset-start-int-end-int-bool"><code>fn interval_remove(t: &amp;mut IntervalSet, start: Int, end: Int) -&gt; Bool</code><a class="headerlink" href="#fn-interval_removet-mut-intervalset-start-int-end-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove the first live interval matching [start, end]. Returns true if one was found and removed. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; interval_query(t, start).len() &lt;= t.alive.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -8980,6 +9405,9 @@
 <blockquote>
 <p>True if <code>key</code> is present. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (rb_find_node(t, key) != -1)</code></li>
+</ul>
 <h5 id="fn-rbtree_removet-mut-rbtree-key-int-bool"><code>fn rbtree_remove(t: &amp;mut RbTree, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-rbtree_removet-mut-rbtree-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code>; returns true if it was present. O(log n).</p>
@@ -9069,14 +9497,27 @@
 <blockquote>
 <p>Create a ring with <code>cap</code> slots. A capacity below 1 is clamped to 1. O(cap).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result.buf.len() == result.cap</code></li>
+<li><strong>Postcondition:</strong> <code>result.head == 0 &amp;&amp; result.tail == 0</code></li>
+</ul>
 <h5 id="fn-ring_pushr-mut-ringbuffer-value-int-bool"><code>fn ring_push(r: &amp;mut RingBuffer, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-ring_pushr-mut-ringbuffer-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Try to enqueue <code>value</code>; returns false when the ring is full. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; r.tail &gt; r.head</code></li>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; r.tail - r.head &gt;= r.cap</code></li>
+</ul>
 <h5 id="fn-ring_popr-mut-ringbuffer-optionint"><code>fn ring_pop(r: &amp;mut RingBuffer) -&gt; Option[Int]</code><a class="headerlink" href="#fn-ring_popr-mut-ringbuffer-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dequeue a value. None when the ring is empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; r.head &gt;= r.tail</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; r.tail &gt;= r.head</code></li>
+</ul>
 <h5 id="fn-ring_lenr-ringbuffer-int"><code>fn ring_len(r: &amp;RingBuffer) -&gt; Int</code><a class="headerlink" href="#fn-ring_lenr-ringbuffer-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of buffered elements. O(1).</p>
@@ -9137,26 +9578,46 @@
 <blockquote>
 <p>Create a segment tree over <code>n</code> zero slots. Out-of-range values clamp to 0. O(n) time, O(4n) memory.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.n &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.sums.len() == 4 * result.n + 4</code></li>
+</ul>
 <h5 id="fn-segtree_buildt-mut-segtree-values-vecint"><code>fn segtree_build(t: &amp;mut SegTree, values: &amp;Vec[Int])</code><a class="headerlink" href="#fn-segtree_buildt-mut-segtree-values-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Build internal nodes from the given values. The tree is resized to match the values length (0-length input leaves the tree empty). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>segtree_size(t) == values.len()</code></li>
+<li><strong>Postcondition:</strong> <code>t.sums.len() == 4 * t.n + 4</code></li>
+</ul>
 <h5 id="fn-segtree_updatet-mut-segtree-idx-int-value-int"><code>fn segtree_update(t: &amp;mut SegTree, idx: Int, value: Int)</code><a class="headerlink" href="#fn-segtree_updatet-mut-segtree-idx-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Set slot <code>idx</code> to <code>value</code>. Out-of-range indices are ignored. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>t.sums.len() == 4 * t.n + 4</code></li>
+</ul>
 <h5 id="fn-segtree_query_sumt-segtree-l-int-r-int-int"><code>fn segtree_query_sum(t: &amp;SegTree, l: Int, r: Int) -&gt; Int</code><a class="headerlink" href="#fn-segtree_query_sumt-segtree-l-int-r-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sum over [l, r] inclusive. Out-of-range queries are clamped; an empty clamped range returns 0 (the sum identity). O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(l &gt; r || r &lt; 0 || l &gt;= t.n) =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-segtree_query_mint-segtree-l-int-r-int-int"><code>fn segtree_query_min(t: &amp;SegTree, l: Int, r: Int) -&gt; Int</code><a class="headerlink" href="#fn-segtree_query_mint-segtree-l-int-r-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Minimum over [l, r] inclusive. An empty clamped range returns INT_MAX (the min identity). O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(l &gt; r || r &lt; 0 || l &gt;= t.n) =&gt; result == _INT_MAX</code></li>
+</ul>
 <h5 id="fn-segtree_query_maxt-segtree-l-int-r-int-int"><code>fn segtree_query_max(t: &amp;SegTree, l: Int, r: Int) -&gt; Int</code><a class="headerlink" href="#fn-segtree_query_maxt-segtree-l-int-r-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Maximum over [l, r] inclusive. An empty clamped range returns INT_MIN (the max identity). O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(l &gt; r || r &lt; 0 || l &gt;= t.n) =&gt; result == _INT_MIN</code></li>
+</ul>
 <h5 id="fn-segtree_sizet-segtree-int"><code>fn segtree_size(t: &amp;SegTree) -&gt; Int</code><a class="headerlink" href="#fn-segtree_sizet-segtree-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of slots in the tree. O(1).</p>
@@ -9206,18 +9667,31 @@
 <blockquote>
 <p>Create an empty skip list (header node with key INT_MIN).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.head &gt;= 0</code></li>
+</ul>
 <h5 id="fn-skiplist_insertl-mut-skiplist-key-int-bool"><code>fn skiplist_insert(l: &amp;mut SkipList, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-skiplist_insertl-mut-skiplist-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert <code>key</code>. Returns false if the key already exists.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>skiplist_contains(l, key)</code></li>
+</ul>
 <h5 id="fn-skiplist_containsl-skiplist-key-int-bool"><code>fn skiplist_contains(l: &amp;SkipList, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-skiplist_containsl-skiplist-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if <code>key</code> is present.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; skiplist_size(l) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-skiplist_removel-mut-skiplist-key-int-bool"><code>fn skiplist_remove(l: &amp;mut SkipList, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-skiplist_removel-mut-skiplist-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code>. Returns true if it was present.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; skiplist_contains(l, key) == false</code></li>
+</ul>
 <h5 id="fn-skiplist_sizel-skiplist-int"><code>fn skiplist_size(l: &amp;SkipList) -&gt; Int</code><a class="headerlink" href="#fn-skiplist_sizel-skiplist-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of keys.</p>
@@ -9229,10 +9703,18 @@
 <blockquote>
 <p>Smallest key (None if empty).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; skiplist_size(l) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; skiplist_size(l) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-skiplist_maxl-skiplist-optionint"><code>fn skiplist_max(l: &amp;SkipList) -&gt; Option[Int]</code><a class="headerlink" href="#fn-skiplist_maxl-skiplist-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Largest key (None if empty).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; skiplist_size(l) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; skiplist_size(l) &gt;= 1</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -9264,18 +9746,30 @@
 <blockquote>
 <p>Create a new empty sparse set. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.dense.len() == 0</code></li>
+</ul>
 <h5 id="fn-sparse_adds-mut-sparseset-value-int"><code>fn sparse_add(s: &amp;mut SparseSet, value: Int)</code><a class="headerlink" href="#fn-sparse_adds-mut-sparseset-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Add a value to the set (no-op if already present). Negative values are rejected (they cannot be indexed in the sparse array). O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>value &gt;= 0 =&gt; sparse_contains(s, value)</code></li>
+</ul>
 <h5 id="fn-sparse_containss-sparseset-value-int-bool"><code>fn sparse_contains(s: &amp;SparseSet, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-sparse_containss-sparseset-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether a value is present. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; sparse_size(s) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-sparse_removes-mut-sparseset-value-int"><code>fn sparse_remove(s: &amp;mut SparseSet, value: Int)</code><a class="headerlink" href="#fn-sparse_removes-mut-sparseset-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a value from the set (no-op if absent). O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sparse_contains(s, value) == false</code></li>
+</ul>
 <h5 id="fn-sparse_sizes-sparseset-int"><code>fn sparse_size(s: &amp;SparseSet) -&gt; Int</code><a class="headerlink" href="#fn-sparse_sizes-sparseset-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements in the set. O(1).</p>
@@ -9287,6 +9781,9 @@
 <blockquote>
 <p>Iterate all elements (arbitrary but stable order). O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == sparse_size(s)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -9601,14 +10098,24 @@
 <blockquote>
 <p>Create a bounded SPMC queue with <code>capacity</code> slots. Params: capacity - number of buffered slots (clamped to &gt;= 1). Returns: a queue able to hold up to <code>capacity</code> items. Complexity: O(capacity) to pre-fill the ring.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result.buf.len() == result.cap</code></li>
+</ul>
 <h5 id="fn-spmc_pushq-mut-spmcqueue-value-int-bool"><code>fn spmc_push(q: &amp;mut SpmcQueue, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-spmc_pushq-mut-spmcqueue-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Try to enqueue <code>value</code> from the single producer end. Fails (false) when full. Params: q - the queue; value - item to enqueue. Returns: true on success, false when full. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-spmc_popq-mut-spmcqueue-optionint"><code>fn spmc_pop(q: &amp;mut SpmcQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-spmc_popq-mut-spmcqueue-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Try to dequeue a value from any consumer. None when empty. Params: q - the queue. Returns: the oldest buffered item, or None when empty. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>q.buf.len() == q.cap</code></li>
+</ul>
 <h5 id="fn-spmc_sizeq-spmcqueue-int"><code>fn spmc_size(q: &amp;SpmcQueue) -&gt; Int</code><a class="headerlink" href="#fn-spmc_sizeq-spmcqueue-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of buffered elements (approximate under concurrent access). Params: q - the queue. Returns: an approximation of the number of items currently buffered. Complexity: O(1).</p>
@@ -9642,18 +10149,31 @@
 <blockquote>
 <p>Create a new empty stack. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.items.len() == 0</code></li>
+</ul>
 <h5 id="fn-stack_pushs-mut-stack-value-int"><code>fn stack_push(s: &amp;mut Stack, value: Int)</code><a class="headerlink" href="#fn-stack_pushs-mut-stack-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Push <code>value</code> onto the top of the stack. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>stack_len(s) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-stack_pops-mut-stack-optionint"><code>fn stack_pop(s: &amp;mut Stack) -&gt; Option[Int]</code><a class="headerlink" href="#fn-stack_pops-mut-stack-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the top value. None if the stack is empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; stack_len(s) == 0</code></li>
+</ul>
 <h5 id="fn-stack_peeks-stack-optionint"><code>fn stack_peek(s: &amp;Stack) -&gt; Option[Int]</code><a class="headerlink" href="#fn-stack_peeks-stack-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the top value without removing it. None if empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; stack_len(s) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; stack_len(s) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-stack_lens-stack-int"><code>fn stack_len(s: &amp;Stack) -&gt; Int</code><a class="headerlink" href="#fn-stack_lens-stack-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements on the stack. O(1).</p>
@@ -9735,10 +10255,16 @@
 <blockquote>
 <p>Get the value for a key. None when absent. Params: m - the map; key - Str key. Returns: Some(value) if present, None otherwise. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == string_map_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-string_map_containsm-stringmap-key-str-bool"><code>fn string_map_contains(m: &amp;StringMap, key: Str) -&gt; Bool</code><a class="headerlink" href="#fn-string_map_containsm-stringmap-key-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether a key is present. Params: m - the map; key - Str key. Returns: true if <code>key</code> maps to a value. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (_find(m, key) &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-string_map_removem-mut-stringmap-key-str"><code>fn string_map_remove(m: &amp;mut StringMap, key: Str)</code><a class="headerlink" href="#fn-string_map_removem-mut-stringmap-key-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a key. Params: m - the map; key - Str key. Absent keys are a no-op. Arena memory is retained. Complexity: O(1) amortized.</p>
@@ -9816,6 +10342,9 @@
 <blockquote>
 <p>Check whether a key is present.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (_ssm_find(m, key) &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-string_str_map_removem-mut-stringstrmap-key-str-bool"><code>fn string_str_map_remove(m: &amp;mut StringStrMap, key: Str) -&gt; Bool</code><a class="headerlink" href="#fn-string_str_map_removem-mut-stringstrmap-key-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a key. Returns true when it was present. Arena memory is retained.</p>
@@ -9841,6 +10370,9 @@
 <blockquote>
 <p>True when arena entry <code>e</code> is live.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; e &gt;= 0 &amp;&amp; e &lt; m.live.len()</code></li>
+</ul>
 <h5 id="fn-string_str_map_entry_keym-stringstrmap-e-int-optionstr"><code>fn string_str_map_entry_key(m: &amp;StringStrMap, e: Int) -&gt; Option[Str]</code><a class="headerlink" href="#fn-string_str_map_entry_keym-stringstrmap-e-int-optionstr" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Key of arena entry <code>e</code>. None when <code>e</code> is dead or out of range.</p>
@@ -9906,18 +10438,37 @@
 <blockquote>
 <p>Create a pool with <code>workers</code> worker slots. Params: workers - fixed number of workers (clamped to &gt;= 1). Returns: a new pool with all workers idle and no pending jobs. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.workers &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>result.idle == result.workers</code></li>
+<li><strong>Postcondition:</strong> <code>result.busy == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.queued.len() == 0</code></li>
+</ul>
 <h5 id="fn-pool_submitp-mut-threadpool-job-fn-unit-bool"><code>fn pool_submit(p: &amp;mut ThreadPool, job: fn() -&gt; Unit) -&gt; Bool</code><a class="headerlink" href="#fn-pool_submitp-mut-threadpool-job-fn-unit-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Enqueue a job; false if the pool is shut down. Params: p - the pool; job - a closure (accepted but not executed; the pool is a pure-XIOM simulation over Int job handles). Returns: true on acceptance, false if the pool is shut down. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; p.queued.len() &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>p.busy + p.idle == p.workers</code></li>
+</ul>
 <h5 id="fn-pool_joinp-mut-threadpool"><code>fn pool_join(p: &amp;mut ThreadPool)</code><a class="headerlink" href="#fn-pool_joinp-mut-threadpool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Wait until all submitted jobs have completed. Params: p - the pool. Completes every queued job (they finish immediately in the simulation) and returns all workers to the idle state. Complexity: O(n) where n is the number of pending jobs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.queued.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>p.busy == 0</code></li>
+<li><strong>Postcondition:</strong> <code>p.idle == p.workers</code></li>
+</ul>
 <h5 id="fn-pool_shutdownp-mut-threadpool"><code>fn pool_shutdown(p: &amp;mut ThreadPool)</code><a class="headerlink" href="#fn-pool_shutdownp-mut-threadpool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Stop workers and release threads. Params: p - the pool. Closes the pool (submit returns false afterwards) and drains the pending queue as pool_join does. Complexity: O(n) where n is the number of pending jobs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.closed == true</code></li>
+<li><strong>Postcondition:</strong> <code>p.queued.len() == 0</code></li>
+</ul>
 <h5 id="fn-pool_sizep-threadpool-int"><code>fn pool_size(p: &amp;ThreadPool) -&gt; Int</code><a class="headerlink" href="#fn-pool_sizep-threadpool-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of worker threads. Params: p - the pool. Returns: the fixed worker count. Complexity: O(1).</p>
@@ -10102,10 +10653,17 @@
 <blockquote>
 <p>Insert a key. Duplicates are ignored.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>bst_contains(b, key)</code></li>
+<li><strong>Postcondition:</strong> <code>b.keys.len() == b.keys.len()@pre || b.keys.len() == b.keys.len()@pre + 1</code></li>
+</ul>
 <h5 id="fn-bst_containsb-bst-key-int-bool"><code>fn bst_contains(b: &amp;Bst, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-bst_containsb-bst-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Returns true if the key is present.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; b.keys.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-bst_removeb-mut-bst-key-int-bool"><code>fn bst_remove(b: &amp;mut Bst, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-bst_removeb-mut-bst-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove a key. Two-child nodes are replaced by their in-order successor. Returns true if the key was found and removed.</p>
@@ -10154,6 +10712,9 @@
 <blockquote>
 <p>True if the in-order traversal is strictly sorted (a valid BST).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b.keys.len() &lt;= 1 =&gt; result</code></li>
+</ul>
 <h5 id="type-avl_1"><code>type Avl</code><a class="headerlink" href="#type-avl_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>AVL Tree (Int keys) Same arena layout as the BST plus a parallel <code>heights</code> vector. Node height: leaf = 1, empty subtree = 0. Every insert rebalances via single/double rotations so |bf| &lt;= 1 holds on every node.</p>
@@ -10199,10 +10760,16 @@
 <blockquote>
 <p>Insert a key. Duplicates are ignored.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>avl_contains(a, key)</code></li>
+</ul>
 <h5 id="fn-avl_containsa-avl-key-int-bool"><code>fn avl_contains(a: &amp;Avl, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-avl_containsa-avl-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Returns true if the key is present.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; a.keys.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-avl_sizea-avl-int"><code>fn avl_size(a: &amp;Avl) -&gt; Int</code><a class="headerlink" href="#fn-avl_sizea-avl-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of nodes in the tree.</p>
@@ -10274,22 +10841,39 @@
 <blockquote>
 <p>Create a new empty tree map. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root == -1</code></li>
+</ul>
 <h5 id="fn-treemap_putm-mut-btreemap-key-int-value-int"><code>fn treemap_put(m: &amp;mut BTreeMap, key: Int, value: Int)</code><a class="headerlink" href="#fn-treemap_putm-mut-btreemap-key-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert or update <code>key</code> -&gt; <code>value</code>. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>treemap_contains(m, key)</code></li>
+<li><strong>Postcondition:</strong> <code>m.size &gt;= 1</code></li>
+</ul>
 <h5 id="fn-treemap_getm-btreemap-key-int-optionint"><code>fn treemap_get(m: &amp;BTreeMap, key: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-treemap_getm-btreemap-key-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value for <code>key</code>, or None when absent. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.is_some == treemap_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-treemap_containsm-btreemap-key-int-bool"><code>fn treemap_contains(m: &amp;BTreeMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-treemap_containsm-btreemap-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if <code>key</code> is present. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; treemap_size(m) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-treemap_removem-mut-btreemap-key-int-bool"><code>fn treemap_remove(m: &amp;mut BTreeMap, key: Int) -&gt; Bool</code><a class="headerlink" href="#fn-treemap_removem-mut-btreemap-key-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>key</code>; returns true if it was present. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; treemap_contains(m, key) == false</code></li>
+</ul>
 <h5 id="fn-treemap_sizem-btreemap-int"><code>fn treemap_size(m: &amp;BTreeMap) -&gt; Int</code><a class="headerlink" href="#fn-treemap_sizem-btreemap-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of entries. O(1).</p>
@@ -10301,14 +10885,25 @@
 <blockquote>
 <p>Smallest key, or None when the map is empty. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; treemap_size(m) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; treemap_size(m) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-treemap_maxm-btreemap-optionint"><code>fn treemap_max(m: &amp;BTreeMap) -&gt; Option[Int]</code><a class="headerlink" href="#fn-treemap_maxm-btreemap-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Largest key, or None when the map is empty. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; treemap_size(m) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; treemap_size(m) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-treemap_iterm-btreemap-vecint-int"><code>fn treemap_iter(m: &amp;BTreeMap) -&gt; Vec[(Int, Int)]</code><a class="headerlink" href="#fn-treemap_iterm-btreemap-vecint-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>All entries as (key, value) pairs in ascending key order. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == treemap_size(m)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -10355,18 +10950,31 @@
 <blockquote>
 <p>Create a new empty tree set. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.root == -1</code></li>
+</ul>
 <h5 id="fn-treeset_inserts-mut-btreeset-value-int-bool"><code>fn treeset_insert(s: &amp;mut BTreeSet, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-treeset_inserts-mut-btreeset-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert <code>value</code>; returns true if it was newly added, false if it was already present. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>treeset_contains(s, value)</code></li>
+</ul>
 <h5 id="fn-treeset_containss-btreeset-value-int-bool"><code>fn treeset_contains(s: &amp;BTreeSet, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-treeset_containss-btreeset-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if <code>value</code> is present. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; treeset_size(s) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-treeset_removes-mut-btreeset-value-int-bool"><code>fn treeset_remove(s: &amp;mut BTreeSet, value: Int) -&gt; Bool</code><a class="headerlink" href="#fn-treeset_removes-mut-btreeset-value-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>value</code>; returns true if it was present. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; treeset_contains(s, value) == false</code></li>
+</ul>
 <h5 id="fn-treeset_sizes-btreeset-int"><code>fn treeset_size(s: &amp;BTreeSet) -&gt; Int</code><a class="headerlink" href="#fn-treeset_sizes-btreeset-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements. O(1).</p>
@@ -10378,10 +10986,18 @@
 <blockquote>
 <p>Smallest element, or None when the set is empty. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; treeset_size(s) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; treeset_size(s) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-treeset_maxs-btreeset-optionint"><code>fn treeset_max(s: &amp;BTreeSet) -&gt; Option[Int]</code><a class="headerlink" href="#fn-treeset_maxs-btreeset-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Largest element, or None when the set is empty. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; treeset_size(s) == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; treeset_size(s) &gt;= 1</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -10416,14 +11032,24 @@
 <blockquote>
 <p>Create an empty trie (root node allocated).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.children.len() == 26</code></li>
+</ul>
 <h5 id="fn-trie_insertt-mut-trie-word-str-bool"><code>fn trie_insert(t: &amp;mut Trie, word: Str) -&gt; Bool</code><a class="headerlink" href="#fn-trie_insertt-mut-trie-word-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert a lowercase word. Returns false if the word already exists or contains non a-z characters.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; trie_contains(t, word)</code></li>
+</ul>
 <h5 id="fn-trie_containst-trie-word-str-bool"><code>fn trie_contains(t: &amp;Trie, word: Str) -&gt; Bool</code><a class="headerlink" href="#fn-trie_containst-trie-word-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if <code>word</code> is stored (exact match).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; trie_size(t) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-trie_sizet-trie-int"><code>fn trie_size(t: &amp;Trie) -&gt; Int</code><a class="headerlink" href="#fn-trie_sizet-trie-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of words stored.</p>
@@ -10435,14 +11061,23 @@
 <blockquote>
 <p>All stored words starting with <code>prefix</code> (lexicographic DFS order). Returns an empty Vec if no word matches.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= trie_size(t)</code></li>
+</ul>
 <h5 id="fn-trie_has_prefixt-trie-prefix-str-bool"><code>fn trie_has_prefix(t: &amp;Trie, prefix: Str) -&gt; Bool</code><a class="headerlink" href="#fn-trie_has_prefixt-trie-prefix-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if any stored word starts with <code>prefix</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; trie_complete(t, prefix).len() == 0</code></li>
+</ul>
 <h5 id="fn-trie_removet-mut-trie-word-str-bool"><code>fn trie_remove(t: &amp;mut Trie, word: Str) -&gt; Bool</code><a class="headerlink" href="#fn-trie_removet-mut-trie-word-str-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove <code>word</code>. Returns true if it was present.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; trie_contains(t, word) == false</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -10478,6 +11113,10 @@
 <blockquote>
 <p>Create a disjoint-set with <code>n</code> isolated elements (ids 0..n-1), each in its own set of size 1. A negative <code>n</code> yields an empty structure. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.count == n</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt;= 0 =&gt; result.parent.len() == n</code></li>
+</ul>
 <h5 id="fn-uf_finduf-mut-unionfind-x-int-int"><code>fn uf_find(uf: &amp;mut UnionFind, x: Int) -&gt; Int</code><a class="headerlink" href="#fn-uf_finduf-mut-unionfind-x-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the representative (root) of the element <code>x</code>, applying path compression. Returns -1 for an out-of-range element id. O(alpha n) amortized.</p>
@@ -10489,10 +11128,16 @@
 <blockquote>
 <p>Merge the sets containing <code>x</code> and <code>y</code> (union by size). Out-of-range ids are ignored. The size of the merged set is tracked at the new root. O(alpha n) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(x &gt;= 0 &amp;&amp; x &lt; uf.parent.len() &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; uf.parent.len()) =&gt; uf_connected(uf, x, y)</code></li>
+</ul>
 <h5 id="fn-uf_connecteduf-unionfind-x-int-y-int-bool"><code>fn uf_connected(uf: &amp;UnionFind, x: Int, y: Int) -&gt; Bool</code><a class="headerlink" href="#fn-uf_connecteduf-unionfind-x-int-y-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Check whether <code>x</code> and <code>y</code> share a representative. Returns false for out-of-range ids. O(alpha n) amortized (read-only traversal).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; uf_component_size(uf, x) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-uf_component_sizeuf-unionfind-x-int-int"><code>fn uf_component_size(uf: &amp;UnionFind, x: Int) -&gt; Int</code><a class="headerlink" href="#fn-uf_component_sizeuf-unionfind-x-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Size of the set containing <code>x</code> (number of elements in its component). Returns 0 for an out-of-range id. O(alpha n) amortized (read-only traversal).</p>
@@ -10543,6 +11188,9 @@
 <blockquote>
 <p>Last element, or <code>fallback</code> when the vector is empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() == 0 =&gt; result == fallback</code></li>
+</ul>
 <h5 id="fn-vec_pop_checkedtv-mut-vect-optiont"><code>fn vec_pop_checked[T](v: &amp;mut Vec[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-vec_pop_checkedtv-mut-vect-optiont" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Checked pop: the explicit Option-shaped face (None when empty, and the element is removed only when Some). Delegates to the built-in checked pop so the discipline is locked on the collect face too. O(1).</p>
@@ -10648,14 +11296,23 @@
 <blockquote>
 <p>Create a new empty vector. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.items.len() == 0</code></li>
+</ul>
 <h5 id="fn-vec_pushv-mut-intvec-value-int"><code>fn vec_push(v: &amp;mut IntVec, value: Int)</code><a class="headerlink" href="#fn-vec_pushv-mut-intvec-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Append <code>value</code> to the end of the vector. Amortized O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>vec_len(v) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-vec_popv-mut-intvec-optionint"><code>fn vec_pop(v: &amp;mut IntVec) -&gt; Option[Int]</code><a class="headerlink" href="#fn-vec_popv-mut-intvec-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the last value. None if the vector is empty. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; vec_len(v) == 0</code></li>
+</ul>
 <h5 id="fn-vec_lenv-intvec-int"><code>fn vec_len(v: &amp;IntVec) -&gt; Int</code><a class="headerlink" href="#fn-vec_lenv-intvec-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of elements currently stored. O(1).</p>
@@ -10667,18 +11324,31 @@
 <blockquote>
 <p>Value at index <code>idx</code>, or None when idx is out of bounds. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; idx &lt; 0 || idx &gt;= vec_len(v)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; idx &gt;= 0 &amp;&amp; idx &lt; vec_len(v)</code></li>
+</ul>
 <h5 id="fn-vec_setv-mut-intvec-idx-int-value-int"><code>fn vec_set(v: &amp;mut IntVec, idx: Int, value: Int)</code><a class="headerlink" href="#fn-vec_setv-mut-intvec-idx-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Overwrite the value at <code>idx</code>. Out-of-bounds indices are ignored. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>idx &lt; 0 || idx &gt;= v.items.len() || v.items[idx] == value</code></li>
+</ul>
 <h5 id="fn-vec_insertv-mut-intvec-idx-int-value-int"><code>fn vec_insert(v: &amp;mut IntVec, idx: Int, value: Int)</code><a class="headerlink" href="#fn-vec_insertv-mut-intvec-idx-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert <code>value</code> at <code>idx</code>, shifting later elements right. Valid range is 0..=len; other indices are ignored. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(idx &gt;= 0 &amp;&amp; idx &lt; vec_len(v)) =&gt; v.items[idx] == value</code></li>
+</ul>
 <h5 id="fn-vec_removev-mut-intvec-idx-int-optionint"><code>fn vec_remove(v: &amp;mut IntVec, idx: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-vec_removev-mut-intvec-idx-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove and return the value at <code>idx</code>, shifting later elements left. None when idx is out of bounds. O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; idx &lt; 0 || idx &gt;= vec_len(v)</code></li>
+</ul>
 <h5 id="fn-vec_clearv-mut-intvec"><code>fn vec_clear(v: &amp;mut IntVec)</code><a class="headerlink" href="#fn-vec_clearv-mut-intvec" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Remove all elements. O(1) (capacity is retained).</p>
@@ -10723,14 +11393,24 @@
 <blockquote>
 <p>Create a new empty work queue. Returns: an empty WorkQueue with no pending jobs. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.items.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.head == 0</code></li>
+</ul>
 <h5 id="fn-workqueue_pushq-mut-workqueue-value-int"><code>fn workqueue_push(q: &amp;mut WorkQueue, value: Int)</code><a class="headerlink" href="#fn-workqueue_pushq-mut-workqueue-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Append a job handle to the back of the queue. Params: q - the queue; value - the Int job handle to enqueue. Complexity: O(1) amortized.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>workqueue_len(q) &gt;= 1</code></li>
+</ul>
 <h5 id="fn-workqueue_popq-mut-workqueue-optionint_1"><code>fn workqueue_pop(q: &amp;mut WorkQueue) -&gt; Option[Int]</code><a class="headerlink" href="#fn-workqueue_popq-mut-workqueue-optionint_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dequeue the front job handle. None when the queue is empty. Params: q - the queue. Returns: the oldest pending job, or None if no jobs are pending. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; q.head &gt;= q.items.len()</code></li>
+</ul>
 <h5 id="fn-workqueue_lenq-workqueue-int_1"><code>fn workqueue_len(q: &amp;WorkQueue) -&gt; Int</code><a class="headerlink" href="#fn-workqueue_lenq-workqueue-int_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of pending jobs. Params: q - the queue. Returns: the count of jobs not yet popped. Complexity: O(1).</p>

@@ -2891,30 +2891,56 @@
 <blockquote>
 <p>Create an executor with empty ready/timer queues.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.ready.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.timers.len() == 0</code></li>
+</ul>
 <h4 id="fn-spawnself-self-task-fn-unit"><code>fn spawn(self: Self, task: fn() -&gt; Unit)</code><a class="headerlink" href="#fn-spawnself-self-task-fn-unit" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Enqueue a task onto the ready-queue. It runs on the next drain, not now.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.ready.len() == self.ready.len()@pre + 1</code></li>
+</ul>
 <h4 id="fn-atself-self-deadline-int-task-fn-unit"><code>fn at(self: Self, deadline: Int, task: fn() -&gt; Unit)</code><a class="headerlink" href="#fn-atself-self-deadline-int-task-fn-unit" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Register a task to become ready once the clock reaches <code>deadline</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.timers.len() == self.timers.len()@pre + 1</code></li>
+</ul>
 <h4 id="fn-stepself-self-bool"><code>fn step(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-stepself-self-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Run a single ready task. Returns true if one was run, false if the ready-queue was empty.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; self.ready.len() == self.ready.len()@pre</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; self.ready.len() == self.ready.len()@pre - 1</code></li>
+</ul>
 <h4 id="fn-fire_due_timersself-self"><code>fn fire_due_timers(self: Self)</code><a class="headerlink" href="#fn-fire_due_timersself-self" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Advance pending timers: sleep until the earliest deadline, then move every timer that is now due onto the ready-queue (keeping the rest pending).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.timers.len() &lt;= self.timers.len()@pre</code></li>
+<li><strong>Postcondition:</strong> <code>self.ready.len() &gt;= self.ready.len()@pre</code></li>
+</ul>
 <h4 id="fn-runself-self"><code>fn run(self: Self)</code><a class="headerlink" href="#fn-runself-self" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Drive the scheduler until both the ready-queue and the timer set are empty.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.ready.len() &lt;= self.ready.len()@pre</code></li>
+<li><strong>Postcondition:</strong> <code>self.timers.len() &lt;= self.timers.len()@pre</code></li>
+</ul>
 <h4 id="fn-block_onself-self-task-fn-unit"><code>fn block_on(self: Self, task: fn() -&gt; Unit)</code><a class="headerlink" href="#fn-block_onself-self-task-fn-unit" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Spawn a task then drive to completion.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.ready.len() &lt;= self.ready.len()@pre + 1</code></li>
+<li><strong>Postcondition:</strong> <code>self.timers.len() &lt;= self.timers.len()@pre</code></li>
+</ul>
 <h4 id="fn-spawntask-fn-unit"><code>fn spawn(task: fn() -&gt; Unit)</code><a class="headerlink" href="#fn-spawntask-fn-unit" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Spawn === Enqueue an async task onto the global executor's ready-queue. NOTE: unlike the old stub, this no longer runs <code>task</code> inline -- it is scheduled and runs when the executor is driven via <code>run</code>/<code>block_on</code>.</p>
@@ -2938,6 +2964,9 @@
 <blockquote>
 <p>Cooperative sleep: wait <code>ms</code> milliseconds while still driving other ready tasks, so the single thread keeps making progress during the wait. NOTE: with no coroutine transform this blocks the calling frame; it does not suspend-and-resume it. Use <code>delay</code> for true fire-after-deadline tasks.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>ms &gt;= 0</code></li>
+</ul>
 <h4 id="type-channel"><code>type Channel</code><a class="headerlink" href="#type-channel" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Channel type ===</p>
@@ -2972,15 +3001,26 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>capacity &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.cap == capacity</code></li>
+<li><strong>Postcondition:</strong> <code>result.closed == false</code></li>
+<li><strong>Postcondition:</strong> <code>result.items.len() == 0</code></li>
 </ul>
 <h4 id="fn-unboundedt-channelt"><code>fn unbounded[T]() -&gt; Channel[T]</code><a class="headerlink" href="#fn-unboundedt-channelt" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Unbounded channel.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.cap == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.closed == false</code></li>
+<li><strong>Postcondition:</strong> <code>result.items.len() == 0</code></li>
+</ul>
 <h4 id="fn-sendtself-self-value-t"><code>fn send[T](self: Self, value: T)</code><a class="headerlink" href="#fn-sendtself-self-value-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Send a value (blocking when the channel is full).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>!self.closed =&gt; self.items.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-recvtself-self-t"><code>fn recv[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-recvtself-self-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Receive a value (blocking until one is available).</p>
@@ -2989,18 +3029,31 @@
 <blockquote>
 <p>Non-blocking receive; None when the channel is empty.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; self.items.len() == self.items.len()@pre</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; self.items.len() == self.items.len()@pre - 1</code></li>
+</ul>
 <h4 id="fn-closetself-self"><code>fn close[T](self: Self)</code><a class="headerlink" href="#fn-closetself-self" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Close the channel.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.closed == true</code></li>
+</ul>
 <h4 id="fn-async_now_ms-int"><code>fn async_now_ms() -&gt; Int</code><a class="headerlink" href="#fn-async_now_ms-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the current monotonic time in milliseconds. Complexity: O(1). Thread-safe.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-async_sleep_msms-int"><code>fn async_sleep_ms(ms: Int)</code><a class="headerlink" href="#fn-async_sleep_msms-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Cooperative sleep: waits <code>ms</code> milliseconds while driving other ready tasks. Complexity: O(ms) pump iterations.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>ms &gt;= 0</code></li>
+</ul>
 <h4 id="fn-async_yield_now"><code>fn async_yield_now()</code><a class="headerlink" href="#fn-async_yield_now" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Yields execution to other ready tasks by sleeping for 0ms. Complexity: O(1) pump iteration.</p>
@@ -3012,26 +3065,46 @@
 <blockquote>
 <p>Enqueues a task onto the global executor and returns a task id. Complexity: O(1). Thread-safe: accesses global executor.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 1</code></li>
+</ul>
 <h4 id="fn-async_spawn_delayedms-int-f-fn-unit"><code>fn async_spawn_delayed(ms: Int, f: fn() -&gt; Unit)</code><a class="headerlink" href="#fn-async_spawn_delayedms-int-f-fn-unit" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Schedules a task to become ready after <code>ms</code> milliseconds. Complexity: O(1). Thread-safe: accesses global executor.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>ms &gt;= 0</code></li>
+</ul>
 <h4 id="fn-async_step_onceexec-mut-asyncexecutor-bool"><code>fn async_step_once(exec: &amp;mut AsyncExecutor) -&gt; Bool</code><a class="headerlink" href="#fn-async_step_onceexec-mut-asyncexecutor-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Runs one step of the given executor. Returns <code>true</code> if a task was run. Complexity: O(1). Thread-safe if executor is not shared.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false =&gt; exec.ready.len() == exec.ready.len()@pre</code></li>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; exec.ready.len() == exec.ready.len()@pre - 1</code></li>
+</ul>
 <h4 id="fn-async_has_pendingexec-asyncexecutor-bool"><code>fn async_has_pending(exec: &amp;AsyncExecutor) -&gt; Bool</code><a class="headerlink" href="#fn-async_has_pendingexec-asyncexecutor-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns <code>true</code> if the executor has pending tasks or timers. Complexity: O(1). Thread-safe: reads immutable data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (exec.ready.len() &gt; 0 || exec.timers.len() &gt; 0)</code></li>
+</ul>
 <h4 id="fn-async_run_until_idleexec-mut-asyncexecutor"><code>fn async_run_until_idle(exec: &amp;mut AsyncExecutor)</code><a class="headerlink" href="#fn-async_run_until_idleexec-mut-asyncexecutor" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Drains all ready tasks from the executor without advancing timers. Complexity: O(ready_queue_size).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>exec.ready.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>exec.timers.len() == exec.timers.len()@pre</code></li>
+</ul>
 <h4 id="fn-async_timer_countexec-asyncexecutor-int"><code>fn async_timer_count(exec: &amp;AsyncExecutor) -&gt; Int</code><a class="headerlink" href="#fn-async_timer_countexec-asyncexecutor-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns the number of pending timers in the executor. Complexity: O(1). Thread-safe: reads immutable data.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == exec.timers.len()</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="channelxi"><code>channel.xi</code><a class="headerlink" href="#channelxi" title="Permanent link">&para;</a></h2>

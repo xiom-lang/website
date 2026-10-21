@@ -3410,6 +3410,9 @@
 <blockquote>
 <p>Stable hash of a Bool.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 177573 || result == 177574</code></li>
+</ul>
 <h4 id="fn-hash_valuetvalue-t-int"><code>fn hash_value[T](value: T) -&gt; Int</code><a class="headerlink" href="#fn-hash_valuetvalue-t-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>=== Free functions === NOTE: these dispatch to the concrete 0-arg <code>.hash()</code> methods (Int/Bool) like the sibling <code>hash</code> below. The hasher-based <code>Hash</code> interface (hash(self, hasher)) is defined above but has no concrete impls yet; calling through it from a &amp;T receiver produced invalid IR (ptr-&gt;i64) -- keep by-value params until the interface path is complete. CAVEAT (REL-20261011-1053-stdlib): zero-arg <code>.hash()</code> on scalar receivers lowers to a compiler BUILTIN identity that shadows the concrete Int.hash/Bool.hash methods, and the explicit-receiver form (<code>Bool.hash(x)</code>) does not type-check -- so those two methods are unreachable today; treat <code>.hash()</code> on Int/Bool as the identity.</p>

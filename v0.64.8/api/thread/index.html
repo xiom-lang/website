@@ -2909,6 +2909,9 @@
 <blockquote>
 <p>Write the calling thread's value. Params: tl - the thread-local; value - the new value. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>tl.initialized == true</code></li>
+</ul>
 <h5 id="fn-tls_replacettl-mut-threadlocalt-value-t-t"><code>fn tls_replace[T](tl: &amp;mut ThreadLocal[T], value: T) -&gt; T</code><a class="headerlink" href="#fn-tls_replacettl-mut-threadlocalt-value-t-t" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Replace and return the previous value. Params: tl - the thread-local; value - the replacement. Returns: the previous value (or the initializer's value if unset). Complexity: O(1).</p>
@@ -2927,6 +2930,9 @@
 <blockquote>
 <p>Drop the calling thread's value and reset to uninitialized. Params: tl - the thread-local. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>tl.initialized == false</code></li>
+</ul>
 <h5 id="fn-thread_local_key_new-int"><code>fn thread_local_key_new() -&gt; Int</code><a class="headerlink" href="#fn-thread_local_key_new-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Allocate a raw TLS key. Returns: a fresh positive key value. Complexity: O(1).</p>
@@ -2938,10 +2944,17 @@
 <blockquote>
 <p>Read the calling thread's value for a raw key. Params: key - the key to look up. Returns: the stored value, or 0 if the key is not the stored one. Complexity: O(1). Single-slot simulation: one raw key per program.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>_raw_key != key =&gt; result == 0</code></li>
+</ul>
 <h5 id="fn-tls_key_setkey-int-value-int"><code>fn tls_key_set(key: Int, value: Int)</code><a class="headerlink" href="#fn-tls_key_setkey-int-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write the calling thread's value for a raw key. Params: key - the key; value - the value to store. Complexity: O(1). Single-slot simulation: one raw key per program.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>_raw_key == key</code></li>
+<li><strong>Postcondition:</strong> <code>_raw_value == value</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -2975,6 +2988,9 @@
 <blockquote>
 <p>Block until the token is notified. Params: tok - the token. Complexity: O(1) per poll; blocks until a notify.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>ptr.is_null(tok.flag) == false</code></li>
+</ul>
 <h5 id="fn-park_token_notifytok-parktoken"><code>fn park_token_notify(tok: ParkToken)</code><a class="headerlink" href="#fn-park_token_notifytok-parktoken" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Release one waiter on the token. Params: tok - the token. Complexity: O(1).</p>
@@ -2986,18 +3002,30 @@
 <blockquote>
 <p>Block the calling thread until it is unparked. Complexity: O(1) per poll; blocks until an unpark.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>ptr.is_null(_park_flag) == false</code></li>
+</ul>
 <h5 id="fn-park_timeoutms-int-bool"><code>fn park_timeout(ms: Int) -&gt; Bool</code><a class="headerlink" href="#fn-park_timeoutms-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Block up to <code>ms</code> milliseconds; true if unparked first. Params: ms - the timeout in milliseconds (clamped to &gt;= 0). Returns: true if unparked before the timeout, false on timeout. Complexity: O(ms) polls, each sleeping up to 1 ms.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>ptr.is_null(_park_flag) == false</code></li>
+</ul>
 <h5 id="fn-unparkt-spawnthread"><code>fn unpark(t: SpawnThread)</code><a class="headerlink" href="#fn-unparkt-spawnthread" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Make the target thread eligible to resume. Params: t - the target thread. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>ptr.is_null(_park_flag) == false</code></li>
+</ul>
 <h5 id="fn-unpark_allthreads-vecspawnthread"><code>fn unpark_all(threads: &amp;Vec[SpawnThread])</code><a class="headerlink" href="#fn-unpark_allthreads-vecspawnthread" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unpark every thread in the vector. Params: threads - the threads to wake. Complexity: O(n) where n is the number of threads.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>ptr.is_null(_park_flag) == false</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3083,6 +3111,10 @@
 <blockquote>
 <p>Enqueue a job; false if the pool is shutting down. Params: p - the pool; job - the closure (REAL: it runs on its own OS thread through the spawn machinery; <code>tp_join</code> waits for it). Returns: true on acceptance, false if the pool is shut down. Complexity: O(1) amortized plus one OS thread spawn.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true =&gt; p.queued.len() &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>p.busy + p.idle == p.workers</code></li>
+</ul>
 <h5 id="fn-tp_submit_withp-mut-threadpool-job-fnint-unit-arg-int-bool"><code>fn tp_submit_with(p: &amp;mut ThreadPool, job: fn(Int) -&gt; Unit, arg: Int) -&gt; Bool</code><a class="headerlink" href="#fn-tp_submit_withp-mut-threadpool-job-fnint-unit-arg-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Enqueue a job with one argument; false if the pool is shutting down. Params: p - the pool; job - the closure; arg - its single argument. REAL but INLINE (engine-6 arg-channel freeze): the spawn trampoline has no argument channel, so the arg-carrying form runs on the submitting thread -- exactly once, with its arg. Returns: true on acceptance, false if the pool is shut down. Complexity: O(1) amortized plus the cost of <code>job</code>.</p>
@@ -3095,10 +3127,19 @@
 <blockquote>
 <p>Block until all queued jobs complete. Params: p - the pool. REAL drain: joins every in-flight OS thread (one per accepted no-arg job) and frees its result buffer; the counters return to busy == 0, idle == workers. Complexity: O(n) where n is the number of pending jobs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.queued.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>p.busy == 0</code></li>
+<li><strong>Postcondition:</strong> <code>p.idle == p.workers</code></li>
+</ul>
 <h5 id="fn-tp_shutdownp-mut-threadpool"><code>fn tp_shutdown(p: &amp;mut ThreadPool)</code><a class="headerlink" href="#fn-tp_shutdownp-mut-threadpool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Stop accepting jobs, drain the queue, and reap workers. Params: p - the pool. Closes the pool (submit returns false afterwards) and drains the pending work as tp_join does. Complexity: O(n) where n is the number of pending jobs.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.closed == true</code></li>
+<li><strong>Postcondition:</strong> <code>p.queued.len() == 0</code></li>
+</ul>
 <h5 id="fn-tp_sizep-threadpool-int"><code>fn tp_size(p: &amp;ThreadPool) -&gt; Int</code><a class="headerlink" href="#fn-tp_sizep-threadpool-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The number of worker threads. Params: p - the pool. Returns: the fixed worker count. Complexity: O(1).</p>
@@ -3175,6 +3216,9 @@
 <blockquote>
 <p>Let the thread run independently and free its OS handle. REAL since wave 145: the runtime releases the handle on exit; the 16-byte result buffer is retained for the process lifetime (documented). Inline handles are a no-op. Params: t - the thread handle (consumed). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>t.id &gt; 0</code></li>
+</ul>
 <h5 id="fn-sleep_msms-int"><code>fn sleep_ms(ms: Int)</code><a class="headerlink" href="#fn-sleep_msms-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Suspend the calling thread for <code>ms</code> milliseconds. Params: ms - the sleep duration (clamped to &gt;= 0). Complexity: O(1) syscall.</p>

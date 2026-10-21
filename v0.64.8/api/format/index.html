@@ -4157,10 +4157,17 @@
 <blockquote>
 <p>Advance the bar to <code>done</code> units (clamped to [0, total]).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.done &lt;= p.total</code></li>
+<li><strong>Postcondition:</strong> <code>p.total &gt;= 0 =&gt; p.done &gt;= 0</code></li>
+</ul>
 <h5 id="fn-progress_renderp-progress-str"><code>fn progress_render(p: &amp;Progress) -&gt; Str</code><a class="headerlink" href="#fn-progress_renderp-progress-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Render the bar to a single line string: "[####----] 50%".</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 3</code></li>
+</ul>
 <h5 id="fn-progress_finishp-mut-progress-unit"><code>fn progress_finish(p: &amp;mut Progress) -&gt; Unit</code><a class="headerlink" href="#fn-progress_finishp-mut-progress-unit" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Finalize the bar: mark it complete (done = total). Rendering after this returns a full bar. No terminal I/O is performed.</p>
@@ -4179,6 +4186,10 @@
 <blockquote>
 <p>Estimated seconds remaining, or -1 when unknown (nothing done yet).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= -1</code></li>
+<li><strong>Postcondition:</strong> <code>p.done &lt;= 0 =&gt; result == -1</code></li>
+</ul>
 <h5 id="type-spinner"><code>type Spinner</code><a class="headerlink" href="#type-spinner" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A spinner with a frame set and a current frame index.</p>
@@ -4213,6 +4224,9 @@
 <blockquote>
 <p>Advance the spinner and return its frame string.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>sp.index == sp.index@pre + 1</code></li>
+</ul>
 <h5 id="fn-spinner_framesp-spinner-int"><code>fn spinner_frame(sp: &amp;Spinner) -&gt; Int</code><a class="headerlink" href="#fn-spinner_framesp-spinner-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Current frame index of the spinner.</p>
@@ -4392,34 +4406,62 @@
 <blockquote>
 <p>ANSI 256-color foreground escape for code 0..255 (clamped).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>code &lt; 0 =&gt; result == "[38;5;0m"</code></li>
+<li><strong>Postcondition:</strong> <code>code &gt; 255 =&gt; result == "[38;5;255m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_256code-int-str"><code>fn ansi_bg_256(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_256code-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI 256-color background escape for code 0..255 (clamped).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>code &lt; 0 =&gt; result == "[48;5;0m"</code></li>
+<li><strong>Postcondition:</strong> <code>code &gt; 255 =&gt; result == "[48;5;255m"</code></li>
+</ul>
 <h5 id="fn-ansi_fg_rgbr-int-g-int-b-int-str"><code>fn ansi_fg_rgb(r: Int, g: Int, b: Int) -&gt; Str</code><a class="headerlink" href="#fn-ansi_fg_rgbr-int-g-int-b-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI 24-bit foreground escape from RGB channels (0-255 each).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r &lt; 0 &amp;&amp; g &lt; 0 &amp;&amp; b &lt; 0) =&gt; result == "[38;2;0;0;0m"</code></li>
+<li><strong>Postcondition:</strong> <code>(r &gt; 255 &amp;&amp; g &gt; 255 &amp;&amp; b &gt; 255) =&gt; result == "[38;2;255;255;255m"</code></li>
+</ul>
 <h5 id="fn-ansi_bg_rgbr-int-g-int-b-int-str"><code>fn ansi_bg_rgb(r: Int, g: Int, b: Int) -&gt; Str</code><a class="headerlink" href="#fn-ansi_bg_rgbr-int-g-int-b-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ANSI 24-bit background escape from RGB channels (0-255 each).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(r &lt; 0 &amp;&amp; g &lt; 0 &amp;&amp; b &lt; 0) =&gt; result == "[48;2;0;0;0m"</code></li>
+<li><strong>Postcondition:</strong> <code>(r &gt; 255 &amp;&amp; g &gt; 255 &amp;&amp; b &gt; 255) =&gt; result == "[48;2;255;255;255m"</code></li>
+</ul>
 <h5 id="fn-ansi_cursor_upn-int-str_1"><code>fn ansi_cursor_up(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-ansi_cursor_upn-int-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Move the cursor up <code>n</code> rows (n clamped &gt;= 0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; result == "[0A"</code></li>
+</ul>
 <h5 id="fn-ansi_cursor_downn-int-str_1"><code>fn ansi_cursor_down(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-ansi_cursor_downn-int-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Move the cursor down <code>n</code> rows.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; result == "[0B"</code></li>
+</ul>
 <h5 id="fn-ansi_cursor_forwardn-int-str"><code>fn ansi_cursor_forward(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-ansi_cursor_forwardn-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Move the cursor right <code>n</code> columns.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; result == "[0C"</code></li>
+</ul>
 <h5 id="fn-ansi_cursor_backn-int-str"><code>fn ansi_cursor_back(n: Int) -&gt; Str</code><a class="headerlink" href="#fn-ansi_cursor_backn-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Move the cursor left <code>n</code> columns.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; result == "[0D"</code></li>
+</ul>
 <h5 id="fn-ansi_cursor_home-str"><code>fn ansi_cursor_home() -&gt; Str</code><a class="headerlink" href="#fn-ansi_cursor_home-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Move the cursor to the home position (1, 1).</p>
@@ -4428,6 +4470,9 @@
 <blockquote>
 <p>Move the cursor to the given 1-based row, col.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(row &lt; 1 &amp;&amp; col &lt; 1) =&gt; result == "[1;1H"</code></li>
+</ul>
 <h5 id="fn-ansi_clear_screen-str_1"><code>fn ansi_clear_screen() -&gt; Str</code><a class="headerlink" href="#fn-ansi_clear_screen-str_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Clear the whole screen and home the cursor.</p>
@@ -4464,10 +4509,20 @@
 <blockquote>
 <p>Convert an xterm-256 index (0..255) to its RGB triple (r, g, b). The 16 base colors use the standard palette, 16..231 the 6x6x6 cube, and 232..255 the grayscale ramp.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result._0 &gt;= 0 &amp;&amp; result._0 &lt;= 255</code></li>
+<li><strong>Postcondition:</strong> <code>result._1 &gt;= 0 &amp;&amp; result._1 &lt;= 255</code></li>
+<li><strong>Postcondition:</strong> <code>result._2 &gt;= 0 &amp;&amp; result._2 &lt;= 255</code></li>
+<li><strong>Postcondition:</strong> <code>code &lt; 0 =&gt; result._0 == 0 &amp;&amp; result._1 == 0 &amp;&amp; result._2 == 0</code></li>
+<li><strong>Postcondition:</strong> <code>code &gt; 255 =&gt; result._0 == 238 &amp;&amp; result._1 == 238 &amp;&amp; result._2 == 238</code></li>
+</ul>
 <h5 id="fn-rgb_to_ansi256r-int-g-int-b-int-int"><code>fn rgb_to_ansi256(r: Int, g: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-rgb_to_ansi256r-int-g-int-b-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Quantize an RGB triple to the nearest xterm-256 index. Uses the 6-level color cube (index 16..231); the grayscale ramp is not considered.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 16 &amp;&amp; result &lt;= 231</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

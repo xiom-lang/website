@@ -2862,12 +2862,12 @@
 <h1 id="stdlibio"><code>stdlib.io</code><a class="headerlink" href="#stdlibio" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>I/O Library</strong></p>
-<p>Generated from <code>v0.64.8</code>. 5 source files, 125 documented symbols.</p>
+<p>Generated from <code>v0.64.8</code>. 5 source files, 126 documented symbols.</p>
 </blockquote>
 <h2 id="bufferxi"><code>buffer.xi</code><a class="headerlink" href="#bufferxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-buf_reader_newfd-int-bufreader"><code>fn buf_reader_new(fd: Int) -&gt; BufReader</code><a class="headerlink" href="#fn-buf_reader_newfd-int-bufreader" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Wrap a standard fd or a FILE*; 0 resolves to the real stdin FILE* via the runtime (so <code>buf_reader_new(io.stdin())</code> works with piped input), any other nonzero value is used as the stream handle directly (e.g. a pointer from <code>fs.fopen</code>). Params: fd - 0 for stdin, or a FILE* as Int. Returns: a buffered reader over the stream. Complexity: O(1).</p>
+<p>Wrap a standard fd or a FILE<em>; 0 resolves to the real stdin FILE</em> via the runtime (so <code>buf_reader_new(io.stdin())</code> works with piped input), any other nonzero value is used as the stream handle directly (e.g. a pointer from <code>fs.fopen</code>). Params: fd - 0 for stdin, or a FILE* as Int. Returns: a buffered reader over the stream. Complexity: O(1).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(fd != 0) =&gt; (result.inner == fd)</code></li>
@@ -2917,7 +2917,7 @@
 </ul>
 <h5 id="fn-buf_writer_newfd-int-bufwriter"><code>fn buf_writer_new(fd: Int) -&gt; BufWriter</code><a class="headerlink" href="#fn-buf_writer_newfd-int-bufwriter" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Wrap a standard fd or a FILE*; 1 resolves to the real stdout FILE* via the runtime (so <code>buf_writer_new(io.stdout())</code> works), any other value is used as the stream handle directly. Params: fd - 1 for stdout, or a FILE* as Int. Returns: a buffered writer over the stream. Complexity: O(1).</p>
+<p>Wrap a standard fd or a FILE<em>; 1 resolves to the real stdout FILE</em> via the runtime (so <code>buf_writer_new(io.stdout())</code> works), any other value is used as the stream handle directly. Params: fd - 1 for stdout, or a FILE* as Int. Returns: a buffered writer over the stream. Complexity: O(1).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(fd != 1) =&gt; (result.inner == fd)</code></li>
@@ -2965,10 +2965,16 @@
 <blockquote>
 <p>Read one character without echo. Returns: Some(char) read from stdin, None at EOF. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; to_int_from_char(result.value) &gt;= 0 &amp;&amp; to_int_from_char(result.value) &lt;= 255</code></li>
+</ul>
 <h5 id="fn-console_read_key-optionchar"><code>fn console_read_key() -&gt; Option[Char]</code><a class="headerlink" href="#fn-console_read_key-optionchar" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Read one raw key press. Returns: Some(char) for the key, None at EOF. Raw mode is not exposed by the runtime; this reads one buffered character. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; to_int_from_char(result.value) &gt;= 0 &amp;&amp; to_int_from_char(result.value) &lt;= 255</code></li>
+</ul>
 <h5 id="fn-console_writes-str"><code>fn console_write(s: Str)</code><a class="headerlink" href="#fn-console_writes-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Write a string to standard output. Params: s - the string. Complexity: O(n).</p>
@@ -3327,7 +3333,7 @@
 <ul>
 <li><strong>Precondition:</strong> <code>src.len() &gt; 0</code></li>
 <li><strong>Precondition:</strong> <code>dst.len() &gt; 0</code></li>
-<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; !file_exists(src) &amp;&amp; file_exists(dst)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; !fs_exists(src) &amp;&amp; fs_exists(dst)</code></li>
 </ul>
 <h4 id="fn-exitcode-int"><code>fn exit(code: Int)</code><a class="headerlink" href="#fn-exitcode-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3687,6 +3693,17 @@
 <li><strong>Precondition:</strong> <code>len &gt;= 0</code></li>
 <li><strong>Postcondition:</strong> <code>(len == 0) =&gt; (result is Ok(_))</code></li>
 </ul>
+<h4 id="fn-read_at_intopath-str-offset-int-buf-mut-vecuint8-len-int-resultint-ioerror"><code>fn read_at_into(path: Str, offset: Int, buf: &amp;mut Vec[UInt8], len: Int) -&gt; Result[Int, IOError]</code><a class="headerlink" href="#fn-read_at_intopath-str-offset-int-buf-mut-vecuint8-len-int-resultint-ioerror" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>read_at_into reads up to <code>len</code> bytes at <code>offset</code> into the caller's <code>buf</code> (cleared first), clamped to the file size, and returns the byte count. Reuses the existing buffer capacity: no fresh Vec per call (m375 page-reader path). Binary read.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>offset &gt;= 0</code></li>
+<li><strong>Precondition:</strong> <code>len &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value &lt;= len</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; buf.len() == result.value</code></li>
+</ul>
 <h4 id="fn-write_atpath-str-offset-int-data-vecuint8-resultunit-ioerror"><code>fn write_at(path: Str, offset: Int, data: &amp;Vec[UInt8]) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-write_atpath-str-offset-int-data-vecuint8-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>write_at writes <code>data</code> at byte <code>offset</code>, creating the file when missing and zero-filling a gap when the offset is past the current end. Binary. Returns: Err on open/write failure; an empty <code>data</code> is a no-op.</p>
@@ -3763,6 +3780,9 @@
 <blockquote>
 <p>dir_exists returns true if the path exists and is a directory.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == is_dir(path)</code></li>
+</ul>
 <h4 id="fn-create_dir_allpath-str-resultunit-ioerror"><code>fn create_dir_all(path: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-create_dir_allpath-str-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>create_dir_all creates the directory and all missing parent directories along the path.  Returns Ok(()) on success. Complexity: O(d) where d = directory depth.</p>

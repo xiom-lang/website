@@ -3621,10 +3621,16 @@
 <blockquote>
 <p>set_var_if_absent sets name to value only if name is not already set. Complexity: O(1).  WARNING: setenv is not available on Windows MSVC.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-clear_varname-str"><code>fn clear_var(name: Str)</code><a class="headerlink" href="#fn-clear_varname-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>clear_var removes the environment variable name. Alias for remove_var.  Same Windows caveat.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-args_len-int"><code>fn args_len() -&gt; Int</code><a class="headerlink" href="#fn-args_len-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>args_len returns the number of command-line arguments. Complexity: O(1).</p>
@@ -3685,6 +3691,9 @@
 <blockquote>
 <p>Return the message for the current errno value. Returns: strerror(errno()). Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-errno_setcode-int-unit"><code>fn errno_set(code: Int) -&gt; Unit</code><a class="headerlink" href="#fn-errno_setcode-int-unit" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Set the errno value. NOT IMPLEMENTED: the runtime does not expose errno(). No-op.</p>
@@ -3701,6 +3710,9 @@
 <blockquote>
 <p>Demangle a compiler-mangled symbol name. NOT IMPLEMENTED: no demangler is available. Returns the symbol unchanged. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == symbol</code></li>
+</ul>
 <h5 id="fn-last_error-str"><code>fn last_error() -&gt; Str</code><a class="headerlink" href="#fn-last_error-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the most recently captured error string. NOT IMPLEMENTED: no error capture is wired in. Returns "". Complexity: O(1). Pure.</p>
@@ -4262,6 +4274,10 @@
 <blockquote>
 <p>Change permissions. Delegates to xiom.io.set_permissions. Parameters: path -- the file path; mode -- the permission bits. Returns: Ok(()) on success, Err with the underlying message otherwise. Complexity: O(1). Pure (OS call).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
+<li><strong>Precondition:</strong> <code>mode &gt;= 0</code></li>
+</ul>
 <h5 id="fn-mmappath-str-offset-int-length-int-resultmappedfile-str"><code>fn mmap(path: Str, offset: Int, length: Int) -&gt; Result[MappedFile, Str]</code><a class="headerlink" href="#fn-mmappath-str-offset-int-length-int-resultmappedfile-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Memory-map a file read-only; the returned struct owns an open fd until munmap. Real implementation (wave 120): opens the path (O_RDONLY), maps it through the runtime mmap family (xiom.os.mmap) and keeps the fd. Returns: Ok(MappedFile) on success; Err on bad arguments or failure.</p>
@@ -4274,6 +4290,9 @@
 <blockquote>
 <p>Unmap a mapped region and close the fd held by the struct. Real implementation (wave 120): munmap/UnmapViewOfFile + close; both steps are best-effort because the signature returns no Result.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>m.ptr &gt;= 0 &amp;&amp; m.length &gt;= 0</code></li>
+</ul>
 <h5 id="fn-msyncm-mappedfile-resultunit-str"><code>fn msync(m: MappedFile) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-msyncm-mappedfile-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Flush mapped pages back to the backing file (sync semantics). Real implementation (wave 120): delegates to mmap_sync with flags 4 (MS_SYNC-equivalent; msync/flush). Returns: Ok(()) once flushed; Err on failure.</p>
@@ -4356,10 +4375,16 @@
 <blockquote>
 <p>Flush file data and metadata to stable storage. Real implementation (wave 115): fsync(2) on POSIX, the CRT _commit on Windows, through the xiom_fsync_fd runtime shim. Returns: Ok(()) once the fd is durable; Err on failure.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>fd &gt;= 0</code></li>
+</ul>
 <h5 id="fn-fdatasyncfd-int-resultunit-str"><code>fn fdatasync(fd: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-fdatasyncfd-int-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Flush file data only (fdatasync; fsync fallback on macOS, _commit on Windows). Returns: Ok(()) once the fd data is durable; Err on failure.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>fd &gt;= 0</code></li>
+</ul>
 <h5 id="fn-mkfifopath-str-mode-int-resultunit-str"><code>fn mkfifo(path: Str, mode: Int) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-mkfifopath-str-mode-int-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Create a named pipe. NOT IMPLEMENTED: requires the mkfifo syscall. Returns: Err("mkfifo: mkfifo syscall not available in the pure stdlib").</p>
@@ -4557,10 +4582,16 @@
 <blockquote>
 <p>Set an environment variable (overwrites; portable shim).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-env_unsetname-str"><code>fn env_unset(name: Str)</code><a class="headerlink" href="#fn-env_unsetname-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Remove an environment variable (portable shim).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
 <h4 id="fn-current_dir-str"><code>fn current_dir() -&gt; Str</code><a class="headerlink" href="#fn-current_dir-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Process working directory ("" on failure).</p>
@@ -5044,6 +5075,9 @@
 <blockquote>
 <p>True when the path exists on disk.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (self.inner.len() &gt; 0)</code></li>
+</ul>
 <h4 id="fn-is_fileself-self-bool"><code>fn is_file(self: Self) -&gt; Bool</code><a class="headerlink" href="#fn-is_fileself-self-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when the path exists and is a regular file.</p>
@@ -5055,10 +5089,16 @@
 <blockquote>
 <p>True when the path exists and is a directory.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; (self.inner.len() &gt; 0)</code></li>
+</ul>
 <h4 id="fn-metadataself-self-resultmetadata-str"><code>fn metadata(self: Self) -&gt; Result[Metadata, Str]</code><a class="headerlink" href="#fn-metadataself-self-resultmetadata-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>File metadata, or Err carrying the OS message.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; (self.inner.len() &gt; 0)</code></li>
+</ul>
 <h4 id="fn-canonicalizeself-self-resultpathbuf-str"><code>fn canonicalize(self: Self) -&gt; Result[PathBuf, Str]</code><a class="headerlink" href="#fn-canonicalizeself-self-resultpathbuf-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute, symlink-resolved path, or Err carrying the OS message.</p>
@@ -5132,6 +5172,9 @@
 <blockquote>
 <p>platform_name returns the OS name ("windows", "linux", "macos", ...). Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-platform_arch-str"><code>fn platform_arch() -&gt; Str</code><a class="headerlink" href="#fn-platform_arch-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_arch returns the target architecture ("x86_64", ...). Complexity: O(1). Pure.</p>
@@ -5178,6 +5221,9 @@
 <blockquote>
 <p>platform_hostname returns the system hostname. Implemented locally via the env.TEMP-free C getenv-free approach: reads the COMPUTERNAME variable (Windows) or HOSTNAME (Unix) as a best effort. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-platform_os_version-str"><code>fn platform_os_version() -&gt; Str</code><a class="headerlink" href="#fn-platform_os_version-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>platform_os_version returns a best-effort OS version string derived from environment constants. Complexity: O(1). Pure.</p>
@@ -5189,6 +5235,9 @@
 <blockquote>
 <p>platform_user_name returns the current user name from the USERNAME (Windows) or USER (Unix) environment variable. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_) &amp;&amp; result.value.len() == 0) =&gt; env.var_opt("USER").is_some == true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5372,6 +5421,9 @@
 <blockquote>
 <p>Current process id. Delegates to xiom.os.process_id. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt; 0</code></li>
+</ul>
 <h5 id="fn-getppid-int"><code>fn getppid() -&gt; Int</code><a class="headerlink" href="#fn-getppid-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parent process id. NOT IMPLEMENTED: requires the getppid syscall. Returns 0.</p>
@@ -5388,10 +5440,16 @@
 <blockquote>
 <p>Extract the exit code from a wait status. Parameters: status -- a wait()/waitpid() status word. Returns: the low 8 bits of the shifted status. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 255</code></li>
+</ul>
 <h5 id="fn-exit_signalstatus-int-int"><code>fn exit_signal(status: Int) -&gt; Int</code><a class="headerlink" href="#fn-exit_signalstatus-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Extract the terminating signal from a wait status. Parameters: status -- a wait()/waitpid() status word. Returns: the low 7 bits of the status. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 127</code></li>
+</ul>
 <h5 id="fn-process_statuspid-int-optionint"><code>fn process_status(pid: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-process_statuspid-int-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Poll a process (None if still running). NOT IMPLEMENTED: requires waitpid(WNOHANG). Returns None.</p>
@@ -5939,10 +5997,16 @@
 <blockquote>
 <p>Return the escape sequence that sets the window title. Parameters: title -- the desired title text. Returns: the "ESC]0;<title>BEL" sequence. Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == title.len() + 5</code></li>
+</ul>
 <h5 id="fn-terminal_bell-str"><code>fn terminal_bell() -&gt; Str</code><a class="headerlink" href="#fn-terminal_bell-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Return the bell escape sequence. Returns: the BEL character "\x07". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == 1</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5971,6 +6035,9 @@
 <blockquote>
 <p>The current user's home directory. Reads HOME via xiom.env (falls back to ""). Complexity: O(1). Pure (OS call).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0 =&gt; env.home_dir().is_some</code></li>
+</ul>
 <h5 id="fn-unix_hostname-str"><code>fn unix_hostname() -&gt; Str</code><a class="headerlink" href="#fn-unix_hostname-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The system hostname. NOT IMPLEMENTED: requires the gethostname syscall. Returns "".</p>
@@ -6087,6 +6154,9 @@
 <blockquote>
 <p>Read a Windows environment variable. Delegates to xiom.env.var_opt. Parameters: name -- the variable name. Returns: Some(value) when set, None otherwise. Complexity: O(1). Pure (OS call).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>name.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-win_set_environment_varname-str-value-str-resultunit-str"><code>fn win_set_environment_var(name: Str, value: Str) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-win_set_environment_varname-str-value-str-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Set a Windows environment variable. NOT IMPLEMENTED: the portable setenv path does not link on Windows MSVC, and the Win32 _putenv_s API is not exposed by the pure stdlib. Returns Err. Complexity: O(1).</p>
@@ -6111,6 +6181,9 @@
 <blockquote>
 <p>The Windows version string. Returns the compile-time target OS name (the runtime does not expose GetVersionEx in the pure stdlib). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-win_is_admin-bool"><code>fn win_is_admin() -&gt; Bool</code><a class="headerlink" href="#fn-win_is_admin-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True when the process runs elevated. NOT IMPLEMENTED: requires the Win32 token API. Returns false.</p>
@@ -6119,6 +6192,9 @@
 <blockquote>
 <p>The current Windows user name. Reads the USERNAME environment variable, or "" when unset. Complexity: O(1). Pure (OS call).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0 =&gt; env.var_opt("USERNAME").is_some</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

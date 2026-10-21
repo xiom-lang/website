@@ -2935,22 +2935,42 @@
 <blockquote>
 <p>BitArray of length n (n &lt; 0 is clamped to 0), all bits cleared. Complexity: O(n/8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(n &lt; 0) =&gt; (result.len == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(n &gt;= 0) =&gt; (result.len == n)</code></li>
+<li><strong>Postcondition:</strong> <code>result.bits.len() == (result.len + 7) / 8</code></li>
+</ul>
 <h5 id="fn-bit_array_setba-mut-bitarray-i-int"><code>fn bit_array_set(ba: &amp;mut BitArray, i: Int)</code><a class="headerlink" href="#fn-bit_array_setba-mut-bitarray-i-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Sets bit i to 1. Out-of-range indices are ignored. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>ba.len == ba.len@pre</code></li>
+<li><strong>Postcondition:</strong> <code>ba.bits.len() == ba.bits.len()@pre</code></li>
+</ul>
 <h5 id="fn-bit_array_clearba-mut-bitarray-i-int"><code>fn bit_array_clear(ba: &amp;mut BitArray, i: Int)</code><a class="headerlink" href="#fn-bit_array_clearba-mut-bitarray-i-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Clears bit i to 0. Out-of-range indices are ignored. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>ba.len == ba.len@pre</code></li>
+<li><strong>Postcondition:</strong> <code>ba.bits.len() == ba.bits.len()@pre</code></li>
+</ul>
 <h5 id="fn-bit_array_testba-bitarray-i-int-bool"><code>fn bit_array_test(ba: BitArray, i: Int) -&gt; Bool</code><a class="headerlink" href="#fn-bit_array_testba-bitarray-i-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True iff bit i is set. Out-of-range indices yield false. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(i &gt;= 0 &amp;&amp; i &lt; ba.len) || (result == false)</code></li>
+</ul>
 <h5 id="fn-bit_array_flipba-mut-bitarray-i-int"><code>fn bit_array_flip(ba: &amp;mut BitArray, i: Int)</code><a class="headerlink" href="#fn-bit_array_flipba-mut-bitarray-i-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Toggles bit i (0 -&gt; 1, 1 -&gt; 0). Out-of-range indices are ignored. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>ba.len == ba.len@pre</code></li>
+<li><strong>Postcondition:</strong> <code>ba.bits.len() == ba.bits.len()@pre</code></li>
+</ul>
 <h5 id="fn-bit_array_countba-bitarray-int"><code>fn bit_array_count(ba: BitArray) -&gt; Int</code><a class="headerlink" href="#fn-bit_array_countba-bitarray-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Number of set bits. Complexity: O(n).</p>
@@ -2969,22 +2989,44 @@
 <blockquote>
 <p>Bitwise AND of two bit arrays; the result has max(a.len, b.len) bits and missing bits read as 0. Complexity: O(max/8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len &gt;= b.len) =&gt; (result.len == a.len)</code></li>
+<li><strong>Postcondition:</strong> <code>(b.len &gt; a.len) =&gt; (result.len == b.len)</code></li>
+<li><strong>Postcondition:</strong> <code>result.bits.len() == (result.len + 7) / 8</code></li>
+</ul>
 <h5 id="fn-bit_array_ora-bitarray-b-bitarray-bitarray"><code>fn bit_array_or(a: BitArray, b: BitArray) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_ora-bitarray-b-bitarray-bitarray" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bitwise OR of two bit arrays; the result has max(a.len, b.len) bits. Complexity: O(max/8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len &gt;= b.len) =&gt; (result.len == a.len)</code></li>
+<li><strong>Postcondition:</strong> <code>(b.len &gt; a.len) =&gt; (result.len == b.len)</code></li>
+<li><strong>Postcondition:</strong> <code>result.bits.len() == (result.len + 7) / 8</code></li>
+</ul>
 <h5 id="fn-bit_array_xora-bitarray-b-bitarray-bitarray"><code>fn bit_array_xor(a: BitArray, b: BitArray) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_xora-bitarray-b-bitarray-bitarray" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bitwise XOR of two bit arrays; the result has max(a.len, b.len) bits and missing bits read as 0. Complexity: O(max/8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a.len &gt;= b.len) =&gt; (result.len == a.len)</code></li>
+<li><strong>Postcondition:</strong> <code>(b.len &gt; a.len) =&gt; (result.len == b.len)</code></li>
+<li><strong>Postcondition:</strong> <code>result.bits.len() == (result.len + 7) / 8</code></li>
+</ul>
 <h5 id="fn-bit_array_notba-bitarray-bitarray"><code>fn bit_array_not(ba: BitArray) -&gt; BitArray</code><a class="headerlink" href="#fn-bit_array_notba-bitarray-bitarray" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Bitwise complement over ba.len bits; trailing bits beyond len in the last byte are cleared. Complexity: O(n/8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len == ba.len</code></li>
+<li><strong>Postcondition:</strong> <code>result.bits.len() == ba.bits.len()</code></li>
+</ul>
 <h5 id="fn-bit_array_to_bytesba-bitarray-vecuint8"><code>fn bit_array_to_bytes(ba: BitArray) -&gt; Vec[UInt8]</code><a class="headerlink" href="#fn-bit_array_to_bytesba-bitarray-vecuint8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Packed byte representation, MSB-first within each byte (bit i of the array is bit 7-(i%8) of byte i/8). Complexity: O(n/8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == ba.bits.len()</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -3377,66 +3419,117 @@
 <blockquote>
 <p>True if the host stores integers big-endian. The supported targets are little-endian, so this returns false. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == false</code></li>
+</ul>
 <h5 id="fn-is_little_endian-bool"><code>fn is_little_endian() -&gt; Bool</code><a class="headerlink" href="#fn-is_little_endian-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>True if the host stores integers little-endian. The supported targets are little-endian, so this returns true. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == true</code></li>
+</ul>
 <h5 id="fn-to_bev-int-size-int-int"><code>fn to_be(v: Int, size: Int) -&gt; Int</code><a class="headerlink" href="#fn-to_bev-int-size-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts v to big-endian byte order for a <code>size</code>-byte value (the low <code>size</code> bytes are reversed; higher bytes are cleared). Complexity: O(size).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(size &gt; 1) || (result == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(size &lt; 8) || (result == swap_endian(v))</code></li>
+</ul>
 <h5 id="fn-to_lev-int-size-int-int"><code>fn to_le(v: Int, size: Int) -&gt; Int</code><a class="headerlink" href="#fn-to_lev-int-size-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts v to little-endian byte order for a <code>size</code>-byte value. On the little-endian host this is the identity. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == v</code></li>
+</ul>
 <h5 id="fn-from_bev-int-size-int-int"><code>fn from_be(v: Int, size: Int) -&gt; Int</code><a class="headerlink" href="#fn-from_bev-int-size-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decodes a <code>size</code>-byte big-endian value held in v into host order (the low <code>size</code> bytes are reversed). Complexity: O(size).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(size &gt; 1) || (result == v)</code></li>
+<li><strong>Postcondition:</strong> <code>(size &lt; 8) || (result == swap_endian(v))</code></li>
+</ul>
 <h5 id="fn-from_lev-int-size-int-int"><code>fn from_le(v: Int, size: Int) -&gt; Int</code><a class="headerlink" href="#fn-from_lev-int-size-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Decodes a <code>size</code>-byte little-endian value held in v into host order (the identity on the little-endian host). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == v</code></li>
+</ul>
 <h5 id="fn-native_to_bev-int-int"><code>fn native_to_be(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-native_to_bev-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts a native value to big-endian order (all 8 bytes reversed). Complexity: O(8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == swap_endian(v)</code></li>
+</ul>
 <h5 id="fn-native_to_lev-int-int"><code>fn native_to_le(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-native_to_lev-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts a native value to little-endian order (the identity on this host). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == v</code></li>
+</ul>
 <h5 id="fn-be_to_nativev-int-int"><code>fn be_to_native(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-be_to_nativev-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts a big-endian value to native order (all 8 bytes reversed). Complexity: O(8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == swap_endian(v)</code></li>
+</ul>
 <h5 id="fn-le_to_nativev-int-int"><code>fn le_to_native(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-le_to_nativev-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Converts a little-endian value to native order (the identity on this host). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == v</code></li>
+</ul>
 <h5 id="fn-swap_endianv-int-int"><code>fn swap_endian(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-swap_endianv-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Unconditionally reverses the byte order of v (all 8 bytes). Complexity: O(8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v != 0) || (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(v &lt; 0 || v &gt; 127) || (result == v * 72057594037927936)</code></li>
+</ul>
 <h5 id="fn-bswap_16v-int-int"><code>fn bswap_16(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_16v-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Byte-swaps a 16-bit value stored in the low 16 bits of v. Complexity: O(2).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 65535</code></li>
+</ul>
 <h5 id="fn-bswap_32v-int-int"><code>fn bswap_32(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_32v-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Byte-swaps a 32-bit value stored in the low 32 bits of v. Complexity: O(4).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 4294967295</code></li>
+</ul>
 <h5 id="fn-bswap_64v-int-int"><code>fn bswap_64(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_64v-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Byte-swaps a 64-bit value. Complexity: O(8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v != 0) || (result == 0)</code></li>
+</ul>
 <h5 id="fn-bswap_128v-int-int"><code>fn bswap_128(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_128v-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Byte-swaps a 128-bit value. FALLBACK (platform Int is 64-bit): identical to bswap_64. Complexity: O(8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == bswap_64(v)</code></li>
+</ul>
 <h5 id="fn-bswap_256v-int-int"><code>fn bswap_256(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-bswap_256v-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Byte-swaps a 256-bit value. FALLBACK (platform Int is 64-bit): identical to bswap_64. Complexity: O(8).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == bswap_64(v)</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

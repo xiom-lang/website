@@ -3036,6 +3036,9 @@
 <blockquote>
 <p>Remove in place every element of v not satisfying pred. O(n). Element order is preserved; v is compacted in place.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v.len() &lt;= v.len()@pre</code></li>
+</ul>
 <h5 id="fn-iter_takev-vecint-n-int-vecint"><code>fn iter_take(v: &amp;Vec[Int], n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_takev-vecint-n-int-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>First n elements of v (or fewer if v is shorter). O(n). n &lt;= 0 yields an empty vector.</p>
@@ -3054,10 +3057,16 @@
 <blockquote>
 <p>The leading run of elements for which pred holds. O(n). Short-circuits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h5 id="fn-iter_skip_whilev-vecint-pred-fnint-bool-vecint"><code>fn iter_skip_while(v: &amp;Vec[Int], pred: fn(&amp;Int) -&gt; Bool) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_skip_whilev-vecint-pred-fnint-bool-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Elements of v after the leading run satisfying pred. O(n). Short-circuits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &lt;= v.len()</code></li>
+</ul>
 <h5 id="fn-iter_dedupv-vecint-vecint"><code>fn iter_dedup(v: &amp;Vec[Int]) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-iter_dedupv-vecint-vecint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Drop consecutive equal elements from v. O(n). [1,1,2,2,3,1] -&gt; [1,2,3,1].</p>
@@ -3246,10 +3255,17 @@
 <blockquote>
 <p>Create a half-open range [start, end).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.start == start &amp;&amp; result.end == end</code></li>
+</ul>
 <h4 id="fn-range_inclusivestart-int-end-int-rangeinclusive"><code>fn range_inclusive(start: Int, end: Int) -&gt; RangeInclusive</code><a class="headerlink" href="#fn-range_inclusivestart-int-end-int-rangeinclusive" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Create an inclusive range [start, end].</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.start == start &amp;&amp; result.end == end</code></li>
+<li><strong>Postcondition:</strong> <code>result.current == start &amp;&amp; result.done == false</code></li>
+</ul>
 <h4 id="fn-nextself-self-optionint"><code>fn next(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-nextself-self-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Yield the next integer; None once <code>start &gt;= end</code>. Consumes from the front.</p>
@@ -3257,6 +3273,9 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>(self.start@pre &gt;= self.end@pre) =&gt; (result.is_none == true)</code></li>
 <li><strong>Postcondition:</strong> <code>(self.start@pre &lt; self.end@pre) =&gt; (result.is_some == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) =&gt; (result.value == self.start@pre)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) =&gt; (self.start == self.start@pre + 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is None) =&gt; (self.start == self.start@pre)</code></li>
 </ul>
 <h4 id="fn-lenself-self-int"><code>fn len(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-lenself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3264,6 +3283,8 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start &lt; self.end) =&gt; (result == self.end - self.start)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result == 0)</code></li>
 </ul>
 <h4 id="fn-containsself-self-x-int-bool"><code>fn contains(self: Self, x: Int) -&gt; Bool</code><a class="headerlink" href="#fn-containsself-self-x-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3272,6 +3293,7 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>(x &lt; self.start) =&gt; (result == false)</code></li>
 <li><strong>Postcondition:</strong> <code>(x &gt;= self.end) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>(result == true) =&gt; (x &gt;= self.start &amp;&amp; x &lt; self.end)</code></li>
 </ul>
 <h4 id="fn-sumself-self-int"><code>fn sum(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-sumself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3294,6 +3316,7 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>(self.done@pre == true) =&gt; (result.is_none == true)</code></li>
 <li><strong>Postcondition:</strong> <code>(self.done@pre == false) =&gt; (result.is_some == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) =&gt; (result.value == self.current@pre)</code></li>
 </ul>
 <h4 id="fn-mapuself-self-f-fnint-u-mapiterint-u"><code>fn map[U](self: Self, f: fn(Int) -&gt; U) -&gt; MapIter[Int, U]</code><a class="headerlink" href="#fn-mapuself-self-f-fnint-u-mapiterint-u" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3338,11 +3361,15 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start &lt; self.end) =&gt; (result.len() == self.end - self.start)</code></li>
 </ul>
 <h4 id="fn-foldbself-self-init-b-f-fnb-int-b-b"><code>fn fold[B](self: Self, init: B, f: fn(B, Int) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldbself-self-init-b-f-fnb-int-b-b" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fold the remaining integers with <code>f</code>, starting from <code>init</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result == init)</code></li>
+</ul>
 <h4 id="fn-countself-self-int"><code>fn count(self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countself-self-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of remaining integers.</p>
@@ -3350,6 +3377,7 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
 <li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start &lt; self.end) =&gt; (result == self.end - self.start)</code></li>
 </ul>
 <h4 id="fn-maxself-self-optionint"><code>fn max(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-maxself-self-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3357,6 +3385,7 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start &lt; self.end) =&gt; (result is Some(_) &amp;&amp; result.value == self.end - 1)</code></li>
 </ul>
 <h4 id="fn-minself-self-optionint"><code>fn min(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-minself-self-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3364,6 +3393,7 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start &lt; self.end) =&gt; (result is Some(_) &amp;&amp; result.value == self.start)</code></li>
 </ul>
 <h4 id="fn-findself-self-predicate-fnint-bool-optionint"><code>fn find(self: Self, predicate: fn(&amp;Int) -&gt; Bool) -&gt; Option[Int]</code><a class="headerlink" href="#fn-findself-self-predicate-fnint-bool-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3392,6 +3422,7 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(n == 0 &amp;&amp; self.start &lt; self.end) =&gt; (result is Some(_) &amp;&amp; result.value == self.start)</code></li>
 </ul>
 <h4 id="fn-lastself-self-optionint"><code>fn last(self: Self) -&gt; Option[Int]</code><a class="headerlink" href="#fn-lastself-self-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3399,6 +3430,7 @@
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(self.start &gt;= self.end) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>(self.start &lt; self.end) =&gt; (result is Some(_) &amp;&amp; result.value == self.end - 1)</code></li>
 </ul>
 <h4 id="type-mapiter"><code>type MapIter</code><a class="headerlink" href="#type-mapiter" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3560,6 +3592,10 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="fn-nexttself-self-optionint-t"><code>fn next[T](self: Self) -&gt; Option[(Int, T)]</code><a class="headerlink" href="#fn-nexttself-self-optionint-t" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[(Int, T)]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) =&gt; (self.index == self.index@pre + 1)</code></li>
+<li><strong>Postcondition:</strong> <code>(result is None) =&gt; (self.index == self.index@pre)</code></li>
+</ul>
 <h4 id="fn-nexttself-self-optiont_1"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <ul>
@@ -3567,6 +3603,9 @@
 </ul>
 <h4 id="fn-nexttself-self-optiont_2"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-nextt-uself-self-optiont"><code>fn next[T, U](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nextt-uself-self-optiont" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="fn-nextt-uself-self-optiont-u"><code>fn next[T, U](self: Self) -&gt; Option[(T, U)]</code><a class="headerlink" href="#fn-nextt-uself-self-optiont-u" title="Permanent link">&para;</a></h4>
@@ -3600,6 +3639,9 @@
 <p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, U) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
 <h4 id="fn-countt-uself-self-int"><code>fn count[T, U](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countt-uself-self-int" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-sumt-uself-self-u"><code>fn sum[T, U](self: Self) -&gt; U</code><a class="headerlink" href="#fn-sumt-uself-self-u" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>U</code>. No source comment yet.</p>
 <h4 id="fn-productt-uself-self-u"><code>fn product[T, U](self: Self) -&gt; U</code><a class="headerlink" href="#fn-productt-uself-self-u" title="Permanent link">&para;</a></h4>
@@ -3647,6 +3689,9 @@
 <p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, T) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
 <h4 id="fn-counttself-self-int"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-sumtself-self-t"><code>fn sum[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-sumtself-self-t" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
 <h4 id="fn-producttself-self-t"><code>fn product[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-producttself-self-t" title="Permanent link">&para;</a></h4>
@@ -3667,6 +3712,9 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
 <h4 id="fn-mapt-uself-self-f-fnint-t-u-mapiterint-t-u"><code>fn map[T, U](self: Self, f: fn((Int, T)) -&gt; U) -&gt; MapIter[(Int, T), U]</code><a class="headerlink" href="#fn-mapt-uself-self-f-fnint-t-u-mapiterint-t-u" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>f: fn((Int, T)) -&gt; U</code>; returns <code>MapIter[(Int, T), U]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.index == self.index@pre</code></li>
+</ul>
 <h4 id="fn-taketself-self-n-int-takeiterint-t"><code>fn take[T](self: Self, n: Int) -&gt; TakeIter[(Int, T)]</code><a class="headerlink" href="#fn-taketself-self-n-int-takeiterint-t" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>TakeIter[(Int, T)]</code>. No source comment yet.</p>
 <ul>
@@ -3674,68 +3722,175 @@
 </ul>
 <h4 id="fn-collecttself-self-vecint-t"><code>fn collect[T](self: Self) -&gt; Vec[(Int, T)]</code><a class="headerlink" href="#fn-collecttself-self-vecint-t" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[(Int, T)]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.index == self.index@pre + result.len()</code></li>
+</ul>
 <h4 id="fn-counttself-self-int_1"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-mapt-uself-self-f-fnt-u-mapitert-u_1"><code>fn map[T, U](self: Self, f: fn(T) -&gt; U) -&gt; MapIter[T, U]</code><a class="headerlink" href="#fn-mapt-uself-self-f-fnt-u-mapitert-u_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>f: fn(T) -&gt; U</code>; returns <code>MapIter[T, U]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.remaining == self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-filtertself-self-predicate-fnt-bool-filteritert_1"><code>fn filter[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; FilterIter[T]</code><a class="headerlink" href="#fn-filtertself-self-predicate-fnt-bool-filteritert_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>FilterIter[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.remaining == self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-collecttself-self-vect_1"><code>fn collect[T](self: Self) -&gt; Vec[T]</code><a class="headerlink" href="#fn-collecttself-self-vect_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result.len() == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-foldt-bself-self-init-b-f-fnb-t-b-b_1"><code>fn fold[T, B](self: Self, init: B, f: fn(B, T) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldt-bself-self-init-b-f-fnb-t-b-b_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, T) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result == init)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-counttself-self-int_2"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &gt; 0) =&gt; (result &lt;= self.remaining@pre)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-sumtself-self-t_1"><code>fn sum[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-sumtself-self-t_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-producttself-self-t_1"><code>fn product[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-producttself-self-t_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result == 1)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-maxtself-self-optiont_1"><code>fn max[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-maxtself-self-optiont_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-mintself-self-optiont_1"><code>fn min[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-mintself-self-optiont_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-findtself-self-predicate-fnt-bool-optiont_1"><code>fn find[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Option[T]</code><a class="headerlink" href="#fn-findtself-self-predicate-fnt-bool-optiont_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-alltself-self-predicate-fnt-bool-bool_1"><code>fn all[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-alltself-self-predicate-fnt-bool-bool_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result == true)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-anytself-self-predicate-fnt-bool-bool_1"><code>fn any[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anytself-self-predicate-fnt-bool-bool_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result == false)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-nthtself-self-n-int-optiont_1"><code>fn nth[T](self: Self, n: Int) -&gt; Option[T]</code><a class="headerlink" href="#fn-nthtself-self-n-int-optiont_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-lasttself-self-optiont_1"><code>fn last[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-lasttself-self-optiont_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.remaining@pre &lt;= 0) =&gt; (result.is_none == true)</code></li>
+<li><strong>Postcondition:</strong> <code>self.remaining &lt;= self.remaining@pre</code></li>
+</ul>
 <h4 id="fn-mapt-uself-self-f-fnt-u-mapitert-u_2"><code>fn map[T, U](self: Self, f: fn(T) -&gt; U) -&gt; MapIter[T, U]</code><a class="headerlink" href="#fn-mapt-uself-self-f-fnt-u-mapitert-u_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>f: fn(T) -&gt; U</code>; returns <code>MapIter[T, U]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip == self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-filtertself-self-predicate-fnt-bool-filteritert_2"><code>fn filter[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; FilterIter[T]</code><a class="headerlink" href="#fn-filtertself-self-predicate-fnt-bool-filteritert_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>FilterIter[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip == self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-collecttself-self-vect_2"><code>fn collect[T](self: Self) -&gt; Vec[T]</code><a class="headerlink" href="#fn-collecttself-self-vect_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-foldt-bself-self-init-b-f-fnb-t-b-b_2"><code>fn fold[T, B](self: Self, init: B, f: fn(B, T) -&gt; B) -&gt; B</code><a class="headerlink" href="#fn-foldt-bself-self-init-b-f-fnb-t-b-b_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>init: B</code>, <code>f: fn(B, T) -&gt; B</code>; returns <code>B</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-counttself-self-int_3"><code>fn count[T](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-counttself-self-int_3" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-sumtself-self-t_2"><code>fn sum[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-sumtself-self-t_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-producttself-self-t_2"><code>fn product[T](self: Self) -&gt; T</code><a class="headerlink" href="#fn-producttself-self-t_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>T</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-maxtself-self-optiont_2"><code>fn max[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-maxtself-self-optiont_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-mintself-self-optiont_2"><code>fn min[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-mintself-self-optiont_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-findtself-self-predicate-fnt-bool-optiont_2"><code>fn find[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Option[T]</code><a class="headerlink" href="#fn-findtself-self-predicate-fnt-bool-optiont_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-alltself-self-predicate-fnt-bool-bool_2"><code>fn all[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-alltself-self-predicate-fnt-bool-bool_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-anytself-self-predicate-fnt-bool-bool_2"><code>fn any[T](self: Self, predicate: fn(&amp;T) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-anytself-self-predicate-fnt-bool-bool_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;T) -&gt; Bool</code>; returns <code>Bool</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-nthtself-self-n-int-optiont_2"><code>fn nth[T](self: Self, n: Int) -&gt; Option[T]</code><a class="headerlink" href="#fn-nthtself-self-n-int-optiont_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>n: Int</code>; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-lasttself-self-optiont_2"><code>fn last[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-lasttself-self-optiont_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>self.to_skip &lt;= self.to_skip@pre</code></li>
+</ul>
 <h4 id="fn-collectt-uself-self-vect"><code>fn collect[T, U](self: Self) -&gt; Vec[T]</code><a class="headerlink" href="#fn-collectt-uself-self-vect" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[T]</code>. No source comment yet.</p>
 <h4 id="fn-countt-uself-self-int_1"><code>fn count[T, U](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countt-uself-self-int_1" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-mapt-u-vself-self-f-fnt-v-mapitert-v"><code>fn map[T, U, V](self: Self, f: fn(T) -&gt; V) -&gt; MapIter[T, V]</code><a class="headerlink" href="#fn-mapt-u-vself-self-f-fnt-v-mapitert-v" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>f: fn(T) -&gt; V</code>; returns <code>MapIter[T, V]</code>. No source comment yet.</p>
 <h4 id="fn-taket-uself-self-n-int-takeitert"><code>fn take[T, U](self: Self, n: Int) -&gt; TakeIter[T]</code><a class="headerlink" href="#fn-taket-uself-self-n-int-takeitert" title="Permanent link">&para;</a></h4>
@@ -3757,6 +3912,9 @@
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Vec[(T, U)]</code>. No source comment yet.</p>
 <h4 id="fn-countt-uself-self-int_2"><code>fn count[T, U](self: Self) -&gt; Int</code><a class="headerlink" href="#fn-countt-uself-self-int_2" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Int</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-findt-uself-self-predicate-fnt-u-bool-optiont-u"><code>fn find[T, U](self: Self, predicate: fn(&amp;(T, U)) -&gt; Bool) -&gt; Option[(T, U)]</code><a class="headerlink" href="#fn-findt-uself-self-predicate-fnt-u-bool-optiont-u" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; takes <code>predicate: fn(&amp;(T, U)) -&gt; Bool</code>; returns <code>Option[(T, U)]</code>. No source comment yet.</p>
 <h4 id="fn-allt-uself-self-predicate-fnt-u-bool-bool"><code>fn all[T, U](self: Self, predicate: fn(&amp;(T, U)) -&gt; Bool) -&gt; Bool</code><a class="headerlink" href="#fn-allt-uself-self-predicate-fnt-u-bool-bool" title="Permanent link">&para;</a></h4>
@@ -3880,6 +4038,9 @@
 </ul>
 <h4 id="fn-nexttself-self-optiont_5"><code>fn next[T](self: Self) -&gt; Option[T]</code><a class="headerlink" href="#fn-nexttself-self-optiont_5" title="Permanent link">&para;</a></h4>
 <p><em>Generated summary:</em> Method; Takes no arguments; returns <code>Option[T]</code>. No source comment yet.</p>
+<ul>
+<li><strong>Postcondition:</strong> <code>(self.skipped@pre == false &amp;&amp; self.skipped == true) =&gt; (result is Some(_))</code></li>
+</ul>
 <h4 id="type-inspectiter"><code>type InspectIter</code><a class="headerlink" href="#type-inspectiter" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Inspect -- calls f on each element for side effects, passes element through Iterator running a side effect on each element.</p>

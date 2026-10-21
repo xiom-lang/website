@@ -2902,10 +2902,16 @@
 <blockquote>
 <p>Render a compact patch text from <code>a</code> to <code>b</code>: one line per operation with a <code>-</code> / <code>+</code> / <code></code> prefix. Diffable with <code>diff_apply</code>. Complexity: O(|a| * |b|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result.len() == 0) || (result.byte_at(result.len() - 1) == 10)</code></li>
+</ul>
 <h5 id="fn-diff_applya-str-patch-str-resultstr-str"><code>fn diff_apply(a: Str, patch: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-diff_applya-str-patch-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Apply a patch produced by <code>diff_patch</code> to <code>a</code>. Returns Err on a malformed patch or a context/deletion mismatch. Complexity: O(|patch lines| * |a lines|).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Err(_) =&gt; result.value.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-diff_similaritya-str-b-str-float64"><code>fn diff_similarity(a: Str, b: Str) -&gt; Float64</code><a class="headerlink" href="#fn-diff_similaritya-str-b-str-float64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Normalized similarity in [0,1]: length of the longest common byte subsequence divided by the longer input. Complexity: O(|a| * |b|).</p>

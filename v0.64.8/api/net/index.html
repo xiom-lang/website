@@ -4181,10 +4181,16 @@
 <blockquote>
 <p>https_request_line builds the request line for a method and target, e.g. https_request_line("GET", "/") == "GET / HTTP/1.1". Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() == method.len() + target.len() + 10</code></li>
+</ul>
 <h5 id="fn-https_build_requestmethod-str-url_str-str-headers-vecstr-str-body-vecuint8-resultstr-str"><code>fn https_build_request(method: Str, url_str: Str, headers: &amp;Vec[(Str, Str)], body: &amp;Vec[UInt8]) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-https_build_requestmethod-str-url_str-str-headers-vecstr-str-body-vecuint8-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>https_build_request builds a full HTTPS request text from a URL, method, headers, and body. The Host header carries the explicit port only when it differs from 443. Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value.len() &gt;= 18</code></li>
+</ul>
 <h5 id="fn-https_status_textcode-int-str"><code>fn https_status_text(code: Int) -&gt; Str</code><a class="headerlink" href="#fn-https_status_textcode-int-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>https_status_text returns the standard reason phrase for a status code, or "Unknown" for codes not in the table. Complexity: O(1).</p>
@@ -4193,18 +4199,30 @@
 <blockquote>
 <p>https_response_status extracts the HTTP status code from a raw response. Returns None if malformed. Complexity: O(1). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt;= 999</code></li>
+</ul>
 <h5 id="fn-https_parse_response_headersraw-str-vecstr-str"><code>fn https_parse_response_headers(raw: Str) -&gt; Vec[(Str, Str)]</code><a class="headerlink" href="#fn-https_parse_response_headersraw-str-vecstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>https_parse_response_headers extracts the (name, value) header pairs from a raw response block. Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((raw.len() == 0) =&gt; (result.len() == 0)) &amp;&amp; ((result.len() &gt; 0) =&gt; (raw.len() &gt; 0))</code></li>
+</ul>
 <h5 id="fn-https_url_encodes-str-str"><code>fn https_url_encode(s: Str) -&gt; Str</code><a class="headerlink" href="#fn-https_url_encodes-str-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>https_url_encode percent-encodes a string for use in a URL. Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= s.len() &amp;&amp; result.len() &lt;= s.len() * 3 &amp;&amp; ((s.len() == 0) =&gt; (result.len() == 0))</code></li>
+</ul>
 <h5 id="fn-https_url_decodes-str-resultstr-str"><code>fn https_url_decode(s: Str) -&gt; Result[Str, Str]</code><a class="headerlink" href="#fn-https_url_decodes-str-resultstr-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>https_url_decode percent-decodes a URL-encoded string. Complexity: O(n). Pure.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((s.len() == 0) =&gt; (result.is_ok == true)) &amp;&amp; ((result.is_err == true) =&gt; (s.len() &gt; 0))</code></li>
+</ul>
 <hr />
 <hr />
 <hr />

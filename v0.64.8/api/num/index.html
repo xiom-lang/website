@@ -3162,6 +3162,9 @@
 <blockquote>
 <p>Rounding mode (thread-local default; whole-value global assignment)</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>bigfloat_get_round_mode() == mode</code></li>
+</ul>
 <h5 id="fn-bigfloat_get_round_mode-roundmode"><code>fn bigfloat_get_round_mode() -&gt; RoundMode</code><a class="headerlink" href="#fn-bigfloat_get_round_mode-roundmode" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Current global rounding mode.</p>
@@ -3230,6 +3233,9 @@
 <blockquote>
 <p>Float128 conversion. Same accumulation strategy as bigfloat_to_float64 but in fp128: ~34 significant digits of the significand survive, and the exponent range extends to ~1.1e4932. Values whose exponent exceeds the fp128 range saturate to +/-inf (fp128 IEEE-754 semantics). TODO(compiler): BUG 33 -- Option[Float128] payload unwrap emits a load of the undefined <code>%struct.Float128</code> (opaque) instead of native <code>fp128</code>, so the Option-returning form cannot be consumed yet; returns the value directly until the unwrap path is fixed.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(f.significand.digits.len() == 0) =&gt; (result == 0)</code></li>
+</ul>
 <h5 id="fn-bigfloat_to_float64f-bigfloat-optionfloat64"><code>fn bigfloat_to_float64(f: &amp;BigFloat) -&gt; Option[Float64]</code><a class="headerlink" href="#fn-bigfloat_to_float64f-bigfloat-optionfloat64" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Float64 conversion. None on exponent overflow/underflow beyond f64 range (|value| &gt; ~1.8e308); values underflowing to 0.0 return Some(0.0).</p>
@@ -3343,18 +3349,34 @@
 <blockquote>
 <p>Round toward zero.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.exponent == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.precision == f.precision</code></li>
+</ul>
 <h5 id="fn-bigfloat_floorf-bigfloat-bigfloat"><code>fn bigfloat_floor(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_floorf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Round toward negative infinity.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.exponent == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.precision == f.precision</code></li>
+</ul>
 <h5 id="fn-bigfloat_ceilf-bigfloat-bigfloat"><code>fn bigfloat_ceil(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_ceilf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Round toward positive infinity.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.exponent == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.precision == f.precision</code></li>
+</ul>
 <h5 id="fn-bigfloat_roundf-bigfloat-bigfloat"><code>fn bigfloat_round(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_roundf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Round to the nearest integer, ties to even (magnitude rounding).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.exponent == 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.precision == f.precision</code></li>
+</ul>
 <h5 id="fn-bigfloat_fractf-bigfloat-bigfloat"><code>fn bigfloat_fract(f: &amp;BigFloat) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_fractf-bigfloat-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Fractional part with the sign of f: f - trunc(f).</p>
@@ -3381,22 +3403,37 @@
 <blockquote>
 <p>Exact equality.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigfloat_compare(a, b) == 0)</code></li>
+</ul>
 <h5 id="fn-bigfloat_lta-bigfloat-b-bigfloat-bool"><code>fn bigfloat_lt(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_lta-bigfloat-b-bigfloat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Strictly less than.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigfloat_compare(a, b) &lt; 0)</code></li>
+</ul>
 <h5 id="fn-bigfloat_lea-bigfloat-b-bigfloat-bool"><code>fn bigfloat_le(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_lea-bigfloat-b-bigfloat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Less than or equal.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigfloat_compare(a, b) &lt;= 0)</code></li>
+</ul>
 <h5 id="fn-bigfloat_gta-bigfloat-b-bigfloat-bool"><code>fn bigfloat_gt(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_gta-bigfloat-b-bigfloat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Strictly greater than.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigfloat_compare(a, b) &gt; 0)</code></li>
+</ul>
 <h5 id="fn-bigfloat_gea-bigfloat-b-bigfloat-bool"><code>fn bigfloat_ge(a: &amp;BigFloat, b: &amp;BigFloat) -&gt; Bool</code><a class="headerlink" href="#fn-bigfloat_gea-bigfloat-b-bigfloat-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Greater than or equal.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (bigfloat_compare(a, b) &gt;= 0)</code></li>
+</ul>
 <h5 id="fn-bigfloat_pi_with_precisionprecision-int-bigfloat"><code>fn bigfloat_pi_with_precision(precision: Int) -&gt; BigFloat</code><a class="headerlink" href="#fn-bigfloat_pi_with_precisionprecision-int-bigfloat" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>pi / e at explicit precision.</p>
@@ -3716,6 +3753,9 @@
 <blockquote>
 <p>True when the value is zero.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b.digits.len() == 0 =&gt; result</code></li>
+</ul>
 <h4 id="fn-bigint_absb-bigint-bigint"><code>fn bigint_abs(b: &amp;BigInt) -&gt; BigInt</code><a class="headerlink" href="#fn-bigint_absb-bigint-bigint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value.</p>
@@ -4316,14 +4356,23 @@
 <blockquote>
 <p>Minimum finite value of a bounded numeric type.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == T.min_value()</code></li>
+</ul>
 <h4 id="fn-max_valuet-t"><code>fn max_value[T]() -&gt; T</code><a class="headerlink" href="#fn-max_valuet-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Maximum finite value of a bounded numeric type.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == T.max_value()</code></li>
+</ul>
 <h4 id="fn-epsilont-t"><code>fn epsilon[T]() -&gt; T</code><a class="headerlink" href="#fn-epsilont-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Difference between 1.0 and the next representable value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == T.epsilon()</code></li>
+</ul>
 <h4 id="fn-gcda-int-b-int-int"><code>fn gcd(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-gcda-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Integer-specific</p>
@@ -4336,31 +4385,46 @@
 <blockquote>
 <p>Least common multiple of two Ints (0 when either is 0).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-is_power_of_twon-int-bool"><code>fn is_power_of_two(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_power_of_twon-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>n &gt; 0</code> and <code>n</code> is a power of two.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (n &gt; 0 &amp;&amp; bit_and(n, n - 1) == 0)</code></li>
+</ul>
 <h4 id="fn-next_power_of_twon-int-int"><code>fn next_power_of_two(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-next_power_of_twon-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Smallest power of two &gt;= n (1 for n &lt;= 1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 1 =&gt; result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt; 1 =&gt; result != 0</code></li>
+</ul>
 <h4 id="fn-count_onesn-int-int"><code>fn count_ones(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_onesn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of set bits (popcount).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
 </ul>
 <h4 id="fn-count_zerosn-int-int"><code>fn count_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-count_zerosn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of cleared bits.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 64 - count_ones(n)</code></li>
+</ul>
 <h4 id="fn-leading_zerosn-int-int"><code>fn leading_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-leading_zerosn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Number of leading zero bits.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
 </ul>
 <h4 id="fn-trailing_zerosn-int-int"><code>fn trailing_zeros(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-trailing_zerosn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -4368,47 +4432,83 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 64</code></li>
 </ul>
 <h4 id="fn-rotate_leftn-int-k-int-int"><code>fn rotate_left(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rotate_leftn-int-k-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Rotate bits left by <code>k</code> positions.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>k % 64 == 0 =&gt; result == n</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-rotate_rightn-int-k-int-int"><code>fn rotate_right(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-rotate_rightn-int-k-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Rotate bits right by <code>k</code> positions.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>k % 64 == 0 =&gt; result == n</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-reverse_bitsn-int-int"><code>fn reverse_bits(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-reverse_bitsn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Reverse the bit order of the value.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == -1 =&gt; result == -1</code></li>
+</ul>
 <h4 id="fn-to_ben-int-int"><code>fn to_be(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-to_ben-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert from native to big-endian byte order.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == -1 =&gt; result == -1</code></li>
+</ul>
 <h4 id="fn-to_len-int-int"><code>fn to_le(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-to_len-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert from native to little-endian byte order.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == n</code></li>
+</ul>
 <h4 id="fn-from_ben-int-int"><code>fn from_be(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-from_ben-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert from big-endian to native byte order.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == to_be(n)</code></li>
+</ul>
 <h4 id="fn-from_len-int-int"><code>fn from_le(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-from_len-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert from little-endian to native byte order.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == n</code></li>
+</ul>
 <h4 id="fn-is_finitex-float64-bool"><code>fn is_finite(x: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-is_finitex-float64-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float-specific</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (!is_nan(x) &amp;&amp; !is_inf(x))</code></li>
+</ul>
 <h4 id="fn-is_normalx-float64-bool"><code>fn is_normal(x: Float64) -&gt; Bool</code><a class="headerlink" href="#fn-is_normalx-float64-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>True when <code>x</code> is finite and neither zero nor subnormal.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (x != 0 &amp;&amp; !is_nan(x) &amp;&amp; !is_inf(x))</code></li>
+</ul>
 <h4 id="fn-classifyx-float64-int"><code>fn classify(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-classifyx-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>IEEE-754 classification code (see the FLOAT_* constants).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == 0 || result == 1 || result == 2 || result == 4</code></li>
+<li><strong>Postcondition:</strong> <code>is_nan(x) =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-floorx-float64-int"><code>fn floor(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-floorx-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Largest integer not greater than <code>x</code>.</p>
@@ -4427,14 +4527,28 @@
 <blockquote>
 <p>Nearest integer, with halves rounded away from zero.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>x == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &gt; 0 &amp;&amp; x &lt; 0.5 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-truncx-float64-int"><code>fn trunc(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-truncx-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Integer part of <code>x</code> (truncation toward zero).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>x == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &gt; 0 &amp;&amp; x &lt; 1 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &lt; 0 &amp;&amp; x &gt; -1 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-fractx-float64-float64"><code>fn fract(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-fractx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fractional part of <code>x</code> (<code>x - trunc(x)</code>).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>x == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &gt; 0 &amp;&amp; x &lt; 1 =&gt; result == x</code></li>
+<li><strong>Postcondition:</strong> <code>x &lt; 0 &amp;&amp; x &gt; -1 =&gt; result == x</code></li>
+</ul>
 <h4 id="fn-recipx-float64-float64"><code>fn recip(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-recipx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Reciprocal <code>1 / x</code>.</p>
@@ -4446,41 +4560,67 @@
 <blockquote>
 <p>Convert radians to degrees.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>rad == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-to_radiansdeg-float64-float64"><code>fn to_radians(deg: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-to_radiansdeg-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert degrees to radians.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>deg == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-hypotx-float64-y-float64-float64"><code>fn hypot(x: Float64, y: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-hypotx-float64-y-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Length of the hypotenuse <code>sqrt(x^2 + y^2)</code> without intermediate overflow.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>x == 0 &amp;&amp; y == 0 =&gt; result == 0</code></li>
 </ul>
 <h4 id="fn-saturating_addta-t-b-t-t"><code>fn saturating_add[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-saturating_addta-t-b-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturation arithmetic</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= T.min_value() &amp;&amp; result &lt;= T.max_value()</code></li>
+</ul>
 <h4 id="fn-saturating_subta-t-b-t-t"><code>fn saturating_sub[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-saturating_subta-t-b-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Subtraction clamped to the type minimum/maximum.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= T.min_value() &amp;&amp; result &lt;= T.max_value()</code></li>
+</ul>
 <h4 id="fn-saturating_multa-t-b-t-t"><code>fn saturating_mul[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-saturating_multa-t-b-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Multiplication clamped to the type minimum/maximum.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= T.min_value() &amp;&amp; result &lt;= T.max_value()</code></li>
+</ul>
 <h4 id="fn-checked_addta-t-b-t-optiont"><code>fn checked_add[T](a: T, b: T) -&gt; Option[T]</code><a class="headerlink" href="#fn-checked_addta-t-b-t-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Checked arithmetic</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == T.zero() =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-checked_subta-t-b-t-optiont"><code>fn checked_sub[T](a: T, b: T) -&gt; Option[T]</code><a class="headerlink" href="#fn-checked_subta-t-b-t-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Subtraction, or None on overflow/underflow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == T.zero() =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-checked_multa-t-b-t-optiont"><code>fn checked_mul[T](a: T, b: T) -&gt; Option[T]</code><a class="headerlink" href="#fn-checked_multa-t-b-t-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Multiplication, or None on overflow.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == T.zero() || b == T.zero() =&gt; result == Some(T.zero())</code></li>
+</ul>
 <h4 id="fn-checked_divta-t-b-t-optiont"><code>fn checked_div[T](a: T, b: T) -&gt; Option[T]</code><a class="headerlink" href="#fn-checked_divta-t-b-t-optiont" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Division, or None on division by zero/overflow.</p>
@@ -4492,22 +4632,37 @@
 <blockquote>
 <p>Wrapping arithmetic</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a + b</code></li>
+</ul>
 <h4 id="fn-wrapping_subta-t-b-t-t"><code>fn wrapping_sub[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-wrapping_subta-t-b-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Subtraction wrapping around the type range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a - b</code></li>
+</ul>
 <h4 id="fn-wrapping_multa-t-b-t-t"><code>fn wrapping_mul[T](a: T, b: T) -&gt; T</code><a class="headerlink" href="#fn-wrapping_multa-t-b-t-t" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Multiplication wrapping around the type range.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a * b</code></li>
+</ul>
 <h4 id="fn-parse_ints-str-resultint-str"><code>fn parse_int(s: Str) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-parse_ints-str-resultint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result is Err(_)</code></li>
+</ul>
 <h4 id="fn-parse_floats-str-resultfloat64-str"><code>fn parse_float(s: Str) -&gt; Result[Float64, Str]</code><a class="headerlink" href="#fn-parse_floats-str-resultfloat64-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse a decimal Float64; Err with a message on bad input.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result is Err(_)</code></li>
+</ul>
 <h4 id="fn-parse_int_radixs-str-radix-int-resultint-str"><code>fn parse_int_radix(s: Str, radix: Int) -&gt; Result[Int, Str]</code><a class="headerlink" href="#fn-parse_int_radixs-str-radix-int-resultint-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse an Int in the given radix (2..36); Err on bad input.</p>
@@ -4520,122 +4675,230 @@
 <blockquote>
 <p>Returns true if n is even. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (n % 2 == 0)</code></li>
+</ul>
 <h4 id="fn-is_oddn-int-bool"><code>fn is_odd(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_oddn-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if n is odd. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == !(n % 2 == 0)</code></li>
+</ul>
 <h4 id="fn-is_positiven-int-bool"><code>fn is_positive(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_positiven-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if n &gt; 0. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (n &gt; 0)</code></li>
+</ul>
 <h4 id="fn-is_negativen-int-bool"><code>fn is_negative(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_negativen-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if n &lt; 0. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (n &lt; 0)</code></li>
+</ul>
 <h4 id="fn-is_non_negativen-int-bool"><code>fn is_non_negative(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_non_negativen-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if n &gt;= 0. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (n &gt;= 0)</code></li>
+</ul>
 <h4 id="fn-signumn-int-int"><code>fn signum(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-signumn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns -1 for negative, 0 for zero, 1 for positive. O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == -1 &amp;&amp; n &lt; 0) || (result == 0 &amp;&amp; n == 0) || (result == 1 &amp;&amp; n &gt; 0)</code></li>
+</ul>
 <h4 id="fn-digit_countn-int-int"><code>fn digit_count(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-digit_countn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Counts the number of decimal digits. O(log10 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &gt;= 0 =&gt; result &gt;= 1</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt; 0 =&gt; result &lt;= 19</code></li>
+</ul>
 <h4 id="fn-digit_sumn-int-int"><code>fn digit_sum(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-digit_sumn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Sum of decimal digits. O(log10 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-digital_rootn-int-int"><code>fn digital_root(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-digital_rootn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Digital root: repeated digit sum until a single digit is obtained. O(log10 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0 &amp;&amp; result &lt;= 9</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-factorialn-int-int"><code>fn factorial(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-factorialn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Factorial of n (n!). Returns 0 on overflow or negative input. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 || n == 1 =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-binomialn-int-k-int-int"><code>fn binomial(n: Int, k: Int) -&gt; Int</code><a class="headerlink" href="#fn-binomialn-int-k-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Binomial coefficient C(n, k). Returns 0 on overflow or invalid input. O(k).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>k &lt; 0 || k &gt; n =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt;= 0 &amp;&amp; (k == 0 || k == n) =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-fibonaccin-int-int"><code>fn fibonacci(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-fibonaccin-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fibonacci number F(n). 0-indexed: F(0)=0, F(1)=1. Returns 0 for n &lt; 0. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == 1 =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-gcd_manynums-vecint-int"><code>fn gcd_many(nums: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-gcd_manynums-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>GCD of a slice of integers. Returns 0 if the slice is empty. O(N-log max).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>nums.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-lcm_manynums-vecint-int"><code>fn lcm_many(nums: &amp;Vec[Int]) -&gt; Int</code><a class="headerlink" href="#fn-lcm_manynums-vecint-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>LCM of a slice of integers. Returns 0 if any element is 0. O(N-log max).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>nums.len() == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-is_primen-int-bool"><code>fn is_prime(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_primen-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Trial-division primality test. O(sqrtn).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; n &gt;= 2</code></li>
+<li><strong>Postcondition:</strong> <code>n &lt; 2 =&gt; !result</code></li>
+</ul>
 <h4 id="fn-next_primen-int-int"><code>fn next_prime(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-next_primen-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Next prime greater than n. O(sqrtresult - gap).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt; 2 =&gt; result == 2</code></li>
+</ul>
 <h4 id="fn-nth_primen-int-int"><code>fn nth_prime(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-nth_primen-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Nth prime (1-indexed: nth_prime(1)=2). Returns 0 for n &lt;= 0. O(n-sqrtpn).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == 1 =&gt; result == 2</code></li>
+</ul>
 <h4 id="fn-prime_factorsn-int-vecint"><code>fn prime_factors(n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-prime_factorsn-int-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Prime factors of n (with multiplicity). O(sqrtn).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n == 0 || n == 1 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt; 1 =&gt; result.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-divisorsn-int-vecint"><code>fn divisors(n: Int) -&gt; Vec[Int]</code><a class="headerlink" href="#fn-divisorsn-int-vecint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>All positive divisors of n (unsorted). O(sqrtn).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 =&gt; result.len() == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt; 0 =&gt; result.len() &gt;= 1</code></li>
+</ul>
 <h4 id="fn-euler_totientn-int-int"><code>fn euler_totient(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-euler_totientn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Euler's totient phi(n): count of k in [1, n] with gcd(k, n) = 1. O(sqrtn).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == 1 =&gt; result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt;= 2 =&gt; result &gt;= 1 &amp;&amp; result &lt; n</code></li>
+</ul>
 <h4 id="fn-mod_powbase-int-exp-int-m-int-int"><code>fn mod_pow(base: Int, exp: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_powbase-int-exp-int-m-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Modular exponentiation: (base^exp) mod m. Uses square-and-multiply. O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m == 1 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>exp &lt; 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-mod_inversea-int-m-int-optionint"><code>fn mod_inverse(a: Int, m: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-mod_inversea-int-m-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Modular inverse: x such that (a * x) == 1 (mod m). Uses extended Euclid. O(log min(a,m)). Returns None if gcd(a, m) != 1.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m == 1 =&gt; result == Some(0)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 &amp;&amp; m &gt; 1 =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-mod_adda-int-b-int-m-int-int"><code>fn mod_add(a: Int, b: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_adda-int-b-int-m-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Modular addition: (a + b) mod m. Result in [0, m). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m &gt; 0 =&gt; result &gt;= 0 &amp;&amp; result &lt; m</code></li>
+</ul>
 <h4 id="fn-mod_suba-int-b-int-m-int-int"><code>fn mod_sub(a: Int, b: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_suba-int-b-int-m-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Modular subtraction: (a - b) mod m. Result in [0, m). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m &gt; 0 =&gt; result &gt;= 0 &amp;&amp; result &lt; m</code></li>
+</ul>
 <h4 id="fn-mod_mula-int-b-int-m-int-int"><code>fn mod_mul(a: Int, b: Int, m: Int) -&gt; Int</code><a class="headerlink" href="#fn-mod_mula-int-b-int-m-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Modular multiplication: (a * b) mod m. Result in [0, m). O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m &gt; 0 =&gt; result &gt;= 0 &amp;&amp; result &lt; m</code></li>
+</ul>
 <h4 id="fn-is_perfect_squaren-int-bool"><code>fn is_perfect_square(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_perfect_squaren-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if n is a perfect square. O(log n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; n &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; !result</code></li>
+</ul>
 <h4 id="fn-is_palindrome_intn-int-bool"><code>fn is_palindrome_int(n: Int) -&gt; Bool</code><a class="headerlink" href="#fn-is_palindrome_intn-int-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true if n reads the same forward and backward in decimal. O(log10 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt; 0 =&gt; !result</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result</code></li>
+</ul>
 <h4 id="fn-reverse_intn-int-int"><code>fn reverse_int(n: Int) -&gt; Int</code><a class="headerlink" href="#fn-reverse_intn-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Reverses the decimal digits of n. Sign is preserved. O(log10 n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-to_basen-int-base-int-str_1"><code>fn to_base(n: Int, base: Int) -&gt; Str</code><a class="headerlink" href="#fn-to_basen-int-base-int-str_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Convert integer to string in given base (2-36). Uses digits 0-9, A-Z. Returns empty string for invalid base. O(log_base n).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(base &lt; 2 || base &gt; 36) =&gt; result == ""</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 &amp;&amp; base &gt;= 2 &amp;&amp; base &lt;= 36 =&gt; result == "0"</code></li>
+</ul>
 <h4 id="fn-from_bases-str-base-int-optionint"><code>fn from_base(s: Str, base: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-from_bases-str-base-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parse integer from string in given base (2-36). Delegates to parse_int_radix. Returns None on invalid input or overflow. O(N).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result is None</code></li>
+</ul>
 <h4 id="type-fraction_1"><code>type Fraction</code><a class="headerlink" href="#type-fraction_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-- Rational number (num / den, den &gt; 0, always reduced) -------------------</p>
@@ -4708,690 +4971,1308 @@
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>x == 0 =&gt; result == 0</code></li>
 </ul>
 <h4 id="fn-f64_floorx-float64-float64"><code>fn f64_floor(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_floorx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Largest integral Float64 &lt;= x. NaN propagates. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &lt;= x) || (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt; -9007199254740992 &amp;&amp; result &lt; 9007199254740992) =&gt; x &lt; result + 1</code></li>
+</ul>
 <h4 id="fn-f64_ceilx-float64-float64"><code>fn f64_ceil(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_ceilx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Smallest integral Float64 &gt;= x. NaN propagates. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= x) || (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>(result &gt; -9007199254740992 &amp;&amp; result &lt; 9007199254740992) =&gt; x &gt; result - 1</code></li>
+</ul>
 <h4 id="fn-f64_truncx-float64-float64"><code>fn f64_trunc(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_truncx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncates x toward zero, returning the integral part as Float64. NaN propagates. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((x &gt;= 0 =&gt; result &lt;= x) &amp;&amp; (x &lt;= 0 =&gt; result &gt;= x)) || result != result</code></li>
+<li><strong>Postcondition:</strong> <code>x &gt; 0 &amp;&amp; x &lt; 1 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &lt; 0 &amp;&amp; x &gt; -1 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-f64_fractx-float64-float64"><code>fn f64_fract(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_fractx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fractional part of x with the sign of x: x - trunc(x). fract(2.75) == 0.75, fract(-2.75) == -0.75. NaN propagates. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt; -1) &amp;&amp; (result &lt; 1)) || (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>x == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-f64_modf_int_partx-float64-float64"><code>fn f64_modf_int_part(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_modf_int_partx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Integral part of x (C <code>modf</code> split, matches f64_fract's sign convention). Equivalent to f64_trunc. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == f64_trunc(x)</code></li>
+</ul>
 <h4 id="fn-f64_modf_frac_partx-float64-float64"><code>fn f64_modf_frac_part(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_modf_frac_partx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fractional part of x (C <code>modf</code> split, sign of x). Equivalent to f64_fract. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == f64_fract(x)</code></li>
+</ul>
 <h4 id="fn-f32_roundx-float32-float32"><code>fn f32_round(x: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_roundx-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Rounds x to the nearest Float32, halves away from zero. NaN propagates. Complexity: O(1).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>x == 0 =&gt; result == 0</code></li>
 </ul>
 <h4 id="fn-f32_floorx-float32-float32"><code>fn f32_floor(x: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_floorx-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Largest integral Float32 &lt;= x. NaN propagates. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((?) &lt;= (?)) || (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>((?) &gt; -9007199254740992 &amp;&amp; (?) &lt; 9007199254740992) =&gt; (?) &lt; (?) + 1</code></li>
+</ul>
 <h4 id="fn-f32_ceilx-float32-float32"><code>fn f32_ceil(x: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_ceilx-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Smallest integral Float32 &gt;= x. NaN propagates. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((?) &gt;= (?)) || (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>((?) &gt; -9007199254740992 &amp;&amp; (?) &lt; 9007199254740992) =&gt; (?) &gt; (?) - 1</code></li>
+</ul>
 <h4 id="fn-f32_truncx-float32-float32"><code>fn f32_trunc(x: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_truncx-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncates x toward zero as Float32. NaN propagates. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>x &gt; 0 &amp;&amp; x &lt; 1 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &lt; 0 &amp;&amp; x &gt; -1 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-f32_fractx-float32-float32"><code>fn f32_fract(x: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_fractx-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fractional part of x with the sign of x. NaN propagates. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(((?) &gt; -1) &amp;&amp; ((?) &lt; 1)) || (result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>x == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-f32_modf_int_partx-float32-float32"><code>fn f32_modf_int_part(x: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_modf_int_partx-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Integral part of x (C <code>modf</code> split). Equivalent to f32_trunc. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == f32_trunc(x)</code></li>
+</ul>
 <h4 id="fn-f32_modf_frac_partx-float32-float32"><code>fn f32_modf_frac_part(x: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_modf_frac_partx-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Fractional part of x (C <code>modf</code> split, sign of x). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == f32_fract(x)</code></li>
+</ul>
 <h4 id="fn-f64_round_to_intx-float64-int"><code>fn f64_round_to_int(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-f64_round_to_intx-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Rounds x to the nearest Int, halves away from zero. NaN -&gt; 0, out of i64 range -&gt; saturated INT_MAX/INT_MIN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_nan(x) =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &gt;= 9223372036854776000 =&gt; result == INT_MAX</code></li>
+<li><strong>Postcondition:</strong> <code>x &lt; -9223372036854776000 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-f64_floor_to_intx-float64-int"><code>fn f64_floor_to_int(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-f64_floor_to_intx-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Floor of x as Int. NaN -&gt; 0, out of i64 range -&gt; saturated INT_MAX/INT_MIN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_nan(x) =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &gt;= 9223372036854776000 =&gt; result == INT_MAX</code></li>
+<li><strong>Postcondition:</strong> <code>x &lt; -9223372036854776000 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-f64_ceil_to_intx-float64-int"><code>fn f64_ceil_to_int(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-f64_ceil_to_intx-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Ceiling of x as Int. NaN -&gt; 0, out of i64 range -&gt; saturated INT_MAX/INT_MIN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_nan(x) =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &gt;= 9223372036854776000 =&gt; result == INT_MAX</code></li>
+<li><strong>Postcondition:</strong> <code>x &lt; -9223372036854776000 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-f64_trunc_to_intx-float64-int"><code>fn f64_trunc_to_int(x: Float64) -&gt; Int</code><a class="headerlink" href="#fn-f64_trunc_to_intx-float64-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncation of x toward zero as Int. NaN -&gt; 0, out of i64 range -&gt; saturated INT_MAX/INT_MIN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_nan(x) =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>x &gt;= 9223372036854776000 =&gt; result == INT_MAX</code></li>
+<li><strong>Postcondition:</strong> <code>x &lt; -9223372036854776000 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-f32_round_to_intx-float32-int"><code>fn f32_round_to_int(x: Float32) -&gt; Int</code><a class="headerlink" href="#fn-f32_round_to_intx-float32-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float32 variant of f64_round_to_int. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_nan(?) =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &gt;= 9223372036854776000 =&gt; result == INT_MAX</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &lt; -9223372036854776000 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-f32_floor_to_intx-float32-int"><code>fn f32_floor_to_int(x: Float32) -&gt; Int</code><a class="headerlink" href="#fn-f32_floor_to_intx-float32-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float32 variant of f64_floor_to_int. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_nan(?) =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &gt;= 9223372036854776000 =&gt; result == INT_MAX</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &lt; -9223372036854776000 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-f32_ceil_to_intx-float32-int"><code>fn f32_ceil_to_int(x: Float32) -&gt; Int</code><a class="headerlink" href="#fn-f32_ceil_to_intx-float32-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float32 variant of f64_ceil_to_int. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_nan(?) =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &gt;= 9223372036854776000 =&gt; result == INT_MAX</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &lt; -9223372036854776000 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-f32_trunc_to_intx-float32-int"><code>fn f32_trunc_to_int(x: Float32) -&gt; Int</code><a class="headerlink" href="#fn-f32_trunc_to_intx-float32-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float32 variant of f64_trunc_to_int. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>is_nan(?) =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &gt;= 9223372036854776000 =&gt; result == INT_MAX</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &lt; -9223372036854776000 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-i64_div_floora-int-b-int-int"><code>fn i64_div_floor(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_div_floora-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Floor division: largest Int &lt;= a/b (rounds toward -inf). floor(-7, 2) == -4. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>a == INT_MIN &amp;&amp; b == -1 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-i64_div_ceila-int-b-int-int"><code>fn i64_div_ceil(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_div_ceila-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Ceiling division: smallest Int &gt;= a/b (rounds toward +inf). ceil(-7, 2) == -3. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>a == INT_MIN &amp;&amp; b == -1 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-i64_div_rounda-int-b-int-int"><code>fn i64_div_round(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_div_rounda-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Division rounding to nearest, halves away from zero, using unsigned magnitude arithmetic so the result is exact for the full i64 range (saturating to INT_MAX/INT_MIN only for the unrepresentable +2^63). Complexity: O(64) via u64_div_mod.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 &amp;&amp; b != 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-i64_mod_euclida-int-b-int-int"><code>fn i64_mod_euclid(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_mod_euclida-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Euclidean remainder: r &gt;= 0 always, r == a (mod b). mod_euclid(-7, 2) == 1. Division by zero returns 0. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-i64_div_euclida-int-b-int-int"><code>fn i64_div_euclid(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_div_euclida-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Euclidean division: q = floor(a/b) (see i64_div_floor). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>a == INT_MIN &amp;&amp; b == -1 =&gt; result == INT_MIN</code></li>
+</ul>
 <h4 id="fn-u64_div_floora-uint64-b-uint64-uint64"><code>fn u64_div_floor(a: UInt64, b: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_div_floora-uint64-b-uint64-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Unsigned floor division (identical to plain unsigned division). Division by zero returns 0. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-u64_div_ceila-uint64-b-uint64-uint64"><code>fn u64_div_ceil(a: UInt64, b: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_div_ceila-uint64-b-uint64-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Unsigned ceiling division. Division by zero returns 0. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>u64_ge(b, a) &amp;&amp; a != 0 =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-u64_mod_euclida-uint64-b-uint64-uint64"><code>fn u64_mod_euclid(a: UInt64, b: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_mod_euclida-uint64-b-uint64-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Unsigned Euclidean remainder (= plain unsigned remainder). Division by zero returns 0. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>b != 0 =&gt; !u64_ge(result, b)</code></li>
+</ul>
 <h4 id="fn-u64_div_euclida-uint64-b-uint64-uint64"><code>fn u64_div_euclid(a: UInt64, b: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_div_euclida-uint64-b-uint64-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Unsigned Euclidean division (identical to u64_div_floor). Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-i64_add_checkeda-int-b-int-optionint"><code>fn i64_add_checked(a: Int, b: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i64_add_checkeda-int-b-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a + b with overflow detection. Some(sum) on success, None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-i64_sub_checkeda-int-b-int-optionint"><code>fn i64_sub_checked(a: Int, b: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i64_sub_checkeda-int-b-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a - b with overflow detection. Some(diff) on success, None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-i64_mul_checkeda-int-b-int-optionint"><code>fn i64_mul_checked(a: Int, b: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i64_mul_checkeda-int-b-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a * b with overflow detection. Some(product) on success, None on overflow. Handles the +/-1 edge cases explicitly. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == Some(0)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 1 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-i64_div_checkeda-int-b-int-optionint"><code>fn i64_div_checked(a: Int, b: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i64_div_checkeda-int-b-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a / b with div-by-zero and INT_MIN / -1 overflow detection. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>a == INT_MIN &amp;&amp; b == -1 =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-i64_neg_checkeda-int-optionint"><code>fn i64_neg_checked(a: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i64_neg_checkeda-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-a with overflow detection (INT_MIN has no positive inverse). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == INT_MIN =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>a != INT_MIN =&gt; result == Some(-a)</code></li>
+</ul>
 <h4 id="fn-i64_pow_checkedbase-int-exp-int-optionint"><code>fn i64_pow_checked(base: Int, exp: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i64_pow_checkedbase-int-exp-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>base^exp with overflow detection via square-and-multiply. Negative exponent returns None. Complexity: O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>exp &lt; 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>exp == 0 =&gt; result == Some(1)</code></li>
+<li><strong>Postcondition:</strong> <code>base == 0 &amp;&amp; exp &gt; 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-i32_add_checkeda-int32-b-int32-optionint32"><code>fn i32_add_checked(a: Int32, b: Int32) -&gt; Option[Int32]</code><a class="headerlink" href="#fn-i32_add_checkeda-int32-b-int32-optionint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i32 a + b. Some on success, None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-i32_sub_checkeda-int32-b-int32-optionint32"><code>fn i32_sub_checked(a: Int32, b: Int32) -&gt; Option[Int32]</code><a class="headerlink" href="#fn-i32_sub_checkeda-int32-b-int32-optionint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i32 a - b. Some on success, None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-i32_mul_checkeda-int32-b-int32-optionint32"><code>fn i32_mul_checked(a: Int32, b: Int32) -&gt; Option[Int32]</code><a class="headerlink" href="#fn-i32_mul_checkeda-int32-b-int32-optionint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i32 a * b (i64 product is exact for all i32 inputs). None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-i32_div_checkeda-int32-b-int32-optionint32"><code>fn i32_div_checked(a: Int32, b: Int32) -&gt; Option[Int32]</code><a class="headerlink" href="#fn-i32_div_checkeda-int32-b-int32-optionint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i32 a / b. None on div-by-zero or INT32_MIN / -1. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>(?) == -2147483648 &amp;&amp; (?) == -1 =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-i16_add_checkeda-int16-b-int16-optionint16"><code>fn i16_add_checked(a: Int16, b: Int16) -&gt; Option[Int16]</code><a class="headerlink" href="#fn-i16_add_checkeda-int16-b-int16-optionint16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i16 a + b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-i16_sub_checkeda-int16-b-int16-optionint16"><code>fn i16_sub_checked(a: Int16, b: Int16) -&gt; Option[Int16]</code><a class="headerlink" href="#fn-i16_sub_checkeda-int16-b-int16-optionint16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i16 a - b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-i16_mul_checkeda-int16-b-int16-optionint16"><code>fn i16_mul_checked(a: Int16, b: Int16) -&gt; Option[Int16]</code><a class="headerlink" href="#fn-i16_mul_checkeda-int16-b-int16-optionint16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i16 a * b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-i16_div_checkeda-int16-b-int16-optionint16"><code>fn i16_div_checked(a: Int16, b: Int16) -&gt; Option[Int16]</code><a class="headerlink" href="#fn-i16_div_checkeda-int16-b-int16-optionint16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i16 a / b. None on div-by-zero or INT16_MIN / -1. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>(?) == -32768 &amp;&amp; (?) == -1 =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-i8_add_checkeda-int8-b-int8-optionint8"><code>fn i8_add_checked(a: Int8, b: Int8) -&gt; Option[Int8]</code><a class="headerlink" href="#fn-i8_add_checkeda-int8-b-int8-optionint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i8 a + b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-i8_sub_checkeda-int8-b-int8-optionint8"><code>fn i8_sub_checked(a: Int8, b: Int8) -&gt; Option[Int8]</code><a class="headerlink" href="#fn-i8_sub_checkeda-int8-b-int8-optionint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i8 a - b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-i8_mul_checkeda-int8-b-int8-optionint8"><code>fn i8_mul_checked(a: Int8, b: Int8) -&gt; Option[Int8]</code><a class="headerlink" href="#fn-i8_mul_checkeda-int8-b-int8-optionint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i8 a * b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-i8_div_checkeda-int8-b-int8-optionint8"><code>fn i8_div_checked(a: Int8, b: Int8) -&gt; Option[Int8]</code><a class="headerlink" href="#fn-i8_div_checkeda-int8-b-int8-optionint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i8 a / b. None on div-by-zero or INT8_MIN / -1. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>(?) == -128 &amp;&amp; (?) == -1 =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-u64_add_checkeda-uint64-b-uint64-optionuint64"><code>fn u64_add_checked(a: UInt64, b: UInt64) -&gt; Option[UInt64]</code><a class="headerlink" href="#fn-u64_add_checkeda-uint64-b-uint64-optionuint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u64 a + b using unsigned wrap detection. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-u64_sub_checkeda-uint64-b-uint64-optionuint64"><code>fn u64_sub_checked(a: UInt64, b: UInt64) -&gt; Option[UInt64]</code><a class="headerlink" href="#fn-u64_sub_checkeda-uint64-b-uint64-optionuint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u64 a - b. None on underflow (a &lt; b). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-u64_mul_checkeda-uint64-b-uint64-optionuint64"><code>fn u64_mul_checked(a: UInt64, b: UInt64) -&gt; Option[UInt64]</code><a class="headerlink" href="#fn-u64_mul_checkeda-uint64-b-uint64-optionuint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u64 a * b via the exact 128-bit product; None when the high limb is non-zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-u64_div_checkeda-uint64-b-uint64-optionuint64"><code>fn u64_div_checked(a: UInt64, b: UInt64) -&gt; Option[UInt64]</code><a class="headerlink" href="#fn-u64_div_checkeda-uint64-b-uint64-optionuint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u64 a / b. None on div-by-zero. Complexity: O(64).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>b != 0 =&gt; result is Some(_)</code></li>
+</ul>
 <h4 id="fn-u32_add_checkeda-uint32-b-uint32-optionuint32"><code>fn u32_add_checked(a: UInt32, b: UInt32) -&gt; Option[UInt32]</code><a class="headerlink" href="#fn-u32_add_checkeda-uint32-b-uint32-optionuint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u32 a + b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-u32_sub_checkeda-uint32-b-uint32-optionuint32"><code>fn u32_sub_checked(a: UInt32, b: UInt32) -&gt; Option[UInt32]</code><a class="headerlink" href="#fn-u32_sub_checkeda-uint32-b-uint32-optionuint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u32 a - b. None on underflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-u32_mul_checkeda-uint32-b-uint32-optionuint32"><code>fn u32_mul_checked(a: UInt32, b: UInt32) -&gt; Option[UInt32]</code><a class="headerlink" href="#fn-u32_mul_checkeda-uint32-b-uint32-optionuint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u32 a * b (i64 product is exact for all u32 inputs). None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-u32_div_checkeda-uint32-b-uint32-optionuint32"><code>fn u32_div_checked(a: UInt32, b: UInt32) -&gt; Option[UInt32]</code><a class="headerlink" href="#fn-u32_div_checkeda-uint32-b-uint32-optionuint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u32 a / b. None on div-by-zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>b != 0 =&gt; result is Some(_)</code></li>
+</ul>
 <h4 id="fn-u16_add_checkeda-uint16-b-uint16-optionuint16"><code>fn u16_add_checked(a: UInt16, b: UInt16) -&gt; Option[UInt16]</code><a class="headerlink" href="#fn-u16_add_checkeda-uint16-b-uint16-optionuint16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u16 a + b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-u16_sub_checkeda-uint16-b-uint16-optionuint16"><code>fn u16_sub_checked(a: UInt16, b: UInt16) -&gt; Option[UInt16]</code><a class="headerlink" href="#fn-u16_sub_checkeda-uint16-b-uint16-optionuint16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u16 a - b. None on underflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-u16_mul_checkeda-uint16-b-uint16-optionuint16"><code>fn u16_mul_checked(a: UInt16, b: UInt16) -&gt; Option[UInt16]</code><a class="headerlink" href="#fn-u16_mul_checkeda-uint16-b-uint16-optionuint16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u16 a * b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-u16_div_checkeda-uint16-b-uint16-optionuint16"><code>fn u16_div_checked(a: UInt16, b: UInt16) -&gt; Option[UInt16]</code><a class="headerlink" href="#fn-u16_div_checkeda-uint16-b-uint16-optionuint16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u16 a / b. None on div-by-zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>b != 0 =&gt; result is Some(_)</code></li>
+</ul>
 <h4 id="fn-u8_add_checkeda-uint8-b-uint8-optionuint8"><code>fn u8_add_checked(a: UInt8, b: UInt8) -&gt; Option[UInt8]</code><a class="headerlink" href="#fn-u8_add_checkeda-uint8-b-uint8-optionuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u8 a + b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == Some(b)</code></li>
+</ul>
 <h4 id="fn-u8_sub_checkeda-uint8-b-uint8-optionuint8"><code>fn u8_sub_checked(a: UInt8, b: UInt8) -&gt; Option[UInt8]</code><a class="headerlink" href="#fn-u8_sub_checkeda-uint8-b-uint8-optionuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u8 a - b. None on underflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == Some(a)</code></li>
+</ul>
 <h4 id="fn-u8_mul_checkeda-uint8-b-uint8-optionuint8"><code>fn u8_mul_checked(a: UInt8, b: UInt8) -&gt; Option[UInt8]</code><a class="headerlink" href="#fn-u8_mul_checkeda-uint8-b-uint8-optionuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u8 a * b. None on overflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-u8_div_checkeda-uint8-b-uint8-optionuint8"><code>fn u8_div_checked(a: UInt8, b: UInt8) -&gt; Option[UInt8]</code><a class="headerlink" href="#fn-u8_div_checkeda-uint8-b-uint8-optionuint8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u8 a / b. None on div-by-zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>b != 0 =&gt; result is Some(_)</code></li>
+</ul>
 <h4 id="fn-i64_add_sata-int-b-int-int"><code>fn i64_add_sat(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_add_sata-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating i64 addition: clamps to INT_MAX/INT_MIN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a &gt;= 0 &amp;&amp; b &gt;= 0 =&gt; result &gt;= a</code></li>
+<li><strong>Postcondition:</strong> <code>a &lt;= 0 &amp;&amp; b &lt;= 0 =&gt; result &lt;= a</code></li>
+</ul>
 <h4 id="fn-i64_sub_sata-int-b-int-int"><code>fn i64_sub_sat(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_sub_sata-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating i64 subtraction. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>a &gt;= 0 &amp;&amp; b &lt;= 0 =&gt; result &gt;= a</code></li>
+<li><strong>Postcondition:</strong> <code>a &lt;= 0 &amp;&amp; b &gt;= 0 =&gt; result &lt;= a</code></li>
+</ul>
 <h4 id="fn-i64_mul_sata-int-b-int-int"><code>fn i64_mul_sat(a: Int, b: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_mul_sata-int-b-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating i64 multiplication. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>a == 1 =&gt; result == b</code></li>
+</ul>
 <h4 id="fn-u64_add_sata-uint64-b-uint64-uint64"><code>fn u64_add_sat(a: UInt64, b: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_add_sata-uint64-b-uint64-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating u64 addition: clamps at 0xFFFFFFFFFFFFFFFF. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == b</code></li>
+</ul>
 <h4 id="fn-u64_sub_sata-uint64-b-uint64-uint64"><code>fn u64_sub_sat(a: UInt64, b: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_sub_sata-uint64-b-uint64-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating u64 subtraction: clamps at 0 on underflow. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>!u64_ge(a, b) =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-u64_mul_sata-uint64-b-uint64-uint64"><code>fn u64_mul_sat(a: UInt64, b: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_mul_sata-uint64-b-uint64-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating u64 multiplication: clamps at 0xFFFFFFFFFFFFFFFF. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>a == 1 =&gt; result == b</code></li>
+</ul>
 <h4 id="fn-i32_add_sata-int32-b-int32-int32"><code>fn i32_add_sat(a: Int32, b: Int32) -&gt; Int32</code><a class="headerlink" href="#fn-i32_add_sata-int32-b-int32-int32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating i32 addition. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == b</code></li>
+</ul>
 <h4 id="fn-i32_sub_sata-int32-b-int32-int32"><code>fn i32_sub_sat(a: Int32, b: Int32) -&gt; Int32</code><a class="headerlink" href="#fn-i32_sub_sata-int32-b-int32-int32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating i32 subtraction. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == a</code></li>
+</ul>
 <h4 id="fn-i32_mul_sata-int32-b-int32-int32"><code>fn i32_mul_sat(a: Int32, b: Int32) -&gt; Int32</code><a class="headerlink" href="#fn-i32_mul_sata-int32-b-int32-int32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating i32 multiplication. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-u32_add_sata-uint32-b-uint32-uint32"><code>fn u32_add_sat(a: UInt32, b: UInt32) -&gt; UInt32</code><a class="headerlink" href="#fn-u32_add_sata-uint32-b-uint32-uint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating u32 addition: clamps at 4294967295. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 =&gt; result == b</code></li>
+</ul>
 <h4 id="fn-u32_sub_sata-uint32-b-uint32-uint32"><code>fn u32_sub_sat(a: UInt32, b: UInt32) -&gt; UInt32</code><a class="headerlink" href="#fn-u32_sub_sata-uint32-b-uint32-uint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating u32 subtraction: clamps at 0. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>b == 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>(?) &lt; (?) =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-u32_mul_sata-uint32-b-uint32-uint32"><code>fn u32_mul_sat(a: UInt32, b: UInt32) -&gt; UInt32</code><a class="headerlink" href="#fn-u32_mul_sata-uint32-b-uint32-uint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Saturating u32 multiplication. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-i128_from_i64v-int-int128"><code>fn i128_from_i64(v: Int) -&gt; Int128</code><a class="headerlink" href="#fn-i128_from_i64v-int-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Constructs an Int128 from a signed 64-bit value (sign-extended). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-i128_from_partshi-int-lo-uint64-int128"><code>fn i128_from_parts(hi: Int, lo: UInt64) -&gt; Int128</code><a class="headerlink" href="#fn-i128_from_partshi-int-lo-uint64-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Constructs an Int128 directly from a high signed limb and a low unsigned limb (value = hi * 2^64 + lo). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>hi == 0 =&gt; result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-i128_adda-int128-b-int128-int128"><code>fn i128_add(a: Int128, b: Int128) -&gt; Int128</code><a class="headerlink" href="#fn-i128_adda-int128-b-int128-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>128-bit addition (wraps on overflow). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (a + b)</code></li>
+</ul>
 <h4 id="fn-i128_suba-int128-b-int128-int128"><code>fn i128_sub(a: Int128, b: Int128) -&gt; Int128</code><a class="headerlink" href="#fn-i128_suba-int128-b-int128-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>128-bit subtraction (wraps on underflow). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (a - b)</code></li>
+</ul>
 <h4 id="fn-i128_nega-int128-int128"><code>fn i128_neg(a: Int128) -&gt; Int128</code><a class="headerlink" href="#fn-i128_nega-int128-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Two's-complement negation. Handles INT128_MIN correctly (wraps back to itself, as required by two's-complement arithmetic). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?) - a</code></li>
+</ul>
 <h4 id="fn-i128_absa-int128-int128"><code>fn i128_abs(a: Int128) -&gt; Int128</code><a class="headerlink" href="#fn-i128_absa-int128-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value (returns the negated value for INT128_MIN, documenting the two's-complement wrap). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a &gt;= 0 =&gt; result == a) &amp;&amp; (a &lt; 0 =&gt; result == i128_neg(a))</code></li>
+</ul>
 <h4 id="fn-i64_mul_widea-int-b-int-int128"><code>fn i64_mul_wide(a: Int, b: Int) -&gt; Int128</code><a class="headerlink" href="#fn-i64_mul_widea-int-b-int-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Full 128-bit product of two 64-bit signed values. i64_mul_wide(2^32, 2^32) == { hi: 1, lo: 0 } == 2^64. Exact. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?) * (?)</code></li>
+</ul>
 <h4 id="fn-i128_mula-int128-b-int128-int128"><code>fn i128_mul(a: Int128, b: Int128) -&gt; Int128</code><a class="headerlink" href="#fn-i128_mula-int128-b-int128-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>128 x 128 multiplication (result is modulo 2^128; low 128 bits are exact regardless of signedness). Complexity: O(1) -- native i128 mul.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (a * b)</code></li>
+</ul>
 <h4 id="fn-i128_comparea-int128-b-int128-int"><code>fn i128_compare(a: Int128, b: Int128) -&gt; Int</code><a class="headerlink" href="#fn-i128_comparea-int128-b-int128-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Three-way comparison (-1/0/1). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a &lt; b &amp;&amp; result == -1) || (a == b &amp;&amp; result == 0) || (a &gt; b &amp;&amp; result == 1)</code></li>
+</ul>
 <h4 id="fn-i128_is_zeroa-int128-bool"><code>fn i128_is_zero(a: Int128) -&gt; Bool</code><a class="headerlink" href="#fn-i128_is_zeroa-int128-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true iff the value is exactly zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (a == (?))</code></li>
+</ul>
 <h4 id="fn-i128_is_negativea-int128-bool"><code>fn i128_is_negative(a: Int128) -&gt; Bool</code><a class="headerlink" href="#fn-i128_is_negativea-int128-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true iff the value is negative (top bit set). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (a &lt; (?))</code></li>
+</ul>
 <h4 id="fn-i128_to_i64a-int128-optionint"><code>fn i128_to_i64(a: Int128) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i128_to_i64a-int128-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Converts to i64; None if the value does not fit in a signed 64-bit range. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (a &gt;= (?) &amp;&amp; a &lt;= (?))</code></li>
+</ul>
 <h4 id="fn-i128_to_stra-int128-str"><code>fn i128_to_str(a: Int128) -&gt; Str</code><a class="headerlink" href="#fn-i128_to_stra-int128-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Decimal string representation, handling the sign. Exact for the full Int128 range, including INT128_MIN. Complexity: O(128 * digits) ~ O(1) bounded by 39 digits.</p>
 <p>NOTE (2026-08-08): uses 64-bit limb arithmetic, NOT native i128 div/rem -- the sdiv/srem i128 libcalls (__divti3/__modti3) inside a multi-iteration loop with memory ops miscompile at clang -O2 (verified repeatedly). The limb algorithm is exact (e2e-proven pre-D1) and works at every opt level.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a == (?) =&gt; result == "0"</code></li>
+<li><strong>Postcondition:</strong> <code>a == (?) =&gt; result == "1"</code></li>
+<li><strong>Postcondition:</strong> <code>a == (?) - (?) =&gt; result == "-1"</code></li>
+</ul>
 <h4 id="fn-i128_from_strs-str-resultint128-str"><code>fn i128_from_str(s: Str) -&gt; Result[Int128, Str]</code><a class="headerlink" href="#fn-i128_from_strs-str-resultint128-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parses a decimal string (optional +/- prefix) into an Int128. Returns Err on invalid characters, empty input, or overflow beyond the 128-bit range. Complexity: O(digits * 128) ~ O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result is Err(_)</code></li>
+<li><strong>Postcondition:</strong> <code>s == "+" || s == "-" =&gt; result is Err(_)</code></li>
+</ul>
 <h4 id="fn-i128_shla-int128-n-int-int128"><code>fn i128_shl(a: Int128, n: Int) -&gt; Int128</code><a class="headerlink" href="#fn-i128_shla-int128-n-int-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Arithmetic shift left by n bits (wraps at 128 bits). n &gt;= 128 yields zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt;= 128 =&gt; result == (?)</code></li>
+</ul>
 <h4 id="fn-i128_shra-int128-n-int-int128"><code>fn i128_shr(a: Int128, n: Int) -&gt; Int128</code><a class="headerlink" href="#fn-i128_shra-int128-n-int-int128" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Arithmetic shift right by n bits (sign-extending). For n &gt;= 128 the result is the sign (all ones for negatives, zero otherwise). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>n &lt;= 0 =&gt; result == a</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt;= 128 &amp;&amp; a &gt;= 0 =&gt; result == (?)</code></li>
+<li><strong>Postcondition:</strong> <code>n &gt;= 128 &amp;&amp; a &lt; 0 =&gt; result == (?) - (?)</code></li>
+</ul>
 <h4 id="fn-i64_mul_diva-int-b-int-c-int-int"><code>fn i64_mul_div(a: Int, b: Int, c: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_mul_diva-int-b-int-c-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a*b/c evaluated with a 128-bit intermediate, then clamped (saturated) to the i64 range. c == 0 returns 0 (documented). Exact for all i64 inputs. Complexity: O(1) -- native i128 mul + div.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>c == 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>a == 0 || b == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-u8_from_i64v-int-optionint"><code>fn u8_from_i64(v: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-u8_from_i64v-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u8 from i64: Some(v) iff 0 &lt;= v &lt;= 255. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (v &gt;= 0 &amp;&amp; v &lt;= 255)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value == v</code></li>
+</ul>
 <h4 id="fn-u8_from_i32v-int32-optionint"><code>fn u8_from_i32(v: Int32) -&gt; Option[Int]</code><a class="headerlink" href="#fn-u8_from_i32v-int32-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u8 from i32 (promoted through i64 arithmetic). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == ((?) &gt;= 0 &amp;&amp; (?) &lt;= 255)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value == (?)</code></li>
+</ul>
 <h4 id="fn-u16_from_i64v-int-optionint"><code>fn u16_from_i64(v: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-u16_from_i64v-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u16 from i64: Some(v) iff 0 &lt;= v &lt;= 65535. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (v &gt;= 0 &amp;&amp; v &lt;= 65535)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value == v</code></li>
+</ul>
 <h4 id="fn-u32_from_i64v-int-optionint"><code>fn u32_from_i64(v: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-u32_from_i64v-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u32 from i64: Some(v) iff 0 &lt;= v &lt;= 4294967295. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (v &gt;= 0 &amp;&amp; v &lt;= 4294967295)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value == v</code></li>
+</ul>
 <h4 id="fn-u64_from_i64v-int-optionuint64"><code>fn u64_from_i64(v: Int) -&gt; Option[UInt64]</code><a class="headerlink" href="#fn-u64_from_i64v-int-optionuint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>u64 from i64: Some(v) iff v &gt;= 0. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (v &gt;= 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (?) == v</code></li>
+</ul>
 <h4 id="fn-i8_from_i64v-int-optionint"><code>fn i8_from_i64(v: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i8_from_i64v-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i8 from i64: Some(v) iff -128 &lt;= v &lt;= 127. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (v &gt;= -128 &amp;&amp; v &lt;= 127)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value == v</code></li>
+</ul>
 <h4 id="fn-i16_from_i64v-int-optionint"><code>fn i16_from_i64(v: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i16_from_i64v-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i16 from i64: Some(v) iff -32768 &lt;= v &lt;= 32767. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (v &gt;= -32768 &amp;&amp; v &lt;= 32767)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value == v</code></li>
+</ul>
 <h4 id="fn-i32_from_i64v-int-optionint"><code>fn i32_from_i64(v: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i32_from_i64v-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i32 from i64: Some(v) iff -2147483648 &lt;= v &lt;= 2147483647. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (v &gt;= -2147483648 &amp;&amp; v &lt;= 2147483647)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value == v</code></li>
+</ul>
 <h4 id="fn-i64_from_u64v-uint64-optionint"><code>fn i64_from_u64(v: UInt64) -&gt; Option[Int]</code><a class="headerlink" href="#fn-i64_from_u64v-uint64-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i64 from u64: Some(v) iff v has the top bit clear. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (u64_bit(v, 63) == 0)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0</code></li>
+</ul>
 <h4 id="fn-i64_from_i32v-int32-int"><code>fn i64_from_i32(v: Int32) -&gt; Int</code><a class="headerlink" href="#fn-i64_from_i32v-int32-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i64 from i32: always fits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-i64_from_i16v-int16-int"><code>fn i64_from_i16(v: Int16) -&gt; Int</code><a class="headerlink" href="#fn-i64_from_i16v-int16-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i64 from i16: always fits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-i64_from_i8v-int8-int"><code>fn i64_from_i8(v: Int8) -&gt; Int</code><a class="headerlink" href="#fn-i64_from_i8v-int8-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i64 from i8: always fits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-i64_from_u8v-uint8-int"><code>fn i64_from_u8(v: UInt8) -&gt; Int</code><a class="headerlink" href="#fn-i64_from_u8v-uint8-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i64 from u8: always fits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-i64_from_u16v-uint16-int"><code>fn i64_from_u16(v: UInt16) -&gt; Int</code><a class="headerlink" href="#fn-i64_from_u16v-uint16-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i64 from u16: always fits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-i64_from_u32v-uint32-int"><code>fn i64_from_u32(v: UInt32) -&gt; Int</code><a class="headerlink" href="#fn-i64_from_u32v-uint32-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>i64 from u32: always fits. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-f64_from_intv-int-float64"><code>fn f64_from_int(v: Int) -&gt; Float64</code><a class="headerlink" href="#fn-f64_from_intv-int-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float64 from i64 (lossless only for |v| &lt; 2^53; rounds beyond). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-f64_from_i32v-int32-float64"><code>fn f64_from_i32(v: Int32) -&gt; Float64</code><a class="headerlink" href="#fn-f64_from_i32v-int32-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float64 from i32: always exact. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-f64_from_u64v-uint64-float64"><code>fn f64_from_u64(v: UInt64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_from_u64v-uint64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float64 from u64: exact split into two 32-bit halves avoids relying on unsigned-to-float conversions for values above i64::MAX. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>v == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-f32_from_intv-int-float32"><code>fn f32_from_int(v: Int) -&gt; Float32</code><a class="headerlink" href="#fn-f32_from_intv-int-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float32 from i64 (rounds for |v| &gt; 2^24). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-f32_from_f64v-float64-float32"><code>fn f32_from_f64(v: Float64) -&gt; Float32</code><a class="headerlink" href="#fn-f32_from_f64v-float64-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float32 from Float64 (round-to-nearest; inf/NaN propagate). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-f64_from_f32v-float32-float64"><code>fn f64_from_f32(v: Float32) -&gt; Float64</code><a class="headerlink" href="#fn-f64_from_f32v-float32-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float64 from Float32: always exact. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (?)</code></li>
+</ul>
 <h4 id="fn-int_from_f64_truncv-float64-optionint"><code>fn int_from_f64_trunc(v: Float64) -&gt; Option[Int]</code><a class="headerlink" href="#fn-int_from_f64_truncv-float64-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncating conversion Float64 -&gt; Int. None on NaN or out-of-i64-range. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (!is_nan(v) &amp;&amp; v &lt; 9223372036854776000 &amp;&amp; v &gt;= -9223372036854776000)</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value == to_int(v)</code></li>
+</ul>
 <h4 id="fn-int_from_f64_roundv-float64-optionint"><code>fn int_from_f64_round(v: Float64) -&gt; Option[Int]</code><a class="headerlink" href="#fn-int_from_f64_roundv-float64-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Rounding conversion Float64 -&gt; Int (round-half-away-from-zero). None on NaN or out-of-range. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (!is_nan(v) &amp;&amp; v &lt; 9223372036854776000 &amp;&amp; v &gt;= -9223372036854776000)</code></li>
+</ul>
 <h4 id="fn-i32_from_f64_truncv-float64-optionint32"><code>fn i32_from_f64_trunc(v: Float64) -&gt; Option[Int32]</code><a class="headerlink" href="#fn-i32_from_f64_truncv-float64-optionint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncating conversion Float64 -&gt; Int32. None on NaN, out-of-i64-range, or outside the Int32 range. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (?) &gt;= -2147483648 &amp;&amp; (?) &lt;= 2147483647</code></li>
+<li><strong>Postcondition:</strong> <code>v == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-i32_from_f64_roundv-float64-optionint32"><code>fn i32_from_f64_round(v: Float64) -&gt; Option[Int32]</code><a class="headerlink" href="#fn-i32_from_f64_roundv-float64-optionint32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Rounding conversion Float64 -&gt; Int32 (round-half-away-from-zero). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; (?) &gt;= -2147483648 &amp;&amp; (?) &lt;= 2147483647</code></li>
+<li><strong>Postcondition:</strong> <code>v == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-u64_from_f64_truncv-float64-optionuint64"><code>fn u64_from_f64_trunc(v: Float64) -&gt; Option[UInt64]</code><a class="headerlink" href="#fn-u64_from_f64_truncv-float64-optionuint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncating conversion Float64 -&gt; UInt64. None on NaN, negatives, or values &gt;= 2^64. Handles the high half without unsigned-to-int casts. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (!is_nan(v) &amp;&amp; v &gt;= 0 &amp;&amp; v &lt; 18446744073709552000)</code></li>
+<li><strong>Postcondition:</strong> <code>v == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-int_from_f32_truncv-float32-optionint"><code>fn int_from_f32_trunc(v: Float32) -&gt; Option[Int]</code><a class="headerlink" href="#fn-int_from_f32_truncv-float32-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Truncating conversion Float32 -&gt; Int. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (!is_nan(?) &amp;&amp; (?) &lt; 9223372036854776000 &amp;&amp; (?) &gt;= -9223372036854776000)</code></li>
+<li><strong>Postcondition:</strong> <code>v == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-int_from_f32_roundv-float32-optionint"><code>fn int_from_f32_round(v: Float32) -&gt; Option[Int]</code><a class="headerlink" href="#fn-int_from_f32_roundv-float32-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Rounding conversion Float32 -&gt; Int (round-half-away-from-zero). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result is Some(_)) == (!is_nan(?) &amp;&amp; (?) &lt; 9223372036854776000 &amp;&amp; (?) &gt;= -9223372036854776000)</code></li>
+<li><strong>Postcondition:</strong> <code>v == 0 =&gt; result == Some(0)</code></li>
+</ul>
 <h4 id="fn-int_from_str_radix_checkeds-str-radix-int-optionint"><code>fn int_from_str_radix_checked(s: Str, radix: Int) -&gt; Option[Int]</code><a class="headerlink" href="#fn-int_from_str_radix_checkeds-str-radix-int-optionint" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Bounds-checked integer parse in the given radix (2..36). Reuses parse_int_radix; None on invalid input or overflow. Complexity: O(len(s)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>radix &lt; 2 || radix &gt; 36 =&gt; result is None</code></li>
+</ul>
 <h4 id="fn-i64_absv-int-int"><code>fn i64_abs(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_absv-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value of an i64. NOTE: |INT_MIN| wraps to INT_MIN (two's-complement); use i64_neg_checked for overflow-safe negation. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v &gt;= 0 =&gt; result == v) &amp;&amp; (v &lt; 0 =&gt; result == -v)</code></li>
+</ul>
 <h4 id="fn-i32_absv-int32-int32"><code>fn i32_abs(v: Int32) -&gt; Int32</code><a class="headerlink" href="#fn-i32_absv-int32-int32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value of an i32. |INT32_MIN| wraps to INT32_MIN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v &gt;= 0 =&gt; result == v) &amp;&amp; (v &lt; 0 =&gt; result == -v)</code></li>
+</ul>
 <h4 id="fn-i16_absv-int16-int16"><code>fn i16_abs(v: Int16) -&gt; Int16</code><a class="headerlink" href="#fn-i16_absv-int16-int16" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value of an i16. |INT16_MIN| wraps to INT16_MIN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v &gt;= 0 =&gt; result == v) &amp;&amp; (v &lt; 0 =&gt; result == -v)</code></li>
+</ul>
 <h4 id="fn-i8_absv-int8-int8"><code>fn i8_abs(v: Int8) -&gt; Int8</code><a class="headerlink" href="#fn-i8_absv-int8-int8" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value of an i8. |INT8_MIN| wraps to INT8_MIN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(v &gt;= 0 =&gt; result == v) &amp;&amp; (v &lt; 0 =&gt; result == -v)</code></li>
+</ul>
 <h4 id="fn-f64_absx-float64-float64"><code>fn f64_abs(x: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_absx-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value of a Float64 (fabs; -0.0 becomes +0.0, NaN propagates). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h4 id="fn-f32_absx-float32-float32"><code>fn f32_abs(x: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_absx-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Absolute value of a Float32. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result &gt;= 0) || (result != result)</code></li>
+</ul>
 <h4 id="fn-i64_clampv-int-lo-int-hi-int-int"><code>fn i64_clamp(v: Int, lo: Int, hi: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_clampv-int-lo-int-hi-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clamps v to the inclusive range [lo, hi]. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>lo &lt;= hi</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= lo &amp;&amp; result &lt;= hi</code></li>
+</ul>
 <h4 id="fn-i32_clampv-int32-lo-int32-hi-int32-int32"><code>fn i32_clamp(v: Int32, lo: Int32, hi: Int32) -&gt; Int32</code><a class="headerlink" href="#fn-i32_clampv-int32-lo-int32-hi-int32-int32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clamps an i32 (promoted to i64 arithmetic). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>lo &lt;= hi</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= lo &amp;&amp; result &lt;= hi</code></li>
+</ul>
 <h4 id="fn-u64_clampv-uint64-lo-uint64-hi-uint64-uint64"><code>fn u64_clamp(v: UInt64, lo: UInt64, hi: UInt64) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_clampv-uint64-lo-uint64-hi-uint64-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clamps a u64 using unsigned comparisons (avoids the signed <code>&gt;</code> bug). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>u64_ge(hi, lo)</code></li>
+<li><strong>Postcondition:</strong> <code>u64_ge(result, lo) &amp;&amp; u64_ge(hi, result)</code></li>
+</ul>
 <h4 id="fn-f64_clampx-float64-lo-float64-hi-float64-float64"><code>fn f64_clamp(x: Float64, lo: Float64, hi: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_clampx-float64-lo-float64-hi-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clamps a Float64. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>lo &lt;= hi</code></li>
+<li><strong>Postcondition:</strong> <code>((result &gt;= lo &amp;&amp; result &lt;= hi) || result != result)</code></li>
+</ul>
 <h4 id="fn-f32_clampx-float32-lo-float32-hi-float32-float32"><code>fn f32_clamp(x: Float32, lo: Float32, hi: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_clampx-float32-lo-float32-hi-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Clamps a Float32. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>lo &lt;= hi</code></li>
+<li><strong>Postcondition:</strong> <code>((result &gt;= lo &amp;&amp; result &lt;= hi) || result != result)</code></li>
+</ul>
 <h4 id="fn-i64_signumv-int-int"><code>fn i64_signum(v: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_signumv-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-1/0/1 for negative/zero/positive i64. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == -1 &amp;&amp; v &lt; 0) || (result == 0 &amp;&amp; v == 0) || (result == 1 &amp;&amp; v &gt; 0)</code></li>
+</ul>
 <h4 id="fn-i32_signumv-int32-int"><code>fn i32_signum(v: Int32) -&gt; Int</code><a class="headerlink" href="#fn-i32_signumv-int32-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-1/0/1 for i32. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == -1 &amp;&amp; v &lt; 0) || (result == 0 &amp;&amp; v == 0) || (result == 1 &amp;&amp; v &gt; 0)</code></li>
+</ul>
 <h4 id="fn-f64_signumv-float64-float64"><code>fn f64_signum(v: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_signumv-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-1.0/0.0/1.0 for a Float64. NaN returns NaN (IEEE signum semantics). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == -1 &amp;&amp; v &lt; 0) || (result == 1 &amp;&amp; v &gt; 0) || (result == 0 &amp;&amp; !(v &lt; 0) &amp;&amp; !(v &gt; 0) &amp;&amp; v == v) || result != result</code></li>
+</ul>
 <h4 id="fn-f32_signumv-float32-float32"><code>fn f32_signum(v: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_signumv-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-1.0/0.0/1.0 for a Float32. NaN returns NaN. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(result == -1 &amp;&amp; v &lt; 0) || (result == 1 &amp;&amp; v &gt; 0) || (result == 0 &amp;&amp; !(v &lt; 0) &amp;&amp; !(v &gt; 0) &amp;&amp; v == v) || result != result</code></li>
+</ul>
 <h4 id="fn-i64_powbase-int-exp-int-int"><code>fn i64_pow(base: Int, exp: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_powbase-int-exp-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>base^exp for i64 via square-and-multiply. Overflows WRAP (documented); use i64_pow_checked for overflow detection. Negative exponent returns 0. Complexity: O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>exp &lt; 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>exp == 0 =&gt; result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>base == 0 &amp;&amp; exp &gt; 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>base == 1 &amp;&amp; exp &gt;= 0 =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-u64_powbase-uint64-exp-int-uint64"><code>fn u64_pow(base: UInt64, exp: Int) -&gt; UInt64</code><a class="headerlink" href="#fn-u64_powbase-uint64-exp-int-uint64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>base^exp for u64. Overflows WRAP (documented). Negative exponent returns 0. Complexity: O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>exp &lt; 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>exp == 0 =&gt; result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>base == 0 &amp;&amp; exp &gt; 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>base == 1 &amp;&amp; exp &gt;= 0 =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-i32_powbase-int32-exp-int-int32"><code>fn i32_pow(base: Int32, exp: Int) -&gt; Int32</code><a class="headerlink" href="#fn-i32_powbase-int32-exp-int-int32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>base^exp for i32 (wraps at 32 bits; documented). Negative exponent returns 0. Complexity: O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>exp &lt; 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>exp == 0 =&gt; result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>base == 0 &amp;&amp; exp &gt; 0 =&gt; result == 0</code></li>
+<li><strong>Postcondition:</strong> <code>base == 1 &amp;&amp; exp &gt;= 0 =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-f64_powbase-float64-exp-float64-float64"><code>fn f64_pow(base: Float64, exp: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_powbase-float64-exp-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float64 power, delegating to xiom.math.pow. Negative bases require an integer exponent; otherwise returns NaN. Exponent outside the i64 range returns NaN (documented edge). Complexity: O(log exp) via libm.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
+<li><strong>Postcondition:</strong> <code>exp == 0 =&gt; result == 1</code></li>
 </ul>
 <h4 id="fn-f32_powbase-float32-exp-float32-float32"><code>fn f32_pow(base: Float32, exp: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_powbase-float32-exp-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float32 power (promoted through f64_pow). Complexity: O(log exp).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>exp == 0 =&gt; result == 1</code></li>
+</ul>
 <h4 id="fn-i64_min_of3a-int-b-int-c-int-int"><code>fn i64_min_of3(a: Int, b: Int, c: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_min_of3a-int-b-int-c-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Minimum of three i64 values. Concrete (generic min3 needs Ord dispatch). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &lt;= a &amp;&amp; result &lt;= b &amp;&amp; result &lt;= c</code></li>
+</ul>
 <h4 id="fn-i64_max_of3a-int-b-int-c-int-int"><code>fn i64_max_of3(a: Int, b: Int, c: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_max_of3a-int-b-int-c-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Maximum of three i64 values. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= a &amp;&amp; result &gt;= b &amp;&amp; result &gt;= c</code></li>
+</ul>
 <h4 id="fn-fraction_newnum-int-den-int-fraction_1"><code>fn fraction_new(num: Int, den: Int) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_newnum-int-den-int-fraction_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Builds a reduced fraction from num/den, normalizing the sign to the denominator. den == 0 returns the zero fraction (documented). Complexity: O(log max(|num|, |den|)) for gcd.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>result.num == 0 =&gt; result.den == 1</code></li>
+</ul>
 <h4 id="fn-fraction_from_intv-int-fraction"><code>fn fraction_from_int(v: Int) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_from_intv-int-fraction" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Builds the fraction v/1. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.num == v &amp;&amp; result.den == 1</code></li>
+</ul>
 <h4 id="fn-fraction_zero-fraction"><code>fn fraction_zero() -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_zero-fraction" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>The zero fraction 0/1. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.num == 0 &amp;&amp; result.den == 1</code></li>
+</ul>
 <h4 id="fn-fraction_one-fraction"><code>fn fraction_one() -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_one-fraction" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>The one fraction 1/1. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.num == 1 &amp;&amp; result.den == 1</code></li>
+</ul>
 <h4 id="fn-fraction_adda-fraction-b-fraction-fraction_1"><code>fn fraction_add(a: &amp;Fraction, b: &amp;Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_adda-fraction-b-fraction-fraction_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a + b. Pre-reduces by gcd(a.den, b.den) to limit overflow; the final result is re-reduced. Cross-products may still overflow i64 for very large denominators (documented). Complexity: O(log max(den)).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>a.den &gt; 0 &amp;&amp; b.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>a.num == 0 &amp;&amp; b.num == 0 =&gt; result.num == 0</code></li>
+</ul>
 <h4 id="fn-fraction_suba-fraction-b-fraction-fraction_1"><code>fn fraction_sub(a: &amp;Fraction, b: &amp;Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_suba-fraction-b-fraction-fraction_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a - b. Complexity: O(log max(den)).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>a.den &gt; 0 &amp;&amp; b.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>a.num == 0 &amp;&amp; b.num == 0 =&gt; result.num == 0</code></li>
+</ul>
 <h4 id="fn-fraction_mula-fraction-b-fraction-fraction_1"><code>fn fraction_mul(a: &amp;Fraction, b: &amp;Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_mula-fraction-b-fraction-fraction_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a * b. Cross-cancels via gcd before multiplying, minimizing overflow. Complexity: O(log max(|num|, den)).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>a.den &gt; 0 &amp;&amp; b.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>a.num == 0 || b.num == 0 =&gt; result.num == 0</code></li>
+</ul>
 <h4 id="fn-fraction_diva-fraction-b-fraction-fraction"><code>fn fraction_div(a: &amp;Fraction, b: &amp;Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_diva-fraction-b-fraction-fraction" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a / b (flip b and multiply). Dividing by the zero fraction yields zero (documented). Complexity: O(log max(|num|, den)).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>a.den &gt; 0 &amp;&amp; b.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>a.num == 0 =&gt; result.num == 0</code></li>
+</ul>
 <h4 id="fn-fraction_nega-fraction-fraction"><code>fn fraction_neg(a: &amp;Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_nega-fraction-fraction" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>-a. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.num == -a.num &amp;&amp; result.den == a.den</code></li>
+</ul>
 <h4 id="fn-fraction_comparea-fraction-b-fraction-int_1"><code>fn fraction_compare(a: Fraction, b: Fraction) -&gt; Int</code><a class="headerlink" href="#fn-fraction_comparea-fraction-b-fraction-int_1" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Three-way comparison via cross-multiplication. Cross-products can overflow i64 for large fractions (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == -1 || result == 0 || result == 1</code></li>
+</ul>
 <h4 id="fn-fraction_is_zeroa-fraction-bool"><code>fn fraction_is_zero(a: Fraction) -&gt; Bool</code><a class="headerlink" href="#fn-fraction_is_zeroa-fraction-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true iff the fraction is zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == (a.num == 0)</code></li>
+</ul>
 <h4 id="fn-fraction_numa-fraction-int"><code>fn fraction_num(a: Fraction) -&gt; Int</code><a class="headerlink" href="#fn-fraction_numa-fraction-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>The numerator. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a.num</code></li>
+</ul>
 <h4 id="fn-fraction_dena-fraction-int"><code>fn fraction_den(a: Fraction) -&gt; Int</code><a class="headerlink" href="#fn-fraction_dena-fraction-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>The denominator (always &gt; 0). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a.den</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt; 0</code></li>
+</ul>
 <h4 id="fn-fraction_to_floata-fraction-float64"><code>fn fraction_to_float(a: Fraction) -&gt; Float64</code><a class="headerlink" href="#fn-fraction_to_floata-fraction-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Converts to Float64 (numerator/denominator division). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.den != 0 &amp;&amp; a.num == a.den =&gt; result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>a.den != 0 &amp;&amp; a.num == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-fraction_to_float32a-fraction-float32"><code>fn fraction_to_float32(a: Fraction) -&gt; Float32</code><a class="headerlink" href="#fn-fraction_to_float32a-fraction-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Converts to Float32. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>a.den != 0 &amp;&amp; a.num == a.den =&gt; result == 1</code></li>
+<li><strong>Postcondition:</strong> <code>a.den != 0 &amp;&amp; a.num == 0 =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-fraction_to_stra-fraction-str"><code>fn fraction_to_str(a: Fraction) -&gt; Str</code><a class="headerlink" href="#fn-fraction_to_stra-fraction-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Renders as "num/den". Complexity: O(1) string building.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>str_len(result) == str_len(to_string(a.num)) + str_len(to_string(a.den)) + 1</code></li>
+</ul>
 <h4 id="fn-fraction_from_strs-str-optionfraction"><code>fn fraction_from_str(s: Str) -&gt; Option[Fraction]</code><a class="headerlink" href="#fn-fraction_from_strs-str-optionfraction" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Parses "num/den" (optional signs on each part). None on malformed input, empty parts, or a zero denominator. Complexity: O(len(s)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.len() == 0 =&gt; result is None</code></li>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value.den &gt; 0</code></li>
+</ul>
 <h4 id="fn-fraction_reciprocala-fraction-fraction"><code>fn fraction_reciprocal(a: &amp;Fraction) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_reciprocala-fraction-fraction" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>1/a (den/num). The zero fraction has no reciprocal; returns zero. Complexity: O(log max(|num|, den)).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>a.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>a.num == 0 =&gt; result.num == 0 &amp;&amp; result.den == 1</code></li>
+<li><strong>Postcondition:</strong> <code>a.num != 0 =&gt; result.den &gt; 0</code></li>
+</ul>
 <h4 id="fn-fraction_pow_inta-fraction-n-int-fraction"><code>fn fraction_pow_int(a: Fraction, n: Int) -&gt; Fraction</code><a class="headerlink" href="#fn-fraction_pow_inta-fraction-n-int-fraction" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>a^n for integer exponents. Negative n raises the reciprocal; n == 0 returns one. n == INT_MIN returns zero (documented overflow edge). Complexity: O(log |n|).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>a.den &gt; 0</code></li>
+<li><strong>Postcondition:</strong> <code>n == 0 =&gt; result.num == 1 &amp;&amp; result.den == 1</code></li>
+<li><strong>Postcondition:</strong> <code>n == INT_MIN =&gt; result.num == 0 &amp;&amp; result.den == 1</code></li>
+<li><strong>Postcondition:</strong> <code>a.num == 0 &amp;&amp; n &gt; 0 =&gt; result.num == 0</code></li>
+</ul>
 <h4 id="fn-fraction_is_propera-fraction-bool"><code>fn fraction_is_proper(a: Fraction) -&gt; Bool</code><a class="headerlink" href="#fn-fraction_is_propera-fraction-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns true iff |num| &lt; den (a proper fraction). NOTE: |INT_MIN| wraps (documented); proper tests near the i64 extreme are degenerate. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; a.den &gt; 0</code></li>
+</ul>
 <h4 id="fn-i64_lerpa-int-b-int-t-int-int"><code>fn i64_lerp(a: Int, b: Int, t: Int) -&gt; Int</code><a class="headerlink" href="#fn-i64_lerpa-int-b-int-t-int-int" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Integer lerp: a + (b - a) * t with t clamped to [0, 1]. For i64, t is effectively 0 or 1. NOTE: (b - a) * t can overflow i64 for extreme ranges (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == a || result == b</code></li>
+</ul>
 <h4 id="fn-f64_lerpa-float64-b-float64-t-float64-float64"><code>fn f64_lerp(a: Float64, b: Float64, t: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_lerpa-float64-b-float64-t-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float64 lerp: a + (b - a) * t. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a == b &amp;&amp; is_finite(a) &amp;&amp; is_finite(t)) =&gt; result == a</code></li>
+</ul>
 <h4 id="fn-f32_lerpa-float32-b-float32-t-float32-float32"><code>fn f32_lerp(a: Float32, b: Float32, t: Float32) -&gt; Float32</code><a class="headerlink" href="#fn-f32_lerpa-float32-b-float32-t-float32-float32" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Float32 lerp: a + (b - a) * t. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>(a == b &amp;&amp; is_finite(?) &amp;&amp; is_finite(?)) =&gt; result == a</code></li>
+</ul>
 <h4 id="fn-f64_inverse_lerpa-float64-b-float64-v-float64-float64"><code>fn f64_inverse_lerp(a: Float64, b: Float64, v: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_inverse_lerpa-float64-b-float64-v-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Inverse lerp: (v - a) / (b - a), clamped to [0, 1]. If b == a, returns 0 (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>((result &gt;= 0 &amp;&amp; result &lt;= 1) || result != result)</code></li>
+<li><strong>Postcondition:</strong> <code>b == a =&gt; result == 0</code></li>
+</ul>
 <h4 id="fn-f64_remapv-float64-in_lo-float64-in_hi-float64-out_lo-float64-out_hi-float64-float64"><code>fn f64_remap(v: Float64, in_lo: Float64, in_hi: Float64, out_lo: Float64, out_hi: Float64) -&gt; Float64</code><a class="headerlink" href="#fn-f64_remapv-float64-in_lo-float64-in_hi-float64-out_lo-float64-out_hi-float64-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Remaps v from the range [in_lo, in_hi] to [out_lo, out_hi] (linear). If in_hi == in_lo, returns out_lo (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>in_hi == in_lo =&gt; result == out_lo</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="precision_floatxi"><code>precision_float.xi</code><a class="headerlink" href="#precision_floatxi" title="Permanent link">&para;</a></h2>

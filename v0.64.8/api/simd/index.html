@@ -3271,14 +3271,23 @@
 <blockquote>
 <p>Vec4f Operations (4 x f32, SSE/NEON)</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-splatvalue-float32-vec4f"><code>fn splat(value: Float32) -&gt; Vec4f</code><a class="headerlink" href="#fn-splatvalue-float32-vec4f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Vector with all four lanes set to <code>value</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-zero-vec4f"><code>fn zero() -&gt; Vec4f</code><a class="headerlink" href="#fn-zero-vec4f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>All-zero vector.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-addself-self-other-vec4f-vec4f"><code>fn add(self: Self, other: Vec4f) -&gt; Vec4f</code><a class="headerlink" href="#fn-addself-self-other-vec4f-vec4f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Lane-wise addition.</p>
@@ -3304,6 +3313,9 @@
 <blockquote>
 <p>Lane-wise division.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>simd_supported()</code></li>
+</ul>
 <h4 id="fn-sqrtself-self-vec4f"><code>fn sqrt(self: Self) -&gt; Vec4f</code><a class="headerlink" href="#fn-sqrtself-self-vec4f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Lane-wise square root.</p>
@@ -3336,14 +3348,25 @@
 <blockquote>
 <p>Euclidean length of the vector.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>simd_supported()</code></li>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
 <h4 id="fn-normalizeself-self-vec4f"><code>fn normalize(self: Self) -&gt; Vec4f</code><a class="headerlink" href="#fn-normalizeself-self-vec4f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Unit vector in the same direction (a zero vector stays zero).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>simd_supported()</code></li>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-cross3self-self-other-vec4f-vec4f"><code>fn cross3(self: Self, other: Vec4f) -&gt; Vec4f</code><a class="headerlink" href="#fn-cross3self-self-other-vec4f-vec4f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Cross product using the first three lanes.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-dropself-self"><code>fn drop(self: Self)</code><a class="headerlink" href="#fn-dropself-self" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Free the underlying lane storage.</p>
@@ -3355,14 +3378,23 @@
 <blockquote>
 <p>Scalar fallback when SIMD unavailable Add the scalar in lane 0 to every lane.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-mul_scalarself-self-other-vec4f-vec4f"><code>fn mul_scalar(self: Self, other: Vec4f) -&gt; Vec4f</code><a class="headerlink" href="#fn-mul_scalarself-self-other-vec4f-vec4f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Multiply every lane by the scalar in lane 0.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-newv0-float32-v1-float32-v2-float32-v3-float32-v4-float32-v5-float32-v6-float32-v7-float32-vec8f"><code>fn new(v0: Float32, v1: Float32, v2: Float32, v3: Float32, v4: Float32, v5: Float32, v6: Float32, v7: Float32) -&gt; Vec8f</code><a class="headerlink" href="#fn-newv0-float32-v1-float32-v2-float32-v3-float32-v4-float32-v5-float32-v6-float32-v7-float32-vec8f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Vec8f Operations (8 x f32, AVX) Build an 8-lane vector from eight lane values.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-addself-self-other-vec8f-vec8f"><code>fn add(self: Self, other: Vec8f) -&gt; Vec8f</code><a class="headerlink" href="#fn-addself-self-other-vec8f-vec8f" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Lane-wise addition (AVX).</p>
@@ -3474,6 +3506,9 @@
 <blockquote>
 <p>Lane-wise division. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a == x.a / y.a &amp;&amp; result.b == x.b / y.b &amp;&amp; result.c == x.c / y.c &amp;&amp; result.d == x.d / y.d</code></li>
+</ul>
 <h5 id="fn-f32x4_sqrtx-f32x4-f32x4"><code>fn f32x4_sqrt(x: F32x4) -&gt; F32x4</code><a class="headerlink" href="#fn-f32x4_sqrtx-f32x4-f32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise square root. Complexity: O(1).</p>
@@ -3499,6 +3534,9 @@
 <blockquote>
 <p>The dot product of two vectors. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == x.a * y.a + x.b * y.b + x.c * y.c + x.d * y.d</code></li>
+</ul>
 <h5 id="fn-f32x4_loadptr-int-f32x4"><code>fn f32x4_load(ptr: Int) -&gt; F32x4</code><a class="headerlink" href="#fn-f32x4_loadptr-int-f32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Load a vector from aligned memory (16 bytes, four Float32 values). Complexity: O(1).</p>
@@ -3544,6 +3582,9 @@
 <blockquote>
 <p>The sum of all lanes. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == x.a + x.b + x.c + x.d</code></li>
+</ul>
 <h5 id="fn-i32x4_newa-int-b-int-c-int-d-int-i32x4"><code>fn i32x4_new(a: Int, b: Int, c: Int, d: Int) -&gt; I32x4</code><a class="headerlink" href="#fn-i32x4_newa-int-b-int-c-int-d-int-i32x4" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Build a vector from four integer lanes. Complexity: O(1).</p>
@@ -3705,6 +3746,9 @@
 <blockquote>
 <p>Build a vector from a fixed 8-element array. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == v[0] &amp;&amp; result.a1 == v[1] &amp;&amp; result.a2 == v[2] &amp;&amp; result.a3 == v[3] &amp;&amp; result.a4 == v[4] &amp;&amp; result.a5 == v[5] &amp;&amp; result.a6 == v[6] &amp;&amp; result.a7 == v[7]</code></li>
+</ul>
 <h5 id="fn-f32x8_addx-f32x8-y-f32x8-f32x8"><code>fn f32x8_add(x: F32x8, y: F32x8) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_addx-f32x8-y-f32x8-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise addition. Complexity: O(1).</p>
@@ -3730,6 +3774,9 @@
 <blockquote>
 <p>Lane-wise division. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == x.a0 / y.a0 &amp;&amp; result.a1 == x.a1 / y.a1 &amp;&amp; result.a2 == x.a2 / y.a2 &amp;&amp; result.a3 == x.a3 / y.a3 &amp;&amp; result.a4 == x.a4 / y.a4 &amp;&amp; result.a5 == x.a5 / y.a5 &amp;&amp; result.a6 == x.a6 / y.a6 &amp;&amp; result.a7 == x.a7 / y.a7</code></li>
+</ul>
 <h5 id="fn-f32x8_sqrtx-f32x8-f32x8"><code>fn f32x8_sqrt(x: F32x8) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_sqrtx-f32x8-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise square root. Complexity: O(1).</p>
@@ -3790,6 +3837,9 @@
 <blockquote>
 <p>The sum of all lanes. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == x.a0 + x.a1 + x.a2 + x.a3 + x.a4 + x.a5 + x.a6 + x.a7</code></li>
+</ul>
 <h5 id="fn-f32x8_loadptr-int-f32x8"><code>fn f32x8_load(ptr: Int) -&gt; F32x8</code><a class="headerlink" href="#fn-f32x8_loadptr-int-f32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Load a vector from aligned memory (32 bytes, eight Float32 values). Complexity: O(1).</p>
@@ -3808,6 +3858,9 @@
 <blockquote>
 <p>Build a vector from a fixed 8-element integer array. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.a0 == v[0] &amp;&amp; result.a1 == v[1] &amp;&amp; result.a2 == v[2] &amp;&amp; result.a3 == v[3] &amp;&amp; result.a4 == v[4] &amp;&amp; result.a5 == v[5] &amp;&amp; result.a6 == v[6] &amp;&amp; result.a7 == v[7]</code></li>
+</ul>
 <h5 id="fn-i32x8_addx-i32x8-y-i32x8-i32x8"><code>fn i32x8_add(x: I32x8, y: I32x8) -&gt; I32x8</code><a class="headerlink" href="#fn-i32x8_addx-i32x8-y-i32x8-i32x8" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Lane-wise addition. Complexity: O(1).</p>

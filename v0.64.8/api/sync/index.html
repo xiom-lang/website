@@ -3196,6 +3196,10 @@
 <blockquote>
 <p>Enqueue without blocking; false if full or closed. Params: ch - the channel; item - the value to send. Returns: true if queued, false if the channel is full or closed. Complexity: O(1). Never blocks.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result =&gt; ch.cap == 0 || ch.items.len() &lt;= ch.cap</code></li>
+<li><strong>Postcondition:</strong> <code>!result =&gt; ch.closed || (ch.cap &gt; 0 &amp;&amp; ch.items.len() &gt;= ch.cap)</code></li>
+</ul>
 <h5 id="fn-channel_recvtch-mut-channelt-optiont"><code>fn channel_recv[T](ch: &amp;mut Channel[T]) -&gt; Option[T]</code><a class="headerlink" href="#fn-channel_recvtch-mut-channelt-optiont" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Dequeue the next item, blocking when empty; None if closed. Params: ch - the channel. Returns: Some(item) in FIFO order, None if closed and drained. Complexity: O(n) shift per pop; blocks while empty.</p>
@@ -3207,6 +3211,9 @@
 <blockquote>
 <p>Dequeue without blocking; None if empty or closed. Params: ch - the channel. Returns: Some(item) in FIFO order, None if empty or closed. Complexity: O(n) shift per pop. Never blocks.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is None =&gt; ch.items.len() == 0</code></li>
+</ul>
 <h5 id="fn-channel_closetch-mut-channelt"><code>fn channel_close[T](ch: &amp;mut Channel[T])</code><a class="headerlink" href="#fn-channel_closetch-mut-channelt" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Mark the channel closed; pending sends fail, queued items stay readable. Params: ch - the channel. Complexity: O(1).</p>
@@ -3239,6 +3246,9 @@
 <blockquote>
 <p>Block until one channel is ready; returns its index. Params: chs - the channels to watch. Returns: Some(index) of the first channel with a queued item, or None if every channel is closed and drained. Complexity: O(n) per poll; blocks while no channel is ready.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Some(_) =&gt; result.value &gt;= 0 &amp;&amp; result.value &lt; chs.len()</code></li>
+</ul>
 <h5 id="type-channelhandle"><code>type ChannelHandle</code><a class="headerlink" href="#type-channelhandle" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>ChannelHandle[T] - a copyable Int-addressed handle to a heap-allocated <code>Channel[T]</code> cell. The address is non-zero for a live handle.</p>
@@ -3576,10 +3586,18 @@
 <blockquote>
 <p>Create an unlocked mutex holding <code>value</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.inner != null</code></li>
+<li><strong>Postcondition:</strong> <code>result.data != null</code></li>
+</ul>
 <h4 id="fn-locktself-self-mutexguardt"><code>fn lock[T](self: Self) -&gt; MutexGuard[T]</code><a class="headerlink" href="#fn-locktself-self-mutexguardt" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Block until the lock is acquired; returns the guard.</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.mutex.inner == inner</code></li>
+<li><strong>Postcondition:</strong> <code>result.mutex.data == data</code></li>
+</ul>
 <h4 id="fn-try_locktself-self-optionmutexguardt"><code>fn try_lock[T](self: Self) -&gt; Option[MutexGuard[T]]</code><a class="headerlink" href="#fn-try_locktself-self-optionmutexguardt" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Non-blocking lock attempt; None when already locked.</p>
@@ -4259,6 +4277,10 @@
 <blockquote>
 <p>Decrements the latch counter by one. Does nothing if already zero. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>l.remaining == l.remaining@pre || l.remaining == l.remaining@pre - 1</code></li>
+<li><strong>Postcondition:</strong> <code>l.remaining &gt;= 0</code></li>
+</ul>
 <h4 id="fn-cdl_is_zerol-countdownlatch-bool"><code>fn cdl_is_zero(l: &amp;CountDownLatch) -&gt; Bool</code><a class="headerlink" href="#fn-cdl_is_zerol-countdownlatch-bool" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Returns <code>true</code> if the latch has reached zero. Complexity: O(1).</p>

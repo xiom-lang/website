@@ -2982,10 +2982,16 @@
 <blockquote>
 <p>The current time as an ISO 8601 string (via xiom.time.iso8601_now). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-log_json_parseline-str-resultjsonlogentry-str"><code>fn log_json_parse(line: Str) -&gt; Result[JsonLogEntry, Str]</code><a class="headerlink" href="#fn-log_json_parseline-str-resultjsonlogentry-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Parse a JSON log line into an entry. Returns Err when the line is malformed (missing the level, message or timestamp keys). Complexity: O(len(line)).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value.level &gt;= 0 &amp;&amp; result.value.level &lt;= 5</code></li>
+</ul>
 <h5 id="fn-log_json_formatentry-jsonlogentry-str"><code>fn log_json_format(entry: JsonLogEntry) -&gt; Str</code><a class="headerlink" href="#fn-log_json_formatentry-jsonlogentry-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Re-serialize a log entry to a JSON line. Complexity: O(len(message) + fields).</p>
@@ -3450,6 +3456,11 @@
 <blockquote>
 <p>Open a file sink for appending. Returns Err when the file cannot be opened for append. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value.target == 3</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value.path.len() == path.len()</code></li>
+<li><strong>Postcondition:</strong> <code>result is Ok(_) =&gt; result.value.bytes == 0</code></li>
+</ul>
 <h5 id="fn-log_sink_stdout-sink"><code>fn log_sink_stdout() -&gt; Sink</code><a class="headerlink" href="#fn-log_sink_stdout-sink" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>A sink that writes to stdout. Complexity: O(1).</p>
