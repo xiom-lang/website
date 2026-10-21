@@ -1763,9 +1763,9 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      subdomains. Bus: acked then fixed with the refs + the ops steps
      (c6a5d00): point the four docroots, 301 /demo/ on xiom-pulse.com to
      the demo host, then 301 the three old subdomains path-preserving
-     (never redirect pulse). Watch the next :19 deploy against a Coming
-     Soon window and verify the four new hosts + the demo once ops flips
-     the docroots.
+     (never redirect pulse). The deploy runs hourly at minute :23; watch
+     the first :23 after the flip for a Coming Soon window and verify the
+     four new hosts + the demo once ops points the docroots.
 117. **Docs subdomains (2026-10-21, owner note)**: the owner clarified the
      product docs live on docs.<product-domain> (not /docs/ under the
      product site), releases stay on dl.xiom-lang.org, and xiom-engine
@@ -1781,7 +1781,7 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      LE certs (supersedes the docs-canonical part of
      REL-20261021-1434-ops); the OrbitDB/XVector/Engine docs hosts stay
      reserved until their docs exist. Watch: the new Docs links land at
-     the next :19 deploy, so the certs need to be valid by then.
+     the next :23 deploy, so the certs need to be valid by then.
 118. **Demo canonical -> xiom-pulse.com/demo (2026-10-21)**: ops moved the
      demo off the subdomain (owner decision; pulse.xiom-lang.org/demo/
      now 301s path-preserving and the /api proxy is wired on
