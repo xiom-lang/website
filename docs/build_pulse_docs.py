@@ -113,7 +113,7 @@ PAGE = """<!doctype html>
     </a>
     <div class="navlinks">
       <a href="https://xiom-pulse.com/">Overview</a>
-      <a href="https://pulse.xiom-lang.org/demo/">Demo</a>
+      <a href="https://xiom-pulse.com/demo/">Demo</a>
       <a href="index.html">Docs</a>
       <a href="https://xiom-pulse.com/#install">Install</a>
       <a href="https://xiom-pulse.com/#downloads">Downloads</a>

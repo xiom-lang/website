@@ -14,7 +14,7 @@ crash-safe append store with an audit trail.
 - Source: https://github.com/xiom-projects/xiom-pulse (MIT OR Apache-2.0)
 - Releases: https://github.com/xiom-projects/xiom-pulse/releases
 - Downloads (mirror): https://dl.xiom-lang.org/pulse/latest.json
-- Live demo: https://pulse.xiom-lang.org/demo/
+- Live demo: https://xiom-pulse.com/demo/
 
 ## What it ships
 
