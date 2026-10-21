@@ -1782,6 +1782,20 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      REL-20261021-1434-ops); the OrbitDB/XVector/Engine docs hosts stay
      reserved until their docs exist. Watch: the new Docs links land at
      the next :19 deploy, so the certs need to be valid by then.
+118. **Demo canonical -> xiom-pulse.com/demo (2026-10-21)**: ops moved the
+     demo off the subdomain (owner decision; pulse.xiom-lang.org/demo/
+     now 301s path-preserving and the /api proxy is wired on
+     xiom-pulse.com). Updated (site 911c8ed): the demo page canonical +
+     og:url -> https://xiom-pulse.com/demo/; product-page demo copy +
+     button -> the new URL; docs Demo nav + docs-src "Live demo" line (8
+     pages rebuilt); hub card label. Install commands and the served-by
+     link already pointed at xiom-pulse.com. The only remaining
+     pulse.xiom-lang.org reference is the factual dogfood sentence about
+     the running instance serving the product page. Link check 110
+     pages, 0 broken. Bus: the item was acked then fixed with refs; the
+     reply flags the docs-link conflict -- Docs links stay on
+     docs.xiom-pulse.com per the owner's docs-subdomain direction, not
+     xiom-pulse.com/docs/ as the ops item assumed.
 
 ## Cross-lane notes
 
