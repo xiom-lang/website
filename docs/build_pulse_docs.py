@@ -6,7 +6,7 @@ build is self-contained. This script renders each page with the same
 markdown converter the rest of the docs site uses (`docs/build_docs.py`)
 and writes flat HTML pages plus a shared stylesheet into
 `xiom-website/projects/pulse/docs/`, which nginx serves at
-pulse.xiom-lang.org/docs/.
+xiom-pulse.com/docs/ (and on the demo host at pulse.xiom-lang.org/docs/).
 
 Usage (from the repository root):
 
@@ -99,7 +99,7 @@ PAGE = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} -- Pulse docs</title>
 <meta name="description" content="{description}">
-<link rel="canonical" href="https://pulse.xiom-lang.org/docs/{canonical}">
+<link rel="canonical" href="https://xiom-pulse.com/docs/{canonical}">
 <link rel="icon" type="image/x-icon" href="../img/pulse.ico">
 <link rel="stylesheet" href="style.css?v=20261011">
 </head>
@@ -113,7 +113,7 @@ PAGE = """<!doctype html>
     </a>
     <div class="navlinks">
       <a href="../">Overview</a>
-      <a href="../demo/">Demo</a>
+      <a href="https://pulse.xiom-lang.org/demo/">Demo</a>
       <a href="index.html">Docs</a>
       <a href="../#install">Install</a>
       <a href="../#downloads">Downloads</a>

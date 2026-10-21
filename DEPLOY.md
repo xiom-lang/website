@@ -131,7 +131,7 @@ content-hashed, so the policy is revalidation-first:
   client that had visited earlier kept old orbitdb/xvector pages after
   the 14:19Z deploy because their HTML carried only `ETag`/`Last-Modified`.
   Tracked in `REL-20261017-1427-website`; verify with
-  `curl -sI https://orbitdb.xiom-lang.org/ | grep -i cache-control`.
+  `curl -sI https://xiom-orbitdb.com/ | grep -i cache-control`.
 - **Long-lived caching (optional, not enabled):** once every referenced
   asset URL carries a `?v=` stamp, the edge can send
   `Cache-Control: public, max-age=31536000, immutable` for requests whose

@@ -20,7 +20,7 @@ made. One request per page view, hidden entirely on any failure.
     note.setAttribute("data-served-by", "");
     note.appendChild(document.createTextNode("Served by "));
     var link = document.createElement("a");
-    link.href = "https://pulse.xiom-lang.org";
+    link.href = "https://xiom-pulse.com";
     link.style.color = "var(--signal)";
     link.textContent = "Pulse";
     note.appendChild(link);
