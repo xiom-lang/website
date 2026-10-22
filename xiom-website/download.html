@@ -55,6 +55,10 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 <main class="wrap" id="main">
 
+  <div id="release-hold" hidden style="border:1px solid var(--signal);border-radius:8px;padding:14px 16px;margin:22px 0 0;">
+    <p style="margin:0;font-size:14px;"><strong>Heads-up:</strong> <span id="release-hold-text"></span></p>
+  </div>
+
   <div class="content-section">
     <h2>Latest Release</h2>
     <p id="release-meta">Fetching release information...</p>
@@ -269,6 +273,12 @@ cargo test --workspace --lib</code></pre>
   var MIRROR = "https://dl.xiom-lang.org/latest.json";
   var API = "https://api.github.com/repos/xiom-lang/xiom/releases/latest";
   var FALLBACK = "https://github.com/xiom-lang/xiom/releases/latest";
+  // Temporary announcement holds: a released tag listed here keeps its
+  // download page visibility but is labelled as held, with the pin command.
+  // Remove the entry when the lane ships the fixed archive and says so.
+  var HELD = {
+    "v0.64.9": "known release-mode codegen regressions (nested generic pointer reads and tuple-returning enumerate); use --version v0.64.8 (install.ps1: -Version v0.64.8) to install the previous release until the patch archive lands."
+  };
 
   function humanSize(bytes) {
     if (!bytes && bytes !== 0) return "see release";
@@ -330,10 +340,22 @@ cargo test --workspace --lib</code></pre>
     var when = rel.published ? rel.published.slice(0, 10) : "";
     var line = document.getElementById("release-line");
     if (line) line.textContent = tag + (when ? " - released " + when : "");
+    var hold = HELD[tag];
     var meta = document.getElementById("release-meta");
     if (meta) {
-      meta.textContent = "Latest stable release: " + tag + (when ? " (" + when + ")" : "") +
+      meta.textContent = (hold ? "Newest release, held for adoption: " : "Latest stable release: ") +
+        tag + (when ? " (" + when + ")" : "") +
         ". Toolchain archives below include the compiler, standard library, and runtime.";
+    }
+    var holdBox = document.getElementById("release-hold");
+    var holdText = document.getElementById("release-hold-text");
+    if (holdBox && holdText) {
+      if (hold) {
+        holdText.textContent = tag + " is released but held for adoption: " + hold;
+        holdBox.hidden = false;
+      } else {
+        holdBox.hidden = true;
+      }
     }
     var notes = document.getElementById("release-notes");
     if (notes) notes.href = rel.pageUrl || FALLBACK;
