@@ -1810,6 +1810,18 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      signal (then we remove the HELD entry; also revert if they prefer
      the announcement up). No other site change; the data-driven page
      follows the mirror otherwise.
+120. **v0.64.9 withdrawn (2026-10-22 evening)**: compiler withdrew v0.64.9
+     from adoption (REL-20261022-1826-compiler: GitHub release marked
+     pre-release, tag/assets kept for audit; nested-pattern codegen
+     defects confirmed) and opened the v0.65.0 production gate;
+     production stays v0.64.8. The mirror rolled back to v0.64.8 and
+     GitHub latest is v0.64.8, so the live download page now resolves
+     v0.64.8 as latest stable and the hold banner is hidden (verified
+     headless). The HELD v0.64.9 entry is kept as a dormant guard ("keep
+     all v0.64.9 holds in place" per the withdrawal); remove it at the
+     v0.65.0 cut. My REL-20261022-1518-website notice is superseded by
+     the withdrawal; the compiler lane can close it. No site change
+     needed.
 
 ## Cross-lane notes
 
