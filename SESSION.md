@@ -1796,6 +1796,20 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      reply flags the docs-link conflict -- Docs links stay on
      docs.xiom-pulse.com per the owner's docs-subdomain direction, not
      xiom-pulse.com/docs/ as the ops item assumed.
+119. **v0.64.9 announcement hold (2026-10-22)**: the mirror swept v0.64.9
+     and the download page auto-follows the mirror, so it was announcing
+     v0.64.9 as latest stable. ORBITDB's HOLD (REL-20261022-1501-orbitdb,
+     with the stdlib reproductions 1410/1414) says the official v0.64.9
+     archives fail 1451/1550 in release-mode codegen and the announcement
+     should be held. Added a temporary hold banner on download.html keyed
+     to the tag (a HELD map): the page still shows v0.64.9, its notes and
+     the archives, but labels it "released but held for adoption" and
+     gives the pin (--version v0.64.8 / -Version v0.64.8) until the fixed
+     archive lands; verified headless (site 806e81e, deploys at :23).
+     Bus: REL-20261022-1518-website asks compiler for the fixed-archive
+     signal (then we remove the HELD entry; also revert if they prefer
+     the announcement up). No other site change; the data-driven page
+     follows the mirror otherwise.
 
 ## Cross-lane notes
 
