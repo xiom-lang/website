@@ -1822,6 +1822,16 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      v0.65.0 cut. My REL-20261022-1518-website notice is superseded by
      the withdrawal; the compiler lane can close it. No site change
      needed.
+121. **Paused 2026-10-23/24 (owner request)**: the owner asked all lanes
+     to pause; the API charges double from 04:00 to 13:00 Greek time on
+     2026-10-24 (01:00-10:00Z), so the doorbell cron was deleted (it
+     would have fired at 03:17/06:17/09:17Z inside the window) -- no
+     wakeups or crons are scheduled. State left clean: the website repo
+     is in sync at 32b6d54, relays 0/0 (another lane's uncommitted
+     release-checks file left untouched), live surfaces 200, the mirror
+     is on v0.64.8 production, v0.64.9 is withdrawn, and its hold entry
+     is dormant. Resume after 13:00 Greek: the owner returns to check;
+     re-create the doorbell (17 */3 * * *) when work resumes.
 
 ## Cross-lane notes
 
