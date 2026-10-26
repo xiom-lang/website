@@ -4629,6 +4629,9 @@
 <blockquote>
 <p>Identity conversion</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result == x</code></li>
+</ul>
 <h4 id="fn-int_to_floatn-int-float64"><code>fn int_to_float(n: Int) -&gt; Float64</code><a class="headerlink" href="#fn-int_to_floatn-int-float64" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Common conversions</p>
@@ -4718,6 +4721,9 @@
 <blockquote>
 <p>Allocate a NUL-terminated copy of a XIOM string and return its pointer. Parameters: s -- the string to copy. Returns: a malloc'd pointer the caller must free with xiom.ffi.free. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-cstring_lenptr-int-int"><code>fn cstring_len(ptr: Int) -&gt; Int</code><a class="headerlink" href="#fn-cstring_lenptr-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length of a C string excluding the terminating NUL. Parameters: ptr -- the address of the C string (0 returns 0). Returns: the byte count before the first NUL. Complexity: O(n).</p>
@@ -4729,6 +4735,9 @@
 <blockquote>
 <p>Duplicate a C string and return the new pointer. Parameters: ptr -- the address of the source C string. Returns: a malloc'd copy the caller must free. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5276,6 +5285,9 @@
 <blockquote>
 <p>Convert a generic value to a string via its Display to_str implementation. Parameters: v -- the value to render. Returns: the value's to_str() representation. Complexity: O(1) for primitives.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5576,18 +5588,30 @@
 <blockquote>
 <p>a + b, returning (wrapped_value, overflowed). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-overflowing_suba-int-b-int-int-bool"><code>fn overflowing_sub(a: Int, b: Int) -&gt; (Int, Bool)</code><a class="headerlink" href="#fn-overflowing_suba-int-b-int-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>a - b, returning (wrapped_value, overflowed). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-overflowing_mula-int-b-int-int-bool"><code>fn overflowing_mul(a: Int, b: Int) -&gt; (Int, Bool)</code><a class="headerlink" href="#fn-overflowing_mula-int-b-int-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>a * b, returning (wrapped_value, overflowed). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-overflowing_nega-int-int-bool"><code>fn overflowing_neg(a: Int) -&gt; (Int, Bool)</code><a class="headerlink" href="#fn-overflowing_nega-int-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>-a, returning (wrapped_value, overflowed). INT_MIN negates to itself. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <hr />
 <hr />
 <hr />
@@ -5963,6 +5987,9 @@
 <blockquote>
 <p>Seconds since the Unix epoch (1970-01-01T00:00:00Z). Returns: the current epoch seconds. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-timestamp_to_datets-int-date"><code>fn timestamp_to_date(ts: Int) -&gt; Date</code><a class="headerlink" href="#fn-timestamp_to_datets-int-date" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convert a Unix timestamp (seconds since the epoch) to a calendar date. Parameters: ts -- the timestamp. Returns: the corresponding Date (UTC). Complexity: O(1).</p>
@@ -5987,6 +6014,9 @@
 <blockquote>
 <p>Seconds since the Unix epoch (1970-01-01T00:00:00Z). Returns: the current epoch seconds. Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-timestamp_to_datets-int-date_1"><code>fn timestamp_to_date(ts: Int) -&gt; Date</code><a class="headerlink" href="#fn-timestamp_to_datets-int-date_1" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Convert a Unix timestamp (seconds since the epoch) to a calendar date. Parameters: ts -- the timestamp. Returns: the corresponding Date (UTC). Complexity: O(1).</p>
@@ -6799,6 +6829,9 @@
 <blockquote>
 <p>Allocate a wide-string copy of a XIOM string and return its pointer. Parameters: s -- the string to copy. Returns: a malloc'd UTF-16 pointer the caller must free. Complexity: O(n).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-wstring_lenptr-int-int"><code>fn wstring_len(ptr: Int) -&gt; Int</code><a class="headerlink" href="#fn-wstring_lenptr-int-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Length of a wide string in code units. Parameters: ptr -- the address of the UTF-16 wide string (0 returns 0). Returns: the number of code units before the terminating zero. Complexity: O(n).</p>

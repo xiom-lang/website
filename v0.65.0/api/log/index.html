@@ -3382,6 +3382,9 @@
 <blockquote>
 <p>Flushes log output. No-op in this implementation (output is synchronous). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <hr />
 <hr />
 <h2 id="sinksxi"><code>sinks.xi</code><a class="headerlink" href="#sinksxi" title="Permanent link">&para;</a></h2>
@@ -3516,10 +3519,16 @@
 <blockquote>
 <p>Flush every registered sink. No-op in this build (output is synchronous). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-log_sink_rotates-sink-max_bytes-int"><code>fn log_sink_rotate(s: Sink, max_bytes: Int)</code><a class="headerlink" href="#fn-log_sink_rotates-sink-max_bytes-int" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Rotate a file sink once it exceeds <code>max_bytes</code>. This build performs no byte accounting, so the sink's byte counter is never advanced and rotation is a no-op (documented). Complexity: O(1).</p>
 </blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>s.bytes == s.bytes@pre</code></li>
+</ul>
 <h5 id="fn-log_sink_closes-sink"><code>fn log_sink_close(s: Sink)</code><a class="headerlink" href="#fn-log_sink_closes-sink" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Close a sink and release its resources: unregisters it from the registry. File handles in this build are per-write and need no explicit release. Complexity: O(registered sinks).</p>

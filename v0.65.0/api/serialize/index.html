@@ -2928,7 +2928,7 @@
 <h1 id="stdlibserialize"><code>stdlib.serialize</code><a class="headerlink" href="#stdlibserialize" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Serialization Library</strong></p>
-<p>Generated from <code>v0.65.0</code>. 8 source files, 126 documented symbols.</p>
+<p>Generated from <code>v0.65.0</code>. 8 source files, 130 documented symbols.</p>
 </blockquote>
 <h2 id="csvxi"><code>csv.xi</code><a class="headerlink" href="#csvxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-csv_parsetext-str-resultvecvecstr-str"><code>fn csv_parse(text: Str) -&gt; Result[Vec[Vec[Str]], Str]</code><a class="headerlink" href="#fn-csv_parsetext-str-resultvecvecstr-str" title="Permanent link">&para;</a></h5>
@@ -3112,9 +3112,23 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
 </ul>
+<h5 id="fn-json_stringify_refv-jsonvalue-str"><code>fn json_stringify_ref(v: &amp;JsonValue) -&gt; Str</code><a class="headerlink" href="#fn-json_stringify_refv-jsonvalue-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Serialize <code>v</code> by reference as compact JSON. Callers that already hold a tree (PULSE request handlers) use this to avoid the by-value deep copy at the call boundary (REL-20261020-1704-pulse). Complexity: O(n), n = number of nodes.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
 <h5 id="fn-json_prettyv-jsonvalue-str"><code>fn json_pretty(v: JsonValue) -&gt; Str</code><a class="headerlink" href="#fn-json_prettyv-jsonvalue-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Serialize <code>v</code> as indented JSON (2 spaces per level). Complexity: O(n), n = number of nodes.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
+</ul>
+<h5 id="fn-json_pretty_refv-jsonvalue-str"><code>fn json_pretty_ref(v: &amp;JsonValue) -&gt; Str</code><a class="headerlink" href="#fn-json_pretty_refv-jsonvalue-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Serialize <code>v</code> by reference as indented JSON. See json_stringify_ref. Complexity: O(n), n = number of nodes.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt; 0</code></li>
@@ -3123,6 +3137,13 @@
 <blockquote>
 <p>The value under <code>key</code>, if <code>v</code> is an object and the key is present. Complexity: O(k), k = number of keys.</p>
 </blockquote>
+<h5 id="fn-json_get_refv-jsonvalue-key-str-optionjsonvalue"><code>fn json_get_ref(v: &amp;JsonValue, key: Str) -&gt; Option[JsonValue]</code><a class="headerlink" href="#fn-json_get_refv-jsonvalue-key-str-optionjsonvalue" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The value under <code>key</code> by reference; only the found subtree is copied, not the whole input tree (REL-20261020-1704-pulse). Complexity: O(k), k = number of keys.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-json_get_pathv-jsonvalue-path-vecstr-optionjsonvalue"><code>fn json_get_path(v: JsonValue, path: &amp;Vec[Str]) -&gt; Option[JsonValue]</code><a class="headerlink" href="#fn-json_get_pathv-jsonvalue-path-vecstr-optionjsonvalue" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The value at a key path (e.g. ["user", "address", "city"]), navigating objects by string key and arrays by numeric string index. Complexity: O(d * k), d = path depth, k = keys per object.</p>
@@ -3267,6 +3288,13 @@
 <h5 id="fn-json_typev-jsonvalue-str"><code>fn json_type(v: JsonValue) -&gt; Str</code><a class="headerlink" href="#fn-json_typev-jsonvalue-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>The type name of <code>v</code>: object, array, string, number, bool, or null. Complexity: O(1).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 4</code></li>
+</ul>
+<h5 id="fn-json_type_refv-jsonvalue-str"><code>fn json_type_ref(v: &amp;JsonValue) -&gt; Str</code><a class="headerlink" href="#fn-json_type_refv-jsonvalue-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The type name of <code>v</code> by reference, avoiding the by-value tree copy. Complexity: O(1).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= 4</code></li>

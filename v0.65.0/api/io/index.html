@@ -3677,7 +3677,7 @@
 </ul>
 <h4 id="fn-read_file_bytespath-str-resultvecuint8-ioerror"><code>fn read_file_bytes(path: Str) -&gt; Result[Vec[UInt8], IOError]</code><a class="headerlink" href="#fn-read_file_bytespath-str-resultvecuint8-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>read_file_bytes reads a file and returns its raw bytes. Complexity: O(n) where n = file size.</p>
+<p>read_file_bytes reads a file and returns its raw bytes. Complexity: O(n) where n = file size. The Ok payload is a fresh main-heap Vec owned by the caller (m375).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(path.len() == 0) =&gt; (result.is_err == true)</code></li>
@@ -3691,7 +3691,7 @@
 </ul>
 <h4 id="fn-read_atpath-str-offset-int-len-int-resultvecuint8-ioerror"><code>fn read_at(path: Str, offset: Int, len: Int) -&gt; Result[Vec[UInt8], IOError]</code><a class="headerlink" href="#fn-read_atpath-str-offset-int-len-int-resultvecuint8-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>read_at reads up to <code>len</code> bytes starting at byte <code>offset</code>, clamped to the file size (no past-EOF fabrication). Binary read. Returns: Ok(bytes) with bytes.len() &lt;= len; Err on open failure.</p>
+<p>read_at reads up to <code>len</code> bytes starting at byte <code>offset</code>, clamped to the file size (no past-EOF fabrication). Binary read. Returns: Ok(bytes) with bytes.len() &lt;= len; Err on open failure. The Ok payload is a fresh main-heap Vec owned by the caller (m375).</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>path.len() &gt; 0</code></li>
@@ -3775,6 +3775,9 @@
 <blockquote>
 <p>file_modified_time returns the last modification time of a file as a Unix timestamp, or None if the path cannot be stated.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h4 id="fn-move_filesrc-str-dst-str-resultunit-ioerror"><code>fn move_file(src: Str, dst: Str) -&gt; Result[Unit, IOError]</code><a class="headerlink" href="#fn-move_filesrc-str-dst-str-resultunit-ioerror" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>move_file renames (moves) a file or directory from src to dst. Alias for rename.  Complexity: O(1) OS call.</p>

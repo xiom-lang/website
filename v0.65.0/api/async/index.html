@@ -2945,14 +2945,23 @@
 <blockquote>
 <p>=== Spawn === Enqueue an async task onto the global executor's ready-queue. NOTE: unlike the old stub, this no longer runs <code>task</code> inline -- it is scheduled and runs when the executor is driven via <code>run</code>/<code>block_on</code>.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h4 id="fn-run"><code>fn run()</code><a class="headerlink" href="#fn-run" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Drive the global executor until all tasks and timers are complete.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h4 id="fn-block_ontask-fn-unit"><code>fn block_on(task: fn() -&gt; Unit)</code><a class="headerlink" href="#fn-block_ontask-fn-unit" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Spawn a task and drive the global executor to completion.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h4 id="fn-delayms-int-task-fn-unit"><code>fn delay(ms: Int, task: fn() -&gt; Unit)</code><a class="headerlink" href="#fn-delayms-int-task-fn-unit" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Schedule <code>task</code> to become ready after <code>ms</code> milliseconds (real timer).</p>
@@ -3558,6 +3567,9 @@
 <blockquote>
 <p>Cooperatively sleep <code>ms</code> milliseconds. Params: ms - the sleep duration (clamped to &gt;= 0). Complexity: O(1) syscall.</p>
 </blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
 <h5 id="fn-timer_delayms-int-timerfuture"><code>fn timer_delay(ms: Int) -&gt; TimerFuture</code><a class="headerlink" href="#fn-timer_delayms-int-timerfuture" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Schedule a task to become ready after <code>ms</code> milliseconds. Params: ms - the delay in milliseconds. Returns: a TimerFuture whose deadline is <code>ms</code> from now. Complexity: O(1).</p>
