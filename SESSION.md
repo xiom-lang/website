@@ -1872,6 +1872,18 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      Pulse dogfood instance (/api/version 0.2.2; the footer note renders
      "Served by Pulse 0.2.2"), while the separate xiom-pulse.com demo
      instance still reports 0.2.1 -- noted, no action.
+124. **v0.65.2 held on the site (2026-10-27)**: the mirror swept v0.65.2
+     (GitHub latest too), but xvector rejected it (WAL/struct-push
+     blocker; REL-20261027-2010-xvector: keep v0.65.1, do not announce)
+     and compiler confirmed a durable-lane regression
+     (REL-20261027-2128-compiler: hotfix on main; stay on v0.65.1 until
+     v0.65.3). Added the v0.65.2 entry to the download page's HELD map:
+     the page labels it "released but held for adoption" with the pin to
+     v0.65.1 and the v0.65.3 wait; verified headless (site cf0bb1c,
+     deploys at :23). Bus: the xvector item was acked then fixed with the
+     ref (1c99e16). The mirror lag pulse reported (REL-20261027-1941-pulse)
+     resolved itself with the sweep. Watch: remove/retarget the hold at the
+     v0.65.3 cut.
 
 ## Cross-lane notes
 
