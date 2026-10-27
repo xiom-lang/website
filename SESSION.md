@@ -1884,6 +1884,19 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      ref (1c99e16). The mirror lag pulse reported (REL-20261027-1941-pulse)
      resolved itself with the sweep. Watch: remove/retarget the hold at the
      v0.65.3 cut.
+125. **Project copy rewritten in product voice (2026-10-27)**: the owner
+     asked to remove agent/process language from the project pages
+     ("Phase 2", "owner's gate", "gating", readiness scores, tracker/CI
+     mechanics). Rewrote the Pulse, OrbitDB and XVector pages plus the
+     hub/roadmap cards: plain status sentences (beta / pre-alpha /
+     release candidate), the concrete test numbers kept, limitations
+     stated directly (memory growth, no TLS/encryption, x64-only,
+     opt-in durability, read-only UI), public downloads simply "not yet",
+     and no internal process references. Hub table cells now read
+     "private for now"/"offline"; the roadmap gates paragraph is
+     visitor-facing. Commit c35bc44, deploys at :23; ASCII clean, link
+     check 111 pages 0 broken, residual-phrase scan 0. No bus items
+     involved.
 
 ## Cross-lane notes
 
