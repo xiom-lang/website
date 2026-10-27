@@ -36,10 +36,10 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;align-items:center;">
       <img src="img/cover.webp" width="1254" height="1254" alt="XVector: a vector database for the XIOM ecosystem, with vector search, embeddings and multimodal panels." style="width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--line);">
       <div>
-        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- experimental, release candidate</p>
+        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- v1.0.0-rc.1</p>
         <h1 style="margin-top:0;">XVector</h1>
         <p>A vector database engine for the XIOM ecosystem: dense vectors with cosine, dot-product and euclidean metrics, exact flat search, an in-memory HNSW graph, payload filtering and WAL-backed durability -- built on the shared core primitives rather than around them.</p>
-        <p style="color:var(--muted);font-size:13px;">Status: the repository is private during development; the embedded engine ships as the xiom.vectors package on the registry, and there are no standalone releases or product downloads yet. The engine is at release candidate, not general availability; the exact search, the ANN index and the durability path are exercised by suites and probes in the private repository.</p>
+        <p style="color:var(--muted);font-size:13px;">Status: the repository is private during development; the embedded engine ships as the xiom.vectors package on the registry, and there are no standalone releases or public product downloads yet -- the public release stays owner-gated. The product is v1.0.0-rc.1: release-grade, 91% internal readiness -- not 100% production. The limits stay visible below.</p>
         <p><strong>Package:</strong> <a href="https://registry.xiom-lang.org/packages/xiom.vectors">xiom.vectors</a> -- the embedded engine, codename <strong>mote</strong> (live on the registry, incubating; in-process only, no socket or daemon).<br><strong>Standalone:</strong> <strong>lattice</strong> -- the scale-out server tier with standalone releases (in development).</p>
       </div>
     </div>
@@ -47,7 +47,7 @@
 
   <div class="content-section">
     <h2>What works today</h2>
-    <p>Verified on Windows and Linux; the embedded engine ships as the xiom.vectors package on the registry. The capability set below is at release candidate, not general availability; the suites and probes live in the repository.</p>
+    <p>Built and accepted on the XIOM v0.65.1 toolchain; the embedded engine ships as the xiom.vectors package on the registry. Release-grade, 91% internal readiness -- not 100% production; the suites and probes live in the repository.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <img src="img/dense-vectors.webp" alt="" loading="lazy" decoding="async">
@@ -100,21 +100,21 @@
         <p>Image, text, audio, 3D and video embeddings -- on the roadmap.</p>
       </div>
     </div>
-    <p style="color:var(--muted);font-size:13px;">Also in the release-candidate surface: opt-in SQ8 quantization, an in-process HTTP service surface, a served daemon with API scopes, limits and metrics, and thread support.</p>
+    <p style="color:var(--muted);font-size:13px;">Also in the release-candidate surface: opt-in SQ8 quantization, an in-process HTTP service surface, a served daemon with auth scopes and rate limiting, /metrics with an ordered log ring, a read-only /ui, and thread support.</p>
   </div>
 
   <div class="content-section">
     <h2>What is next</h2>
     <ul>
-      <li>Product architecture: the embedded engine is the mote tier; the scale-out lattice tier -- a stateless collection router with online move/drain, replicas next -- is in active development on the same engine.</li>
-      <li>Phase 2: GitHub releases and mirror installers, once the repository opens and the gates pass.</li>
+      <li>Product architecture: the embedded engine is the mote tier; the scale-out lattice tier -- a stateless collection router with online move/drain, replicas next -- is in active development on the same engine. L-6 intra-collection scatter-gather is post-rc.1.</li>
+      <li>Phase 2: a public release under the owner's gate -- GitHub releases and mirror installers -- once the repository opens and the gates pass.</li>
     </ul>
-    <p style="color:var(--muted);font-size:13px;">Release candidate, not GA: the xiom.vectors package is live on the registry (incubating), there is no standalone lattice release yet, and nothing here claims production readiness.</p>
+    <p style="color:var(--muted);font-size:13px;">Release-grade, 91% internal readiness, not 100% production: no TLS or encryption at rest, G-3 read snapshots are not done, no IVF/PQ, no mmap, x64 only, durability is opt-in, and the admin UI is read-only. The public release stays owner-gated.</p>
   </div>
 
   <div class="content-section">
     <h2>Downloads</h2>
-    <p style="color:var(--muted);">Nothing to download yet. Phase 2 publishes GitHub releases and mirror installers for every OS, like the toolchain's.</p>
+    <p style="color:var(--muted);">Nothing to download publicly yet; the v1.0.0-rc.1 release stays owner-gated. Phase 2 publishes GitHub releases and mirror installers when the owner greenlights.</p>
   </div>
 
 </main>

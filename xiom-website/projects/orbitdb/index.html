@@ -47,7 +47,7 @@
 
   <div class="content-section">
     <h2>What works today</h2>
-    <p>Verified on Windows and WSL: conformance 160/160, crash recovery 25/25, fuzz and soak green. Pinned to the official v0.64.5 toolchain; readiness is scored 77.5/100 in the repository's production-readiness record.</p>
+    <p>ORBITDB is pre-alpha. The embedded engine (Satellite) runs a durable write-ahead log with real fsync at commit acknowledgements, snapshot/replay recovery, transactions and savepoints, MVCC snapshot pins, typed rows, a query path with a planner and secondary indexes, and a paged storage layer with a bounded cache. The conformance suite passes 166/166 on Windows and WSL (run twice per platform), and hard-kill recovery matrices for the block store, database/transactions, and the Station are green. The 1,000,000-key memory soak completes under a 4 GB cap at a 1.83 GB peak with exact sample verification. A separate server tier (Station) is planned on the same engine: Station v1 targets trusted networks and local use, with the ORBITWIRE protocol frozen and crash recovery verified; graceful shutdown and session-loop hardening are the remaining v1 items. Readiness is scored 82.5/100 in the repository's production-readiness record.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <img src="img/b-tree.webp" alt="" loading="lazy" decoding="async">
@@ -67,12 +67,12 @@
       <div class="feature-card">
         <img src="img/crash-recovery.webp" alt="" loading="lazy" decoding="async">
         <h4>Crash recovery</h4>
-        <p>Disk WAL and page file with crash harnesses on Windows and WSL (25/25 on both); torn-tail healing.</p>
+        <p>Disk WAL and page file with hard-kill recovery matrices on Windows and WSL -- block store, database/transactions and Station; torn-tail healing.</p>
       </div>
       <div class="feature-card">
         <img src="img/query-filter.webp" alt="" loading="lazy" decoding="async">
         <h4>Query engine</h4>
-        <p>Equality and range filters with limit and offset.</p>
+        <p>A query path with a planner, secondary indexes, and equality/range filters.</p>
       </div>
       <div class="feature-card">
         <img src="img/schema-validation.webp" alt="" loading="lazy" decoding="async">
@@ -82,7 +82,7 @@
       <div class="feature-card">
         <img src="img/pages-n-buffer-pool.webp" alt="" loading="lazy" decoding="async">
         <h4>Pages and buffer pool</h4>
-        <p>Storage primitives, page files and the buffer pool; the v2 byte container is the default (v1 auto-detected, migrates on write).</p>
+        <p>A paged storage layer with a bounded cache; the v2 byte container is the default (v1 auto-detected, migrates on write).</p>
       </div>
       <div class="feature-card">
         <img src="img/tuple-code-crc32c.webp" alt="" loading="lazy" decoding="async">
@@ -92,26 +92,27 @@
       <div class="feature-card">
         <img src="img/conformance-suite.webp" alt="" loading="lazy" decoding="async">
         <h4>Conformance suite</h4>
-        <p>160/160 checks on Windows and WSL.</p>
+        <p>166/166 checks on Windows and WSL, run twice per platform.</p>
       </div>
-      <div class="feature-card feature-card--pending">
+      <div class="feature-card">
         <img src="img/transactions.webp" alt="" loading="lazy" decoding="async">
         <h4>Transactions</h4>
-        <p>State machine only -- no isolation or crash-safe redo/undo yet.</p>
+        <p>Transactions and savepoints with MVCC snapshot pins.</p>
       </div>
       <div class="feature-card">
         <img src="img/fsync-durability.webp" alt="" loading="lazy" decoding="async">
         <h4>fsync durability</h4>
-        <p>The standard library's fsync and sync-write primitives landed and now back ORBITDB's durable log path; the remaining steps are the power-loss test matrix and the pager.</p>
+        <p>The standard library fsync and sync-write primitives back the durable log path; commit acks are power-loss honest up to the synced seams, and the hardware power-loss test matrix is the remaining step.</p>
       </div>
     </div>
   </div>
 
   <div class="content-section">
     <h2>What is next</h2>
-    <p>Two-tier direction: the embedded engine (Satellite) continues as the release line while a server tier (Station) is planned on the same engine; Station v1 is trusted-network/local-only until the TLS server side lands (both tiers pre-alpha today).</p>
+    <p>Two-tier direction: the embedded engine (Satellite) continues as the release line while a PostgreSQL-class server tier (Station) is planned on the same engine -- never a fork -- gated on the embedded tier 1.0 prerequisites. Station v1 targets trusted networks and local use until the TLS server binding lands. (Both tiers are pre-alpha today.)</p>
     <ul>
-      <li>Pager next (the current storage milestone), then a refactor pass, then the Station prerequisites.</li>
+      <li>The next gates are hardware power-loss testing and the Station v1 close-out; no dates are announced.</li>
+      <li>Station v1 close-out: graceful stop and session-loop hardening, then reader snapshots.</li>
       <li>Phase 2: GitHub releases and mirror installers, once the repository opens and the gates pass.</li>
     </ul>
     <p style="color:var(--muted);font-size:13px;">Pre-alpha means pre-alpha: the engine's core, durable log and pages work today, but nothing here is ready for production data.</p>
