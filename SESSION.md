@@ -1897,6 +1897,14 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      visitor-facing. Commit c35bc44, deploys at :23; ASCII clean, link
      check 111 pages 0 broken, residual-phrase scan 0. No bus items
      involved.
+126. **Paused until the next release (2026-10-27)**: the owner asked to
+     pause the lane until the next release. The doorbell cron was deleted
+     (no wakeups or crons remain); the website repo is clean at ad4cb4b
+     and the relays are at 0/0. Resume when the next toolchain release
+     lands (v0.65.3 per the compiler's note): re-create the doorbell
+     (17 */3 * * *), remove/retarget the v0.65.2 HELD entry once v0.65.3
+     is accepted, then check the queue and the live pages. The v0.65.2
+     hold is live on the download page; the project copy rewrite is live.
 
 ## Cross-lane notes
 
