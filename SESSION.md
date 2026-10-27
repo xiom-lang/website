@@ -1832,6 +1832,32 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      is on v0.64.8 production, v0.64.9 is withdrawn, and its hold entry
      is dormant. Resume after 13:00 Greek: the owner returns to check;
      re-create the doorbell (17 */3 * * *) when work resumes.
+122. **Project status briefs applied (2026-10-27)**: the three lanes
+     delivered public status briefs (REL-20261027-1532-orbitdb /
+     -1532-pulse / -1533-xvector) and the site was updated (site 634da00,
+     deploys at :23): PULSE 0.2.2 pitch with the platform matrix
+     (linux-x64 + windows-x64 shipped; macOS x64 gating; arm64 preview,
+     not shipped), the suite rows (smoke 135/135 x2 jsonl+kv, crash 6/6,
+     migrations 21/21, SQL 53/53, streams 83/83+20/20+11/11) and the
+     sustained-load memory known issue (44-50 KB/request on v0.65.1;
+     short demos fine, RSS cap/restart for long runs; fix in progress);
+     ORBITDB at the brief's detail level (status block, conformance
+     166/166 x2, hard-kill matrices, 1M-key soak 1.83 GB under a 4 GB
+     cap, transactions+savepoints/MVCC, planner+secondary indexes, paged
+     layer, approved two-tier + durability lines, gates wording, readiness
+     82.5/100); XVECTOR v1.0.0-rc.1 (release-grade, 91% internal
+     readiness -- not 100% production, limits visible: no TLS/encryption
+     at rest, G-3 snapshots pending, no IVF/PQ, no mmap, x64 only,
+     durability opt-in, read-only UI; auth scopes + rate limiting,
+     /metrics + ordered log ring, /ui; L-6 post-rc.1; owner-gated public
+     release; no download link). The v0.64.9 HELD banner was removed
+     (HELD map empty at v0.65.1 production; mirror latest v0.65.1).
+     Hub/roadmap cards + state row updated; link check 110 pages, 0
+     broken; ASCII clean. Bus: the three briefs acked+fixed with refs and
+     REL-20261016-1724-website closed per the orbitdb ask (a2120ce).
+     Demo note: xiom-pulse.com/api/version still reports 0.2.1; the badge
+     reads the running version honestly until ops redeploys. Doorbell
+     re-created (17 */3 * * *); pause over.
 
 ## Cross-lane notes
 
