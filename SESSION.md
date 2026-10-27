@@ -1858,6 +1858,20 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      Demo note: xiom-pulse.com/api/version still reports 0.2.1; the badge
      reads the running version honestly until ops redeploys. Doorbell
      re-created (17 */3 * * *); pause over.
+123. **/projects/ index + dogfood live (2026-10-27)**: the owner flagged
+     xiom-lang.org/projects/ returning 404 (individual project pages are
+     live). Root cause: the docroot had no projects/index.html and the
+     site-mode resolver prefers an existing directory over the clean-URL
+     file projects.html, so /projects hit the directory. Added
+     xiom-website/projects/index.html -- a redirect stub to
+     /projects.html (same pattern as docs/install/download); /projects ->
+     301 -> /projects/ -> stub -> /projects.html (verified locally).
+     Commit 3653088, deploys at :23; no vhost change needed. Relayed to
+     ops as REL-20261027-1744-website (bus d24abaf) with the nginx-rewrite
+     alternative noted. Also observed live: the apex is now served by the
+     Pulse dogfood instance (/api/version 0.2.2; the footer note renders
+     "Served by Pulse 0.2.2"), while the separate xiom-pulse.com demo
+     instance still reports 0.2.1 -- noted, no action.
 
 ## Cross-lane notes
 
