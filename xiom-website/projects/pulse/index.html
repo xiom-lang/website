@@ -43,7 +43,7 @@
         <p data-pulse-badge hidden style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin:6px 0 0;">live demo</p>
         <h1 style="margin-top:0;">Pulse</h1>
         <p>The official XIOM web backend: a single-binary HTTP/1.1 service built with the XIOM toolchain and running behind the front proxy on loopback by design. Open source, MIT OR Apache-2.0. Pulse is a separate project from the language itself; its product home is xiom-pulse.com and the live demo runs at xiom-pulse.com/demo/.</p>
-        <p style="color:var(--muted);font-size:13px;">Honest beta: the repository is public and pulse-v0.1.0 was the first release. Every number below comes from the release suites and is re-checked at each release; the gap list is just as real as the wins.</p>
+        <p style="color:var(--muted);font-size:13px;">Pulse is in beta. The numbers below come from the release test suites, and the limitations are listed just as plainly.</p>
         <p><strong>Package:</strong> <a href="https://registry.xiom-lang.org/packages/xiom.pulse">xiom.pulse</a> -- the embeddable protocol core, codename <strong>Beacon</strong> (live on the registry).<br><strong>Standalone:</strong> <strong>Station</strong> -- the service on this site, consuming the same core (live, beta). One core, never a fork.</p>
       </div>
     </div>
@@ -51,7 +51,7 @@
 
   <div class="content-section">
     <h2>What works today</h2>
-    <p>Verified on linux-x64 and windows-x64: HTTP smoke 135/135 on both platforms (jsonl + kv), crash/reopen 6/6, migrations 21/21, SQL 53/53, streams 83/83 unit + 20/20 live + 11/11 auth. macOS x64 is gating; linux-arm64 and macOS arm64 are preview, not shipped.</p>
+    <p>Tested on Linux x64 and Windows x64: HTTP smoke 135/135 on both platforms (jsonl + kv), crash/reopen 6/6, migrations 21/21, SQL 53/53, streams 83/83 unit + 20/20 live + 11/11 auth. macOS x64 is coming; ARM64 builds are previews.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <img src="img/single-binary.webp" alt="" loading="lazy" decoding="async">
@@ -119,19 +119,19 @@
   <div class="content-section" id="gap">
     <h2>Honest beta -- what it does not do yet</h2>
     <ul>
-      <li>About 55% of the team's strict production bar: not production-ready, not hardened, not battle-tested.</li>
-      <li>Known issue: sustained-load memory -- the v0.65.1 pin retains roughly 44-50 KB per request. Short demos are fine; long high-rate runs need an RSS cap/restart (fix in progress).</li>
-      <li>No receive timeouts yet; avoid exposing it directly (the front proxy mitigates).</li>
-      <li>No graceful SIGTERM drain yet; restarts heal the store.</li>
-      <li>No credentials or RBAC: the login is a demo, not a security boundary.</li>
-      <li>No HTTP/2, SSE or WebSockets; TLS and proxying are the front proxy's job.</li>
-      <li>linux-arm64 and macOS arm64 are preview, not shipped -- do not deploy them yet.</li>
+      <li>Beta: not production-ready, not hardened, not battle-tested.</li>
+      <li>Memory use grows under sustained load (roughly 44-50 KB per request). Short demos are fine; long high-rate runs should cap and restart the process. A fix is in progress.</li>
+      <li>No receive timeouts yet, so avoid exposing it directly (the front proxy mitigates).</li>
+      <li>No graceful shutdown drain yet; restarts heal the store.</li>
+      <li>No credentials or role-based access control: the login is a demo, not a security boundary.</li>
+      <li>No HTTP/2, SSE or WebSockets. TLS and proxying are the front proxy's job.</li>
+      <li>ARM64 builds (Linux and macOS) are previews and not recommended for deployment yet.</li>
     </ul>
   </div>
 
   <div class="content-section" id="install">
     <h2>One-line install</h2>
-    <p>The installer resolves the latest release, verifies its SHA256, installs it for your user (no administrator or root needed) and puts a <code>pulse</code> command on your PATH. Only platforms with a published archive are offered: today linux-x64 and windows-x64. macOS x64 is gating; linux-arm64 and macOS arm64 are preview, not shipped.</p>
+    <p>The installer downloads the latest release, verifies its SHA256, installs it for your user (no administrator or root needed) and puts a <code>pulse</code> command on your PATH. Downloads are available for Linux x64 and Windows x64 today; macOS x64 is coming, and ARM64 builds are preview only.</p>
     <pre><code><span class="cm"># Windows PowerShell</span>
 irm https://xiom-pulse.com/install.ps1 | iex
 
@@ -149,7 +149,7 @@ curl -fsSL https://xiom-pulse.com/install.sh | sh</code></pre>
 
   <div class="content-section" id="downloads">
     <h2>Downloads</h2>
-    <p style="color:var(--muted);">Downloads come from the release pipeline: <a href="https://github.com/xiom-projects/xiom-pulse/releases" style="color:var(--signal);">releases on GitHub</a>, mirrored at <a href="https://dl.xiom-lang.org/pulse/latest.json" style="color:var(--signal);">dl.xiom-lang.org/pulse</a> (hourly). Buttons appear from the latest release itself -- nothing is hardcoded here.</p>
+    <p style="color:var(--muted);">Downloads are published on <a href="https://github.com/xiom-projects/xiom-pulse/releases" style="color:var(--signal);">GitHub</a> and mirrored at <a href="https://dl.xiom-lang.org/pulse/latest.json" style="color:var(--signal);">dl.xiom-lang.org/pulse</a>.</p>
     <div class="btn-group" data-pulse-downloads>
       <span data-pulse-slot="windows-x64"><span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">Windows -- soon</span></span>
       <span data-pulse-slot="linux-x64"><span class="btn-secondary" style="opacity:0.45;cursor:not-allowed;" aria-disabled="true">Linux -- soon</span></span>
@@ -161,11 +161,11 @@ curl -fsSL https://xiom-pulse.com/install.sh | sh</code></pre>
   <div class="content-section">
     <h2>What is next</h2>
     <ul>
-      <li>The repository is public; releases publish from CI and reach the mirror hourly. The current line adds the OpenAPI 3.1 contract, the CLI, paginated and idempotent event writes, bounded multipart uploads, and the outbound HTTP client as integrations groundwork.</li>
-      <li>The running Pulse instance at pulse.xiom-lang.org serves this product page itself, with the live status/version badge and download buttons reading the mirror; the interactive demo lives at xiom-pulse.com/demo/. macOS x64 is gating; linux-arm64 and macOS arm64 remain preview, not shipped (packaging held).</li>
-      <li>Chunked request decoding, configuration validation and the source-roots build proof have landed; the queue continues with chunked responses, the wildcard-bind fix, and a long soak of the optional kv backend.</li>
+      <li>The repository is public. Recent releases add the OpenAPI 3.1 contract, a CLI, paginated and idempotent event writes, bounded multipart uploads, and an outbound HTTP client.</li>
+      <li>The live demo runs at xiom-pulse.com/demo/. macOS x64 is coming; ARM64 builds remain previews.</li>
+      <li>Work continues on chunked responses, wildcard binding, and a longer soak of the optional kv backend.</li>
     </ul>
-    <p style="color:var(--muted);font-size:13px;">Nothing here is a release or a stability promise; the beta label stays until the gap list above is cleared.</p>
+    <p style="color:var(--muted);font-size:13px;">Beta until the limitations above are cleared.</p>
   </div>
 
 </main>
