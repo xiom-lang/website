@@ -47,7 +47,7 @@
 
   <div class="content-section">
     <h2>What works today</h2>
-    <p>OrbitDB is pre-alpha. The embedded engine (Satellite) has a durable write-ahead log with fsync at every commit, snapshot and replay recovery, transactions with savepoints and MVCC snapshots, typed rows, a query planner with secondary indexes, and a paged storage layer with a bounded cache. The conformance suite passes 166/166 on Windows and WSL, and crash-recovery tests pass for the block store, transactions and the server tier. A 1,000,000-key soak stays under a 4 GB cap at a 1.83 GB peak with exact sample verification. A server tier (Station) is planned on the same engine: it targets trusted networks and local use, with the ORBITWIRE protocol frozen and crash recovery verified -- graceful shutdown and session-loop hardening are the remaining work.</p>
+    <p>OrbitDB is pre-alpha. The embedded engine (Satellite) has a durable write-ahead log with fsync at every commit, snapshot and replay recovery, transactions with savepoints and MVCC snapshots, typed rows, a query planner with secondary indexes, and a paged storage layer with a bounded cache. The conformance suite passes 166/166 on Windows and WSL, and crash-recovery tests pass for the block store, transactions and the server tier. A 1,000,000-key soak stays under a 4 GB cap at a 1.83 GB peak with exact sample verification. A server tier (Station) is planned on the same engine: it targets trusted networks and local use, with the ORBITWIRE protocol frozen and crash recovery verified -- graceful shutdown and session-loop hardening are the remaining work. SQL is planned for the server tier only: Station will add a SQL front-end over the same engine and file format, while the embedded tier stays typed-only. SQL is not available yet.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <img src="img/b-tree.webp" alt="" loading="lazy" decoding="async">
@@ -113,6 +113,7 @@
     <ul>
       <li>Next: hardware power-loss testing and finishing the Station v1 work.</li>
       <li>Station v1: graceful shutdown and session-loop hardening, then reader snapshots.</li>
+      <li>Station (planned): a SQL front-end (SELECT/WHERE/ORDER/LIMIT, expressions, NULL semantics, GROUP BY/aggregates, INNER JOIN, basic DDL, transactions) alongside the typed/ORBITWIRE access, over one engine and one format; the embedded tier stays typed-only.</li>
       <li>Public downloads will follow when the repository opens.</li>
     </ul>
     <p style="color:var(--muted);font-size:13px;">Pre-alpha: the engine works, but do not put production data in it yet.</p>
