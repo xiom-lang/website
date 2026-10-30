@@ -1905,6 +1905,22 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      (17 */3 * * *), remove/retarget the v0.65.2 HELD entry once v0.65.3
      is accepted, then check the queue and the live pages. The v0.65.2
      hold is live on the download page; the project copy rewrite is live.
+127. **Resume: v0.65.3, xvector + orbitdb updates (2026-10-30)**: the
+     pause ended with v0.65.3 released (mirror and GitHub latest;
+     v0.65.2 superseded, v0.64.9 withdrawn). Applied the two website
+     items: XVector pins "Built with XIOM v0.65.3" and the v0.65.2 HELD
+     entry was removed (HELD empty; the page shows v0.65.3 as latest).
+     OrbitDB's positioning update is live in the copy: SQL is planned for
+     the server tier only (subset-first, not available today), the
+     embedded tier stays typed-only, one engine and one format; the hub
+     and roadmap cards carry the short clause. Per the owner's copy
+     direction the xvector page keeps the product-voice wording
+     (release-candidate stage + visible limits) rather than the internal
+     91% score. Site de7b034, deploys at :23; ASCII clean, link check
+     111/0. Bus: both items acked+fixed with refs (b71242c). Doorbell
+     re-created (17 */3 * * *, next fire 22:17Z). Watch: v0.65.4 (epos
+     fix) is on the bus but not yet the mirror/GitHub latest; handle its
+     cut when it lands.
 
 ## Cross-lane notes
 
