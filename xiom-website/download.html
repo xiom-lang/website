@@ -117,13 +117,27 @@ SPDX-License-Identifier: MIT OR Apache-2.0
         <td id="size-macos-arm64">see release</td>
         <td id="sha-macos-arm64" class="sha">-</td>
       </tr>
+      <tr id="row-wasm">
+        <td><strong>WebAssembly</strong></td>
+        <td>wasm32</td>
+        <td><a id="dl-wasm" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">xiom-wasm.wasm</a></td>
+        <td id="size-wasm">see release</td>
+        <td id="sha-wasm" class="sha">-</td>
+      </tr>
+      <tr id="row-vscode">
+        <td><strong>VS Code</strong></td>
+        <td>extension</td>
+        <td><a id="dl-vscode" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">xiom-vscode.vsix</a></td>
+        <td id="size-vscode">see release</td>
+        <td id="sha-vscode" class="sha">-</td>
+      </tr>
       <tr>
         <td colspan="3"><strong>Checksums</strong></td>
         <td><a id="dl-checksums" href="https://github.com/xiom-lang/xiom/releases/latest" style="color:var(--signal);">SHA256SUMS</a></td>
         <td>-</td>
       </tr>
     </table>
-    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. The expected SHA256 column is filled from <code>SHA256SUMS</code> when the browser can read it; otherwise the column points you at <code>SHA256SUMS</code> to check manually. Archives unpack to <code>bin/</code> (toolchain executables) and <code>lib/</code> (standard library and runtime). The same release also carries the WebAssembly build (<code>xiom-wasm</code>: <code>.wasm</code> plus JS bindings and typings) and the VS Code extension (<code>.vsix</code>); those files are listed on the release page.</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;">Downloads are served from the project mirror at <code>dl.xiom-lang.org</code>; the same archives, checksums and attestations are on the GitHub release. The expected SHA256 column is filled from <code>SHA256SUMS</code> when the browser can read it; otherwise the column points you at <code>SHA256SUMS</code> to check manually. Archives unpack to <code>bin/</code> (toolchain executables) and <code>lib/</code> (standard library and runtime). The WebAssembly build (wasm module plus JS bindings and typings) and the VS Code extension are in the table above; the bindings and typings files are in the same release.</p>
   </div>
 
   <div class="content-section">
@@ -325,9 +339,25 @@ cargo test --workspace --lib</code></pre>
             if (name.indexOf(key + ".") !== -1) { cell.textContent = hashes[name]; return; }
           }
         });
+        var extra = { "wasm": "xiom-wasm-", "vscode": "xiom-vscode-" };
+        for (var key2 in extra) {
+          var cell2 = document.getElementById("sha-" + key2);
+          if (!cell2) continue;
+          for (var name2 in hashes) {
+            if (name2.indexOf(extra[key2]) === 0) { cell2.textContent = hashes[name2]; break; }
+          }
+        }
+        ["wasm", "vscode"].forEach(function (key) {
+          var cell = document.getElementById("sha-" + key);
+          if (cell && cell.textContent === "-") cell.textContent = "see SHA256SUMS";
+        });
       })
       .catch(function () {
         SHA_CELLS.forEach(function (key) {
+          var cell = document.getElementById("sha-" + key);
+          if (cell && cell.textContent === "-") cell.textContent = "see SHA256SUMS";
+        });
+        ["wasm", "vscode"].forEach(function (key) {
           var cell = document.getElementById("sha-" + key);
           if (cell && cell.textContent === "-") cell.textContent = "see SHA256SUMS";
         });
@@ -367,6 +397,8 @@ cargo test --workspace --lib</code></pre>
     showAsset(assets, "dl-linux-arm64", "size-linux-arm64", "row-linux-arm64", /linux-arm64\.tar\.gz$/);
     showAsset(assets, "dl-macos-x64", "size-macos-x64", "row-macos-x64", /macos-x64\.tar\.gz$/);
     showAsset(assets, "dl-macos-arm64", "size-macos-arm64", "row-macos-arm64", /macos-arm64\.tar\.gz$/);
+    showAsset(assets, "dl-wasm", "size-wasm", "row-wasm", /^xiom-wasm-.*\.wasm$/);
+    showAsset(assets, "dl-vscode", "size-vscode", "row-vscode", /\.vsix$/);
     showAsset(assets, "dl-checksums", null, null, /^SHA256SUMS$/);
     loadChecksums(assets);
 
