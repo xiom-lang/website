@@ -1921,6 +1921,25 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      re-created (17 */3 * * *, next fire 22:17Z). Watch: v0.65.4 (epos
      fix) is on the bus but not yet the mirror/GitHub latest; handle its
      cut when it lands.
+128. **Release/mirror/docs verification (2026-10-30)**: verified the
+     v0.65.3 release end to end. CI: the 7 verification jobs (windows,
+     ubuntu, arm64 floor, MCU QEMU, release parity x2, hygiene) are green
+     for v0.65.3 (run 41075015231) and for current CI (41136384010); the
+     release run 41077253955 has all 8 jobs green (7 package/guard +
+     publish). The dl mirror carries all 11 published files (5 platform
+     archives, the .vsix, 4 wasm files, SHA256SUMS) and the mirror
+     SHA256SUMS matches the GitHub release digests for all 10 payloads
+     (sizes match latest.json). docs.xiom-lang.org latest is v0.65.3
+     including the stdlib API pages. v0.65.4 archives are ready
+     (dry-run 41134774980 green, CI 41136384010 green) but not yet
+     released. Site (db28b4e, deploys at :23): added direct WebAssembly
+     and VS Code download rows (data-driven from the release assets, with
+     a "see SHA256SUMS" checksum fallback) and refreshed the roadmap
+     stdlib fallbacks to the current tracker (corpus 963, probes 420).
+     Bus: REL-20261030-2230-website asks ops to keep the v0.65.4 sweep
+     complete (same 11-file set), publish per-release release.json (still
+     404) and add JSON CORS on dl, referencing the open owner item
+     REL-20261010-1549-website-2.
 
 ## Cross-lane notes
 
