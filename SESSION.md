@@ -1940,6 +1940,17 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      complete (same 11-file set), publish per-release release.json (still
      404) and add JSON CORS on dl, referencing the open owner item
      REL-20261010-1549-website-2.
+129. **v0.65.4 released and verified (2026-10-31)**: v0.65.4 is the latest
+     release (mirror + GitHub, published 2026-10-30 23:35Z) with all 11
+     files (5 platform archives incl. arm64 and macOS, the .vsix, 4 wasm
+     files, SHA256SUMS); the mirror SHA256SUMS matches the GitHub digests
+     for all 10 payloads. Release run 41144793224: 8/8 jobs green. The
+     download page already shows v0.65.4 with the wasm/VS Code rows
+     (data-driven; no site change needed). docs.xiom-lang.org/latest =
+     v0.65.4; the stdlib tracker reads 90% (9/10 gates), corpus 963/963,
+     modules 533/533, probes 420/420 -- matching the roadmap fallbacks.
+     XVector stays pinned to its lane-accepted v0.65.3. No HOLD or
+     withdrawal for v0.65.4 on the bus.
 
 ## Cross-lane notes
 
