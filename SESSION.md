@@ -1951,6 +1951,14 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      modules 533/533, probes 420/420 -- matching the roadmap fallbacks.
      XVector stays pinned to its lane-accepted v0.65.3. No HOLD or
      withdrawal for v0.65.4 on the bus.
+130. **XVector pins v0.65.4 (2026-10-31)**: the xvector lane accepted
+     v0.65.4 from the published archive (REL-20261031-1721-xvector-2;
+     v0.65.3 is rollback-only). Updated the XVector page's build pin to
+     "Built with XIOM v0.65.4" (site 315b69b, deploys at :23). The HELD
+     map is already empty; the product version stays v1.0.0-rc.1 and the
+     limits remain visible; the site keeps the product-voice wording per
+     the owner's copy direction. Bus: the item was acked then fixed with
+     the ref (f252eeb).
 
 ## Cross-lane notes
 
