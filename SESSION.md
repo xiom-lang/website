@@ -1976,6 +1976,27 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      deploy (main site + all project docroots + docs) and a demo redeploy
      to 0.2.2 -- the demo instance still reports 0.2.1 while 0.2.2 is the
      accepted release.
+132. **Roadmaps + benchmark baseline + public repo links (2026-11-02)**:
+     the lanes delivered public roadmaps (REL-20261102-1644-pulse,
+     -1645-orbitdb, -1647-xvector) and the site was updated (fa578fb,
+     deploys at :23): Pulse phases 0-4 + Now + the production-grade bar;
+     OrbitDB phases 0-8 + Now + the bar (SQL server-tier only); XVector
+     the 14-phase timeline + Tier-X proof gate + Now (G-3 + M0). The
+     owner published the first Benchmark of Chaos results (report, proof
+     and raw session under projects/chaos/bench). Built the results
+     section: data-driven from bench/latest.json (stable copy of the
+     report) with manifest.json for the evidence links, language icons
+     (simple-icons SVGs + the XIOM mark), per-task speed bars, the t8
+     safety index and a per-language table; verified headless (7
+     languages, 42 trials, XIOM v0.65.5). Each run: replace
+     bench/latest.json (and manifest.json for the evidence filenames) and
+     the page picks it up. Chaos copy moved from "no results yet" to the
+     published baseline. OrbitDB and XVector repos are public: GitHub nav
+     buttons (like Pulse), "public on GitHub" copy and hub table/intro
+     updates. ASCII clean, link check 111/0. Bus: the three roadmap items
+     acked+fixed (bb7bade); REL-20261102-1657-website asks ops for the
+     full deploy (main + all project sites + docs), the chaos bench JSON,
+     and the Pulse demo redeploy to 0.2.2.
 
 ## Cross-lane notes
 
