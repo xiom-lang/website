@@ -6555,7 +6555,7 @@
 </ul>
 <h5 id="type-eventloop"><code>type EventLoop</code><a class="headerlink" href="#type-eventloop" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Opaque readiness-loop handle (an epoll fd on Linux).</p>
+<p>Opaque readiness-loop handle (an epoll fd on Linux, a kqueue fd on macOS/FreeBSD, a slot handle on Windows).</p>
 </blockquote>
 <table>
 <thead>
@@ -6603,10 +6603,10 @@
 </ul>
 <h5 id="fn-eventloop_new-resulteventloop-str"><code>fn eventloop_new() -&gt; Result[EventLoop, Str]</code><a class="headerlink" href="#fn-eventloop_new-resulteventloop-str" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Create a readiness loop. Linux uses epoll, Windows uses a WSAPoll readiness shim; macOS/BSD return the documented Err until the kqueue wave.</p>
+<p>Create a readiness loop. Linux uses epoll, macOS/FreeBSD use kqueue, Windows uses a WSAPoll readiness shim; other POSIX returns the documented Err.</p>
 </blockquote>
 <ul>
-<li><strong>Postcondition:</strong> <code>(plat.platform_is_macos()) =&gt; (result.is_err)</code></li>
+<li><strong>Postcondition:</strong> <code>true</code></li>
 </ul>
 <h5 id="fn-eventloop_addloop-eventloop-fd-int-read-bool-write-bool-resultunit-str"><code>fn eventloop_add(loop: &amp;EventLoop, fd: Int, read: Bool, write: Bool) -&gt; Result[Unit, Str]</code><a class="headerlink" href="#fn-eventloop_addloop-eventloop-fd-int-read-bool-write-bool-resultunit-str" title="Permanent link">&para;</a></h5>
 <blockquote>

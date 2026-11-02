@@ -4248,7 +4248,7 @@
 <h1 id="stdlibcollect"><code>stdlib.collect</code><a class="headerlink" href="#stdlibcollect" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Collections: Adaptive Replacement Cache</strong></p>
-<p>Generated from <code>v0.65.4</code>. 68 source files, 678 documented symbols.</p>
+<p>Generated from <code>v0.65.4</code>. 68 source files, 681 documented symbols.</p>
 </blockquote>
 <h2 id="arcxi"><code>arc.xi</code><a class="headerlink" href="#arcxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-arc_newcapacity-int-arccache"><code>fn arc_new(capacity: Int) -&gt; ArcCache</code><a class="headerlink" href="#fn-arc_newcapacity-int-arccache" title="Permanent link">&para;</a></h5>
@@ -7576,6 +7576,13 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>string_map_contains(m, key)</code></li>
 </ul>
+<h5 id="fn-string_map_put_ownedm-mut-orderedstringmap-key-str-value-int"><code>fn string_map_put_owned(m: &amp;mut OrderedStringMap, key: Str, value: Int)</code><a class="headerlink" href="#fn-string_map_put_ownedm-mut-orderedstringmap-key-str-value-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Consuming variant of <code>string_map_put</code>. <code>key</code> must be a fresh owned Str. On an update the key is not stored (freed); on insert the map owns it. Use only for maps built exclusively with the <code>_owned</code> mutator.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>string_map_contains(m, key)</code></li>
+</ul>
 <h5 id="fn-string_map_getm-orderedstringmap-key-str-optionint"><code>fn string_map_get(m: &amp;OrderedStringMap, key: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-string_map_getm-orderedstringmap-key-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Value for <code>key</code>, or None if absent. O(n).</p>
@@ -9224,7 +9231,7 @@
 </table>
 <h5 id="fn-radix_new-radixtrie"><code>fn radix_new() -&gt; RadixTrie</code><a class="headerlink" href="#fn-radix_new-radixtrie" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Create a new empty radix trie (root node only). O(1).</p>
+<p>Create a new empty radix trie (root node only). O(1). Unannotated on purpose (REL-20261101-0116): labels hold literal "" seeds, so a mechanical owned-drop / overwrite free would free non-heap memory. Revisit after the trie tracks per-label ownership.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.size == 0</code></li>
@@ -9232,7 +9239,7 @@
 </ul>
 <h5 id="fn-radix_insertr-mut-radixtrie-key-str-value-int"><code>fn radix_insert(r: &amp;mut RadixTrie, key: Str, value: Int)</code><a class="headerlink" href="#fn-radix_insertr-mut-radixtrie-key-str-value-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Insert <code>key</code> with its value. Empty keys are rejected. Inserting an existing key is a no-op (the original value is kept). O(L) where L is the key length (amortized).</p>
+<p>Insert <code>key</code> with its value. Empty keys are rejected. Inserting an existing key is a no-op (the original value is kept). O(L) where L is the key length (amortized). Unannotated on purpose (REL-20261101-0116): overwritten labels/keys and discarded keys need per-entry ownership; leak-only is safe for now.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>string.str_len(key) &gt; 0 =&gt; radix_contains(r, key)</code></li>
@@ -10254,6 +10261,13 @@
 <ul>
 <li><strong>Postcondition:</strong> <code>m.count &gt;= 1</code></li>
 </ul>
+<h5 id="fn-string_map_put_ownedm-mut-stringmap-key-str-value-int"><code>fn string_map_put_owned(m: &amp;mut StringMap, key: Str, value: Int)</code><a class="headerlink" href="#fn-string_map_put_ownedm-mut-stringmap-key-str-value-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Consuming variant of <code>string_map_put</code>. The caller transfers ownership of <code>key</code> (must be a fresh, owned Str; never a literal or borrowed Str). On an update the key is not stored and is freed; on insert the map owns it. Use this only for maps built exclusively with the <code>_owned</code> mutator; a map with any borrowing put is not ownership-dropped by the compiler.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>m.count &gt;= 1</code></li>
+</ul>
 <h5 id="fn-string_map_getm-stringmap-key-str-optionint"><code>fn string_map_get(m: &amp;StringMap, key: Str) -&gt; Option[Int]</code><a class="headerlink" href="#fn-string_map_getm-stringmap-key-str-optionint" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Get the value for a key. None when absent. Params: m - the map; key - Str key. Returns: Some(value) if present, None otherwise. Complexity: O(1) amortized.</p>
@@ -10330,6 +10344,13 @@
 <h5 id="fn-string_str_map_putm-mut-stringstrmap-key-str-value-str"><code>fn string_str_map_put(m: &amp;mut StringStrMap, key: Str, value: Str)</code><a class="headerlink" href="#fn-string_str_map_putm-mut-stringstrmap-key-str-value-str" title="Permanent link">&para;</a></h5>
 <blockquote>
 <p>Insert or update <code>key</code> -&gt; <code>value</code>. Re-inserting an existing key updates its value in place (position kept).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>string_str_map_contains(m, key)</code></li>
+</ul>
+<h5 id="fn-string_str_map_put_ownedm-mut-stringstrmap-key-str-value-str"><code>fn string_str_map_put_owned(m: &amp;mut StringStrMap, key: Str, value: Str)</code><a class="headerlink" href="#fn-string_str_map_put_ownedm-mut-stringstrmap-key-str-value-str" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Consuming variant of <code>string_str_map_put</code>. Both args must be fresh owned Str values. On an update the key is not stored and is freed, and the overwritten old value is freed; on insert the map owns both. Use only for maps built exclusively with the <code>_owned</code> mutator (no borrowing puts).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>string_str_map_contains(m, key)</code></li>

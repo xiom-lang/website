@@ -2862,7 +2862,7 @@
 <h1 id="stdlibthread"><code>stdlib.thread</code><a class="headerlink" href="#stdlibthread" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Threading</strong></p>
-<p>Generated from <code>v0.65.4</code>. 5 source files, 64 documented symbols.</p>
+<p>Generated from <code>v0.65.4</code>. 5 source files, 67 documented symbols.</p>
 </blockquote>
 <h2 id="localxi"><code>local.xi</code><a class="headerlink" href="#localxi" title="Permanent link">&para;</a></h2>
 <h5 id="type-threadlocal"><code>type ThreadLocal</code><a class="headerlink" href="#type-threadlocal" title="Permanent link">&para;</a></h5>
@@ -3032,7 +3032,7 @@
 <h2 id="poolxi"><code>pool.xi</code><a class="headerlink" href="#poolxi" title="Permanent link">&para;</a></h2>
 <h5 id="type-pooljob"><code>type PoolJob</code><a class="headerlink" href="#type-pooljob" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>One in-flight job: its OS-thread handle plus the 16-byte result buffer the spawn trampoline writes into (layout: [done: 8][result: 8]).</p>
+<p>Legacy per-job record (kept for source compatibility; the persistent fleet no longer stores per-job handles).</p>
 </blockquote>
 <table>
 <thead>
@@ -3054,7 +3054,7 @@
 </table>
 <h5 id="type-threadpool"><code>type ThreadPool</code><a class="headerlink" href="#type-threadpool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Fixed-size worker pool with a shared job queue.</p>
+<p>Fixed-size persistent worker pool.</p>
 </blockquote>
 <table>
 <thead>
@@ -3096,11 +3096,15 @@
 <td><code>running</code></td>
 <td><code>Vec[PoolJob]</code></td>
 </tr>
+<tr>
+<td><code>handle</code></td>
+<td><code>*UInt8</code></td>
+</tr>
 </tbody>
 </table>
 <h5 id="fn-thread_pool_newworkers-int-threadpool"><code>fn thread_pool_new(workers: Int) -&gt; ThreadPool</code><a class="headerlink" href="#fn-thread_pool_newworkers-int-threadpool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Create a pool with <code>workers</code> threads. Params: workers - fixed number of workers (clamped to &gt;= 1). Returns: a new pool with all workers idle and no pending jobs. Complexity: O(1).</p>
+<p>Create a pool with <code>workers</code> persistent workers. Params: workers - fixed number of workers (clamped to &gt;= 1). Returns: a new pool with all workers idle and no pending jobs. Complexity: O(workers) OS thread creation.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.workers &gt;= 1</code></li>
@@ -3109,7 +3113,7 @@
 </ul>
 <h5 id="fn-tp_submitp-mut-threadpool-job-fn-unit-bool"><code>fn tp_submit(p: &amp;mut ThreadPool, job: fn() -&gt; Unit) -&gt; Bool</code><a class="headerlink" href="#fn-tp_submitp-mut-threadpool-job-fn-unit-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Enqueue a job; false if the pool is shutting down. Params: p - the pool; job - the closure (REAL: it runs on its own OS thread through the spawn machinery; <code>tp_join</code> waits for it). Returns: true on acceptance, false if the pool is shut down. Complexity: O(1) amortized plus one OS thread spawn.</p>
+<p>Enqueue a job; false if the pool is shutting down. Params: p - the pool; job - a named/top-level closure (runs on a persistent worker; capturing closures are not representable as bare code pointers -- see the module contract). Returns: true on acceptance, false if the pool is shut down. Complexity: O(1) amortized (blocks while the queue is full).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result == true =&gt; p.queued.len() &gt;= 1</code></li>
@@ -3117,7 +3121,7 @@
 </ul>
 <h5 id="fn-tp_submit_withp-mut-threadpool-job-fnint-unit-arg-int-bool"><code>fn tp_submit_with(p: &amp;mut ThreadPool, job: fn(Int) -&gt; Unit, arg: Int) -&gt; Bool</code><a class="headerlink" href="#fn-tp_submit_withp-mut-threadpool-job-fnint-unit-arg-int-bool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Enqueue a job with one argument; false if the pool is shutting down. Params: p - the pool; job - the closure; arg - its single argument. REAL but INLINE (engine-6 arg-channel freeze): the spawn trampoline has no argument channel, so the arg-carrying form runs on the submitting thread -- exactly once, with its arg. Returns: true on acceptance, false if the pool is shut down. Complexity: O(1) amortized plus the cost of <code>job</code>.</p>
+<p>Enqueue a job with one argument; false if the pool is shutting down. Params: p - the pool; job - the closure; arg - its single argument. Runs on a persistent worker with <code>arg</code> (no longer inline). Returns: true on acceptance, false if the pool is shut down. Complexity: O(1) amortized (blocks while the queue is full).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>(p.closed == true) =&gt; (result == false)</code></li>
@@ -3125,7 +3129,7 @@
 </ul>
 <h5 id="fn-tp_joinp-mut-threadpool"><code>fn tp_join(p: &amp;mut ThreadPool)</code><a class="headerlink" href="#fn-tp_joinp-mut-threadpool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Block until all queued jobs complete. Params: p - the pool. REAL drain: joins every in-flight OS thread (one per accepted no-arg job) and frees its result buffer; the counters return to busy == 0, idle == workers. Complexity: O(n) where n is the number of pending jobs.</p>
+<p>Block until all queued and running jobs complete. Params: p - the pool. REAL drain: waits for the runtime's outstanding counter to reach zero, then returns the assignment counters to busy == 0, idle == workers. Complexity: O(1) wait plus the workers' runtime.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>p.queued.len() == 0</code></li>
@@ -3134,15 +3138,24 @@
 </ul>
 <h5 id="fn-tp_shutdownp-mut-threadpool"><code>fn tp_shutdown(p: &amp;mut ThreadPool)</code><a class="headerlink" href="#fn-tp_shutdownp-mut-threadpool" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Stop accepting jobs, drain the queue, and reap workers. Params: p - the pool. Closes the pool (submit returns false afterwards) and drains the pending work as tp_join does. Complexity: O(n) where n is the number of pending jobs.</p>
+<p>Stop accepting jobs, drain the queue, and reap the workers. Params: p - the pool. Closes the pool (submit returns false afterwards), waits for completion, wakes every worker and joins the OS threads. Complexity: O(n) where n is the pending work.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>p.closed == true</code></li>
 <li><strong>Postcondition:</strong> <code>p.queued.len() == 0</code></li>
 </ul>
+<h5 id="fn-tp_destroyp-mut-threadpool"><code>fn tp_destroy(p: &amp;mut ThreadPool)</code><a class="headerlink" href="#fn-tp_destroyp-mut-threadpool" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>Shut the pool down and free its runtime resources. Params: p - the pool (consumed). Do not call while another thread may still submit. Complexity: O(n) where n is the pending work.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>p.closed == true</code></li>
+<li><strong>Postcondition:</strong> <code>p.busy == 0</code></li>
+<li><strong>Postcondition:</strong> <code>p.idle == p.workers</code></li>
+</ul>
 <h5 id="fn-tp_sizep-threadpool-int"><code>fn tp_size(p: &amp;ThreadPool) -&gt; Int</code><a class="headerlink" href="#fn-tp_sizep-threadpool-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>The number of worker threads. Params: p - the pool. Returns: the fixed worker count. Complexity: O(1).</p>
+<p>The number of persistent workers. Params: p - the pool. Returns: the fixed worker count. Complexity: O(1).</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
@@ -3156,7 +3169,21 @@
 </ul>
 <h5 id="fn-tp_busyp-threadpool-int"><code>fn tp_busy(p: &amp;ThreadPool) -&gt; Int</code><a class="headerlink" href="#fn-tp_busyp-threadpool-int" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>The number of currently running workers. Params: p - the pool. Returns: workers currently assigned a job (does not include queued work). Complexity: O(1).</p>
+<p>The number of currently assigned workers. Params: p - the pool. Returns: workers currently assigned a job (does not include queued work). Complexity: O(1).</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-tp_activep-threadpool-int"><code>fn tp_active(p: &amp;ThreadPool) -&gt; Int</code><a class="headerlink" href="#fn-tp_activep-threadpool-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The real number of queued + running jobs. Params: p - the pool. Returns: the runtime outstanding count (0 in degraded mode). Complexity: O(1) plus one lock.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
+</ul>
+<h5 id="fn-tp_completedp-threadpool-int"><code>fn tp_completed(p: &amp;ThreadPool) -&gt; Int</code><a class="headerlink" href="#fn-tp_completedp-threadpool-int" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>The real number of jobs completed by the workers. Params: p - the pool. Returns: the runtime completed counter (0 in degraded mode). Complexity: O(1) plus one lock.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result &gt;= 0</code></li>
@@ -3200,7 +3227,7 @@
 </ul>
 <h5 id="fn-spawn_withf-fnint-unit-arg-int-spawnthread"><code>fn spawn_with(f: fn(Int) -&gt; Unit, arg: Int) -&gt; SpawnThread</code><a class="headerlink" href="#fn-spawn_withf-fnint-unit-arg-int-spawnthread" title="Permanent link">&para;</a></h5>
 <blockquote>
-<p>Start a new thread running <code>f(arg)</code>. Params: f - the function to run; arg - its single argument. Returns: a handle to the (INLINE-run) closure -- spawn_with stays inline until the runtime grows an argument channel (engine-6); the handle carries no OS thread (join is a no-op Ok, detach a no-op). Complexity: O(1) plus the cost of <code>f</code>.</p>
+<p>Start a new thread running <code>f(arg)</code>. Params: f - a named/top-level fn(Int) (capturing closures are not bare code pointers); arg - its single argument. Returns: a real OS-thread handle; <code>join</code> waits and frees the buffer. The arg travels in the runtime payload (REL-20261010-1834-engine-6: the arg channel now exists; spawn_with is no longer inline). Complexity: O(1) plus the cost of <code>f</code> on the worker.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.id &gt; 0</code></li>

@@ -2862,7 +2862,7 @@
 <h1 id="stdlibio"><code>stdlib.io</code><a class="headerlink" href="#stdlibio" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>I/O Library</strong></p>
-<p>Generated from <code>v0.65.4</code>. 5 source files, 126 documented symbols.</p>
+<p>Generated from <code>v0.65.4</code>. 5 source files, 129 documented symbols.</p>
 </blockquote>
 <h2 id="bufferxi"><code>buffer.xi</code><a class="headerlink" href="#bufferxi" title="Permanent link">&para;</a></h2>
 <h5 id="fn-buf_reader_newfd-int-bufreader"><code>fn buf_reader_new(fd: Int) -&gt; BufReader</code><a class="headerlink" href="#fn-buf_reader_newfd-int-bufreader" title="Permanent link">&para;</a></h5>
@@ -3218,6 +3218,13 @@
 <h4 id="fn-printlnmsg-str"><code>fn println(msg: Str)</code><a class="headerlink" href="#fn-printlnmsg-str" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>Write a line to standard output.</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-eprintlnmsg-str"><code>fn eprintln(msg: Str)</code><a class="headerlink" href="#fn-eprintlnmsg-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Write a line to standard error and flush it immediately. Use this for crash/diagnostic markers: stdout is buffered, so a later fault can lose pending <code>println</code> output while stderr is already on the sink.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
@@ -3606,10 +3613,17 @@
 </ul>
 <h4 id="fn-join_pathsbase-str-child-str-str"><code>fn join_paths(base: Str, child: Str) -&gt; Str</code><a class="headerlink" href="#fn-join_pathsbase-str-child-str-str" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>=== Path operations ===</p>
+<p>=== Path operations === Join <code>child</code> onto <code>base</code>, recognizing BOTH <code>/</code> and <code>\</code> as separators so a Windows-style path is not silently treated as one segment. The result keeps the caller's separator style; a missing separator is added as <code>/</code>.</p>
 </blockquote>
 <ul>
 <li><strong>Postcondition:</strong> <code>result.len() &gt;= base.len()</code></li>
+</ul>
+<h4 id="fn-normalize_pathpath-str-str"><code>fn normalize_path(path: Str) -&gt; Str</code><a class="headerlink" href="#fn-normalize_pathpath-str-str" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Normalize a filesystem path lexically without touching the disk. Both <code>/</code> and <code>\</code> are accepted as separators and the output uses <code>/</code>; repeated separators and <code>.</code> segments are removed; <code>..</code> pops the previous segment (and is dropped at a root). A drive prefix (<code>C:</code>) or a leading <code>/</code> / <code>//</code> (UNC) root is preserved. An empty or fully-relative-empty path yields <code>.</code>. This is a lexical helper only: it does not resolve symlinks.</p>
+</blockquote>
+<ul>
+<li><strong>Postcondition:</strong> <code>result.len() &gt;= 1</code></li>
 </ul>
 <h4 id="fn-parent_pathpath-str-optionstr"><code>fn parent_path(path: Str) -&gt; Option[Str]</code><a class="headerlink" href="#fn-parent_pathpath-str-optionstr" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -3664,6 +3678,13 @@
 <h4 id="fn-flush_stdout"><code>fn flush_stdout()</code><a class="headerlink" href="#fn-flush_stdout" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>flush_stdout flushes the C stdout buffer (real since wave 115). Makes redirected/piped logs visible immediately; OS-level durability of the sink still depends on it (use io.fsync on a handle you own).</p>
+</blockquote>
+<ul>
+<li><strong>Precondition:</strong> <code>true</code></li>
+</ul>
+<h4 id="fn-flush_stderr"><code>fn flush_stderr()</code><a class="headerlink" href="#fn-flush_stderr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>flush_stderr flushes the C stderr buffer. <code>eprintln</code> already flushes per line; use this only after writing through a raw stderr FILE* handle.</p>
 </blockquote>
 <ul>
 <li><strong>Precondition:</strong> <code>true</code></li>
