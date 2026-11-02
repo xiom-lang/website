@@ -1959,6 +1959,23 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      limits remain visible; the site keeps the product-voice wording per
      the owner's copy direction. Bus: the item was acked then fixed with
      the ref (f252eeb).
+131. **Pulse site refresh + full deploy coordination (2026-11-02)**: the
+     pulse lane's public status file (docs/STATUS-FOR-WEBSITE.md, updated
+     16:00Z today) supersedes the Oct-27 brief: all five platforms gate
+     (linux-x64/arm64, windows-x64, macOS x64/arm64) and all five are
+     packaged in the release dry-run, but the published 0.2.2 assets are
+     linux-x64 + windows-x64 only (macOS/ARM64 arrive with the next
+     release); sustained-load memory is down to ~16.5 KB/req on v0.65.5
+     (22.3 on v0.65.4, 44-50 on v0.65.1) with the 24h soak gate ahead;
+     0.3.0 is in preparation; realtime compression/subprotocols next.
+     Updated the Pulse page (a1007c7): five-platform tested line, the
+     precise shipping matrix, the memory numbers, an "Also included"
+     line (SSE/WebSocket, site mode, multipart, OpenAPI, CLI) and the
+     refreshed next steps; hub/roadmap cards updated. ASCII clean, link
+     check 111/0. Bus: REL-20261102-1629-website asks ops for a full
+     deploy (main site + all project docroots + docs) and a demo redeploy
+     to 0.2.2 -- the demo instance still reports 0.2.1 while 0.2.2 is the
+     accepted release.
 
 ## Cross-lane notes
 
