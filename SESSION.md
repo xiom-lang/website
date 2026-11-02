@@ -1997,6 +1997,17 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      acked+fixed (bb7bade); REL-20261102-1657-website asks ops for the
      full deploy (main + all project sites + docs), the chaos bench JSON,
      and the Pulse demo redeploy to 0.2.2.
+133. **XVector v0.65.5 + roadmap alignment (2026-11-02)**: the xvector
+     lane accepted v0.65.5 (REL-20261102-1718-xvector) and updated the
+     roadmap doc (39de639). The page now pins "Built with XIOM v0.65.5"
+     and the phase table matches the current numbering: phase 8 Toolchain
+     hardening Done (v0.65.5 accepted), phase 9 G-3 read snapshots and
+     parity M0 next, 11-13 planned, 14 the Tier-X gate. Mirror and GitHub
+     latest are v0.65.5, so the download page follows. Site d577be1,
+     deploys at :23; ASCII/link checks clean. Bus: the item was
+     acked+fixed (ce5ce36). Also verified the 19:23 deploy: the
+     pulse/orbitdb roadmaps, the chaos results section and
+     bench/latest.json are live.
 
 ## Cross-lane notes
 
