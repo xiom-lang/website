@@ -24,9 +24,10 @@
     <div class="navlinks">
       <a href="https://xiom-lang.org/projects.html">Projects</a>
       <a href="https://xiom-lang.org/">xiom-lang.org</a>
+      <a href="https://xiom-lang.org/download.html">Toolchain</a>
       <a href="https://opencollective.com/xiom">Support</a>
     </div>
-    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+    <a class="nav-cta" href="https://github.com/xiom-projects/xiom-xvector">GitHub</a>
   </div>
 </nav>
 
@@ -39,7 +40,7 @@
         <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- v1.0.0-rc.1</p>
         <h1 style="margin-top:0;">XVector</h1>
         <p>A vector database engine for the XIOM ecosystem: dense vectors with cosine, dot-product and euclidean metrics, exact flat search, an in-memory HNSW graph, payload filtering and WAL-backed durability -- built on the shared core primitives rather than around them.</p>
-        <p style="color:var(--muted);font-size:13px;">XVector is at release-candidate stage (v1.0.0-rc.1). The code is private for now; the embedded engine is available as the xiom.vectors package. There is no public download yet.</p>
+        <p style="color:var(--muted);font-size:13px;">XVector is at release-candidate stage (v1.0.0-rc.1). The code is public on GitHub; the embedded engine is available as the xiom.vectors package. There is no public download yet.</p>
         <p><strong>Package:</strong> <a href="https://registry.xiom-lang.org/packages/xiom.vectors">xiom.vectors</a> -- the embedded engine, codename <strong>mote</strong> (live on the registry, incubating; in-process only, no socket or daemon).<br><strong>Standalone:</strong> <strong>lattice</strong> -- the scale-out server tier with standalone releases (in development).</p>
       </div>
     </div>
@@ -104,12 +105,28 @@
   </div>
 
   <div class="content-section">
-    <h2>What is next</h2>
-    <ul>
-      <li>The embedded engine is the mote tier; the scale-out lattice tier -- a stateless collection router with online move and drain, with replicas next -- is in development on the same engine. Cross-shard scatter-gather will follow the 1.0 release.</li>
-      <li>A public release will follow when the repository opens.</li>
-    </ul>
-    <p style="color:var(--muted);font-size:13px;">Not production-ready yet: no TLS or encryption at rest, read snapshots are not done, no IVF/PQ, no mmap, x64 only, durability is opt-in, and the admin UI is read-only. There is no public download yet.</p>
+    <h2>Roadmap</h2>
+    <p>XVector is at v1.0.0-rc.1. The roadmap to the production-grade Tier-X gate is ordered, not scheduled; Tier-X is a proof gate, not a date.</p>
+    <p><strong>Now:</strong> G-3 read snapshots and parity M0 (freezing the reference inventories).</p>
+    <table>
+      <tr><th>Phase</th><th>Focus</th><th>Status</th></tr>
+      <tr><td>1</td><td>Exact engine</td><td>Done</td></tr>
+      <tr><td>2</td><td>HNSW</td><td>Done</td></tr>
+      <tr><td>3</td><td>Durability</td><td>Done</td></tr>
+      <tr><td>4</td><td>Payload and query</td><td>Done</td></tr>
+      <tr><td>5</td><td>Serving and scale-out</td><td>Done</td></tr>
+      <tr><td>6</td><td>Concurrency and observability</td><td>Done</td></tr>
+      <tr><td>7</td><td>Packaging and UI</td><td>Done</td></tr>
+      <tr><td>8</td><td>v1.0.0-rc.1</td><td>Current release</td></tr>
+      <tr><td>9</td><td>Toolchain hardening</td><td>Done -- v0.65.4 accepted</td></tr>
+      <tr><td>10</td><td>G-3 read snapshots</td><td>Now</td></tr>
+      <tr><td>11</td><td>Parity M0 -- reference inventories</td><td>Now</td></tr>
+      <tr><td>12</td><td>Parity M1 / P0</td><td>Next</td></tr>
+      <tr><td>13</td><td>Parity M2 / P1</td><td>Next</td></tr>
+      <tr><td>14</td><td>Parity M3 / P2</td><td>Next</td></tr>
+      <tr><td>Tier-X</td><td>Proof gate: at least 90% weighted P0 and P1 parity on the package and standalone surfaces, external benchmarks and audit, security and operations controls, owner greenlight.</td><td>Gate</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px;">Not production-ready yet: no TLS or encryption at rest, read snapshots are not done, no IVF/PQ, no mmap, x64 only, durability is opt-in, and the admin UI is read-only. A public release will follow when the owner opens the public release gate.</p>
   </div>
 
   <div class="content-section">

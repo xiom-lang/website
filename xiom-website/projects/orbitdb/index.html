@@ -24,9 +24,10 @@
     <div class="navlinks">
       <a href="https://xiom-lang.org/projects.html">Projects</a>
       <a href="https://xiom-lang.org/">xiom-lang.org</a>
+      <a href="https://xiom-lang.org/download.html">Toolchain</a>
       <a href="https://opencollective.com/xiom">Support</a>
     </div>
-    <a class="nav-cta" href="https://xiom-lang.org/download.html">toolchain</a>
+    <a class="nav-cta" href="https://github.com/xiom-projects/xiom-orbitdb">GitHub</a>
   </div>
 </nav>
 
@@ -39,7 +40,7 @@
         <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- experimental, pre-alpha</p>
         <h1 style="margin-top:0;">OrbitDB</h1>
         <p>An embedded database engine in pure XIOM: B-tree index, write-ahead log, query engine, transactions and crash recovery, organised as a layered engine on the shared durable-systems substrate. It reuses the ecosystem's core primitives instead of copying them.</p>
-        <p style="color:var(--muted);font-size:13px;">OrbitDB is in development. The code is private for now, and there are no downloads yet.</p>
+        <p style="color:var(--muted);font-size:13px;">OrbitDB is in development. The code is public on GitHub, and there are no downloads yet.</p>
         <p><strong>Package:</strong> <a href="https://registry.xiom-lang.org/packages/xiom.orbitdb">xiom.orbitdb</a> -- the embedded engine, codename <strong>Satellite</strong> (live on the registry, incubating).<br><strong>Standalone:</strong> <strong>Station</strong> -- the PostgreSQL-class server tier with standalone releases (pending).</p>
       </div>
     </div>
@@ -108,20 +109,29 @@
   </div>
 
   <div class="content-section">
-    <h2>What is next</h2>
+    <h2>Roadmap</h2>
+    <p>ORBITDB is a pre-1.0 storage engine for the XIOM stack: an embedded tier (Satellite) with a crash-tested WAL, typed rows and a query path, and a server tier (Station) planned on the same engine.</p>
     <p>Two-tier direction: the embedded engine (Satellite) is the release line, with a PostgreSQL-class server tier (Station) planned on the same engine -- never a fork. Station v1 is for trusted networks and local use until TLS support lands. Both are pre-alpha today.</p>
-    <ul>
-      <li>Next: hardware power-loss testing and finishing the Station v1 work.</li>
-      <li>Station v1: graceful shutdown and session-loop hardening, then reader snapshots.</li>
-      <li>Station (planned): a SQL front-end (SELECT/WHERE/ORDER/LIMIT, expressions, NULL semantics, GROUP BY/aggregates, INNER JOIN, basic DDL, transactions) alongside the typed/ORBITWIRE access, over one engine and one format; the embedded tier stays typed-only.</li>
-      <li>Public downloads will follow when the repository opens.</li>
-    </ul>
-    <p style="color:var(--muted);font-size:13px;">Pre-alpha: the engine works, but do not put production data in it yet.</p>
+    <p>SQL is planned for the server tier only: Station will add a SQL front-end over the same engine and file format, while the embedded tier stays typed-only. SQL is not available yet.</p>
+    <p><strong>Now:</strong> hardware power-loss testing and finishing the Station v1 work.</p>
+    <table>
+      <tr><th>Phase</th><th>Focus</th><th>Status</th></tr>
+      <tr><td>0</td><td>In-memory core</td><td>Done</td></tr>
+      <tr><td>1</td><td>Durable pages and pager</td><td>Done</td></tr>
+      <tr><td>2</td><td>Disk WAL and durable recovery: fsync, snapshot and replay, torn-tail, crash tests</td><td>Done</td></tr>
+      <tr><td>3</td><td>Query, types and isolation: typed rows, predicates, secondary indexes, planner, MVCC</td><td>Done for the current scope</td></tr>
+      <tr><td>4</td><td>1.0 hardening -- Satellite</td><td>In progress: hardware power-loss matrix, multi-process safety, 5M-key memory target, CI on Linux and Windows, signed reproducible releases with an SBOM, a stable C ABI and thin Python binding, one external pilot.</td></tr>
+      <tr><td>5</td><td>Station v1 core</td><td>In progress: ORBITWIRE v1 frozen; graceful shutdown and session-loop hardening, then reader snapshots; trusted networks and local use.</td></tr>
+      <tr><td>6</td><td>Station SQL front-end</td><td>Planned after v1, subset-first; Satellite stays typed-only.</td></tr>
+      <tr><td>7</td><td>Production-grade server</td><td>Planned: auth and TLS, replication and failover, range sharding, operations tooling, scale benchmarks.</td></tr>
+      <tr><td>8</td><td>Ecosystem</td><td>Ongoing: bindings, docs, tutorials, crash corpus, pilots, release cadence.</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px;">The roadmap is ordered, not scheduled. Production grade means proven: power-loss tested on real hardware, documented multi-process behaviour, a published memory budget, signed reproducible releases with an SBOM, a stable API, operations docs, a security review and a real pilot. Until then OrbitDB stays pre-1.0. Pre-alpha: the engine works, but do not put production data in it yet.</p>
   </div>
 
   <div class="content-section">
     <h2>Downloads</h2>
-    <p style="color:var(--muted);">No public downloads yet. Releases and installers will follow when the repository opens.</p>
+    <p style="color:var(--muted);">No public downloads yet. Releases and installers will follow when the release gates pass.</p>
   </div>
 
 </main>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Benchmark of Chaos -- XIOM</title>
-<meta name="description" content="The Benchmark of Chaos: a language-safety benchmark that runs the same LLM across C, C++, Rust, Zig, Go, Ada and XIOM. Offline by design; instructions-only during phase 1.">
+<meta name="description" content="The Benchmark of Chaos: a language-safety benchmark that runs the same LLM across C, C++, Rust, Zig, Go, Ada and XIOM. Offline by design; the first baseline results are published.">
 <link rel="canonical" href="https://chaos.xiom-lang.org/">
 <meta property="og:title" content="Benchmark of Chaos -- XIOM">
 <meta property="og:description" content="A language-safety benchmark across systems, contracts, scripting and LLM arenas. Offline by design.">
@@ -12,6 +12,26 @@
 <meta property="og:type" content="website">
 <link rel="icon" type="image/x-icon" href="img/chaos.ico">
 <link rel="stylesheet" href="style.css?v=20261011">
+<style>
+.bench-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0 8px;}
+.bench-card{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;background:var(--panel);}
+.bench-card b{display:block;font-size:18px;color:var(--paper);margin-top:2px;}
+.bench-card span{font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);}
+.bench-task{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin:14px 0;background:var(--panel);}
+.bench-task h4{margin:0 0 2px;font-size:14px;}
+.bench-task .cap{color:var(--muted);font-size:12px;margin:0 0 8px;}
+.bench-row{display:grid;grid-template-columns:130px 1fr 76px;gap:10px;align-items:center;margin:5px 0;font-size:13px;}
+.bench-lang{display:flex;align-items:center;gap:8px;color:var(--paper-dim);}
+.bench-lang img{width:18px;height:18px;object-fit:contain;flex:none;}
+.bench-bar{height:8px;background:var(--line-soft);border-radius:4px;overflow:hidden;}
+.bench-bar span{display:block;height:100%;background:var(--signal);border-radius:4px;}
+.bench-val{text-align:right;font-family:var(--font-mono);font-size:12px;color:var(--paper-dim);}
+.bench-table{width:100%;border-collapse:collapse;font-size:13px;}
+.bench-table th,.bench-table td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;}
+.bench-table th{color:var(--muted);font-weight:600;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;}
+.bench-table td.num{text-align:right;font-family:var(--font-mono);}
+@media (max-width:560px){.bench-row{grid-template-columns:100px 1fr 64px;}}
+</style>
 </head>
 <body>
 
@@ -39,7 +59,7 @@
         <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);margin-bottom:6px;">XIOM project -- offline benchmark</p>
         <h1 style="margin-top:0;">Benchmark of Chaos</h1>
         <p>A language-safety benchmark platform: it compares programming languages on their ability to produce safe, correct systems code, using the same LLM as the code writer. Not an LLM benchmark -- a language benchmark.</p>
-        <p style="color:var(--muted);font-size:13px;">Offline by design: the benchmark runs from a local checkout, and the source and results stay offline during phase 1. This site carries the setup instructions; nothing is claimed from unpublished runs.</p>
+        <p style="color:var(--muted);font-size:13px;">The benchmark runs from a local checkout. The first baseline results are published below, with the report, proof bundle and raw session. Nothing is claimed beyond what those files show.</p>
       </div>
     </div>
   </div>
@@ -53,6 +73,21 @@
       <tr><td>Scripting</td><td>Python, Node.js, Bun, Lua, XIOM (four execution modes)</td><td>Correctness, speed, throughput, startup latency</td></tr>
       <tr><td>LLM</td><td>The same matrix, written by the model</td><td>Does AI-produced code pass each arena's tests</td></tr>
     </table>
+  </div>
+
+  <div class="content-section" id="results">
+    <h2>Results -- first baseline</h2>
+    <p>The first published run: the systems arena, one baseline session across seven languages and six tasks on the pinned toolchain. One sample per language and task -- a baseline, not a statistical claim. The full report, proof bundle and raw session are linked below.</p>
+    <div id="bench-summary" class="bench-cards"></div>
+    <p id="bench-error" hidden style="color:var(--error);font-size:13px;">The results file could not be loaded (bench/latest.json).</p>
+    <div id="bench-tasks"></div>
+    <h3>Safety probe (t8)</h3>
+    <p style="color:var(--muted);font-size:13px;">Twelve hazard probes per language, three repeats, with observed canary and sentinel evidence. The index is the benchmark's t8 safety index (higher is better in its scoring contract); probe-level evidence is in the report.</p>
+    <div id="bench-safety"></div>
+    <h3>Per-language summary</h3>
+    <div id="bench-table"></div>
+    <p style="color:var(--muted);font-size:13px;">Caveats: per-language values are means of per-session means; unmeasured metrics are not shown; this is a single baseline run. Methodology and disputes live in the benchmark's fairness documents.</p>
+    <p style="font-size:13px;">Evidence: <a id="bench-report" href="bench/latest.json" style="color:var(--signal);">report JSON</a> -- <a id="bench-proof" href="#" style="color:var(--signal);">proof bundle</a> -- <a id="bench-session" href="#" style="color:var(--signal);">raw session</a>.</p>
   </div>
 
   <div class="content-section">
@@ -103,13 +138,13 @@
         <h4>Reproducibility</h4>
         <p>Arena profiles need no API keys; LLM profiles use keys you provide, and a run is rebuilt from the checkout.</p>
       </div>
-      <div class="feature-card feature-card--pending">
+      <div class="feature-card">
         <img src="img/results.webp" alt="" loading="lazy" decoding="async">
         <h4>Results</h4>
-        <p>Nothing is claimed from unpublished runs; results will appear on this site when they are ready.</p>
+        <p>First baseline published: seven languages, six tasks, one systems-arena session. See the results above.</p>
       </div>
     </div>
-    <p style="color:var(--muted);font-size:13px;">Phase 1: source and results stay offline. Setup instructions and, when they are ready, published results will appear on this site. Nothing is claimed yet -- no results have been published and the harness is still being battle-tested.</p>
+    <p style="color:var(--muted);font-size:13px;">Phase 1: the benchmark runs offline from a local checkout. The first baseline is published above; the fairness and methodology documents are maintained with the benchmark.</p>
   </div>
 
 </main>
@@ -123,5 +158,6 @@
   </div>
 </footer>
 
+<script src="js/chaos-bench.js?v=20261102"></script>
 </body>
 </html>
