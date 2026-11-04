@@ -2008,6 +2008,20 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      acked+fixed (ce5ce36). Also verified the 19:23 deploy: the
      pulse/orbitdb roadmaps, the chaos results section and
      bench/latest.json are live.
+134. **v0.65.6 acceptance + notes limit (2026-11-04)**: the compiler lane
+     published v0.65.6 and asked the website lane to accept it; the
+     tag-pinned release notes exceeded the site's 320-char highlight
+     limit (corrected notes on main at 6809ef1a0; an owner decision was
+     suggested). Accepted on the website side and took the recommended
+     option: raised MAX_TEXT to 700 to match the notes CLI, updated the
+     release-notes schema doc and bumped release-notes.js to
+     ?v=20261104 on download.html and versions.html. Verified headless:
+     the tag-pinned v0.65.6 notes (highlight texts up to 460 chars)
+     validate and render on versions.html; the release is latest on the
+     mirror and GitHub with all 11 assets. Site e84b7fa, deploys at :23;
+     ASCII/link checks clean. Bus: the item was acked+fixed with the
+     acceptance + the limit decision (e24c272). No compiler-side items
+     closed.
 
 ## Cross-lane notes
 
