@@ -38,7 +38,7 @@ same file.
     {
       "kind": "language",
       "title": "At most 60 characters",
-      "text": "One or two sentences of plain text, at most 320 characters."
+      "text": "One or two sentences of plain text, at most 700 characters."
     }
   ],
   "breaking": [],
@@ -58,7 +58,7 @@ same file.
 | `tag` | yes | Must equal the release tag, `vX.Y.Z` (suffix allowed). |
 | `published` | no | ISO 8601; the site falls back to the mirror's date. |
 | `summary` | yes | Plain text, 1-240 characters, one sentence, no version number inside. |
-| `highlights` | yes | 1-6 items. `kind` in `language`, `compiler`, `stdlib`, `tooling`, `fix`, `security`. `title` 1-60, `text` 1-320. |
+| `highlights` | yes | 1-6 items. `kind` in `language`, `compiler`, `stdlib`, `tooling`, `fix`, `security`. `title` 1-60, `text` 1-700. |
 | `breaking` | yes | Array; `[]` means "no breaking changes" and is the only way to say it. Each item 1-240 characters. |
 | `known_issues` | no | Array; each item 1-240 characters. |
 | `docs` | no | 0-6 entries with `title` (1-60) and an `https://` URL. |
