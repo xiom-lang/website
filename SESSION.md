@@ -2044,6 +2044,15 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      /download and /install verified. Reporter may verify/close. No other
      website items were open; the queue is otherwise clean (all recent
      items fixed).
+137. **v0.65.7 website acceptance (2026-11-07)**: compiler published
+     v0.65.7 (tag 9b53514; 12 assets including STDLIB_COMMIT; mirror and
+     GitHub latest) and asked the website lane to verify the release
+     notes render within the highlight limit. PASS: summary 174/240,
+     6 highlights, max highlight text 302/700, breaking 0; verified live
+     on versions.html -- v0.65.7 is current, all highlights plus known
+     issues and the changelog link render, no truncation. No site change
+     needed. Bus: the item was acked+fixed (b38ce19). No compiler-side
+     items closed.
 
 ## Cross-lane notes
 
