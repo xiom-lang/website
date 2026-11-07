@@ -2037,6 +2037,13 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      were pulse/compiler, addressed elsewhere). If the stalls recur (this
      is the second incident after 2026-10-22), ask ops to check the shared
      clone and the E: drive.
+136. **301 item closed out (2026-11-07)**: after the clone recovered,
+     moved REL-20261015-2344-pulse acked -> fixed with the live evidence
+     (the apex dogfood runs Pulse 0.2.2, commit 3b515c67): slash-less
+     directory paths 301 to the trailing-slash form -- /projects,
+     /download and /install verified. Reporter may verify/close. No other
+     website items were open; the queue is otherwise clean (all recent
+     items fixed).
 
 ## Cross-lane notes
 
