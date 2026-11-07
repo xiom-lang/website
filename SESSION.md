@@ -2022,6 +2022,21 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      ASCII/link checks clean. Bus: the item was acked+fixed with the
      acceptance + the limit decision (e24c272). No compiler-side items
      closed.
+135. **Relays clone stall + queue check (2026-11-07)**: the shared
+     xiom-relays clone stalled on working-tree reads again (relay.py view,
+     item listings and fresh git status scans hang; ~50 then ~8 git
+     processes and an index.lock held by another lane). The website repo
+     (also on E:) is fine. Read the committed queue through git objects
+     instead: all recent website items are fixed; one item is still
+     acked -- REL-20261015-2344-pulse (site-mode directory 301s). The fix
+     is verified live on the apex dogfood (Pulse 0.2.2, commit 3b515c67):
+     /projects -> 301 /projects/, /download -> 301 /download/, /install ->
+     301 /install/. Move that item acked -> fixed with this evidence when
+     the clone recovers (do not write during the stall). No new
+     website-addressed item files appeared before the stall (the newest
+     were pulse/compiler, addressed elsewhere). If the stalls recur (this
+     is the second incident after 2026-10-22), ask ops to check the shared
+     clone and the E: drive.
 
 ## Cross-lane notes
 
