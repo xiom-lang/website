@@ -2053,6 +2053,13 @@ UptimeRobot keyword check on /health; the mirror sweeps at :17 and
      issues and the changelog link render, no truncation. No site change
      needed. Bus: the item was acked+fixed (b38ce19). No compiler-side
      items closed.
+138. **XVector v0.65.7 accepted (2026-11-07)**: xvector accepted v0.65.7
+     (REL-20261107-1823-xvector; roadmap doc 8d38e61) and the page now
+     pins "Built with XIOM v0.65.7" with phase 8 "Done -- v0.65.7
+     accepted"; the roadmap numbering is unchanged (9 G-3 + parity M0
+     next, 14 Tier-X gate). Site c45e29d, deploys at :23; ASCII/link
+     checks clean. Bus: the item was acked+fixed (c690169). The download
+     page follows the mirror (v0.65.7 latest).
 
 ## Cross-lane notes
 
